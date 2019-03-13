@@ -2,7 +2,14 @@
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 require_once '../login/login_check.php';
-
+if($action=="linkopen"){
+$met_addlinkopen=$met_addlinkopen;
+$langp=$lang;
+$metcms[$langp]['met_addlinkopen']=$met_addlinkopen;
+require_once '../set/configsave.php';
+okinfo('../link/index.php?lang='.$lang);
+}else{																																		
+$met_addlinkopens[$met_addlinkopen]="checked='checked'";
     $serch_sql=" where lang='$lang' ";
 	if($link_type!="")$serch_sql.=" and link_type=$link_type ";
     if($com_ok!="")$serch_sql.=" and com_ok=$com_ok ";
@@ -12,7 +19,7 @@ require_once '../login/login_check.php';
     if($search == "detail_search") {	
         if($webname) { $serch_sql .= " and webname like '%$webname%' "; }
         $total_count = $db->counter($met_link, "$serch_sql", "*");
-    } else {
+    }else{
         $total_count = $db->counter($met_link, "$serch_sql", "*");
     }
     require_once 'include/pager.class.php';
@@ -35,6 +42,7 @@ $css_url="../templates/".$met_skin."/css";
 $img_url="../templates/".$met_skin."/images";
 include template('link');
 footer();
+}
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

@@ -2,6 +2,9 @@
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 require_once template('head');
+$colspan=10;
+if(!$met_member_use)$colspan=$colspan-1;
+$colspanj=$colspan-2;
 if($readok==""){
    $style1="style='color:#FF0000'";
  }elseif($readok==0){
@@ -14,93 +17,101 @@ echo <<<EOT
 <title>{$lang_messageTitle}</title>
 </head>
 <body>
-<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
+<table cellpadding="2" cellspacing="1" class="table">
           <tr> 
-            <td colspan="10" align="center" class="list1_title">{$lang_messageTitle}</td>
+            <td colspan="3" class="title">{$lang_messageTitle}</td>
           </tr>
       <tr>
- <td align="left" class="list1_input list9" colspan="10">{$lang_messageClass}：
- <a href="index.php?search=$search&useinfo=$useinfo&lang=$lang" $style1>{$lang_messageClass1}</a>&nbsp;|&nbsp;
- <a href="index.php?search=$search&readok=0&useinfo=$useinfo&lang=$lang" $style2 >{$lang_messageClass2}</a>&nbsp;|&nbsp;
- <a href="index.php?search=$search&readok=1&useinfo=$useinfo&lang=$lang" $style3>{$lang_messageClass3}</a> 
-</td> </tr>
+ <td align="left" class="centle" colspan="3">
+ 			<form method="POST" name="myform" style="float:left; margin-right:5px; font-weight:normal; color:#666;" action="index.php?search=detail_search&lang=$lang" target="_self">
+			    &nbsp;&nbsp;<input name="useinfo" type="text" />
+  <input type="submit" name="Submit2" value="{$lang_search}" class="submit" />  
+	        {$lang_messageTip1}</form>
+			<div style="float:right; margin-right:5px; font-weight:normal;" >
+ 			    <b>{$lang_messageClass}</b>&nbsp;<select name="new" id="new" onChange="changes($(this));">
+					<option value="index.php?search=$search&useinfo=$useinfo&lang=$lang" $style1>{$lang_messageClass1}</option>
+					<option value="index.php?search=$search&readok=0&useinfo=$useinfo&lang=$lang" $style2>{$lang_messageClass2}</option>
+					<option value="index.php?search=$search&readok=1&useinfo=$useinfo&lang=$lang" $style3>{$lang_messageClass3}</option>
+				</select>
+</div> 
+</td> 
+</tr>
+	  	<tr>
+			 <td colspan="3">
+			  <form name="del" method="Post" action="delete.php?lang=$lang">
+			  <table cellpadding="0" cellspacing="0" class="table neitable" style="margin:0px; border:none;">
               <tr>
-                <td width="5%" class="list1_top" align="center">{$lang_selected}</td>
-				<td width="5%" class="list1_top" align="center">ID</td>
-				<td width="12%" class="list1_top" align="center" >{$lang_messageID}</td>
-                <td width="10%" class="list1_top" align="center">{$lang_name}</td>
-				<td width="10%" class="list1_top" align="center">{$lang_messageTel}</td>
-				<td width="10%" class="list1_top" align="center">email</td>
-				<td width="8%" class="list1_top" align="center" >{$lang_messageReply}</td>                
-                <td width="19%" class="list1_top" align="center" >{$lang_messageTime}</td>
+                <td width="40" class="list">{$lang_selected}</td>
+				<td width="50" class="list">ID</td>
+				<td class="list" >{$lang_messageID}</td>
+                <td class="list">{$lang_name}</td>
+				<td class="list">{$lang_messageTel}</td>
+				<td width="10%" class="list">email</td>
+				<td width="8%" class="list" >{$lang_messageReply}</td>                
+                <td class="list" >{$lang_messageTime}</td>
 <!--
 EOT;
 if($met_member_use){
 echo <<<EOT
 --> 
-				<td width="8%"  class="list1_top" align="center" >{$lang_access}</td>
+				<td width="8%"  class="list" >{$lang_access}</td>
 <!--
 EOT;
 }
 echo <<<EOT
 --> 
-				<td width="13%" class="list1_top" align="center" >{$lang_operate}</td>
+				<td width="13%" class="list" >{$lang_operate}</td>
               </tr>
-			  <form name="del" method="Post" action="delete.php?lang=$lang" onSubmit="return ConfirmDelall();">
 <!--
 EOT;
 foreach ($message_list as $key=>$val){
 echo <<<EOT
 -->          
-              <tr class="tdbg">
-              <td align="center"  class="list1_content_titile"><input name='id' type='checkbox' onClick="unselectall()" id="id" value='$val[id]' class="xz"></td>
-                <td  class="list1_content" align="center">$val[id]</td>
-				<td  class="list1_content" align="center">$val[customerid]</td>
-			    <td  class="list1_content" align="center">$val[name]</td>
-				<td  class="list1_content" align="center">$val[tel]</td>
-				<td  class="list1_content" align="center">$val[email]</td>
-                <td  class="list1_content" align="center">$val[readok]</td>				
-                <td  class="list1_content" align="center">$val[addtime]</td>
+              <tr class="mouse click">
+              <td  class="list-text"><input name='id' type='checkbox' onClick="unselectall()" id="id" value='$val[id]' /></td>
+                <td  class="list-text">$val[id]</td>
+				<td  class="list-text">$val[customerid]</td>
+			    <td  class="list-text">$val[name]</td>
+				<td  class="list-text">$val[tel]</td>
+				<td  class="list-text">$val[email]</td>
+                <td  class="list-text">$val[readok]</td>				
+                <td  class="list-text">$val[addtime]</td>
 <!--
 EOT;
 if($met_member_use){
 echo <<<EOT
 --> 					
-				<td  class="list1_content" align="center">$val[access]</td>
+				<td  class="list-text">$val[access]</td>
 <!--
 EOT;
 }
 echo <<<EOT
 --> 
-				<td align="center" class="list1_content" style="color:#0066FF" ></a> <a href="editor.php?id=$val[id]&lang=$lang" >{$lang_editor}</a> | <a href="delete.php?id=$val[id]&lang=$lang" onClick="return ConfirmDel();" >{$lang_delete}</a></td>
+				<td class="list-text"><a href="editor.php?id=$val[id]&lang=$lang" >{$lang_View}</a>&nbsp;&nbsp;<a href="delete.php?id=$val[id]&lang=$lang" onClick="return linkSmit($(this),1);" >{$lang_delete}</a></td>
               </tr>
 <!--
 EOT;
 }
 echo <<<EOT
 -->
-    
-   	   <tr> 
-            <td class="input_bottom" align="center"><input name="chkAll" class="xz" type="checkbox" id="chkAll" onclick=CheckAll(this.form) value="checkbox"></td>
-              <td class="input_bottom" align="center">{$lang_selectall}</td>
-			  <td class="input_bottom" align="left" colspan="8">
-			  <input name="submit" type='submit' value='{$lang_deleteselected}' style="*padding-top:2px; *height:22px;"> 
+   	   </table>
               <input name="action" type="hidden" id="action" value="del">
-			  <input name="allid" type="hidden" id="allid" value=""></form></td>
+			  <input name="allid" type="hidden" id="allid" value="">
+</form>	
+   	   </td> 
+   	   </tr> 
+   	   <tr> 
+            <td width="40" class="all"><input name="chkAll" type="checkbox" id="chkAll" onclick="CheckAllx($(this),'del')" value="checkbox" /></td>
+            <td width="50" class="all"><label for="chkAll">{$lang_selectall}</label></td>
+			  <td class="all-submit" align="left">
+			  <input name="submit" type='submit' value='{$lang_deleteselected}' class="submit li-submit" onclick="return met_modify($(this),'del','del');" /> 
+			  <div class="page_list">
+			  $page_list
+			  </div>
+              </td>
           </tr>
-		  <tr>
-            <td align="left" class="input_search" colspan="10">
-			<form method="POST" name="myform"  action="index.php?search=detail_search&lang=$lang" target="_self">
-			       <span><b>{$lang_search}</b></span> 
-			    <input name="useinfo" type="text" size="30">
-  <input type="submit" name="Submit2" value="{$lang_search}" class="tj" style="*padding-top:2px; *height:22px;">  
-	        {$lang_messageTip1}</form></td>
-          </tr>
-   	   <tr>
-   	     <td align="center" class="list1_input" colspan="10">$page_list</td>
-        </tr>
 		<tr>
-		  <td class="list1_footer" colspan="10" align="center">$foot</td>
+		  <td class="footer" colspan="3">$foot</td>
 	  </tr>
 </table>
 </body>

@@ -7,54 +7,88 @@ echo <<<EOT
 <title>{$lang_setsafetitle}</title>
 </head>
 <body>
-        <form method="POST" name="myform" action="" target="_self">
+$webwapurl
+        <form method="POST" name="myform" action="safe.php?lang=$lang" target="_self">
 		<input name="action" type="hidden" value="modify">
-<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
-
-            <td colspan="3" align="center" class="list1_title">{$lang_setsafetitle}</td>
+<table cellpadding="2" cellspacing="1" class="table safe">
+            <td colspan="2" class="title">{$lang_setsafetitle}</td>
    </tr>
          <tr> 
-            <td class="list1_text"><b>{$lang_setsafeadminname}</b></td>
-            <td class="list1_input"><input name="met_adminfile" type="text" class="input" size="5" maxlength="200" value="$adminfile">{$lang_setsafeadminname1}</td>
-          </tr>
-		  <tr style="$installstyle"> 
-            <td class="list1_text"><font color="#FF0000"><b>{$lang_setsafeinstall}</b></font></td>
-            <td class="list1_input"><font color="#FF0000">{$lang_setsafeinstall1}</font><a href="safe.php?action=delete&filename=install&lang=$lang">【{$lang_delete}】</a></td>
+            <td class="text">{$lang_setsafeadminname}</td>
+            <td class="input">
+			    <input name="met_adminfile" type="text" class="text med" value="$adminfile" />
+				<span class="tips">{$lang_setsafeadminname1c}</span>
+			</td>
           </tr>
 		  <tr style="$updatestyle"> 
-            <td class="list1_text"><font color="#FF0000"><b>{$lang_setsafeupdate}</b></font></td>
-            <td class="list1_input"><font color="#FF0000">{$lang_setsafeupdate1}</font><a href="safe.php?action=delete&filename=update&lang=$lang">【{$lang_delete}】</a></td>
+            <td class="text"><font color="#FF0000"><b>{$lang_setsafeupdate}</b></font></td>
+            <td class="input"><font color="#FF0000">{$lang_setsafeupdate1}</font><a href="safe.php?action=delete&filename=update&lang=$lang">【{$lang_delete}】</a></td>
           </tr>
 		  <tr> 
-            <td class="list1_text">{$lang_setsafeadmin}</td>
-            <td class="list1_input"><input name="met_login_code" type="radio" value="1"  $met_login_code1[1] >{$lang_open} <input name="met_login_code" type="radio" value="0" $met_login_code1[0]>{$lang_close}</td>
+            <td class="text">{$lang_setsafeadmin}</td>
+            <td class="input">
+			    <input name="met_login_code" type="radio" id="met_login_code" value="1" $met_login_code1[1] />
+				<label for="met_login_code">{$lang_open}</label>&nbsp;
+				<input name="met_login_code" type="radio" value="0" id="met_login_codes" $met_login_code1[0] />
+				<label for="met_login_codes">{$lang_close}</label>
+			</td>
           </tr>
 		    <tr> 
-            <td class="list1_text">{$lang_setsafemember}</td>
-            <td class="list1_input"><input name="met_memberlogin_code" type="radio" value="1" $met_memberlogin_code1[1] >{$lang_open} <input name="met_memberlogin_code" type="radio" value="0" $met_memberlogin_code1[0]>{$lang_close}</td>
+            <td class="text">{$lang_setsafemember}</td>
+            <td class="input">
+			    <input name="met_memberlogin_code" type="radio" id="met_memberlogin_code" value="1" $met_memberlogin_code1[1] >
+				<label for="met_memberlogin_code">{$lang_open}</label>&nbsp;
+				<input name="met_memberlogin_code" type="radio" id="met_memberlogin_codes" value="0" $met_memberlogin_code1[0]>
+				<label for="met_memberlogin_codes">{$lang_close}</label>
+			</td>
           </tr>
 		  	 <tr> 
-            <td class="list1_text">{$lang_setsafesqlrep}</td>
-            <td class="list1_input"><input name="met_sqlreplace" type="radio" value="0" $met_sqlreplace1[0] >{$lang_setsafesqlrep1} <input name="met_sqlreplace" type="radio" value="1" $met_sqlreplace1[1]>{$lang_setsafesqlrep2}</td>
+            <td class="text">{$lang_setsafesqlrep}</td>
+            <td class="input">
+			    <input name="met_sqlreplace" type="radio" id="met_sqlreplace" value="0" $met_sqlreplace1[0] />
+				<label for="met_sqlreplace">{$lang_setsafesqlrep1}</label>&nbsp;
+				<input name="met_sqlreplace" type="radio" id="met_sqlreplaces" value="1" $met_sqlreplace1[1] />
+				<label for="met_sqlreplaces">{$lang_setsafesqlrep2}</label>
+			</td>
           </tr>
 		   <tr> 
-            <td class="list1_text">{$lang_setsafesubmit}</td>
-            <td class="list1_input"><input name="met_submit_type" type="radio" value="1" $met_submit_type1[1] >{$lang_open} <input name="met_submit_type" type="radio" value="0" $met_submit_type1[0]>{$lang_close}  {$lang_setsafesubmit1}</td>
+            <td class="text"><a href="javascript:;" class="tips"><img src="{$img_url}/botton/faq.png" /></a>&nbsp;{$lang_setsafesubmit}</td>
+            <td class="input">
+			    <input name="met_submit_type" type="radio" id="met_submit_type" value="1" $met_submit_type1[1] />
+				<label for="met_submit_type">{$lang_open}</label>&nbsp; 
+				<input name="met_submit_type" type="radio" id="met_submit_types" value="0" $met_submit_type1[0] />
+				<label for="met_submit_types">{$lang_close}</label>  
+				<div class="tips-text none">{$lang_setsafesubmit1}</div>
+			</td>
           </tr>
 		  <tr> 
-            <td class="list1_text">{$lang_setsafesql}</td>
-            <td class="list1_input"><input name="met_sqlnum" type="text" class="input" size="5" maxlength="200" value="$met_sqlnum">{$lang_setsafesqltext}</td>
+            <td class="text">{$lang_setsafesql}</td>
+            <td class="input">
+			    <input name="met_sqlnum" type="text" class="text med" value="$met_sqlnum" /><span class="tips">{$lang_setsafesqltext}</span></td>
           </tr> 
-
 	      <tr> 
-            <td class="list1_text"></td>
-	      <td class="list1_submit"><input type="submit" name="Submit" value="{$lang_Submit}" class="tj" style="*padding-top:2px; *height:22px;"><input type="reset" name="Submit" value="{$lang_Reset}" class="tj" style="*padding-top:2px; *height:22px;"></td>
+            <td class="text"></td>
+	      <td class="submit">
+		      <input type="submit" name="Submit" value="{$lang_Submit}" class="submit" onclick="return Smit($(this),'myform')" />
+			  <input type="reset" name="Submit" value="{$lang_Reset}" class="reset" />
+			 </td>
           </tr>
-        </form>
 		<tr>
-		  <td class="list1_footer" colspan="2" align="center">$foot</td>
+         <tr> 
+            <td colspan="2" class="input">
+			    {$lang_setsafeadminname1}
+				<ol>
+				    <li>{$lang_setsafeadminname1a}</li>
+				    <li>{$lang_setsafeadminname1b}</li>
+					<li style="$installstyle">{$lang_setsafeinstall1}<a href="safe.php?action=delete&filename=install&lang=$lang">【{$lang_delete}】</a></li>
+				</ol>
+			</td>
+          </tr>
+		<tr>
+		  <td class="footer" colspan="2" align="center">$foot</td>
 	  </tr>
 </table>
+        </form>
 </body>
 </html>
 <!--

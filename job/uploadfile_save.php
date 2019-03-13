@@ -28,11 +28,10 @@ require_once '../include/common.inc.php';
     $met_file_format=str_replace("asp","",strtolower($met_file_format));
     $met_file_format=str_replace("jsp","",strtolower($met_file_format));
     $met_file_format=str_replace("js","",strtolower($met_file_format));
-    if ($met_file_format != "" && !in_array(strtolower($ext), explode("|",
-        strtolower($met_file_format)))) { 
+    if($met_file_format != "" && !in_array(strtolower($ext), explode("|",
+        strtolower($met_file_format)))){ 
 		okinfo('javascript:history.go(-1);',$lang_js23);
     }
-     
 	 if (!copy($filear["tmp_name"],"../upload/file/".$name)) {
      $errors = array(0 => "$lang_fileOK",  1 =>"$lang_fileError1 ", 2 => "$lang_fileError2 ", 3 => "$lang_fileError3 ", 4 => "$lang_fileError4 ");
     } else {

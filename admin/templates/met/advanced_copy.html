@@ -1,0 +1,75 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+require_once template('head');
+echo <<<EOT
+-->
+<title>内容复制</title>
+</head>
+<body>
+    <div class="main">
+        <table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
+            <tr>
+			    <td class="list1_title" colspan="2">内容复制</td>
+			</tr>
+            <tr>
+			    <td class="list1_text">全部内容复制【语言对语言】</td>
+			    <td class="list1_input">
+				<form method="POST" name="copy" onSubmit="return onsubmitcopy();"  action="copy.php?action=copy" target="_self">
+				<input type="hidden" value="$lang" name="lang">
+				
+<!--
+EOT;
+foreach($met_langok as $key=>$val){
+if($val[mark]==$lang){
+echo <<<EOT
+-->	
+				    <b>{$val[name]}</b>
+<!--
+EOT;
+}
+}
+echo <<<EOT
+-->	 
+				复制到
+				<select name="copylang">
+				    <option value="">选择语言</option>
+<!--
+EOT;
+foreach($met_langok as $key=>$val){
+if($val[mark]!=$lang){
+echo <<<EOT
+-->	
+				    <option value="$val[mark]">$val[name]</option>
+<!--
+EOT;
+}
+}
+echo <<<EOT
+-->	
+				</select>
+				<input type="submit" name="submit" value="开始复制" />
+				</td>
+				</form>
+<script type="text/javascript">
+    function onsubmitcopy(){
+	    if(document.copy.copylang.value.length == 0){
+		  alert("请选择语言！");
+		  document.copy.copylang.focus();
+		  return false;
+		}
+	}
+</script>
+			</tr>
+			<tr>
+			    <td class="list1_footer" colspan="2">$foot</td>
+			</tr>
+        </table>
+	</div>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.ed.
+?>-->

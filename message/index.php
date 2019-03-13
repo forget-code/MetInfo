@@ -2,6 +2,11 @@
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 require_once '../include/common.inc.php';
+if(!$metid)$metid='index';
+if($metid!='index'){
+require_once $metid.'.php';
+}else{
+
 $settings = parse_ini_file('config_'.$lang.'.inc.php');
 @extract($settings);
 $message_column=$db->get_one("select * from $met_column where module='7' and lang='$lang'");
@@ -36,7 +41,9 @@ $navtitle=$message_column[name];
 
 if($met_webhtm==2){
 $met_pagelist=$met_htmlistname?"message_list_":"index_list_";
-$e_page_list = $rowset->link($met_pagelist,$met_htmtype);
+$met_pagelist=$message_column['filename']<>''?$message_column['filename'].'_':$met_pagelist;
+$met_ahtmtype = $message_column['filename']<>''?$met_chtmtype:$met_htmtype;
+$page_list = $rowset->link($met_pagelist,$met_ahtmtype);
 }else{			
 $page_list = $rowset->link("index.php?lang=".$lang."&page=");	
 }
@@ -45,11 +52,12 @@ $class2=$class_list[$class1][releclass]?$class1:$class2;
 $class1=$class_list[$class1][releclass]?$class_list[$class1][releclass]:$class1;
 $class_info=$class2?$class2_info:$class1_info;
 if($class2!=""){
-$class_info[name]=$class2_info[name]."--".$class1_info[name];
+$class_info[name]=$class2_info[name]."-".$class1_info[name];
 }
      $show[description]=$class_info[description]?$class_info[description]:$met_keywords;
      $show[keywords]=$class_info[keywords]?$class_info[keywords]:$met_keywords;
-	 $met_title=$class_info[name]."--".$met_title;
+	 $met_title=$met_title?$class_info['name'].'-'.$met_title:$class_info['name'];
+	 if($class_info['ctitle']!='')$met_title=$class_info['ctitle'];
 if(count($nav_list2[$message_column[id]])){
 $k=count($nav_list2[$class1]);
 $nav_list2[$class1][$k]=$class1_info;
@@ -68,14 +76,14 @@ require_once '../public/php/methtml.inc.php';
 
 $methtml_messagelist.="<ul>\n";
 foreach($message_list as $key=>$val){
-$methtml_messagelist.="<li class='message_list_line'><span >[NO".$val[id]."]ï¼š<b>".$val[name]."</b> ".$lang_Publish." ".$val[addtime]."</span></li>\n";
+$methtml_messagelist.="<li class='message_list_line'><span >[NO".$val[id]."]£º<b>".$val[name]."</b> ".$lang_Publish." ".$val[addtime]."</span></li>\n";
 $methtml_messagelist.="<li class='message_list_info'><span ><b>".$lang_SubmitContent."</b>:".$val[info]."</span></li>\n";
 $methtml_messagelist.="<li class='message_list_reinfo'><span ><b>".$lang_Reply."</b>:".$val[useinfo]."</span></li>\n";
 }
 $methtml_messagelist.="</ul>\n";
-
 include template('message_index');
 footer();
+}
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

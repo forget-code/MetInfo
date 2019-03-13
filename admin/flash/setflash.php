@@ -91,7 +91,7 @@ if(!is_writable($flashinc))@chmod($flashinc,0666);
  $fp = fopen($flashinc,w);
  fputs($fp, $config_save);
  fclose($fp);
-okinfo('setflash.php?lang='.$lang,$lang_jsok);
+okinfo('../flash/setflash.php?lang='.$lang);
 }
 else{
 

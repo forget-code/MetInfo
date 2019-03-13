@@ -21,7 +21,7 @@ $languser = $_GET[langset];
 $langset=($languser!="")?$languser:$met_admin_type;
 $file_name=ROOTPATH_ADMIN."language/language_".$langset.".ini";	
 $fp = @fopen($file_name, "r") or die("Cannot open $file_name");
-$js='var user_msg = new Array();';
+$js="var user_msg = new Array();\n";
 while ($conf_line = @fgets($fp, 1024)){ 
 if(substr($conf_line,0,1)=="#"){   
 $line = ereg_replace("#.*$", "", $conf_line);
@@ -45,7 +45,7 @@ $value=str_replace("&quot;","\"",$value);
 if($name[0]=='j' && $name[1]=='s') 
 {
 	$tmp=trim($value);
-	$js=$js."user_msg['$name']='$tmp';";
+	$js=$js."user_msg['$name']='$tmp';\n";
 }
 list($value, $valueinfo)=explode ('/*', $value);
 $name = 'lang_'.daddslashes1(trim($name),1);

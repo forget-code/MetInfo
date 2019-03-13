@@ -34,6 +34,12 @@ require_once '../login/login_check.php';
    } 	
 	$list[readok] = $list[readok] ? $lang_yes : $lang_no;
 	//$list[addtime] = date('Y-m-d',strtotime($list[addtime]));
+/*bd*/
+$list[name]=strip_tags($list[name]);
+$list[email]=strip_tags($list[email]);
+$list[tel]=strip_tags($list[tel]);
+$list[contact]=strip_tags($list[contact]);
+/*bd*/
     $message_list[]=$list;
     }
 $page_list = $rowset->link("index.php?search=$search&readok=$readok&useinfo=$useinfo&lang=$lang&page=");

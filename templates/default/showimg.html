@@ -1,32 +1,20 @@
 <!--<?php
 require_once template('head'); 
+require_once template('webbar'); 
 $met_img=methtml_showimg('all');
 $methits=methtml_hits('img');
-$met_imgnext=methtml_prenextinfo();
+$met_next=methtml_prenextinfo(1);
 echo <<<EOT
 -->
-<div id="web">
-<div class="right">
-   <h3 class="title"><span>{$class_list[$classnow][name]}</span></h3>
-<div class="webcontent">
-<h1 class="title">$img[title]</h1>
-  <div class="product_list">
-{$met_img}
-</div>
-<div class="pcontent">$img[content]</div>
-<div class="page">$met_imgnext</div>
-<div class="hits">$methits</div>
-
-</div>
-</div>
-<!--
-EOT;
-require_once template('webleft'); 
-echo <<<EOT
--->
-<div style="clear:both;"></div>
-
-
+        <div class="showimg webbox">
+		    <h1 class="title">$img[title]</h1>
+            <div class="para">{$met_img}</div>
+            <div class="editor">{$img[content]}<div class="clear"></div></div>
+			<div class="hits">$methits</div>
+            <div class="page">$met_next</div>
+        </div>
+    </div>
+    <div class="clear"></div>
 </div>
 <!--
 EOT;

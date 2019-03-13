@@ -1,30 +1,33 @@
 <!--<?php
 require_once template('head'); 
+require_once template('webbar');
 $metlinkimg=methtm_link('img','all','0','100','1');
 $metlinktext=methtm_link('text','all','0','100','1');
 echo <<<EOT
 -->
-<div id="web">
-<div class="right">
-   <h3 class="title"><span>{$class_list[$classnow][name]}</span></h3>
-<div class="webcontent">   
-<div class="message_line"><a href="$addlink_url">{$lang_ApplyLink}&gt;&gt;</a></div>
-     <dl class="link_main">
-        <dt>{$lang_PictureLink}:</dt>
-        <dd>$metlinkimg</dd>
-     </dl>
-     <dl class="link_main">
-         <dt>{$lang_TextLink}:</dt>
-         <dd>$metlinktext</dd>
-     </dl>
-</div>
-</div>
+        <div class="linklist webbox">
 <!--
 EOT;
-require_once template('webleft'); 
+if($class_list[$classnow][releclass]!=0){
 echo <<<EOT
 -->
-<div style="clear:both;"></div>
+            <div class="inside"><a href="$addlink_url" class="hover-none">{$lang_ApplyLink}</a></div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+            <dl class="metlist">
+                <dt>{$lang_PictureLink}</dt>
+                <dd>$metlinkimg</dd>
+            </dl>
+            <dl class="metlist">
+                <dt>{$lang_TextLink}</dt>
+                <dd>$metlinktext</dd>
+            </dl>
+        </div>
+    </div>
+    <div style="clear:both;"></div>
 </div>
 <!--
 EOT;

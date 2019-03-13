@@ -2,7 +2,7 @@
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 require_once '../login/login_check.php';
-$backurl="cv.php?lang=".$lang;
+$backurl="../job/cv.php?lang=".$lang;
 $query = "select * from $met_parameter where lang='$lang' and module='6' and type='5' order by no_order";
 $result = $db->query($query);
 while($list = $db->fetch_array($result)){
@@ -23,7 +23,7 @@ $db->query($query);
 $query = "delete from $met_cv where id='$val'";
 $db->query($query);
 }
-okinfo($backurl,$lang_jsok);
+okinfo($backurl);
 }elseif($action=='deljobs')
 {
 	$alljobidlist=explode(',',$alljobid);	
@@ -39,13 +39,13 @@ okinfo($backurl,$lang_jsok);
 	$query = "delete from $met_cv where jobid='$val'";
 	$db->query($query);
 	}
-	okinfo("index.php?class1=$class1&lang=$lang",$lang_jsok);
+	okinfo("../job/index.php?class1=$class1&lang=$lang");
 }
 elseif($action=='deljob')
 {
 	$cv_list = $db->get_one("SELECT * FROM $met_cv WHERE jobid='$jobid'");
 	if(!$cv_list){
-	okinfo("index.php?class1=$class1&lang=$lang",$lang_cvTip5);
+	okinfox("../job/index.php?class1=$class1&lang=$lang",$lang_dataerror);
 	}
     if($met_deleteimg){
      foreach($para_list as $key=>$val){
@@ -57,7 +57,7 @@ elseif($action=='deljob')
     $db->query($query);	
 	$query = "delete from $met_cv where jobid='$jobid'";
 	$db->query($query);
-	okinfo("index.php?class1=$class1&lang=$lang",$lang_jsok);
+	okinfo("../job/index.php?class1=$class1&lang=$lang");
 }else{
 //delete images
 if($met_deleteimg){
@@ -70,7 +70,7 @@ $query = "delete from $met_plist where listid='$id' and module='6'";
 $db->query($query);
 $query = "delete from $met_cv where id='$id'";
 $db->query($query);
-okinfo($backurl,$lang_jsok);
+okinfo($backurl);
 }
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.

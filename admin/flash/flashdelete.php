@@ -14,7 +14,7 @@ file_unlink("../".$flashrec[flash_back]);
 $query = "delete from $met_flash where id='$val'";
 $db->query($query);
 }
-okinfo('flash.php?lang='.$lang.'&flashmode='.$flashmode,$lang_jsok);
+okinfo('../flash/flash.php?lang='.$lang.'&flashmode='.$flashmode);
 }
 else{
 $flashrec=$db->get_one("SELECT * FROM $met_flash where id='$id'");
@@ -25,7 +25,7 @@ file_unlink("../".$flashrec[flash_back]);
 }
 $query = "delete from $met_flash where id='$id'";
 $db->query($query);
-okinfo('flash.php?lang='.$lang.'&flashmode='.$flashmode,$lang_jsok);
+okinfo('../flash/flash.php?lang='.$lang.'&flashmode='.$flashmode);
 }
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.

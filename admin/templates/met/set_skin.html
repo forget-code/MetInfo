@@ -5,39 +5,44 @@ require_once template('head');
 echo <<<EOT
 -->
 <title>{$lang_setskinUISet}</title>
-</head>
+$scriptcss
 <script language="javascript" type="text/javascript">
 function viewpage(imgid){
-document.getElementById('pageimg').src="../../public/images/page/page"+imgid+".png";
+   $("#pageimg").attr("src","../../public/images/page/page"+imgid+".png");
 }
 </script>
+</head>
 <body>
-
-<form method="POST" name="myform" action="" target="_self">
-		<input name="action" type="hidden" value="modify">
-<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1"> 
-   <tr> 
-            <td colspan="3" align="center" class="list1_title">{$lang_setskinUISet}</td>
-          </tr>
-		   <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font>{$lang_setskinTemplate}</td>
-            <td class="list1_input">
-			<select name="met_skin_user" onChange="changecss(document.myform.met_skin_user.options[document.myform.met_skin_user.selectedIndex].value)">
 <!--
 EOT;
-foreach($skin_list as $key=>$val){
-$select_ok="";
-if($met_skin_user==$val[skin_file]){$select_ok="selected";}
+$littr=11;
+require_once template('metlangs');
 echo <<<EOT
 -->
-<option value="$val[skin_file]" $select_ok >$val[skin_name]</option>		
+    <form method="POST" name="myform" action="skin.php?lang=$lang" target="_self">
+	<input name="action" type="hidden" value="modify" />
+	<input name="met_jiathis_custom" type="hidden" value="0" />
+	<input name="met_tools_custom" type="hidden" value="0" />
+<table cellpadding="2" cellspacing="1" class="table">
+        <tr> 
+            <td class="text"><font class="must">*</font>{$lang_setskinTemplate}</td>
+            <td class="input">
+			<select name="met_skin_user" onChange="changecss($(this))">
+<!--
+EOT;
+foreach($skin_list as $key=>$vaa){
+$select_ok="";
+if($met_skin_user==$vaa[skin_file]){$select_ok="selected";}
+echo <<<EOT
+-->
+                <option value="$vaa[skin_file]" $select_ok>$vaa[skin_name]</option>		
 <!--
 EOT;
 }
 echo <<<EOT
 -->      
-</select>	
-		<select name="met_skin_css">
+            </select>	
+		    <select name="met_skin_css">
 <!--
 EOT;
 for($i=0; $i<count($cssnumnow);$i++){
@@ -45,72 +50,114 @@ $select_ok="";
 if($met_skin_css==$cssnumnow[$i][1]){$select_ok="selected";}
 echo <<<EOT
 -->
-		<option value="{$cssnumnow[$i][1]}" $select_ok  >{$cssnumnow[$i][0]}</option>
+		        <option value="{$cssnumnow[$i][1]}" $select_ok>{$cssnumnow[$i][0]}</option>
 <!--
 EOT;
 }
 echo <<<EOT
 -->		
-		</select>	
-					<span><a href="skin_manager.php?lang=$lang" class="title_add">{$lang_setskinAdd}</a></span></td>
-          </tr> 
-		  
-          <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font>{$lang_mod3}{$lang_setskinListPage}</td>
-            <td class="list1_input">{$lang_setskinNumOfPage}&nbsp;<input name="met_product_list" type="text" class="input" size="3" maxlength="20" value="$met_product_list">{$lang_item}</td>
-          </tr> 
-		  <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font>{$lang_mod2}{$lang_setskinListPage}</td>
-            <td class="list1_input"> {$lang_setskinNumOfPage}&nbsp;<input name="met_news_list" type="text" class="input" size="3" maxlength="20" value="$met_news_list">{$lang_item}</td>
-          </tr>
-		  <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font>{$lang_mod4}{$lang_setskinListPage}</td>
-            <td class="list1_input"> {$lang_setskinNumOfPage}&nbsp;<input name="met_download_list" type="text" class="input" size="3" maxlength="20" value="$met_download_list">{$lang_item}</td>
-          </tr>
-		  <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font>{$lang_mod5}{$lang_setskinListPage}</td>
-            <td class="list1_input"> {$lang_setskinNumOfPage}&nbsp;<input name="met_img_list" type="text" class="input" size="3" maxlength="20" value="$met_img_list">{$lang_item}</td>
-          </tr>
-		  <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font>{$lang_mod6}{$lang_setskinListPage}</td>
-            <td class="list1_input"> {$lang_setskinNumOfPage}&nbsp;<input name="met_job_list" type="text" class="input" size="3" maxlength="20" value="$met_job_list">{$lang_item}</td>
-          </tr>
-		  	<tr> 
-            <td class="list1_text"><font color="#FF0000">*</font>{$lang_mod7}{$lang_setskinListPage}</td>
-            <td class="list1_input"> {$lang_setskinNumOfPage}&nbsp;<input name="met_message_list" type="text" class="input" size="3" maxlength="20" value="$met_message_list">{$lang_item}</td>
-          </tr>
-		  <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font>{$lang_mod11}{$lang_setskinListPage}</td>
-            <td class="list1_input"> {$lang_setskinNumOfPage}&nbsp;<input name="met_search_list" type="text" class="input" size="3" maxlength="20" value="$met_search_list">{$lang_item}</td>
-          </tr>
-		  	<tr> 
-            <td class="list1_text"><font color="#FF0000">*</font>{$lang_setskinnews}</td>
-            <td class="list1_input">{$lang_setskinnews1} <input name="met_newsdays" type="text" class="input" size="3" maxlength="20" value="$met_newsdays">{$lang_setskinnews2}<img src="../../templates/$met_skin_user/images/news.gif"> {$lang_setskinnews3}</td>
-          </tr>
-		  <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font>{$lang_setskinhot}</td>
-            <td class="list1_input">{$lang_setskinhot1} <input name="met_hot" type="text" class="input" size="3" maxlength="20" value="$met_hot">{$lang_setskinhot2}<img src="../../templates/$met_skin_user/images/hot.gif"> {$lang_setskinhot3}</td>
-          </tr>
-		  	<tr> 
-            <td class="list1_text"><font color="#FF0000">*</font>{$lang_setskindatelist}</td>
-            <td class="list1_input">
+		    </select>	
+			<a href="skin_manager.php?lang=$lang&addaskin=1" title="{$lang_setskinAdd}" class="red">{$lang_setskinAdd}</a>
+			<a href="langeditorskin.php?langeditor=$lang&langnowok=metinfo&langid=0&lang=$lang&met_newskins={$met_skin_user}" title="{$lang_editor}">{$lang_setskineditor}</a>
+			</td>
+        </tr> 
+		<tr> 
+            <td class="text"><font class="must">*</font>{$lang_mod3}{$lang_setskinListPage}</td>
+            <td class="input">
+			    {$lang_setskinNumOfPage}
+				<input name="met_product_list" type="text" class="text mid" value="{$met_product_list}" />
+				{$lang_item}
+			</td>
+        </tr> 
+		<tr> 
+            <td class="text"><font class="must">*</font>{$lang_mod2}{$lang_setskinListPage}</td>
+            <td class="input">
+			    {$lang_setskinNumOfPage}
+				<input name="met_news_list" type="text" class="text mid" value="{$met_news_list}" />
+				{$lang_item}
+			</td>
+        </tr>
+		<tr> 
+            <td class="text"><font class="must">*</font>{$lang_mod4}{$lang_setskinListPage}</td>
+            <td class="input">
+			    {$lang_setskinNumOfPage}
+				<input name="met_download_list" type="text" class="text mid" value="{$met_download_list}">
+				{$lang_item}
+			</td>
+        </tr>
+		<tr> 
+            <td class="text"><font class="must">*</font>{$lang_mod5}{$lang_setskinListPage}</td>
+            <td class="input">
+			    {$lang_setskinNumOfPage}
+				<input name="met_img_list" type="text" class="text mid" value="{$met_img_list}" />
+				{$lang_item}
+			</td>
+        </tr>
+		<tr> 
+            <td class="text"><font class="must">*</font>{$lang_mod6}{$lang_setskinListPage}</td>
+            <td class="input">
+			    {$lang_setskinNumOfPage}
+				<input name="met_job_list" type="text" class="text mid"  value="{$met_job_list}" />
+				{$lang_item}
+			</td>
+        </tr>
+		<tr> 
+            <td class="text"><font class="must">*</font>{$lang_mod7}{$lang_setskinListPage}</td>
+            <td class="input">
+			    {$lang_setskinNumOfPage}
+				<input name="met_message_list" type="text" class="text mid" value="{$met_message_list}" />
+				{$lang_item}
+			</td>
+        </tr>
+		<tr> 
+            <td class="text"><font class="must">*</font>{$lang_mod11}{$lang_setskinListPage}</td>
+            <td class="input">
+			    {$lang_setskinNumOfPage}
+				<input name="met_search_list" type="text" class="text mid" value="{$met_search_list}" />
+				{$lang_item}
+			</td>
+        </tr>
+		<tr> 
+            <td class="text"><font class="must">*</font>{$lang_setskinnews}</td>
+            <td class="input">
+			    {$lang_setskinnews1}
+				<input name="met_newsdays" type="text" class="text mid" value="{$met_newsdays}" />
+				{$lang_setskinnews2}
+				<img src="../../templates/$met_skin_user/images/news.gif" />
+				{$lang_setskinnews3}
+			</td>
+        </tr>
+		<tr> 
+            <td class="text"><font class="must">*</font>{$lang_setskinhot}</td>
+            <td class="input">
+			    {$lang_setskinhot1}
+				<input name="met_hot" type="text" class="text mid" value="{$met_hot}" />
+				{$lang_setskinhot2}
+				<img src="../../templates/$met_skin_user/images/hot.gif" />
+				{$lang_setskinhot3}
+			</td>
+        </tr>
+		<tr> 
+            <td class="text"><font class="must">*</font>{$lang_setskindatelist}</td>
+            <td class="input">
 			<select name="met_listtime">
 <!--
 EOT;
 for($i=0;$i<9;$i++){
 echo <<<EOT
 -->
-			<option value="{$met_timetype[$i][1]}" {$met_listtime1[$i]}>{$met_timetype[$i][2]}</option>
+			    <option value="{$met_timetype[$i][1]}" {$met_listtime1[$i]}>{$met_timetype[$i][2]}</option>
 <!--
 EOT;
 }
 echo <<<EOT
 -->
-			</select></td>
-          </tr>
-		  	<tr> 
-            <td class="list1_text"><font color="#FF0000">*</font>{$lang_setskindatecontent}</td>
-            <td class="list1_input">
+			</select>
+			</td>
+        </tr>
+		<tr> 
+            <td class="text"><font class="must">*</font>{$lang_setskindatecontent}</td>
+            <td class="input">
 			<select name="met_contenttime">
 <!--
 EOT;
@@ -123,12 +170,13 @@ EOT;
 }
 echo <<<EOT
 -->
-			</select></td>
-          </tr>
-		  	<tr> 
-            <td class="list1_text"><font color="#FF0000">*</font>{$lang_setskinpage}</td>
-            <td class="list1_input">
-			<select name="met_pageskin" onChange="viewpage(this.options[this.selectedIndex].value);">
+			</select>
+			</td>
+        </tr>
+		<tr> 
+            <td class="text"><font class="must">*</font>{$lang_setskinpage}</td>
+            <td class="input">
+			<select name="met_pageskin" onChange="viewpage($(this).val());" style=" float:left; position:relative; top:5px;">
 <!--
 EOT;
 for($i=1;$i<10;$i++){
@@ -140,19 +188,23 @@ EOT;
 }
 echo <<<EOT
 -->
-			</select> <img id="pageimg" src="../../public/images/page/page{$met_pageskin}.png" border="0" style="margin:2px 0px 0px 10px;"></td>
-          </tr>
-		   <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font>{$lang_mod3}{$lang_setskinListPage}</td>
-            <td class="list1_input"><input name="met_product_page" type="radio" value="0" $met_product_page1[0]>{$lang_setskinproduct1}&nbsp;<input name="met_product_page" type="radio" value="1" $met_product_page1[1]>{$lang_setskinproduct2}&nbsp;</td>
-          </tr>
-		  <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font>{$lang_mod5}{$lang_setskinListPage}</td>
-            <td class="list1_input"><input name="met_img_page" type="radio" value="0" $met_img_page1[0]>{$lang_setskinproduct1}&nbsp;<input name="met_img_page" type="radio" value="1" $met_img_page1[1] >{$lang_setskinproduct2}&nbsp;</td>
-          </tr>
-		  <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font>{$lang_mod3}{$lang_setskinimgdetail}</td>
-            <td class="list1_input">
+			</select><img id="pageimg" src="../../public/images/page/page{$met_pageskin}.png" /></td>
+        </tr>
+		<tr> 
+            <td class="text"><font class="must">*</font>{$lang_mod3}{$lang_setskinListPage}</td>
+            <td class="input">
+			<input name="met_product_page" type="radio" class="radio" id="met_product_page" value="0" {$met_product_page1[0]} /><label for="met_product_page">{$lang_setskinproduct1}</label>&nbsp;&nbsp;<input name="met_product_page" class="radio" id="met_product_page0" type="radio" value="1" {$met_product_page1[1]} /><label for="met_product_page0">{$lang_setskinproduct2}</label>
+			</td>
+        </tr>
+		<tr> 
+            <td class="text"><font class="must">*</font>{$lang_mod5}{$lang_setskinListPage}</td>
+            <td class="input">
+			<input name="met_img_page" id="met_img_page" type="radio" class="radio" value="0" {$met_img_page1[0]} /><label for="met_img_page">{$lang_setskinproduct1}</label>&nbsp;&nbsp;<input name="met_img_page" type="radio" id="met_img_page0" class="radio" value="1" {$met_img_page1[1]} /><label for="met_img_page0">{$lang_setskinproduct2}</label>
+			</td>
+        </tr>
+		<tr> 
+            <td class="text"><font class="must">*</font>{$lang_mod3}{$lang_setskinimgdetail}</td>
+            <td class="input">
 			<select name="met_product_detail" onChange="viewproduct(this.options[this.selectedIndex].value);">
 <!--
 EOT;
@@ -166,12 +218,13 @@ EOT;
 echo <<<EOT
 -->
 			</select>
-			{$lang_setflashWidth}({$lang_setflashPixel})<input type="text" name="met_productdetail_x" value="$met_productdetail_x" size="3">&nbsp;{$lang_setflashHeight}({$lang_setflashPixel})<input name="met_productdetail_y" type="text" value="$met_productdetail_y" size="3">
-			 </td>
-          </tr>
-		   <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font>{$lang_mod5}{$lang_setskinimgdetail}</td>
-            <td class="list1_input">
+			{$lang_setflashWidth}
+			<input type="text" class="text mid" name="met_productdetail_x" value="{$met_productdetail_x}" /><font style="font-family:'宋体';">× </font><input name="met_productdetail_y" type="text" class="text mid" value="{$met_productdetail_y}" />{$lang_setflashHeight}({$lang_setflashPixel})
+			</td>
+        </tr>
+		<tr> 
+            <td class="text"><font class="must">*</font>{$lang_mod5}{$lang_setskinimgdetail}</td>
+            <td class="input">
 			<select name="met_img_detail" onChange="viewimg(this.options[this.selectedIndex].value);">
 <!--
 EOT;
@@ -184,17 +237,58 @@ EOT;
 }
 echo <<<EOT
 -->
-			</select> {$lang_setflashWidth}({$lang_setflashPixel})<input type="text"  name="met_imgdetail_x" value="$met_imgdetail_x" size="3">&nbsp;{$lang_setflashHeight}({$lang_setflashPixel})<input type="text" name="met_imgdetail_y" value="$met_imgdetail_y" size="3"></td>
-          </tr>
-	      <tr> 
-            <td class="list1_text"></td>
-	      <td class="list1_submit"><input type="submit" name="Submit" value="{$lang_Submit}" class="tj" style="*padding-top:2px; *height:22px;"><input type="reset" name="Submit" value="{$lang_Reset}" class="tj" style="*padding-top:2px; *height:22px;"> </td>
-          </tr>
-        </form>
-		<tr>
-		  <td class="list1_footer" colspan="2" align="center">$foot</td>
-	  </tr>
-</table>
+			</select> 
+			{$lang_setflashWidth}
+			<input type="text"  name="met_imgdetail_x" class="text mid" value="{$met_imgdetail_x}" /><font style="font-family:'宋体';">× </font><input type="text" name="met_imgdetail_y" class="text mid" value="{$met_imgdetail_y}" />{$lang_setflashHeight}({$lang_setflashPixel})
+			</td>
+        </tr>
+		<tr> 
+            <td class="text"><font class="must">*</font>{$lang_setskincontentxian}</td>
+            <td class="input">
+			<input name="met_hitsok" type="radio" class="radio" id="met_hitsok" value="0" {$met_hitsok1[0]} /><label for="met_hitsok">{$lang_close}</label>&nbsp;&nbsp;<input name="met_hitsok" class="radio" id="met_hitsok0" type="radio" value="1" {$met_hitsok1[1]} /><label for="met_hitsok0">{$lang_open}</label>
+			</td>
+        </tr>
+		<tr> 
+            <td class="text">{$lang_setseotype}</td>
+            <td class="input">
+			<input name="met_urlblank" type="radio" class="radio" id="met_urlblank" value="0" {$met_urlblank1[0]} /><label for="met_urlblank">{$lang_setseodopen}</label>&nbsp;&nbsp;<input name="met_urlblank" class="radio" id="met_urlblank0" type="radio" value="1" {$met_urlblank1[1]} /><label for="met_urlblank0">{$lang_setseonewopen}</label>
+			</td>
+        </tr>
+		<tr> 
+            <td class="text">{$lang_setseojiathis}<br/><a href="http://www.metinfo.cn/faq/jiathis.htm" target="_blank" title="{$lang_setseojiathisnow}">{$lang_setseojiathisnow}</a></td>
+            <td colspan="2" class="input">
+				<dl>
+				<dt style='padding:2px 5px 0px 0px; font-weight:bold;'>{$lang_setseojiathis_side}</dt>
+				<dd style='border-top:1px dotted #ccc;'><input name="met_jiathis_ok" type="radio" id="met_jiathis_ok" value="1" {$met_jiathis_ok1[1]} /><label for="met_jiathis_ok">{$lang_open}</label>
+				<input name="met_jiathis_ok" type="radio" id="met_jiathis_ok1" value="0" {$met_jiathis_ok1[0]} /><label for="met_jiathis_ok1">{$lang_close}</label><br/>
+				<input name="met_jiathis_custom" type="checkbox" id="met_jiathis_custom1" onchange="changeshow($(this),'met_jiathis')" value="1" {$met_jiathis_custom1[1]} /><label for="met_jiathis_custom1">{$lang_setseojiathis_Top5}</label><br/>
+				<textarea name="met_jiathis" id="met_jiathis" class="textarea gen {$customnone}">$met_jiathis</textarea>
+				</dd>
+				</dl>
+				<dl>
+				<dt style='padding:2px 5px 0px 0px; font-weight:bold;'>{$lang_setseojiathis_tools}</dt>
+				<dd style='border-top:1px dotted #ccc;'><input name="met_tools_ok" type="radio" id="met_tools_ok" value="1" {$met_tools_ok1[1]} /><label for="met_tools_ok">{$lang_open}</label>
+				<input name="met_tools_ok" type="radio" id="met_tools_ok1" value="0" {$met_tools_ok1[0]} /><label for="met_tools_ok1">{$lang_close}</label><br/>
+				<input name="met_tools_custom" type="checkbox" id="met_tools_custom1" onchange="changeshow($(this),'met_tools_code')" value="1" {$met_tools_custom1[1]} /><label for="met_tools_custom1">{$lang_setseojiathis_Top5}</label><br/>
+				<textarea name="met_tools_code" id="met_tools_code" class="textarea gen {$toolsnone}">$met_tools_code</textarea>
+				</dd>
+				</dl>
+				<script type="text/javascript">
+				    function changeshow(my,id){
+						my.attr('checked')?$('#'+id).show():$('#'+id).hide();
+					}
+				</script>
+			</td>
+        </tr>
+	    <tr> 
+            <td class="text"></td>
+	        <td class="submit">
+			    <input type="submit" name="Submit" value="{$lang_Submit}" class="submit" onclick="return Smit($(this),'myform')" />
+				<input type="reset" name="Submit" value="{$lang_Reset}" class="reset" /> 
+        </tr>
+	</table>
+	</form>
+<div class="footer">$foot</div>
 </body>
 </html>
 <!--

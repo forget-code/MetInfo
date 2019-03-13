@@ -6,26 +6,27 @@ echo <<<EOT
 -->
 <title>{$lang_editinfo}</title>
 </head>
+$listjs
 <body>
-<form  method="POST" name="myform" onSubmit="return CheckFormarticle();" action="save.php?action=$action" target="_self">
+<form  method="POST" name="myform" action="save.php?action=$action" target="_self">
 		<input name="class1" type="hidden" value="$class1">
 		<input name="id" type="hidden" value="$id">
 		<input name="lang" type="hidden"   value="$lang">
 		<input name="filenameold" type="hidden"  value="$news_list[filename]">
 		<input name="updatetimeold" type="hidden"  value="$news_list[updatetime]">
-<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
+<table cellpadding="2" cellspacing="1" class="table">
           <tr> 
-            <td colspan="3" align="center" class="list1_title">{$lang_editinfo}</td>
+            <td colspan="3" class="title">{$lang_editinfo}</td>
           </tr>		  
 		  <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_columnname}</b></td>
-            <td colspan="2" class="list1_input">
+            <td class="text"><font class="must">*</font>{$lang_columnname}</td>
+            <td colspan="2" class="input">
 <!--
 EOT;
 if(count($met_class22[$class1])){
 echo <<<EOT
 -->	
-<select name="class2" onChange="changelocation(document.myform.class2.options[document.myform.class2.selectedIndex].value)" size="1">
+<select name="class2" class="noselect" onChange="changelocation(document.myform.class2.options[document.myform.class2.selectedIndex].value)" size="1">
 <option value=0 $class2[0]>{$lang_modClass2}</option>
 <!--
 EOT;
@@ -77,8 +78,8 @@ echo <<<EOT
 -->		  
 
 		  <tr> 
-            <td class="list1_text"><b>{$lang_webaccess}</b></td>
-            <td class="list1_input" colspan="2" ><select name="access" id="access" >
+            <td class="text">{$lang_webaccess}</td>
+            <td class="input" colspan="2" ><select name="access" id="access" >
              $level
             </select></td>
           </tr>
@@ -88,8 +89,11 @@ EOT;
 echo <<<EOT
 -->	
 		  <tr> 
-            <td class="list1_text"><b>{$lang_top}</b></td>
-            <td colspan="2" class="list1_input"><input name="top_ok" type="checkbox" value="1" $top_ok>{$lang_modtopinfo}</td>
+            <td class="text">{$lang_top}</td>
+            <td colspan="2" class="input">
+				<input name="top_ok" type="checkbox" id="label1" class="checkbox" value="1" $top_ok>
+				<label for="label1">{$lang_modtopinfo}</label>
+			</td>
           </tr> 
 <!--
 EOT;
@@ -97,17 +101,19 @@ if($metadmin[newsimage]){
 echo <<<EOT
 -->
 		  <tr> 
-            <td class="list1_text"><b>{$lang_images}</b></td>
-            <td colspan="2" class="list1_input"><input name="img_ok" type="checkbox" value="1" onMouseDown="displayall('imgurl','imgurls')" $img_ok>{$lang_modcontentimage}</td>
+            <td class="text">{$lang_images}</td>
+            <td colspan="2" class="input">
+				<input name="img_ok" type="checkbox" value="1" id="label2" class="checkbox" onchange="displayall($(this),'#imgurl','#imgurls')" $img_ok>
+				<label for="label2">{$lang_modcontentimage}</label></td>
           </tr> 
 		  <tr id="imgurl" style="display:none"> 
-            <td class="list1_text"><b>{$lang_modimgurl}</b><br><font color='red' $styletip>{$lang_modimgauto}</span></td>
-            <td colspan="2" class="list1_input"> <input name="imgurl" type="text" class="input" size="30"  value="$news_list[imgurl]"> 
-			<iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_photo.php?returnid=big&create_samll=$met_autothumb_ok&lang=$lang" frameborder=0 scrolling=no width="320" height="25"></iframe></td>
+            <td class="text">{$lang_modimgurl}<br><font color='red' $styletip>{$lang_modimgauto}</span></td>
+            <td colspan="2" class="input upload"> <input name="imgurl" type="text" class="text" size="30" value="$news_list[imgurl]"> 
+			<iframe ID="UploadFiles" src="../include/upload_photo.php?returnid=big&create_samll=$met_autothumb_ok&lang=$lang&imgtype=3" frameborder=0 scrolling=no></iframe></td>
           </tr> 
 		  <tr id="imgurls" style="display:none"> 
-            <td class="list1_text"><b>{$lang_modimgurls}</b></td>
-            <td colspan="2" class="list1_input"> <input name="imgurls" type="text" class="input" size="30"  value="$news_list[imgurls]"><iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_photo.php?returnid=small&lang=$lang" frameborder=0 scrolling=no width="320" height="25"></iframe></td>
+            <td class="text">{$lang_modimgurls}</td>
+            <td colspan="2" class="input upload"> <input name="imgurls" type="text" class="text" size="30"  value="$news_list[imgurls]"><iframe  ID="UploadFiles" src="../include/upload_photo.php?returnid=small&lang=$lang" frameborder=0 scrolling=no></iframe></td>
           </tr> 
 <!--
 EOT;
@@ -116,40 +122,59 @@ if($metadmin[newscom]){
 echo <<<EOT
 -->	
 		 <tr> 
-            <td class="list1_text"><b>{$lang_recom}</b></td>
-            <td colspan="2" class="list1_input"><input name="com_ok" type="checkbox" value="1" $com_ok>{$lang_modcontentcom}</td>
+            <td class="text">{$lang_recom}</td>
+            <td colspan="2" class="input">
+				<input name="com_ok" type="checkbox" class="checkbox" id="label3" value="1" $com_ok>
+				<label for="label3">{$lang_modcontentcom}</label></td>
           </tr> 
 <!--
 EOT;
 }
 echo <<<EOT
 -->	
+<!--
+EOT;
+if($met_wap && $met_wap_ok){
+echo <<<EOT
+-->	
+		<tr> 
+            <td class="text">WAP</td>
+            <td colspan="2" class="input">
+				<input name="wap_ok" type="checkbox" class="checkbox" id="label4" value="1" $wap_ok>
+				<label for="label4">{$lang_wapcontentcom}</label>
+			</td>
+        </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->	
 		  <tr> 
-            <td class="list1_text"><b>{$lang_modpublish}</b></td>
-            <td colspan="2" class="list1_input"><input name="issue" type="text" class="input" size="10"  value="$news_list[issue]"></td>
+            <td class="text">{$lang_modpublish}</td>
+            <td colspan="2" class="input"><input name="issue" type="text" class="text mid" size="10" value="$news_list[issue]"></td>
           </tr>
 		  <tr> 
-            <td class="list1_text"><b>{$lang_hits}</b></td>
-            <td colspan="2" class="list1_input"><input name="hits" type="text" class="input" size="10"  value="$news_list[hits]"> {$lang_modhits}</td>
-          </tr>
-		  <tr> 
-            <td class="list1_text"><b>{$lang_addtime}</b></td>
-            <td colspan="2" class="list1_input"><input name="addtime" type="text" class="input" size="20"  value="$news_list[addtime]">{$lang_modtimenow}$m_now_date {$lang_modtimenow1}</td>
-          </tr>
-		  <tr> 
-            <td class="list1_text"><b>{$lang_updatetime}</b></td>
-            <td colspan="2" class="list1_input"><input name="updatetime" type="text" class="input" size="20"  value="$m_now_date">{$lang_modtimenow}$m_now_date {$lang_modtimenow1}</td>
+            <td class="text">{$lang_hits}</td>
+            <td colspan="2" class="input"><input name="hits" type="text" class="text mid" size="10"  value="$news_list[hits]"><span class="tips">{$lang_modhits}</span></td>
           </tr>
 		   <tr> 
-            <td class="list1_text"><b>{$lang_hits}</b></td>
-            <td colspan="2" class="list1_input">{$lang_modorderinfo}</td>
+            <td class="text">{$lang_sort}</td>
+            <td colspan="2" class="input"><input type="text" name="no_order" class="text mid" value="$news_list[no_order]" /><span class="tips">{$lang_ordernumber}</span></td>
           </tr>
 		  <tr> 
-				<td colspan="3" align="center" class="list1_title"><b>{$lang_content}</b></td>
+            <td class="text">{$lang_addtime}</td>
+            <td colspan="2" class="input"><input name="addtime" type="text" class="text" style="width:120px;" value="$news_list[addtime]"><span class="tips">{$lang_modtimenow}$m_now_date {$lang_modtimenow1}</span></td>
+          </tr>
+		  <tr> 
+            <td class="text">{$lang_updatetime}</td>
+            <td colspan="2" class="input"><input name="updatetime" type="text" class="text" style="width:120px;" value="$m_now_date"><span class="tips">{$lang_modtimenow}$m_now_date {$lang_modtimenow1}</span></td>
+          </tr>
+		  <tr> 
+				<td colspan="3" class="title">{$lang_content}</td>
 		  </tr>
 		  <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_title}</b></td>
-            <td colspan="2" class="list1_input"> <input name="title" type="text" class="input" size="50"  value="$news_list[title]"></td>
+            <td class="text"><font class="must">*</font>{$lang_title}</td>
+            <td colspan="2" class="input"> <input name="title" type="text" class="text nonull" value="$news_list[title]"></td>
           </tr>
 <!--
 EOT;
@@ -157,8 +182,8 @@ if($metadmin[pagename]){
 echo <<<EOT
 -->	
 		  <tr> 
-            <td class="list1_text"><b>{$lang_columnhtmlname}</b></td>
-            <td colspan="2" class="list1_input"><input name="filename" type="text" class="input" size="40"  value="$news_list[filename]">{$lang_contenthtml}</td>
+            <td class="text">{$lang_columnhtmlname}</td>
+            <td colspan="2" class="input"><input name="filename" type="text" class="text" size="40"  value="$news_list[filename]">{$lang_contenthtml}</td>
           </tr>
 <!--
 EOT;
@@ -166,41 +191,44 @@ EOT;
 echo <<<EOT
 -->	
 		  <tr> 
-            <td class="list1_text"><b>{$lang_keywords}</b></td>
-            <td colspan="2" class="list1_input"><input name="keywords" type="text" class="input" size="40"  value="$news_list[keywords]">{$lang_descriptioninfo},{$lang_keywordsinfo}</td>
+            <td class="text">{$lang_keywords}</td>
+            <td colspan="2" class="input"><input name="keywords" type="text" class="text" size="40"  value="$news_list[keywords]"><span class="tips">{$lang_descriptioninfo},{$lang_keywordsinfo}</span></td>
           </tr>
 		  <tr> 
-            <td class="list1_text"><b>{$lang_description}</b><br>{$lang_descriptioninfo}
+            <td class="text">{$lang_description}<br>{$lang_descriptioninfo}
 			</td>
-            <td class="list1_input" colspan="2"><textarea name="description" cols="60" rows="5" >$news_list[description]</textarea></td>
+            <td class="input" colspan="2"><textarea name="description" class="textarea gen" cols="60" rows="5" >$news_list[description]</textarea></td>
 			</tr> 
 			 <tr> 
-            <td class="list1_text"><b>{$lang_contentdetail}</b></td>
-            <td class="list1_input" colspan="2">
-<!--
-EOT;
-echo "-->";
-$oFCKeditor = new FCKeditor('content'); 
-$oFCKeditor->BasePath = '../../fckeditor/';
-$oFCKeditor->Config['AutoDetectLanguage']	= false ;
-$oFCKeditor->Config['DefaultLanguage']		= $langusenow ;
-$oFCKeditor->Value = $news_list[content];
-$oFCKeditor->Width = '100%';   
-$oFCKeditor->Height = '300';
-$oFCKeditor->Create();
-echo <<<EOT
+            <td class="text">{$lang_contentdetail}</td>
+            <td class="input" colspan="2">
+			<div class="edir-hide">
+			<div class="left-hiden"></div>
+<script type="text/javascript" src="../ckeditor/ckeditor.js"></script>
+			<textarea class="ckeditor" name="content">$news_list[content]</textarea>
+<script type="text/javascript">
+CKEDITOR.replace('content', {
+	filebrowserBrowseUrl : '../ckeditor/ckfinder/ckfinder.html',
+	filebrowserImageBrowseUrl : '../ckeditor/ckfinder/ckfinder.html?Type=Images',
+	filebrowserFlashBrowseUrl : '../ckeditor/ckfinder/ckfinder.html?Type=Flash',
+	filebrowserUploadUrl : '../ckeditor/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
+	filebrowserImageUploadUrl : '../ckeditor/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
+	filebrowserFlashUploadUrl : '../ckeditor/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash'
+});
+</script>
+</div>
 </td></tr>
 		   
 
 		  <tr> 
-            <td class="list1_text"></td>
-	      <td class="list1_submit"><input type="submit" name="Submit" value="{$lang_Submit}" class="tj" style="*padding-top:2px; *height:22px;"><input type="reset" name="Submit" value="{$lang_Reset}" class="tj" style="*padding-top:2px; *height:22px;"> </td>
+            <td class="text"></td>
+	      <td class="submit"><input type="submit" name="Submit" value="{$lang_Submit}" class="submit" onclick="return Smit($(this),'myform')" /><input type="reset" name="Submit" value="{$lang_Reset}" class="reset" /> </td>
           </tr>
-        </form>
 		<tr>
-		  <td class="list1_footer" colspan="2" align="center">$foot</td>
+		  <td class="footer" colspan="2">$foot</td>
 	  </tr>
 </table>
+        </form>
 <script type='text/javascript'>
 if(document.myform.img_ok.checked==true){
  document.getElementById('imgurl').style.display="";

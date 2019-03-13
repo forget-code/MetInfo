@@ -13,8 +13,24 @@ while($list = $db->fetch_array($result)){
 $para_list[]=$list;
 }
 $filename=preg_replace("/\s/","_",trim($filename)); 
-$filenameold=preg_replace("/\s/","_",trim($filenameold));  
+$filenameold=preg_replace("/\s/","_",trim($filenameold)); 
+if($imgnum>0){
+	for($i=0;$i<$imgnum;$i++){
+		$displayimg = "displayimg".$i;
+		$displayname = "displayname".$i;
+		if($i==0){
+			$displayimglist=$$displayname.'-'.$$displayimg;
+		}else{
+			$displayimglist=$displayimglist.','.$$displayname.'-'.$$displayimg;
+		}
+	}
+} 
+$displayimg = $displayimglist;
 if($action=="add"){
+if($filename!=''){
+	$filenameok = $db->get_one("SELECT * FROM $met_product WHERE class1='$class1' and filename='$filename'");
+	if($filenameok)okinfox('../product/content.php?lang='.$lang."&action=$action&class1=$class1",$lang_modFilenameok);
+}
 $access=$access<>""?$access:0;
 $query = "INSERT INTO $met_product SET
                       title              = '$title',
@@ -27,13 +43,16 @@ $query = "INSERT INTO $met_product SET
 					  new_ok             = '$new_ok',
 					  imgurl             = '$imgurl',
 					  imgurls            = '$imgurls',
+					  displayimg         = '$displayimg',
 				      com_ok             = '$com_ok',
+				      wap_ok             = '$wap_ok',
 					  issue              = '$issue',
 					  hits               = '$hits', 
 					  addtime            = '$addtime', 
 					  updatetime         = '$updatetime',
 					  access          	 = '$access',
 					  filename           = '$filename',
+					  no_order       	 = '$no_order',
 					  lang          	 = '$lang',";
 if($metadmin[productother])$query .="
                       contentinfo         = '$contentinfo',
@@ -80,14 +99,16 @@ foreach($para_list as $key=>$val){
    $paraname="";
  }
 //html
-contenthtm($class1,$id,'showproduct',$filename);
-indexhtm();
-classhtm($class1,$class2,$class3);
-
-okinfo('index.php?lang='.$lang.'&class1='.$class1,$lang_jsok);
+$htmjs =contenthtm($class1,$id,'showproduct',$filename);
+$htmjs.=indexhtm();
+$htmjs.=classhtm($class1,$class2,$class3);
+okinfoh('../product/index.php?lang='.$lang.'&class1='.$class1,$htmjs);
 }
-
 if($action=="editor"){
+if($filename!='' && $filename != $filenameold){
+	$filenameok = $db->get_one("SELECT * FROM $met_product WHERE class1='$class1' and filename='$filename'");
+	if($filenameok)okinfox('../product/content.php?lang='.$lang."&action=$action&id=$id",$lang_modFilenameok);
+}
 $query = "update $met_product SET 
                       title              = '$title',
 					  keywords           = '$keywords',
@@ -97,12 +118,14 @@ $query = "update $met_product SET
 					  class2             = '$class2',
 					  class3             = '$class3',
 					  imgurl             = '$imgurl',
-					  imgurls            = '$imgurls',";
+					  imgurls            = '$imgurls',
+					  displayimg         = '$displayimg',";
 if($metadmin[productnew])$query .= "					  
 					  new_ok             = '$new_ok',";
 if($metadmin[productcom])$query .= "	
 				      com_ok             = '$com_ok',";
 					  $query .= "
+					  wap_ok             = '$wap_ok',
 					  issue              = '$issue',
 					  hits               = '$hits', 
 					  addtime            = '$addtime', 
@@ -110,7 +133,8 @@ if($metadmin[productcom])$query .= "
 if($met_member_use)  $query .= "
 					  access			 = '$access',";
 if($metadmin[pagename])$query .= "
-					  filename       	 = '$filename',";
+					  filename       	 = '$filename',
+					  no_order       	 = '$no_order',";
 if($metadmin[productother])$query .="
                       contentinfo         = '$contentinfo',
 					  contentinfo1        = '$contentinfo1',
@@ -165,11 +189,11 @@ foreach($para_list as $key=>$val){
    $paraname="";
  }
 //html
-contenthtm($class1,$id,'showproduct',$filename);
-indexhtm();
-classhtm($class1,$class2,$class3);
+$htmjs =contenthtm($class1,$id,'showproduct',$filename);
+$htmjs.=indexhtm();
+$htmjs.=classhtm($class1,$class2,$class3);
 if($filenameold<>$filename and $metadmin[pagename])deletepage($met_class[$class1][foldername],$id,'showproduct',$updatetimeold,$filenameold);
-okinfo('index.php?lang='.$lang.'&class1='.$class1,$lang_jsok);
+okinfoh('../product/index.php?lang='.$lang.'&class1='.$class1,$htmjs);
 }
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.

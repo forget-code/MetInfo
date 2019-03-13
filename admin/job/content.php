@@ -3,6 +3,8 @@
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 require_once '../login/login_check.php';
 include_once("../../fckeditor/fckeditor.php");
+$settingse = parse_ini_file('../../job/config_'.$lang.'.inc.php');
+@extract($settingse);
 $job_list=$db->get_one("select * from $met_job where id='$id'");
 $job_list1=$db->get_one("SELECT * FROM $met_column where id=$class1 order by no_order");
 if($met_member_use){
@@ -26,6 +28,11 @@ switch(intval($lev))
 	case 2:$level.="<option value='2' $access2>$lang_access2</option>";
 	case 3:$level.="<option value='3' $access3>$lang_access3</option>";
 }
+}
+//
+$term=0;
+foreach($column_lang[6] as $key=>$val){
+    if($val[lang]!=$lang)$term++;
 }
 if($action=="add")$lang_editinfo=$lang_addinfo;
 if($action=="add")$job_list[addtime]=$m_now_counter;

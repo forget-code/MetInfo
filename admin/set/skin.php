@@ -3,8 +3,8 @@
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 require_once '../login/login_check.php';
 if($action=="modify"){
-require_once 'configsave.php';
-okinfo('skin.php?lang='.$lang,$lang_jsok);
+    require_once 'configsave.php';
+    okinfo('skin.php?lang='.$lang);
 }
 else{
 $query="select * from $met_skin_table order by id";
@@ -21,20 +21,18 @@ $list[cssname][0]=array($lang_setskinDefault,'metinfo.css');
 if($met_skin_user==$list[skin_file])$cssnumnow=$list[cssname];
 unset($cssnum);
 }
-
-echo "<script language = 'JavaScript'>\n";
-echo "var onecount;\n";
-echo "subcat = new Array();\n";
+$scriptcss = "<script language = 'JavaScript'>\n";
+$scriptcss .= "var onecount;\n";
+$scriptcss .= "subcat = new Array();\n";
 $i=0;
 foreach($skin_list as $key=>$val){
 for($j=0; $j<count($val[cssname]); $j++){
-echo "subcat[".$i."] = new Array('".$val[skin_file]."','".$val[cssname][$j][0]."','".$val[cssname][$j][1]."');\n";
+$scriptcss .= "subcat[".$i."] = new Array('".$val[skin_file]."','".$val[cssname][$j][0]."','".$val[cssname][$j][1]."');\n";
 $i++;
 }
-
 }
-echo "onecount=".$i.";\n";
-echo "</script>";
+$scriptcss .= "onecount=".$i.";\n";
+$scriptcss .= "</script>";
 
 $met_timetype[0]=array(0=>"selected='selected'",1=>'Y-m-d H:i:s',2=>date('Y-m-d H:i:s',$m_now_time));
 $met_timetype[1]=array(0=>"selected='selected'",1=>'Y-m-d',2=>date('Y-m-d',$m_now_time));
@@ -46,6 +44,7 @@ $met_timetype[6]=array(0=>"selected='selected'",1=>'Ym',2=>date('Ym',$m_now_time
 $met_timetype[6]=array(0=>"selected='selected'",1=>'m-d',2=>date('m-d',$m_now_time));
 $met_timetype[7]=array(0=>"selected='selected'",1=>'m/d',2=>date('m/d',$m_now_time));
 $met_timetype[8]=array(0=>"selected='selected'",1=>'md',2=>date('md',$m_now_time));
+
 for($i=0;$i<9;$i++){
 if($met_timetype[$i][1]==$met_listtime)$met_listtime1[$i]=$met_timetype[$i][0];
 if($met_timetype[$i][1]==$met_contenttime)$met_contenttime1[$i]=$met_timetype[$i][0];
@@ -55,6 +54,14 @@ $met_product_page1[$met_product_page]="checked='checked'";
 $met_img_page1[$met_img_page]="checked='checked'";
 $met_product_detail1[$met_product_detail]="selected='selected'";
 $met_img_detail1[$met_img_detail]="selected='selected'";
+$met_hitsok1[$met_hitsok]="checked='checked'";
+$met_tools_ok1[$met_tools_ok]="checked='checked'";
+if($met_tools_custom==0)$toolsnone="none";
+$met_tools_custom1[$met_tools_custom]="checked='checked'";
+$met_jiathis_custom1[$met_jiathis_custom]="checked='checked'";
+if($met_jiathis_custom==0)$customnone="none";
+$met_jiathis_ok1[$met_jiathis_ok]="checked='checked'";
+$met_urlblank1[$met_urlblank]="checked='checked'";
 
 $css_url="../templates/".$met_skin."/css";
 $img_url="../templates/".$met_skin."/images";

@@ -6,7 +6,7 @@
 function methtml_product($listtype,$type,$titlenum,$paranum,$detail,$feedback,$time,$hits,$newwindow=1,$desription,$desnum,$classname,$news,$hot,$top,$listnav=1,$max,$topcolor){
  global $product_list,$product_list_com,$product_list_img,$product_class,$lang_Colunm,$lang_Hits,$lang_UpdateTime,$lang_Title,$lang_Detail,$lang_Buy,$lang_ProductTitle;
  global $product_paralist,$met_img_x,$met_img_y,$addfeedback_url,$met_submit_type,$met_product_page;
- global $class1,$class2,$class3,$nav_list2,$nav_list3,$class_list,$module_list1,$search;
+ global $class1,$class2,$class3,$nav_list2,$nav_list3,$class_list,$module_list1,$search,$metblank;
  $listarray=($type=='new')?$product_list_new:(($type=='com')?$product_list_com:$product_list);
  $metproductok=0;
  if($met_product_page && $listtype=='img' &&($search<>'search')){
@@ -43,15 +43,16 @@ function methtml_product($listtype,$type,$titlenum,$paranum,$detail,$feedback,$t
  foreach($listarray as $key=>$val){
  $val[title]=($val[title]=='')?$val[name]:$val[title];
  $val[name]=($val[name]=='')?$val[title]:$val[name];
- $addfeedback_url1=$met_submit_type?$addfeedback_url.$val[title]:addfeedback_url;
+ $val[titlef]=urlencode($val[title]);
+ $addfeedback_url1=$met_submit_type?$addfeedback_url.$val[titlef]:addfeedback_url;
  $i++;
  if(intval($titlenum)<>0)$val[title]=utf8substr($val[title], 0, $titlenum); 
  if(intval($desnum)<>0)$val[description]=utf8substr($val[description], 0, $desnum); 
  $listtext.="<li>";
 if($listtype=='img'){
- $listtext.="<span class='info_img' ><a href='".$val[url]."'";
+ $listtext.="<span class='info_img' ><a href='".$val[url]."' title='".$val[name]."'";
  if($metproductok){
- $listtext.=" ".$val[new_windows]."><img src=".$val[columnimg]." alt=".$val[name]." width=".$met_img_x." height=".$met_img_y." /></a></span>";
+ $listtext.=" ".$val[new_windows]."><img src=".$val[columnimg]." alt='".$val[name]."' title='".$val[name]."' width='".$met_img_x."' height='".$met_img_y."' /></a></span>";
  $listtext.="<span class='info_title' ><a title='".$val[name]."' href=".$val[url]." ".$val[new_windows]." >".$val[name]."</a></span>";
  
  if($paranum)$listtext.="<span class='info_description' ><a title='".$val[name]."' href=".$val[url]." ".$val[new_windows]." >".$val[description]."</a></span>";
@@ -59,7 +60,7 @@ if($listtype=='img'){
  if($feedback==1)$listtext.="<span class='info_feedback'><a href='".$addfeedback_url1."' >".$lang_Buy."</a></span>";
  }else{
  if($newwindow==1)$listtext.=" target='_blank' ";
- $listtext.=" ><img src=".$val[imgurls]." alt=".$val[title]." width=".$met_img_x." height=".$met_img_y." /></a></span>";
+ $listtext.=" ><img src=".$val[imgurls]." alt='".$val[title]."' title='".$val[title]."' width='".$met_img_x."' height='".$met_img_y."' /></a></span>";
  if($classname==1)$listtext.="<span class='info_class' ><a href='".$val[classurl]."' title='".$val[classname]."' >[".$val[classname]."]</a></span>";
  $listtext.="<span class='info_title' ><a title='".$val[title]."' href=".$val[url];
  if($newwindow==1)$listtext.=" target='_blank' ";

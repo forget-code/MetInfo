@@ -7,7 +7,6 @@ if(!file_exists('config/install.lock')){
 $index="index";
 require_once 'include/common.inc.php';
 require_once 'include/head.php';
-	
 $index = $db->get_one("SELECT * FROM $met_index where lang='$lang' order by id desc");
 $index[online_type]=$index_online_type;
 $index[news_no]=$index_news_no;
@@ -20,10 +19,9 @@ $index[link_img]=$index_link_img;
 $index[link_text]=$index_link_text;
 if($index[online_type]=="1" and $met_online_type=="0" )$met_online_type=2;
 if($index[online_type]=="0" )$met_online_type=3;
-
 if(!isset($dataoptimize[$pagemark][job]))$dataoptimize[$pagemark][job]=$dataoptimize[10000][job];
-if($dataoptimize[$pagemark][job]){
-    $query = "SELECT * FROM $met_job where top_ok='1' and lang='$lang' order by addtime desc";
+if($dataoptimize[$pagemark]['job']){
+    $query = "SELECT * FROM $met_job where top_ok='1' and lang='$lang' order by no_order";
     $result = $db->query($query);
 	while($list= $db->fetch_array($result)){
 	$list[top]="<img src='".$navurl.$img_url."top.gif"."' />";
@@ -57,25 +55,20 @@ if($dataoptimize[$pagemark][job]){
 	$listall[job][]=$list;
 	}
 }
-
-    $query = "SELECT * FROM $met_job where top_ok='0' and lang='$lang' order by addtime desc";
-	nave1_1();
+    $query = "SELECT * FROM $met_job where top_ok='0' and lang='$lang' order by no_order";
     $result = $db->query($query);
 	while($list= $db->fetch_array($result)){
 	$list[top]="";
 	$list[news]=(((strtotime($m_now_date)-strtotime($list[addtime]))/86400)<$met_newsdays)?"<img src='".$navurl.$img_url."news.gif"."' />":"";
 	switch($met_htmpagename){
      case 0:
-	 $htmname="job/showjob".$list[id];
-	 $phpname="job/showjob.php?id=".$list[id];	
+	 $htmname="showjob".$list[id];	
 	 break;
 	 case 1:
-	 $htmname="job/".date('Ymd',strtotime($list[addtime])).$list[id];
-	 $phpname="job/showjob.php?id=".$list[id];
+	 $htmname=date('Ymd',strtotime($list[addtime])).$list[id];
 	 break;
 	 case 2:
-	 $htmname="job/job".$list[id];
-	 $phpname="job/showjob.php?id=".$list[id];	
+	 $htmname="job".$list[id];	
 	 break;
 	 }
 	 if($met_submit_type==1){
@@ -83,19 +76,25 @@ if($dataoptimize[$pagemark][job]){
 	   }else{
 	   $list[cv]=$cv[url];
 	   }
-	 $list[e_url]=$met_webhtm?$htmname.$met_htmtype:$phpname."&lang=".$lang;
-	$list[addtime] = date($met_listtime,strtotime($list[addtime]));
+	$filename=$navurl.'job';
+	$pagename='job';
+	$htmname=($list['filename']<>"" and $metadmin['pagename'])?$filename."/".$list['filename']:$filename."/".$htmname;
+	$panyid = $list['filename']!=''?$list['filename']:$list['id'];
+	$met_ahtmtype = $list['filename']<>""?$met_chtmtype:$met_htmtype;
+	$phpname=$met_pseudo?$filename."/".$panyid.'-'.$lang.'.html':$filename."/show".$pagename.".php?".$langmark."&id=".$list['id'];	
+	$list['url']=$met_pseudo?$phpname:($met_webhtm?$htmname.$met_ahtmtype:$phpname);
+	$list['addtime'] = date($met_listtime,strtotime($list['addtime']));
 	if($met_member_use==2){
      if(intval($metinfo_member_type)>=intval($list[access])){  
-    $listall[job][]=$list;
+      $listall[job][]=$list;
 	}
 	}else{
 	$listall[job][]=$list;
 	}
 }
 }
-$show[description]=$met_description;
-$show[keywords]=$met_keywords;
+$show['description']=$met_description;
+$show['keywords']=$met_keywords;
 require_once 'public/php/methtml.inc.php';
 if($met_indexskin=="" or (!file_exists("templates/".$met_skin_user."/".$met_indexskin.".".$dataoptimize_html)))$met_indexskin='index';
 include template($met_indexskin);

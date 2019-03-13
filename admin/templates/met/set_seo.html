@@ -7,53 +7,129 @@ echo <<<EOT
 <title>{$lang_setseoTitle}</title>
 </head>
 <body>
-        <form method="POST" name="myform" action="" target="_self">
-		<input name="action" type="hidden" value="modify">
-<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
-          <tr> 
-            <td colspan="3" align="center" class="list1_title">{$lang_setseoTitle}</td>
-          </tr>
-          <tr> 
-            <td class="list1_text">{$lang_setseoKeys}</td>
-            <td colspan="2" class="list1_input"> <input name="met_title_keywords" type="text" class="input" size="55" maxlength="200" value="$met_title_keywords">{$lang_setseoTip1}</td>
-          </tr>
-		  <tr> 
-            <td class="list1_text">{$lang_setseoKey}</td>
-            <td colspan="2" class="list1_input"> <input name="met_keywords" type="text" class="input" size="55" maxlength="200" value="$met_keywords">{$lang_setseoTip2}</td>
-          </tr>
-          <tr> 
-          <td class="list1_text" valign="middle">{$lang_setseoIntro}</td>
-          <td colspan="2" class="list1_input" valign="top"> <textarea name="met_description" cols="45" rows="5" >$met_description</textarea>{$lang_setseoTip3}</td>
-          </tr>
-		   <tr> 
-            <td class="list1_text">{$lang_setseoTip4}</td>
-            <td colspan="2" class="list1_input"><textarea name="met_seo" cols="45" rows="5" >$met_seo</textarea>{$lang_htmlok}</td>
-          </tr>
-		  <tr> 
-            <td class="list1_text">{$lang_setseoTip6}</td>
-            <td colspan="2" class="list1_input"> <input name="met_alt" type="text" class="input" size="55" maxlength="200" value="$met_alt">{$lang_setseoTip7}</td>
-          </tr>
-		  <tr> 
-            <td class="list1_text">{$lang_setseoTip8}</td>
-            <td colspan="2" class="list1_input"> <input name="met_atitle" type="text" class="input" size="55" maxlength="200" value="$met_atitle">{$lang_setseoTip9}</td>
-          </tr>
-		  <tr> 
-            <td class="list1_text">{$lang_setseoFriendLink}</td>
-            <td colspan="2" class="list1_input"> <input name="met_linkname" type="text" class="input" size="55" maxlength="200" value="$met_linkname"></td>
-          </tr>
-		  <tr> 
-          <td class="list1_text" valign="middle">{$lang_setseoFoot}</td>
-          <td colspan="2" class="list1_input" valign="top"> <textarea name="met_foottext" cols="45" rows="5" >$met_foottext</textarea>{$lang_htmlok}</td>
-          </tr>	  
-	      <tr> 
-            <td class="list1_text"></td>
-	      <td class="list1_submit"><input type="submit" name="Submit" value="{$lang_Submit}" class="tj" style="*padding-top:2px; *height:22px;"><input type="reset" name="Submit" value="{$lang_Reset}" class="tj" style="*padding-top:2px; *height:22px;"></td>
-          </tr>
-        </form>
-<tr>
-		  <td class="list1_footer" colspan="2" align="center">$foot</td>
-	  </tr>
+<!--
+EOT;
+$littr=28;
+require_once template('metlangs');
+echo <<<EOT
+-->
+    <form method="POST" name="myform" action="seo.php?lang=$lang" target="_self">
+	<input name="action" type="hidden" value="modify" />
+	<input name="met_jiathis_custom" type="hidden" value="0" />
+	<input name="met_tools_custom" type="hidden" value="0" />
+	<table cellpadding="2" cellspacing="1" class="table seo">
+		<tr> 
+            <td class="text"><a href="javascript:;" class="tips"><img src="{$img_url}/botton/faq.png" /></a>&nbsp;{$lang_setseotitletype}</td>
+            <td colspan="2" class="input"> 
+				<ul>
+					<li class="floatl" style="padding-right:30px;">
+						<input type="radio" name="met_title_type" class="radio" id="label0" value="0" {$radio1[0]} /><label for="label0">{$lang_setseotitletype1}</label><br/>
+						<input type="radio" name="met_title_type" class="radio" id="label2" value="2" {$radio1[2]} /><label for="label2">{$lang_setseotitletype2}</label>
+					</li>
+					<li class="floatl">
+						<input type="radio" name="met_title_type" class="radio" id="label1" value="1" {$radio1[1]} /><label for="label1">{$lang_setseotitletype3}</label><br/>
+						<input type="radio" name="met_title_type" class="radio" id="label3" value="3" {$radio1[3]} /><label for="label3">{$lang_setseotitletype4}</label>
+					</li>
+				</ul>
+				<div class="tips-text none clear">{$lang_setseoTip14}</div>
+			</td>
+        </tr>
+        <tr> 
+            <td class="text">{$lang_setseoKeys}</td>
+            <td colspan="2" class="input"> 
+				<div class="tips-text poon none">{$lang_setseoTip10}{$lang_setseoTip1}</div>
+				<input name="met_title_keywords" type="text" class="text keytext" keymax='80' value="$met_title_keywords" />
+				<span class="tips">{$lang_setseoTipx}&nbsp;<span class="keylist"></span>/80&nbsp;{$lang_setseoTipy}</span>
+			</td>
+        </tr>
+		<tr> 
+            <td class="text">{$lang_setseoKey}</td>
+            <td colspan="2" class="input"> 
+				<div class="tips-text poon none">{$lang_setseoTip11}{$lang_setseoTip2}</div>
+				<input name="met_keywords" type="text" class="text keytext" keymax='100' value="$met_keywords" />
+				<span class="tips">{$lang_setseoTipx}&nbsp;<span class="keylist"></span>/100&nbsp;{$lang_setseoTipy}</span>
+			</td>
+		</tr>
+		<tr> 
+			<td class="text" valign="middle">{$lang_setseoIntro}</td>
+			<td colspan="2" class="input" valign="top"> 
+				<div class="tips-text poon none">{$lang_setseoTip12}{$lang_setseoTip3}</div>
+				<textarea name="met_description" cols="45" class="textarea keytext" keymax='200' rows="5" >$met_description</textarea>
+				<span class="tips">{$lang_setseoTipx}&nbsp;<span class="keylist"></span>/200&nbsp;{$lang_setseoTipy}</span>
+			</td>
+		</tr>
+		<tr> 
+            <td class="text">{$lang_setseoTip6}</td>
+            <td colspan="2" class="input"> 
+				<input name="met_alt" type="text" class="text gen" value="$met_alt" /><span class="tips">{$lang_setseoTip7}</span>
+			</td>
+        </tr>
+		<tr> 
+            <td class="text">{$lang_setseoTip8}</td>
+            <td colspan="2" class="input"> 
+				<input name="met_atitle" type="text" class="text gen" value="$met_atitle" /><span class="tips">{$lang_setseoTip9}</span>
+			</td>
+        </tr>
+		<tr> 
+            <td class="text">{$lang_setseoFriendLink}</td>
+            <td colspan="2" class="input"> 
+				<input name="met_linkname" type="text" class="text gen" value="$met_linkname" /><span class="tips">{$lang_setseoTip13}</span>
+			</td>
+        </tr>
+		<tr> 
+			<td class="text" valign="middle">{$lang_setseoFoot}</td>
+			<td colspan="2" class="input" valign="top"> 
+				<textarea name="met_foottext" class="textarea gen">$met_foottext</textarea><span class="tips">{$lang_htmlok}</span>
+			</td>
+        </tr>
+		<tr> 
+            <td class="text">{$lang_setseoTip4}</td>
+            <td colspan="2" class="input">
+				<textarea name="met_seo" class="textarea gen">$met_seo</textarea><span class="tips">{$lang_htmlok}</span>
+			</td>
+        </tr>		
+	    <tr> 
+            <td class="text"></td>
+			<td class="submit">
+				<input type="submit" name="Submit" value="{$lang_Submit}" class="submit" onclick="return Smit($(this),'myform')"  />
+				<input type="reset" name="Submit" value="{$lang_Reset}" class="reset" />
+			</td>
+        </tr>
 </table>
+        </form>
+<div class="footer">$foot</div>
+<script type="text/javascript">
+	var keytext = $('.keytext');
+		keytext.each(function(){ getkey($(this)); });
+		keytext.bind('keyup change',function(){getkey($(this)); });
+		keytext.focus(function(){
+			var div = $(this).parent('td').find('div.tips-text');
+			var offset = $(this).offset();
+			var h = $(this).height() + 4;
+			div.css({
+				'width':$(this).width(),
+				'left':offset.left,
+				'top':offset.top+h
+			});
+			div.show();
+			$('div.tips-text').not(div).hide();
+		});
+		keytext.focusout(function(){
+			var div = $(this).parent('td').find('div.tips-text');
+			div.hide();
+		});
+function getkey(my){
+	var ta = my.next().find('span.keylist');
+	var mit = my.attr('keymax');
+	var nums = my.val();
+		ta.text(nums.length);
+		if(nums.length>mit)ta.css('color','#f00');
+}
+    var input = $("input[type='text'],textarea");
+	focus(input);
+	var Unity = $("#unity");
+	    Unity.click(function(){ return Smits($(this),'.myforms');});
+</script>
 </body>
 </html>
 <!--

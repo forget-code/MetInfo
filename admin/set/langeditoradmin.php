@@ -85,7 +85,7 @@ if(!is_writable($file_nameupdate))@chmod($file_nameupdate,0777);
 $fp = fopen($file_nameupdate,w);
     fputs($fp, $config_save);
     fclose($fp);
-okinfo($reurl,$lang_jsok);
+okinfox($reurl);
 }else{
 $css_url="../templates/".$met_skin."/css";
 $img_url="../templates/".$met_skin."/images";

@@ -8,7 +8,7 @@ if(!$feedback_list){
 okinfo('index.php?lang='.$lang,$lang_dataerror);
 }
 $feedback_list['customerid']=$feedback_list['customerid']==0?$lang_feedbackAccess0:$list['customerid'];
-$query = "SELECT * FROM $met_parameter where module=8 and lang='$lang' order by no_order";
+$query = "SELECT * FROM $met_parameter where module=8 and lang='$lang' and class1='$feedback_list[class1]' order by no_order";
 $result = $db->query($query);
 while($list= $db->fetch_array($result)){
 $info_list=$db->get_one("select * from $met_flist where listid='$id' and paraid='$list[id]' and lang='$lang'");

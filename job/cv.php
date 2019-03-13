@@ -3,10 +3,10 @@
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 $admin_index=FALSE;
 require_once '../include/common.inc.php';
+if($class1)$selectedjob=$class1;
 $classaccess= $db->get_one("SELECT * FROM $met_column WHERE module='6' and lang='$lang' ");
 $metaccess=$classaccess[access];
 $class1=$classaccess[id];
-
  	if($met_submit_type==1){
 	   $job[cv]=$cv[url].$job[id];
 	   }else{
@@ -78,7 +78,7 @@ $class_info[name]=$class2_info[name]."--".$class1_info[name];
 }	 
      $show[description]=$met_keywords;
      $show[keywords]=$met_keywords;
-	 $met_title=$lang_cvtitle."--".$met_title;
+	 $met_title=$met_title?$lang_cvtitle.'-'.$met_title:$lang_cvtitle;
      if(count($nav_list2)){
        $nav_list2[$class1][0]=$class1_info;
        $nav_list2[$class1][1]=array('id'=>10004,'url'=>$cv[url],'name'=>$lang_cvtitle);
@@ -165,6 +165,7 @@ $class_info[name]=$class2_info[name]."--".$class1_info[name];
 	 break;
     }
    }
+$cvidnow=10004;
 if($met_memberlogin_code==1){
      $methtml_cv.="<tr class='cv_tr'> \n";   
      $methtml_cv.="<td class='cv_td1' align='right'>".$lang_memberImgCode.":</b></td>\n";

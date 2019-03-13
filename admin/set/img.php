@@ -3,20 +3,20 @@
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 require_once '../login/login_check.php';
 if($action=="modify"){
-require_once '../include/upfile.class.php';
-$f = new upfile($met_img_type,'',$met_img_maxsize,'');
-if($_FILES['met_wate_img']['name']!=''){
-        $met_wate_img   = $f->upload('met_wate_img'); 
-		$met_wate_img   = "../".$met_wate_img;
-    }
-if($_FILES['met_wate_bigimg']['name']!=''){
-        $met_wate_bigimg   = $f->upload('met_wate_bigimg'); 
-		$met_wate_bigimg   = "../".$met_wate_bigimg;
-    }
-require_once 'configsave.php';
-okinfo('img.php?lang='.$lang,$lang_jsok);
-}
-else{
+	$dltimg=explode('../',$met_wate_img);
+	if(count($dltimg)==2){
+			$met_wate_img   = "../".$met_wate_img;
+	}
+	$dltimg1=explode('../',$met_wate_bigimg);
+	if(count($dltimg1)==2){
+			$met_wate_bigimg   = "../".$met_wate_bigimg;
+	}
+	require_once 'configsave.php';
+	okinfo('img.php?lang='.$lang);
+}else{
+
+if($met_img_style==0)$met_img_style0="checked='checked'";
+if($met_img_style==1)$met_img_style1="checked='checked'";
 if($met_big_wate==1)$met_big_wate1="checked='checked'";
 if($met_thumb_wate==1)$met_thumb_wate1="checked='checked'";
 if($met_autothumb_ok==1)$met_autothumb_ok1="checked='checked'";
@@ -51,8 +51,6 @@ break;
 case 8:
 $met_watermark8="checked='checked'";
 break;
-
-
 }
 
 $css_url="../templates/".$met_skin."/css";

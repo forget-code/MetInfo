@@ -3,6 +3,8 @@
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 require_once '../login/login_check.php';
 $met_footstat      =str_replace("\\\"","",$met_footstat);
+$met_jiathis       =str_replace("\\\"","",$met_jiathis);
+$met_tools_code    =str_replace("\\\"","",$met_tools_code);
 $met_webname       =str_replace("\"","'",$met_webname);
 $met_weburl        =str_replace("\"","'",$met_weburl);
 $met_logo          =str_replace("\"","'",$met_logo);
@@ -21,8 +23,15 @@ $met_text_color    =str_replace("\"","'",$met_text_color);
 $met_text_angle    =str_replace("\"","'",$met_text_angle);
 jmali_start();
 $met_watermark     =str_replace("\"","'",$met_watermark);
+$met_img_style     =str_replace("\"","'",$met_img_style);
 $met_img_x         =str_replace("\"","'",$met_img_x);
 $met_img_y         =str_replace("\"","'",$met_img_y);
+$met_newsimg_x     =str_replace("\"","'",$met_newsimg_x);
+$met_newsimg_y     =str_replace("\"","'",$met_newsimg_y);
+$met_productimg_x  =str_replace("\"","'",$met_productimg_x);
+$met_productimg_y  =str_replace("\"","'",$met_productimg_y);
+$met_imgs_x        =str_replace("\"","'",$met_imgs_x);
+$met_imgs_y        =str_replace("\"","'",$met_imgs_y);
 $met_file_format   =str_replace("\"","'",$met_file_format);
 $met_file_maxsize  =str_replace("\"","'",$met_file_maxsize);
 $met_title_keywords=str_replace("\"","'",$met_title_keywords);
@@ -52,7 +61,11 @@ $met_fd_password   =str_replace("\"","'",$met_fd_password);
 $met_memberemail   =str_replace("\"","'",$met_memberemail);
 $met_membercontrol =str_replace("\"","'",$met_membercontrol);
 $met_onlinetel     =str_replace("\"","'",$met_onlinetel);
-
+$met_addlinkopen   =str_replace("\"","'",$met_addlinkopen);
+$met_wap_logo      =str_replace("\"","'",$met_wap_logo);
+$met_wap_img       =str_replace("\"","'",$met_wap_img);
+$met_jiathis       =str_replace("\"","'",$met_jiathis);
+$met_tools_code    =str_replace("\"","'",$met_tools_code);
 
 $met_text_wate     =str_replace(chr(13).chr(10),"",$met_text_wate);
 $met_description   =str_replace(chr(13).chr(10),"",$met_description);
@@ -63,6 +76,8 @@ $met_footstat      =str_replace(chr(13).chr(10),"",$met_footstat);
 $met_memberemail   =str_replace(chr(13).chr(10),"",$met_memberemail);
 $met_membercontrol =str_replace(chr(13).chr(10),"",$met_membercontrol);
 $met_onlinetel     =str_replace(chr(13).chr(10),"",$met_onlinetel);
+$met_jiathis       =str_replace(chr(13).chr(10),"",$met_jiathis);
+$met_tools_code    =str_replace(chr(13).chr(10),"",$met_tools_code);
 
 $config_save       = "<?php
 /*
@@ -82,12 +97,26 @@ met_text_fonts    = \"$met_text_fonts\";
 met_text_color    = \"$met_text_color\";
 met_text_angle    = \"$met_text_angle\";
 met_watermark     = \"$met_watermark\";
+met_img_style     = \"$met_img_style\";
 met_img_x         = \"$met_img_x\";
 met_img_y         = \"$met_img_y\";
+met_newsimg_x     = \"$met_newsimg_x\";
+met_newsimg_y     = \"$met_newsimg_y\";
+met_productimg_x  = \"$met_productimg_x\";
+met_productimg_y  = \"$met_productimg_y\";
+met_imgs_x        = \"$met_imgs_x\";
+met_imgs_y        = \"$met_imgs_y\";
 met_title_keywords= \"$met_title_keywords\";
 met_keywords      = \"$met_keywords\";
 met_description   = \"$met_description\";
+met_title_type    = \"$met_title_type\";
 met_seo           = \"$met_seo\";
+met_jiathis_ok    = \"$met_jiathis_ok\";
+met_jiathis_custom= \"$met_jiathis_custom\";
+met_tools_ok      = \"$met_tools_ok\";
+met_tools_custom  = \"$met_tools_custom\";
+met_tools_code    = \"$met_tools_code\";
+met_jiathis       = \"$met_jiathis\";
 met_alt           = \"$met_alt\";
 met_atitle        = \"$met_atitle\";
 met_linkname      = \"$met_linkname\";
@@ -122,6 +151,7 @@ met_membercontrol = \"$met_membercontrol\";
 met_sitemap_html    =\"$met_sitemap_html\";
 met_sitemap_xml     =\"$met_sitemap_xml\";
 met_sitemap_max     =\"$met_sitemap_max\";
+met_pseudo          =\"$met_pseudo\";
 met_online_skin     =\"$met_online_skin\";
 met_online_color    =\"$met_online_color\";
 met_qq_type         =\"$met_qq_type\";
@@ -130,8 +160,11 @@ met_taobao_type     =\"$met_taobao_type\";
 met_alibaba_type    =\"$met_alibaba_type\";
 met_skype_type      =\"$met_skype_type\";
 met_onlinetel       =\"$met_onlinetel\";
+met_addlinkopen     =\"$met_addlinkopen\";
 met_pageskin        =\"$met_pageskin\";
 met_indexskin       =\"$met_indexskin\";
+met_urlblank        =\"$met_urlblank\";
+met_hitsok          =\"$met_hitsok\";
 met_product_page    =\"$met_product_page\";
 met_img_page        =\"$met_img_page\";
 met_product_detail  =\"$met_product_detail\";
@@ -144,7 +177,7 @@ met_onlineright_top =\"$met_onlineright_top\";
 met_onlineright_right =\"$met_onlineright_right\";
 met_onlineleft_top  =\"$met_onlineleft_top\";
 met_onlineleft_left =\"$met_onlineleft_left\";
-met_onlinenameok    =\"$met_onlinenameok2\";
+met_onlinenameok    =\"$met_onlinenameok\";
 met_file_format   = \"$met_file_format\";
 met_file_maxsize  = \"$met_file_maxsize\";
 met_memberlogin_code= \"$met_memberlogin_code\";
@@ -157,6 +190,8 @@ met_webhtm        = \"$met_webhtm\";
 met_htmtype       = \"$met_htmtype\";
 met_htmpagename   = \"$met_htmpagename\";
 met_htmlistname   = \"$met_htmlistname\";
+met_htmpack       = \"$met_htmpack\";
+met_htmpack_url   = \"$met_htmpack_url\";
 met_htmway        = \"$met_htmway\";
 met_member_force  = \"$met_member_force\";
 met_memberforce   = \"$met_memberforce\";
@@ -176,7 +211,6 @@ if(!is_writable("../../config/config_".$lang.".inc.php"))@chmod("../../config/co
 $fp = fopen("../../config/config_".$lang.".inc.php",w);
       fputs($fp, $config_save);
       fclose($fp);
-	  
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

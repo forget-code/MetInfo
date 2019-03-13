@@ -5,17 +5,17 @@ $lang_fontfamily=str_replace("'","\"",$lang_fontfamily);
 $lang_fontfamily=str_replace("&quot;","\"",$lang_fontfamily);
 echo <<<EOT
 -->
-<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-cn">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>MetInfo{$lang_metinfo}{$lang_logintitle}</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <meta http-equiv="Content-Language" content="zh-cn"/>
 <meta name="author" content="www.metinfo.cn"/>
 <meta name="copyright" content="www.metinfo.cn"/>
-<meta name="keywords" content="MetInfo{$lang_metinfo}{$lang_logintitle}"/>
-<meta name="description" content="MetInfo{$lang_metinfo}{$lang_logintitle}"/>
 <meta content="MetInfo{$lang_metinfo}{$lang_logintitle}"/>
-<link rel="stylesheet" type="text/css" href="$img_url/metinfo.css">
+<link rel="stylesheet" type="text/css" href="$img_url/css/metinfo.css">
+<script type="text/javascript" src="../../public/js/metinfo-min.js"></script>
 <style type="text/css">
 body {
 	font-size: $lang_fontsize; 
@@ -25,31 +25,62 @@ body {
 </style>
 </head>
 <script type="text/javascript">
-function check_main_login()
-{
-	var m=document.main_login;
-	if(m.login_name.value.length=="")
-	{
-		alert("{$lang_loginid}");
-		m.login_name.focus();
-		return false;
-	}
-	if(m.login_pass.value.length=="")
-	{
-		alert("{$lang_loginps}");
-		m.login_pass.focus();
-		return false;
-	}
+function check_main_login(){
+	var name = $("input[name='login_name']");
+	var pass = $("input[name='login_pass']");
+		if(name.val() == ''){
+			alert('$lang_loginid');
+			name.focus();
+			return false;
+		}
+		if(pass.val() == ''){
+			alert('$lang_loginps');
+			pass.focus();
+			return false;
+		}
 }
-function pressCaptcha(obj)
-  {
+function pressCaptcha(obj){
     obj.value = obj.value.toUpperCase();
-  }
+}
+function metfocus(intext){
+        intext.focus(function(){
+		    $(this).addClass('metfocus');
+		});
+        intext.focusout(function(){
+		    $(this).removeClass('metfocus');
+		});
+}
+$(document).ready(function(){
+var loginheight =$('.login-min').height();
+var bodyheight = $(document).height();
+	$('.login-min').css('margin-top',(bodyheight-loginheight)/2);
+    var inputps = $("input[type='text'],input[type='password']");
+	if(inputps)metfocus(inputps);
+});
 </script>
-<body>
-<div class="loginlang" style="display:$met_admin_type_display;">
-&nbsp;&nbsp;<b>MetInfo Enterprise Content Management System</b> Administrator Language
-<select name="loginlang" onchange=javascript:window.location.href=this.options[this.selectedIndex].value >
+<body id="login">
+<div class="login-min">
+	<div class="login-minl">
+		<div class="login-minr">
+			<div class="login-left">
+				<a href="http://www.metinfo.cn" style="font-size:0px;" target="_blank" title="MetInfo{$lang_metinfo}">
+					<img src="$img_url/login-logo.png" alt="MetInfo{$lang_metinfo}" title="MetInfo{$lang_metinfo}" />
+				</a>
+				<p>$foot</p>
+			</div>
+			<div class="login-right">	
+				<h1 class="login-title">{$lang_loginadmin}</h1>
+				<div>
+				<form method="post" action="login_check.php?langset=$langset" name="main_login" onSubmit="return check_main_login()">
+					<input type="hidden" name="action" value="login" />
+<p style="height:22px;">
+<!--
+EOT;
+if($met_admin_type_ok){
+echo <<<EOT
+-->
+	<label>{$lang_loginlanguage}:</label>
+	<select name="loginlang" onchange=javascript:window.location.href=this.options[this.selectedIndex].value >
 <!--
 EOT;
 ob_pcontent();
@@ -64,41 +95,42 @@ EOT;
 }
 echo <<<EOT
 -->
-</select></div>
-<div class="login">
-<div class="login_title"><font style="font-family:Arial, Helvetica, sans-serif">MetInfo</font>{$lang_metinfo} V{$metcms_v} </div>
-<div class="login_img">
-<a href="http://www.metinfo.cn"  target="_blank" ><img  alt="MetInfo{$lang_metinfo}" src="$img_url/logosmall.gif"></a><br><br>
-<span><a href="http://www.metinfo.cn"  target="_blank" title="MetInfo{$lang_metinfo}" style="font-family:Arial, Helvetica, sans-serif">MetInfo Co.,Ltd</a> </span>
-</div>
-<div class="login_right">
-<div class="login_log">{$lang_loginadmin}</div>
-<form method="post" action="login_check.php?langset=$langset" name="main_login" onSubmit="javascript: return check_main_login()">
-<input type="hidden" name="action" value="login"/>
-<div class="login_text"><span>{$lang_loginusename} </span><input type="text" name="login_name" value="$check_name" $disabled size="20"/></div>
-<div class="login_text"><span>{$lang_loginpassword}</span><input type="password" name="login_pass"  size="21"/></div>
-<!--
-EOT;
-if($met_login_code==1){
-echo <<<EOT
--->
-<div class="login_text"><span>{$lang_logincode} </span><input name="code" onKeyUp="pressCaptcha(this)" type="text" class="inp" id="code" size="6" maxlength="8" style="width:50px" />
-<img align="absbottom" src="../include/ajax.php?action=code"  onclick=this.src="../include/ajax.php?action=code&"+Math.random() style="cursor: pointer;" title="{$lang_logincodechange}"/></div>
+	</select>
 <!--
 EOT;
 }
 echo <<<EOT
 -->
-<div class="login_text text_input" style="text-align:center;">
-<a href="../admin/getpassword.php" style="color:#E5FFAE;">{$lang_loginforget}</a><input   type="submit" name="Submit" value=" {$lang_loginconfirm} "  style="width:45px;">&nbsp;<input name="reset" type="reset"  id="reset" value=" {$lang_loginreset} "  style="width:45px;"></div>
+</p>
+					<p><label>{$lang_loginusename}:</label><input type="text" class="text" name="login_name" value="$check_name" $disabled /></p>
+					<p><label>{$lang_loginpassword}:</label><input type="password" class="text" name="login_pass" /></p>
+					<p class="login-code">
+<!--
+EOT;
+if($met_login_code==1){
+echo <<<EOT
+-->
+						<label>{$lang_logincode}:</label>
+						<input name="code" onKeyUp="pressCaptcha(this)" type="text" class="text mid" id="code" />
+						<img align="absbottom" src="../include/ajax.php?action=code"  onclick=this.src="../include/ajax.php?action=code&"+Math.random() style="cursor: pointer;" title="{$lang_logincodechange}"/>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+					</p>
+					<p class="login-submit">
+						<input type="submit" name="Submit" value="{$lang_loginconfirm}" />
+						<input name="reset" type="reset" value="{$lang_loginreset}" />
+					</p>
+					<p class="login-zhao"><a href="../admin/getpassword.php">{$lang_loginforget}</a></p>
+				</form>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
-</form>
-<div style="clear:both;"></div>
-</div>
-
 </body>
-<div class="list1_footer"  align="center">$foot</div>
-
 </html>
 <!--
 EOT;

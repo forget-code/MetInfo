@@ -21,7 +21,7 @@ foreach($authurl as $val)
  okinfo('authcode.php?lang='.$lang,$lang_jsok);
  }
 }
-okinfo('authcode.php?lang='.$lang,$lang_authTip2);
+okinfo('authcode.php?lang='.$lang,'',$lang_authTip2);
 }
 else
 {

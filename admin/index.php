@@ -8,8 +8,11 @@ if($action=="renameadmin"){
   if($met_adminfile!=""&&$met_adminfile!=$adminfile){
   $oldname='../'.$adminfile;
   $newname='../'.$met_adminfile;
-  rename($oldname,$newname);
-  echo "<script type='text/javascript'>parent.setCookie('adminnow', '$met_adminfile'); top.location.href='$newname'; </script>";
+	if(rename($oldname,$newname)){
+		echo "<script type='text/javascript'> top.location.href='$newname'; </script>";
+	}else{
+		echo "<script type='text/javascript'>alert('$lang_adminwenjian'); top.location.reload(); </script>";
+	}
   }
 }
 
@@ -24,6 +27,10 @@ $img_url="templates/".$met_skin."/images";
 	   $class2_list[$list[module]][]=$list;	
       }
 	}
+
+
+$admin_list = $db->get_one("SELECT * FROM $met_admin_table WHERE admin_id='$metinfo_admin_name'");
+$metinfo_admin_pop=admin_popes($admin_list['admin_type'],$lang);
 if(	$metinfo_admin_pop!="metinfo"){
 $admin_pop=explode('-',$metinfo_admin_pop);
 $admin_poptext="admin_pop";
@@ -32,8 +39,6 @@ $admin_poptext1=$admin_poptext.$val=$val;
 $$admin_poptext1="metinfo";
 }
 }
-
-$admin_list = $db->get_one("SELECT * FROM $met_admin_table WHERE admin_id='$metinfo_admin_name'");
 include template('index');
 footer();
 # This program is an open source system, commercial use, please consciously to purchase commercial license.

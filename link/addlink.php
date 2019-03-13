@@ -2,30 +2,30 @@
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 require_once '../include/common.inc.php';
-$link_list=$db->get_one("select * from $met_column where module='9' and lang='$lang'");
-$metaccess=$link_list[access];
-$class1=$link_list[id];
+if(!$met_addlinkopen)okinfo('javascript:history.back();',$lang_ApplyLinkNO);
+    $link_list=$db->get_one("select * from $met_column where module='9' and lang='$lang'");
+    $metaccess=$link_list[access];
+    $class1=$link_list[id];
 require_once '../include/head.php';
 	$class1_info=$class_list[$class1][releclass]?$class_list[$class_list[$class1][releclass]]:$class_list[$class1];
 	$class2_info=$class_list[$class1][releclass]?$class_list[$class1]:$class_list[$class2];
     $navtitle=$link_list[name];
-	$addlink_url=$met_webhtm?"addlink".$met_htmtype:"addlink.php?lang=".$lang;
-
-if($action=="add"){
-$ip=$m_user_ip;
-$addtime=$m_now_date;
-$ipok=$db->get_one("select * from $met_link where ip='$ip' order by addtime desc");
-if($ipok)
-$time1 = strtotime($ipok[addtime]);
-else
-$time1 = 0;
-$time2 = strtotime($m_now_date);
-$timeok= (float)($time2-$time1);
-if($timeok<=120){
-$fd_time="{$lang_Feedback1} 120 {$lang_Feedback2}";
-okinfo('javascript:history.back();',$fd_time);
-}
-$query = "INSERT INTO $met_link SET
+	$addlink_url=$met_pseudo?'addlink-'.$lang.'.html':($met_webhtm?"addlink".$met_htmtype:"addlink.php?lang=".$lang);
+    if($action=="add"){
+        $ip=$m_user_ip;
+        $addtime=$m_now_date;
+        $ipok=$db->get_one("select * from $met_link where ip='$ip' order by addtime desc");
+        if($ipok)
+            $time1 = strtotime($ipok[addtime]);
+        else
+            $time1 = 0;
+            $time2 = strtotime($m_now_date);
+            $timeok= (float)($time2-$time1);
+        if($timeok<=120){
+            $fd_time="{$lang_Feedback1} 120 {$lang_Feedback2}";
+            okinfo('javascript:history.back();',$fd_time);
+        }
+        $query = "INSERT INTO $met_link SET
                       webname              = '$webname',
 					  info                 = '$info',
 					  link_type            = '$link_type',
@@ -33,62 +33,55 @@ $query = "INSERT INTO $met_link SET
 					  weblogo              = '$weblogo',
 					  contact              = '$contact',
 					  orderno              = '$orderno',
-					  com_ok               = '$com_ok',
-					  show_ok              = '$show_ok', 
 					  lang                 = '$lang', 
 					  ip                   = '$ip', 
 					  addtime              = '$m_now_date'";
-         $db->query($query);
-$returnurl=$module_listall[9][0][url];
-okinfo($returnurl,$lang_MessageInfo2);
-
-}else{
-$class2=$class_list[$class1][releclass]?$class1:$class2;
-$class1=$class_list[$class1][releclass]?$class_list[$class1][releclass]:$class1;
-$class_info=$class2?$class2_info:$class1_info;
-if($class2!=""){
-$class_info[name]=$class2_info[name]."--".$class1_info[name];
-}
-     $show[description]=$class_info[description]?$class_info[description]:$met_keywords;
-     $show[keywords]=$class_info[keywords]?$class_info[keywords]:$met_keywords;
-	 $met_title=$navtitle."--".$met_title;
-	 
-if(count($nav_list2[$link_list[id]])){
-$k=count($nav_list2[$class1]);
-$nav_list2[$class1][$k]=$class1_info;
-$k++;
-$nav_list2[$class1][$k]=array('url'=>$addlink_url,'name'=>$lang_ApplyLink);
-}else{
-  $k=count($nav_list2[$class1]);
-  if(!$k){
-   $nav_list2[$class1][0]=array('url'=>$addlink_url,'name'=>$lang_ApplyLink);
-   $nav_list2[$class1][1]=$class1_info;
-   }
-}
-
-$fdjs="<script language='javascript'>";
-$fdjs=$fdjs."function Checklink(){ ";
-
-$fdjs=$fdjs."if (document.myform.webname.value.length == 0) {";
-$fdjs=$fdjs."alert('{$lang_LinkInfo2}');";
-$fdjs=$fdjs."document.myform.webname.focus();";
-
-$fdjs=$fdjs."return false;}";
-$fdjs=$fdjs."if (document.myform.weburl.value.length == 0 || document.myform.weburl.value == 'http://') {";
-
-$fdjs=$fdjs."alert('{$lang_LinkInfo3}');";
-
-$fdjs=$fdjs."document.myform.weburl.focus();";
-$fdjs=$fdjs."return false;}";
-$fdjs=$fdjs."}</script>";
-
+        $db->query($query);
+        $returnurl=$module_listall[9][0][url];
+        okinfo($returnurl,$lang_MessageInfo2);
+    }else{
+        $class2=$class_list[$class1][releclass]?$class1:$class2;
+        $class1=$class_list[$class1][releclass]?$class_list[$class1][releclass]:$class1;
+        $class_info=$class2?$class2_info:$class1_info;
+        if($class2!="")$class_info[name]=$class2_info[name]."--".$class1_info[name];
+        $show[description]=$class_info[description]?$class_info[description]:$met_keywords;
+        $show[keywords]=$class_info[keywords]?$class_info[keywords]:$met_keywords;
+		$met_title=$met_title?$navtitle.'-'.$met_title:$navtitle;
+		if($link_list['ctitle']!='')$met_title=$link_list['ctitle'];
+        if(count($nav_list2[$link_list[id]])){
+            $k=count($nav_list2[$class1]);
+            $nav_list2[$class1][$k]=$class1_info;
+            $k++;
+            $nav_list2[$class1][$k]=array('url'=>$addlink_url,'name'=>$lang_ApplyLink);
+        }else{
+            $k=count($nav_list2[$class1]);
+            if(!$k){
+                $nav_list2[$class1][0]=array('url'=>$addlink_url,'name'=>$lang_ApplyLink);
+                $nav_list2[$class1][1]=$class1_info;
+            }
+        }
+        $fdjs="<script language='javascript'>";
+        $fdjs=$fdjs."function Checklink(){ ";
+        $fdjs=$fdjs."if (document.myform.webname.value.length == 0) {";
+        $fdjs=$fdjs."alert('{$lang_LinkInfo2}');";
+        $fdjs=$fdjs."document.myform.webname.focus();";
+        $fdjs=$fdjs."return false;}";
+        $fdjs=$fdjs."if (document.myform.weburl.value.length == 0 || document.myform.weburl.value == 'http://') {";
+        $fdjs=$fdjs."alert('{$lang_LinkInfo3}');";
+        $fdjs=$fdjs."document.myform.weburl.focus();";
+        $fdjs=$fdjs."return false;}";
+        $fdjs=$fdjs."}</script>";
 require_once '../public/php/methtml.inc.php';
-
-$methtml_addlink.=$fdjs;
-$methtml_addlink.="<table width='90%' cellpadding='2' cellspacing='1' bgcolor='#F2F2F2' align='center' class=addlink_table>\n";
-$methtml_addlink.="<tr class='addlink_tr'><td width='20%' height='25' align='left' bgcolor='#FFFFFF' colspan='3' class='addlink_title'><b>".$lang_Info4."</b>&nbsp;</td></tr>\n";
-$methtml_addlink.="<tr class='addlink_tr'>\n";
-$methtml_addlink.="<td width='20%' height='25' align='right' bgcolor='#FFFFFF' class='addlink_td1'><b>".$lang_OurWebName."</b>&nbsp;</td>\n";
+        $methtml_addlink.=$fdjs;
+        $methtml_addlink.="<table width='90%' cellpadding='2' cellspacing='1' bgcolor='#F2F2F2' align='center' class='addlink_table'>\n";
+        $methtml_addlink.="
+		    <tr class='addlink_tr'>
+			    <td width='20%' height='25' align='left' bgcolor='#FFFFFF' colspan='3' class='addlink_title'>
+				    <b>".   $lang_Info4."</b>&nbsp;
+				</td>
+			</tr>\n";
+        $methtml_addlink.="<tr class='addlink_tr'>\n";
+        $methtml_addlink.="<td width='20%' height='25' align='right' bgcolor='#FFFFFF' class='addlink_td1'><b>".$lang_OurWebName."</b>&nbsp;</td>\n";
 $methtml_addlink.="<td width='70%' bgcolor='#FFFFFF' class='addlink_td2'>".$met_linkname."&nbsp;</td>\n";
 $methtml_addlink.="<td bgcolor='#FFFFFF' style='color:#990000'></td>\n";
 $methtml_addlink.="</tr>\n";
@@ -108,7 +101,6 @@ $methtml_addlink.="<td bgcolor='#FFFFFF' class='addlink_td2'>".$met_title_keywor
 $methtml_addlink.="<td bgcolor='#FFFFFF' style='color:#990000'></td>\n";
 $methtml_addlink.="</tr>\n";
 $methtml_addlink.="</table>\n";
-
 $methtml_addlink.="<form method='POST' name='myform' onSubmit='return Checklink();' action='addlink.php?action=add' target='_self'>\n";
 $methtml_addlink.="<table width='90%' cellpadding='2' cellspacing='1' bgcolor='#F2F2F2' align='center' class=addlink_table >\n";
 $methtml_addlink.="<tr class='addlink_tr'>\n";
@@ -147,11 +139,8 @@ $methtml_addlink.="<input type='hidden' name='lang' value='".$lang."'>\n";
 $methtml_addlink.="<input type='reset' name='Submit' value='".$lang_Reset."' class='tj'></td></tr>\n";
 $methtml_addlink.="</table>\n";
 $methtml_addlink.="</form>\n";
-
-
 include template('addlink');
 footer();
-
 }
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.

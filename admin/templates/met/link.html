@@ -3,63 +3,91 @@
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 require_once template('head');
 if($show_ok==0 && $show_ok<>""){
-   $style1="style='color:#FF0000'";
+   $style1="style='color:#FF0000' selected='selected'";
  }elseif($com_ok==1 && $com_ok<>""){
-   $style2="style='color:#FF0000'";
+   $style2="style='color:#FF0000' selected='selected'";
  }elseif($link_type==0 && $link_type<>""){
-   $style4="style='color:#FF0000'";
+   $style4="style='color:#FF0000' selected='selected'";
  }
  elseif($link_type==1 && $link_type<>""){
-   $style5="style='color:#FF0000'";
+   $style5="style='color:#FF0000' selected='selected'";
  }else{
-   $style3="style='color:#FF0000'";
+   $style3="style='color:#FF0000' selected='selected'";
  }
+
 echo <<<EOT
 -->
 <title>{$lang_indexlink}{$lang_manager}</title>
 </head>
 <body>
-<br>
-<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
-          <tr> 
-            <td colspan="9" align="center" class="list1_title">{$lang_indexlink}</td>
-          </tr>
+<!--
+EOT;
+$littr=30;
+require_once template('metlangs');
+echo <<<EOT
+-->
+<table cellpadding="2" cellspacing="1" class="table">
        <tr>
-	        <td align="left" class="list1_input list9" colspan="9">{$lang_linkType}: 
-			<a href="index.php?lang=$lang&show_ok=0" $style1>{$lang_linkType1}</a>&nbsp;|&nbsp;
-			<a href="index.php?lang=$lang&com_ok=1" $style2>{$lang_linkType2}</a>&nbsp;|&nbsp;
-			<a href="index.php?lang=$lang" $style3>{$lang_linkType3}</a>&nbsp;|&nbsp;
-			<a href="index.php?lang=$lang&link_type=0" $style4>{$lang_linkType4}</a>&nbsp;|&nbsp;
-			<a href="index.php?lang=$lang&link_type=1" $style5>{$lang_linkType5}</a> 
-
-</td> </tr>
+	        <td class="centle" colspan="3">
+		     <form  method="POST" name="myform" style="float:right; margin-right:5px; font-weight:normal;" action="index.php?action=linkopen" target="_self">
+<input name="lang" type="hidden"  value="$lang">
+<input name="id" type="hidden"  value="$id">
+友情链接申请：<input name="met_addlinkopen" type="radio" class="radio" value="1" {$met_addlinkopens[1]}>开启&nbsp;&nbsp;&nbsp;<input name="met_addlinkopen" type="radio" class="radio" value="0" {$met_addlinkopens[0]}>关闭
+<input type="submit" name="Submit" value="{$lang_Submit}" class="submit"/>
+</form>
+			&nbsp;&nbsp;<a href="content.php?action=add&lang=$lang" title="{$lang_add}{$lang_indexlink}">{$lang_add}{$lang_indexlink}</a>
+            </td>
+       </tr>
+</table>
+<table cellpadding="2" cellspacing="1" class="table">
+       <tr>
+	        <td class="centle" colspan="3">
+			<form method="POST" name="myform" style="float:left; font-weight:normal; color:#666;" action="index.php?search=detail_search&lang=$lang" target="_self">
+			    &nbsp;&nbsp;<input name="webname" type="text" />
+  <input type="submit" name="Submit2" value="{$lang_search}" class="submit" />  
+	        {$lang_linkTip2}
+			</form>
+<div style="float:right; margin-right:5px; font-weight:normal;" >
+			    &nbsp;&nbsp;{$lang_linkType}:<select name="new" id="new" onChange="changes($(this));">
+					<option value="index.php?lang=$lang&show_ok=0" $style1>{$lang_linkType1}</option>
+					<option value="index.php?lang=$lang&com_ok=1" $style2>{$lang_linkType2}</option>
+					<option value="index.php?lang=$lang" $style3>{$lang_linkType3}</option>
+					<option value="index.php?lang=$lang&link_type=0" $style4>{$lang_linkType4}</option>
+					<option value="index.php?lang=$lang&link_type=1" $style5>{$lang_linkType5}</option>
+				</select>
+</div>
+			</td>		
+</tr>
+			 <tr>
+			 <td colspan="3">
+			  <form name="del" method="Post" action="delete.php?lang=$lang">
+			  <table cellpadding="0" cellspacing="0" class="table neitable" style="margin:0px; border:none;">
               <tr>
-                <td width="5%" class="list1_top" align="center">{$lang_selected}</td>
-				<td width="5%" class="list1_top" align="center">ID</td>
-                <td width="8%" class="list1_top" align="center">{$lang_linkType}</td>
-                <td width="18%" class="list1_top" align="center" >{$lang_linkName}</td>
-                <td width="26%" class="list1_top" align="center" >{$lang_linkKeys}</td>
-                <td width="6%" class="list1_top" align="center" >{$lang_sort}</td>
-				<td width="6%" class="list1_top" align="center" >{$lang_linkCheck}</td>
-				<td width="6%" class="list1_top" align="center" >{$lang_recom}</td>
-				<td width="10%" class="list1_top" align="center" >{$lang_operate}</td>
+                <td width="40" class="list">{$lang_selected}</td>
+				<td width="50" class="list">ID</td>
+                <td width="8%" class="list">{$lang_linkType}</td>
+                <td width="18%" class="list" >{$lang_linkName}</td>
+                <td class="list" >{$lang_linkKeys}</td>
+                <td width="6%" class="list" >{$lang_sort}</td>
+				<td width="6%" class="list" >{$lang_linkCheck}</td>
+				<td width="6%" class="list" >{$lang_recom}</td>
+				<td width="10%" class="list" >{$lang_operate}</td>
               </tr>
-			  <form name="del" method="Post" action="delete.php?lang=$lang" onSubmit="return ConfirmDelall();">
 <!--
 EOT;
 foreach ($link_list as $key=>$val){
 echo <<<EOT
 -->          
-              <tr>
-              <td class="list1_content_titile" align="center"><input name='id' type='checkbox' onClick="unselectall()" id="id" value='$val[id]' class="xz"></td>
-                <td class="list1_content" align="center">$val[id]</td>
-				<td align="center" class="list1_content">$val[link_type]</td>
-			    <td align="left" class="list1_content">$val[webname]</td>
-				<td align="left" class="list1_content">$val[info]</td>
-				<td class="list1_content" align="center">$val[orderno]</td>
-                <td class="list1_content" align="center">$val[show_ok]</td>
-                <td class="list1_content" align="center">$val[com_ok]</td>          
-				<td align="center" class="list1_content" style="color:#0066FF;"></a> <a href="content.php?action=editor&lang=$lang&id=$val[id]" >{$lang_editor}</a> | <a href="delete.php?lang=$lang&id=$val[id]" onClick="return ConfirmDel();" >{$lang_delete}</a></td>
+              <tr class="mouse click">
+              <td class="list-text"><input name='id' type='checkbox' id="id" value='$val[id]' /></td>
+                <td class="list-text">$val[id]</td>
+				<td class="list-text">$val[link_type]</td>
+			    <td align="left" class="list-text">&nbsp;$val[webname]</td>
+				<td align="left" class="list-text">&nbsp;$val[info]</td>
+				<td class="list-text">$val[orderno]</td>
+                <td class="list-text">$val[show_ok]</td>
+                <td class="list-text">$val[com_ok]</td>          
+				<td class="list-text"><a href="content.php?action=editor&lang=$lang&id=$val[id]" >{$lang_editor}</a>&nbsp;&nbsp;<a href="delete.php?lang=$lang&id=$val[id]" onClick="return linkSmit($(this),1);" >{$lang_delete}</a></td>
               </tr>
 <!--
 EOT;
@@ -67,28 +95,121 @@ EOT;
 echo <<<EOT
 -->
 		   
-   	   <tr> 
-            <td class="input_bottom" align="center"><input name="chkAll" class="xz" type="checkbox" id="chkAll" onclick=CheckAll(this.form) value="checkbox"></td>
-            <td class="input_bottom" align="center">{$lang_selectall}</td>
-			<td class="input_bottom" align="left" colspan="8"><input name="submit" type='submit' value='{$lang_deleteselected}' style="*padding-top:2px; *height:22px;"> 
+   	   </table>
               <input name="action" type="hidden" id="action" value="del">
-			  <input name="allid" type="hidden" id="allid" value=""></form></td>
+			  <input name="allid" type="hidden" id="allid" value="">
+</form>	   
+   	   </td> 
+   	   </tr> 
+   	   <tr> 
+            <td class="all" width="40"><input name="chkAll" type="checkbox" id="chkAll" onclick="CheckAllx($(this),'del')" value="checkbox" /></td>
+            <td class="all" width="50"><label for="chkAll">{$lang_selectall}</label></td>
+			<td class="all-submit" align="left">
+			<input name="submit" type='submit' value='{$lang_deleteselected}' class="submit li-submit" onclick="return met_modify($(this),'del','del');" /> 
+			<div class="li-submit">
+			<form method="POST" id="mycopy" name="mycopy"  action="../advanced/copypara.php?lang=$lang&module=9&action=copy" target="_self">
+			  <input name="allid" type="hidden" value="" />
+			  <input name="access" type="hidden" value="" />
+			  <input name="class1" type="hidden" value="$class1" />
+                &nbsp;&nbsp;<select name="copylang">
+				    <option value="">{$lang_Copytitle}</option>
+<!--
+EOT;
+foreach($met_langok as $key=>$val){
+echo <<<EOT
+-->	
+				    <option value="$val[mark]">$val[name]</option>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+               </select>
+            </form>
+				</div>
+				<input name="submit" type='submit' value='{$lang_Copy}' class="submit li-submit" onclick="return met_modify($(this),'mycopy','editor');" />
+			  <div class="page_list">
+			  $page_list
+			  </div>
+			</td>
           </tr>
-		  <tr>
-            <td class="input_search" colspan="9" align="left">
-			<form method="POST" name="myform"  action="index.php?search=detail_search&lang=$lang" target="_self">
-			       <span><b>{$lang_indexlink}{$lang_search}</b></span>
-			    <input name="webname" type="text" size="30">
-  <input type="submit" name="Submit2" value="{$lang_search}" class="tj" style="*padding-top:2px; *height:22px;">  
-	        {$lang_linkTip2}</form></td>
-          </tr>
-   	   <tr>
-   	     <td  align="center" colspan="9" class="list1_input" >$page_list</td>
-        </tr>
 		<tr>
-		  <td class="list1_footer" colspan="9" align="center">$foot</td>
+		  <td class="footer" colspan="3">$foot</td>
 	  </tr>
 </table>
+<script type="text/javascript">
+var copycolumn=new Array();
+<!--
+EOT;
+$i=0;
+foreach($column_lang[5] as $key=>$val){
+if($val[bigclass]>0 && $val[releclass]==0)$val[lang]=$val[bigclass];
+echo <<<EOT
+-->
+    copycolumn[$i]=new Array('$val[name]','$val[lang]','$val[id]','$val[access]');
+<!--
+EOT;
+$i++;
+}
+echo <<<EOT
+-->
+var copyclass=new Array();
+    copyclass[0]=$("select[name='copylang']");
+    copyclass[1]=$("select[name='copyclass1']");
+    copyclass[2]=$("select[name='copyclass2']");
+    copyclass[3]=$("select[name='copyclass3']");
+var form = $("#mycopy");
+$(document).ready(function(){
+	copyclass[0].change( function(){ copyselect($(this),copyclass[1],0); });
+	copyclass[1].change( function(){ copyselect($(this),copyclass[2],1); });
+	copyclass[2].change( function(){ copyselect($(this),copyclass[3],2); });
+	form.submit( function(){ return copylist($(this)); });
+});
+function copyselect(my,classy,p){
+        var term = my.val();
+		var g = 0;
+        for(i=0;i<4;i++){
+		    if(i>p){
+			   copyclass[i].find("option").remove("option[value!='']");
+			   copyclass[i].hide();
+			}
+        }
+		if(term!=''){
+		    for(k=0;k<$i;k++){
+			    if(copycolumn[k][2]==term){
+				   var accs=copycolumn[k][3]==1?1:0;
+				   $("input[name='access']").val(accs);
+				}
+			    if(copycolumn[k][1]==term){
+			       classy.append("<option value='"+copycolumn[k][2]+"'>"+copycolumn[k][0]+"</option>");
+				   g=1;
+				}
+			}
+			if(g==0){classy.hide();}else{classy.show();}
+		}
+}
+function copylist(){
+    var sm,mm,tj=0,values='',flag=0;
+    var del = $("input[name='id']");
+    var allid = $("#mycopy").find("input[name='allid']");
+    var text = new Array(user_msg['js36'],user_msg['js37'],user_msg['js38'],user_msg['js39']);
+    for(i=0;i<del.length;i++){
+        if(del.eq(i).attr("checked")==true){
+            values = values + del.eq(i).val()+",";
+	        flag=1;
+	    }
+    }
+	allid.val(values);
+	if(flag==0){ alert(user_msg['js23']); return false;}
+    for(i=0;i<4;i++){
+	    sm = copyclass[i].val();
+	    mm = copyclass[i].find("option[value!='']").length;
+	    if(!sm && mm>0){alert(text[i]); return false;}
+		else{ tj++; }
+	}
+	if(tj>3 && confirm(user_msg['js24'])){ return true; }else{ return false; }
+}
+</script>
 </body>
 </html>
 <!--

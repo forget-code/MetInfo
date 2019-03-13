@@ -7,21 +7,47 @@ echo <<<EOT
 <title>{$lang_setfiletitle}</title>
 </head>
 <body>
-<br>
-<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
-          <tr> 
-            <td colspan="7" align="center" class="list1_title">{$lang_setfiletitle}</td>
-          </tr>
-              <tr>
-			<tr> 
-            <td colspan="7" align="left">
-			<a href="uploadfile.php?lang=$lang&fileurl=upload" style="color:#FF0000"><img src="$img_url/file.gif"><b>upload</b></a>&nbsp;&nbsp;{$lang_setfiletext1}<br><br>
+<table cellpadding="2" cellspacing="1" class="table uploadfile">
+    <tr> 
+        <td colspan="8" class="title">{$lang_setfiletitle}</td>
+    </tr>
+	<tr> 
+        <td colspan="6" class="input"> 
+			{$lang_setsafesq2text}
+			<a  href="uploadfile.php?lang=$lang&filename={$metnowdir}&file_classnow=$file_classnow&action=deletefolder" 
+			    onClick="return ConfirmDel();"
+             	title="{$lang_setsafesq3text}">
+			    <img class="small" src="$img_url/botton/Deletea.png" />
+		    </a>
+			 {$lang_setsafesq3text}【{$metnowdir}】{$lang_setfiletext4}
+		</td>
+		<td class="input" style="text-align:right" colspan="2">
+		    【{$metnowdir}】{$lang_setfiletext2} {$total_count} {$lang_setfiletext3}
+		</td>
+    </tr>
+	<tr>	
+        <td width="160" class="list">{$lang_setsafesq4text}</td>	
+        <td width="40" class="list">{$lang_selected}</td>	
+        <td width="60" class="list">{$lang_setfiletype}</td>
+		<td class="list">{$lang_skinDocument}</td>
+        <td class="list">{$lang_setfilename}</td>
+        <td width="80" class="list">{$lang_setfilesize}</td>
+		<td width="120" class="list">{$lang_setfiletime}</td>
+		<td class="list">{$lang_operate}</td>
+    </tr>
+	<tr>
+        <td class="files" id="files" valign="top">
+		    <dl>
+			    <dt><img class="small" src="$img_url/botton/File.png" /> <a href="uploadfile.php?lang=$lang&fileurl=upload" title="upload">upload</a></dt>
+				<dd>
+				<ul>
 <!--
 EOT;
 foreach ($fileclass[1] as $key=>$val){
 echo <<<EOT
 -->
-<div style="float:left; margin:2px 20px 2px 0px;"><a href="uploadfile.php?lang=$lang&fileurl=upload/$val[name]&file_classnow=2" style="color:#003399;float:left;"><img src="$img_url/file.gif"><b>$val[name]</b></a> 
+                <li>
+				<img class="small" src="$img_url/botton/Filey.png" /> <a href="uploadfile.php?lang=$lang&fileurl=upload/$val[name]&file_classnow=2" title="$val[name]">$val[name]</a>				
 <!--
 EOT;
 if($file_classnow>=2){
@@ -29,34 +55,35 @@ foreach ($fileclass[2] as $key=>$val2){
 if (strstr($val2[url],$fileurl)&&strstr($val2[url],$val[name])){
 echo <<<EOT
 -->
-<br><br><a href="uploadfile.php?lang=$lang&fileurl=upload/$val[name]/$val2[name]&file_classnow=3" style=" float:left; margin:5px 10px 0px 5px;" ><img src="$img_url/filesmall.gif">$val2[name]</a>
+            <p><img src="$img_url/botton/Filey.png" /> <a href="uploadfile.php?lang=$lang&fileurl=upload/$val[name]/$val2[name]&file_classnow=3" title="$val2[name]">$val2[name]</a>
+			</p>
 <!--
 EOT;
 }}}
 echo <<<EOT
 -->
-</div>
+                </li>
 <!--
 EOT;
 }
 echo <<<EOT
 -->
-			</td>
-          </tr>
-		  <tr> 
-            <td colspan="7" align="left">
-			<br>【<font color="#0000FF"><b>{$metnowdir}/</b></font>】{$lang_setfiletext2}<font color="#FF0000"><b>{$total_count}</b></font>{$lang_setfiletext3}，<a href="uploadfile.php?lang=$lang&filename={$metnowdir}&file_classnow=$file_classnow&action=deletefolder" onClick="return ConfirmDel();" style="color:#FF0000" ><img src="$img_url/redx.gif" width="10" style="margin:5px 0px 0px 5px">{$lang_skinDelete}</a>【<font color="#0000FF"><b>{$metnowdir}/</b></font>】{$lang_setfiletext4}</td>
-          </tr>
-			
-			    <td  class="list1_lm" align="center" >{$lang_skinDocument}</td>
-                <td  class="list1_lm" align="center">{$lang_selected}</td>
-                <td  class="list1_lm" align="center">{$lang_setfilename}</td>
-                <td  class="list1_lm" align="center" >{$lang_setfiletype}</td>
-                <td  class="list1_lm" align="center" >{$lang_setfilesize}</td>
-				<td  class="list1_lm" align="center" >{$lang_setfiletime}</td>
-				<td  class="list1_lm" align="center" >{$lang_operate}</td>
-              </tr>
-			  <form name="del" method="Post" action="uploadfile.php?lang=$lang&fileurl=$fileurl2&file_classnow=$file_classnow&page=$page&action=delete" onSubmit="return ConfirmDelall();">
+                </dd>
+			</dl>
+		</td>
+<!--
+EOT;
+if($total_count==0){
+echo <<<EOT
+-->
+<td class="list-text" colspan="7">{$lang_setsafesq5text}</td>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+	</tr>
+	<form name="del" method="Post" action="uploadfile.php?lang=$lang&fileurl=$fileurl2&file_classnow=$file_classnow&page=$page&action=delete">
 <!--
 EOT;
 $i=0;
@@ -67,40 +94,52 @@ $val[size]=number_format($val[size]/1024, 2);
 $filetypearray=explode('.',$val[file]);
 $val[type]=$filetypearray[1];
 echo <<<EOT
--->          
-              <tr class="tdbg">
-			   <td  class="list1_content" align="center">$val[folder]</td>
-              <td class="list1_content_titile" align="center" ><input name='id' type='checkbox' onClick="unselectall()" id="id" value='{$val[folder]}/{$val[file]}' class="xz"></td>
-                <td align="center" class="list1_content">$val[file]</td>
-                <td  class="list1_content" align="center">$val[type]</a></td>
-                <td align="center" class="list1_content">$val[size] KB</td>
-				<td align="center" class="list1_content">20$val[uploadtime]</td>
-				<td align="center" class="list1_content" style="color:#0066FF;"><a href="{$val[folder]}/$val[file]" target="_blank" >{$lang_setfileview}</a> | <a href="uploadfile.php?lang=$lang&filename={$val[folder]}/{$val[file]}&fileurl=$fileurl2&file_classnow=$file_classnow&page=$page&action=delete" onClick="return ConfirmDel();" >{$lang_delete}</a></td>
-              </tr>
+-->    
+    <tr class="mouse click">
+        <td class="list-text"><input name='id' type='checkbox' onClick="unselectall()" id="id" value='{$val[folder]}/{$val[file]}' /></td>
+        <td class="list-text">$val[type]</a></td>
+		<td class="list-text">$val[folder]</td>
+        <td class="list-text">$val[file]</td>
+        <td class="list-text">$val[size] KB</td>
+		<td class="list-text">20$val[uploadtime]</td>
+		<td class="list-text">
+		    <a href="{$val[folder]}/$val[file]" target="_blank" >{$lang_setfileview}</a>&nbsp;&nbsp; 
+			<a href="uploadfile.php?lang=$lang&filename={$val[folder]}/{$val[file]}&fileurl=$fileurl2&file_classnow=$file_classnow&page=$page&action=delete" onClick="return linkSmit($(this),1);" title="{$lang_delete}">{$lang_delete}</a>
+		</td>
+    </tr> 
 <!--
 EOT;
 }
 $i++;
 }
 echo <<<EOT
--->
-       
-        </td>
-          </tr> 
-		   
+-->  
+<input name="action" type="hidden" id="action" value="del">
+<input name="action_type" type="hidden" value="del">
+			  <input name="allid" type="hidden" id="allid" value="">
+			  </form>
    	   <tr> 
-	        <td  class="input_bottom" align="center" colspan="2">
-              {$lang_selectall} <input name="chkAll" class="xz" type="checkbox" id="chkAll" onclick=CheckAll(this.form) value="checkbox"> 
+            <td width="40" class="all"><input name="chkAll" type="checkbox" id="chkAll" onclick="CheckAllx($(this),'del')" value="checkbox" /></td>
+            <td class="all"><label for="chkAll">{$lang_selectall}</label></td>
+			  <td class="all-submit" align="left" colspan="6">
+			  <input name="submit" type='submit' value='{$lang_deleteselected}' class="submit li-submit" onclick="met_modify($(this),'del','delete');" /> 
+			  <div class="page_list">
+			  $page_list
+			  </div>
               </td>
-			  <td  class="input_bottom" colspan="6" align="left"><input name="submit" type='submit' value='{$lang_deleteselected}' style="*padding-top:4px;"><input name="action_type" type="hidden" id="action_type" value="del"><input name="allid" type="hidden" id="allid" value=""><input name="lang" type="hidden"  value="$lang"></form></td>
           </tr>
-   	   <tr>
-   	     <td height="0" align="center"  colspan="7">$page_list</td>
-        </tr>
-		<tr>
-		  <td class="list1_footer" colspan="7" align="center">$foot</td>
-	  </tr>
+	<tr>
+	    <td class="input" colspan="8">{$lang_setfiletext1}</td>
+	</tr>
+	<tr>
+		<td class="footer" colspan="8">$foot</td>
+	</tr>
 </table>
+	
+<script type="text/javascript">
+    var tdfile = $("#files");
+	    tdfile.attr("rowspan",$('tr.click').length+1);
+</script>
 </body>
 </html>
 <!--

@@ -50,7 +50,7 @@ class upfile {
     }
     $this->savepath = $path;
     $this->overwrite = $over; //Whether it covers the same name file
-    $this->maxsize = !$maxsize ? $this->maxsize: $maxsize; //Maximum file size bytes
+    $this->maxsize = $maxsize?$maxsize:$this->maxsize; //Maximum file size bytes
     $this->format = $format;
   }
 
@@ -148,7 +148,8 @@ class upfile {
   function halt($msg) {
 	global $lang_upfileNotice;
     //admin_msg($msg);
-    echo"<strong>$lang_upfileNotice</strong>".$msg;
+    //echo"<strong>$lang_upfileNotice</strong>".$msg;
+	okinfoy('javascript:history.go(-1)',$lang_upfileNotice.$msg);
     exit;
   }
   /**Thumbnail image width and height to determine treatment**/
@@ -265,7 +266,8 @@ class upfile {
      */
     function createthumb($img, $thumb_width = 0, $thumb_height = 0, $path = '', $bgcolor='')
     {
-	     global $met_img_x,$met_img_y,$lang_upfileFail4,$lang_upfileFail5;
+	
+	     global $met_img_x,$met_img_y,$met_productimg_x,$lang_upfileFail4,$lang_upfileFail5;
 		 $thumb_width=$thumb_width?$thumb_width:$met_img_x;
 		 $thumb_height=$thumb_height?$thumb_height:$met_img_y;
          $gd = $this->gd_version(); 
@@ -355,17 +357,17 @@ class upfile {
         if (function_exists('imagejpeg'))
         {
             $filename .= '.jpg';
-            imagejpeg($img_thumb, $thumbname);
+            imagejpeg($img_thumb, $thumbname,100);
         }
         elseif (function_exists('imagegif'))
         {
             $filename .= '.gif';
-            imagegif($img_thumb, $thumbname);
+            imagegif($img_thumb, $thumbname,100);
         }
         elseif (function_exists('imagepng'))
         {
             $filename .= '.png';
-            imagepng($img_thumb, $thumbname);
+            imagepng($img_thumb, $thumbname,100);
         }
         else
         {

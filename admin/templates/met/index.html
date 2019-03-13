@@ -8,304 +8,274 @@ echo <<<EOT
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>MetInfo{$lang_metinfo}</title>
-<link href="$img_url/metinfo.css" rel="stylesheet" />
-<style type="text/css">
-body {
-	font-size: $lang_fontsize; 
-	font-family:$lang_fontfamily;
-}
-</style>
+<link href="$img_url/css/reset.css" rel="stylesheet" />
+<link href="$img_url/css/metinfo.css" rel="stylesheet" />
 </head>
+<script type="text/javascript" src="../public/js/metinfo-min.js"></script>
+<script type="text/javascript" src="$img_url/js/cookie.js"></script>
+<script type="text/javascript"src="include/metvar.js"></script>
+<script type="text/javascript">
+$(function(){
+	var lefth = $(window).height() - 90 - 1;
+	$('#metleft').height(lefth);
+	$('#metright').height(lefth);
+	$('#main').height(lefth);
+	var leftnavh = lefth - 10 - 25 - 40;
+	$('#leftnav').height(leftnavh);
+});
+</script>
 <body>
-<div class="toplang">
+<div id="sitemap"></div>
+    <div id="toplang">
+        <div class="floatr">
+			<a href="javascript:sitemp('set/sitemap.php?lang=$lang&admintp=$admin_list[id]');" class="sitemapa">{$lang_adminstmp}</a>
+        <iframe allowtransparency="true" src="http://www.metinfo.cn/metnewslistv4.php?fromurl=$met_weburl&softtype=1" frameborder="0" scrolling="no" ></iframe>
+        </div>
 <!--
 EOT;
-if(count($met_langok)>1 and (count($adminlang)>3 or $langadminok=="metinfo")){
+if(count($met_langok)>1 and (count($adminlang)>3 or $langadminok=="metinfo") and $met_lang_mark){
 echo <<<EOT
 -->
-&nbsp;&nbsp;<b>{$lang_langcontent}</b>
-<select name="loginlang" onchange=javascript:window.location.href=this.options[this.selectedIndex].value >
+        <span class="floatl langtxt">{$lang_langcontent}</span>
+        <select name="loginlang" id="loginlang" onchange="changes($(this));">
 <!--
 EOT;
 $met_langtype_select[$lang]="selected='selected'" ;
 foreach($met_langok as $key=>$val){
 if($langadminok=="metinfo" or (strstr($langadminok,"-".$val[mark]."-"))){
+$url = 'index.php?lang='.$val['mark'];
 echo <<<EOT
 -->
-<option value="index.php?lang=$val[mark]" {$met_langtype_select[$val[mark]]}>$val[name]</option>
+            <option value="$url" {$met_langtype_select[$val[mark]]}>$val[name]</option>
 <!--
 EOT;
 }}
 echo <<<EOT
 -->
-</select>
+        </select>
 <!--
 EOT;
 if($langadminok=="metinfo"){
 echo <<<EOT
 -->
- <a target="main" onfocus="if(this.blur)this.blur();" id="list0_$k" href="set/lang.php?langaction=add"   onclick="san(0),san1(1,2)">{$lang_langadd}</a>
- 
+        <a href="set/lang.php?langaction=add" target="main" onclick="clickula(ula,2); clicknav(nav,$(this),0)" class='addlang'><span>{$lang_langadd}</span></a>
 <!--
 EOT;
 }}
 echo <<<EOT
 -->
+    </div>
+<div id="top"> 
+    <div class="floatr">
+		<div class="nav">
+		    <div class="username">
+<span>{$lang_indexwelcom}$metinfo_admin_name <span style="font-family:arail;">{$lang_indexmanager}MetInfo{$lang_metinfo}!</span></span>
+			</div>
+            <ul id="topnav">
+                <li><a href="#" class="onnav" hidefocus="true">{$lang_indexbasic}</a></li>
+	            <li><a href="#" hidefocus="true">{$lang_indexskin}</a></li>
+	            <li><a href="#" hidefocus="true">{$lang_indexcolumn}</a></li>
+	            <li><a href="#" hidefocus="true">{$lang_indexcontent}</a></li>
+	            <li><a href="#" hidefocus="true">{$lang_indexseo}</a></li>
+	            <li><a href="#" hidefocus="true">{$lang_indexfeedback}</a></li>
+	            <li><a href="#" hidefocus="true">{$lang_indexuser}</a></li>
+            </ul>
+			<div id="Problem"></div>
+		</div>
+    </div>
+    <div class="floatl">
+	    <a href="http://www.metinfo.cn" target="_blank" hidefocus="true"><img src="$img_url/logoen.gif" alt="MetInfo" title="MetInfo"  /></a>
+	</div>
 </div>
-<div class="top">
-<div style="width:100%;">
-<iframe allowtransparency="true" style="padding-top:0px; margin-top:0px; position:absolute; height:30px; width:50%; line-height:30px; right:20px; top:0px; z-index:100; background-color=transparent " src="http://www.metinfo.cn/metnewslist.php?fromurl=$met_weburl&softtype=1" frameborder=0 scrolling=no ></iframe>
-</div> 
-   <div class="top_bottom">
-   <div class="top_left"><a href="http://www.metinfo.cn" target="_blank" hidefocus="true"><img src="$img_url/logo.gif" alt="MetInfo"  /></a></div>
-<div class="top_right">
-<div class="top_right_top"></div>
-<div class="top_list">
-   <ul id="top_ul">
-       <li><a href="#" onfocus="if(this.blur)this.blur();" onclick="san(0,'$lang')"  class="li_ok" style="color:#FFFFFF;">{$lang_indexbasic}</a></li>
-	   <li><a href="#" onfocus="if(this.blur)this.blur();" onclick="san(1,'$lang')">{$lang_indexskin}</a></li>
-	   <li><a href="#" onfocus="if(this.blur)this.blur();" onclick="san(2,'$lang')">{$lang_indexcolumn}</a></li>
-	   <li><a href="#" onfocus="if(this.blur)this.blur();" onclick="san(3,'$lang')" >{$lang_indexcontent}</a></li>
-	   <li><a href="#" onfocus="if(this.blur)this.blur();" onclick="san(4,'$lang')">{$lang_indexseo}</a></li>
-	   <li><a href="#" onfocus="if(this.blur)this.blur();" onclick="san(5,'$lang')">{$lang_indexfeedback}</a></li>
-	   <li><a href="#" onfocus="if(this.blur)this.blur();" onclick="san(6,'$lang')">{$lang_indexuser}</a></li>
-	   <div style="clear:both;"></div>
-   </ul>
-   <div class="top_admin"><span>MetInfo{$lang_indexmanager}&nbsp;</span>{$lang_indexwelcom}: $metinfo_admin_name</div>
-</div>
-   <div style="clear:both;"></div>
-   <div class="top_right_bottom"></div>
-</div>
-</div>
-</div>
-
-
-
-<div class="bottom" >
-<table width="100%"  height="100%" cellpadding="0" cellspacing="0" >
-<tr>
-<td  valign="top" style="width:170px; *width:172px; _width:174px; z-index:2;">
-<div class="left" id="leftheight" >
-     <div class="left_top">
-	      <a target="_blank" href="../">{$lang_indexhome}</a>&nbsp;&nbsp;<a href="site/sysadmin.php?lang=$lang" target="main">{$lang_indexadmin}</a>&nbsp;&nbsp;<a target="_top" href="login/login_out.php">{$lang_indexloginout}</a>	 </div>
-	 <div class="left_content">
+<div id="content">
+    <div class="floatr" id="metright">
+	    <div class="metbox">
+        <div class="iframe">
+		    <div class="min"><iframe frameborder="0" id="main" name="main" src="site/sysadmin.php?lang=$lang" scrolling="yes"></iframe></div>
+		</div>
+		<div class="clse"><img src="$img_url/botton/hide.gif" onclick="metclse($(this),'$img_url/');" alt="{$lang_launched}" title="{$lang_launched}" /></div>
+		</div>
+    </div>
+    <div class="floatl" id="metleft">
+        <div class="fast">
+	        <a target="_blank" href="../index.php?lang=$lang" title="{$lang_indexhome}">{$lang_indexhome}</a>
+			<a href="site/sysadmin.php?lang=$lang" target="main" title="{$lang_indexadmin}">{$lang_indexadmin}</a>
+			<a target="_top" href="login/login_out.php" title="{$lang_indexloginout}" class='tui'>{$lang_indexloginout}</a>
+		</div>
+	    <div class="nav_list" id="leftnav">
 <!--——————————————————————category 1 start————————————————————————————-->
-	 <div id="list0" class="left_u">
-	    <ul id="left_ul1" class="pt">
+	        <ul>
+                <li><a class="on" target="main" id="nav_0" href="site/sysadmin.php?lang=$lang" title="{$lang_indexsysteminfo}">{$lang_indexsysteminfo}</a></li>
 <!--
 EOT;
-$k=0;
-echo <<<EOT
--->
-<li><a target="main" onfocus="if(this.blur)this.blur();" id="list0_$k" href="site/sysadmin.php?lang=$lang" onclick="san1(1,$k)" class="left_clicka" style=" border:1px solid  #c5edf9; color:#1788c2;">{$lang_indexsysteminfo}</a></li>
-<!--
-EOT;
-$k++;
 if($metinfo_admin_pop=="metinfo" || $admin_pop1001=="metinfo"){
 echo <<<EOT
 -->
-<li><a target="main" onfocus="if(this.blur)this.blur();" id="list0_$k" href="set/basic.php?lang=$lang" onclick="san1(1,$k)" >{$lang_indexbasicinfo}</a></li>
+                <li><a href="set/basic.php?lang=$lang" target="main" id="nav_1" title="{$lang_indexbasicinfo}">{$lang_indexbasicinfo}</a></li>
 <!--
 EOT;
-$k++;
 }
 if($metinfo_admin_pop=="metinfo" || $admin_pop1002=="metinfo"){
 echo <<<EOT
 -->
-<li><a target="main" onfocus="if(this.blur)this.blur();" id="list0_$k" href="set/lang.php?lang=$lang" onclick="san1(1,$k)">{$lang_indexlang}</a></li> 
+                <li><a href="set/lang.php?lang=$lang" target="main" id="nav_2" title="{$lang_indexlang}">{$lang_indexlang}</a></li> 
 <!--
 EOT;
-$k++;
 }
 if($metinfo_admin_pop=="metinfo" || $admin_pop1003=="metinfo"){
 echo <<<EOT
 --> 
-<li><a target="main" onfocus="if(this.blur)this.blur();" id="list0_$k" href="set/foot.php?lang=$lang" onclick="san1(1,$k)">{$lang_indexfoot}</a></li>
+                <li><a href="set/foot.php?lang=$lang" target="main" id="nav_3" title="{$lang_indexfoot}">{$lang_indexfoot}</a></li>
 <!--
 EOT;
-$k++;
 }
 if($metinfo_admin_pop=="metinfo" || $admin_pop1004=="metinfo"){
 echo <<<EOT
 -->
-<li><a target="main" onfocus="if(this.blur)this.blur();" id="list0_$k" href="set/other_info.php?lang=$lang" onclick="san1(1,$k)">{$lang_indexotherinfo}</a></li> 
+                <li><a href="set/other_info.php?lang=$lang" target="main" id="nav_4" title="{$lang_indexotherinfo}">{$lang_indexotherinfo}</a></li> 
 <!--
 EOT;
-$k++;
+}
+if($metinfo_admin_pop=="metinfo" || $admin_pop1405=="metinfo"){
+echo <<<EOT
+--> 
+				<li><a href="set/wap.php?lang=$lang" target="main" id="nav_27" title="{$lang_indexwap}">{$lang_indexwap}</a></li>
+<!--
+EOT;
 }
 if($metinfo_admin_pop=="metinfo" || $admin_pop1005=="metinfo"){
 echo <<<EOT
 --> 
-<li><a target="main" onfocus="if(this.blur)this.blur();" id="list0_$k" href="set/database.php?lang=$lang" onclick="san1(1,$k)">{$lang_indexdataback}</a></li> 
+                <li><a href="set/database.php?lang=$lang" target="main" id="nav_5" title="{$lang_indexdataback}">{$lang_indexdataback}</a></li> 
 <!--
 EOT;
-$k++;
 }
 if($metinfo_admin_pop=="metinfo" || $admin_pop1006=="metinfo"){
 echo <<<EOT
 --> 
-<li><a target="main" onfocus="if(this.blur)this.blur();" id="list0_$k" href="set/safe.php?lang=$lang" onclick="san1(1,$k)">{$lang_indexsafe}</a></li> 
+                <li><a href="set/safe.php?lang=$lang" target="main" id="nav_6" title="{$lang_indexsafe}">{$lang_indexsafe}</a></li> 
 <!--
 EOT;
-$k++;
 }
 if($metinfo_admin_pop=="metinfo" || $admin_pop1007=="metinfo"){
 echo <<<EOT
 --> 
-<li><a target="main" onfocus="if(this.blur)this.blur();" id="list0_$k" href="set/uploadfile.php?lang=$lang" onclick="san1(1,$k)">{$lang_indexupload}</a></li> 
+                <li><a href="set/uploadfile.php?lang=$lang" target="main" id="nav_7" title="{$lang_indexupload}">{$lang_indexupload}</a></li> 
 <!--
 EOT;
-$k++;
 }
-$k1=$k+1;
-
 echo <<<EOT
 --> 
-		   <li><a target="main" onfocus="if(this.blur)this.blur();"  id="list0_$k2" href="set/authcode.php?lang=$lang" onclick="san1(1,$k)">{$lang_indexcode}</a></li>
-		   <li><a  target="_blank" onfocus="if(this.blur)this.blur();" id="list0_$k3" href="http://www.metinfo.cn/ebook" onclick="san1(1,$k1)">{$lang_indexebook}</a></li>
-		   <li><a  target="_blank" onfocus="if(this.blur)this.blur();" id="list0_$k4" href="http://bbs.metinfo.cn/" onclick="san1(1,$k1)">{$lang_indexbbs}</a></li>
-		</ul>	
-	</div>
+		        <li><a href="set/authcode.php?lang=$lang" target="main" id="nav_8" title="{$lang_indexcode}">{$lang_indexcode}</a></li>
+		        <li><a target="_blank" href="http://www.metinfo.cn/ebook/" title="{$lang_indexebook}">{$lang_indexebook}</a></li>
+		        <li><a target="_blank" href="http://bbs.metinfo.cn/" title="{$lang_indexbbs}">{$lang_indexbbs}</a></li>
+		    </ul>
 <!--***************************************category 1 end***************************************-->
-
-
-
-
 <!--——————————————————————category 2 start————————————————————————————-->
-	<div id="list1" class="left_u" style="display:none;">
-	    <ul id="left_ul2" class="pt">
-
+	        <ul style="display:none;">
 <!--
 EOT;
-$k=0;
 if($metinfo_admin_pop=="metinfo" || $admin_pop1101=="metinfo"){
-$k++;
 echo <<<EOT
 -->
-<li><a target="main" id="list1_0" onfocus="if(this.blur)this.blur();" href="set/skin.php?lang=$lang" onclick="san1(2,0)" class="li_left_ok" style=" border:1px solid  #c5edf9; color:#1788c2;">{$lang_indexskin}</a></li>
-<li><a target="main" id="list2_$k" onfocus="if(this.blur)this.blur();" href="set/skin_manager.php?lang=$lang" onclick="san1(2,$k)">{$lang_indexskinmanager}</a></li>
+                <li><a href="set/skin.php?lang=$lang" target="main" id="nav_11" title="{$lang_indexskin}">{$lang_indexskin}</a></li>
+                <li><a href="set/skin_manager.php?lang=$lang" target="main" id="nav_12" title="{$lang_indexskinmanager}">{$lang_indexskinmanager}</a></li>
 <!--
 EOT;
-$k++;
 }
 if($metinfo_admin_pop=="metinfo" || $admin_pop1102=="metinfo"){
 echo <<<EOT
 -->
-<li><a target="main" id="list1_$k" onfocus="if(this.blur)this.blur();" href="set/img.php?lang=$lang" onclick="san1(2,$k)">{$lang_indexpic}</a></li>
+                <li><a href="set/img.php?lang=$lang" target="main" id="nav_13" title="{$lang_indexpic}">{$lang_indexpic}</a></li>
 <!--
 EOT;
-$k++;
 }
 if($metinfo_admin_pop=="metinfo" || $admin_pop1103=="metinfo"){
 echo <<<EOT
 --> 
-<li><a target="main" id="list1_$k" onfocus="if(this.blur)this.blur();" href="set/index_set.php?lang=$lang" onclick="san1(2,$k)">{$lang_indexhomeset}</a></li>
- <!--
-EOT;
-$k++;
-}
-if($metinfo_admin_pop=="metinfo" || $admin_pop1104=="metinfo"){
-$flashk=$k+1;
-echo <<<EOT
---> 
-<li><a target="main" id="list1_$k" onfocus="if(this.blur)this.blur();" href="flash/setflash.php?lang=$lang" onclick="san1(2,$k)">{$lang_indexflashset}</a></li>
-<li><a target="main" id="list1_$flashk" onfocus="if(this.blur)this.blur();" href="flash/flash.php?lang=$lang" onclick="san1(2,$flashk)">{$lang_indexflash}</a></li>
- <!--
-EOT;
-$k++;
-$k++;
-}
-if($metinfo_admin_pop=="metinfo" || $admin_pop1105=="metinfo"){
-$onlinek=$k+1;
-echo <<<EOT
---> 
-<li><a target="main" id="list1_$k" onfocus="if(this.blur)this.blur();" href="set/online.php?lang=$lang" onclick="san1(2,$k)">{$lang_indexonlineset}</a></li>
-<li><a target="main" id="list1_$k" onfocus="if(this.blur)this.blur();" href="online/index.php?lang=$lang" onclick="san1(2,$onlinek)">{$lang_indexonline}</a></li>
+                <li><a href="set/index_set.php?lang=$lang" target="main" id="nav_14" titlte="{$lang_indexhomeset}">{$lang_indexhomeset}</a></li>
 <!--
 EOT;
-$k++;
-$k++;
+}
+if($metinfo_admin_pop=="metinfo" || $admin_pop1104=="metinfo"){
+echo <<<EOT
+--> 
+                <li><a href="flash/setflash.php?lang=$lang" target="main" id="nav_15" title="{$lang_indexflashset}">{$lang_indexflashset}</a></li>
+                <li><a href="flash/flash.php?lang=$lang" target="main" id="nav_16" title="{$lang_indexflash}">{$lang_indexflash}</a></li>
+<!--
+EOT;
+}
+if($metinfo_admin_pop=="metinfo" || $admin_pop1105=="metinfo"){
+echo <<<EOT
+--> 
+                <li><a href="set/online.php?lang=$lang" target="main" id="nav_17" title="{$lang_indexonlineset}">{$lang_indexonlineset}</a></li>
+                <li><a href="online/index.php?lang=$lang" target="main" id="nav_18" title="{$lang_indexonline}">{$lang_indexonline}</a></li>
+<!--
+EOT;
 }
 echo <<<EOT
 -->
-		   <li><a target="main" onfocus="if(this.blur)this.blur();" id="list0_$k1" href="set/info.php?lang=$lang" onclick="san1(2,$k)">{$lang_indexskinset}</a></li>
-		</ul>
-	</div>
+		        <li><a href="set/info.php?lang=$lang" target="main" id="nav_19" title="{$lang_indexskinset}">{$lang_indexskinset}</a></li>
+		    </ul>
 <!--***************************************category 2 end***************************************-->
-
-
-
-
-
 <!--—————————————————————category 3 start————————————————————————————-->
-<div id="list2" class="left_u" style="display:none;">
-<ul id="left_ul3" class="pt">	
+            <ul style="display:none;">	
 <!--
 EOT;
-$k=0;
 if($metinfo_admin_pop=="metinfo" || $admin_pop1201=="metinfo"){
 echo <<<EOT
 -->         	
-		   <li><a target="main" id="list2_$k" onfocus="if(this.blur)this.blur();" href="column/index.php?lang=$lang" onclick="san1(3,$k)" class="li_left_ok" style=" border:1px solid  #c5edf9; color:#1788c2;">{$lang_indexcolumn}</a></li>
+		        <li><a href="column/index.php?lang=$lang" target="main" id="nav_20" title="{$lang_indexcolumn}">{$lang_indexcolumn}</a></li>
 <!--
 EOT;
-$k++;
 }
 if($metinfo_admin_pop=="metinfo" || $admin_pop1202=="metinfo"){
 echo <<<EOT
 -->      
-<li><a target="main" id="list2_$k" onfocus="if(this.blur)this.blur();" href="parameter/parameter.php?module=3&lang=$lang" onclick="san1(3,$k)">{$lang_mod3}{$lang_parameter}</a></li>
- <!--
+                <li><a href="parameter/parameter.php?module=3&lang=$lang" target="main" id="nav_21" title="{$lang_mod3}{$lang_parameter}">{$lang_mod3}{$lang_parameter}</a></li>
+<!--
 EOT;
-$k++;
 }
 if($metinfo_admin_pop=="metinfo" || $admin_pop1203=="metinfo"){
 echo <<<EOT
 --> 
-<li><a target="main" id="list2_$k" onfocus="if(this.blur)this.blur();" href="parameter/parameter.php?module=4&lang=$lang" onclick="san1(3,$k)">{$lang_mod4}{$lang_parameter}</a></li>
- <!--
+                <li><a href="parameter/parameter.php?module=4&lang=$lang" target="main" id="nav_22" title="{$lang_mod4}{$lang_parameter}">{$lang_mod4}{$lang_parameter}</a></li>
+<!--
 EOT;
-$k++;
 }
 if($metinfo_admin_pop=="metinfo" || $admin_pop1204=="metinfo"){
 echo <<<EOT
 --> 
-<li><a target="main" id="list2_$k" onfocus="if(this.blur)this.blur();" href="parameter/parameter.php?module=5&lang=$lang" onclick="san1(3,$k)">{$lang_mod5}{$lang_parameter}</a></li>
- <!--
+                <li><a href="parameter/parameter.php?module=5&lang=$lang" target="main" id="nav_23" title="{$lang_mod5}{$lang_parameter}">{$lang_mod5}{$lang_parameter}</a></li>
+<!--
 EOT;
-$k++;
 }
 if($metinfo_admin_pop=="metinfo" || $admin_pop1205=="metinfo"){
 echo <<<EOT
 --> 
-<li><a target="main" id="list2_$k" onfocus="if(this.blur)this.blur();" href="parameter/parameter.php?module=6&lang=$lang" onclick="san1(3,$k)">{$lang_indexcv}</a></li>
- <!--
+                <li><a href="parameter/parameter.php?module=6&lang=$lang" target="main" id="nav_24" title="{$lang_indexcv}">{$lang_indexcv}</a></li>
+<!--
 EOT;
 }
 echo <<<EOT
 --> 
-		</ul>
-	</div>
+		    </ul>
 <!--***************************************category 3 end***************************************-->
-
-
-
-
 <!--——————————————————————category 4 start————————————————————————————-->	
-	<div id="list3" class="left_u" style="display:none;">
-	   <ul id="left_ul4" class="lmgl">
+	        <div class="post" style="display:none;">
 <!--home content start-->
 <!--
 EOT;
-$i=0;
 if($metadmin[homecontent]){
 if($metinfo_admin_pop=="metinfo" || $admin_pop1301=="metinfo"){
 echo <<<EOT
 --> 
-<li onclick="san4($i)"><a onfocus="if(this.blur)this.blur();" target="_self" href="#">{$lang_indexsetcontent}</a></li>
-		   <span style="display:none;">
-           <li><a target="main" onfocus="if(this.blur)this.blur();" href="set/index_content.php?lang=$lang" >{$lang_indexsetcontent}</a></li>
-		   </span>
+                <dl>  
+                    <dt><a target="_self" href="javascript:;" title="{$lang_indexsetcontent}">{$lang_indexsetcontent}</a></dt>
+                    <dd style="display:none;">
+					    <p><a href="set/index_content.php?lang=$lang" target="main" title="{$lang_indexsetcontent}">{$lang_indexsetcontent}</a></p>
+					</dd>
+				</dl>
 <!--
 EOT;
 $i++;
@@ -316,20 +286,20 @@ echo <<<EOT
 <!--page module start-->
 <!--
 EOT;
-foreach($met_classindex[1] as $key=>$val)
-{
+foreach($met_classindex[1] as $key=>$val){
 $admin_pop="admin_pop".$val[id];
 if($metinfo_admin_pop=="metinfo" || $$admin_pop=="metinfo"){
 echo <<<EOT
 -->	
-		   <li onclick="san4($i)"><a onfocus="if(this.blur)this.blur();" target="_self" href="#">$val[name]</a></li>
-		   <span style="display:none;">
+		        <dl>
+				    <dt><a target="_self" href="javascript:;" title="$val[name]">$val[name]</a></dt>
+					<dd style="display:none;">
 <!--
 EOT;
 if($val[isshow]==1){
 echo <<<EOT
---> 
-		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="about/about.php?id=$val[id]&lang=$lang">$val[name]</a></li>
+-->
+					    <p><a href="about/about.php?id=$val[id]&lang=$lang" target="main" title="$val[name]">$val[name]</a></p>
 <!--
 EOT;
 }
@@ -338,47 +308,44 @@ foreach($met_class22[$val[id]] as $key=>$val1)
 if($val1[releclass]==0){
 echo <<<EOT
 --> 
-			     <li><a target="main" onfocus="if(this.blur)this.blur();" href="about/about.php?id=$val1[id]&lang=$lang">$val1[name]</a></li>
+			            <p><a href="about/about.php?id=$val1[id]&lang=$lang" target="main" title="$val1[name]">$val1[name]</a></p>
 <!--
 EOT;
 foreach($met_class3[$val1[id]] as $key=>$val2){
 if($val2[releclass]==0){
 echo <<<EOT
 -->
-                <li><a target="main" onfocus="if(this.blur)this.blur();" href="about/about.php?id=$val2[id]&lang=$lang">--$val2[name]</a></li>
+                        <p class="list3"><a href="about/about.php?id=$val2[id]&lang=$lang" target="main" title="$val2[name]">$val2[name]</a></p>
 <!--
 EOT;
-}}		
-}
-}
+}}}}
 echo <<<EOT
 -->
-			</span>
+			        </dd>
+			    </dl>
 <!--
 EOT;
-$i++;
 }}
 echo <<<EOT
 -->	
 <!--page module end-->
-
 <!--news module end-->
 <!--
 EOT;
-foreach($met_classindex[2] as $key=>$val)
-{
+foreach($met_classindex[2] as $key=>$val){
 $admin_pop="admin_pop".$val[id];
 if($metinfo_admin_pop=="metinfo" || $$admin_pop=="metinfo"){
 echo <<<EOT
 -->
-          <li onclick="san4($i)"><a onfocus="if(this.blur)this.blur();" target="_self" href="#">$val[name]</a></li>
-		   <span style="display:none;">	
-		   <li><a target="main"  onfocus="if(this.blur)this.blur();" href="article/content.php?lang=$lang&action=add&class1=$val[id]">{$lang_addinfo}</a></li>
-		   <li><a target="main" onfocus="if(this.blur)this.blur();"  href="article/index.php?class1=$val[id]&lang=$lang">{$lang_manager}</a></li>
-		   </span>
+		        <dl>
+				    <dt><a target="_self" href="javascript:;" title="$val[name]">$val[name]</a></dt>
+					<dd style="display:none;">
+					    <p><a target="main" href="article/content.php?lang=$lang&action=add&class1=$val[id]" title="{$lang_addinfo}">{$lang_addinfo}</a></p>
+					    <p><a target="main" href="article/index.php?class1=$val[id]&lang=$lang" title="{$lang_manager}">{$lang_manager}</a></p>
+		            </dd>
+			    </dl>
 <!--
 EOT;
-$i++;
 }}
 echo <<<EOT
 -->	
@@ -386,20 +353,20 @@ echo <<<EOT
 <!--product module start-->
 <!--
 EOT;
-foreach($met_classindex[3] as $key=>$val)
-{
+foreach($met_classindex[3] as $key=>$val){
 $admin_pop="admin_pop".$val[id];
 if($metinfo_admin_pop=="metinfo" || $$admin_pop=="metinfo"){
 echo <<<EOT
 -->	
-             <li onclick="san4($i)"><a onfocus="if(this.blur)this.blur();" target="_self" href="#">$val[name]</a></li>
-		   <span style="display:none;">	
-		   <li><a target="main"  onfocus="if(this.blur)this.blur();" href="product/content.php?lang=$lang&action=add&class1=$val[id]">{$lang_addinfo}</a></li>
-		   <li><a target="main" onfocus="if(this.blur)this.blur();"  href="product/index.php?class1=$val[id]&lang=$lang">{$lang_manager}</a></li>
-		   </span>
+		        <dl>
+				    <dt><a target="_self" href="javascript:;" title="$val[name]">$val[name]</a></dt>
+					<dd style="display:none;">
+					   	<p><a target="main" href="product/content.php?lang=$lang&action=add&class1=$val[id]" title="{$lang_addinfo}">{$lang_addinfo}</a></p>
+		                <p><a target="main" href="product/index.php?class1=$val[id]&lang=$lang" title="{$lang_manager}">{$lang_manager}</a></p>
+                    </dd>
+				</dl>
 <!--
 EOT;
-$i++;
 }}
 echo <<<EOT
 -->	
@@ -407,20 +374,20 @@ echo <<<EOT
 <!--download module start-->
 <!--
 EOT;
-foreach($met_classindex[4] as $key=>$val)
-{
+foreach($met_classindex[4] as $key=>$val){
 $admin_pop="admin_pop".$val[id];
 if($metinfo_admin_pop=="metinfo" || $$admin_pop=="metinfo"){
 echo <<<EOT
 -->	
-            <li onclick="san4($i)"><a onfocus="if(this.blur)this.blur();" target="_self" href="#">$val[name]</a></li>
-		   <span style="display:none;">	
-		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="download/content.php?class1=$val[id]&lang=$lang&action=add">{$lang_addinfo}</a></li>
-		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="download/index.php?class1=$val[id]&lang=$lang">{$lang_manager}</a></li>
-		   </span>
+		        <dl>
+				    <dt><a target="_self" href="javascript:;" title="$val[name]">$val[name]</a></dt>
+					<dd style="display:none;">
+					   	<p><a target="main" href="download/content.php?class1=$val[id]&lang=$lang&action=add" title="{$lang_addinfo}">{$lang_addinfo}</a></p>
+		                <p><a target="main" href="download/index.php?class1=$val[id]&lang=$lang" title="{$lang_manager}">{$lang_manager}</a></p>
+                    </dd>
+				</dl>
 <!--
 EOT;
-$i++;
 }}
 echo <<<EOT
 -->	
@@ -428,20 +395,20 @@ echo <<<EOT
 <!--image module start-->
 <!--
 EOT;
-foreach($met_classindex[5] as $key=>$val)
-{
+foreach($met_classindex[5] as $key=>$val){
 $admin_pop="admin_pop".$val[id];
 if($metinfo_admin_pop=="metinfo" || $$admin_pop=="metinfo"){
 echo <<<EOT
 -->	
-            <li onclick="san4($i)"><a onfocus="if(this.blur)this.blur();" target="_self" href="#">$val[name]</a></li>
-		   <span style="display:none;">	
-		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="img/content.php?class1=$val[id]&lang=$lang&action=add">{$lang_addinfo}</a></li>
-		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="img/index.php?class1=$val[id]&lang=$lang">{$lang_manager}</a></li>
-		   </span>
+		        <dl>
+				    <dt><a target="_self" href="javascript:;" title="$val[name]">$val[name]</a></dt>
+					<dd style="display:none;">
+					   	<p><a target="main" href="img/content.php?class1=$val[id]&lang=$lang&action=add" title="{$lang_addinfo}">{$lang_addinfo}</a></p>
+		                <p><a target="main" href="img/index.php?class1=$val[id]&lang=$lang" title="{$lang_manager}">{$lang_manager}</a></p>
+                    </dd>
+				</dl>
 <!--
 EOT;
-$i++;
 }}
 echo <<<EOT
 -->	
@@ -449,126 +416,103 @@ echo <<<EOT
 <!--job module start-->
 <!--
 EOT;
-foreach($met_classindex[6] as $key=>$val)
-{
+foreach($met_classindex[6] as $key=>$val){
 $admin_pop="admin_pop".$val[id];
 if($metinfo_admin_pop=="metinfo" || $$admin_pop=="metinfo"){
 echo <<<EOT
 -->	
-           <li onclick="san4($i)"><a onfocus="if(this.blur)this.blur();" target="_self" href="#">$val[name]</a></li>
-		   <span style="display:none;">	
-		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="job/content.php?class1=$val[id]&lang=$lang&action=add">{$lang_addinfo}</a></li>
-		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="job/index.php?class1=$val[id]&lang=$lang">{$lang_manager}</a></li>
-		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="job/cv.php?class1=$val[id]&lang=$lang">{$lang_indexCv}</a></li>
-		   </span>
+		        <dl>
+				    <dt><a target="_self" href="javascript:;" title="$val[name]">$val[name]</a></dt>
+					<dd style="display:none;">
+					   	<p><a target="main" href="job/content.php?class1=$val[id]&lang=$lang&action=add" title="{$lang_addinfo}">{$lang_addinfo}</a></p>
+		                <p><a target="main" href="job/index.php?class1=$val[id]&lang=$lang" title="{$lang_manager}">{$lang_manager}</a></p>
+		                <p><a target="main" href="job/cv.php?class1=$val[id]&lang=$lang" title="{$lang_indexCv}">{$lang_indexCv}</a></p>
+		                <p><a target="main" href="job/inc.php?lang=$lang" title="{$lang_set}">{$lang_set}</a></p>
+                    </dd>
+				</dl>
 <!--
 EOT;
-$i++;
 }}
 echo <<<EOT
 -->	
 <!--job module end-->
 		  
-		</ul>
-	    
-	</div>
+		    </div>
 <!--***************************************category 4 end***************************************-->
-
-
-
-
 <!--——————————————————————category 5 start————————————————————————————-->		
-	<div id="list4" class="left_u" style="display:none;">
-	    <ul id="left_ul5" class="pt">
+	        <ul style="display:none;">
 <!--
 EOT;
-$k=0;
 if($metinfo_admin_pop=="metinfo" || $admin_pop1401=="metinfo"){
-$k1=$k+1;
 if($met_webhtm){
 echo <<<EOT
 --> 
- <li><a target="main" id="list4_$k" onfocus="if(this.blur)this.blur();" href="set/htm.php?lang=$lang" onclick="san1(5,$k)" class="li_left_ok" style=" border:1px solid  #c5edf9; color:#1788c2;">{$lang_indexhtm}</a></li>		
- <li><a target="main" id="list4_$k" onfocus="if(this.blur)this.blur();" href="set/sethtm.php?lang=$lang" onclick="san1(5,$k1)">{$lang_indexhtmset}</a></li>
+                <li><a href="set/htm.php?lang=$lang" target="main" id="nav_26" title="{$lang_indexhtm}">{$lang_indexhtm}</a></li>		
+                <li><a href="set/sethtm.php?lang=$lang" target="main" id="nav_25" title="{$lang_indexhtmset}">{$lang_indexhtmset}</a></li>
 <!--
 EOT;
 }else{
 echo <<<EOT
 --> 
- <li><a target="main" id="list4_$k" onfocus="if(this.blur)this.blur();" href="set/sethtm.php?lang=$lang" onclick="san1(5,$k)" class="li_left_ok" style=" border:1px solid  #c5edf9; color:#1788c2;">{$lang_indexhtmset}</a></li>		
- <li><a target="main" id="list4_$k" onfocus="if(this.blur)this.blur();" href="set/htm.php?lang=$lang" onclick="san1(5,$k1)">{$lang_indexhtm}</a></li>
+                <li><a href="set/sethtm.php?lang=$lang" target="main" id="nav_25" title="{$lang_indexhtmset}">{$lang_indexhtmset}</a></li>		
+                <li><a href="set/htm.php?lang=$lang" target="main" id="nav_26" title="{$lang_indexhtm}">{$lang_indexhtm}</a></li>
 <!--
 EOT;
 }
-$k++;
 ob_pcontent();
-$k++;
 }
 if($metinfo_admin_pop=="metinfo" || $admin_pop1402=="metinfo"){
 echo <<<EOT
---> 
- <li><a target="main"  id="list4_$k" onfocus="if(this.blur)this.blur();" href="set/seo.php?lang=$lang" onclick="san1(5,$k)" >{$lang_indexseoset}</a></li>
+-->
+                <li><a href="set/seo.php?lang=$lang" target="main" id="nav_28" title="{$lang_indexseoset}">{$lang_indexseoset}</a></li>
 <!--
 EOT;
-$k++;
 }
 jmali_start();
 if($metinfo_admin_pop=="metinfo" || $admin_pop1403=="metinfo"){
 echo <<<EOT
 --> 
-<li><a target="main" id="list4_$k" onfocus="if(this.blur)this.blur();" href="set/strcontent.php?lang=$lang"  onclick="san1(5,$k)">{$lang_indexhot}</a></li>
+                <li><a href="set/strcontent.php?lang=$lang" target="main" id="nav_29" title="{$lang_indexhot}">{$lang_indexhot}</a></li>
 <!--
 EOT;
-$k++;
 }
 echo <<<EOT
 --> 
-
 <!--friendly link start-->
 <!--
 EOT;
 if($metinfo_admin_pop=="metinfo" || $admin_pop1404=="metinfo"){
-$k1=$k+1;
 echo <<<EOT
 -->	
-<li><a target="main" id="list4_$k" onfocus="if(this.blur)this.blur();" href="link/index.php?lang=$lang" onclick="san1(5,$k)">{$lang_indexlink}</a></li>
-<li><a target="main" id="list4_$k1" onfocus="if(this.blur)this.blur();" href="link/content.php?action=add&lang=$lang" onclick="san1(5,$k1)">{$lang_add}{$lang_indexlink}</a></li>
+                <li><a href="link/index.php?lang=$lang" target="main" id="nav_30" title="{$lang_indexlink}">{$lang_indexlink}</a></li>
 <!--
 EOT;
 }
 echo <<<EOT
 -->	
 <!--friendly link end -->
-
-
-		</ul>
-	</div>
+            </ul>
 <!--***************************************category 5 end***************************************-->
-
-
-
 <!--——————————————————————category 6 start————————————————————————————-->		
-	<div id="list5" class="left_u" style="display:none;">
-	    <ul id="left_ul6" class="lmgl">
+	        <div class="post" style="display:none;">
 <!--feedback start-->
 <!--
 EOT;
-$i=0;
-foreach($met_module[8] as $key=>$val)
-{
+foreach($met_module[8] as $key=>$val){
 $admin_pop="admin_pop".$val[id];
 if($metinfo_admin_pop=="metinfo" || $$admin_pop=="metinfo"){
 echo <<<EOT
 -->	
-           <li onclick="san6($i)"><a onfocus="if(this.blur)this.blur();" target="_self" href="#">$val[name]</a></li>
-		   <span style="display:none;">	
-		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="feedback/inc.php?lang=$lang">{$lang_set}</a></li>
-		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="feedback/parameter.php?lang=$lang">{$lang_indexfeedbackp}</a></li>
-		   <li><a target="main" id="list5_$j" onfocus="if(this.blur)this.blur();" href="feedback/index.php?lang=$lang">{$lang_indexfeedbackm}</a></li>
-		   </span>
+		        <dl>
+				    <dt><a target="_self" href="javascript:;" title="$val[name]">$val[name]</a></dt>
+					<dd style="display:none;">
+					   	<p><a target="main" href="feedback/inc.php?lang=$lang&class1=$val[id]" title="{$lang_set}">{$lang_set}</a></p>
+		                <p><a target="main" href="feedback/parameter.php?lang=$lang&class1=$val[id]" title="{$lang_indexfeedbackp}">{$lang_indexfeedbackp}</a></p>
+		                <p><a target="main" href="feedback/index.php?lang=$lang&class1=$val[id]" title="{$lang_indexfeedbackm}">{$lang_indexfeedbackm}</a></p>
+                    </dd>
+				</dl>
 <!--
 EOT;
-$i++;
 }}
 echo <<<EOT
 -->	
@@ -576,112 +520,100 @@ echo <<<EOT
 <!--message start-->
 <!--
 EOT;
-foreach($met_module[7] as $key=>$val)
-{
+foreach($met_module[7] as $key=>$val){
 $admin_pop="admin_pop".$val[id];
 if($metinfo_admin_pop=="metinfo" || $$admin_pop=="metinfo"){
 echo <<<EOT
 -->	
-           <li onclick="san6($i)"><a onfocus="if(this.blur)this.blur();" target="_self" href="#">$val[name]</a></li>
-		   <span style="display:none;">	
-		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="message/inc.php?lang=$lang">{$lang_set}</a></li>
-		   <li><a target="main" onfocus="if(this.blur)this.blur();" id="list5_$j" href="message/index.php?lang=$lang">{$lang_indexmessage}</a></li>
-		   </span>
+		        <dl>
+				    <dt><a target="_self" href="javascript:;" title="$val[name]">$val[name]</a></dt>
+					<dd style="display:none;">
+					   	<p><a target="main" href="message/inc.php?lang=$lang&class1=$val[id]" title="{$lang_set}">{$lang_set}</a></p>
+		                <p><a target="main" href="message/index.php?lang=$lang&class1=$val[id]" title="{$lang_indexmessage}">{$lang_indexmessage}</a></p>
+                    </dd>
+				</dl>
 <!--
 EOT;
 }}
 echo <<<EOT
 -->	
 <!--message end-->
-
-		</ul>
-	</div>
+            </div>
 <!--***************************************category 6 end***************************************-->
-
-
 <!--——————————————————————category 7 start————————————————————————————-->		
-	<div id="list6" class="left_u" style="display:none;">
-	<ul id="left_ul7" class="pt">
+	        <ul style="display:none;">
 <!--
 EOT;
-$k=0;
 if($metinfo_admin_pop=="metinfo" || $admin_pop1603=="metinfo"){
 echo <<<EOT
 --> 
-<li><a target="main" id="list6_$k"  onfocus="if(this.blur)this.blur();" href="member/index.php?lang=$lang" onclick="san1(7,$k)" class="li_left_ok" style=" border:1px solid  #c5edf9; color:#1788c2;">{$lang_memberManage}</a></li>
+                <li><a href="member/index.php?lang=$lang" target="main" id="nav_31" title="{$lang_memberManage}">{$lang_memberManage}</a></li>
 <!--
 EOT;
-$k++;
 }
 if($metinfo_admin_pop=="metinfo" || $admin_pop1602=="metinfo"){
 echo <<<EOT
 --> 
-<li><a target="main" id="list6_$k"  onfocus="if(this.blur)this.blur();" href="set/member.php?lang=$lang" onclick="san1(7,$k)">{$lang_memberset}</a></li>
+                <li><a href="set/member.php?lang=$lang" target="main" id="nav_32" title="{$lang_memberset}">{$lang_memberset}</a></li>
 <!--
 EOT;
-$k++;
 }
 if($metinfo_admin_pop=="metinfo" || $admin_pop1601=="metinfo"){
 echo <<<EOT
 -->
-<li><a target="main" onfocus="if(this.blur)this.blur();" href="admin/index.php?lang=$lang" onclick="san1(7,$k)" id="list6_$k" >{$lang_indexadminname}</a></li>
+                <li><a href="admin/index.php?lang=$lang" target="main" id="nav_33" title="{$lang_indexadminname}">{$lang_indexadminname}</a></li>
 <!--
 EOT;
-$k++;
 }
 else{
 echo <<<EOT
 -->
-<li><a target="main"  onfocus="if(this.blur)this.blur();" href="admin/editor_pass.php?id=$admin_list[id]&lang=$lang" id="list6_$k" onclick="san1(7,$k)" >{$lang_indexperson}</a></li>
+                <li><a href="admin/editor_pass.php?id=$admin_list[id]&lang=$lang" target="main" id="nav_34" title="{$lang_indexperson}">{$lang_indexperson}</a></li>
 <!--
 EOT;
-$k++;
 }
 echo <<<EOT
 -->
-
-
-		</ul>
-	</div>
+		    </ul>
 <!--***************************************category 6 end***************************************-->
-
-
-
-<!--——————————————————————foot start——————————————————————-->
-     <div class="left_footer">
-	    $foot	 </div>
-<!--——————————————————————foot end——————————————————————-->
-
-	 </div><script src="$img_url/metinfo.js" type="text/javascript"></script>
-</div></td>
-<td class="right" valign="top" bgcolor="#FFFFFF"><iframe frameborder="0" id="main" name="main" src="site/sysadmin.php?lang=$lang" scrolling="yes" class="iframe_main" ></iframe>&nbsp;</td>
-</tr>
-</table>
+	    </div>
+		<div class="claer"></div>
+		<div class="left_footer">$foot</div>
+	</div>
 </div>
-<script type='text/javascript'>
-var colunmnow=getCookie ('colunmid');
-var okinfo='$lang_jsok';
-if(colunmnow=='metinfo'){
-san(2);
-alert(okinfo);
-}else if(colunmnow=='metinfolang'){
-san1(1,2);
-document.getElementById("main").src='set/lang.php?lang=$lang';
-alert(okinfo);
-}
-delCookie ('colunmid');
-
-var adminnow=getCookie ('adminnow');
-if(adminnow){
-var adminfile=adminnow;
-delCookie ('adminnow');
-alert(okinfo);
-location.href='../'+adminfile+'/';
-}
+<script type="text/javascript">
+    var lang='$lang';
+    var imgurl='$img_url/';
+	var okinfo='$lang_jsok';
+	var loadingimg = "<div id='loading'><img src='"+imgurl+"loading.gif' /></div>";
+</script>
+<script src="$img_url/js/metinfo.js" type="text/javascript"></script>
+<script type="text/javascript">
+	var langget = $.cookie('langget');
+		$.cookie('langget',null);
+	if(langget){
+		if($('#nav_'+langget).size()<1){
+			alert("{$lang_loginalllang}");
+			window.history.back();
+		}
+		if(langget>10 && langget<20)clicknav(nav,lang,1);
+		if(langget>19 && langget<25)clicknav(nav,lang,2);
+		if(langget>24 && langget<31){
+			if(langget!=27)clicknav(nav,lang,4);
+		}
+		if(langget>30)clicknav(nav,lang,6);
+		$("#nav_"+langget).click();
+	}
+	$('#sitemap').load('set/sitemap.php?lang=$lang&admintp=$admin_list[id]&langset=$langset');
+	$(document).keypress(function(e){  
+	var type = e.keyCode||e.which||e.charCode;
+		if(type==27){ 			
+			sitemp('set/sitemap.php?lang=$lang&admintp=$admin_list[id]&langset=$langset');  
+		}				
+	});
 </script>
 </body>
 </html>
-
 <!--
 EOT;
 # This program is an open source system, commercial use, please consciously to purchase commercial license.

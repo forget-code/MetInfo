@@ -3,119 +3,116 @@
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.  
 require_once template('head');
 if($readok=="" && $langnow==""){
-   $style1="style='color:#FF0000'";
+   $style1="style='color:#FF0000' selected='selected'";
  }elseif($readok==0  && $langnow==""){
-   $style2="style='color:#FF0000'";
+   $style2="style='color:#FF0000' selected='selected'";
  }elseif($readok==1){
-   $style3="style='color:#FF0000'";
+   $style3="style='color:#FF0000' selected='selected'";
   }elseif($langnow=="cn"){
-   $style4="style='color:#FF0000'";
+   $style4="style='color:#FF0000' selected='selected'";
  }
  elseif($langnow=="en"){
-   $style5="style='color:#FF0000'";
+   $style5="style='color:#FF0000' selected='selected'";
  }
  elseif($langnow=="other"){
-   $style6="style='color:#FF0000'";
+   $style6="style='color:#FF0000' selected='selected'";
  }
 echo <<<EOT
 -->
 <title>{$lang_feedbackTitle}</title>
 </head>
 <body>
-<br>
-<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
+<table cellpadding="2" cellspacing="1" class="table">
           <tr> 
-            <td colspan="7" align="center" class="list1_title">{$lang_feedbackTitle}</td>
+            <td colspan="3" class="title">{$lang_feedbackTitle}</td>
           </tr>
       <tr>
-     <td class="list1_input list9" colspan="6" align="left">{$lang_feedbackClass}:
-	 <a href="index.php?search=$search&useinfo=$useinfo&lang=$lang"  $style1>{$lang_feedbackClass1}</a> |
-	 <a href="index.php?search=$search&readok=0&useinfo=$useinfo&lang=$lang" $style2 >{$lang_feedbackClass2}</a> |
-	 <a href="index.php?search=$search&readok=1&useinfo=$useinfo&lang=$lang" $style3 >{$lang_feedbackClass3}</a>
-</td> 
-     <td align="left" class="list1_input">
-         <script language="JavaScript">
-            function MM_jumpMenu(selObj){ 
-			var url=selObj.options[selObj.selectedIndex].value; 
-            location.href=url;
-            }
-          </script>
-<select name="met_fd_class" style="float:right;" onChange="MM_jumpMenu(this)">
-<option value="index.php?lang=$lang&search=$search&readok=$readok&useinfo=$useinfo&met_fd_classname=">{$lang_feedbackShowAll}</option>
+     <td class="centle" colspan="3" align="left">
+			<form method="POST" name="myform" style="float:left; margin-right:5px; font-weight:normal; color:#666;" action="index.php?search=detail_search&lang=$lang&class1=$class1" target="_self">
+			    &nbsp;&nbsp;<input name="useinfo" type="text" />
+  <input type="submit" name="Submit2" value="{$lang_search}" class="submit">  
+	        {$lang_feedbackTip1}
+			</form>
+			<div style="float:right; margin-right:5px; font-weight:normal;" >
+			    <b>{$lang_feedbackClass}</b>&nbsp;<select name="new" id="new" onChange="changes($(this));">
+					<option value="index.php?search=$search&useinfo=$useinfo&lang=$lang&class1=$class1" $style1>{$lang_feedbackClass1}</option>
+					<option value="index.php?search=$search&readok=0&useinfo=$useinfo&lang=$lang&class1=$class1" $style2>{$lang_feedbackClass2}</option>
+					<option value="index.php?search=$search&readok=1&useinfo=$useinfo&lang=$lang&class1=$class1" $style3>{$lang_feedbackClass3}</option>
+				</select>
+				&nbsp;&nbsp;<b>{$lang_feedbackClasp}</b>&nbsp;
+<select name="met_fd_class" onChange="changes($(this));">
+<option value="index.php?lang=$lang&search=$search&readok=$readok&useinfo=$useinfo&class1=$class1&met_fd_classname=">{$lang_feedbackShowAll}</option>
 <!--
 EOT;
 foreach ($selectlist as $key=>$val){
 if($met_fd_classname==$val['info']){
 echo <<<EOT
 -->
-<option value="index.php?lang=$lang&search=$search&readok=$readok&useinfo=$useinfo&met_fd_classname=$val[info]" selected="selected">$val[info]</option>
+<option value="index.php?lang=$lang&search=$search&readok=$readok&useinfo=$useinfo&class1=$class1&met_fd_classname=$val[info]" selected="selected">$val[info]</option>
 <!--
 EOT;
 }else{
 echo <<<EOT
 -->
-<option value="index.php?lang=$lang&search=$search&readok=$readok&useinfo=$useinfo&met_fd_classname=$val[info]">$val[info]</option>
+<option value="index.php?lang=$lang&search=$search&readok=$readok&useinfo=$useinfo&class1=$class1&met_fd_classname=$val[info]">$val[info]</option>
 <!--
 EOT;
 }}
 echo <<<EOT
 -->
-</select></td>
+</select>
+</div>
+</td> 
       </tr>
+	  	<tr>
+			 <td colspan="3">
+			  <form name="del" method="Post" action="delete.php?lang=$lang">
+			  <table cellpadding="0" cellspacing="0" class="table neitable" style="margin:0px; border:none;">
               <tr>
-                <td width="5%" class="list1_top" align="center">{$lang_selected}</td>
-				<td width="5%" class="list1_top" align="center">ID</td>
-                <td width="40%" class="list1_top" align="center">{$lang_title}</td>
-				<td width="5%" class="list1_top" align="center" >{$lang_read}</td>
-                <td width="15%" class="list1_top" align="center" >{$lang_feedbackID}</td>
-                <td width="20%" class="list1_top" align="center" >{$lang_feedbackTime}</td>
-				<td width="10%" class="list1_top" align="center" >{$lang_operate}</td>
+                <td width="40" class="list">{$lang_selected}</td>
+				<td width="50" class="list">ID</td>
+                <td class="list">{$lang_title}</td>
+				<td width="5%" class="list" >{$lang_read}</td>
+                <td width="15%" class="list" >{$lang_feedbackID}</td>
+                <td class="list" >{$lang_feedbackTime}</td>
+				<td width="10%" class="list" >{$lang_operate}</td>
               </tr>
-			  <form name="del" method="Post" action="delete.php?lang=$lang" onSubmit="return ConfirmDelall();">
 <!--
 EOT;
 foreach ($feedback_list as $key=>$val){
 echo <<<EOT
 -->          
-              <tr>
-              <td class="list1_content_titile" align="center"><input name='id' type='checkbox' onClick="unselectall()" id="id" value='$val[id]' class="xz"></td>
-                <td class="list1_content" align="center">$val[id]</td>
-			    <td align="left" class="list1_content"><a href="editor.php?id=$val[id]&lang=$lang" title="{$lang_detail}">$val[fdtitle]</a></td>
-                <td class="list1_content" align="center">$val[readok]</td>
-				<td class="list1_content" align="center">$val[customerid]</td>
-                <td class="list1_content" align="center">$val[addtime]</td>
-				<td align="center" class="list1_content" style="color:#0066FF;"></a> <a href="editor.php?id=$val[id]&lang=$lang" >{$lang_editor}</a> | <a href="delete.php?id=$val[id]&lang=$lang" onClick="return ConfirmDel();" >{$lang_delete}</a></td>
+              <tr class="mouse click">
+              <td class="list-text"><input name='id' type='checkbox' id="id" value='$val[id]' /></td>
+                <td class="list-text">$val[id]</td>
+			    <td align="left" class="list-text">&nbsp;&nbsp;<a href="editor.php?id=$val[id]&lang=$lang&class1=$class1" title="{$lang_detail}">$val[fdtitle]</a></td>
+                <td class="list-text">$val[readok]</td>
+				<td class="list-text">$val[customerid]</td>
+                <td class="list-text">$val[addtime]</td>
+				<td class="list-text"><a href="editor.php?id=$val[id]&lang=$lang&class1=$class1" >{$lang_View}</a>&nbsp;&nbsp;<a href="delete.php?id=$val[id]&lang=$lang&class1=$class1" onClick="return linkSmit($(this),1);" >{$lang_delete}</a></td>
               </tr>
 <!--
 EOT;
 }
 echo <<<EOT
 -->
-       
-  
+   	   </table>
+              <input name="action" type="hidden" id="action" value="del" />
+			  <input name="allid" type="hidden" id="allid" value="" />
+</form>	
+   	   </tr> 
    	   <tr> 
-            <td align="center"  class="input_bottom"><input name="chkAll" class="xz" type="checkbox" id="chkAll" onclick=CheckAll(this.form) value="checkbox"></td>
-            <td align="center"  class="input_bottom">{$lang_selectall}</td> 
-            <td align="left"  class="input_bottom" colspan="5"><input name="submit" type='submit' value='{$lang_deleteselected}'><input name="action" type="hidden" id="action" value="del"><input name="allid" type="hidden" id="allid" value=""></form></td>
-          </tr>
-		  <tr>
-            <td colspan="7" align="left" class="input_search">
-			<form method="POST" name="myform"  action="index.php?search=detail_search&lang=$lang" target="_self">
-			       <span><b>{$lang_search}</b></span>
-			    <input name="useinfo" type="text" size="30">
-  <input type="submit" name="Submit2" value="{$lang_search}" class="tj">  
-	        {$lang_feedbackTip1}</form></td>
-          </tr>
-	   <tr >
-            <td  colspan="7" align="left" class="input_search">
-			<form method="POST" name="exportform"  action="export.php?lang=$lang" target="_self">
-			       <span><b>{$lang_feedbackTip2}</b> </span>
-				   {$lang_feedbackTip3}
-				   <select name="met_fd_export" >
+            <td class="all" width="40"><input name="chkAll" type="checkbox" id="chkAll" onclick="CheckAllx($(this),'del')" value="checkbox" /></td>
+            <td class="all" width="50"><label for="chkAll">{$lang_selectall}</label></td>
+			<td class="all-submit" align="left">
+			<input name="submit" type='submit' value='{$lang_deleteselected}' class="submit li-submit" onclick="return met_modify($(this),'del','del');" /> 
+			<div class="li-submit">
+			<form method="POST" name="exportform" action="export.php?lang=$lang&class=$class1" target="_self">
+			       &nbsp;&nbsp;{$lang_feedbackTip2}
+				   <select name="met_fd_export">
 				   <option value="-1">{$lang_feedbackTip4}</option>
 <!--
 EOT;
-
 foreach ($selectlist as $key=>$val){
 echo <<<EOT
 -->
@@ -127,15 +124,16 @@ EOT;
 echo <<<EOT
 -->
 					</select>				   
-					<input name="submit" type='submit' value='{$lang_feedbackExport}'>
+					<input name="submit" type='submit' value='{$lang_feedbackExport}' class="submit" />
 			</form>
+			</div>
+			  <div class="page_list">
+			  $page_list
+			  </div>
 			</td>
           </tr>
-   	   <tr>
-   	     <td class="list1_input" colspan="7" align="center">$page_list</td>
-        </tr>
 		<tr>
-		  <td class="list1_footer" colspan="6" align="center">$foot</td>
+		  <td class="footer" colspan="3">$foot</td>
 	  </tr>
 </table>
 </body>

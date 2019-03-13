@@ -24,29 +24,47 @@ require_once '../login/login_check.php';
     } else {
         $total_count = $db->counter($met_news, "$serch_sql", "*");
     }
+	$totaltop_count = $db->counter($met_news, "$serch_sql and top_ok='1'", "*");
     require_once 'include/pager.class.php';
     $page = (int)$page;
 	if($page_input){$page=$page_input;}
     $list_num = 20;
     $rowset = new Pager($total_count,$list_num,$page);
     $from_record = $rowset->_offset();
-    $query = "SELECT * FROM $met_news $serch_sql $order_sql LIMIT $from_record, $list_num";
+    $query = "SELECT * FROM $met_news $serch_sql and top_ok='1' $order_sql LIMIT $from_record, $list_num";
     $result = $db->query($query);
 	while($list = $db->fetch_array($result)){
-	if($met_member_use){
-	switch($list['access'])
-    {
-    	case '1':$list['access']=$lang_access1;break;
-    	case '2':$list['access']=$lang_access2;break;
-    	case '3':$list['access']=$lang_access3;break;
-		default:$list['access']=$lang_access0;break;
+		$news_listo[]=$list;
 	}
+	if(count($news_listo)<intval($list_num)){
+		if($totaltop_count>=$list_num){
+			$from_record=$from_record-$totaltop_count;
+			if($from_record<0)$from_record=0;
+		}else{
+			$from_record=$from_record?($from_record-$totaltop_count):$from_record;
+		}
+		$list_num=intval($list_num)-count($news_listo);
+		$query = "SELECT * FROM $met_news $serch_sql and top_ok='0' $order_sql LIMIT $from_record, $list_num";
+		$result = $db->query($query);
+		while($list= $db->fetch_array($result)){
+			$news_listo[]=$list;
+		}
 	}
-	$list[img_ok1] = $list[img_ok] ? $lang_yes : $lang_no;
-	$list[com_ok1] = $list[com_ok] ? $lang_yes : $lang_no;
-	$list[top_ok1] = $list[top_ok] ? $lang_yes : $lang_no;
-	$list[updatetime] = date('Y-m-d',strtotime($list[updatetime]));
-    $news_list[]=$list;
+	foreach($news_listo as $key=>$list){
+		if($met_member_use){
+			switch($list['access']){
+				case '1':$list['access']=$lang_access1;break;
+				case '2':$list['access']=$lang_access2;break;
+				case '3':$list['access']=$lang_access3;break;
+				default:$list['access']=$lang_access0;break;
+			}
+		}
+		$list[img_ok1] = $list[img_ok] ? $lang_yes : $lang_no;
+		$list[com_ok1] = $list[com_ok] ? $lang_yes : $lang_no;
+		$list[top_ok1] = $list[top_ok] ? $lang_yes : $lang_no;
+		$list[wap_ok1] = $list[wap_ok] ? $lang_yes : $lang_no;
+		$list[updatetime] = date('Y-m-d',strtotime($list[updatetime]));
+		$news_list[]=$list;
 	}
 $page_list = $rowset->link("index.php?lang=$lang&class1=$class1&class2=$class2&class3=$class3&search=$search&title=$title&page=");
 switch($img)
@@ -68,15 +86,15 @@ switch($top)
 	default:$top0="selected='selected'";break;
 }
 $i=0;
-echo "<script language = 'JavaScript'>\n";
-echo "var onecount;\n";
-echo "lev = new Array();\n";
+$listjs = "<script language = 'JavaScript'>\n";
+$listjs.= "var onecount;\n";
+$listjs.= "lev = new Array();\n";
 foreach($met_module[2] as $key=>$vallist){
-echo "lev[".$i."] = new Array('".$vallist[name]."','".$vallist[bigclass]."','".$vallist[id]."');\n";
+$listjs.= "lev[".$i."] = new Array('".$vallist[name]."','".$vallist[bigclass]."','".$vallist[id]."');\n";
 	 $i=$i+1;
 }
-echo "onecount=".$i.";\n";
-echo "</script>";
+$listjs.= "onecount=".$i.";\n";
+$listjs.= "</script>";
 
 $css_url="../templates/".$met_skin."/css";
 $img_url="../templates/".$met_skin."/images";

@@ -16,7 +16,7 @@ switch($news_list['access'])
 }
 }
 if(!$news_list){
-okinfo('index.php?lang='.$lang,$lang_dataerror);
+okinfox('../article/index.php?lang='.$lang,$lang_dataerror);
 }
 $class1=$news_list[class1];
 if($news_list[img_ok]==1){
@@ -35,25 +35,26 @@ $class3[$news_list[class3]]="selected='selected'";
 }else{
 $news_list[issue]=$metinfo_admin_name;
 $news_list[hits]=0;
+$news_list[no_order]=0;
 $news_list[addtime]=$m_now_date;
 $news_list[access]=0;
 $lang_editinfo=$lang_addinfo;
 $lev=$met_class[$class1][access];
 }
 	$i=0;
-echo "<script language = 'JavaScript'>\n";
-echo "var onecount;\n";
-echo "subcat = new Array();\n";
+$listjs = "<script language = 'JavaScript'>\n";
+$listjs .= "var onecount;\n";
+$listjs .= "subcat = new Array();\n";
 foreach($met_class22[$class1] as $key=>$vallist){
-echo "subcat[".$i."] = new Array('".$vallist[name]."','".$vallist[bigclass]."','".$vallist[id]."','".$vallist[access]."');\n";
+$listjs .= "subcat[".$i."] = new Array('".$vallist[name]."','".$vallist[bigclass]."','".$vallist[id]."','".$vallist[access]."');\n";
 	 $i=$i+1;
   foreach($met_class3[$vallist[id]] as $key=>$vallist3){
-      echo "subcat[".$i."] = new Array('".$vallist3[name]."','".$vallist3[bigclass]."','".$vallist3[id]."','".$vallist3[access]."');\n";
+$listjs .= "subcat[".$i."] = new Array('".$vallist3[name]."','".$vallist3[bigclass]."','".$vallist3[id]."','".$vallist3[access]."');\n";
 	 $i=$i+1;
     }
 }
-echo "onecount=".$i.";\n";
-echo "</script>";
+$listjs .= "onecount=".$i.";\n";
+$listjs .= "</script>";
 
 if($met_member_use){
 $level="";

@@ -7,47 +7,73 @@ echo <<<EOT
 <title>{$lang_setdbBackup}</title>
 </head>
 <body>
+<table cellpadding="2" cellspacing="1" class="table database">
+<tr><td class="title">{$lang_setdbBackup}</td> </tr>
+<tr>
+<td class="input">
+<ol>
+<li><a href="database.php?lang=$lang&action=datadisplay" class="red" title="{$lang_setdbExport}">{$lang_setdbExport}</a></li>
+<li><a href="database.php?lang=$lang&action=import" title="{$lang_setdbImport}">{$lang_setdbImport}</a></li>
+<li><a href="database.php?lang=$lang&action=filedown" title="{$lang_setdbDownloadfile}">{$lang_setdbDownloadfile}</a></li>
+<li><a href="database.php?lang=$lang&action=uploadimg" onClick="return Confirmarchive('$lang_setdbfileuploadimg?');" title="{$lang_setdbfileuploadimg}">{$lang_setdbfileuploadimg}</a></li>
+<li><a href="database.php?lang=$lang&action=allfile&dosubmit=1" onClick="return Confirmarchive('$lang_setdbfileall?');" class="red" title="{$lang_setdbfileall}">{$lang_setdbfileall}</a></li>
+<li><a href="database.php?lang=$lang&action=config" onClick="return Confirmarchive('$lang_setdbfileconfig?');" title="{$lang_setdbfileconfig}">{$lang_setdbfileconfig}</a></li>
+</ol>
+</td>
+</tr>		   
+</table>
 <!--
 EOT;
 if($action=='datadisplay'){
 echo <<<EOT
 -->
-<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
-   <tr> 
-    <td colspan="4" align="center" class="list1_title">{$lang_setdbBackup}</td>
-   </tr>
-	<tr>
-	<td colspan="4" class="list1_text_title" style="text-align:right;">&nbsp;&nbsp;<a href="database.php?lang=$lang"><b>{$lang_setdbBackto}</b></a></td>
+<form method="POST" name="myform" action="database.php?action=export&lang=$lang" target="_self">
+<table cellpadding="2" cellspacing="1" class="table datadisplay">
+	<tr> 
+		<td colspan="4" class="title">{$lang_setdbBackup}</td>
 	</tr>
-	<form method="POST" name="myform" action="database.php?action=export&lang=$lang" target="_self">
-		   <tr bgcolor="#ECF5FF" align="center"> 
-            <td width="15%" height="25" class="list1_lm"><input name='chkAll' type='checkbox' id='chkAll' onclick='CheckAll(this.form)' value='check' checked><span>{$lang_selected}</span></td>
-            <td width="50%" class="list1_lm">{$lang_setdbTable}</td>
-			<td width="15%" class="list1_lm">{$lang_setdbItems}</td>
-			<td width="20%" class="list1_lm">{$lang_setdbSize} [{$lang_setdbAll} $totalsize M]</td></tr>
+	<tr>
+		<td colspan="4" class="line"><a href="database.php?lang=$lang" title="{$lang_setdbBackto}">{$lang_setdbBackto}</a></td>
+	</tr>
+	<tr> 
+        <td width="50" class="list">{$lang_selected}</td>
+		<td width="60" class="list">{$lang_setdbItems}</td>
+		<td width="150" class="list">{$lang_setdbSize} [{$lang_setdbAll} $totalsize M]</td>
+        <td class="list">{$lang_setdbTable}</td>
+	</tr>
 <!--
 EOT;
 foreach($tables as $k => $val){
 echo <<<EOT
 -->
-<tr bgcolor="#ECF5FF" align="center"> 
-            <td width="15%" height="25"><input type="checkbox" name="tables[]" value="$val" checked></td>
-            <td width="50%">$val</td>
-			<td width="15%">$bkresults[$k]</td>
-			<td width="20%">$size[$k] M</td></tr>
+	<tr class="mouse click"> 
+        <td class="list-text"><input type="checkbox" name="tables[]" value="$val" checked /></td>
+        <td class="list-text">$bkresults[$k]</td>
+		<td class="list-text">$size[$k] M</td>
+        <td class="list-text">$val</td>
+	</tr>
 <!--
 EOT;
 }
 echo <<<EOT
 -->
- <tr>
-    <td colspan="4" bgcolor="#ECF5FF"  align="center">{$lang_setdbEveryoneSize}<input type=text name="sizelimit" value="2048" size=5> K <input type="submit" name="dosubmit" value=" {$lang_setdbStart} "></td>
-  </tr>
-        </form>
-		<tr>
-		  <td class="list1_footer" colspan="4" align="center">$foot</td>
-	  </tr>
+	<tr>
+		<td class="all"><input name='chkAll' type='checkbox' id='chkAll' onclick='CheckAll(this.form)' value='check' checked /></td>
+		<td class="all"><label for="chkAll">{$lang_selectall}</label></td>
+		<td class="text all">
+			<a href="javascript:;" class="tips"><img src="{$img_url}/botton/faq.png" /></a>{$lang_setdbEveryoneSize}&nbsp;
+			<input type=text name="sizelimit" value="2048" style="width:40px;" />&nbsp;K
+		</td>
+		<td class="input all-submit">
+			<input type="submit" name="dosubmit" value=" {$lang_setdbStart}" class="submit" onclick="return Smit($(this),'myform')" />
+			<span class="tips-text none">{$lang_setdbTip4}</span>
+		</td>
+	</tr>
+	<tr>
+		<td class="footer" colspan="4">$foot</td>
+	</tr>
 </table>
+	</form>
 <!--
 EOT;
 }
@@ -55,20 +81,20 @@ elseif($action=="import"){
 echo <<<EOT
 -->
 
-<table cellpadding="2" cellspacing="2" border="0" width="95%" class="table_list1">
+<table cellpadding="2" cellspacing="1" class="table import">
  </tr>
           <tr> 
-            <td colspan="6" align="center" class="list1_title">{$lang_setdbImport}</td>
+            <td colspan="6" class="title">{$lang_setdbImport}</td>
           </tr>
-		  <tr><td colspan="6" class="list1_text_title" style="text-align:right;">&nbsp;&nbsp;&nbsp;<a href="database.php?lang=$lang"><b>{$lang_setdbBackto}</b></a></td></tr>
-		   <tr bgcolor="#ECF5FF" align="center"> 
-            <td width="8%" class="list1_lm">ID</td>
-            <td width="30%" class="list1_lm">{$lang_setdbFilename}</td>
-            <td width="10%" class="list1_lm">{$lang_setdbFilesize}[MB]</td>
-            <td width="20%" class="list1_lm">{$lang_setdbTime}</td>
-            <td width="8%"  class="list1_lm">{$lang_setdbNumber}</td>
-            <td width="24%" class="list1_lm">{$lang_operate}</td>
-			</tr>
+<tr><td colspan="6" class="tips-line">{$lang_setdbTip1}&nbsp;<span class="blue">{$lang_setdbTip1a}</span>&nbsp;{$lang_setdbTip1b}</td></tr>
+		<tr> 
+            <td width="40" class="list">ID</td>
+            <td class="list">{$lang_setdbFilename}</td>
+            <td width="100" class="list">{$lang_setdbFilesize}</td>
+            <td class="list">{$lang_setdbTime}</td>
+            <td width="40"  class="list">{$lang_setdbNumber}</td>
+            <td class="list">{$lang_operate}</td>
+		</tr>
 
 <!--
 EOT;
@@ -77,31 +103,33 @@ $filenamearray=explode(".sql",$info[filename]);
 $id++;
 echo <<<EOT
 -->
-            <tr bgcolor="#ECF5FF" align="center"> 
-            <td width="8%" height="20px">$id</td>
-            <td width="30%" height="20px">$info[filename]</td>
-            <td width="10%" height="20px">$info[filesize]</td>
-            <td width="20%" height="20px">$info[maketime]</td>
-            <td width="8%" height="20px">$info[number]</td>
-            <td width="24%" height="20px">
-			<a href="?action=import&pre=$info[pre]&dosubmit=1&lang=$lang">{$lang_setdbImportData}</a> | 
-	<a href="?action=delete&filenames=$info[filename]&lang=$lang">{$lang_delete}</a> | 
-	<a href="../databack/sql/metinfo_{$filenamearray[0]}.zip" target="_blank">{$lang_setdbDownload}</a></td>
+            <tr class="mouse"> 
+            <td class="list-text">$id</td>
+            <td class="list-text">$info[filename]</td>
+            <td class="list-text">{$info[filesize]} MB</td>
+            <td class="list-text">$info[maketime]</td>
+            <td class="list-text">$info[number]</td>
+            <td class="list-text">
+			<a href="?action=import&pre=$info[pre]&dosubmit=1&lang=$lang" title="{$lang_setdbImportData}">{$lang_setdbImportData}</a>&nbsp; 
+	        <a href="?action=delete&filenames=$info[filename]&lang=$lang&rutnmt=import" onclick="return linkSmit($(this),1);" title="{$lang_delete}">{$lang_delete}</a>&nbsp;  
+	        <a href="../databack/sql/metinfo_{$filenamearray[0]}.zip" target="_blank" title="{$lang_setdbDownload}">{$lang_setdbDownload}</a></td>
 			</tr>
 <!--
 EOT;
 }
 echo <<<EOT
 -->
-<tr bgcolor="#ECF5FF" >
-<form enctype="multipart/form-data" method="POST" name="myform" action="database.php?action=uploadsql&lang=$lang" target="_self">
-            <td  height="25" colspan="2" align="center" class="sjk"><b>{$lang_setdbUploadDB}</b> &nbsp; {$lang_setdbFilesize}[MB]<input name="met_sqlname" type="text" class="input" size="10" ></td>
-            <td colspan="4" class="sjk"><input name="met_upsql" type="file" class="input" size="30" ><input type="submit" name="Submit" value="{$lang_Submit}" class="tj"></td>
-			</form>
-          </tr> 
-<tr bgcolor="#ECF5FF" ><td colspan="6"  class="list1_text_title" align="center">{$lang_setdbTip1}"</td></tr>
 <tr>
-<td class="list1_footer" colspan="6" align="center">$foot</td>
+            <td colspan="1" class="all">{$lang_setdbUploadDB} </td>
+            <td colspan="5" class="all-submit">
+<form enctype="multipart/form-data" method="POST" name="myform" action="database.php?action=uploadsql&lang=$lang" target="_self">
+			    <input name="met_upsql" type="file" id="met_upsql" class="nonull" />
+				<input type="submit" name="Submit" value="{$lang_Submit}" onclick="return Smit($(this),'myform')" />
+</form>
+			</td>
+          </tr> 
+<tr>
+<td class="footer" colspan="6">$foot</td>
 </tr>
 </table>
 <!--
@@ -110,20 +138,23 @@ EOT;
 elseif($action=="filedown"){
 echo <<<EOT
 -->
-
-<table cellpadding="2" cellspacing="2" border="0" width="95%" class="table_list1">
- </tr>
+<table cellpadding="2" cellspacing="1" class="table filedown">
           <tr> 
-            <td colspan="6" align="center" class="list1_title">{$lang_setdbDownloadfile}</td>
+            <td colspan="6" class="title">{$lang_setdbDownloadfile}</td>
           </tr>
-<tr><td colspan="6" class="list1_text_title" style="text-align:right;">&nbsp;&nbsp;&nbsp;<a href="database.php?lang=$lang"><b>{$lang_setdbBackto}</b></a></td></tr>
-<tr><td colspan="6" align="left">&nbsp;&nbsp;&nbsp;<b>1.{$lang_setdbDBFile}</b></td></tr>
-		   <tr bgcolor="#ECF5FF" align="center"> 
-            <td width="8%" class="list1_lm">ID</td>
-            <td width="30%" class="list1_lm">{$lang_setdbFilename}</td>
-            <td width="10%" class="list1_lm">{$lang_setdbFilesize}[MB]</td>
-            <td width="20%" class="list1_lm">{$lang_setdbTime}</td>
-            <td width="24%" class="list1_lm">{$lang_operate}</td>
+<tr><td colspan="6" class="lines"><a href="database.php?lang=$lang" title="{$lang_setdbBackto}" class="red">{$lang_setdbBackto}</a></td></tr>
+<!--
+EOT;
+if(count($infosql)>0){
+echo <<<EOT
+-->
+<tr><td colspan="6" class="line"><span>{$lang_setdbDBFile}</span></td></tr>
+		   <tr> 
+            <td width="40" class="list">ID</td>
+            <td class="list">{$lang_setdbFilename}</td>
+            <td width="100" class="list">{$lang_setdbFilesize}</td>
+            <td width="20%" class="list">{$lang_setdbTime}</td>
+            <td class="list">{$lang_operate}</td>
 			</tr>
 
 <!--
@@ -132,28 +163,27 @@ foreach($infosql as $id => $info){
 $id++;
 echo <<<EOT
 -->
-            <tr bgcolor="#ECF5FF" align="center"> 
-            <td width="8%" height="20px">$id</td>
-            <td width="30%" height="20px">$info[filename]</td>
-            <td width="10%" height="20px">$info[filesize]</td>
-            <td width="20%" height="20px">$info[maketime]</td>
-            <td width="24%" height="20px">
-	<a href="?action=delete&filenames=$info[filename]&fileon=sql&lang=$lang" onClick="return ConfirmDel();">{$lang_delete}</a> | 
-	<a href="../databack/sql/$info[filename]" target="_blank">{$lang_setdbDownload}</a></td>
+            <tr class="mouse"> 
+            <td class="list-text">$id</td>
+            <td class="list-text">$info[filename]</td>
+            <td class="list-text">{$info[filesize]} MB</td>
+            <td class="list-text">$info[maketime]</td>
+            <td class="list-text">
+	<a href="?action=delete&filenames=$info[filename]&fileon=sql&lang=$lang" onClick="return linkSmit($(this),1);" title="{$lang_delete}">{$lang_delete}</a>&nbsp;&nbsp;<a href="../databack/sql/$info[filename]" target="_blank" title="{$lang_setdbDownload}">{$lang_setdbDownload}</a></td>
 			</tr>
 <!--
 EOT;
-}
+}}
+if(count($infoconfig)>0){
 echo <<<EOT
 -->
-<tr><td colspan="6" align="left">&nbsp;&nbsp;&nbsp;</td></tr>
-<tr><td colspan="6" align="left">&nbsp;&nbsp;&nbsp;<b>2.{$lang_setdbProfileFile}</b></td></tr>
-		   <tr bgcolor="#ECF5FF" align="center"> 
-            <td width="8%" class="list1_lm">ID</td>
-            <td width="30%" class="list1_lm">{$lang_setdbFilename}</td>
-            <td width="10%" class="list1_lm">{$lang_setdbFilesize}[MB]</td>
-            <td width="20%" class="list1_lm">{$lang_setdbTime}</td>
-            <td width="32%" class="list1_lm">{$lang_operate}</td>
+<tr><td colspan="6" class="line"><span>{$lang_setdbProfileFile}</span></td></tr>
+		   <tr> 
+            <td class="list">ID</td>
+            <td class="list">{$lang_setdbFilename}</td>
+            <td class="list">{$lang_setdbFilesize}</td>
+            <td class="list">{$lang_setdbTime}</td>
+            <td class="list">{$lang_operate}</td>
 			</tr>
 
 <!--
@@ -162,29 +192,27 @@ foreach($infoconfig as $id => $info){
 $id++;
 echo <<<EOT
 -->
-            <tr bgcolor="#ECF5FF" align="center"> 
-            <td  height="20px">$id</td>
-            <td  height="20px">$info[filename]</td>
-            <td  height="20px">$info[filesize]</td>
-            <td height="20px">$info[maketime]</td>
-            <td height="20px">
-<!--<a href="?action=extract&filenames=$info[filename]&fileon=config&lang=$lang">{$lang_setdbRecoveryfile}</a> |-->
-	<a href="?action=delete&filenames=$info[filename]&fileon=config&lang=$lang" onClick="return ConfirmDel();">{$lang_delete}</a> | 
-	<a href="../databack/config/$info[filename]" target="_blank">{$lang_setdbDownload}</a></td>
+            <tr class="mouse"> 
+            <td class="list-text">$id</td>
+            <td class="list-text">$info[filename]</td>
+            <td class="list-text">{$info[filesize]} MB</td>
+            <td class="list-text">$info[maketime]</td>
+            <td class="list-text">
+	<a href="?action=delete&filenames=$info[filename]&fileon=config&lang=$lang" onClick="return linkSmit($(this),1);" title="{$lang_delete}">{$lang_delete}</a>&nbsp;&nbsp;<a href="../databack/config/$info[filename]" target="_blank" title="{$lang_setdbDownload}">{$lang_setdbDownload}</a></td>
 			</tr>
 <!--
 EOT;
-}
+}}
+if(count($infoupload)>0){
 echo <<<EOT
 -->
-<tr><td colspan="6" align="left">&nbsp;&nbsp;&nbsp;</td></tr>
-<tr><td colspan="6" align="left">&nbsp;&nbsp;&nbsp;<b>3.{$lang_setdbuploadFile}</b></td></tr>
-		   <tr bgcolor="#ECF5FF" align="center"> 
-            <td width="8%" class="list1_lm">ID</td>
-            <td width="30%" class="list1_lm">{$lang_setdbFilename}</td>
-            <td width="10%" class="list1_lm">{$lang_setdbFilesize}[MB]</td>
-            <td width="20%" class="list1_lm">{$lang_setdbTime}</td>
-            <td width="32%" class="list1_lm">{$lang_operate}</td>
+<tr><td colspan="6" class="line"><span>{$lang_setdbuploadFile}</span></td></tr>
+		   <tr> 
+            <td class="list">ID</td>
+            <td class="list">{$lang_setdbFilename}</td>
+            <td class="list">{$lang_setdbFilesize}</td>
+            <td class="list">{$lang_setdbTime}</td>
+            <td class="list">{$lang_operate}</td>
 			</tr>
 
 <!--
@@ -193,29 +221,27 @@ foreach($infoupload as $id => $info){
 $id++;
 echo <<<EOT
 -->
-            <tr bgcolor="#ECF5FF" align="center"> 
-            <td  height="20px">$id</td>
-            <td  height="20px">$info[filename]</td>
-            <td  height="20px">$info[filesize]</td>
-            <td height="20px">$info[maketime]</td>
-            <td height="20px">
-<!--<a href="?action=extract&filenames=$info[filename]&fileon=upload&lang=$lang">{$lang_setdbRecoveryfile}</a> |-->
-	<a href="?action=delete&filenames=$info[filename]&fileon=upload&lang=$lang" onClick="return ConfirmDel();">{$lang_delete}</a> | 
-	<a href="../databack/upload/$info[filename]" target="_blank">{$lang_setdbDownload}</a></td>
+            <tr class="mouse"> 
+            <td class="list-text">$id</td>
+            <td class="list-text">$info[filename]</td>
+            <td class="list-text">{$info[filesize]} MB</td>
+            <td class="list-text">$info[maketime]</td>
+            <td class="list-text">
+	<a href="?action=delete&filenames=$info[filename]&fileon=upload&lang=$lang" onClick="return linkSmit($(this),1);" title="{$lang_delete}">{$lang_delete}</a>&nbsp;&nbsp;<a href="../databack/upload/$info[filename]" target="_blank" title="{$lang_setdbDownload}">{$lang_setdbDownload}</a></td>
 			</tr>
 <!--
 EOT;
-}
+}}
+if(count($infoweb)>0){
 echo <<<EOT
 -->
-<tr><td colspan="6" align="left">&nbsp;&nbsp;&nbsp;</td></tr>
-<tr><td colspan="6" align="left">&nbsp;&nbsp;&nbsp;<b>4.{$lang_setdballFile}</b></td></tr>
-		   <tr bgcolor="#ECF5FF" align="center"> 
-            <td width="8%" class="list1_lm">ID</td>
-            <td width="30%" class="list1_lm">{$lang_setdbFilename}</td>
-            <td width="10%" class="list1_lm">{$lang_setdbFilesize}[MB]</td>
-            <td width="20%" class="list1_lm">{$lang_setdbTime}</td>
-            <td width="32%" class="list1_lm">{$lang_operate}</td>
+<tr><td colspan="6" class="line"><span>{$lang_setdballFile}</span></td></tr>
+		   <tr> 
+            <td class="list">ID</td>
+            <td class="list">{$lang_setdbFilename}</td>
+            <td class="list">{$lang_setdbFilesize}</td>
+            <td class="list">{$lang_setdbTime}</td>
+            <td class="list">{$lang_operate}</td>
 			</tr>
 
 <!--
@@ -224,44 +250,51 @@ foreach($infoweb as $id => $info){
 $id++;
 echo <<<EOT
 -->
-            <tr bgcolor="#ECF5FF" align="center"> 
-            <td  height="20px">$id</td>
-            <td  height="20px">$info[filename]</td>
-            <td  height="20px">$info[filesize]</td>
-            <td height="20px">$info[maketime]</td>
-            <td height="20px">
-<!--<a href="?action=extract&filenames=$info[filename]&fileon=web&lang=$lang">{$lang_setdbRecoveryfile}</a> |-->
-	<a href="?action=delete&filenames=$info[filename]&fileon=web&lang=$lang" onClick="return ConfirmDel();">{$lang_delete}</a> | 
-	<a href="../databack/web/$info[filename]" target="_blank">{$lang_setdbDownload}</a></td>
+            <tr class="mouse"> 
+            <td class="list-text">$id</td>
+            <td class="list-text">$info[filename]</td>
+            <td class="list-text">{$info[filesize]} MB</td>
+            <td class="list-text">$info[maketime]</td>
+            <td class="list-text">
+	<a href="?action=delete&filenames=$info[filename]&fileon=web&lang=$lang" onClick="return linkSmit($(this),1);" title="{$lang_delete}">{$lang_delete}</a>&nbsp;&nbsp;<a href="../databack/web/$info[filename]" target="_blank" title="{$lang_setdbDownload}">{$lang_setdbDownload}</a></td>
 			</tr>
 <!--
 EOT;
-}
+}}
+if(count($staticweb)>0){
 echo <<<EOT
 -->
-<tr>
-<td class="list1_footer" colspan="6" align="center">$foot</td>
-</tr>
-</table>
+<tr><td colspan="6" class="line"><span>{$lang_setdbstaticFile}</span></td></tr>
+		   <tr> 
+            <td class="list">ID</td>
+            <td class="list">{$lang_setdbFilename}</td>
+            <td class="list">{$lang_setdbFilesize}</td>
+            <td class="list">{$lang_setdbTime}</td>
+            <td class="list">{$lang_operate}</td>
+			</tr>
+
 <!--
 EOT;
-}else{
+foreach($staticweb as $id => $info){
+$id++;
 echo <<<EOT
 -->
-<table cellpadding="1" cellspacing="1" border="0" width="95%" class="table_list1">
-<tr><td colspan="6" align="center" class="list1_title">{$lang_setdbBackup}</td> </tr>
-<tr><td colspan="6" class="list1_text_title">
-<ul>
-<li>1.&nbsp;&nbsp;&nbsp;<a href="database.php?lang=$lang&action=datadisplay"><b>{$lang_setdbExport}</b></a></li>
-<li>2.&nbsp;&nbsp;&nbsp;<a href="database.php?lang=$lang&action=import"><b>{$lang_setdbImport}</b></a></li>
-<li>3.&nbsp;&nbsp;&nbsp;<a href="database.php?lang=$lang&action=config" onClick="return Confirmarchive('$lang_setdbfileconfig?');"><b>{$lang_setdbfileconfig}</b></a></li>
-<li>4.&nbsp;&nbsp;&nbsp;<a href="database.php?lang=$lang&action=uploadimg" onClick="return Confirmarchive('$lang_setdbfileuploadimg?');"><b>{$lang_setdbfileuploadimg}</b></a></li>
-<li>5.&nbsp;&nbsp;&nbsp;<a href="database.php?lang=$lang&action=allfile" onClick="return Confirmarchive('$lang_setdbfileall?');"><b>{$lang_setdbfileall}</b></a></li>
-<li>6.&nbsp;&nbsp;&nbsp;<a href="database.php?lang=$lang&action=filedown"><b>{$lang_setdbDownloadfile}</b></a></li>
-</ul>
-</td></tr>		   
+            <tr class="mouse"> 
+            <td class="list-text">$id</td>
+            <td class="list-text">$info[filename]</td>
+            <td class="list-text">{$info[filesize]} MB</td>
+            <td class="list-text">$info[maketime]</td>
+            <td class="list-text">
+	<a href="?action=delete&filenames=$info[filename]&fileon=static&lang=$lang" onClick="return linkSmit($(this),1);" title="{$lang_delete}">{$lang_delete}</a>&nbsp;&nbsp;<a href="../databack/static/$info[filename]" target="_blank" title="{$lang_setdbDownload}">{$lang_setdbDownload}</a></td>
+			</tr>
+<!--
+EOT;
+}}
+echo <<<EOT
+-->
+<tr><td colspan="6">&nbsp;</td></tr>
 <tr>
-<td class="list1_footer" colspan="6" align="center">$foot</td>
+<td class="footer" colspan="6">$foot</td>
 </tr>
 </table>
 <!--

@@ -7,65 +7,71 @@ echo <<<EOT
 <title>{$lang_setbasicWebInfoSet}</title>
 </head>
 <body>
-        <form method="POST" name="myform" action="" target="_self">
-		<input name="action" type="hidden" value="modify">
-		<input name="lang" type="hidden" value="$lang">
-<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
-<tr>
-            <td colspan="3" align="center" class="list1_title">{$lang_setbasicWebInfoSet}</td>
-   </tr>
-   <tr> 
-         <td class="list1_text"><font color="#FF0000" size="2" style="padding-right5px;">*</font>{$lang_setbasicWebName}</td>
-         <td class="list1_input"><input name="met_webname" type="text" class="input" size="20" maxlength="200" value="$met_webname"></td>
-   </tr> 
-
-       <tr> 
-            <td class="list1_text">LOGO</td>
-            <td class="list1_input"><input name="met_logo" type="text" class="input" size="30" maxlength="200" value="$met_logo"><iframe style="padding-top0px;"ID="UploadFiles" src="../include/upload_photo.php?returnid=met_logo&flash=flash&lang=$lang" frameborder=0 scrolling=no width="320" height="25"></iframe>
-			</td>
-          </tr>
-		  <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font>{$lang_setbasicWebSite}</td>
-            <td class="list1_input"><input name="met_weburl" type="text" class="input" size="20" maxlength="200" value="$met_weburl"><span>{$lang_setbasicRealWebSite}<font color="#FF0000">$localurl</font></span></td>
-          </tr> 
-		   
-		  <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font><span>{$lang_setbasicUploadMax}</span></td>
-            <td class="list1_input"> <input name="met_file_maxsize" type="text" class="input" size="3" maxlength="200" value="$met_file_maxsize"><span>Mb</span></td>
-          </tr> 
-		  <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font>{$lang_setbasicEnableFormat}</td>
-            <td class="list1_input"> <input name="met_file_format" type="text" class="input" size="30" maxlength="200" value="$met_file_format"><span>{$lang_setbasicTip5}</span></td>
-          </tr> 
-		  <tr> 
-		    <td class="list1_text"></td>
-            <td class="list1_text_title"><b>{$lang_setbasicSysEmailSet}</b>（{$lang_setbasicTip6}）</td>
-          </tr>  
-		  <tr> 
-            <td class="list1_text">{$lang_setbasicFromName}</td>
-            <td class="list1_input"><input name="met_fd_fromname" type="text" class="input" size="30" maxlength="200" value="$met_fd_fromname"><span>{$lang_setbasicTip7}</span></td>
-          </tr> 
-		  <tr> 
-            <td class="list1_text">{$lang_setbasicEmailAccount}</td>
-            <td class="list1_input"><input name="met_fd_usename" type="text" class="input" size="30" maxlength="200" value="$met_fd_usename"><span>{$lang_setbasicTip8}</span></td>
-          </tr> 
-		  <tr> 
-            <td class="list1_text">{$lang_setbasicSMTPServer}</td>
-            <td class="list1_input"><input name="met_fd_smtp" type="text" class="input" size="30" maxlength="200" value="$met_fd_smtp"><span>{$lang_setbasicTip10}</span></td>
-          </tr> 
-		  <tr> 
-            <td class="list1_text">{$lang_setbasicSMTPPassword}</td>
-            <td class="list1_input"><input name="met_fd_password" type="password" class="input" size="32" maxlength="200" value="$met_fd_password"><span>{$lang_setbasicTip11}</span></td>
-          </tr> 
-	      <tr> 
-            <td class="list1_text"></td>
-	      <td class="list1_submit"><input type="submit" name="Submit" value="{$lang_Submit}" class="tj" style="*padding-top2px; *height22px;"><input type="reset" name="Submit" value="{$lang_Reset}" class="tj" style="*padding-top2px; *height22px;"></td>
-          </tr>
-        </form>
-		<tr>
-		  <td class="list1_footer" colspan="2" align="center">$foot</td>
-	  </tr>
-</table>
+<!--
+EOT;
+$littr=1;
+require_once template('metlangs');
+echo <<<EOT
+-->
+    <form method="POST" name="myform" action="basic.php?lang=$lang" target="_self">
+	<input name="action" type="hidden" value="modify" />
+<table cellpadding="2" cellspacing="1" class="table">
+    <tr> 
+        <td class="text"><font class="must">*</font>{$lang_setbasicWebName}</td>
+        <td class="input"><input name="met_webname" type="text" class="text" value="{$met_webname}" /></td>
+    </tr> 
+    <tr> 
+        <td class="text">LOGO</td>
+        <td class="input upload">
+		    <input name="met_logo" type="text" class="text" value="{$met_logo}" />
+			<iframe id="UploadFiles" src="../include/upload_photo.php?returnid=met_logo&flash=flash&lang=$lang" frameborder="0" scrolling="no"></iframe>
+		</td>
+    </tr>
+	<tr> 
+        <td class="text"><font class="must">*</font>{$lang_setbasicWebSite}</td>
+        <td class="input">
+		    <input name="met_weburl" type="text" class="text" value="{$met_weburl}" />
+		    <span class="tips">{$lang_setbasicRealWebSite}：<font class="red">$localurl</font></span>
+	    </td>
+    </tr> 
+    <tr> 
+        <td class="text"><font class="must">*</font><span>{$lang_setbasicUploadMax}</span></td>
+        <td class="input"> <input name="met_file_maxsize" type="text" class="text" value="{$met_file_maxsize}" /><span class="tips">Mb</span></td>
+    </tr> 
+	<tr> 
+        <td class="text"><font class="must">*</font>{$lang_setbasicEnableFormat}</td>
+        <td class="input"><input name="met_file_format" type="text" class="text" value="{$met_file_format}" /><span class="tips">{$lang_setbasicTip5}</span></td>
+    </tr>
+	<tr> 
+        <td class="text"></td>
+        <td class="input"><b>{$lang_setbasicSysEmailSet}({$lang_setbasicTip6})</b></td>
+    </tr>  
+	<tr> 
+        <td class="text">{$lang_setbasicFromName}</td>
+        <td class="input"><input name="met_fd_fromname" type="text" class="text" value="{$met_fd_fromname}" /><span class="tips">{$lang_setbasicTip7}</span></td>
+    </tr> 
+	<tr> 
+        <td class="text">{$lang_setbasicEmailAccount}</td>
+        <td class="input"><input name="met_fd_usename" type="text" class="text email" value="{$met_fd_usename}" /><span class="tips">{$lang_setbasicTip8}</span></td>
+    </tr> 
+	<tr> 
+        <td class="text">{$lang_setbasicSMTPServer}</td>
+        <td class="input"><input name="met_fd_smtp" type="text" class="text" value="{$met_fd_smtp}" /><span class="tips">{$lang_setbasicTip10}</span></td>
+    </tr> 
+	<tr> 
+        <td class="text">{$lang_setbasicSMTPPassword}</td>
+        <td class="input"><input name="met_fd_password" type="password" class="text"  value="{$met_fd_password}" /><span class="tips">{$lang_setbasicTip11}</span></td>
+    </tr>
+	<tr> 
+        <td class="text"></td>
+	    <td class="submit">
+		<input type="submit" name="submit1" value="{$lang_Submit}" class="submit" onclick="return Smit($(this),'myform')" />
+		<input type="reset" name="reset" value="{$lang_Reset}" class="reset" />
+		</td>
+    </tr>
+	</table>
+	</form>
+<div class="footer">$foot</div>
 </body>
 </html>
 <!--

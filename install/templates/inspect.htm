@@ -15,30 +15,29 @@ parent.document.getElementById("inspect").className='stepnow';
 </script>
 <body>
 <div class="contenttext">
-<p>此步骤将检查您的服务器是否支持安装MetInfo企业网站管理系统，请在继续安装前消除错误或警告信息，然后点击<b>安装</b>继续。</p>
+<p style="font-weight:bold;">此步骤将检查您的服务器是否支持安装MetInfo企业网站管理系统，请在继续安装前消除错误或警告信息，然后点击<b>安装</b>继续。</p>
 <form method="post" action="index.php?action=db_setup">
-<fieldset>
-<legend><strong>系统检测结果</strong></legend>
-<div class="section"><ul class="inspect-list">
-   <li class='NA'><strong>服务器 </strong> = $SERVER_SIGNATURE</li>
-   <li class='NA'><strong>HTTP主机</strong> = $SERVER_NAME</li>
-   <li class='NA'><strong>PHP页面最大执行时间</strong> = $bigtime</li>
-   <li class='$mysql_ver_class'><strong>MySQL支持</strong> = $mysql_support</li>
-   <li class='$ver_class'><strong>PHP版本</strong> = $PHP_VERSION $errormsg_v</li>
-
-</ul>
-<br /><a href="javascript:popupWindowLrg('phpinfo.php')">查看服务器的PHPINFO</a>
-</div>
-</fieldset>
+	<fieldset>
+		<legend><strong>系统检测结果</strong></legend>
+		<div class="section">
+			<ul class="inspect-list">
+				<li class='NA'><strong>服务器 </strong> = $SERVER_SIGNATURE</li>
+				<li class='NA'><strong>HTTP主机</strong> = $SERVER_NAME</li>
+				<li class='NA'><strong>PHP页面最大执行时间</strong> = $bigtime</li>
+				<li class='$mysql_ver_class'><strong>MySQL支持</strong> = $mysql_support</li>
+				<li class='$ver_class'><strong>PHP版本</strong> = $PHP_VERSION $errormsg_v</li>
+			</ul>
+			<a href="javascript:popupWindowLrg('phpinfo.php')" style="padding-left:20px;">查看服务器的PHPINFO</a>
+		</div>
+	</fieldset>
 
 <fieldset>
 <legend><strong>文件和目录权限</strong></legend>
-<div class='section'>
-要能正常使用MetInfo企业网站管理系统，
+<div class='section'>&nbsp;&nbsp;&nbsp;&nbsp;要能正常使用MetInfo企业网站管理系统，
 需要将几个文件/目录设置为 "可写"。下面是需要设置为"可写" 的目录清单， 
 以及建议的 CHMOD 设置。在继续安装前，请做修改。
-在浏览器中刷新本页面以重新检测设置。<br />
-<br />某些主机不允许您设置 CHMOD 777，要用666。先试最高的值，不行的话，再逐步降低该值。
+在浏览器中刷新本页面以重新检测设置。
+<p style="margin-top:5px; font-weight:bold;">某些主机不允许您设置 CHMOD 777，要用666。先试最高的值，不行的话，再逐步降低该值。</p>
 <ul class="inspect-list">
 <!--
 EOT;
@@ -46,7 +45,7 @@ for($i=0; $i<$count; $i++){
 echo <<<EOT
 -->
    <li class='$class_chcek[$i]'>
-   <strong>$w_check[$i]</strong> =$check_msg[$i]  
+   <strong>$w_check[$i]</strong> = $check_msg[$i]  
    </li>
 <!--
 EOT;
@@ -59,9 +58,9 @@ echo <<<EOT
 
 <fieldset>
 <legend><strong>开始安装?  (将删除已有数据，不是升级模式!!!)</strong></legend>
-<div align="left" style="margin-top:-15px; *margin-top:0px;">
-<input type="submit" name="submit" class="btn2" tabindex="8" value=" 安装 "  $disabled style="*padding-top:4px;"/>
-<input type="button" name="refresh" class="btn2" tabindex="11" value="重新检查" onClick="history.go(0)" style="*padding-top:4px;" />
+<div style="margin-top:-5px; margin-top:3px\9; ">
+<input type="submit" name="submit" class="submit" style="margin-right:5px;" tabindex="8" value=" 安装 " $disabled />
+<input type="button" name="refresh" class="submit" tabindex="11" value="重新检查" onClick="history.go(0)" />
 </div>
 </fieldset>
 </form>

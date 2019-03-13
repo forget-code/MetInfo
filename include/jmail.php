@@ -61,8 +61,10 @@ if ( ! function_exists('jmailsend'))
 		//}
 		if(!$mail->Send()) {
 		  //echo "Mailer Error: " . $mail->ErrorInfo;
+		  return false;
 		} else {
-		 // echo "Message sent!";
+		  //echo "Message sent!";
+		  return true;
 		}
 	}
 }

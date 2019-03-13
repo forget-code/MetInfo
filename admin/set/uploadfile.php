@@ -2,7 +2,6 @@
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 require_once '../login/login_check.php';
-
 /*
  * foreach (getDir(dirname(__FILE__)) as $dir) {   
  *        echo $dir."<br>";   
@@ -176,60 +175,35 @@ if ( !$this->result )
 { 
 global $lang_setfileno,$file_classnow;
 if($file_classnow==3){
-okinfo('uploadfile.php?lang='.$lang,$lang_setfileno);
+okinfox('uploadfile.php?lang='.$lang,$lang_setfileno);
 exit; 
 } }
 return $this->result; 
 } 
 } 
 
-function deldir($dir) {
-  $dh=opendir($dir);
-  while ($file=readdir($dh)) {
-    if($file!="." && $file!="..") {
-      $fullpath=$dir."/".$file;
-      if(!is_dir($fullpath)) {
-          unlink($fullpath);
-      } else {
-          deldir($fullpath);
-      }
-    }
-  }
-
-  closedir($dh);
-  if($dir!='../../upload'){
-    if(rmdir($dir)) {
-    return true;
-    } else {
-    return false;
-    }
-	}
-} 
-
-
 if($action=='deletefolder'){
    $returnurl="uploadfile.php?lang=".$lang;
    $filedir="../../".$filename;
-   deldir($filedir);
-   okinfo($returnurl,$lang_jsok);
+   deldir($filedir,0);
+   okinfo($returnurl);
    }
 
 if($action=='delete'){
 $returnurl="uploadfile.php?lang=".$lang."&fileurl=".$fileurl."&file_classnow=".$file_classnow."&page=".$page;
-
 if($action_type=="del"){
 $allidlist=explode(',',$allid);
 $k=count($allidlist)-1;
   for($i=0;$i<$k; $i++){
    if(file_exists($allidlist[$i]))@unlink($allidlist[$i]);
    }
-okinfo($returnurl,$lang_jsok);
+okinfo($returnurl);
 }else{
   if(file_exists($filename)){
       @unlink($filename);
-	  okinfo($returnurl,$lang_jsok);
+	  okinfo($returnurl);
 	}else{
-	  okinfo($returnurl,$lang_setfilenourl);
+	  okinfox($returnurl,$lang_setfilenourl);
 	}
   }
 }else{

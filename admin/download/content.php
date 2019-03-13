@@ -36,7 +36,7 @@ switch($download_list['downloadaccess'])
 }
 }
 if(!$download_list){
-okinfo('index.php?lang='.$lang,$lang_dataerror);
+okinfox('../download/index.php?lang='.$lang,$lang_dataerror);
 }
 
 $query = "select * from $met_plist where module='4' and listid='$id'";
@@ -58,24 +58,25 @@ $class3[$download_list[class3]]="selected='selected'";
 }else{
 $download_list[issue]=$metinfo_admin_name;
 $download_list[hits]=0;
+$download_list[no_order]=0;
 $download_list[addtime]=$m_now_date;
 $download_list[access]="0";
 $lang_editinfo=$lang_addinfo;
 $lev=$met_class[$class1][access];
 }
 	$i=0;
-echo "<script language = 'JavaScript'>\n";
-echo "var onecount;\n";
-echo "subcat = new Array();\n";
+$listjs = "<script language = 'JavaScript'>\n";
+$listjs.= "var onecount;\n";
+$listjs.= "subcat = new Array();\n";
 foreach($met_class22[$class1] as $key=>$vallist){
-echo "subcat[".$i."] = new Array('".$vallist[name]."','".$vallist[bigclass]."','".$vallist[id]."','".$vallist[access]."');\n";
+$listjs.= "subcat[".$i."] = new Array('".$vallist[name]."','".$vallist[bigclass]."','".$vallist[id]."','".$vallist[access]."');\n";
 	 $i=$i+1;
   foreach($met_class3[$vallist[id]] as $key=>$vallist3){
-      echo "subcat[".$i."] = new Array('".$vallist3[name]."','".$vallist3[bigclass]."','".$vallist3[id]."','".$vallist3[access]."');\n";
+$listjs.= "subcat[".$i."] = new Array('".$vallist3[name]."','".$vallist3[bigclass]."','".$vallist3[id]."','".$vallist3[access]."');\n";
 	 $i=$i+1;
     }
 }
-echo "onecount=".$i.";\n";
+$listjs.= "onecount=".$i.";\n";
 
 $checkjs=$checkjs."function Checkdownload(){ \n";
 $checkjs=$checkjs."if (document.myform.title.value==null || document.myform.title.value.length == 0){\n";
@@ -112,8 +113,8 @@ $checkjs=$checkjs."return false;}\n";
 }
 }
 $checkjs=$checkjs."}";
-echo $checkjs;
-echo "</script>";
+$listjs.= $checkjs;
+$listjs.= "</script>";
 if($met_member_use){
 $level="";
 switch(intval($lev))

@@ -13,8 +13,9 @@ $config_save1=$config_save1.
 "$"."str[".$i."]=array('$val[oldwords]','$val[newwords]');\n";
 }else{
 if(!strstr($val[url],"http://"))$val[url]="http://".$val[url];
+
 $config_save1=$config_save1.
-              "$"."str[".$i."]=array('$val[oldwords]',\"<a title='$val[newwords]' target='_blank' href='$val[url]' class='seolabel'>$val[newwords]</a>\");\n";
+              "$"."str[".$i."]=array('$val[oldwords]',\"<a title='$val[newtitle]' target='_blank' href='$val[url]' class='seolabel'>$val[newwords]</a>\");\n";
 }
 $i=$i+1;
 }

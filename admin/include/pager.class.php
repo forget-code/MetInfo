@@ -85,12 +85,11 @@ function link($url, $exc='')
       global $lang_pageTotal,$lang_pages,$lang_pageLoction,$lang_pageHome,$lang_pageEnd,$lang_pageReturn,$lang_pageNext,$lang_pageGo;
    $text="<form method='POST' name='page1'  action='".$url."' target='_self'>";
    $text.="<style>";
-   $text.=".digg4 { padding:3px; margin:3px; text-align:center; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px;}";
-   $text.=".digg4  a { border:1px solid #ccdbe4; padding:2px 8px 2px 8px; background-position:50%; margin:2px; color:#0061de; text-decoration:none;}";
-   $text.=".digg4  a:hover { border:1px solid #2b55af; color:#fff; background-color:#3666d4;}";
-   $text.=".digg4  a:active {border:1px solid #000099; color:#000000;}";
-   $text.=".digg4  span.current { padding:2px 8px 2px 8px; margin:2px; color:#000; text-decoration:none;}";
-   $text.=".digg4  span.disabled { border:1px solid #ccdbe4; padding:2px 8px 2px 8px; margin:2px; color:#ddd;}";
+   $text.=".digg4 a{ border:1px solid #ccdbe4; padding:2px 8px 2px 8px; background:#fff; background-position:50%; margin:2px; color:#666; text-decoration:none;}\n";
+   $text.=".digg4 a:hover { border:1px solid #999; color:#fff; background-color:#999;}\n";
+   $text.=".digg4 a:active {border:1px solid #000099; color:#000000;}\n";
+   $text.=".digg4 span.current { padding:2px 8px 2px 8px; margin:2px; text-decoration:none;}\n";
+   $text.=".digg4 span.disabled { border:1px solid #ccc; background:#fff; padding:1px 8px 1px 8px; margin:2px; color:#999;}\n";
    $text.=" </style>";
    if($this->pages >12 ){
      $startnum=floor(($this->_cur_page/10))*10+1;
@@ -152,8 +151,8 @@ function link($url, $exc='')
 		$text.=$nextpagenow."<a style='font-family: Tahoma, Verdana;' href=".$url.$this->pages.$exc."><b>»</b></a>";
 		}  
 
-$text.=" $lang_pageGo<INPUT size='1' name='page_input'>$lang_pages ";
-$text.="<input type='submit' name='Submit3' value=' go ' class='tj'>  </form>";	
+$text.=" $lang_pageGo<input name='page_input' class='page_input' />$lang_pages ";
+$text.="<input type='submit' name='Submit3' value=' go ' class='submit' /></form>";	
         $text.="</div>";	
         return $text;
   }

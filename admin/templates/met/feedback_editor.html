@@ -7,15 +7,15 @@ echo <<<EOT
 <title>{$lang_editor}</title>
 </head>
 <body>
-<form  method="POST" name="myform"  action="editor.php?action=editor&lang=$lang" target="_self">
+<form  method="POST" name="myform"  action="editor.php?action=editor&lang=$lang&class1=$class1" target="_self">
 		<input name="id" type="hidden" value="$id">
-<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
+<table cellpadding="2" cellspacing="1" class="table">
           <tr> 
-            <td colspan="3" align="center" class="list1_title">{$lang_editor}</td>
+            <td colspan="2" class="title">{$lang_editor}</td>
           </tr>
           <tr> 
-            <td class="list1_text"><b>{$lang_fdeditorInterest}</b></td>
-            <td colspan="2" class="list1_input" class="list1_input">$feedback_list[fdtitle]</td>
+            <td class="text">{$lang_fdeditorInterest}</td>
+            <td class="input">$feedback_list[fdtitle]</td>
           </tr> 
 
 <!--
@@ -24,8 +24,8 @@ foreach($feedback_para as $key=>$val){
 echo <<<EOT
 -->
          <tr> 
-            <td class="list1_text"><b>$val[name]</b></td>
-            <td colspan="2" class="list1_input">$val[content]</td>
+            <td class="text">$val[name]</td>
+            <td class="input">$val[content]</td>
           </tr>
 <!--
 EOT;
@@ -33,45 +33,46 @@ EOT;
 echo <<<EOT
 -->
 		  <tr> 
-            <td class="list1_text"><b>{$lang_fdeditorTime}</b></td>
-            <td colspan="2" class="list1_input">$feedback_list[addtime]</td>
+            <td class="text">{$lang_fdeditorTime}</td>
+            <td class="input">$feedback_list[addtime]</td>
           </tr>
 		  <tr> 
-            <td class="list1_text"><b>{$lang_fdeditorFrom}</b>
-			</td>
-            <td class="list1_input">$feedback_list[fromurl]</td>
+            <td class="text">{$lang_fdeditorFrom}</td>
+            <td class="input">$feedback_list[fromurl]</td>
 			</tr> 
 			 <tr> 
-            <td class="list1_text"><b>{$lang_feedbackID}</b>
-			</td>
-            <td class="list1_input">$feedback_list[customerid]</td>
+            <td class="text">{$lang_feedbackID}</td>
+            <td class="input">$feedback_list[customerid]</td>
 			</tr> 
 			 <tr> 
-            <td class="list1_text"><b>{$lang_fdeditorRecord}</b></td>
-            <td class="list1_input">
-<!--
-EOT;
-echo "-->";
-$oFCKeditor = new FCKeditor('useinfo'); 
-$oFCKeditor->BasePath = '../../fckeditor/';
-$oFCKeditor->Config['AutoDetectLanguage']	= false ;
-$oFCKeditor->Config['DefaultLanguage']		= $langusenow ;
-$oFCKeditor->Value = $feedback_list[useinfo];
-$oFCKeditor->Width = '100%';   
-$oFCKeditor->Height = '300';
-$oFCKeditor->Create();
-echo <<<EOT
+            <td class="text">{$lang_fdeditorRecord}</td>
+            <td class="input">
+<script type="text/javascript" src="../ckeditor/ckeditor.js"></script>
+			<textarea class="ckeditor" name="useinfo">$feedback_list[useinfo]</textarea>
+<script type="text/javascript">
+CKEDITOR.replace('useinfo', {
+	filebrowserBrowseUrl : '../ckeditor/ckfinder/ckfinder.html',
+	filebrowserImageBrowseUrl : '../ckeditor/ckfinder/ckfinder.html?Type=Images',
+	filebrowserFlashBrowseUrl : '../ckeditor/ckfinder/ckfinder.html?Type=Flash',
+	filebrowserUploadUrl : '../ckeditor/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
+	filebrowserImageUploadUrl : '../ckeditor/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
+	filebrowserFlashUploadUrl : '../ckeditor/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash'
+});
+</script>
 </td></tr>
 		  
 		  <tr> 
-           <td class="list1_text"></td>
-	      <td class="list1_submit"><input type="submit" name="Submit" value="{$lang_Submit}" class="tj" style="*padding-top:2px; *height:22px;"><input type="reset" name="Submit" value="{$lang_Reset}" class="tj" style="*padding-top:2px; *height:22px;"></td>
+           <td class="text"></td>
+	        <td class="submit">
+			    <input type="submit" name="Submit" value="{$lang_Submit}" class="submit" onclick="return Smit($(this),'myform','','useinfo')" />
+				<input type="reset" name="Submit" value="{$lang_Reset}" class="submit" /> 
+			</td>
           </tr>
-        </form>
           <tr>
-		  <td class="list1_footer" colspan="3" align="center">$foot</td>
+		  <td class="footer" colspan="2">$foot</td>
 	  </tr>
 </table>
+        </form>
 </body>
 </html>
 <!--

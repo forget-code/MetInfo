@@ -7,52 +7,59 @@ echo <<<EOT
 <title>{$lang_memberset}</title>
 </head>
 <body>
-        <form method="POST" name="myform" action="" target="_self">
+<!--
+EOT;
+$littr=32;
+require_once template('metlangs');
+echo <<<EOT
+-->
+        <form method="POST" name="myform" action="member.php?lang=$lang" target="_self">
 		<input name="action" type="hidden" value="modify">
-<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
-
-            <td colspan="3" align="center" class="list1_title">{$lang_memberset}</td>
+<table cellpadding="2" cellspacing="1" class="table">
+            <td colspan="2" class="title">{$lang_memberset}</td>
    </tr>
-
    <tr> 
-         <td class="list1_text"><font color="#FF0000" size="2" style="padding-right:5px;">*</font>{$lang_memberuse}</td>
-         <td class="list1_input">
-		 <input name="met_member_use" type="radio" $met_member_use1[0] value="0">{$lang_close}<br>
-		 <input name="met_member_use" type="radio" $met_member_use1[1] value="1">{$lang_memberuseok2} <br>
-		 <input name="met_member_use" type="radio" $met_member_use1[2] value="2">{$lang_memberuseok3}</td>
+         <td class="text"><font class="must">*</font>{$lang_memberuse}</td>
+         <td class="input">
+		 <input name="met_member_use" type="radio" class="radio" id="label1" $met_member_use1[0] value="0"><label for="label1">{$lang_close}</label><br>
+		 <input name="met_member_use" type="radio" class="radio" id="label2" $met_member_use1[1] value="1"><label for="label2">{$lang_memberuseok2}</label><br>
+		 <input name="met_member_use" type="radio" class="radio" id="label3" $met_member_use1[2] value="2"><label for="label3">{$lang_memberuseok3}</label></td>
    </tr> 
     <tr> 
-         <td class="list1_text"><font color="#FF0000" size="2" style="padding-right:5px;">*</font>{$lang_memberlogin}</td>
-         <td class="list1_input">
-		 <input name="met_member_login" type="radio" $met_member_login1[0] value="0">{$lang_close} 
-		 <input name="met_member_login" type="radio" $met_member_login1[1] value="1">{$lang_open}  
-		 <input name="met_member_login" type="radio" $met_member_login1[2] value="2">{$lang_memberloginok3}  
-		 <input name="met_member_login" type="radio" $met_member_login1[3] value="3">{$lang_memberloginok4}</td>
+         <td class="text"><font class="must">*</font>{$lang_memberlogin}</td>
+         <td class="input">
+		 <input name="met_member_login" type="radio" class="radio" id="label4" $met_member_login1[0] value="0"><label for="label4">{$lang_close}</label> 
+		 <input name="met_member_login" type="radio" class="radio" id="label5" $met_member_login1[1] value="1"><label for="label5">{$lang_open}</label> 
+		 <input name="met_member_login" type="radio" class="radio" id="label6" $met_member_login1[2] value="2"><label for="label6">{$lang_memberloginok3}</label>  
+		 <input name="met_member_login" type="radio" class="radio" id="label7" $met_member_login1[3] value="3"><label for="label7">{$lang_memberloginok4}</label></td>
    </tr> 
    <tr> 
-         <td class="list1_text">{$lang_memberregisteremail}</td>
-         <td class="list1_input"><textarea name="met_memberemail" cols="50" rows="3">$met_memberemail</textarea>$lang_setfootTip1</td>
+         <td class="text">{$lang_memberregisteremail}</td>
+         <td class="input"><textarea name="met_memberemail" class="textarea gen" cols="50" rows="3">$met_memberemail</textarea>$lang_setfootTip1</td>
    </tr> 
    <tr> 
-         <td class="list1_text">{$lang_membercontrol}</td>
-         <td class="list1_input"><textarea name="met_membercontrol" cols="50" rows="5">$met_membercontrol</textarea>$lang_setfootTip1</td>
+         <td class="text">{$lang_membercontrol}</td>
+         <td class="input"><textarea name="met_membercontrol" class="textarea gen" cols="50" rows="5">$met_membercontrol</textarea>$lang_setfootTip1</td>
    </tr> 
     <tr> 
-         <td class="list1_text"><font color="#FF0000" size="2" style="padding-right:5px;">*</font>{$lang_memberforce}</td>
-         <td class="list1_input">
-		 <input name="met_member_force" type="text"  value="$met_member_force" size="8">{$lang_memberforceinfo} {$met_weburl}index.php?metmemberforce=$met_member_force
+         <td class="text"><font class="must">*</font>{$lang_memberforce}</td>
+         <td class="input">
+		 <input name="met_member_force" type="text" class="text mid" value="$met_member_force" size="8">{$lang_memberforceinfo} {$met_weburl}index.php?metmemberforce=$met_member_force
 	       </td>
    </tr> 
 		 
 	      <tr> 
-            <td class="list1_text"></td>
-	      <td class="list1_submit"><input type="submit" name="Submit" value="{$lang_Submit}" class="tj" style="*padding-top:2px; *height:22px;"><input type="reset" name="Submit" value="{$lang_Reset}" class="tj" style="*padding-top:2px; *height:22px;"></td>
+            <td class="text"></td>
+	      <td class="submit">
+		<input type="submit" name="submit" value="{$lang_Submit}" class="submit" onclick="return Smit($(this),'myform')" />
+		<input type="reset" name="reset" value="{$lang_Reset}" class="reset" />
+		  </td>
           </tr>
-        </form>
 		<tr>
-		  <td class="list1_footer" colspan="2" align="center">$foot</td>
+		  <td class="footer" colspan="2">$foot</td>
 	  </tr>
 </table>
+        </form>
 </body>
 </html>
 <!--

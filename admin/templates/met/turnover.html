@@ -1,0 +1,69 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+require_once template('head');
+$resulttext = $error==''?$lang_jsok:$error;
+if($mettext!='')$resulttext=$mettext;
+$geturl = strtr($geturl,'$','&'); ;
+$gettime=2000;
+$getjs = "location.href='$geturl'";
+echo <<<EOT
+-->
+<title></title>
+</head>
+<!--
+EOT;
+if(!$htmljs){
+echo <<<EOT
+-->
+<script type="text/javascript">
+<!--
+EOT;
+if($meturn){
+$meturn = strtr($meturn,'$','&'); ;
+echo <<<EOT
+-->
+	if(confirm('$turntxt')){
+		location.href='$meturn';
+	}
+<!--
+EOT;
+}
+if($metck!=''){
+$getjs = 'parent.location.reload();';
+$geturl = 'javascript:parent.location.reload();';
+echo <<<EOT
+-->
+    parent.$.cookie('langget', $metck);
+<!--
+EOT;
+}
+if($error!=''){
+$gettime=4000;
+$getjs="history.go(-2)";
+$geturl="javascript:history.go(-2)";
+}
+echo <<<EOT
+-->
+	AnymetMask(2);
+	setTimeout(function(){ $getjs },$gettime);
+</script>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<body>
+<div id="turnover">
+<h1>$resulttext</h1>
+<div class="geturl"><a href="$geturl" title="{$lang_funjumpget}">{$lang_funjumpget}</a></div>
+$htmljs
+</div>
+<div class="footer">$foot</div>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>-->

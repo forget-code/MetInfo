@@ -5,8 +5,7 @@
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
 if($admin_index){
 require_once 'include/common.inc.php';
-}
-elseif($fckeditor){
+}elseif($fckeditor){
 require_once '../../../../../include/common.inc.php';
 }
 else{
@@ -17,7 +16,7 @@ if($force_index!="metinfo"){
   if(!$admin_index){
   if (!strstr($_SERVER['HTTP_REFERER'],$_SERVER ['HTTP_HOST'])){
   die($lang_loginNomeet);
-  } }
+  }}
 
   if($action=="login"){
   $metinfo_admin_name     = $login_name;
@@ -38,11 +37,13 @@ if($force_index!="metinfo"){
 		       echo("<script type='text/javascript'> alert('$lang_loginname');location.href='login.php';</script>");
 		       exit;
           }
-		  elseif($admincp_list['admin_pass']!==$metinfo_admin_pass){
+		  elseif($admincp_list['admin_pass']!=$metinfo_admin_pass){
 		   echo("<script type='text/javascript'> alert('$lang_loginpass');location.href='login.php';</script>");
 		   exit;
 		  }
 		  else{ 
+
+		  $admincp_list['admin_type']=admin_popes($admincp_list['admin_type'],$lang);
 		  session_start();
 		  $_SESSION['metinfo_admin_name'] = $metinfo_admin_name;
           $_SESSION['metinfo_admin_pass'] = $metinfo_admin_pass;
@@ -59,8 +60,11 @@ if($force_index!="metinfo"){
 		  $db->query($query);
 		  }
   $adminlang=explode('-',$admincp_list[langok]);
+  
   if($admincp_list[langok]<>'metinfo' and (!strstr($admincp_list[langok],"-".$met_index_type."-")))$lang=$adminlang[1];
-echo("<script type='text/javascript'> var nowurl=parent.location.href; var metlogin=(nowurl.split('login')).length-1; if(metlogin==0)location.href='../site/sysadmin.php?lang=$lang'; if(metlogin!=0)location.href='../index.php?lang=$lang';</script>");
+$filejs = ROOTPATH_ADMIN.'include/metvar.js';
+$strlen = file_put_contents($filejs, $js);
+echo "<script type='text/javascript'> var nowurl=parent.location.href; var metlogin=(nowurl.split('login')).length-1; if(metlogin==0)location.href='../site/sysadmin.php?lang=$lang'; if(metlogin!=0)location.href='../index.php?lang=$lang';</script>";
   }
   else{  
   if(!$metinfo_admin_name||!$metinfo_admin_pass){
@@ -89,43 +93,43 @@ echo("<script type='text/javascript'> var nowurl=parent.location.href; var metlo
   if($admin_power!="metinfo"){
     if(!strstr($admincp_ok[admin_op], "metinfo")){
 	  if(strstr($_SERVER['REQUEST_URI'], "delete.php")){
-	  if(!strstr($admincp_ok[admin_op], "del"))okinfo('javascript:window.history.back();',$lang_logindelete);
+	  if(!strstr($admincp_ok[admin_op], "del"))okinfoy('javascript:window.history.back();',$lang_logindelete);
 	  }
 	  if(strstr($_SERVER['REQUEST_URI'], "changeState.php")){
-	  if(!strstr($admincp_ok[admin_op], "editor"))okinfo('javascript:window.history.back();',$lang_loginedit);
+	  if(!strstr($admincp_ok[admin_op], "editor"))okinfoy('javascript:window.history.back();',$lang_loginedit);
 	  }
 	  if(strstr($_SERVER['REQUEST_URI'], "/htm.php")){
-	  if(!strstr($admincp_ok[admin_op], "editor"))okinfo('javascript:window.history.back();',$lang_loginedit);
+	  if(!strstr($admincp_ok[admin_op], "editor"))okinfoy('javascript:window.history.back();',$lang_loginedit);
 	  }
       switch($action){
 	  case "add";
 	  if(!strstr($_SERVER['REQUEST_URI'], "/content.php")){
-	  if(!strstr($admincp_ok[admin_op], "add"))okinfo('javascript:window.history.back();',$lang_loginadd);
+	  if(!strstr($admincp_ok[admin_op], "add"))okinfoy('javascript:window.history.back();',$lang_loginadd);
 	  }
 	  break;
 	  case "editor";
 	   if(!strstr($_SERVER['REQUEST_URI'], "/content.php")){
-	  if(!strstr($admincp_ok[admin_op], "editor"))okinfo('javascript:window.history.back();',$lang_loginedit);
+	  if(!strstr($admincp_ok[admin_op], "editor"))okinfoy('javascript:window.history.back();',$lang_loginedit);
 	  }
 	  break;
 	  case "modify";
-	  if(!strstr($admincp_ok[admin_op], "editor"))okinfo('javascript:window.history.back();',$lang_loginedit);
+	  if(!strstr($admincp_ok[admin_op], "editor"))okinfoy('javascript:window.history.back();',$lang_loginedit);
 	  break;
 	  case "Modify";
-	  if(!strstr($admincp_ok[admin_op], "editor"))okinfo('javascript:window.history.back();',$lang_loginedit);
+	  if(!strstr($admincp_ok[admin_op], "editor"))okinfoy('javascript:window.history.back();',$lang_loginedit);
 	  break;
 	  case "del";
-	  if(!strstr($admincp_ok[admin_op], "del"))okinfo('javascript:window.history.back();',$lang_logindelete);
+	  if(!strstr($admincp_ok[admin_op], "del"))okinfoy('javascript:window.history.back();',$lang_logindelete);
 	  break;
 	  case "delete";
-	  if(!strstr($admincp_ok[admin_op], "del"))okinfo('javascript:window.history.back();',$lang_logindelete);
+	  if(!strstr($admincp_ok[admin_op], "del"))okinfoy('javascript:window.history.back();',$lang_logindelete);
 	  break;
 	  }
-	  if(($admincp_ok[admin_op]=='---' or $admincp_ok[admin_op]=='') and $action<>'' and (!strstr($_SERVER['REQUEST_URI'], "/content.php")) )okinfo('javascript:window.history.back();',$lang_loginall);
+	  if(($admincp_ok[admin_op]=='---' or $admincp_ok[admin_op]=='') and $action<>'' and (!strstr($_SERVER['REQUEST_URI'], "/content.php")) )okinfoy('javascript:window.history.back();',$lang_loginall);
     }
   }
     $adminlang=explode('-',$admincp_ok[langok]);
-  if($admincp_ok[langok]<>'metinfo' and (!strstr($admincp_ok[langok],$lang)))okinfo('javascript:window.history.back();',$lang_loginalllang);
+  if($admincp_ok[langok]<>'metinfo' and (!strstr($admincp_ok[langok],$lang)))okinfoy('javascript:window.history.back();',$lang_loginalllang);
   //power end
    }
   }

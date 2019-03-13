@@ -7,69 +7,95 @@ echo <<<EOT
 <title>{$lang_onlineTitle}</title>
 </head>
 <body>
-<br>
-<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
-          <tr> 
-            <td colspan="9" align="center" class="list1_title">{$lang_onlineTitle}</td>
-          </tr> 
+<!--
+EOT;
+$littr=18;
+require_once template('metlangs');
+echo <<<EOT
+-->
+<table cellpadding="2" cellspacing="1" class="table">
 		  <tr>
-            <td class="list1_text_title" colspan="9" align="left">&nbsp;&nbsp;<a href="content.php?lang=$lang&action=add">{$lang_onlineAdd}</a></td>
-          </tr>  
-              <tr>
-                <td class="list1_lm"   align="center">{$lang_selected}</td>
-				<td class="list1_lm"   align="center">{$lang_ordernum}</td>
-                <td class="list1_lm"   align="center">{$lang_onlineName}</td>
-                <td class="list1_lm"   align="center" >QQ</td>
-				<td class="list1_lm"  align="center" >MSN</td>
-                <td class="list1_lm"  align="center" >{$lang_onlinetaobao}</td>
-                <td class="list1_lm"  align="center" >{$lang_onlinealibaba}</td>
-				<td class="list1_lm"  align="center" >SKYPE</td>
-				<td class="list1_lm"  align="center" >{$lang_operate}</td>
+            <td class="centle" colspan="3">
+			<form method="POST" name="myform1" style='float:right; font-weight:normal;' action="index.php?search=detail_search&lang=$lang" target="_self">
+			       <input name="name" type="text" class="med" /> <input type="submit" name="Submit2" value="{$lang_search}" class="submit">  
+	        {$lang_onlineTip1}</form>
+			&nbsp;&nbsp;<a href="save.php?lang=$lang&action=add" onclick="return addsave($(this),0);">{$lang_onlineAdd}</a>
+			</td>
+          </tr> 
+			 <tr>
+			 <td colspan="3">
+<form name="del" method="Post" action="delete.php?lang=$lang&class1=$class1">
+<input name="allid" type="hidden" id="allid" value=""><input name="action" type="hidden" id="allid" value="del">
+<table cellpadding="0" cellspacing="0" class="table neitable" style="margin:0px; border:none;">
+              <tr id="list-top">
+                <td class="list" width="40">{$lang_selected}</td>
+				<td class="list" width="40">{$lang_sort}</td>
+                <td class="list">{$lang_onlineName}</td>
+                <td class="list" width="110">QQ</td>
+				<td class="list" width="110">MSN</td>
+                <td class="list">{$lang_onlinetaobao}</td>
+                <td class="list">{$lang_onlinealibaba}</td>
+				<td class="list">SKYPE</td>
+				<td class="list">{$lang_operate}</td>
               </tr>
-			  <form name="del" method="Post" action="delete.php?lang=$lang&class1=$class1" onSubmit="return ConfirmDelall();">
 <!--
 EOT;
 foreach ($online_list as $key=>$val){
 echo <<<EOT
 -->          
-              <tr class="tdbg">
-              <td align="center" class="list1_content_titile"><input name='id' type='checkbox' onClick="unselectall()" id="id" value='$val[id]' class="xz"></td>
-                <td class="list1_content" align="center">$val[no_order]</td>
-			    <td class="list1_content" align="center">$val[name]</td>
-                <td class="list1_content" align="center">$val[qq]</td>
-				<td class="list1_content" align="center">$val[msn]</td>
-                <td class="list1_content" align="center">$val[taobao]</td>
-                <td class="list1_content" align="center">$val[alibaba]</td>
-				<td class="list1_content" align="center">$val[skype]</td>
-				<td align="center" class="list1_content" style="color:#0066FF;"></a> <a href="content.php?action=editor&lang=$lang&id=$val[id]" >{$lang_editor}</a> | <a href="delete.php?lang=$lang&id=$val[id]" onClick="return ConfirmDel();" >{$lang_delete}</a></td>
+              <tr class="mouse click">
+                <td class="list-text"><input name='id' type='checkbox' id="id" value='$val[id]'></td>
+                <td class="list-text"><input type="text" name="no_order_$val[id]" class="text no_order" value="$val[no_order]" /></td>
+			    <td class="list-text"><input type="text" name="name_$val[id]" class="text max" value="$val[name]" /></td>
+                <td class="list-text"><input type="text" name="qq_$val[id]" class="text max" value="$val[qq]" /></td>
+				<td class="list-text"><input type="text" name="msn_$val[id]" class="text max" value="$val[msn]" /></td>
+                <td class="list-text"><input type="text" name="taobao_$val[id]" class="text max" value="$val[taobao]" /></td>
+                <td class="list-text"><input type="text" name="alibaba_$val[id]" class="text max" value="$val[alibaba]" /></td>
+				<td class="list-text"><input type="text" name="skype_$val[id]" class="text max" value="$val[skype]" /></td>
+				<td class="list-text" width="60"><a href="delete.php?lang=$lang&id=$val[id]" onClick="return linkSmit($(this),1);" >{$lang_delete}</a></td>
               </tr>
 <!--
 EOT;
 }
 echo <<<EOT
 -->
-		   
+		</table>
+			<input name="action_type" type="hidden" id="action_type" value="del" />
+			<input name="allid" type="hidden" id="allid" value="" /> 	
+</form>
+		</td> 
+		</tr>
    	   <tr> 
-            <td  class="input_bottom" align="center"><input name="chkAll" class="xz" type="checkbox" id="chkAll" onclick=CheckAll(this.form) value="checkbox">
-              </td>
-			  <td  class="input_bottom" align="center">{$lang_selectall}</td>
-			  <td  class="input_bottom" align="left" colspan="7"><input name="submit" type='submit' value='{$lang_deleteselected}' style="color:#333333;"> 
-              <input name="action" type="hidden" id="action" value="del">
-			  <input name="allid" type="hidden" id="allid" value=""></form></td>
+            <td class="all" width="40"><input name="chkAll" type="checkbox" id="chkAll" onclick="CheckAllx($(this),'del')" value="checkbox" /></td>
+            <td class="all" width="50"><label for="chkAll">{$lang_selectall}</label></td>
+			  <td  class="all-submit" align="left">
+				<input name="submit" type='submit' value='{$lang_deleteselected}' class="submit li-submit" onclick="return met_modify($(this),'del','del');" /> 
+				<input name="saveorder" type='submit' value='{$lang_Submit}' class="submit li-submit" onclick="return met_modify($(this),'del','editor');" /> 
+				<div class="li-submit">
+			<form method="POST" name="myform"  action="../advanced/copy.php?lang=$lang&action=copy&table=3" target="_self">
+			  <input name="allid" type="hidden" id="allid" value="" />
+                <select name="copylang">
+				    <option value="">{$lang_Copytitle}</option>
+<!--
+EOT;
+foreach($met_langok as $key=>$val){
+echo <<<EOT
+-->	
+				    <option value="$val[mark]">$val[name]</option>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+				</select>
+            </form>
+				</div>
+				<input name="submit" type='submit' value='{$lang_Copy}' class="submit li-submit" onclick="return met_modify($(this),'myform','editor');" />
+				<div class="page_list">$page_list</div>
+				</td>
           </tr>
-		  <tr>
-            <td class="input_search" align="left" colspan="9">
-			<form method="POST" name="myform"  action="index.php?search=detail_search&lang=$lang" target="_self">
-			       <b>{$lang_onlineSearchByName}</b> 
-			    <input name="name" type="text" size="30">
-  <input type="submit" name="Submit2" value="{$lang_search}" class="tj" style="color:#333333;">  
-	        {$lang_onlineTip1}</form></td>
-          </tr>
-   	   <tr>
-   	     <td align="center" class="input_search" colspan="9">$page_list</td>
-        </tr>
 		<tr>
-		  <td class="list1_footer" colspan="9" align="center">$foot</td>
+		  <td class="footer" colspan="3">$foot</td>
 	  </tr>
 </table>
 </body>

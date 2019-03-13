@@ -2,81 +2,28 @@
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 require_once template('head');
-
+$colspan=3;
 echo <<<EOT
 -->
 <title>{$lang_listTitle}</title>
 </head>
 <body>
-<!--
-EOT;
-if($action=="modify"){
-echo <<<EOT
--->
-<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
+<table cellpadding="2" cellspacing="1" class="table">
           <tr> 
-            <td align="center" class="list1_title">{$lang_listTitle} [$bigid_info[name]]</td>
+            <td colspan="$colspan" class="title">{$lang_listTitle} [$bigid_info[name]]</td>
           </tr>
           <tr>
-            <td class="list1_input">
-			  <form method="POST" name="myform"  action="list.php?action=editor&id=$id&bigid=$bigid" onSubmit="return CheckForm_skin();" target="_self">
-			  <input name="lang" type="hidden" value="$lang" >
-			  <input name="module" type="hidden" value="$bigid_info[module]" >
-			  <a href="list.php?lang=$lang&bigid=$bigid"><b>{$lang_listManage}</b></a>
-			  <br />
-
-  {$lang_sort}
-  <input name="no_order" type="text" size="3" value="$fdlist_m[no_order]">
-{$lang_name}
-<input name="info" type="text" size="20" value="$fdlist_m[info]" >
-  <input type="submit" name="Submit2" value="{$lang_modify}" class="tj">  
-	        </form>
-			    </td>
-          </tr>
-		  <tr>
-		  <td class="list1_footer" colspan="2" align="center">$foot</td>
-	  </tr>
-</table>
-</body>
-</html>
+            <td class="centle" colspan="$colspan">
 <!--
 EOT;
-}
-else{
-echo <<<EOT
--->
-<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
-          <tr> 
-            <td colspan="6" align="center" class="list1_title">{$lang_listTitle} [$bigid_info[name]]</td>
-          </tr>
-          <tr>
-            <td class="list1_input" colspan="6">
-<!--
-EOT;
-if($listmarknow<>'metinfo'){
-echo <<<EOT
---> 
-			  <form method="POST" name="myform"  action="list.php?bigid=$bigid&action=add" onSubmit="return CheckForm_skin();" target="_self">
-			  <input name="lang" type="hidden" value="$lang" >
-			  <input name="module" type="hidden" value="$bigid_info[module]" >
-			  <span><b>{$lang_listAddList}</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-			    {$lang_sort}
-  <input name="no_order" type="text" size="3">
-			   {$lang_name}
-			    <input name="info" type="text" size="20" value="" >
-  <input type="submit" name="Submit2" value="{$lang_add}" class="tj">  
-	        </form>
-<!--
-EOT;
-}
 if($bigid_info[module]==8){
 $metlistrele[$listinfo[info]]="selected='selected'";
 echo <<<EOT
---> 
-	<form method="POST" name="myform"  action="list.php?bigid=$bigid&action=add&listproduct=metinfo"  target="_self">
+-->
+	<form method="POST" name="myform" style="float:right; margin-right:5px;" action="list.php?bigid=$bigid&action=add&listproduct=metinfo" target="_self">
 			  <input name="lang" type="hidden" value="$lang" >
 			  <input name="module" type="hidden" value="$bigid_info[module]" >
-			  <span><b>{$lang_listproductre}</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+			 <b>&nbsp;&nbsp;{$lang_listproductre}</b>&nbsp;&nbsp;
 			  <input name="no_order" type="hidden" value="99999">
 			  <select name="info">
 			  <option value="0" $metlistrele[0]>$lang_listproductreok</option>
@@ -105,60 +52,86 @@ EOT;
 echo <<<EOT
 --> 
 			  </select>
-  <input type="submit" name="Submit2" value="{$lang_Submit}" class="tj">  
-	        </form>
+			  <input type="submit" value="{$lang_Submit}" class="submit" onclick="return Smit($(this),'myform');" />
+	        </form> 
 <!--
 EOT;
 }
 echo <<<EOT
---> 			
-			
-			</td>
-          </tr>
-              <tr>
+--> 
 <!--
 EOT;
 if($listmarknow<>'metinfo'){
 echo <<<EOT
 --> 
-                <td class="list1_top" align="center" width="5%">{$lang_selected}</td>
-                <td width="5%" class="list1_top" align="center">{$lang_sort}</td>
-                <td width="20%" class="list1_top" align="center" >{$lang_name}</td>
-				<td width="10%" class="list1_top" align="center" >{$lang_operate}</td>
+			&nbsp;&nbsp;<a href="list.php?bigid=$bigid&lang=$lang&action=addsave" title="{$lang_listAddList}" onclick="return addsave($(this),1);">{$lang_listAddList}</a>
+<!--
+EOT;
+}
+echo <<<EOT
+--> 			
+			</td>
+          </tr>
+		</table>
+		<table cellpadding="2" cellspacing="1" class="table">
+					 <tr>
+			 <td colspan="3">
+			  <form name="del" method="Post" action="list.php?lang=$lang">
+			  <table cellpadding="0" cellspacing="0" class="table neitable" style="margin:0px; border:none;">
+              <tr id="list-top">
+<!--
+EOT;
+if($listmarknow<>'metinfo'){
+echo <<<EOT
+--> 
+                <td class="list" width="5%">{$lang_selected}</td>
+                <td width="5%" class="list">{$lang_sort}</td>
+                <td width="20%" class="list" >{$lang_name}</td>
+				<td width="10%" class="list" >{$lang_operate}</td>
               </tr>
-			  <form name="del" method="Post" action="list.php?action=delete&lang=$lang" onSubmit="return ConfirmDelall();">
 <!--
 EOT;
 foreach ($fd_list as $key=>$val){
 echo <<<EOT
 -->          
-              <tr>
-              <td class="list1_content_titile" align="center"><input name='id' type='checkbox' onClick="unselectall()" id="id" value='$val[id]' class="xz"></td>
-                <td align="center" class="list1_content">$val[no_order]</td>
-                <td class="list1_content" align="center">$val[info]</td>
-				<td align="center" class="list1_content" style="color:#0066FF;"><a href="list.php?bigid=$val[bigid]&id=$val[id]&action=modify&lang=$lang" >{$lang_editor}</a> | <a href="list.php?bigid=$val[bigid]&id=$val[id]&action=delete&lang=$lang" onClick="return ConfirmDel();" >{$lang_delete}</a></td>
+              <tr class="mouse click">
+              <td class="list-text"><input name='id' type='checkbox' id="id" value='$val[id]' />
+			  <input name='bigid_$val[id]' type='hidden' value='$bigid' />
+			  </td>
+                <td class="list-text"><input type="text" value="$val[no_order]" name="no_order_$val[id]" class="text no_order" /></td>
+                <td class="list-text"><input type="text" value="$val[info]" name="info_$val[id]" class="text nonull" /></td>
+				<td class="list-text"><a href="list.php?bigid=$val[bigid]&id=$val[id]&action=delete&lang=$lang" onClick="return linkSmit($(this),1);" >{$lang_delete}</a></td>
               </tr>
 <!--
 EOT;
 }
 echo <<<EOT
 -->
-       
-   
+			</td>
+			</tr>
+			</table>
+				<input name="action_type" type="hidden" id="action_type" value="del" />
+				<input name="action" type="hidden" value="delete" />
+				<input name="allid" type="hidden" id="allid" value="" />
+				<input name="bigid" type="hidden" value="$bigid" />
+				</form>
+		</td>
+		</tr>
    	   <tr> 
-            <td align="center" class="input_bottom"><input name="chkAll" class="xz" type="checkbox" id="chkAll" onclick=CheckAll(this.form) value="checkbox"></td>
-              <td align="center" class="input_bottom">{$lang_selectall}</td> 
-			  <td align="left" class="input_bottom" colspan="4"><input name="submit" type='submit' value='{$lang_deleteselected}' style="*padding-top:4px;"> 
-              <input name="action_type" type="hidden" id="action_type" value="del">
-			  <input name="allid" type="hidden" id="allid" value=""></form></td>
+            <td class="all" width="40"><input name="chkAll" type="checkbox" id="chkAll" onclick="CheckAllx($(this),'del')" value="checkbox" /></td>
+			<td class="all" width="40" ><label for="chkAll">{$lang_selectall}</label></td>
+			  <td class="all-submit"><input name="submit" type='submit' value='{$lang_deleteselected}' class="submit li-submit" onclick="return met_modify($(this),'del','delete');" />
+				<input name="submit" type='submit' value='$lang_Submit' class="submit li-submit" onclick="return met_modify($(this),'del','editor');" />
+				<div class="page_list">$page_list</div>
+			</td>
           </tr>
 <!--
 EOT;
 }else{
 echo <<<EOT
 --> 
-                <td width="5%" class="list1_top" align="center">{$lang_sort}</td>
-                <td width="20%" class="list1_top" align="center" >{$lang_name}</td>
+                <td width="5%" class="list">{$lang_sort}</td>
+                <td width="20%" class="list" >{$lang_name}</td>
               </tr>
 <!--
 EOT;
@@ -166,26 +139,22 @@ foreach ($fd_list as $key=>$val){
 echo <<<EOT
 -->          
               <tr>
-                <td align="center" class="list1_content_titile">$val[no_order]</td>
-                <td class="list1_content" align="center">$val[info]</td>
+                <td class="list-text">$val[no_order]</td>
+                <td class="list-text">$val[info]</td>
               </tr>
 <!--
 EOT;
 }}
 echo <<<EOT
 -->
-   	   <tr>
-   	     <td colspan="6" align="center" class="list1_input">$page_list</td>
-        </tr>
 		<tr>
-		  <td class="list1_footer" colspan="6" align="center">$foot</td>
-	  </tr>
-</table>
+			<td class="footer" colspan="$colspan">$foot</td>
+		</tr>
+	</table>
 </body>
 </html>
 <!--
 EOT;
-}
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>-->

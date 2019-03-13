@@ -50,14 +50,13 @@ location.href='flash.php?lang=$lang';
 <form method="POST" name="myform" action="flashsave.php?lang=$lang" target="_self" onSubmit="return CheckFormflash();">
 		<input name="action" type="hidden" value="add">
 		<input name="met_flash_ok" type="hidden" value="0">
-<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
-      
+<table cellpadding="2" cellspacing="1" class="table">
           <tr> 
-            <td colspan="4" align="center" class="list1_title">Flash{$lang_add}</td>
+            <td colspan="3" class="title">Flash{$lang_add}</td>
           </tr>
 		  		  <tr> 
-            <td class="list1_text">{$lang_setflashBelong}</td>
-            <td colspan="2" class="list1_input"><select name="module" id="module" onChange="changeflashclass(document.myform.module.options[document.myform.module.selectedIndex].label1,document.myform.module.options[document.myform.module.selectedIndex].value)" >
+            <td class="text">{$lang_setflashBelong}</td>
+            <td colspan="2" class="input"><select name="module" id="module" onChange="changeflashclass(document.myform.module.options[document.myform.module.selectedIndex].label1,document.myform.module.options[document.myform.module.selectedIndex].value)" >
 <!--
 EOT;
 foreach($mod1 as $key=>$val){
@@ -84,62 +83,65 @@ echo <<<EOT
             </select></td>
           </tr> 
 		  <tr> 
-            <td class="list1_text">{$lang_flashMode}</td>
-            <td colspan="2" class="list1_input">
-			<input type="radio" id="met_flash_type_0" name="met_flash_type" disabled="disabled"  $met_flash_type[0]  >{$lang_close} 
-			<input type="radio" id="met_flash_type_1" name="met_flash_type" disabled="disabled"  $met_flash_type[1]  >{$lang_flashMode1}  
-			<input type="radio" id="met_flash_type_2" name="met_flash_type" disabled="disabled"  $met_flash_type[2] >{$lang_flashMode2}
-			<input type="radio" id="met_flash_type_3" name="met_flash_type" disabled="disabled"  $met_flash_type[3] >{$lang_setflashMode3}
+            <td class="text">{$lang_flashMode}</td>
+            <td colspan="2" class="input">
+			<input type="radio" id="met_flash_type_0" name="met_flash_type" disabled="disabled" class="radio" $met_flash_type[0]  >{$lang_close}&nbsp; 
+			<input type="radio" id="met_flash_type_1" name="met_flash_type" disabled="disabled" class="radio" $met_flash_type[1]  >{$lang_flashMode1}&nbsp;  
+			<input type="radio" id="met_flash_type_2" name="met_flash_type" disabled="disabled" class="radio" $met_flash_type[2] >{$lang_flashMode2}&nbsp;
+			<input type="radio" id="met_flash_type_3" name="met_flash_type" disabled="disabled" class="radio" $met_flash_type[3] >{$lang_setflashMode3}&nbsp;
 			<span style="color:#FF0000">{$lang_flashmodify}</span>
 			</td>
           </tr> 
 		  <tr> 
-            <td class="list1_text">{$lang_setflashSize}</td>
-            <td colspan="2" class="list1_input">
-			{$lang_setflashWidth}<input name="width" disabled="disabled"  id="met_flash_x" type="text" class="input" size="3"  value="{$met_flasharray[10000][x]}">{$lang_setflashPixel}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			{$lang_setflashHeight}<input disabled="disabled"  id="met_flash_y" name="height" type="text" class="input" size="3"  value="{$met_flasharray[10000][y]}">{$lang_setflashPixel}
+            <td class="text">{$lang_setflashSize}</td>
+            <td colspan="2" class="input">
+			{$lang_setflashWidth}&nbsp;<input name="width" disabled="disabled" id="met_flash_x" type="text" class="text mid" value="{$met_flasharray[10000][x]}">×
+			<input disabled="disabled"  id="met_flash_y" name="height" type="text" class="text mid" value="{$met_flasharray[10000][y]}">{$lang_setflashHeight}({$lang_setflashPixel})
 			<span style="color:#FF0000">{$lang_flashmodify}</span>
 			</td>
           </tr>
 </table>
-	<table id='flash1' $style1  cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
+<table cellpadding="2" id='flash1' $style1 cellspacing="1" class="table">
 		  <tr id="no_order" $style3>
-			<td class="list1_text">{$lang_sort}</td>
-            <td colspan="2"  class="list1_input"><input name="no_order" type="text" class="input" size="2" maxlength="5" value="0"><font color=red>{$lang_ordernumber}</font></td>
+			<td colspan="2" class="text">{$lang_sort}</td>
+            <td class="input"><input name="no_order" type="text" class="text mid" value="0"><span class="tips">{$lang_ordernumber}</span></td>
           </tr>
 		  <tr >
-			<td class="list1_text">{$lang_setflashName}</td>
-            <td colspan="2" class="list1_input"><input name="img_title" type="text" class="input" size="30"  value=""></td>
+			<td colspan="2" class="text">{$lang_setflashName}</td>
+            <td class="input"><input name="img_title" type="text" class="text" value=""></td>
           </tr>
 		  <tr >
-		    <td class="list1_text">{$lang_setflashImgUrl}</td>
-	        <td colspan="2" class="list1_input"><input name="img_path" type="text" class="input" size="30"  value=""><iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_photo.php?returnid=img_path&flash=flash&lang=$lang" frameborder=0 scrolling=no width="320" height="25"></iframe>			</td>
+		    <td colspan="2" class="text">{$lang_setflashImgUrl}</td>
+	        <td class="input upload"><input name="img_path" type="text" class="text" value=""><iframe ID="UploadFiles" src="../include/upload_photo.php?returnid=img_path&flash=flash&lang=$lang" frameborder=0 scrolling=no ></iframe>			</td>
 		  </tr>
 		  <tr > 
-            <td class="list1_text">{$lang_setflashImgHref}</td>
-            <td colspan="2" class="list1_input"><input name="img_link" type="text" class="input" size="30"  value=""></td>
+            <td colspan="2" class="text">{$lang_setflashImgHref}</td>
+            <td class="input"><input name="img_link" type="text" class="text" value=""></td>
           </tr> 
 		  </table>
-		  
-		  <table id='flash2' $style2 cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
+<table cellpadding="2" id='flash2' $style2 cellspacing="1" class="table">
 		   <tr > 
-            <td class="list1_text" >{$lang_setflashUrl}</td>
-            <td colspan="2" class="list1_input"> <input name="flash_path" type="text" class="input" size="30"  value=""> 
-			<iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_file.php?uploadtype=flash&returnid=flash_path&lang=$lang" frameborder=0 scrolling=no width="320" height="25"></iframe></td>
+            <td colspan="2" class="text" >{$lang_setflashUrl}</td>
+            <td class="input upload"> <input name="flash_path" type="text" class="text" value=""> 
+			<iframe ID="UploadFiles" src="../include/upload_file.php?uploadtype=flash&returnid=flash_path&lang=$lang" frameborder=0 scrolling=no></iframe>
+			</td>
           </tr>		  
 		  <tr> 
-            <td class="list1_text" >{$lang_setflashBg}</td>
-            <td colspan="2" class="list1_input"><input name="flash_back" type="text" class="input" size="30"  value=""><iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_photo.php?returnid=flash_back&flash=flash&lang=$lang" frameborder=0 scrolling=no width="320" height="25"></iframe>			</td>
+            <td colspan="2" class="text" >{$lang_setflashBg}</td>
+            <td class="input upload"><input name="flash_back" type="text" class="text" value=""><iframe ID="UploadFiles" src="../include/upload_photo.php?returnid=flash_back&flash=flash&lang=$lang" frameborder=0 scrolling=no ></iframe>			
+			</td>
           </tr>
-		  </table>
-	<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
+</table>
+<table cellpadding="2" cellspacing="1" class="table">
 	      <tr> 
-            <td style="width:20%" class="list1_text" colspan="2"></td>
-	      <td class="list1_submit"><input type="submit" name="Submit" value="{$lang_Submit}" class="tj" style="*padding-top:2px; *height:22px;"><input type="reset" name="Submit" value="{$lang_Reset}" class="tj" style="*padding-top:2px; *height:22px;">
+            <td class="text" colspan="2"></td>
+	      <td class="submit">
+			<input type="submit" name="Submit" value="{$lang_Submit}" class="submit" onclick="return Smit($(this),'myform')" >
+			<input type="reset" name="Submit" value="{$lang_Reset}" class="reset" >
 		  </td>
           </tr>        
           <tr>
-		  <td class="list1_footer" colspan="4" align="center">$foot</td>
+		  <td class="footer" colspan="4">$foot</td>
 	  </tr>
 </table>
 </form>

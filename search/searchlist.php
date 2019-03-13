@@ -4,7 +4,7 @@
 	
 	$list[title]=get_keyword_str(replaceHtmlAndJs($list[title]),$searchword,50);
 	$list[content]=get_keyword_str(replaceHtmlAndJs($list[content]),$searchword,68);
-	$htmname=($list[filename]<>"" and $metadmin[pagename])?$filename."/".$list[filename]."_".$filenamenow.$list[id]:$filename."/".$filenamenow.$list[id];
+	$htmname=($list[filename]<>"" and $metadmin[pagename])?$filename."/".$list[filename]:$filename."/".$filenamenow.$list[id];
 	$phpname=$filename."/show".$pagename.".php?id=".$list[id];	
 	$list[url]=$met_webhtm?$htmname.$met_htmtype:$phpname."&lang=".$lang;
 if($met_member_use==2){

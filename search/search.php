@@ -183,6 +183,7 @@ break;
 	$query1 = "SELECT * FROM $met_column $serch_sql1 order by id";
     $result = $db->query($query1);
 	while($list= $db->fetch_array($result)){
+	if($list[filename]=='')$list[filename]=$list[foldername].$list[id];
 	$url1="../".$list[foldername]."/show.php?lang=".$lang."&id=".$list[id];
 	$url2="../".$list[foldername]."/".$list[filename].$met_htmtype;	
 	$list[url]=$met_webhtm?$url2:$url1;
@@ -261,7 +262,8 @@ $search_list[0][url]=$index_url;
 if($class_info[name]=="")$class_info=array('name'=>$lang_search,'url'=>'search.php?lang='.$lang);
      $show[description]=$class_info[description]?$class_info[description]:$met_keywords;
      $show[keywords]=$class_info[keywords]?$class_info[keywords]:$met_keywords;
-	 $met_title=$class_info[name]."--".$met_title;
+	 $met_title=$met_title?$class_info['name'].'-'.$met_title:$class_info['name'];
+	 if($class_info['ctitle']!='')$met_title=$class_info['ctitle'];
 
 
 require_once '../public/php/methtml.inc.php';

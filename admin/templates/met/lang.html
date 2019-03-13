@@ -14,40 +14,60 @@ $langorder=count($met_langadmin)+1;
 $langopen1="checked='checked'";
 if($langaction=='editadmin'){
 $langopen1="";
+$langopen2="checked='checked'";
 $lang_langadd=$lang_langedit;
 $langorder=$met_langadmin[$langeditor][order];
-if($met_langadmin[$langeditor][useok])$langopen1="checked='checked'";
+$met_langadmin[$langeditor][useok]?$langopen1="checked='checked'":$langopen0="checked='checked'";
 $langmark1="disabled='disabled'";
 }
 echo <<<EOT
 -->	
-
-
-
-        <form method="POST" name="myform" action="" target="_self">
+<script type="text/javascript">
+    var langmarks = Array();
+<!--
+EOT;
+$y='';
+$i=0;
+foreach($met_langadmin as $key=>$val){
+if($langaction=='editadmin')$y=$langeditor;
+if($val[mark]!=$y){
+echo <<<EOT
+-->
+        langmarks[$i]='$val[mark]';
+<!--
+EOT;
+$i++;
+}
+}
+echo <<<EOT
+-->
+   var p = 0;
+</script>
+        <form method="POST" name="myform" action="lang.php?lang=$lang" target="_self">
 		<input name="action" type="hidden" value="modify">
 		<input name="langsetaction"type="hidden" value="{$langaction}">
 		<input name="langorderold" type="hidden" value="{$met_langadmin[$langeditor][order]}">
 		<input name="langmark" type="hidden" value="{$met_langadmin[$langeditor][mark]}">
-<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
-<tr> 
-            <td colspan="2" align="center" class="list1_title">{$lang_langadd}</td>
-          </tr>
+<table cellpadding="2" cellspacing="1" class="table">
 		  <tr> 
-            <td class="list1_text">{$lang_langname}</td>
-            <td class="list1_input"><input type="text" size="20" name="langname" value="{$met_langadmin[$langeditor][name]}"></td>
+            <td class="text">{$lang_langname}</td>
+            <td class="input"><input type="text" class="text med nonull" name="langname" value="{$met_langadmin[$langeditor][name]}" /></td>
           </tr> 
 		  <tr> 
-            <td class="list1_text">{$lang_sort}</td>
-            <td class="list1_input"><input type="text" size="3" name="langorder" value="$langorder">{$lang_langorderinfo}</td>
+            <td class="text">{$lang_sort}</td>
+            <td class="input"><input type="text" name="langorder" class="text small nonull" value="$langorder" /><span class="tips">{$lang_langorderinfo}</span></td>
           </tr>  
 		   <tr> 
-            <td class="list1_text">{$lang_langmark}</td>
-            <td class="list1_input"><input type="text" size="3" name="langmark" value="{$met_langadmin[$langeditor][mark]}" $langmark1>{$lang_langmarkinfo}</td>
+            <td class="text">{$lang_langmark}</td>
+            <td class="input"><input type="text" class="text small nonull" name="langmark" value="{$met_langadmin[$langeditor][mark]}" $langmark1 /><span class="tips">{$lang_langmarkinfo}</span></td>
            </tr> 
 		   <tr> 
-            <td class="list1_text">{$lang_open}</td>
-            <td class="list1_input"><input name="languseok" type="checkbox" value="1" $langopen1 >{$lang_languseinfo}</td>
+            <td class="text"><a href="javascript:;" class="tips"><img src="{$img_url}/botton/faq.png" /></a>&nbsp;{$lang_langtype}</td>
+            <td class="input">
+			<input name="languseok" id="languseok" type="radio" class="radio" value="1" $langopen1 ><label for="languseok">{$lang_open}</label>
+			<input name="languseok" id="languseno" type="radio" class="radio" value="0" $langopen0 ><label for="languseno">{$lang_close}</label>
+			<div class="tips-text none">{$lang_languseinfo}</div>
+			</td>
            </tr>
 <!--
 EOT;
@@ -55,8 +75,8 @@ if($langaction=='addadmin'){
 echo <<<EOT
 -->	
 		   <tr> 
-            <td class="list1_text">{$lang_langbasic}</td>
-            <td class="list1_input">
+            <td class="text"><a href="javascript:;" class="tips"><img src="{$img_url}/botton/faq.png" /></a>&nbsp;{$lang_langbasic}</td>
+            <td class="input">
 			<select name="langfile">
 <!--
 EOT;
@@ -69,7 +89,7 @@ EOT;
 }
 echo <<<EOT
 -->			
-			</select> {$lang_langbasicinfo}</td>
+			</select><div class="tips-text none">{$lang_langbasicinfo}</div></td>
            </tr> 
 <!--
 EOT;
@@ -77,13 +97,13 @@ EOT;
 echo <<<EOT
 --> 
 	      <tr> 
-            <td class="list1_text"></td>
-	      <td class="list1_submit"><input type="submit" name="Submit" value="{$lang_Submit}" class="tj" style="*padding-top:2px; *height:22px;"><input type="reset" name="Submit" value="{$lang_Reset}" class="tj" style="*padding-top:2px; *height:22px;"></td>
+            <td class="text"></td>
+	      <td class="submit"><input type="submit" name="Submit" value="{$lang_Submit}" class="submit" onclick="return Smit($(this),'myform')" />
+		  <input type="reset" name="Submit" value="{$lang_Reset}" class="reset" /></td>
           </tr>
 		  <tr> 
-		  <td class="list1_footer" colspan="2" align="center">$foot</td>
+		  <td class="footer" colspan="2" align="center">$foot</td>
 		  </tr>
-        </form>
 <!--
 EOT;
 }elseif($langaction=='add' or $langaction=='edit'){
@@ -94,52 +114,73 @@ $langopen1="";
 $lang_langadd=$lang_langedit;
 $langorder=$met_langok[$langeditor][order];
 if($met_langok[$langeditor][useok])$langopen1="checked='checked'";
-if($met_langok[$langeditor][newwindows])$langnewwindows1="checked='checked'";
-$langmark1="disabled='disabled'";
+$met_langok[$langeditor][newwindows]?$langnewwindows1="checked='checked'":$langnewwindows0="checked='checked'";
+$langmark1="class='none'";
 }
 echo <<<EOT
 -->	
-
-
-
-        <form method="POST" name="myform" action="" target="_self">
+<script type="text/javascript">
+    var langmarks = Array();
+<!--
+EOT;
+$y='';
+$i=0;
+foreach($met_langok as $key=>$val){
+if($langaction=='edit')$y=$langeditor;
+if($val[mark]!=$y){
+echo <<<EOT
+-->
+        langmarks[$i]='$val[mark]';
+<!--
+EOT;
+$i++;
+}
+}
+echo <<<EOT
+-->
+   var p = 0;
+</script>
+        <form method="POST" name="myform" action="lang.php?lang=$lang" target="_self">
 		<input name="action" type="hidden" value="modify">
 		<input name="langsetaction"type="hidden" value="{$langaction}">
-		<input name="langorderold" type="hidden" value="{$met_langok[$langeditor][order]}">
-		<input name="langmark" type="hidden" value="{$met_langok[$langeditor][mark]}">
-<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
-<tr> 
-            <td colspan="2" align="center" class="list1_title">{$lang_langadd}</td>
-          </tr>
-		  <tr> 
-            <td class="list1_text">{$lang_langname}</td>
-            <td class="list1_input"><input type="text" size="20" name="langname" value="{$met_langok[$langeditor][name]}"></td>
-          </tr> 
-		  <tr> 
-            <td class="list1_text">{$lang_sort}</td>
-            <td class="list1_input"><input type="text" size="3" name="langorder" value="$langorder">{$lang_langorderinfo}</td>
-          </tr> 
-		  <tr> 
-            <td class="list1_text">{$lang_langflag}</td>
-            <td class="list1_input"><input name="langflag" type="text" class="input" size="30"  value="{$met_langok[$langeditor][flag]}"><iframe style="padding-top0px;"ID="UploadFiles" src="../include/upload_photo.php?returnid=langflag&flash=flash&lang=$lang" frameborder=0 scrolling=no width="320" height="25"></iframe></td>
-          </tr> 
-		   <tr> 
-            <td class="list1_text">{$lang_langmark}</td>
-            <td class="list1_input"><input type="text" size="3" name="langmark" value="{$met_langok[$langeditor][mark]}" $langmark1>{$lang_langmarkinfo}</td>
-           </tr> 
-		   <tr> 
-            <td class="list1_text">{$lang_open}</td>
-            <td class="list1_input"><input name="languseok" type="checkbox" value="1" $langopen1 >{$lang_languseinfo}</td>
-           </tr>
+<table cellpadding="2" cellspacing="1" class="table">
+		<tr> 
+            <td class="text">{$lang_langname}</td>
+            <td class="input"><input type="text" class="text med nonull" name="langname" value="{$met_langok[$langeditor][name]}" /></td>
+        </tr> 
+		<tr> 
+            <td class="text">{$lang_sort}</td>
+            <td class="input"><input type="text" class="text small nonull" name="langorder" value="$langorder" /><span class="tips">{$lang_langorderinfo}</span></td>
+        </tr> 
+		<tr> 
+            <td class="text">{$lang_langflag}</td>
+            <td class="input upload"><input name="langflag" type="text" class="text" style="width:145px;" size="30"  value="{$met_langok[$langeditor][flag]}" />
+			<div class="flag" style="float:left; margin-right:5px;">
+			    <img src="{$img_url}/flag.gif" alt="{$lang_chooseflag}" title="{$lang_chooseflag}" style="cursor:pointer;" onclick="metflag($(this),'$lang');" />
+			</div>
+			</td>
+        </tr> 
+		<tr $langmark1> 
+            <td class="text">{$lang_langmark}</td>
+            <td class="input"><input type="text" class="text small nonull" name="langmark" value="{$met_langok[$langeditor][mark]}"><span class="tips">{$lang_langmarkinfo}</span>
+			</td>
+        </tr> 
+		<tr> 
+            <td class="text">{$lang_langtype}</td>
+            <td class="input">
+			<input name="languseok" id="languseok1" class="radio" type="radio" value="1" $langopen1 ><label for="languseok1">{$lang_open}</label>&nbsp;&nbsp;
+			<input name="languseok" id="languseok2" class="radio" type="radio" value="0" $langopen2 ><label for="languseok2">{$lang_close}</label>
+			</td>
+        </tr>
 		   
 <!--
 EOT;
 if($langaction=='add'){
 echo <<<EOT
 -->	
-		   <tr> 
-            <td class="list1_text">{$lang_langbasic}</td>
-            <td class="list1_input">
+		<tr> 
+            <td class="text"><a href="javascript:;" class="tips"><img src="{$img_url}/botton/faq.png" /></a>&nbsp;{$lang_langbasic}</td>
+            <td class="input">
 			<select name="langfile">
 <!--
 EOT;
@@ -152,156 +193,164 @@ EOT;
 }
 echo <<<EOT
 -->			
-			</select> {$lang_langbasicinfo}</td>
-           </tr> 
-		   <tr> 
-            <td class="list1_text">{$lang_langincbasic}</td>
-            <td class="list1_input">
+			</select><div class="tips-text none">{$lang_langbasicinfo1}</div></td>
+        </tr> 
+		<tr> 
+            <td class="text"><a href="javascript:;" class="tips"><img src="{$img_url}/botton/faq.png" /></a>&nbsp;{$lang_langincbasic}</td>
+            <td class="input">
 			<select name="langincfile">
 <!--
 EOT;
 foreach($met_langok as $key=>$val){
 echo <<<EOT
 -->
-<option value="$val[mark]">$val[name]</option>	
+				<option value="$val[mark]">$val[name]</option>	
 <!--
 EOT;
 }
 echo <<<EOT
 -->			
-			</select> {$lang_langbasicinfo}</td>
-           </tr> 
+			</select><div class="tips-text none">{$lang_langinfo1}</div></td>
+        </tr> 
 <!--
 EOT;
 }
 echo <<<EOT
 -->	
-		    <tr> 
-            <td class="list1_text">{$lang_langnewwindows}</td>
-            <td class="list1_input"><input name="langnewwindows" type="checkbox" value="1" $langnewwindows1 >{$lang_yes}</td>
-           </tr>
-		    <tr> 
-            <td class="list1_text">{$lang_langouturl}</td>
-            <td class="list1_input"><input type="text" size="30" name="langlink" value="{$met_langok[$langeditor][link]}">{$lang_langouturlinfo}</td>
-          </tr> 
-	      <tr> 
-            <td class="list1_text"></td>
-	      <td class="list1_submit"><input type="submit" name="Submit" value="{$lang_Submit}" class="tj" style="*padding-top:2px; *height:22px;"><input type="reset" name="Submit" value="{$lang_Reset}" class="tj" style="*padding-top:2px; *height:22px;"></td>
-          </tr>
-		   <tr> 
-		  <td class="list1_footer" colspan="2" align="center">$foot</td>
-		  </tr>
-        </form>
+		<tr> 
+            <td class="text">{$lang_langnewwindows}</td>
+            <td class="input">
+			    <input name="langnewwindows" id="langnewwindows1" type="radio" class="radio" value="1" $langnewwindows1 /><label for="langnewwindows1">{$lang_yes}</label>&nbsp;&nbsp;
+			    <input name="langnewwindows" id="langnewwindows0" type="radio" class="radio" value="0" $langnewwindows0 /><label for="langnewwindows0">{$lang_no}</label>
+			</td>
+        </tr>
+		<tr> 
+            <td class="text">{$lang_langouturl}</td>
+            <td class="input"><input type="text" class="text" name="langlink" value="{$met_langok[$langeditor][link]}"><span class="tips">{$lang_langouturlinfo}</span></td>
+        </tr> 
+	    <tr> 
+            <td class="text"></td>
+			<td class="submit">
+		    <input type="submit" name="Submit" value="{$lang_Submit}" class='submit' onclick="return Smit($(this),'myform')" />
+		    <input type="reset" name="Submit" value="{$lang_Reset}" class='reset' />
+			</td>
+        </tr>
+    </table>
+    </form>
+	<div class="footer">$foot</div>
 <!--
 EOT;
 }else{
 echo <<<EOT
 -->
-<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
-          <tr> 
-            <td colspan="8" align="center" class="list1_title">{$lang_langtitle}</td>
-          </tr>
-		  <tr> 
-            <td colspan="8" align="center" height="25" align="left" style="text-align:left; background-color:#CCFF66;">
+    <table cellpadding="2" cellspacing="1" class="table">
+		<tr> 
+            <td colspan="8" class="line">
 <!--
 EOT;
 if($langadminok=="metinfo"){
 echo <<<EOT
 -->				
-			&nbsp;<b>{$lang_langweb}</b>&nbsp;&nbsp;<a href="lang.php?langaction=add&lang=$lang">{$lang_langadd}</a>
+			<span>{$lang_langweb}</span><a href="lang.php?langaction=add&lang=$lang" title="{$lang_langadd}">{$lang_langadd}</a>
 <!--
 EOT;
 }
 echo <<<EOT
 -->				
 			</td>
-          </tr>
-              <tr> 
-                <td width="5%" align="center" class="list1_lm">{$lang_sort}</td>
-                <td width="10%" align="center" class="list1_lm">{$lang_langname}</td>
-                <td width="7%" align="center" class="list1_lm">{$lang_langflag}</td>
-				<td width="5%" align="center" class="list1_lm">{$lang_langmark}</td>
-				<td width="8%" align="center" class="list1_lm">{$lang_open}</td>
-				<td width="20%" align="center" class="list1_lm">{$lang_langouturl}</td>
-				<td width="10%" align="center" class="list1_lm">{$lang_operate}</td>
-				<td width="35%" align="center" class="list1_lm">{$lang_langpara}</td>
-              </tr>
+        </tr>
+        <tr> 
+            <td width="40" class="list">{$lang_sort}</td>
+            <td class="list">{$lang_langname}</td>
+            <td class="list">{$lang_langflag}</td>
+			<td class="list">{$lang_langmark}</td>
+			<td width="50" class="list">{$lang_open}</td>
+			<td class="list">{$lang_langouturl}</td>
+			<td width="80" class="list">{$lang_operate}</td>
+			<td class="list">{$lang_langpara}</td>
+        </tr>
 <!--
 EOT;
+$i=0;
 foreach($met_langok as $key=>$val){
+$i++;
 if($langadminok=="metinfo" or (strstr($langadminok,"-".$val[mark]."-"))){
  if(strstr($val[flag], 'http://')){
-$val[flag]=($val[flag]=='')?'':"<img src='".$val[flag]."' alt=".$val[name].">";
+	$val['flag']=($val['flag']=='')?'':"<img src='".$val['flag']."' alt=".$val['name'].">";
+}elseif(strstr($val['flag'], '../')){
+	$val['flag']=($val['flag']=='')?'':"<img src='../".$val['flag']."' alt=".$val['name'].">";
 }else{
-$val[flag]=($val[flag]=='')?'':"<img src='../".$val[flag]."' alt=".$val[name].">";
+$val[flag]=($val[flag]=='')?'':"<img src='../../public/images/flag/".$val[flag]."' alt=".$val[name].">";
 }
 $val[useok]=$val[useok]?$lang_yes:$lang_no;
-$met_indextype.="<input name='met_index_type1' type='radio' value='".$val[mark]."'";
+$met_indextype.="<input name='met_index_type1' id='met_index_type1_$i' type='radio' class='radio' value='".$val[mark]."'";
 if($met_index_type==$val[mark])$met_indextype.=" checked='checked'";
-$met_indextype.=">".$val[name]; 
+$met_indextype.="/>"."<label for='met_index_type1_$i'>".$val[name]."</label>&nbsp;&nbsp;"; 
 echo <<<EOT
 -->	
-			   <tr> 
-                <td align="center" class="list1_lm1">{$val[order]} </td>
-                <td align="center" class="list1_lm1">{$val[name]}</td>
-                <td align="center" class="list1_lm1">$val[flag]</td>
-				<td align="center" class="list1_lm1">{$val[mark]}</td>
-				<td align="center" class="list1_lm1">{$val[useok]}</td>
-				<td align="center" class="list1_lm1">{$val[link]}</td>
-				<td align="center" class="list1_lm1">
+		<tr class="mouse"> 
+            <td class="list-text">{$val[order]} </td>
+            <td class="list-text">{$val[name]}</td>
+            <td class="list-text">{$val[flag]}</td>
+			<td class="list-text">{$val[mark]}</td>
+			<td class="list-text">{$val[useok]}</td>
+			<td class="list-text">{$val[link]}</td>
+			<td class="list-text">
 <!--
 EOT;
 if($langadminok=="metinfo"){
 echo <<<EOT
 -->	
-				<span><a href="lang.php?langaction=edit&langeditor=$val[mark]&lang=$lang" >{$lang_editor}</a></span>|<span><a href="lang.php?action=modify&langsetaction=delete&langeditor=$val[mark]&lang=$lang" onClick="return ConfirmDel();">{$lang_delete}</a></span>
+				<a href="lang.php?langaction=edit&langeditor=$val[mark]&lang=$lang" title="{$lang_editor}" class="img"><img src="{$img_url}/botton/Set.png" /></a><a href="lang.php?action=modify&langsetaction=delete&langeditor=$val[mark]&lang=$lang" onClick="return linkSmit($(this),1,'cookie');" title="{$lang_delete}" class="img"><img src="{$img_url}/botton/delete.png" /></a>
 <!--
 EOT;
 }
 echo <<<EOT
 -->	
-				</td>
-				<td align="center" class="list1_lm1">
-				<span><a href="langeditor.php?langeditor=$val[mark]&lang=$lang" style="color:#0000FF; text-decoration:none;">{$lang_langwebeditor}</a></span>|
-				<span><a href="langeditorskin.php?langeditor=$val[mark]&langnowok=metinfo&langid=0&lang=$lang" style="color:#FF6600; text-decoration:none;">{$lang_langskineditor}</a></span>
-				</td>
-              </tr>
+			</td>
+			<td class="list-text">
+				<a href="langeditor.php?langeditor=$val[mark]&lang=$lang" title="{$lang_langwebeditor}" class="text">{$lang_langwebeditor}</a>
+				<a href="langeditorskin.php?langeditor=$val[mark]&langnowok=metinfo&langid=0&lang=$lang" title="{$lang_langskineditor}" class="text">{$lang_langskineditor}</a>
+			</td>																	
+        </tr>
 <!--
 EOT;
 }}
 if($langadminok=="metinfo"){
 echo <<<EOT
--->	
-		  <tr> 
-            <td colspan="8" align="center" height="25" align="left" style="text-align:left; border-top:1px solid #339999; background-color:#CCFF66;">&nbsp;<b>{$lang_langadmin}</b>&nbsp;&nbsp;<a href="lang.php?langaction=addadmin&lang=$lang">{$lang_langadd}</a></td>
-          </tr>
-              <tr> 
-                <td width="5%" align="center" class="list1_lm">{$lang_sort}</td>
-                <td width="10%" align="center" class="list1_lm" colspan="2">{$lang_langname}</td>  
-				<td width="5%" align="center" class="list1_lm" colspan="2">{$lang_langmark}</td>
-				<td width="8%" align="center" class="list1_lm" >{$lang_open}</td>
-				<td width="10%" align="center" class="list1_lm">{$lang_operate}</td>
-				<td width="35%" align="center"  class="list1_lm">{$lang_langpara}</td>
-              </tr>
+-->																							 	
+		<tr> 
+            <td colspan="8" class="line" style="border-top:1px solid #84d5fe;"><span>{$lang_langadmin}</span><a href="lang.php?langaction=addadmin&lang=$lang" title="{$lang_langadd}">{$lang_langadd}</a></td>
+        </tr>
+        <tr> 
+            <td class="list">{$lang_sort}</td>
+            <td class="list" colspan="2">{$lang_langname}</td>  
+			<td class="list" colspan="2">{$lang_langmark}</td>
+			<td class="list" >{$lang_open}</td>
+			<td class="list">{$lang_operate}</td>
+			<td class="list">{$lang_langpara}</td>
+        </tr>
 <!--
 EOT;
+$i=0;
 foreach($met_langadmin as $key=>$val){
+$i++;
 $val[useok]=$val[useok]?$lang_yes:$lang_no;
-$met_admintype.="<input name='met_admin_type1' type='radio' value='".$val[mark]."'";
+$met_admintype.="<input name='met_admin_type1' id='met_admin_type1_$i' type='radio' class='radio' value='".$val[mark]."'";
 if($met_admin_type==$val[mark])$met_admintype.=" checked='checked'";
-$met_admintype.=">".$val[name]; 
+$met_admintype.=">"."<label for='met_admin_type1_$i'>".$val[name]."</label>&nbsp;&nbsp;"; 
 echo <<<EOT
--->	
-			   <tr> 
-                <td align="center" class="list1_lm1">{$val[order]}</td>
-                <td align="center" class="list1_lm1" colspan="2">{$val[name]}</td>
-				<td align="center" class="list1_lm1" colspan="2">{$val[mark]}</td>
-				<td align="center" class="list1_lm1" >{$val[useok]}</td>
-				<td align="center" class="list1_lm1" >
-				<span><a href="lang.php?langaction=editadmin&langeditor=$val[mark]&lang=$lang" >{$lang_editor}</a></span>|<span><a href="lang.php?action=modify&langsetaction=deleteadmin&langeditor=$val[mark]&lang=$lang" onClick="return ConfirmDel();">{$lang_delete}</a></span>
+-->												
+			   <tr class="mouse"> 
+                <td class="list-text">{$val[order]}</td>
+                <td class="list-text" colspan="2">{$val[name]}</td>
+				<td class="list-text" colspan="2">{$val[mark]}</td>
+				<td class="list-text">{$val[useok]}</td>
+				<td class="list-text">
+				<a href="lang.php?langaction=editadmin&langeditor=$val[mark]&lang=$lang" title="{$lang_editor}" class="img"><img src="{$img_url}/botton/Set.png" /></a><a href="lang.php?action=modify&langsetaction=deleteadmin&langeditor=$val[mark]&lang=$lang" onClick="return linkSmit($(this),1);" title="{$lang_delete}" class="img"><img src="{$img_url}/botton/delete.png" /></a>
 				</td>
-				<td align="center" class="list1_lm1">
-				<span><a href="langeditoradmin.php?langeditor=$val[mark]&lang=$lang" style="color:#990000; text-decoration:none;">{$lang_langeadminditor}</a></span>
+				<td class="list-text">
+				<a href="langeditoradmin.php?langeditor=$val[mark]&lang=$lang" class="text" title="{$lang_langeadminditor}">{$lang_langeadminditor}</a>
 				</td>
               </tr>
 <!--
@@ -309,61 +358,81 @@ EOT;
 }}
 echo <<<EOT
 -->	
-
-			  </table>
-
+	</table>
 <!--
 EOT;
 if($langadminok=="metinfo"){
 echo <<<EOT
 -->	
-        <form method="POST" name="myform" action="" target="_self">
+        <form method="POST" name="myform" action="lang.php?lang=$lang" target="_self">
 		<input name="action" type="hidden" value="modify">
 		<input name="langsetaction"type="hidden" value="set">
-<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
-		  <tr> 
-            <td class="list1_text">{$lang_langch}</td>
-            <td class="list1_input"><input name="met_ch_lang1" type="checkbox" value="1" $met_ch_lang1> {$lang_open}<span>{$lang_langchok}</span><br><span>{$lang_langcnch}</span> <input type="text" size="5" name="met_ch_mark1" value="$met_ch_mark"></td>
-          </tr> 
-		  <tr> 
-            <td class="list1_text">{$lang_langhome}</td>
-            <td class="list1_input">{$met_indextype}</td>
-          </tr> 
-		  <tr> 
-            <td class="list1_text">{$lang_langdefaultadmin}</td>
-            <td class="list1_input">{$met_admintype}</td>
-          </tr> 
-		   <tr> 
-            <td class="list1_text">{$lang_langadminok}</td>
-            <td class="list1_input"><input name="met_admin_type_ok1" type="checkbox" value="1" $met_admin_type_yes>{$lang_langadminyes}</td>
-   </tr> 
-   		   <tr> 
-            <td class="list1_text">{$lang_langurl}</td>
-            <td class="list1_input"><input name="met_url_type1" type="checkbox" value="1" $met_url_type_yes>{$lang_langurlinfo}</td>
-   </tr> 
-         <tr> 
-            <td class="list1_text">{$lang_langsw}</td>
-            <td class="list1_input"><input name="met_lang_mark1" type="checkbox" value="1" $met_lang_mark_yes>{$lang_open}</td>
-   </tr> 
-	      <tr> 
-            <td class="list1_text"></td>
-	      <td class="list1_submit"><input type="submit" name="Submit" value="{$lang_Submit}" class="tj" style="*padding-top:2px; *height:22px;"></td>
-          </tr>
-        </form>
+    <table cellpadding="2" cellspacing="1" class="table">
+		<tr> 
+            <td class="text">
+			     <a href="javascript:;" class="tips"><img src="{$img_url}/botton/faq.png" /></a>&nbsp;{$lang_langch}
+				</td>
+            <td class="input">
+			    <input name="met_ch_lang1" id="met_ch_lang1" type="radio" class="radio" value="1" $met_ch_lang1 /><label for="met_ch_lang1">{$lang_open}</label>&nbsp;&nbsp;<input name="met_ch_lang1" id="met_ch_lang2" type="radio" class="radio" value="0" $met_ch_lang2 /><label for="met_ch_lang2">{$lang_close}</label><br/>
+				<input type="text" class="text small" name="met_ch_mark1" value="$met_ch_mark" /><span class="tips">{$lang_langcnch}</span>
+				<div class="tips-text none">{$lang_langchok}</div>
+			</td>
+        </tr> 
+		<tr> 
+            <td class="text">{$lang_langhome}</td>
+            <td class="input">{$met_indextype}</td>
+        </tr> 																															
+		<tr> 
+            <td class="text">{$lang_langdefaultadmin}</td>
+            <td class="input">{$met_admintype}</td>
+        </tr> 
+		<tr> 
+            <td class="text"><a href="javascript:;" class="tips"><img src="{$img_url}/botton/faq.png" /></a>&nbsp;{$lang_langadminok}</td>
+            <td class="input"><input name="met_admin_type_ok1" id="met_admin_type_oks" type="radio" class="radio" value="1" $met_admin_type_yes /><label for="met_admin_type_oks">{$lang_open}</label>&nbsp;&nbsp;<input name="met_admin_type_ok1" id="met_admin_type_ok1" type="radio" class="radio" value="0" $met_admin_type_no /><label for="met_admin_type_ok1">{$lang_close}</label><div class="tips-text none">{$lang_langadminyes}</div></td>
+        </tr> 
+   		<tr> 
+            <td class="text"><a href="javascript:;" class="tips"><img src="{$img_url}/botton/faq.png" /></a>&nbsp;{$lang_langurl}</td>
+            <td class="input">
+			<input name="met_url_type1" id="met_url_type1" type="radio" class="radio" value="1" $met_url_type_yes /><label for="met_url_type1">{$lang_open}</label>&nbsp;
+			<input name="met_url_type1" id="met_url_type2" type="radio" class="radio" value="0" $met_url_type_no /><label for="met_url_type2">{$lang_close}</label>
+			<div class="tips-text none">{$lang_langurlinfo}</div>
+			</td>
+        </tr> 
+        <tr> 
+            <td class="text">{$lang_langsw}</td>
+            <td class="input"><input name="met_lang_mark1" id="met_lang_mark1" type="radio" class="radio" value="1" $met_lang_mark_yes /><label for="met_lang_mark1">{$lang_open}</label>
+			<input name="met_lang_mark1" id="met_lang_mark2" type="radio" class="radio" value="0" $met_lang_mark_no /><label for="met_lang_mark2">{$lang_close}</label></td>
+        </tr> 
+        <tr> 
+            <td class="text"><a href="javascript:;" class="tips"><img src="{$img_url}/botton/faq.png" /></a>&nbsp;{$lang_langduo}</td>
+            <td class="input"><input name="met_lang_editor" id="met_lang_editor1" type="radio" class="radio" value="1" $met_lang_editor_yes /><label for="met_lang_editor1">{$lang_open}</label>
+			<input name="met_lang_editor" id="met_lang_editor2" type="radio" class="radio" value="0" $met_lang_editor_no /><label for="met_lang_editor2">{$lang_close}</label><div class="tips-text none">{$lang_langinfo2}</div></td>
+        </tr> 
+	    <tr> 
+            <td class="text"></td>
+	        <td class="submit"><input type="submit" name="Submit" class="submit" value="{$lang_Submit}" onclick="return Smit($(this),'myform')" /></td>
+        </tr>
+    </table>
+</form>	
 <!--
 EOT;
 }
 echo <<<EOT
 -->
-		<tr>
-		  <td class="list1_footer" colspan="2" align="center">$foot</td>
-	  </tr>
-</table>
+        <div class="footer" colspan="2">$foot</div>
 <!--
 EOT;
 }
 echo <<<EOT
 -->	
+<script type="text/javascript">
+    var input = $("input[type='text']");
+	focus(input);
+	var metsand=$("input,select");
+	    metsand.each(function(){
+		    if($(this).attr("disabled")==true)$(this).addClass("disabled");
+        });
+</script>
 </body>
 </html>
 <!--

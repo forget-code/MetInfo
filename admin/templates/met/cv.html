@@ -7,72 +7,75 @@ echo <<<EOT
 <title>{$lang_cvTitle}</title>
 </head>
 <body>
-<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
-          <tr> 
-            <td colspan="7" align="center" class="list1_title">{$lang_cvTitle}</td>
-          </tr>  
-			<tr align="right">
-			<form method="POST" name="filterform"  action="cv.php?search=detail_search&lang=$lang&jobid=$jobid&customerid=$customerid" target="_self">
-			<td colspan="7">				
-				<span><b>{$lang_read}:</b></span>
+<div id="Problem"></div>
+    <table cellpadding="2" cellspacing="1" class="table">
+        <tr> 
+            <td colspan="7" class="title">{$lang_cvTitle}</td>
+        </tr>  
+		<tr>
+			<td colspan="7" class="centle">
+		<form method="POST" name="search" style="float:left; font-weight:normal; color:#666;" action="cv.php?search=detail_search&lang=$lang" target="_self">
+			    &nbsp;&nbsp;<input name="position" type="text" />
+                <input type="submit" name="Submit2" value="{$lang_search}" class="submit" />  
+	            {$lang_modsearch} 
+		</form>		
+		<form method="POST" name="filterform" style="float:right;" action="cv.php?search=detail_search&lang=$lang&jobid=$jobid&customerid=$customerid" target="_self">		
+				<span>{$lang_cvsha}</span>
 				<select name="readok" id="readok" onChange="autosubmit()">
-					<option value="" $readok0>{$lang_selectnow}</option>
-					<option value="1" $readok1>{$lang_yes}</option>
-					<option value="0" $readok2>{$lang_no}</option>
+					<option value="" $readok0>{$lang_cvall}</option>
+					<option value="1" $readok1>{$lang_cvyd}</option>
+					<option value="0" $readok2>{$lang_cvwd}</option>
 				</select>
-				
+		</form>
 			</td>
-			</form>
+			
 		</tr>
-              <tr>
-                <td width="5%" class="list1_top" align="center">{$lang_selected}</td>
-				<td width="5%" class="list1_top" align="center">ID</td>
-                <td width="25%" class="list1_top" align="center">{$lang_cvPosition}</td>
-                <td width="20%" class="list1_top" align="center" >{$lang_cvName}</td>
-                <td width="20%" class="list1_top" align="center" >{$lang_cvAddtime}</td>
-				<td width="5%"  class="list1_top" align="center" >{$lang_read}</td>
-				<td width="20%" class="list1_top" align="center" >{$lang_operate}</td>
-              </tr>
-			  <form name="del" method="Post" action="cv_delete.php?lang=$lang" onSubmit="return ConfirmDelall();">
+        <tr>
+            <td width="40" class="list">{$lang_selected}</td>
+			<td width="40" class="list">ID</td>
+            <td class="list">{$lang_cvPosition}</td>
+            <td class="list" >{$lang_cvName}</td>
+            <td class="list" >{$lang_cvAddtime}</td>
+			<td width="60"  class="list" >{$lang_read}</td>
+			<td width="120" class="list" >{$lang_operate}</td>
+        </tr>
+			  <form name="del" method="Post" action="cv_delete.php?lang=$lang">
 <!--
 EOT;
 foreach ($cv_list as $key=>$val){
 echo <<<EOT
 -->          
-              <tr>
-              <td align="center"class="list1_content_titile"><input name='id' type='checkbox' onClick="unselectall()" id="id" value='$val[id]' class="xz"></td>
-                <td  align="center" class="list1_content">$val[id]</td>
-			    <td align="center" class="list1_content">$val[position]</td>
-                <td class="list1_content" align="center">$val[customerid]</td>
-                <td   class="list1_content" align="center">$val[addtime]</td>
-				<td   class="list1_content" align="center">$val[readok]</td>
-				<td align="center"  class="list1_content" style="color:#0066FF;"></a> <a href="cv_editor.php?lang=$lang&id=$val[id]" >{$lang_detail}</a> | <a href="cv_delete.php?lang=$lang&id=$val[id]" onClick="return ConfirmDel();" >{$lang_delete}</a></td>
-              </tr>
+        <tr class="mouse click">
+            <td class="list-text"><input name='id' type='checkbox' onClick="unselectall()" id="id" value='$val[id]' /></td>
+            <td class="list-text">$val[id]</td>
+			<td class="list-text">$val[position]</td>
+            <td class="list-text">$val[customerid]</td>
+            <td class="list-text">$val[addtime]</td>
+			<td class="list-text">$val[readok]</td>
+			<td class="list-text">
+			    <a href="cv_editor.php?lang=$lang&id=$val[id]" >{$lang_detail}</a>&nbsp;&nbsp;
+				<a href="cv_delete.php?lang=$lang&id=$val[id]" onClick="return linkSmit($(this),1);" />{$lang_delete}</a>
+			</td>
+        </tr>
 <!--
 EOT;
 }
 echo <<<EOT
 -->
-
+			<input name="allid" type="hidden" id="allid" value="" /><input name="action" type="hidden" id="action" value="del" />
+		</form>
    	   <tr> 
-            <td class="input_bottom" align="center"><input name="chkAll" class="xz" type="checkbox" id="chkAll" onclick=CheckAll(this.form) value="checkbox"></td>
-             <td class="input_bottom" align="center">{$lang_selectall}</td>
-              <td class="input_bottom" align="left" colspan="7"><input name="submit" type='submit' value='{$lang_deleteselected}'><input name="action" type="hidden" id="action" value="del"><input name="allid" type="hidden" id="allid" value=""></form></td>
-          </tr>
-		  <tr>
-            <td align="left" colspan="7"  class="input_search">
-			<form method="POST" name="search"  action="cv.php?search=detail_search&lang=$lang" target="_self">
-			       <span><b>{$lang_search}</b></span> 
-			    <input name="position" type="text" size="30">
-  <input type="submit" name="Submit2" value="{$lang_search}" class="tj">  
-	        {$lang_cvTip3}</form></td>
-          </tr>
-   	   <tr>
-   	     <td height="0" align="center" colspan="7" class="list1_input">$page_list</td>
+            <td class="all"><input name="chkAll" type="checkbox" id="chkAll" onclick=CheckAll(this.form) value="checkbox" /></td>
+            <td class="all"><label for="chkAll">{$lang_selectall}</label></td>
+            <td class="all-submit" colspan="7">
+				<input name="submit" type='submit' value='{$lang_deleteselected}' class="submit li-submit" onclick="return met_modify($(this),'del','del');" /> 			  <div class="page_list">
+			  $page_list
+			  </div>
+			</td>
         </tr>
 		<tr>
-		  <td class="list1_footer" colspan="7" align="center">$foot</td>
-	  </tr>
+		  <td class="footer" colspan="7">$foot</td>
+	    </tr>
 </table>
 <script type='text/javascript'>
 	function autosubmit()

@@ -9,26 +9,26 @@ echo <<<EOT
 <title>{$lang_langeadminditor}</title>
 </head>
 <body>
-        <form method="POST" name="myform" action="" target="_self">
+        <form method="POST" name="myform" action="langeditoradmin.php?lang=$lang" target="_self">
 		<input name="action" type="hidden" value="modify">
 		<input name="langnum" type="hidden" value="$j">
 		<input name="langeditor" type="hidden" value="$langeditor">
-<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1" >
+<table cellpadding="2" cellspacing="1" class="table">
 <tr>
-<td colspan="$colspan" align="center" class="list1_title">{$lang_langeadminditor}【<b>{$met_langadmin[$langeditor][name]}</b>】</td>
+<td colspan="$colspan" class="title">{$lang_langeadminditor}【<b>{$met_langadmin[$langeditor][name]}</b>】</td>
 </tr>
-   <tr><td class="list1_text" ><b>{$lang_langeditorinfo}</b></td>
-    <td colspan="$colspan1" class="list1_input">{$lang_langeditordetail1}<br>{$lang_langeditordetail2}<br>{$lang_langeditordetail3}</td></tr>
-<tr><td class="list1_text" colspan="$colspan"><a href="lang.php?lang=$lang">{$lang_indexlang}</a> | <a href="langeditoradmin.php?langeditor=$langeditor&lang=$lang">{$lang_langclass}</a></td></tr>
+   <tr><td class="text">{$lang_langeditorinfo}</td>
+    <td colspan="$colspan1" class="input">{$lang_langeditordetail1}<br>{$lang_langeditordetail3}</td></tr>
+<tr><td class="text" colspan="$colspan"><a href="lang.php?lang=$lang" title="{$lang_indexlang}">{$lang_indexlang}</a> | <a href="langeditoradmin.php?langeditor=$langeditor&lang=$lang" title="{$lang_langclass}">{$lang_langclass}</a></td></tr>
 <!--
 EOT;
 if($langnowok=='metinfo'){
 echo <<<EOT
 -->
 <tr>
-<td class="list1_text" width:20%><b>{$lang_langclass2}</b></td>
-<td class="list1_input" width:60%><b>{$lang_langvalue}</b></td>
-<td class="list1_input" width:20%><b>{$lang_langinfo}</b></td>
+<td class="text">说明</td>
+<td class="input" style="width:220px;">字段值</td>
+<td class="input">参数名</td>
 </tr>
 <input name="metinfolangid" type="hidden" value="$langid">
 <!--
@@ -38,9 +38,9 @@ echo <<<EOT
 -->
 
  <tr> 
- <td class="list1_text">$val[name]</td>
- <td class="list1_input"><input name="$val[name]_metinfo" type="text" value="$val[value]" size="70"></td>
- <td class="list1_input"><input name="$val[name]_info_metinfo" type="text" value="$val[valueinfo]"></td>
+ <td class="text">$val[valueinfo]</td>
+ <td class="input"><input name="$val[name]_metinfo" type="text" class="text" value="$val[value]" /></td>
+ <td class="input">$val[name]</td>
  </tr>
 <!--
 EOT;
@@ -48,8 +48,8 @@ EOT;
 echo <<<EOT
 -->
 <tr>
-<td class="list1_text"><b>{$lang_langclass}</b></td>
-<td class="list1_input"><b><font color="red">{$lang_langclass1}</font></b></td>
+<td class="text">{$lang_langclass}</td>
+<td class="input">{$lang_langclass1}</font></td>
 </tr> 
 <input name="metinfo_langtitle" type="hidden" value="metinfolangtitle">
 <!--
@@ -58,8 +58,8 @@ for($i=0;$i<$j;$i++){
 echo <<<EOT
 -->
 <tr>
-<td class="list1_text"><input name="langarray1[$i]" type="text" style="font-weight:bold; color:#0033CC;" value="$langarray[$i]" size="15" ></td>
-<td class="list1_input" ><a href="langeditoradmin.php?langeditor=$langeditor&langnowok=metinfo&langid=$i&lang=$lang">{$lang_langclass2}【$langarray[$i]】</a></td>
+<td class="text"><input name="langarray1[$i]" type="text" class="text" value="$langarray[$i]" /></td>
+<td class="input" ><a href="langeditoradmin.php?langeditor=$langeditor&langnowok=metinfo&langid=$i&lang=$lang" title="$langarray[$i]">{$lang_langclass2}【$langarray[$i]】</a></td>
 </tr> 
 
 <!--
@@ -69,13 +69,14 @@ echo <<<EOT
 -->
 
 	      <tr> 
-	      <td class="list1_submit" colspan="$colspan" style="text-align:center;"><input type="submit" name="Submit" value="{$lang_Submit}" class="tj" style="*padding-top:2px; *height:22px;"><input type="reset" name="Submit" value="{$lang_Reset}" class="tj" style="*padding-top:2px; *height:22px;"></td>
+		  <td class="text"></td>
+	      <td class="submit" colspan="$colspan"><input type="submit" name="Submit" value="{$lang_Submit}" class="submit" onclick="return Smit($(this),'myform')" /><input type="reset" name="Submit" value="{$lang_Reset}" class="reset" /></td>
           </tr>
-        </form>
 		<tr>
-		  <td class="list1_footer" colspan="$colspan" align="center">$foot</td>
+		  <td class="footer" colspan="$colspan">$foot</td>
 	  </tr>
 </table>
+        </form>
 </body>
 </html>
 <!--

@@ -15,6 +15,10 @@ $para_list[]=$list;
 $filename=preg_replace("/\s/","_",trim($filename)); 
 $filenameold=preg_replace("/\s/","_",trim($filenameold));  
 if($action=="add"){
+if($filename!=''){
+	$filenameok = $db->get_one("SELECT * FROM $met_download WHERE class1='$class1' and filename='$filename'");
+	if($filenameok)okinfox('../download/content.php?lang='.$lang."&action=$action&class1=$class1",$lang_modFilenameok);
+}
 $access=$access<>""?$access:0;
 $query = "INSERT INTO $met_download SET
                       title              = '$title',
@@ -27,7 +31,9 @@ $query = "INSERT INTO $met_download SET
 					  new_ok             = '$new_ok',
 					  downloadurl        = '$downloadurl',
 					  filesize           = '$filesize',
+				      no_order           = '$no_order',
 				      com_ok             = '$com_ok',
+				      wap_ok             = '$wap_ok',
 					  issue              = '$issue',
 					  hits               = '$hits', 
 					  addtime            = '$addtime', 
@@ -70,14 +76,16 @@ foreach($para_list as $key=>$val){
    $paraname="";
  }
 //html
-contenthtm($class1,$id,'showdownload',$filename);
-indexhtm();
-classhtm($class1,$class2,$class3);
-
-okinfo('index.php?lang='.$lang.'&class1='.$class1,$lang_jsok);
+$htmjs =contenthtm($class1,$id,'showdownload',$filename);
+$htmjs.=indexhtm();
+$htmjs.=classhtm($class1,$class2,$class3);
+okinfoh('../download/index.php?lang='.$lang.'&class1='.$class1,$htmjs);
 }
-
 if($action=="editor"){
+if($filename!='' && $filename != $filenameold){
+	$filenameok = $db->get_one("SELECT * FROM $met_download WHERE class1='$class1' and filename='$filename'");
+	if($filenameok)okinfox('../download/content.php?lang='.$lang."&action=$action&id=$id",$lang_modFilenameok);
+}
 $query = "update $met_download SET 
                       title              = '$title',
 					  keywords           = '$keywords',
@@ -93,6 +101,7 @@ if($metadmin[downloadnew])$query .= "
 if($metadmin[downloadcom])$query .= "	
 				      com_ok             = '$com_ok',";
 					  $query .= "
+				      com_ok             = '$com_ok',
 					  issue              = '$issue',
 					  hits               = '$hits', 
 					  addtime            = '$addtime', 
@@ -145,11 +154,11 @@ foreach($para_list as $key=>$val){
    $paraname="";
  }
 //html
-contenthtm($class1,$id,'showdownload',$filename);
-indexhtm();
-classhtm($class1,$class2,$class3);
+$htmjs =contenthtm($class1,$id,'showdownload',$filename);
+$htmjs.=indexhtm();
+$htmjs.=classhtm($class1,$class2,$class3);
 if($filenameold<>$filename and $metadmin[pagename])deletepage($met_class[$class1][foldername],$id,'showdownlaod',$updatetimeold,$filenameold);
-okinfo('index.php?lang='.$lang.'&class1='.$class1,$lang_jsok);
+okinfoh('../download/index.php?lang='.$lang.'&class1='.$class1,$htmjs);
 }
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.

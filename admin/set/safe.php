@@ -4,37 +4,38 @@
 require_once '../login/login_check.php';
 $adminfile=$url_array[count($url_array)-2];
 if($action=="delete"){
-if($filename=='update')@chmod('../../update/install.lock',0777);
-function deldir($dir) {
-  $dh=opendir($dir);
-  while ($file=readdir($dh)) {
-    if($file!="." && $file!="..") {
-      $fullpath=$dir."/".$file;
-      if(!is_dir($fullpath)) {
-          unlink($fullpath);
-      } else {
-          deldir($fullpath);
-      }
-    }
-  }
-
-  closedir($dh);
-  if($dir!='../../upload'){
-    if(rmdir($dir)) {
-    return true;
-    } else {
-    return false;
-    }
+	if($filename=='update')@chmod('../../update/install.lock',0777);
+	function deldirs($dir){
+	  $dh=opendir($dir);
+	  while ($file=readdir($dh)) {
+		if($file!="." && $file!="..") {
+		  $fullpath=$dir."/".$file;
+		  if(!is_dir($fullpath)) {
+			  unlink($fullpath);
+		  } else {
+			  deldir($fullpath);
+		  }
+		}
 	}
-} 
- $dir='../../'.$filename;
-deldir($dir);
-okinfo('safe.php?lang='.$lang,$lang_jsok);
+
+	  closedir($dh);
+	  if($dir!='../../upload'){
+		if(rmdir($dir)) {
+		return true;
+		} else {
+		return false;
+		}
+		}
+	} 
+	$dir='../../'.$filename;
+	deldirs($dir);
+	okinfo('safe.php?lang='.$lang);
 }
 
 if($action=="modify"){
-require_once 'configsave.php';
-$con_save       = "<?php
+	$langp=$lang;
+	require_once 'configsave.php';
+	$con_save   = "<?php
                    /*
                    con_db_host = \"$con_db_host\"
                    con_db_id   = \"$con_db_id\"
@@ -45,16 +46,17 @@ $con_save       = "<?php
                    db_charset  = \"$db_charset\";
                   */
                   ?>";
-@chmod('../../config/config_db.php',0777);
-$fpd = fopen("../../config/config_db.php",w);
-      fputs($fpd, $con_save);
-      fclose($fpd);
-@chmod('../../config/config_db.php',0554);
- if($met_adminfile!=""&&$met_adminfile!=$adminfile){
- Header("Location: ../index.php?lang=".$lang."&action=renameadmin&met_adminfile=".$met_adminfile);
- }else{
-  okinfo('safe.php?lang='.$lang,$lang_jsok);
-  }
+	@chmod('../../config/config_db.php',0777);
+	$fpd = fopen("../../config/config_db.php",w);
+	fputs($fpd, $con_save);
+	fclose($fpd);
+	@chmod('../../config/config_db.php',0554);
+	if($met_adminfile!=""&&$met_adminfile!=$adminfile){
+		Header("Location: ../index.php?lang=".$lang."&action=renameadmin&met_adminfile=".$met_adminfile);
+		//okinfo("../index.php?lang=$lang&action=renameadmin&met_adminfile=$met_adminfile",'admin');
+	}else{
+		okinfo('safe.php?lang='.$lang);
+	}
 }
 else{
 if(is_dir('../../install')){

@@ -9,8 +9,7 @@ $result = $db->query($query);
 while($list= $db->fetch_array($result)){
 $selectlist[]=$list;
 }
-
-    $serch_sql=" where lang='$lang' ";
+    $serch_sql=" where lang='$lang' and class1='$class1' ";
 	if($readok!="") $serch_sql.=" and readok='$readok' ";
 	if($met_fd_classname!="")$serch_sql.=" and exists(select info from $met_flist where listid=$met_feedback.id and paraid=$met_fd_class and info='$met_fd_classname')";
 	$order_sql=" order by id desc ";
@@ -36,7 +35,7 @@ $selectlist[]=$list;
 	//$list[addtime] = date('Y-m-d',strtotime($list[addtime]));
     $feedback_list[]=$list;
     }
-$page_list = $rowset->link("index.php?lang=$lang&search=$search&readok=$readok&useinfo=$useinfo&met_fd_classname=$met_fd_classname&page=");
+$page_list = $rowset->link("index.php?lang=$lang&class1=$class1&search=$search&readok=$readok&useinfo=$useinfo&met_fd_classname=$met_fd_classname&page=");
 $css_url="../templates/".$met_skin."/css";
 $img_url="../templates/".$met_skin."/images";
 include template('feedback');

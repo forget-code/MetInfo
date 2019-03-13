@@ -288,7 +288,7 @@ if($class2&&$class3){
     $metinfo.="}}\n";
     $metinfo.="</script>\n";
     $metinfo.="<form method='Get' name='myformsearch' onSubmit='return Checksearch();'  action='".$searchurl."'>\n";       
-    $metinfo.="<ul>\n";
+    $metinfo.="<ul class='searchnavlist'>\n";
 if($class1){	
     $metinfo.="<li><span class='advsearch_class1'><select name='class1' ";
  if($class2)$metinfo.="onChange='changelocation(document.myformsearch.class1.options[document.myformsearch.class1.selectedIndex].value)'";
@@ -327,14 +327,14 @@ if($class3){
 }
 if($searchtype==""){
     $metinfo.="<li><span class='advsearch_searchtype'><select name='searchtype' size='1'>\n";
-    $metinfo.="<option value='0' selected>".$lang_Title."&nbsp".$lang_And."&nbsp".$lang_Content."</option>\n";
+    $metinfo.="<option value='0' selected>".$lang_Title."&nbsp;".$lang_And."&nbsp;".$lang_Content."</option>\n";
     $metinfo.="<option value='1'>".$lang_Title."</option>\n";
     $metinfo.="<option value='2'>".$lang_Content."</option>\n";
     $metinfo.="</select></span></li>\n";
 }else{
     $metinfo.="<input type='hidden' name='searchtype' value='".$searchtype."' />\n";
 }
-    $metinfo.="<li><span class='advsearch_searchword'><input id='searchword' type='text' name='searchword' value='".$lang_Keywords."' maxlength='50' onmousedown='select1()'></span></li>\n"; 
+    $metinfo.="<li><span class='advsearch_searchword'><input id='searchword' type='text' class='input-text' name='searchword' value='".$lang_Keywords."' maxlength='50' onmousedown='select1()'></span></li>\n"; 
     $metinfo.="<input type='hidden' name='lang' value='".$lang."' />\n";
 	if($module)$metinfo.="<input type=\"hidden\" name=\"module\" value='$module'/>&nbsp;";
 	if($classid){

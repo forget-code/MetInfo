@@ -2,7 +2,7 @@
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 require_once '../login/login_check.php';
-$backurl="index.php?lang=".$lang;
+$backurl="../feedback/index.php?lang=".$lang;
 $query = "select * from $met_parameter where lang='$lang' and module='8' and type='5' order by no_order";
 $result = $db->query($query);
 while($list = $db->fetch_array($result)){
@@ -23,7 +23,7 @@ $db->query($query);
 $query = "delete from $met_feedback where id='$val'";
 $db->query($query);
 }
-okinfo($backurl,$lang_jsok);
+okinfo($backurl);
 }
 else{
 $admin_list = $db->get_one("SELECT * FROM $met_feedback WHERE id='$id'");
@@ -41,7 +41,7 @@ $query = "delete from $met_flist where listid='$id' and module='8'";
 $db->query($query);
 $query = "delete from $met_feedback where id='$id'";
 $db->query($query);
-okinfo($backurl,$lang_jsok);
+okinfox($backurl);
 }
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.	

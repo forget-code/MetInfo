@@ -1,20 +1,16 @@
 <!--<?php
 require_once template('head'); 
+require_once template('webbar');
 echo <<<EOT
 -->
-<div id="web">
-<div class="right">
-   <h3 class="title"><span>{$class_list[$classnow][name]}</span></h3>
-   <div class="webcontent">$show[content]</div>
-   </div>
-<!--
-EOT;
-require_once template('webleft'); 
-echo <<<EOT
--->
-<div style="clear:both;"></div>
+        <div class="showtext editor webbox">
+		    {$show[content]}
+			<div class="clear"></div>
+		</div>
+    </div>
+    <div class="clear"></div>
 </div>
 <!--
 EOT;
-require_once template('foot'); 
+require_once template('foot');
 ?>

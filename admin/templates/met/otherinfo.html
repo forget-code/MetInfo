@@ -7,16 +7,16 @@ echo <<<EOT
 <title>{$lang_setotherItemSet}</title>
 </head>
 <body>
-        <form method="POST" name="myform"  action="other_info.php?action=modify" target="_self">
-		<input name="id" type="hidden" value="$otherinfo[id]">
-		<input name="lang" type="hidden" value="$lang">
-<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
-       <tr> 
-            <td colspan="3" align="center" class="list1_title">{$lang_setotherItemSet}</td>
-          </tr>
-		  <tr> 
-            <td class="list1_text_title" colspan="3" align="center">{$lang_setotherTip1}</td>
-          </tr>
+<!--
+EOT;
+$littr=4;
+require_once template('metlangs');
+echo <<<EOT
+-->
+	<form method="POST" name="myform" action="other_info.php?lang=$lang" target="_self">
+	<input name="action" type="hidden" value="modify" />
+	<input name="id" type="hidden" value="$otherinfo[id]">
+<table cellpadding="2" cellspacing="1" class="table">
 <!--
 EOT;
 for($i=1;$i<=7;$i++){
@@ -25,8 +25,8 @@ $infoname1="info".$i;
 echo <<<EOT
 -->
 			<tr> 
-            <td class="list1_text in"><b>{$infoname[$i][0]}</b></td>
-            <td class="list1_input"><input name="info{$i}" type="text" size="30" value="{$otherinfo[$infoname1]}">{$infoname[$i][1]}</td>
+            <td class="text">{$infoname[$i][0]}</td>
+            <td class="input"><input name="info{$i}" type="text" class="text" value="{$otherinfo[$infoname1]}" /><span class="tips">{$infoname[$i][1]}</span></td>
            </tr>
 <!--
 EOT;
@@ -35,8 +35,8 @@ if($imgurlname[1][2]){
 echo <<<EOT
 -->
             <tr>
-            <td class="list1_text in"><b>{$imgurlname[1][0]}</b><br>{$imgurlname[1][1]}</td>
-            <td class="list1_input"><input name="imgurl1" type="text" class="input" size="30" value="$otherinfo[imgurl1]"><iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_photo.php?returnid=imgurl1&flash=flash&lang=$lang" frameborder=0 scrolling=no width="320" height="25"></iframe>	</td></tr>
+            <td class="text">{$imgurlname[1][0]}<br/>{$imgurlname[1][1]}</td>
+            <td class="input upload"><input name="imgurl1" type="text" class="text" value="{$otherinfo[imgurl1]}" /><iframe id="uploadFiles" src="../include/upload_photo.php?returnid=imgurl1&flash=flash&lang=$lang" frameborder="0" scrolling="no"></iframe></td></tr>
 <!--
 EOT;
 }
@@ -44,8 +44,8 @@ if($imgurlname[2][2]){
 echo <<<EOT
 -->			
 			<tr> 
-            <td class="list1_text in"><b>{$imgurlname[2][0]}</b><br>{$imgurlname[2][1]}</td>
-            <td class="list1_input"><input name="imgurl2" type="text" class="input" size="30" value="$otherinfo[imgurl2]"><iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_photo.php?returnid=imgurl2&flash=flash&lang=$lang" frameborder=0 scrolling=no width="320" height="25"></iframe>	</td></tr>
+            <td class="text">{$imgurlname[2][0]}<br>{$imgurlname[2][1]}</td>
+            <td class="input upload"><input name="imgurl2" type="text" class="text" value="{$otherinfo[imgurl2]}" /><iframe id="uploadFiles" src="../include/upload_photo.php?returnid=imgurl2&flash=flash&lang=$lang" frameborder="0" scrolling="no"></iframe></td></tr>
 <!--
 EOT;
 }
@@ -53,8 +53,8 @@ if($infoname[8][2]){
 echo <<<EOT
 -->			
 			<tr> 
-            <td class="list1_text in"><b>{$infoname[8][0]}</b><br>{$infoname[8][1]}</td>
-            <td class="list1_input"><textarea name="info8" cols="60" rows="5">$otherinfo[info8]</textarea></td></tr>
+            <td class="text">{$infoname[8][0]}<br/>{$infoname[8][1]}</td>
+            <td class="input"><textarea name="info8" cols="60" rows="5">$otherinfo[info8]</textarea></td></tr>
 <!--
 EOT;
 }
@@ -62,8 +62,8 @@ if($infoname[9][2]){
 echo <<<EOT
 -->			
 			<tr> 
-            <td class="list1_text in"><b>{$infoname[9][0]}</b><br>{$infoname[9][1]}</td>
-            <td class="list1_input"><textarea name="info9" cols="60" rows="5">$otherinfo[info9]</textarea></td></tr>
+            <td class="text">{$infoname[9][0]}<br/>{$infoname[9][1]}</td>
+            <td class="input"><textarea name="info9" cols="60" rows="5">{$otherinfo[info9]}</textarea></td></tr>
 <!--
 EOT;
 }
@@ -71,34 +71,37 @@ if($infoname[10][2]){
 echo <<<EOT
 -->				
 			<tr> 
-            <td class="list1_text in"><b>{$infoname[10][0]}</b><br>{$infoname[10][1]}</td>
-            <td class="list1_input">
-<!--
-EOT;
-echo "-->";
-$oFCKeditor = new FCKeditor('info10'); 
-$oFCKeditor->BasePath = '../../fckeditor/';
-$oFCKeditor->Config['AutoDetectLanguage']	= false ;
-$oFCKeditor->Config['DefaultLanguage']		= $langusenow ;
-$oFCKeditor->Value = $otherinfo[info10];
-$oFCKeditor->Width = '100%';   
-$oFCKeditor->Height = '300';
-$oFCKeditor->Create();
-echo <<<EOT
-</td></tr>
+            <td class="text">{$infoname[10][0]}<br/>{$infoname[10][1]}</td>
+            <td class="input">
+<script type="text/javascript" src="../ckeditor/ckeditor.js"></script>
+			<textarea class="ckeditor" name="info10">{$otherinfo[info10]}</textarea>
+<script type="text/javascript">
+CKEDITOR.replace('info10', {
+	filebrowserBrowseUrl : '../ckeditor/ckfinder/ckfinder.html',
+	filebrowserImageBrowseUrl : '../ckeditor/ckfinder/ckfinder.html?Type=Images',
+	filebrowserFlashBrowseUrl : '../ckeditor/ckfinder/ckfinder.html?Type=Flash',
+	filebrowserUploadUrl : '../ckeditor/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
+	filebrowserImageUploadUrl : '../ckeditor/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
+	filebrowserFlashUploadUrl : '../ckeditor/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash'
+});
+</script>
+</td>
+</tr>
 <!--
 EOT;
 }
 echo <<<EOT
 -->	
-<tr><td class="list1_text"></td>
-	      <td class="list1_submit" ><input type="submit" name="Submit" value="{$lang_Submit}" class="tj" style="*padding-top:2px; *height:22px;"><input type="reset" name="Submit" value="{$lang_Reset}" class="tj" style="*padding-top:2px; *height:22px;"></td>
-          </tr>
-        </form>
-		<tr>
-		  <td class="list1_footer" colspan="2" align="center">$foot</td>
-	  </tr>
-</table>
+        <tr>
+		    <td class="text"></td>
+	        <td class="submit">
+		        <input type="submit" name="submit" value="{$lang_Submit}" class="submit" onclick="return Smit($(this),'myform')" />
+			    <input type="reset" name="Submit" value="{$lang_Reset}" class="reset" />
+			</td>
+        </tr>
+	</table>
+	</form>
+<div class="footer">$foot</div>
 </body>
 </html>
 <!--

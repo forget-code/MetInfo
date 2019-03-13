@@ -2,54 +2,63 @@
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 require_once template('head');
+$fcls='';
+$fclsa='';
+if($flashmode==1)$fcls='downalnk';
+if($flashmode==2)$fclsa='downalnk';
 echo <<<EOT
 -->
-
 <title>{$lang_indexflash}</title>
 </head>
 <body>
- <div class="div_top">
-	              <div class="div_title">{$lang_indexflash}</div>     					
-<div class="div_content" align="left"><a href="flashadd.php?lang=$lang" >Flash{$lang_add}</a></div>
-<div class="div_content" align="left"><span>{$lang_flashMode}:</span>
-<a href="?lang=$lang&flashmode=1" $selected1>{$lang_flashMode3}</a>&nbsp;&nbsp;|&nbsp;
-<a href="?lang=$lang&flashmode=2" $selected2>{$lang_flashMode2}</a>
-</div>
-</div>
-<div>
- <table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1" >
- 			  <form name="del" method="Post" action="flashdelete.php?lang=$lang" onSubmit="return ConfirmDelall();">
-			  <input  name="flashmode" type="hidden" value="$flashmode">
+<!--
+EOT;
+$littr=16;
+require_once template('metlangs');
+echo <<<EOT
+-->
+	<table cellpadding="2" cellspacing="1" class="table">
+		<tr>
+			<td class="title">{$lang_indexflash}</td>
+		</tr>
+		<tr>
+			<td class="input"><b><a href="flashadd.php?lang=$lang" >Flash{$lang_add}</a></b></td>
+		</tr>
+	</table>
+<div style="text-align:left; margin-top:5px;" id="table-topnav">
+<a href="?lang=$lang&flashmode=1" $selected1 class="$fcls">{$lang_flashMode3}</a>
+<a href="?lang=$lang&flashmode=2" $selected2 class="$fclsa">{$lang_flashMode2}</a></div>
+<table cellpadding="2" cellspacing="1" class="table" style="margin-top:0px;">
 <!--
 EOT;
 if($flashmode==1){
 echo <<<EOT
 -->
               <tr>
-                <td width="8%" class="list1_top" align="center">{$lang_selected}</td>
-				<td width="8%" class="list1_top" align="center">{$lang_sort}</td>
-                <td width="30%" class="list1_top" align="center">{$lang_setflashName}</td>
-                <td width="17%" class="list1_top" align="center" >
-				<select name="module" id="module" onchange='javascript:window.location.href=this.options[this.selectedIndex].value'>
-				<option value='flash.php?lang=$lang&flashmode=1' >&nbsp;{$lang_setflashBelong}</option>
+                <td width="40" class="list">{$lang_selected}</td>
+				<td width="40" class="list">{$lang_sort}</td>
+                <td class="list">{$lang_setflashName}</td>
+                <td width="17%" class="list">
+				<select name="module" style="margin:3px 0px;" id="module" onchange='javascript:window.location.href=this.options[this.selectedIndex].value'>
+				<option value='flash.php?lang=$lang&flashmode=1' style="color:#666;">&nbsp;{$lang_setflashBelong}</option>
 <!--
 EOT;
 foreach($mod1 as $key=>$val){
 echo <<<EOT
 -->	
-	<option value='flash.php?lang=$lang&flashmode=1&module=$val[id]'  >&nbsp;$val[name]</option>
+	<option value='flash.php?lang=$lang&flashmode=1&module=$val[id]' style="font-weight:bold; color:#4b4b4b;">&nbsp;$val[name]</option>
 <!--
 EOT;
 foreach($mod2[$val[id]] as $key=>$val2){
 echo <<<EOT
 -->	
-    <option value='flash.php?lang=$lang&flashmode=1&module=$val2[id]' style="color:#000099" >&nbsp;&nbsp;- $val2[name]</option>
+    <option value='flash.php?lang=$lang&flashmode=1&module=$val2[id]' style="color:#555;">&nbsp;&nbsp;- $val2[name]</option>
 <!--
 EOT;
 foreach($mod3[$val2[id]] as $key=>$val3){
 echo <<<EOT
 -->	
-    <option value='flash.php?lang=$lang&flashmode=1&module=$val3[id]' style="color:#FF0000" >&nbsp;&nbsp;&nbsp;-- $val3[name]</option>		
+    <option value='flash.php?lang=$lang&flashmode=1&module=$val3[id]' style="color:#999;">&nbsp;&nbsp;&nbsp;-- $val3[name]</option>		
 <!--
 EOT;
 }}}  
@@ -59,51 +68,55 @@ echo <<<EOT
 				
 				
 				</td>
-                <td width="25%" class="list1_top" align="center" >{$lang_setflashImgUrl}</td>
-				<td width="12%" class="list1_top" align="center" >{$lang_operate}</td>
+                <td class="list">{$lang_setflashImgUrl}</td>
+				<td width="12%" class="list" >{$lang_operate}</td>
               </tr>
+<form name="del" method="Post" action="flashdelete.php?lang=$lang">
+			  <input name="flashmode" type="hidden" value="$flashmode">
 <!--
 EOT;
 foreach ($flashrec as $key=>$val){
 echo <<<EOT
 -->          
-              <tr >
-              <td class="list1_content_titile" align="center"><input name='id' type='checkbox' onClick="unselectall()" id="id" value='$val[id]' class="xz"></td>      
-				<td class="list1_content" align="center">$val[no_order]</td>
-			    <td align="left" class="list1_content">$val[img_title]</td>
-                <td class="list1_content" align="center"><a href="flash.php?lang=$lang&flashmode=1&module=$val[module]">$val[modulename]</a></td>
-                <td  class="list1_content" align="center">$val[img_path]</td>
-				<td align="center" class="list1_content" style="color:#0066FF;"></a> <a href="flashedit.php?lang=$lang&id=$val[id]&flashmode=1" >{$lang_editor}</a> | <a href="flashdelete.php?lang=$lang&flashmode=1&id=$val[id]" onClick="return ConfirmDel();" >{$lang_delete}</a></td>
+              <tr class="mouse click">
+              <td class="list-text"><input name='id' type='checkbox' onClick="unselectall()" id="id" value='$val[id]' class="xz"></td>      
+				<td class="list-text">$val[no_order]</td>
+			    <td align="left" class="list-text" style="padding-left:5px;">$val[img_title]</td>
+                <td class="list-text"><a href="flash.php?lang=$lang&flashmode=1&module=$val[module]">$val[modulename]</a></td>
+                <td  class="list-text">$val[img_path]</td>
+				<td class="list-text" style="color:#0066FF;"></a> <a href="flashedit.php?lang=$lang&id=$val[id]&flashmode=1" >{$lang_editor}</a>&nbsp;&nbsp;<a href="flashdelete.php?lang=$lang&flashmode=1&id=$val[id]" onClick="return linkSmit($(this),1);" >{$lang_delete}</a></td>
               </tr>
 <!--
 EOT;
 }}else{
 echo <<<EOT
 -->
+<form name="del" method="Post" action="flashdelete.php?lang=$lang">
+			  <input name="flashmode" type="hidden" value="$flashmode">
 			  <tr>
-                <td width="8%" class="list1_top" align="center">{$lang_selected}</td>
-				<td width="17%" class="list1_top" align="center" >
-				<select name="module" id="module" onchange='javascript:window.location.href=this.options[this.selectedIndex].value'>
-				<option value='flash.php?lang=$lang&flashmode=1' >&nbsp;{$lang_setflashBelong}</option>
+                <td width="40" class="list">{$lang_selected}</td>
+				<td class="list" >
+				<select name="module" id="module" style="margin:3px 0px;" onchange='javascript:window.location.href=this.options[this.selectedIndex].value'>
+				<option value='flash.php?lang=$lang&flashmode=1' style="color:#666;">&nbsp;{$lang_setflashBelong}</option>
 <!--
 EOT;
 jmali_start();
 foreach($mod1 as $key=>$val){
 echo <<<EOT
 -->	
-	<option value='flash.php?lang=$lang&flashmode=2&module=$val[id]'  >&nbsp;$val[name]</option>
+	<option value='flash.php?lang=$lang&flashmode=2&module=$val[id]' style="font-weight:bold; color:#4b4b4b;">&nbsp;$val[name]</option>
 <!--
 EOT;
 foreach($mod2[$val[id]] as $key=>$val2){
 echo <<<EOT
 -->	
-    <option value='flash.php?lang=$lang&flashmode=2&module=$val2[id]' style="color:#000099" >&nbsp;&nbsp;- $val2[name]</option>
+    <option value='flash.php?lang=$lang&flashmode=2&module=$val2[id]' style="color:#555;">&nbsp;&nbsp;- $val2[name]</option>
 <!--
 EOT;
 foreach($mod3[$val2[id]] as $key=>$val3){
 echo <<<EOT
 -->	
-    <option value='flash.php?lang=$lang&flashmode=2&module=$val3[id]' style="color:#FF0000" >&nbsp;&nbsp;&nbsp;-- $val3[name]</option>		
+    <option value='flash.php?lang=$lang&flashmode=2&module=$val3[id]' style="color:#999;">&nbsp;&nbsp;&nbsp;-- $val3[name]</option>		
 <!--
 EOT;
 }}}  
@@ -111,21 +124,21 @@ echo <<<EOT
 -->	
             </select>				
 				</td>
-                <td width="25%" class="list1_top" align="center">{$lang_setflashUrl}</td>
-                <td width="30%" class="list1_top" align="center" >{$lang_setflashBg}</td>
-				<td width="12%" class="list1_top" align="center" >{$lang_operate}</td>
+                <td class="list">{$lang_setflashUrl}</td>
+                <td class="list" >{$lang_setflashBg}</td>
+				<td width="12%" class="list" >{$lang_operate}</td>
               </tr>
 <!--
 EOT;
 foreach ($flashrec as $key=>$val){
 echo <<<EOT
 -->          
-			  <tr >
-              <td class="list1_content_titile" align="center"><input name='id' type='checkbox' onClick="unselectall()" id="id" value='$val[id]' class="xz"></td>
-				<td class="list1_content" align="center"><a href="flash.php?lang=$lang&flashmode=2&module=$val[module]">$val[modulename]</a></td>
-			    <td align="left" class="list1_content">$val[flash_path]</td>
-                <td class="list1_content" align="center">$val[flash_back]</td>
-				<td align="center" class="list1_content" style="color:#0066FF;"></a> <a href="flashedit.php?lang=$lang&flashmode=2&id=$val[id]" >{$lang_editor}</a> | <a href="flashdelete.php?lang=$lang&flashmode=2&id=$val[id]" onClick="return ConfirmDel();" >{$lang_delete}</a></td>
+			  <tr class="mouse click">
+              <td class="list-text"><input name='id' type='checkbox' onClick="unselectall()" id="id" value='$val[id]' class="xz"></td>
+				<td class="list-text"><a href="flash.php?lang=$lang&flashmode=2&module=$val[module]">$val[modulename]</a></td>
+			    <td align="left" class="list-text">$val[flash_path]</td>
+                <td class="list-text">$val[flash_back]</td>
+				<td class="list-text" style="color:#0066FF;"></a> <a href="flashedit.php?lang=$lang&flashmode=2&id=$val[id]" >{$lang_editor}</a> | <a href="flashdelete.php?lang=$lang&flashmode=2&id=$val[id]" onClick="return linkSmit($(this),1);" >{$lang_delete}</a></td>
               </tr>
 			  
 <!--
@@ -133,22 +146,41 @@ EOT;
 }}
 echo <<<EOT
 -->
-		   
-   	   <tr> 
-            <td class="input_bottom" align="center"><input name="chkAll" class="xz" type="checkbox" id="chkAll" onclick=CheckAll(this.form) value="checkbox"></td>
-            <td class="input_bottom" align="center">{$lang_selectall}</td>
-			<td class="input_bottom" align="left" colspan="5"><input name="submit" type='submit' value='{$lang_deleteselected}'> 
               <input name="action" type="hidden" id="action" value="del">
-			  <input name="allid" type="hidden" id="allid" value=""></form></td>
+			  <input name="allid" type="hidden" id="allid" value="">			
+			</form>   
+   	   <tr> 
+            <td width="40" class="all"><input name="chkAll" type="checkbox" id="chkAll" onclick="CheckAllx($(this),'del')" value="checkbox" /></td>
+            <td class="all"><label for="chkAll">{$lang_selectall}</label></td>
+			<td class="all-submit" colspan="5">
+				<input name="submit" type='submit' value='{$lang_deleteselected}' class="submit li-submit" onclick="return met_modify($(this),'del','del');" /> 
+				<div class="li-submit">
+			<form method="POST" name="myform"  action="../advanced/copy.php?lang=$lang&action=copy&table=2" target="_self" onSubmit="return copyform();">
+			  <input name="allid" type="hidden" id="allid" value="" />
+                <select name="copylang">
+				    <option value="">{$lang_Copytitle}</option>
+<!--
+EOT;
+foreach($met_langok as $key=>$val){
+echo <<<EOT
+-->	
+				    <option value="$val[mark]">$val[name]</option>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+				</select>
+            </form>
+				</div>
+				<input name="submit" type='submit' value='{$lang_Copy}' class="submit li-submit" onclick="return met_modify($(this),'myform','editor');" />
+				<div class="page_list">$page_list</div>
+			 </td>
           </tr>
-   	   <tr>
-   	     <td height="0" align="center" colspan="7" class="list1_input">$page_list</td>
-        </tr>
 		<tr>
-		  <td class="list1_footer" colspan="10" align="center">$foot</td>
+		  <td class="footer" colspan="10">$foot</td>
 	  </tr>
 </table>
-</div>
 </body>
 </html>
 <!--

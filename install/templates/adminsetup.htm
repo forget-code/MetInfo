@@ -12,10 +12,8 @@ parent.document.getElementById("db_setup").className='stepnowno';
 parent.document.getElementById("adminsetup").className='stepnow';
 </script>
 <body>
-<div class="contenttext">
-<br>
-<p>请设置网站后台管理员帐号，确定后选择<b>保存管理设置</b>。 </p>
-<br>
+<div class="contenttext adminsetup">
+<p style="font-weight:bold;">请设置网站后台管理员帐号，确定后选择<b style="color:red;">保存管理设置</b>。 </p>
     <form method="post" action="" name="adminsetup" onSubmit="return chkreg();">
      <input name="setup" type="hidden" value="1">
 	 <input name="cndata" type="hidden" value="$cndata" />
@@ -23,28 +21,28 @@ parent.document.getElementById("adminsetup").className='stepnow';
 	  <fieldset>
 	  <legend><strong>管理员信息</strong></legend>
 		<div class="section">
-		  <input type="text" class="inp" id="regname" name="regname" tabindex="1" onBlur="chkname();" />
+		  <input type="text" class="text" id="regname" name="regname" tabindex="1" onBlur="chkname();" />
 		  <label for="admin_username">管理员用户名 <span id="div_regname"></span></label>
 		  <p>输入系统管理员帐号的用户名</p>
 		</div>
 		<div class="section">
-		  <input type="password" class="inpp" id="regpwd" name="regpwd" tabindex="2" onBlur="chkpassword();"/>
+		  <input type="password" class="text" id="regpwd" name="regpwd" tabindex="2" onBlur="chkpassword();"/>
 		  <label for="admin_pass">管理员密码  <span id="div_pwd"></span></label>
 		  <p>输入系统管理员帐号的密码</p>
 		</div>
 		<div class="section">
-		  <input type="password" class="inpp" id="aginpwd" name="aginpwd" tabindex="3" onBlur="comfirmpassword()"/>
+		  <input type="password" class="text" id="aginpwd" name="aginpwd" tabindex="3" onBlur="comfirmpassword()"/>
 		  <label for="admin_pass_confirm">确认管理员密码  <span id="div_aginpwd"></span></label>
 		  <p>确认系统管理员帐号的密码</p>
 		</div>
 		<div class="section">
-		  <input type="text" class="inp" id="email" name="email" tabindex="4" onBlur="checke_mail();" />
+		  <input type="text" class="text" id="email" name="email" tabindex="4" onBlur="checke_mail();" />
 		  <label for="admin_email">管理员电子邮件  <span id="div_email"></span></label>
-		  <p style="color:#990000;">请务必填写正确，以便当忘记密码时找回</p>
+		  <p style="color:red;">请务必填写正确，以便当忘记密码时找回</p>
 		  		  
 		</div>
 	  </fieldset>
-	  <p align="center"> <input type="submit" name="submit" class="btn2" tabindex="20" value="保存管理设置" style="*padding-top:4px;" /></p>
+	  <p align="center" style="margin-top:5px;"><input type="submit" name="submit" class="submit" tabindex="20" value="保存管理设置" /></p>
     </form>
 
 </div>

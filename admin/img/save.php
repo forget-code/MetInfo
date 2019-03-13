@@ -13,8 +13,24 @@ while($list = $db->fetch_array($result)){
 $para_list[]=$list;
 }
 $filename=preg_replace("/\s/","_",trim($filename)); 
-$filenameold=preg_replace("/\s/","_",trim($filenameold));  
+$filenameold=preg_replace("/\s/","_",trim($filenameold)); 
+if($imgnum>0){
+	for($i=0;$i<$imgnum;$i++){
+		$displayimg = "displayimg".$i;
+		$displayname = "displayname".$i;
+		if($i==0){
+			$displayimglist=$$displayname.'-'.$$displayimg;
+		}else{
+			$displayimglist=$displayimglist.','.$$displayname.'-'.$$displayimg;
+		}
+	}
+} 
+$displayimg = $displayimglist;
 if($action=="add"){
+if($filename!=''){
+	$filenameok = $db->get_one("SELECT * FROM $met_img WHERE class1='$class1' and filename='$filename'");
+	if($filenameok)okinfox('../img/content.php?lang='.$lang."&action=$action&class1=$class1",$lang_modFilenameok);
+}
 $access=$access<>""?$access:0;
 $query = "INSERT INTO $met_img SET
                       title              = '$title',
@@ -27,13 +43,16 @@ $query = "INSERT INTO $met_img SET
 					  new_ok             = '$new_ok',
 					  imgurl             = '$imgurl',
 					  imgurls            = '$imgurls',
+					  displayimg         = '$displayimg',
 				      com_ok             = '$com_ok',
+				      wap_ok             = '$wap_ok',
 					  issue              = '$issue',
 					  hits               = '$hits', 
 					  addtime            = '$addtime', 
 					  updatetime         = '$updatetime',
 					  access          	 = '$access',
 					  filename           = '$filename',
+					  no_order       	 = '$no_order',
 					  lang          	 = '$lang',";
 if($metadmin[imgother])$query .="
                       contentinfo         = '$contentinfo',
@@ -80,14 +99,16 @@ foreach($para_list as $key=>$val){
    $paraname="";
  }
 //html
-contenthtm($class1,$id,'showimg',$filename);
-indexhtm();
-classhtm($class1,$class2,$class3);
-
-okinfo('index.php?lang='.$lang.'&class1='.$class1,$lang_jsok);
+$htmjs =contenthtm($class1,$id,'showimg',$filename);
+$htmjs.=indexhtm();
+$htmjs.=classhtm($class1,$class2,$class3);
+okinfoh('../img/index.php?lang='.$lang.'&class1='.$class1,$htmjs);
 }
-
 if($action=="editor"){
+if($filename!=''){
+	$filenameok = $db->get_one("SELECT * FROM $met_img WHERE class1='$class1' and filename='$filename'");
+	if($filenameok)okinfox('../img/content.php?lang='.$lang."&action=$action&id=$id",$lang_modFilenameok);
+}
 $query = "update $met_img SET 
                       title              = '$title',
 					  keywords           = '$keywords',
@@ -97,12 +118,14 @@ $query = "update $met_img SET
 					  class2             = '$class2',
 					  class3             = '$class3',
 					  imgurl             = '$imgurl',
-					  imgurls            = '$imgurls',";
+					  imgurls            = '$imgurls',
+					  displayimg         = '$displayimg',";
 if($metadmin[imgnew])$query .= "					  
 					  new_ok             = '$new_ok',";
 if($metadmin[imgcom])$query .= "	
 				      com_ok             = '$com_ok',";
 					  $query .= "
+					  wap_ok             = '$wap_ok',
 					  issue              = '$issue',
 					  hits               = '$hits', 
 					  addtime            = '$addtime', 
@@ -110,7 +133,8 @@ if($metadmin[imgcom])$query .= "
 if($met_member_use)  $query .= "
 					  access			 = '$access',";
 if($metadmin[pagename])$query .= "
-					  filename       	 = '$filename',";
+					  filename       	 = '$filename',
+					  no_order       	 = '$no_order',";
 if($metadmin[imgother])$query .="
                       contentinfo         = '$contentinfo',
 					  contentinfo1        = '$contentinfo1',
@@ -165,11 +189,11 @@ foreach($para_list as $key=>$val){
    $paraname="";
  }
 //html
-contenthtm($class1,$id,'showimg',$filename);
-indexhtm();
-classhtm($class1,$class2,$class3);
+$htmjs =contenthtm($class1,$id,'showimg',$filename);
+$htmjs.=indexhtm();
+$htmjs.=classhtm($class1,$class2,$class3);
 if($filenameold<>$filename and $metadmin[pagename])deletepage($met_class[$class1][foldername],$id,'showimg',$updatetimeold,$filenameold);
-okinfo('index.php?lang='.$lang.'&class1='.$class1,$lang_jsok);
+okinfoh('../img/index.php?lang='.$lang.'&class1='.$class1,$htmjs);
 }
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.

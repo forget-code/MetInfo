@@ -5,27 +5,28 @@ require_once template('head');
 echo <<<EOT
 -->
 <title>{$lang_editinfo}</title>
+{$listjs}
 </head>
 <body>
-<form  method="POST" name="myform" onSubmit="return Checkimg();" action="save.php?action=$action" target="_self">
+<form  method="POST" name="myform" action="save.php?action=$action" target="_self">
 		<input name="class1" type="hidden" value="$class1">
 		<input name="id" type="hidden" value="$id">
 		<input name="lang" type="hidden"   value="$lang">
 		<input name="filenameold" type="hidden"  value="$img_list[filename]">
 		<input name="updatetimeold" type="hidden"  value="$img_list[updatetime]">
-<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
+<table cellpadding="2" cellspacing="1" class="table">
           <tr> 
-            <td colspan="3" align="center" class="list1_title">{$lang_editinfo}</td>
+            <td colspan="3" class="title">{$lang_editinfo}</td>
           </tr>		  
 		  <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_columnname}</b></td>
-            <td colspan="2" class="list1_input">
+            <td class="text"><font class="must">*</font>{$lang_columnname}</td>
+            <td colspan="2" class="input">
 <!--
 EOT;
 if(count($met_class22[$class1])){
 echo <<<EOT
 -->	
-<select name="class2" onChange="changelocation(document.myform.class2.options[document.myform.class2.selectedIndex].value)" size="1">
+<select name="class2" class="noselect" onChange="changelocation(document.myform.class2.options[document.myform.class2.selectedIndex].value)" size="1">
 <option value=0 $class2[0]>{$lang_modClass2}</option>
 <!--
 EOT;
@@ -60,7 +61,7 @@ EOT;
 }else{
 echo <<<EOT
 -->		 
-		 <font color="#FF0000">{$met_class[$class1][name]}</font>
+		 <font color="#f00">{$met_class[$class1][name]}</font>
 <!--
 EOT;
 }
@@ -75,8 +76,8 @@ echo <<<EOT
 -->		  
 
 		  <tr> 
-            <td class="list1_text"><b>{$lang_webaccess}</b></td>
-            <td class="list1_input" colspan="2" ><select name="access" id="access" >
+            <td class="text">{$lang_webaccess}</td>
+            <td class="input" colspan="2" ><select name="access" id="access" >
              $level
             </select></td>
           </tr>
@@ -86,17 +87,21 @@ EOT;
 echo <<<EOT
 -->	
 		  <tr> 
-            <td class="list1_text"><b>{$lang_top}</b></td>
-            <td colspan="2" class="list1_input"><input name="top_ok" type="checkbox" value="1" $top_ok>{$lang_modtopinfo}</td>
+            <td class="text">{$lang_top}</td>
+            <td colspan="2" class="input">
+				<input name="top_ok" type="checkbox" id="label1" class="checkbox" value="1" $top_ok>
+				<label for="label1">{$lang_modtopinfo}</label>
+				</td>
           </tr>  
 		  <tr> 
-            <td class="list1_text"><b>{$lang_modimgurl}</b><br><font color='red' $styletip>{$lang_modimgauto}</span></td>
-            <td colspan="2" class="list1_input"> <input name="imgurl" type="text" class="input" size="30"  value="$img_list[imgurl]"> 
-			<iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_photo.php?returnid=big&create_samll=$met_autothumb_ok&lang=$lang" frameborder=0 scrolling=no width="320" height="25"></iframe></td>
+            <td class="text">{$lang_modimgurl}<br><font color='red' $styletip>{$lang_modimgauto}</span></td>
+            <td colspan="2" class="input upload"> 
+				<input name="imgurl" type="text" class="text" value="$img_list[imgurl]"> 
+				<iframe ID="UploadFiles" src="../include/upload_photo.php?returnid=big&create_samll=$met_autothumb_ok&lang=$lang&imgtype=2" frameborder=0 scrolling=no></iframe></td>
           </tr> 
 		  <tr> 
-            <td class="list1_text"><b>{$lang_modimgurls}</b></td>
-            <td colspan="2" class="list1_input"> <input name="imgurls" type="text" class="input" size="30"  value="$img_list[imgurls]"><iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_photo.php?returnid=small&lang=$lang" frameborder=0 scrolling=no width="320" height="25"></iframe></td>
+            <td class="text">{$lang_modimgurls}</td>
+            <td colspan="2" class="input upload"><input name="imgurls" type="text" class="text" value="$img_list[imgurls]"><iframe ID="UploadFiles" src="../include/upload_photo.php?returnid=small&lang=$lang" frameborder=0 scrolling=no></iframe></td>
           </tr>
 <!--
 EOT;
@@ -104,8 +109,11 @@ if($metadmin[imgnew]){
 echo <<<EOT
 -->
 		  <tr> 
-            <td class="list1_text"><b>{$lang_new}</b></td>
-            <td colspan="2" class="list1_input"><input name="new_ok" type="checkbox" value="1"  $new_ok>{$lang_modcontentnew}</td>
+            <td class="text">{$lang_new}</td>
+            <td colspan="2" class="input">
+				<input name="new_ok" type="checkbox" id="label2" class="checkbox" value="1"  $new_ok>
+				<label for="label2">{$lang_modcontentnew}</label>
+			</td>
           </tr> 
 <!--
 EOT;
@@ -114,60 +122,84 @@ if($metadmin[imgcom]){
 echo <<<EOT
 -->	
 		 <tr> 
-            <td class="list1_text"><b>{$lang_recom}</b></td>
-            <td colspan="2" class="list1_input"><input name="com_ok" type="checkbox" value="1" $com_ok>{$lang_modcontentcom}</td>
+            <td class="text">{$lang_recom}</td>
+            <td colspan="2" class="input">
+				<input name="com_ok" type="checkbox" id="label3" class="checkbox" value="1" $com_ok>
+				<label for="label3">{$lang_modcontentcom}</label>
+			</td>
           </tr> 
 <!--
 EOT;
 }
 echo <<<EOT
 -->	
+<!--
+EOT;
+if($met_wap && $met_wap_ok){
+echo <<<EOT
+-->	
+		<tr> 
+            <td class="text">WAP</td>
+            <td colspan="2" class="input">
+				<input name="wap_ok" type="checkbox" class="checkbox" id="label4" value="1" $wap_ok>
+				<label for="label4">{$lang_wapcontentcom}</label>
+			</td>
+        </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->	
 		  <tr> 
-            <td class="list1_text"><b>{$lang_modpublish}</b></td>
-            <td colspan="2" class="list1_input"><input name="issue" type="text" class="input" size="10"  value="$img_list[issue]"></td>
+            <td class="text">{$lang_modpublish}</td>
+            <td colspan="2" class="input"><input name="issue" type="text" class="text mid" value="$img_list[issue]"></td>
           </tr>
 		  <tr> 
-            <td class="list1_text"><b>{$lang_hits}</b></td>
-            <td colspan="2" class="list1_input"><input name="hits" type="text" class="input" size="10"  value="$img_list[hits]"> {$lang_modhits}</td>
-          </tr>
-		  <tr> 
-            <td class="list1_text"><b>{$lang_addtime}</b></td>
-            <td colspan="2" class="list1_input"><input name="addtime" type="text" class="input" size="20"  value="$img_list[addtime]">{$lang_modtimenow}$m_now_date {$lang_modtimenow1}</td>
-          </tr>
-		  <tr> 
-            <td class="list1_text"><b>{$lang_updatetime}</b></td>
-            <td colspan="2" class="list1_input"><input name="updatetime" type="text" class="input" size="20"  value="$m_now_date">{$lang_modtimenow}$m_now_date {$lang_modtimenow1}</td>
+            <td class="text">{$lang_hits}</td>
+            <td colspan="2" class="input"><input name="hits" type="text" class="text mid" value="$img_list[hits]" />
+			<span class="tips">{$lang_modhits}</span></td>
           </tr>
 		   <tr> 
-            <td class="list1_text"><b>{$lang_hits}</b></td>
-            <td colspan="2" class="list1_input">{$lang_modorderinfo}</td>
+            <td class="text">{$lang_sort}</td>
+            <td colspan="2" class="input"><input type="text" name="no_order" class="text mid" value="$img_list[no_order]" />
+			<span class="tips">{$lang_ordernumber}</span></td>
           </tr>
 		  <tr> 
-				<td colspan="3" align="center" class="list1_title"><b>{$lang_content}</b></td>
+            <td class="text">{$lang_addtime}</td>
+            <td colspan="2" class="input"><input name="addtime" type="text" class="text" style="width:120px;" value="$img_list[addtime]">{$lang_modtimenow}$m_now_date {$lang_modtimenow1}</td>
+          </tr>
+		  <tr> 
+            <td class="text">{$lang_updatetime}</td>
+            <td colspan="2" class="input"><input name="updatetime" type="text" class="text" style="width:120px;" value="$m_now_date">{$lang_modtimenow}$m_now_date {$lang_modtimenow1}</td>
+          </tr>
+		  <tr> 
+				<td colspan="3" class="title">{$lang_content}</td>
 		  </tr>
 		  <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_title}</b></td>
-            <td colspan="2" class="list1_input"> <input name="title" type="text" class="input" size="50"  value="$img_list[title]"></td>
+            <td class="text"><font class="must">*</font>{$lang_title}</td>
+            <td colspan="2" class="input"> <input name="title" type="text" class="text nonull" value="$img_list[title]"></td>
           </tr>
 <!--
 EOT;
-		 
+$mrok='';		 
 foreach($para_list as $key=>$val){
-if($val[wr_ok])$wrok="<font color='#FF0000'>*</font>";
+if($val[wr_ok])$wrok="<font class='must'>*</font>";
 $para="para".$val[id];
 switch($val[type]){
 case 1:
+if($val[wr_ok])$mrok='nonull';
 echo <<<EOT
 -->
          <tr> 
-            <td class="list1_text">$wrok<b>$val[name]</b></td>
-			 <td colspan="2" class="list1_input"><input name="para$val[id]" type="text" class="input" size="50" value="$img_list[$para]"></td>
+            <td class="text">$wrok$val[name]</td>
+			 <td colspan="2" class="input"><input name="para$val[id]" type="text" class="text $mrok" value="$img_list[$para]"></td>
         </tr>
 <!--
 EOT;
 break;
 case 2:
-$tmp="<select name='para$val[id]'>";
+if($val[wr_ok])$mrok='class="noselect"';
+$tmp="<select name='para$val[id]' $mrok>";
 $tmp=$tmp."<option value=''>$lang_modnull</option>";
 foreach($paravalue[$val[id]] as $key=>$val1){
 $selected='';
@@ -178,18 +210,19 @@ $tmp=$tmp."</select>";
 echo <<<EOT
 -->
          <tr> 
-            <td class="list1_text">$wrok<b>$val[name]</b></td>
-            <td colspan="2" class="list1_input">$tmp</td>
+            <td class="text">$wrok$val[name]</td>
+            <td colspan="2" class="input">$tmp</td>
           </tr>
 <!--
 EOT;
 break;
 case 3:
+if($val[wr_ok])$mrok='nonull';
 echo <<<EOT
 -->
          <tr> 
-            <td class="list1_text">$wrok<b>$val[name]</b></td>
-            <td colspan="2" class="list1_input"><textarea name="para$val[id]" cols="60" rows="5">$img_list[$para]</textarea></td>
+            <td class="text">$wrok$val[name]</td>
+            <td colspan="2" class="input"><textarea name="para$val[id]" class="textarea gen $mrok" cols="60" rows="5">$img_list[$para]</textarea></td>
           </tr>
 <!--
 EOT;
@@ -202,29 +235,30 @@ foreach($paravalue[$val[id]] as $key=>$val1){
 $checked='';
 $i++;
 if(strstr($nowinfo, "-".$val1[info]."-")) $checked="checked='checked'";
-$tmp1=$tmp1."<input name='para$val[id]_$i' type='checkbox' value='$val1[info]' $checked>$val1[info]  ";
+$tmp1=$tmp1."<input name='para$val[id]_$i' type='checkbox' class='checkbox' id='para4-$i' value='$val1[info]' $checked /><label for='para4-$i'>$val1[info]</label> ";
 }
 echo <<<EOT
 -->
          <tr> 
-            <td class="list1_text">$wrok<b>$val[name]</b></td>
-            <td colspan="2" class="list1_input">$tmp1</td>
+            <td class="text">$wrok$val[name]</td>
+            <td colspan="2" class="input">$tmp1</td>
           </tr>
 
 <!--
 EOT;
 break;
 case 5:
+$mrok='';
+if($val[wr_ok])$mrok='nonull';
 $paraname=$para."name";
 echo <<<EOT
 -->
          <tr> 
-            <td class="list1_text">$wrok<b>$val[name]</b></td>
-            <td colspan="2" class="list1_input">
-			<input name="para{$val[id]}name" type="text" class="input" size="30"  value="$img_list[$paraname]">{$lang_imagename} <br>
-			<input name="para$val[id]" type="text" class="input" size="30"  value="$img_list[$para]">
-			<iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_photo.php?returnid=para$val[id]&flash=flash&met_arrayimg=1&lang=$lang" frameborder=0 scrolling=no width="340" height="25"></iframe>
-			
+            <td class="text">$wrok$val[name]</td>
+            <td colspan="2" class="input upload">
+			<div style="height:30px;"><input name="para{$val[id]}name" type="text" class="text med" value="$img_list[$paraname]">{$lang_imagename}</div>
+			<input name="para$val[id]" type="text" class="text $mrok" value="$img_list[$para]" />
+			<iframe id="UploadFiles" src="../include/upload_photo.php?returnid=para$val[id]&flash=flash&met_arrayimg=1&lang=$lang" frameborder=0 scrolling=no ></iframe>
 			</td>
           </tr>
 <!--
@@ -238,13 +272,13 @@ $checked='';
 $i++;
 if($action=="add" && $i==1)$checked="checked='checked'";
 if($img_list["$para"]==$val2['info']) $checked="checked='checked'";
-$tmp2=$tmp2."<input name='para$val[id]' type='radio' value='$val2[info]' $checked>$val2[info]  ";
+$tmp2=$tmp2."<input name='para$val[id]' type='radio' class='radio' id='para6-$i' value='$val2[info]' $checked /><label for='para6-$i'>$val2[info]</label> ";
 }
 echo <<<EOT
 -->
          <tr> 
-            <td class="list1_text">$wrok<b>$val[name]</b></td>
-            <td colspan="2" class="list1_input">$tmp2</td>
+            <td class="text">$wrok$val[name]</td>
+            <td colspan="2" class="input">$tmp2</td>
           </tr>
 <!--
 EOT;
@@ -260,31 +294,64 @@ if($metadmin[pagename]){
 echo <<<EOT
 -->	
 		  <tr> 
-            <td class="list1_text"><b>{$lang_columnhtmlname}</b></td>
-            <td colspan="2" class="list1_input"><input name="filename" type="text" class="input" size="40"  value="$img_list[filename]">{$lang_contenthtml}</td>
+            <td class="text">{$lang_columnhtmlname}</td>
+            <td colspan="2" class="input"><input name="filename" type="text" class="text" value="$img_list[filename]">{$lang_contenthtml}</td>
           </tr>
 <!--
 EOT;
 }
 echo <<<EOT
 -->	
-		  <tr> 
-            <td class="list1_text"><b>{$lang_keywords}</b></td>
-            <td colspan="2" class="list1_input"><input name="keywords" type="text" class="input" size="40"  value="$img_list[keywords]">{$lang_descriptioninfo},{$lang_keywordsinfo}</td>
+         <tr id="list-top"> 
+            <td class="text"></td>
+            <td colspan="2" class="input"><b>{$lang_displayimgTip}</b><input name="imgnum" type="hidden" value="$imgnum" /></td>
+          </tr>
+<!--
+EOT;
+if($displaylist){
+$i=0;
+foreach($displaylist as $key=>$val){
+$i++;
+$k=$i-1;
+echo <<<EOT
+-->
+         <tr class="newlist"> 
+            <td class="text"><a href="javascript:;" onclick="imgnumfu();delettr($(this));" style="font-weight:normal; margin-right:5px;">{$lang_delete}</a> {$lang_displayimg}$i</td>
+            <td colspan="2" class="input upload">
+			<div style="height:30px;"><input name="displayname{$k}" type="text" class="text med" value="$val[name]">{$lang_imagename}</div>
+			<input name="displayimg{$k}" type="text" class="text" value="$val[imgurl]" /> 
+			<iframe id="UploadFiles" src="../include/upload_photo.php?returnid=displayimg{$k}&flash=flash&met_arrayimg=1&lang=$lang" frameborder=0 scrolling=no ></iframe>
+			</td>
+          </tr>
+<!--
+EOT;
+}}
+echo <<<EOT
+-->
+         <tr> 
+            <td class="text"></td>
+            <td colspan="2" class="input">
+			<a href="addimg.php?lang=$lang&action=add" onclick="return adddisplayimg($(this));">{$lang_add}{$lang_displayimg}</a>
+			<span id="loadtxt"></span>
+			</td>
           </tr>
 		  <tr> 
-            <td class="list1_text"><b>{$lang_description}</b><br>{$lang_descriptioninfo}
+            <td class="text">{$lang_keywords}</td>
+            <td colspan="2" class="input"><input name="keywords" type="text" class="text" value="$img_list[keywords]">{$lang_descriptioninfo},{$lang_keywordsinfo}</td>
+          </tr>
+		  <tr> 
+            <td class="text">{$lang_description}<br>{$lang_descriptioninfo}
 			</td>
-            <td class="list1_input" colspan="2"><textarea name="description" cols="60" rows="5" >$img_list[description]</textarea></td>
+            <td class="input" colspan="2"><textarea name="description" cols="60" class="textarea gen" rows="5" >$img_list[description]</textarea></td>
 			</tr> 
 			 <tr> 
-            <td class="list1_text"><b>
+            <td class="text">
 <!--
 EOT;
 if($metadmin[imgother]){
 echo <<<EOT
 -->			
-			<input name="contentinfo" type="text" class="input" size="20"  value="{$img_list[contentinfo]}">
+			<input name="contentinfo" type="text" class="text" size="20" value="{$img_list[contentinfo]}">
 <!--
 EOT;
 }else{
@@ -295,61 +362,65 @@ echo <<<EOT
 EOT;
 }
 echo <<<EOT
--->	
-			</b></td>
-            <td class="list1_input" colspan="2">
-<!--
-EOT;
-echo "-->";
-$oFCKeditor = new FCKeditor('content'); 
-$oFCKeditor->BasePath = '../../fckeditor/';
-$oFCKeditor->Config['AutoDetectLanguage']	= false ;
-$oFCKeditor->Config['DefaultLanguage']		= $langusenow ;
-$oFCKeditor->Value = $img_list[content];
-$oFCKeditor->Width = '100%';   
-$oFCKeditor->Height = '300';
-$oFCKeditor->Create();
-echo <<<EOT
+-->		
+			</td>
+            <td class="input" colspan="2">
+			<div class="edir-hide">
+			<div class="left-hiden"></div>
+<script type="text/javascript" src="../ckeditor/ckeditor.js"></script>
+			<textarea class="ckeditor" name="content">$img_list[content]</textarea>
+<script type="text/javascript">
+CKEDITOR.replace('content', {
+	filebrowserBrowseUrl : '../ckeditor/ckfinder/ckfinder.html',
+	filebrowserImageBrowseUrl : '../ckeditor/ckfinder/ckfinder.html?Type=Images',
+	filebrowserFlashBrowseUrl : '../ckeditor/ckfinder/ckfinder.html?Type=Flash',
+	filebrowserUploadUrl : '../ckeditor/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
+	filebrowserImageUploadUrl : '../ckeditor/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
+	filebrowserFlashUploadUrl : '../ckeditor/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash'
+});
+</script>
+</div>
 </td></tr>
 <!--
 EOT;
-if($metadmin[imgother]){
-for($i=1;$i<=$metadmin[imgother];$i++){
+if($metadmin[productother]){
+for($i=1;$i<=$metadmin[productother];$i++){
 $othertitle='contentinfo'.$i;
 $othermark='content'.$i;
 echo <<<EOT
--->	   
+-->		   
 			 <tr> 
-            <td class="list1_text"><b><input name="{$othertitle}" type="text" class="input" size="20"  value="{$img_list[$othertitle]}"></b></td>
-            <td class="list1_input" colspan="2">
-<!--
-EOT;
-echo "-->";
-$oFCKeditor = new FCKeditor($othermark); 
-$oFCKeditor->BasePath = '../../fckeditor/';
-$oFCKeditor->Config['AutoDetectLanguage']	= false ;
-$oFCKeditor->Config['DefaultLanguage']		= $langusenow ;
-$oFCKeditor->Value = $img_list[$othermark];
-$oFCKeditor->Width = '100%';   
-$oFCKeditor->Height = '300';
-$oFCKeditor->Create();
-echo <<<EOT
+            <td class="text"><input name="{$othertitle}" type="text" class="text" value="{$img_list[$othertitle]}"></td>
+            <td class="input" colspan="2">
+			<div class="edir-hide">
+			<div class="left-hiden"></div>
+			<textarea class="ckeditor" name="$othermark">$img_list[$othermark]</textarea>
+<script type="text/javascript">
+CKEDITOR.replace('$othermark', {
+	filebrowserBrowseUrl : '../ckeditor/ckfinder/ckfinder.html',
+	filebrowserImageBrowseUrl : '../ckeditor/ckfinder/ckfinder.html?Type=Images',
+	filebrowserFlashBrowseUrl : '../ckeditor/ckfinder/ckfinder.html?Type=Flash',
+	filebrowserUploadUrl : '../ckeditor/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
+	filebrowserImageUploadUrl : '../ckeditor/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
+	filebrowserFlashUploadUrl : '../ckeditor/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash'
+});
+</script>
+</div>
 </td></tr>
 <!--
 EOT;
 }}
 echo <<<EOT
--->		   
-
+-->
 		  <tr> 
-            <td class="list1_text"></td>
-	      <td class="list1_submit"><input type="submit" name="Submit" value="{$lang_Submit}" class="tj" style="*padding-top:2px; *height:22px;"><input type="reset" name="Submit" value="{$lang_Reset}" class="tj" style="*padding-top:2px; *height:22px;"> </td>
+            <td class="text"></td>
+	      <td class="submit"><input type="submit" name="Submit" value="{$lang_Submit}" class="submit" onclick="return Smit($(this),'myform')" /><input type="reset" name="Submit" value="{$lang_Reset}" class="reset" /> </td>
           </tr>
-        </form>
 		<tr>
-		  <td class="list1_footer" colspan="2" align="center">$foot</td>
+		  <td class="footer" colspan="2">$foot</td>
 	  </tr>
-</table>
+</table>        
+</form>
 </body>
 </html>
 <!--

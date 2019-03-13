@@ -90,7 +90,8 @@ $class_info[name]=$class2_info[name]."--".$class1_info[name];
 }
      $show[description]=$class_info[description]?$class_info[description]:$met_keywords;
      $show[keywords]=$class_info[keywords]?$class_info[keywords]:$met_keywords;
-	 $met_title=$class_info[name]."--".$met_title;
+	 $met_title=$met_title?$class_info['name'].'-'.$met_title:$class_info['name'];
+	 if($class_info['ctitle']!='')$met_title=$class_info['ctitle'];
 if(count($nav_list2[$classaccess[id]])){
 $k=count($nav_list2[$class1]);
 $nav_list2[$class1][$k]=$class1_info;

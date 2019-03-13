@@ -49,6 +49,24 @@ $lang=$_GET['lang']<>""?$_GET['lang']:$_POST['lang'];
 $lang=($lang=="")?$met_index_type:$lang;
 $settings = parse_ini_file(ROOTPATH."config/config_".$lang.".inc.php");
 @extract($settings);
+$settings = parse_ini_file(ROOTPATH."wap/config_".$lang.".inc.php");
+@extract($settings);
+function dump($vars, $label = '', $return = false)
+{
+    if (ini_get('html_errors')){
+        $content = "<pre>\n";
+        if ($label != '') {
+            $content .= "<strong>{$label} :</strong>\n";
+        }
+        $content .= htmlspecialchars(print_r($vars, true));
+        $content .= "\n</pre>\n";
+    } else {
+        $content = $label . " :\n" . print_r($vars, true);
+    }
+    if ($return) { return $content; }
+    echo $content;
+    return null;
+}
 require_once ROOTPATH_ADMIN.'include/lang.php';
 isset($_REQUEST['GLOBALS']) && exit('Access Error');
 foreach(array('_COOKIE', '_POST', '_GET') as $_request) {
@@ -56,7 +74,7 @@ foreach(array('_COOKIE', '_POST', '_GET') as $_request) {
 		$_key{0} != '_' && $$_key = daddslashes($_value);
 	}
 }
-$metcms_v="3.0";
+$metcms_v="4.0";
 require_once ROOTPATH_ADMIN.'include/pubilc.php';
 (!MAGIC_QUOTES_GPC) && $_FILES = daddslashes($_FILES);
 $REQUEST_URI  = $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'];
@@ -83,6 +101,7 @@ $m_user_ip  = preg_match('/^([0-9]{1,3}\.){3}[0-9]{1,3}$/',$m_user_ip) ? $m_user
 $PHP_SELF = $_SERVER['PHP_SELF'] ? $_SERVER['PHP_SELF'] : $_SERVER['SCRIPT_NAME'];
 //admin skin
 $met_skin="met";
+if($metsking)$met_skin=$metsking;
 if($lang==""){
 foreach($met_langok as $key=>$val){
 $lang=$val[mark];
@@ -95,6 +114,7 @@ require_once $metinfoadminfile;
 }else{
 require_once ROOTPATH.'config/metinfo.inc.php';
 }
+$metadmin[pagename]=1;
 $met_htmtypeadmin=($lang==$met_index_type)?".".$met_htmtype:"_".$lang.".".$met_htmtype;
 $met_seo=stripslashes($met_seo);
 $met_foottext=stripslashes($met_foottext);
@@ -106,12 +126,18 @@ $met_footstat=stripslashes($met_footstat);
 $met_memberemail=stripslashes($met_memberemail);
 $met_membercontrol=stripslashes($met_membercontrol);
 $met_onlinetel=stripslashes($met_onlinetel);
+$wap_description=stripslashes($wap_description);
+$wap_footertext=stripslashes($wap_footertext);
+$met_onlinetel = stripslashes($met_onlinetel);
+$met_jiathis = stripslashes($met_jiathis);
+$met_tools_code = stripslashes($met_tools_code);
 if(!function_exists('ob_phpintan')) {
 	function ob_phpintan($content){return htmlspecialchars($content);}
 }
  if(!function_exists('ob_pcontent')) {
 	function ob_pcontent($content){return intval($content);}
 }
+
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

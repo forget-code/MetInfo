@@ -1,20 +1,14 @@
 <!--<?php
 require_once template('head'); 
+require_once template('webbar');
+$addlinkform=metlabel_addlink();
 echo <<<EOT
 -->
-<div id="web">
-<div class="right">
-   <h3 class="title"><span>{$class_list[$classnow][name]}</span></h3>
-<div class="webcontent">
-$methtml_addlink
-</div>
-</div>
-<!--
-EOT;
-require_once template('webleft'); 
-echo <<<EOT
--->
-<div style="clear:both;"></div>
+        <div class="linksubmit webbox">
+            {$addlinkform}
+        </div>
+    </div>
+    <div class='clear'></div>
 </div>
 <!--
 EOT;

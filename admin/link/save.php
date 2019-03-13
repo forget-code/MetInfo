@@ -3,6 +3,7 @@
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 require_once '../login/login_check.php';
 if($action=="add"){
+if($link_type=='')okinfox('content.php?action=add&lang='.$lang,$lang_linkTypenonull);
 $query = "INSERT INTO $met_link SET
                       webname              = '$webname',
 					  info                 = '$info',
@@ -16,11 +17,14 @@ $query = "INSERT INTO $met_link SET
 					  lang                 = '$lang', 
 					  addtime              = '$m_now_date'";
          $db->query($query);
-onepagehtm('link','index');
-indexhtm();
-okinfo('index.php?lang='.$lang,$lang_jsok);
+$htmljs = onepagehtm('link','index');
+$htmljs.= indexhtm();
+okinfoh('../link/index.php?lang='.$lang,$htmljs);
 }
-
+if($action=="lco"){
+  $linksqok = "ok";
+  die($linksqok);
+}
 if($action=="editor"){
 $query = "update $met_link SET 
                       webname              = '$webname',
@@ -36,9 +40,9 @@ $query = "update $met_link SET
 					  where id='$id'";
 
 $db->query($query);
-onepagehtm('link','index');
-indexhtm();
-okinfo('index.php?lang='.$lang,$lang_jsok);
+$htmljs = onepagehtm('link','index');
+$htmljs.= indexhtm();
+okinfoh('../link/index.php?lang='.$lang,$htmljs);
 }
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.

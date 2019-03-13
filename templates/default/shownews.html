@@ -1,26 +1,31 @@
 <!--<?php
 require_once template('head'); 
+require_once template('webbar'); 
 $methits=methtml_hits('news');
-$met_newsnext=methtml_prenextinfo();
+$met_newsnext=methtml_prenextinfo(1);
+$weblist=metlabel_news(0);
 echo <<<EOT
 -->
-<div id="web">
-<div class="right">
-   <h3 class="title"><span>{$class_list[$classnow][name]}</span></h3>
-   
-<div class="webcontent">
-<h1 class="title">$news[title]</h1>
-<div class="text">$news[content]</div>
-<div class="page">$met_newsnext</div>
-<div class="hits">$methits</div>
-</div>
-</div>
+        <div class="shownews webbox">
+            <h1 class="title">{$news[title]}</h1>
+            <div class="editor">{$news[content]}<div class="clear"></div></div>
+			<div class="hits">{$methits}</div>
+            <div class="page">{$met_newsnext}</div>
+        </div>
 <!--
 EOT;
-require_once template('webleft'); 
+if($lang_NewsRelatedKO==1){
 echo <<<EOT
 -->
-<div style="clear:both;"></div>
+			<h4 class="related"><span>{$lang_NewsRelated}</span></h4>
+			<div class='relatedlist'>{$weblist}<div class="clear"></div></div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+    </div>
+    <div class="clear"></div>
 </div>
 <!--
 EOT;

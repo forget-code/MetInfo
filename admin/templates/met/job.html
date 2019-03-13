@@ -2,111 +2,244 @@
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 require_once template('head');
+$colspan=11;
+if(!$met_wap && !$met_wap_ok)$colspan=$colspan-1;
+if(!$met_member_use)$colspan=$colspan-1;
+$colspanj=$colspan-2;
 echo <<<EOT
 -->
 <title>{$lang_mod6}{$lang_manager}</title>
 </head>
 <body>
-<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
-          <tr> 
-            <td colspan="10" align="center" class="list1_title">{$lang_manager} [$class1_info[name]]</td>
-          </tr>  
-			<tr align="right">
-			<form method="POST" name="filterform"  action="index.php?search=detail_search" target="_self">
-			<input name="class1" type="hidden" value="$class1">
-			<input name="lang" type="hidden"  value="$lang">
-			<td colspan="10">				
-				<b>{$lang_top}</b>	
-				<select name="top" id="top" onChange="autosubmit()">
+    <table cellpadding="2" cellspacing="1" class="table">
+        <tr> 
+            <td colspan="$colspan" class="title">{$lang_manager} [$class1_info[name]]</td>
+        </tr>  
+	    <tr>
+		    <td colspan="$colspan" class="centle">	
+			    <form method="POST" name="search" style="float:left; font-weight:normal; color:#666;" action="index.php?search=detail_search&lang=$lang" target="_self">
+				    <input name="class1" type="hidden" value="$class1" />
+			        &nbsp;&nbsp;<input name="position" type="text" />
+                    <input type="submit" name="Submit2" value="{$lang_search}" class="submit" /> {$lang_modsearch} 
+				</form>			
+	            <form method="POST" name="filterform" style="float:right;" action="index.php?lang=$lang&search=detail_search" action="index.php?search=detail_search" target="_self">
+	            <input name="class1" type="hidden" value="$class1" />
+	            <input name="lang" type="hidden"  value="$lang" />			
+				<span>{$lang_top}</span>	
+				<select name="top" id="listtop" onChange="handle_form('filterform')">
 					<option value="all" $top0>{$lang_selectnow}</option>
 					<option value="1" $top1>{$lang_yes}</option>
 					<option value="0" $top2>{$lang_no}</option>
 				</select>
+				</form>
 			</td>	
-			</form>
 		</tr>
-              <tr>
-                <td width="5%" class="list1_top" align="center">{$lang_selected}</td>
-				<td width="5%" class="list1_top" align="center">ID</td>
-                <td width="10%" class="list1_top" align="center">{$lang_jobposition}</td>
-                <td width="4%" class="list1_top" align="center" >{$lang_jobnum}</td>
-				<td width="15%" class="list1_top" align="center" >{$lang_jobaddress}</td>
-                <td width="8%" class="list1_top" align="center" >{$lang_joblife}</td>
-				<td width="4%"  class="list1_top" align="center" >{$lang_top}</td>
-                <td width="13%" class="list1_top" align="center" >{$lang_jobpublish}</td>
+        <tr>
+            <td width="40" class="list">{$lang_selected}</td>
+			<td width="50" class="list">{$lang_sort}</td>
+            <td class="list">{$lang_jobposition}</td>
+            <td class="list">{$lang_jobnum}</td>
+			<td class="list">{$lang_jobaddress}</td>
+            <td width="80" class="list">{$lang_joblife}</td>
+			<td width="60" class="list">{$lang_top}</td>
 <!--
 EOT;
-if($met_member_use){
+if($met_wap && $met_wap_ok){
 echo <<<EOT
 -->	
-				<td width="14%"  class="list1_top" align="center" >{$lang_webaccess}</td>
+				<td width="5%" class="list" >{$lang_wap}</td>
 <!--
 EOT;
 }
 echo <<<EOT
 -->	
-				<td width="18%" class="list1_top" align="center" >{$lang_operate}</td>
-              </tr>
-			  <form name="del" method="Post" action="delete.php?lang=$lang&class1=$class1" onSubmit="return ConfirmDelall();">
+            <td width="120" class="list">{$lang_jobpublish}</td>
+<!--
+EOT;
+if($met_member_use){
+echo <<<EOT
+-->	
+			<td width="100" class="list">{$lang_webaccess}</td>
+<!--
+EOT;
+}
+echo <<<EOT
+-->	
+			<td class="list">{$lang_operate}</td>
+        </tr>
+		<form name="del" method="Post" action="delete.php?lang=$lang&class1=$class1">
 <!--
 EOT;
 foreach ($job_list as $key=>$val){
 echo <<<EOT
 -->          
-              <tr>
-              <td align="center"class="list1_content_titile"><input name='id' type='checkbox' onClick="unselectall()" id="id" value='$val[id]' class="xz"></td>
-                <td  align="center" class="list1_content">$val[id]</td>
-			    <td align="left" class="list1_content"><a href="../../job/showjob.php?lang=$lang&id=$val[id]" title="{$lang_preview}" target="_blank">$val[position]</a></td>
-                <td class="list1_content" align="center">$val[count]</td>
-				<td   class="list1_content" align="center">$val[place]</td>
-                <td   class="list1_content" align="center">$val[useful_life]</td>
-				<td   class="list1_content" align="center"><a href="changeState.php?lang=$lang&top_ok=$val[top_ok]&id=$val[id]&class1=$class1" onClick="return ConfirmChange();">$val[top_ok1]</a></td>
-                <td   class="list1_content" align="center">$val[addtime]</td>
+        <tr class="mouse click">
+            <td class="list-text"><input name='id' type='checkbox' id="id" value='$val[id]' /></td>
+            <td class="list-text">
+			    <input type="text" name="no_order_$val[id]" value="$val[no_order]" class="text no_order" />
+			</td>
+			<td class="list-text"><a href="../../job/showjob.php?lang=$lang&id=$val[id]" title="{$lang_preview}" target="_blank">$val[position]</a></td>
+            <td class="list-text">$val[count]</td>
+			<td class="list-text">$val[place]</td>
+            <td class="list-text">$val[useful_life]</td>
+			<td class="list-text">
+			    <a href="changeState.php?lang=$lang&top_ok=$val[top_ok]&id=$val[id]&class1=$class1" onClick="return linkSmit($(this));">$val[top_ok1]</a>
+			</td>
 <!--
 EOT;
-if($met_member_use){
+if($met_wap && $met_wap_ok){
 echo <<<EOT
 -->	
-				<td   class="list1_content" align="center">$val[access]</td>
-<!--
-EOT;
-}
-echo <<<EOT
--->	
-				<td align="center"  class="list1_content" style="color:#0066FF;"></a> <a href="content.php?lang=$lang&id=$val[id]&class1=$class1&action=editor" >{$lang_editor}</a> | <a href="cv.php?lang=$lang&search=detail_search&jobid=$val[id]" >{$lang_jobCV}</a> | <a href="delete.php?lang=$lang&id=$val[id]&class1=$class1" onClick="return ConfirmDel();" >{$lang_delete}</a></td>
-              </tr>
+				<td class="list-text"><a href="changeState.php?lang=$lang&wap_ok=$val[wap_ok]&id=$val[id]&class1=$class1&class2=$class2&class3=$class3" onClick="return linkSmit($(this));">$val[wap_ok1]</a></td>
 <!--
 EOT;
 }
 echo <<<EOT
 -->
-
-   	   <tr> 
-            <td class="input_bottom" align="center"><input name="chkAll" class="xz" type="checkbox" id="chkAll" onclick=CheckAll(this.form) value="checkbox"></td>
-             <td class="input_bottom" align="center">{$lang_selectall}</td>
-              <td class="input_bottom" align="left" colspan="10"><input name="submit" type='submit' value='{$lang_deleteselected}'><input name="action" type="hidden" id="action" value="del"><input name="allid" type="hidden" id="allid" value=""></form></td>
-          </tr>
-		  <tr>
-            <td align="left" colspan="10"  class="input_search">
-			<form method="POST" name="search"  action="index.php?search=detail_search&lang=$lang" target="_self">
-			       <span><b>{$lang_search}</b></span> 
-				  <input name="class1" type="hidden" size="30" value="$class1">
-			    <input name="position" type="text" size="30">
-  <input type="submit" name="Submit2" value="{$lang_search}" class="tj">  
-	        {$lang_cvTip3}</form></td>
-          </tr>
-   	   <tr>
-   	     <td height="0" align="center" colspan="10" class="list1_input">$page_list</td>
+            <td class="list-text">$val[addtime]</td>
+<!--
+EOT;
+if($met_member_use){
+echo <<<EOT
+-->	
+			<td class="list-text">$val[access]</td>
+<!--
+EOT;
+}
+echo <<<EOT
+-->	
+			<td class="list-text">
+			    <a href="content.php?lang=$lang&id=$val[id]&class1=$class1&action=editor" title="{$lang_editor}">{$lang_editor}</a>&nbsp;&nbsp;
+				<a href="cv.php?lang=$lang&search=detail_search&jobid=$val[id]" title="{$lang_jobCV}">{$lang_jobCV}</a>&nbsp;&nbsp;
+				<a href="delete.php?lang=$lang&id=$val[id]&class1=$class1" onClick="return linkSmit($(this),1,'meturnjob');" title="{$lang_delete}">{$lang_delete}</a>
+			</td>
         </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+			<input name="allid" type="hidden" id="allid" value="" /><input name="action" type="hidden" id="action" value="del" />
+		</form>
+   	    <tr> 
+            <td class="all"><input name="chkAll" type="checkbox" id="chkAll" onclick="CheckAllx($(this),'del')" value="checkbox" /></td>
+            <td class="all"><label for="chkAll">{$lang_selectall}</label></td>
+
+            <td class="all-submit" colspan="$colspanj">
+				<input name="submit" type='submit' value='{$lang_deleteselected}' class="submit li-submit" onclick="return met_modify($(this),'del','del');" /> 
+				<input name="saveorder" type='submit' value='{$lang_Submit}' class="submit li-submit" onclick="return met_modify($(this),'del','editor');" /> 
+				<div class="li-submit">
+			    <form method="POST" id="mycopy" name="mycopy"  action="../advanced/copypara.php?lang=$lang&module=6&action=copy" target="_self">
+			    <input name="allid" type="hidden" value="" />
+			    <input name="access" type="hidden" value="" />
+			    <input name="class1" type="hidden" value="$class1" />
+                <select name="copylang">
+				    <option value="">{$lang_Copytitle}</option>
+<!--
+EOT;
+foreach($met_langok as $key=>$val){
+echo <<<EOT
+-->	
+				    <option value="$val[mark]">$val[name]</option>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+               </select>
+			   <select name="copyclass1" style="display:none;">
+			        <option value="">{$lang_modClass1}</option>
+			   </select>
+			   <select name="copyclass2" style="display:none;">
+			        <option value="">{$lang_modClass2}</option>
+			   </select>
+			   <select name="copyclass3" style="display:none;">
+			        <option value="">{$lang_modClass3}</option>
+			   </select>
+            </form>
+				</div>
+				<input name="submit" type='submit' value='{$lang_Copy}' class="submit li-submit" onclick="return met_modify($(this),'mycopy','editor');" />
+			  <div class="page_list">
+			  $page_list
+			  </div>
+			  </td>
+		</tr>
 		<tr>
-		  <td class="list1_footer" colspan="11" align="center">$foot</td>
+		  <td class="footer" colspan="$colspan" >$foot</td>
 	  </tr>
 </table>
-<script type='text/javascript'>
-	function autosubmit()
-	{
-		document.filterform.submit();
+<script type="text/javascript">
+var copycolumn=new Array();
+<!--
+EOT;
+$i=0;
+foreach($column_lang[6] as $key=>$val){
+if($val[bigclass]>0 && $val[releclass]==0)$val[lang]=$val[bigclass];
+echo <<<EOT
+-->
+    copycolumn[$i]=new Array('$val[name]','$val[lang]','$val[id]','$val[access]');
+<!--
+EOT;
+$i++;
+}
+echo <<<EOT
+-->
+var copyclass=new Array();
+    copyclass[0]=$("select[name='copylang']");
+    copyclass[1]=$("select[name='copyclass1']");
+    copyclass[2]=$("select[name='copyclass2']");
+    copyclass[3]=$("select[name='copyclass3']");
+var form = $("#mycopy");
+$(document).ready(function(){
+	copyclass[0].change( function(){ copyselect($(this),copyclass[1],0); });
+	copyclass[1].change( function(){ copyselect($(this),copyclass[2],1); });
+	copyclass[2].change( function(){ copyselect($(this),copyclass[3],2); });
+	form.submit( function(){ return copylist($(this)); });
+});
+function copyselect(my,cassy,p){
+        var term = my.val();
+		var g = 0;
+        for(i=0;i<4;i++){
+		    if(i>p){
+			   copyclass[i].find("option").remove("option[value!='']");
+			   copyclass[i].hide();
+			}
+        }
+		if(term!=''){
+		    for(k=0;k<$i;k++){
+			    if(copycolumn[k][2]==term){
+				   var accs=copycolumn[k][3]==1?1:0;
+				   $("input[name='access']").val(accs);
+				}
+			    if(copycolumn[k][1]==term){
+			       cassy.append("<option value='"+copycolumn[k][2]+"'>"+copycolumn[k][0]+"</option>");
+				   g=1;
+				}
+			}
+			if(g==0){cassy.hide();}else{cassy.show();}
+		}
+}
+function copylist(){
+    var sm,mm,tj=0,values='',flag=0;
+    var del = $("input[name='id']");
+    var allid = $("#mycopy").find("input[name='allid']");
+    var text = new Array(user_msg['js36'],user_msg['js37'],user_msg['js38'],user_msg['js39']);
+    for(i=0;i<del.length;i++){
+        if(del.eq(i).attr("checked")==true){
+            values = values + del.eq(i).val()+",";
+	        flag=1;
+	    }
+    }
+	allid.val(values);
+	if(flag==0){ alert(user_msg['js23']); return false;}
+    for(i=0;i<4;i++){
+	    sm = copyclass[i].val();
+	    mm = copyclass[i].find("option[value!='']").length;
+	    if(!sm && mm>0){alert(text[i]); return false;}
+		else{ tj++; }
 	}
+	if(tj>3 && confirm(user_msg['js24'])){ return true; }else{ return false; }
+}
 </script>
 </body>
 </html>

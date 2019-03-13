@@ -29,7 +29,7 @@ switch($img_list['access'])
 }
 }
 if(!$img_list){
-okinfo('index.php?lang='.$lang,$lang_dataerror);
+okinfox('../img/index.php?lang='.$lang,$lang_dataerror);
 }
 
 $query = "select * from $met_plist where module='5' and listid='$id'";
@@ -48,9 +48,19 @@ if($img_list[com_ok]==1)$com_ok="checked='checked'";
 if($img_list[top_ok]==1)$top_ok="checked='checked'";
 $class2[$img_list[class2]]="selected='selected'";
 $class3[$img_list[class3]]="selected='selected'";	
+$displaylist='';
+if($img_list['displayimg']!=''){
+	$displayimg=explode(',',$img_list['displayimg']);
+	for($i=0;$i<count($displayimg);$i++){
+		$newdisplay=explode('-',$displayimg[$i]);
+		$displaylist[$i]['name']=$newdisplay[0];
+		$displaylist[$i]['imgurl']=$newdisplay[1];
+	}
+}
 }else{
 $img_list[issue]=$metinfo_admin_name;
 $img_list[hits]=0;
+$img_list[no_order]=0;
 $img_list[addtime]=$m_now_date;
 $img_list[access]="0";
 $img_list[contentinfo]=$lang_contentinfo;
@@ -62,18 +72,18 @@ $lang_editinfo=$lang_addinfo;
 $lev=$met_class[$class1][access];
 }
 	$i=0;
-echo "<script language = 'JavaScript'>\n";
-echo "var onecount;\n";
-echo "subcat = new Array();\n";
+$listjs = "<script language = 'JavaScript'>\n";
+$listjs.= "var onecount;\n";
+$listjs.= "subcat = new Array();\n";
 foreach($met_class22[$class1] as $key=>$vallist){
-echo "subcat[".$i."] = new Array('".$vallist[name]."','".$vallist[bigclass]."','".$vallist[id]."','".$vallist[access]."');\n";
+$listjs.= "subcat[".$i."] = new Array('".$vallist[name]."','".$vallist[bigclass]."','".$vallist[id]."','".$vallist[access]."');\n";
 	 $i=$i+1;
   foreach($met_class3[$vallist[id]] as $key=>$vallist3){
-      echo "subcat[".$i."] = new Array('".$vallist3[name]."','".$vallist3[bigclass]."','".$vallist3[id]."','".$vallist3[access]."');\n";
+$listjs.= "subcat[".$i."] = new Array('".$vallist3[name]."','".$vallist3[bigclass]."','".$vallist3[id]."','".$vallist3[access]."');\n";
 	 $i=$i+1;
     }
 }
-echo "onecount=".$i.";\n";
+$listjs.= "onecount=".$i.";\n";
 
 $checkjs=$checkjs."function Checkimg(){ \n";
 $checkjs=$checkjs."if (document.myform.title.value==null || document.myform.title.value.length == 0) {\n";
@@ -105,8 +115,8 @@ $checkjs=$checkjs."return false;}\n";
 }
 }
 $checkjs=$checkjs."}";
-echo $checkjs;
-echo "</script>";
+$listjs.= $checkjs;
+$listjs.= "</script>";
 if($met_member_use){
 $level="";
 switch(intval($lev))
@@ -117,6 +127,7 @@ switch(intval($lev))
 	case 3:$level.="<option value='3' $access3>$lang_access3</option>";
 }
 }
+$imgnum=$displaylist?count($displaylist):0;
 $css_url="../templates/".$met_skin."/css";
 $img_url="../templates/".$met_skin."/images";
 include template('img_content');

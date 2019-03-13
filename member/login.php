@@ -18,7 +18,7 @@ $class1_info=$class_list[$classnow];
 $class_info=$class1_info;
      $show[description]=$class_info[description]?$class_info[description]:$met_keywords;
      $show[keywords]=$class_info[keywords]?$class_info[keywords]:$met_keywords;
-	 $met_title=$class_info[name]."--".$met_title;
+	 $met_title=$met_title?$class_info['name'].'-'.$met_title:$class_info['name'];
 if($metinfo_member_name<>""){
    $member_title=$metinfo_member_name.$lang_memberIndex2;
  }else{

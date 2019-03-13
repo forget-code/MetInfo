@@ -2,67 +2,79 @@
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 require_once '../login/login_check.php';
-if($action=='export')
-{
-    if($dosubmit)
-    {
+if($action=='')$action='import';
+if($action=='export' || $action=='allfile'){
+    if($dosubmit){
         $fileid = isset($fileid) ? $fileid : 1;
-        if($fileid==1 && $tables)
-        {
-            if(!isset($tables) || !is_array($tables))okinfo('database.php?lang='.$lang,$lang_setdbSelectTable); 
-            $random = mt_rand(1000, 9999);
+		if($action=='allfile'){
+		    $k = 0;
+            $query = $db->query("SHOW TABLES FROM ".$con_db_name);
+            while($r = $db->fetch_row($query)){
+                $tables[$k] = $r[0];
+                $k++;
+            }
+			$sizelimit=2048;
+		}
+        if($fileid==1 && $tables){
+            if(!isset($tables) || !is_array($tables))okinfox('database.php?lang='.$lang,$lang_setdbSelectTable); 
+            $random = mt_rand(1000,9999);
             cache_write('bakup_tables.php', $tables);
-        }
-        else
-        {
-            if(!$tables = cache_read('bakup_tables.php'))okinfo('database.php?lang='.$lang,$lang_setdbSelectTable);
+        }else{
+            if(!$tables = cache_read('bakup_tables.php'))okinfox('database.php?lang='.$lang,$lang_setdbSelectTable);
         }
         $sqldump = '';
         $tableid = isset($tableid) ? $tableid - 1 : 0;
         $startfrom = isset($startfrom) ? intval($startfrom) : 0;
         $tablenumber = count($tables);
-        for($i = $tableid; $i < $tablenumber && strlen($sqldump) < $sizelimit * 1000; $i++)
-        {
+        for($i = $tableid; $i < $tablenumber && strlen($sqldump) < $sizelimit * 1000; $i++){
             $sqldump .= sql_dumptable($tables[$i], $startfrom, strlen($sqldump));
             $startfrom = 0;
         }
-        if(trim($sqldump))
-        {
+        if(trim($sqldump)){
             $sqldump = "#MetInfo.cn Created\n# --------------------------------------------------------\n\n\n".$sqldump;
             $tableid = $i;
             $filename = $con_db_name.'_'.date('Ymd').'_'.$random.'_'.$fileid.'.sql';
 			$zipname  = $con_db_name.'_'.date('Ymd').'_'.$random.'_'.$fileid;
             $fileid++;
             $bakfile = '../databack/'.$filename;
-            if(!is_writable('../databack/'))okinfo('database.php?lang='.$lang,$lang_setdbTip2.'../databack/'.$lang_setdbTip3); 
+            if(!is_writable('../databack/'))okinfox('database.php?lang='.$lang,$lang_setdbTip2.'../databack/'.$lang_setdbTip3); 
             file_put_contents($bakfile, $sqldump);
 			$data_msg.="{$lang_setdbBackupFile}".$filename."{$lang_setdbWriteOK}<br>";
 			echo $data_msg;
-		  include "pclzip.lib.php";
+			include "pclzip.lib.php";
 		 if(!file_exists('../databack/sql'))@mkdir ('../databack/sql', 0777);  
 		 $sqlzip='../databack/sql/metinfo_'.$zipname.'.zip';
 		 $archive = new PclZip($sqlzip);
          $zip_list = $archive->create('../databack/'.$filename,PCLZIP_OPT_REMOVE_PATH,'../databack/');
-         if ($zip_list == 0) {
+        if($zip_list == 0){
             die("Error : ".$archive->errorInfo(true));
-         }
+        }
             header('location:database.php?lang='.$lang.'&data_msg='.$data_msg.'&action='.$action.'&sizelimit='.$sizelimit.'&tableid='.$tableid.'&fileid='.$fileid.'&startfrom='.$startrow.'&random='.$random.'&dosubmit=1');
-        }
-        else
-        {
+        }else{
             cache_delete('bakup_tables.php');
-            okinfo("database.php?action=import",$lang_setdbBackupOK);
+			if($action!='allfile')okinfo("database.php?action=import",'',$lang_setdbBackupOK);
         }
-        exit;
-    }
-
-    else {
+// archive all file
+        if($action=='allfile'){
+            include "pclzip.lib.php";
+		    if(!file_exists('../databack/web'))@mkdir ('../databack/web', 0777);  
+		    $sqlzip='../databack/web/metinfo_web_'.date('YmdHis',time()).'.zip';
+		    $zipfile="../../";
+		    $archive = new PclZip($sqlzip);
+            $zip_list = $archive->create($zipfile,PCLZIP_OPT_REMOVE_PATH,'../../');
+            if($zip_list==0){
+                die("Error : ".$archive->errorInfo(true));
+            }
+            okinfo('database.php?action=filedown&lang='.$lang,'',$lang_setdbArchiveOK);
+        }else{
+		    exit;
+		}
+    }else{
         $size = $bktables = $bkresults = $results= array();
         $k = 0;
         $totalsize = 0;
         $query = $db->query("SHOW TABLES FROM ".$con_db_name);
-        while($r = $db->fetch_row($query))
-        {
+        while($r = $db->fetch_row($query)){
             $tables[$k] = $r[0];
             $count = $db->get_one("SELECT count(*) as number FROM $r[0] WHERE 1");
             $results[$k] = $count['number'];
@@ -77,68 +89,55 @@ if($action=='export')
         include_once template('database');
     }
 }
-
-
 /**data import**/
-elseif ($action=='import')
-{
-    if($dosubmit)
-    {
+elseif($action=='import'){
+    if($dosubmit){
         $fileid = $fileid ? $fileid : 1;
         $filename = $pre.$fileid.'.sql';
         $filepath = '../databack/'.$filename;
-        if(file_exists($filepath))
-        {
+        if(file_exists($filepath)){
             $sql = file_get_contents($filepath);
             sql_execute($sql);
             $fileid++;
-            okinfo("database.php?lang=".$lang."&action=".$action."&pre=".$pre."&fileid=".$fileid."&dosubmit=1","{$lang_setdbDBFile} $filename {$lang_setdbImportOK}");
+            okinfo("database.php?lang=".$lang."&action=".$action."&pre=".$pre."&fileid=".$fileid."&dosubmit=1",'',"{$lang_setdbDBFile} $filename {$lang_setdbImportOK}{$lang_setdbImportcen}");
+        }else{
+            okinfo("database.php?action=$action&lang=$lang",'',$lang_setdbDBRestoreOK);
         }
-        else {
-            okinfo("database.php?action=$action&lang=$lang","{$lang_setdbDBRestoreOK}");
-        }
-    }
-	 else
-	 {
-		 $sqlfiles = glob('../databack/*.sql');
-		 if(is_array($sqlfiles))
-		 {
+    }else{
+		$sqlfiles = glob('../databack/*.sql');
+		if(is_array($sqlfiles)){
 			 $prepre = '';
 			 $info = $infos = array();
-			 foreach($sqlfiles as $id=>$sqlfile)
-			 {
-				 preg_match("/([a-z0-9_]+_[0-9]{8}_[0-9a-z]{4}_)([0-9]+)\.sql/i",basename($sqlfile),$num);
-				 $info['filename'] = basename($sqlfile);
-				 $info['filesize'] = round(filesize($sqlfile)/(1024*1024), 2);
-				 $info['maketime'] = date('Y-m-d H:i:s', filemtime($sqlfile));
-				 $info['pre'] = $num[1];
-				 $info['number'] = $num[2];
-				 if(!$id) $prebgcolor = '#E4EDF9';
-				 if($info['pre'] == $prepre)
-				 {
-					 $info['bgcolor'] = $prebgcolor;
-				 }
-				 else
-				 {
-					 $info['bgcolor'] = $prebgcolor == '#E4EDF9' ? '#F1F3F5' : '#E4EDF9';
-				 }
-				 $prebgcolor = $info['bgcolor'];
-				 $prepre = $info['pre'];
-				 $infos[] = $info;
-			 }
-		 }
-$css_url="../templates/".$met_skin."/css";
-$img_url="../templates/".$met_skin."/images";
-include template('database');
-footer();
-	 }
+			 foreach($sqlfiles as $id=>$sqlfile){
+				preg_match("/([a-z0-9_]+_[0-9]{8}_[0-9a-z]{4}_)([0-9]+)\.sql/i",basename($sqlfile),$num);
+				$info['filename'] = basename($sqlfile);
+				$info['filesize'] = round(filesize($sqlfile)/(1024*1024), 2);
+				$info['maketime'] = date('Y-m-d H:i:s', filemtime($sqlfile));
+				$info['pre'] = $num[1];
+				$info['number'] = $num[2];
+				if(!$id) $prebgcolor = '#E4EDF9';
+				if($info['pre'] == $prepre)
+				{
+				 $info['bgcolor'] = $prebgcolor;
+				}
+				else
+				{
+				 $info['bgcolor'] = $prebgcolor == '#E4EDF9' ? '#F1F3F5' : '#E4EDF9';
+				}
+				$prebgcolor = $info['bgcolor'];
+				$prepre = $info['pre'];
+				$infos[] = $info;
+			}
+		}
+	$css_url="../templates/".$met_skin."/css";
+	$img_url="../templates/".$met_skin."/images";
+	include template('database');
+	footer();
+	}
 }
-
-
 /**delete file**/
 elseif ($action=='delete') {
     if(is_array($filenames)) {
-        
         foreach($filenames as $filename){
             if(fileext($filename)=='sql'){
                 @unlink('../databack/'.$filename);
@@ -154,10 +153,13 @@ elseif ($action=='delete') {
 		    @unlink('../databack/'.$fileon.'/'.$filenames);
 		}
     }
+	if($rutnmt=='import'){
+		okinfox("database.php?lang=".$lang);
+	}
 	if($fileon=""){
-	okinfo("database.php?action=import&lang=".$lang,"{$lang_setdbDeleteOK}");
+	okinfox("database.php?action=filedown&lang=".$lang);
 	}else{
-	okinfo("database.php?action=filedown&lang=".$lang,"{$lang_setdbDeleteOK}");
+	okinfox("database.php?action=filedown&lang=".$lang);
 	}
 }
 
@@ -169,34 +171,34 @@ elseif ($action=='down'){
 
 /**upload sql**/
 elseif ($action=='uploadsql') {
-require_once '../include/upfile.class.php';
-if(strstr($_FILES['met_upsql']['name'],'.sql')){
-$filenamearray=explode('.sql',$_FILES['met_upsql']['name']);
-$f = new upfile('sql,zip','../databack/','','');
-if(file_exists('../databack/'.$filenamearray[0].'.sql'))$filenamearray[0]='metinfo'.$filenamearray[0];
-if($_FILES['met_upsql']['name']!=''){
-        $met_upsql   = $f->upload('met_upsql',$filenamearray[0]); 
-    }
-}else{
-$filenamearray=explode('.zip',$_FILES['met_upsql']['name']);
-$f = new upfile('sql,zip','../databack/sql/','','');
-if(file_exists('../databack/sql/'.$filenamearray[0].'.zip'))$filenamearray[0]='metinfo'.$filenamearray[0];
-if($_FILES['met_upsql']['name']!=''){
-        $met_upsql   = $f->upload('met_upsql',$filenamearray[0]); 
-    }
- include "pclzip.lib.php";
- $archive = new PclZip('../databack/sql/'.$filenamearray[0].'.zip');
-  if ($archive->extract(PCLZIP_OPT_PATH, '../databack') == 0)die("Error : ".$archive->errorInfo(true));
-}
-    okinfo('database.php?action=import&lang='.$lang,$lang_setdbUploadOK);
+	require_once '../include/upfile.class.php';
+	if(strstr($_FILES['met_upsql']['name'],'.sql')){
+		$filenamearray=explode('.sql',$_FILES['met_upsql']['name']);
+		$f = new upfile('sql,zip','../databack/','','');
+		if(file_exists('../databack/'.$filenamearray[0].'.sql'))$filenamearray[0]='metinfo'.$filenamearray[0];
+		if($_FILES['met_upsql']['name']!=''){
+				$met_upsql   = $f->upload('met_upsql',$filenamearray[0]); 
+			}
+	}else{
+		$filenamearray=explode('.zip',$_FILES['met_upsql']['name']);
+		$f = new upfile('sql,zip','../databack/sql/','','');
+		if(file_exists('../databack/sql/'.$filenamearray[0].'.zip'))$filenamearray[0]='metinfo'.$filenamearray[0];
+		if($_FILES['met_upsql']['name']!=''){
+				$met_upsql   = $f->upload('met_upsql',$filenamearray[0]); 
+		}
+		include "pclzip.lib.php";
+		$archive = new PclZip('../databack/sql/'.$filenamearray[0].'.zip');
+		if($archive->extract(PCLZIP_OPT_PATH, '../databack') == 0)okinfox('database.php?action=import&lang='.$lang,"{$lang_Error} : ".$archive->errorInfo(true));
+	}
+		okinfo('database.php?action=import&lang='.$lang);
 }
 //extract
 elseif ($action=='extract'){
  include "pclzip.lib.php";
  $archive = new PclZip('../databack/'.$fileon.'/'.$filenames);
-  if ($archive->extract(PCLZIP_OPT_PATH, '../../') == 0)die("Error : ".$archive->errorInfo(true));
+  if ($archive->extract(PCLZIP_OPT_PATH, '../../') == 0)die("{$lang_Error} : ".$archive->errorInfo(true));
 
-    okinfo('database.php?action=filedown&lang='.$lang,$lang_setdbExtractOK);
+    okinfo('database.php?action=filedown&lang='.$lang,'',$lang_setdbExtractOK);
 }
 //dislpay database
 elseif($action=='datadisplay'){
@@ -231,6 +233,7 @@ elseif($action=='config'){
    if(file_exists("../../config/flash_".$val[mark].".inc.php"))$zipfile.="../../config/flash_".$val[mark].".inc.php,";
    if(file_exists("../../config/str_".$val[mark].".inc.php"))$zipfile.="../../config/str_".$val[mark].".inc.php,";
    if(file_exists("../../feedback/config_".$val[mark].".inc.php"))$zipfile.="../../feedback/config_".$val[mark].".inc.php,";
+   if(file_exists("../../job/config_".$val[mark].".inc.php"))$zipfile.="../../job/config_".$val[mark].".inc.php,";
    if(file_exists("../../message/config_".$val[mark].".inc.php"))$zipfile.="../../message/config_".$val[mark].".inc.php,";
    }
          include "pclzip.lib.php";
@@ -242,7 +245,7 @@ elseif($action=='config'){
          if ($zip_list == 0) {
             die("Error : ".$archive->errorInfo(true));
          }
-      okinfo('database.php?action=filedown&lang='.$lang,$lang_setdbArchiveOK);
+      okinfo('database.php?action=filedown&lang='.$lang,'',$lang_setdbArchiveOK);
 }
 // archive upload file
 elseif($action=='uploadimg'){
@@ -255,20 +258,7 @@ elseif($action=='uploadimg'){
          if ($zip_list == 0) {
             die("Error : ".$archive->errorInfo(true));
          }
-      okinfo('database.php?action=filedown&lang='.$lang,$lang_setdbArchiveOK);
-}
-// archive all file
-elseif($action=='allfile'){
-         include "pclzip.lib.php";
-		 if(!file_exists('../databack/web'))@mkdir ('../databack/web', 0777);  
-		 $sqlzip='../databack/web/metinfo_web_'.date('YmdHis',time()).'.zip';
-		 $zipfile="../../";
-		 $archive = new PclZip($sqlzip);
-         $zip_list = $archive->create($zipfile,PCLZIP_OPT_REMOVE_PATH,'../../');
-         if ($zip_list == 0) {
-            die("Error : ".$archive->errorInfo(true));
-         }
-      okinfo('database.php?action=filedown&lang='.$lang,$lang_setdbArchiveOK);
+      okinfo('database.php?action=filedown&lang='.$lang,'',$lang_setdbArchiveOK);
 }elseif($action=='filedown'){
 //sql
 		 $sqlfiles = glob('../databack/sql/*.zip');
@@ -382,6 +372,34 @@ elseif($action=='allfile'){
 				 $infoweb[] = $info;
 			 }
 		 }
+//all files
+		 $sqlfiles = glob('../databack/static/*.zip');
+		 if(is_array($sqlfiles))
+		 {
+			 $prepre = '';
+			 $info = $infos = array();
+			 foreach($sqlfiles as $id=>$sqlfile)
+			 {
+				 preg_match("/([a-z0-9_]+_[0-9]{8}_[0-9a-z]{4}_)([0-9]+)\.zip/i",basename($sqlfile),$num);
+				 $info['filename'] = basename($sqlfile);
+				 $info['filesize'] = round(filesize($sqlfile)/(1024*1024), 2);
+				 $info['maketime'] = date('Y-m-d H:i:s', filemtime($sqlfile));
+				 $info['pre'] = $num[1];
+				 $info['number'] = $num[2];
+				 if(!$id) $prebgcolor = '#E4EDF9';
+				 if($info['pre'] == $prepre)
+				 {
+					 $info['bgcolor'] = $prebgcolor;
+				 }
+				 else
+				 {
+					 $info['bgcolor'] = $prebgcolor == '#E4EDF9' ? '#F1F3F5' : '#E4EDF9';
+				 }
+				 $prebgcolor = $info['bgcolor'];
+				 $prepre = $info['pre'];
+				 $staticweb[] = $info;
+			 }
+		 }
 $css_url="../templates/".$met_skin."/css";
 $img_url="../templates/".$met_skin."/images";
 include template('database');
@@ -396,7 +414,7 @@ footer();
 function file_down($file)
 {
     global $lang_setdbNotExist;
-	!file_exists($file) && okinfo('database.php?action=import',$lang_setdbNotExist);
+	!file_exists($file) && okinfox('database.php?action=import',$lang_setdbNotExist);
 	$filename = $filename ? $filename : basename($file);
 	$filetype = fileext($filename);
     //$filetype!='sql' && okinfo('database.php?action=import',$lang_setdbOnlyDownload);
@@ -503,11 +521,9 @@ function sql_execute($sql)
 	return true;
 }
 
-function sql_split($sql)
-{
+function sql_split($sql){
 	global $db_charset, $db;
-	if($db->version() > '4.1' && $db_charset)
-	{
+	if($db->version() > '4.1' && $db_charset){
 		$sql = preg_replace("/TYPE=(InnoDB|MyISAM)( DEFAULT CHARSET=[^; ]+)?/", "TYPE=\\1 DEFAULT CHARSET=".$db_charset,$sql);
 	}
 	$sql = str_replace("\r", "\n", $sql);
@@ -515,13 +531,11 @@ function sql_split($sql)
 	$num = 0;
 	$queriesarray = explode(";\n", trim($sql));
 	unset($sql);
-	foreach($queriesarray as $query)
-	{
+	foreach($queriesarray as $query){
 		$ret[$num] = '';
 		$queries = explode("\n", trim($query));
 		$queries = array_filter($queries);
-		foreach($queries as $query)
-		{
+		foreach($queries as $query){
 			$str1 = substr($query, 0, 1);
 			if($str1 != '#' && $str1 != '-') $ret[$num] .= $query;
 		}
@@ -529,8 +543,7 @@ function sql_split($sql)
 	}
 	return($ret);
 }
-function fileext($filename)
-{
+function fileext($filename){
 	return trim(substr(strrchr($filename, '.'), 1));
 }
 # This program is an open source system, commercial use, please consciously to purchase commercial license.

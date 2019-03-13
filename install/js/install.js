@@ -8,7 +8,7 @@ function checke_mail(){
 	else
 	{
 		document.getElementById('div_email').style.cssText = "";
-		document.getElementById('div_email').innerHTML = "[<font color=green>√</font>]";
+		document.getElementById('div_email').innerHTML = "[<font><img src='images/greencheck.png' style='position:relative; top:3px;' /></font>]";
 		return  true;
 	}
 }
@@ -23,7 +23,7 @@ function chkpassword(){
 	else
 	{
 		document.getElementById('div_pwd').style.cssText = "";
-		document.getElementById('div_pwd').innerHTML = "[<font color=green>√</font>]";
+		document.getElementById('div_pwd').innerHTML = "[<font><img src='images/greencheck.png' style='position:relative; top:3px;' /></font>]";
 		return  true;
 	}
 }
@@ -41,7 +41,7 @@ function comfirmpassword(){
 		else
 		{
 			document.getElementById('div_aginpwd').style.cssText = "";
-			document.getElementById('div_aginpwd').innerHTML = "[<font color=green>√</font>]";
+			document.getElementById('div_aginpwd').innerHTML = "[<font><img src='images/greencheck.png' style='position:relative; top:3px;' /></font>]";
 			return  true;
 		}
 	}
@@ -86,7 +86,7 @@ function chkanswer()//回答问题答案
 		else
 		{
 			document.getElementById('div_answer').style.cssText = "";
-			document.getElementById('div_answer').innerHTML = "[<font color=green>√</font>]";
+			document.getElementById('div_answer').innerHTML = "[<font><img src='images/greencheck.png' style='position:relative; top:3px;' /></font>]";
 			return  true;
 		}
 	}else{
@@ -104,7 +104,7 @@ function chkname(){
 	else
 	{
 		document.getElementById('div_regname').style.cssText = "";
-		document.getElementById('div_regname').innerHTML = "[<font color=green>√</font>]";
+		document.getElementById('div_regname').innerHTML = "[<font><img src='images/greencheck.png' style='position:relative; top:3px;' /></font>]";
 		return  true;
 	}
 }

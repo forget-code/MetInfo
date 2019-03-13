@@ -2,55 +2,41 @@
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 require_once template('head');
+$colspan=7;
+if(!$met_member_use)$colspan=$colspan-1;
+if($module==6 || $module==8)$colspan=$colspan-1;
 echo <<<EOT
 -->
-
 <title>{$lang_parameterTitle}</title>
-
 </head>
 <body>
-<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1" >
-          <tr> 
-            <td colspan="7" align="center" class="list1_title">$p_title</td>
-		 </tr>
 <!--
 EOT;
-if($action=='addsave'){
-echo <<<EOT
---> 
-		   <tr align="center" height="30"> 
-			<td class="list1_submit" colspan="7"><a href="parameter.php?lang=$lang&module=$module"><b>{$lang_parameterview}</b></a></td>
-          </tr>
-<!--
-EOT;
-}else{
-echo <<<EOT
--->
-		   <tr align="center" height="30"> 
-			<td class="list1_submit" colspan="7"><a href="parameter.php?lang=$lang&action=addsave&module=$module"><b>{$lang_parameteradd}</b></a></td>
-          </tr>
-<!--
-EOT;
+if($module!=8){
+$littr=21;
+if($module==4)$littr=22;
+if($module==5)$littr=23;
+if($module==6)$littr=24;
+require_once template('metlangs');
 }
 echo <<<EOT
 -->
-          <tr> 
-            <td width="7%" class="list1_top" align="center">{$lang_sort}</td>
-            <td width="18%" class="list1_top" align="center">{$lang_name}</td>
+<form method="POST" name="myform"  action="parameter.php?lang=$lang&module=$module&class1=$class1" target="_self">
+<input name='action' type="hidden" value="editor" />
+<table cellpadding="2" cellspacing="1" class="table">
+		<tr> 
+			<td class="centle" colspan="$colspan">&nbsp;&nbsp;<a href="parameter.php?lang=$lang&action=addsave&module=$module" onclick="return addsave($(this),0);"><b>{$lang_parameteradd}</b></a></td>
+        </tr>
+        <tr id="list-top"> 
+            <td width="7%" class="list">{$lang_sort}</td>
+            <td width="18%" class="list">{$lang_name}</td>
 <!--
 EOT;
 if($module<6){
-if($action=='addsave'){
 echo <<<EOT
 -->
-			<td width="20%" class="list1_top" align="center">{$lang_category}</td>
-<!--
-EOT;
-}else{
-echo <<<EOT
--->
-			<td width="20%" class="list1_top" align="center">
-			<select name="category"  onchange='javascript:window.location.href=this.options[this.selectedIndex].value'>
+			<td width="20%" class="list">
+			<select name="category" onchange='javascript:window.location.href=this.options[this.selectedIndex].value'>
 			<option value="parameter.php?lang=$lang&module=$module" selected="selected">{$lang_category}</option>
 <!--
 EOT;
@@ -69,102 +55,37 @@ echo <<<EOT
 			</td>
 <!--
 EOT;
-}}
+}
 if($met_member_use){
 echo <<<EOT
 -->
-			<td width="15%" class="list1_top" align="center">{$lang_webaccess}</td>
+			<td width="15%" class="list">{$lang_webaccess}</td>
 <!--
 EOT;
 }
 echo <<<EOT
 -->
-			<td width="12%" class="list1_top" align="center">{$lang_parametertype}</td>
-			<td width="8%" class="list1_top" align="center">{$lang_parameterMust}</td>
-            <td width="20%" class="list1_top" align="center">{$lang_operate}</td>
+			<td width="12%" class="list">{$lang_parametertype}</td>
+			<td width="8%" class="list">{$lang_parameterMust}</td>
+            <td width="20%" class="list">{$lang_operate}</td>
           </tr>
-<!--
-EOT;
-if($action=='addsave'){
-echo <<<EOT
--->
-<form method="POST" name="myform"  action="parameter.php?lang=$lang&action=add&module=$module" target="_self">
-<input name='access_0' type="hidden" value="0">
-			<tr align="center"> 
-			<td class="list1_content" align="center"><input name='no_order_0' type="text" class="input" size="1" maxlength="10" ></td>
-            <td class="list1_content"><input name='name_0' type="text" class="input" size="15" ></td>
-<!--
-EOT;
-if($module<6){
-echo <<<EOT
--->			
-			<td class="list1_content">
-			<select name="class1_0" >
-			<option value="0" selected="selected">{$lang_allcategory}</option>
-<!--
-EOT;
-foreach($met_classindex[$module] as $key=>$val1){
-echo <<<EOT
--->
-			  <option value="$val1[id]" >{$val1[name]}</option>
-<!--
-EOT;
-$gclass1="";
-}
-echo <<<EOT
--->
-            </select></td>
-<!--
-EOT;
-}
-if($met_member_use){
-echo <<<EOT
--->
-			<td class="list1_content"><select name="access_0" id="access" >
-              <option value="0">{$lang_access0}</option>
-			  <option value="1" >{$lang_access1}</option>
-              <option value="2" >{$lang_access2}</option>
-              <option value="3" >{$lang_access3}</option>
-            </select></td>
-<!--
-EOT;
-}
-echo <<<EOT
--->
-			<td class="list1_content"><select name="type_0" id="access" >
-			  <option value="1" >{$lang_parameter1}</option>
-              <option value="2" >{$lang_parameter2}</option>
-              <option value="3" >{$lang_parameter3}</option>
-			  <option value="4" >{$lang_parameter4}</option>
-			  <option value="5" >{$lang_parameter5}</option>
-			  <option value="6" >{$lang_parameter6}</option>
-            </select></td>
-            <td class="list1_content" align="center"><input type="checkbox" name=wr_ok_0 value=1 class="xz" /></td>
-			<td class="list1_content" align="center"><input type="submit" name="Submit" value="{$lang_add}" class="tj" style="*padding-top:2px; *height:22px;"></td>
-		  </tr>
-</form>
-<!--
-EOT;
-}else{
-echo <<<EOT
--->	
-<form method="POST" name="myform"  action="parameter.php?lang=$lang&action=editor&module=$module&class1=$class1" target="_self">
 <!--
 EOT;
 foreach($list as $key=>$val){
 echo <<<EOT
 -->		   
+			<tr class="mouse"> 
+			<td class="list-text">
 <input name='$val[id]' type="hidden" value="$val[id]">
 <input name='access_$val[id]' type="hidden" value="$val[access]">
-			<tr align="center"> 
-			<td class="list1_content" align="center"><input name='no_order_$val[id]' type="text" class="input" size="1" maxlength="10" value="$val[no_order]"></td>
-            <td class="list1_content"><input name='name_$val[id]' type="text" class="input" size="15"  value="$val[name]" ></td>
+			<input name='no_order_$val[id]' type="text" class="text no_order" value="$val[no_order]"></td>
+            <td class="list-text"><input name='name_$val[id]' type="text" class="text" value="$val[name]" ></td>
 <!--
 EOT;
 if($module<6){
 echo <<<EOT
 -->				
-			<td class="list1_content">
+			<td class="list-text">
 			<select name="class1_$val[id]" >
 			<option value="0" selected="selected">{$lang_allcategory}</option>
 <!--
@@ -187,7 +108,7 @@ EOT;
 if($met_member_use){
 echo <<<EOT
 -->
-			<td class="list1_content"><select name="access_$val[id]" id="access" >
+			<td class="list-text"><select name="access_$val[id]" id="access" >
               <option value="0" $val[access0]>{$lang_access0}</option>
 			  <option value="1" $val[access1]>{$lang_access1}</option>
               <option value="2" $val[access2]>{$lang_access2}</option>
@@ -198,7 +119,7 @@ EOT;
 }
 echo <<<EOT
 -->
-			<td class="list1_content"><select name="type_$val[id]" id="access" >
+			<td class="list-text"><select name="type_$val[id]" id="access" >
 			  <option value="1" $val[type1]>{$lang_parameter1}</option>
               <option value="2" $val[type2]>{$lang_parameter2}</option>
               <option value="3" $val[type3]>{$lang_parameter3}</option>
@@ -206,39 +127,36 @@ echo <<<EOT
 			  <option value="5" $val[type5]>{$lang_parameter5}</option>
 			  <option value="6" $val[type6]>{$lang_parameter6}</option>
             </select></td>
-            <td class="list1_content" align="center"><input type="checkbox" name=wr_ok_$val[id] value=1 class="xz" $val[wr_ok]/></td>
-			<td class="list1_content" align="center">
+            <td class="list-text"><input type="checkbox" name=wr_ok_$val[id] value=1 class="xz" $val[wr_ok]/></td>
+			<td class="list-text">
 <!--
 EOT;
 if($val[type]==2 or $val[type]==4 or $val[type]==6){  
 echo <<<EOT
 -->
-			<a href="list.php?bigid=$val[id]&lang=$lang">{$lang_listTitle}</a> | 
+			<a href="list.php?bigid=$val[id]&lang=$lang">{$lang_listTitle}</a>&nbsp;&nbsp;
 <!--
 EOT;
 }
 echo <<<EOT
 -->
-			<a href="parameter.php?id=$val[id]&action=delete&bigid=$val[id]&lang=$lang&type=$val[type]&module=$module&class1=$class1" onClick="return ConfirmDel();">{$lang_delete}</a></td>
+			<a href="parameter.php?id=$val[id]&action=delete&bigid=$val[id]&lang=$lang&type=$val[type]&module=$module&class1=$class1" onClick="return linkSmit($(this),1);">{$lang_delete}</a></td>
 		  </tr>
 <!--
 EOT;
 }
 echo <<<EOT
 -->  
-          <tr align="center" height="30"> 
-			<td class="list1_submit" colspan="7" style="text-align:center; margin:5px 0px;"><input type="submit" name="Submit" value="{$lang_Submit}" class="tj" style="*padding-top:2px; *height:22px;"></td>
+          <tr> 
+			<td class="all-submit" style="text-align:center;" colspan="$colspan">
+				<input type="submit" name="Submit" value="{$lang_Submit}" class="submit" onclick="return met_modify($(this),'myform','editor');" />
+			</td>
           </tr>
-        </form>
-<!--
-EOT;
-}
-echo <<<EOT
---> 
     <tr>
-		  <td class="list1_footer" colspan="7" align="center">$foot</td>
+		  <td class="footer" colspan="$colspan">$foot</td>
 	  </tr>
 </table>
+        </form>
 </body>
 </html>
 <!--

@@ -11,13 +11,13 @@ $query = "update $met_message SET
 					  access			 = '$access'
 					  where id='$id'";
 $db->query($query);
-classhtm('message',0,0);
-okinfo('index.php?lang='.$lang,$lang_jsok);
+$htmljs = classhtm('message',0,0);
+okinfoh('../message/index.php?lang='.$lang,$htmljs);
 }
 else
 {
 $message_list=$db->get_one("select * from $met_message where id='$id'");
-$message_list['customerid']=$message_list['customerid']==0?$lang_feedbackAccess0:$list['customerid'];
+$message_list['customerid']=metidtype($message_list['customerid']);
 switch($message_list['access'])
 {
 	case '1':$access1="selected='selected'";break;
@@ -26,9 +26,14 @@ switch($message_list['access'])
 	default:$access0="selected='selected'";break;
 }
 if(!$message_list){
-okinfo('index.php?lang='.$lang,$lang_dataerror);
+okinfox('../message/index.php?lang='.$lang,$lang_dataerror);
 }
-
+/*bd*/
+$message_list[name]=strip_tags($message_list[name]);
+$message_list[email]=strip_tags($message_list[email]);
+$message_list[tel]=strip_tags($message_list[tel]);
+$message_list[contact]=strip_tags($message_list[contact]);
+/*bd*/
 if($met_member_use){
 $lev=$met_module[7][0][access];
 $level="";

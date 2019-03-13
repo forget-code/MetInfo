@@ -9,39 +9,39 @@ echo <<<EOT
 <body>
 <form  method="POST" name="myform"  action="editor.php?action=editor&lang=$lang" target="_self">
 		<input name="id" type="hidden" value="$id">
-<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
+<table cellpadding="2" cellspacing="1" class="table">
           <tr> 
-            <td colspan="3" align="center" class="list1_title">{$lang_editor}</td>
+            <td colspan="2" class="title">{$lang_editor}</td>
           </tr>
           <tr> 
-            <td class="list1_text"><b>{$lang_name}</b></td>
-            <td colspan="2" class="list1_input">$message_list[name]</td>
+            <td class="text">{$lang_name}</td>
+            <td class="input">$message_list[name]</td>
           </tr> 
 		   <tr> 
-            <td class="list1_text"><b>{$lang_messageTel}</b></td>
-            <td colspan="2" class="list1_input">$message_list[tel]</td>
+            <td class="text">{$lang_messageTel}</td>
+            <td class="input">$message_list[tel]</td>
           </tr> 
 		   <tr> 
-            <td class="list1_text"><b>email</b></td>
-            <td colspan="2" class="list1_input">$message_list[email]</td>
+            <td class="text">email</td>
+            <td class="input">$message_list[email]</td>
           </tr> 
 		   <tr> 
-            <td class="list1_text"><b>{$lang_messageeditorContact}</b></td>
-            <td colspan="2" class="list1_input">$message_list[contact]</td>
+            <td class="text">{$lang_messageeditorContact}</td>
+            <td class="input">$message_list[contact]</td>
           </tr> 
 		  <tr> 
-            <td class="list1_text"><b>{$lang_messageeditorContent}</b>
+            <td class="text">{$lang_messageeditorContent}
 			</td>
-            <td colspan="2" class="list1_input"><textarea name="info" cols="50" rows="5">$message_list[info]</textarea></td>
+            <td class="input"><textarea name="info" class="textarea gen" cols="50" rows="5">$message_list[info]</textarea></td>
 			</tr> 
 		  <tr> 
-            <td class="list1_text"><b>{$lang_messageTime}</b></td>
-            <td colspan="2" class="list1_input">$message_list[addtime]</td>
+            <td class="text">{$lang_messageTime}</td>
+            <td class="input">$message_list[addtime]</td>
           </tr>
 			 <tr> 
-            <td class="list1_text"><b>{$lang_messageID}</b>
+            <td class="text">{$lang_messageID}
 			</td>
-            <td colspan="2" class="list1_input">$message_list[customerid]</td>
+            <td class="input">$message_list[customerid]</td>
 			</tr> 
 <!--
 EOT;
@@ -49,8 +49,8 @@ if($met_member_use){
 echo <<<EOT
 -->
 			<tr> 
-            <td class="list1_text"><b>{$lang_access}</b></td>
-            <td colspan="2" class="list1_input"><select name="access" id="access" >
+            <td class="text">{$lang_access}</td>
+            <td class="input"><select name="access" id="access" >
              $level
             </select></td>
           </tr>
@@ -60,21 +60,24 @@ EOT;
 echo <<<EOT
 -->
 			 <tr> 
-            <td class="list1_text"><b>{$lang_messageeditorReply}</b></td>
-            <td colspan="2" class="list1_input"><textarea name="useinfo" cols="50" rows="5">$message_list[useinfo]</textarea></td></tr>
+            <td class="text">{$lang_messageeditorReply}</td>
+            <td class="input"><textarea name="useinfo" cols="50" class="textarea gen" rows="5">$message_list[useinfo]</textarea></td></tr>
 		  <tr> 
-            <td class="list1_text"><b style="color:#ff0000">{$lang_messageeditorCheck}</b></td>
-            <td colspan="2" class="list1_input"><input name="readok" type="checkbox" value="1" $met_readok>{$lang_messageeditorShow}</td>
+            <td class="text">{$lang_messageeditorCheck}</td>
+            <td class="input"><input name="readok" type="checkbox" class="checkbox" id="lable1" value="1" $met_readok><label for="lable1">{$lang_messageeditorShow}</label></td>
           </tr>
 		  <tr> 
-            <td class="list1_text"></td>
-	      <td class="list1_submit"><input type="submit" name="Submit" value="{$lang_Submit}" class="tj" style="*padding-top:2px; *height:22px;"><input type="reset" name="Submit" value="{$lang_Reset}" class="tj" style="*padding-top:2px; *height:22px;"></td>
+            <td class="text"></td>
+	      <td class="submit">
+			    <input type="submit" name="Submit" value="{$lang_Submit}" class="submit" onclick="return Smit($(this),'myform')" />
+				<input type="reset" name="Submit" value="{$lang_Reset}" class="submit" /> 
+		  </td>
           </tr>
-        </form>
             <tr>
-		  <td class="list1_footer" colspan="2" align="center">$foot</td>
+		  <td class="footer" colspan="2">$foot</td>
 	  </tr>
 </table>
+        </form>
 </body>
 </html>
 <!--

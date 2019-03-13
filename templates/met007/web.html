@@ -1,0 +1,66 @@
+<!--<?php
+$Tite1=$lang_Web_Column1;
+
+$Conw=$class_list[$classnow][module];
+$metsearchadv='';
+if($Conw==11)$metsearchadv=methtml_advsearch();
+if($Conw==11||$Conw==10)$Y=1;
+if($nav_list2[$class1]!="" || $Conw >= 100 || $Conw==11 || $Conw==10){$G=1;}
+echo <<<EOT
+-->
+</div>
+    <div id="right">
+<!--
+EOT;
+if($G==1){
+$C1=$class1;
+if($Y==1)$C1=$classnow;
+echo <<<EOT
+-->
+<div class="border">
+	    <h3 class="title"><div><span>{$class_list[$C1][name]}</span></div></h3>
+		<div class="webnav"> 
+		$metsearchadv
+<!--
+EOT;
+if($Conw==10){
+echo <<<EOT
+-->
+   <ul class="memberul">
+        <li><a target="main" href="basic.php?lang=$lang" title="{$lang_memberIndex3}">{$lang_memberIndex3}</a></li>
+        <li><a target="main" href="editor.php?lang=$lang" title="{$lang_memberIndex4}">{$lang_memberIndex4}</a></li>
+        <li><a target="main" href="feedback.php?lang=$lang" title="{$lang_memberIndex5}">{$lang_memberIndex5}</a></li>
+        <li><a target="main" href="message.php?lang=$lang" title="{$lang_memberIndex6}">{$lang_memberIndex6}</a></li>
+        <li><a target="main" href="cv.php?lang=$lang" title="{$lang_memberIndex7}">{$lang_memberIndex7}</a></li>
+        <li><a href="login_out.php?lang=$lang" title="{$lang_memberIndex10}">{$lang_memberIndex10}</a></li>
+   </ul>
+<!--
+EOT;
+}
+if($Y<>1){
+require_once template('webnav'); 
+}
+echo <<<EOT
+-->
+		</div>
+		</div>
+<!--
+EOT;
+$Line='line';
+}
+if($lang_WebNav_contact){
+echo <<<EOT
+-->
+	   <div class="border $Line">
+		<h3 class="title"><div><span>$Tite1</span></div></h3>
+		<div class="text">{$otherinfo[info10]}</div>
+		</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+    </div>
+<!--
+EOT;
+?>

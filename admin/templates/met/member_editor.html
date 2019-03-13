@@ -6,44 +6,96 @@ echo <<<EOT
 -->
 <title>{$lang_membereditorTitle}</title>
 </head>
+<script type="text/javascript">
+function Disb1(M,K){
+var ty= K==1?false:true;
+    M.attr('disabled',ty);
+}
+function pass2null(pass2){
+			Disb1($('#passsubmit'),0);
+			$('#pass2').text('{$lang_memberjstxt1}');
+			$('#pass2').show();
+			pass2.focus();
+}
+function pass1null(pass1){
+			Disb1($('#passsubmit'),0);
+			$('#pass1').text('{$lang_memberjstxt2}');
+			$('#pass1').show();
+			pass1.focus();
+}
+function passnot(pass2){
+			Disb1($('#passsubmit'),0);
+			$('#pass2').text('{$lang_memberjstxt3}');
+			$('#pass2').show();
+			pass2.focus();
+}
+$(document).ready(function(){
+    var pass1 = $("input[name='pass1']");
+    var pass2 = $("input[name='pass2']");
+	pass1.focusout(function(){
+		if(pass2.val()!='' && pass2.val()!=pass1.val()){
+		$('#pass1').hide();
+		passnot(pass2);
+		}else if($(this).val()!='' && pass2.val()==''){
+			$('#pass1').hide();
+			pass2null(pass2);
+		}else{ 
+		$('#pass1').hide();
+		$('#pass2').hide();
+		Disb1($('#passsubmit'),1);
+		}
+	});
+	pass2.focusout(function(){
+		if(pass1.val()!='' && pass2.val()!=pass1.val())passnot($(this));
+		else if($(this).val()!='' && pass1.val()==''){
+			$('#pass2').hide();
+			pass1null(pass1);
+		}else{ 
+		$('#pass1').hide();
+		$('#pass2').hide();
+		Disb1($('#passsubmit'),1);
+		}
+	});
+});
+</script>
 <body>
-<form method="POST" name="myform" onSubmit="return CheckForm_e();" action="save.php?action=editor&id=$id&lang=$lang" target="_self">
-		<input name="useid" type="hidden"size="20" maxlength="20" value="$admin_list[admin_id]">
-<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
+<form method="POST" name="myform" action="save.php?action=editor&id=$id&lang=$lang" target="_self">
+		<input name="useid" type="hidden" value="$admin_list[admin_id]">
+<table cellpadding="2" cellspacing="1" class="table">
           <tr> 
-            <td colspan="3" align="center" class="list1_title">{$lang_membereditorTitle}</td>
+            <td colspan="3" class="title">{$lang_membereditorTitle}</td>
           </tr>
           <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font>{$lang_memberUserName}</td>
-            <td colspan="2" class="list1_input"> <input name="useid" type="text" class="input" size="20" maxlength="20" value="$admin_list[admin_id]" disabled="disabled"></td>
+            <td class="text"><font class="must">*</font>{$lang_memberUserName}</td>
+            <td colspan="2" class="input"> <input name="useid" type="text" class="text" value="$admin_list[admin_id]" disabled="disabled"></td>
           </tr> 
 		  <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font>{$lang_memberPs}</td>
-            <td colspan="2" class="list1_input"> <input name="pass1" type="password" class="input" size="20" maxlength="20">{$lang_memberTip}</td>
+            <td class="text"><font class="must">*</font>{$lang_memberPs}</td>
+            <td colspan="2" class="input"> <input name="pass1" type="password" class="text" maxlength="20">{$lang_memberTip}<span id='pass1'></span></td>
           </tr> 
 		   <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font>{$lang_memberPs1}</td>
-            <td colspan="2" class="list1_input"> <input name="pass2" type="password" class="input" size="20" maxlength="20">{$lang_memberTip}</td>
+            <td class="text"><font class="must">*</font>{$lang_memberPs1}</td>
+            <td colspan="2" class="input"> <input name="pass2" type="password" class="text" maxlength="20">{$lang_memberTip}<span id='pass2'></span></td>
           </tr> 
 		  <tr> 
-            <td class="list1_text">{$lang_memberName}</td>
-            <td colspan="2" class="list1_input"> <input name="name" type="text" class="input" size="20" maxlength="20" value="$admin_list[admin_name]"></td>
+            <td class="text">{$lang_memberName}</td>
+            <td colspan="2" class="input"> <input name="name" type="text" class="text" value="$admin_list[admin_name]"></td>
           </tr> 
 		  <tr> 
-            <td class="list1_text">{$lang_memberSex}</td>
-            <td colspan="2" class="list1_input">
+            <td class="text">{$lang_memberSex}</td>
+            <td colspan="2" class="input">
 <!--
 EOT;
 if($admin_list[admin_sex]==0){
 echo <<<EOT
 -->	
-		<input name="sex" type="radio" value="0" checked="checked">{$lang_memberMan} &nbsp;<input name="sex" type="radio" value="1">{$lang_memberWoman}
+		<input name="sex" type="radio" value="0" checked="checked">{$lang_memberMan} &nbsp;<input name="sex" type="radio" class="radio" value="1">{$lang_memberWoman}
 <!--
 EOT;
 }else{
 echo <<<EOT
 -->	
-		<input name="sex" type="radio" value="0" >{$lang_memberMan} &nbsp;<input name="sex" type="radio" value="1" checked="checked">{$lang_memberWoman}
+		<input name="sex" type="radio" value="0" >{$lang_memberMan} &nbsp;<input name="sex" type="radio" value="1" class="radio" checked="checked">{$lang_memberWoman}
 <!--
 EOT;
 }echo <<<EOT
@@ -51,57 +103,57 @@ EOT;
 			</td>
           </tr> 
 		  <tr> 
-            <td class="list1_text">{$lang_memberTel}</td>
-            <td colspan="2" class="list1_input"> <input name="tel" type="text" class="input" size="20" maxlength="20" value="$admin_list[admin_tel]"></td>
+            <td class="text">{$lang_memberTel}</td>
+            <td colspan="2" class="input"> <input name="tel" type="text" class="text" value="$admin_list[admin_tel]"></td>
           </tr> 
 		  <tr> 
-            <td class="list1_text">{$lang_memberCell}</td>
-            <td colspan="2" class="list1_input"> <input name="mobile" type="text" class="input" size="20" maxlength="20" value="$admin_list[admin_mobile]"></td>
+            <td class="text">{$lang_memberCell}</td>
+            <td colspan="2" class="input"> <input name="mobile" type="text" class="text" value="$admin_list[admin_mobile]"></td>
           </tr> 
 		  <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font>email</td>
-            <td colspan="2" class="list1_input"> <input name="email" type="text" class="input" size="20" maxlength="50" value="$admin_list[admin_email]">{$lang_memberTip1}</td>
+            <td class="text"><font class="must">*</font>email</td>
+            <td colspan="2" class="input"> <input name="email" type="text" class="text med" value="$admin_list[admin_email]">{$lang_memberTip1}</td>
           </tr> 
 		  <tr> 
-            <td class="list1_text">QQ</td>
-            <td colspan="2" class="list1_input"> <input name="qq" type="text" class="input" size="20" maxlength="20" value="$admin_list[admin_qq]"></td>
+            <td class="text">QQ</td>
+            <td colspan="2" class="input"> <input name="qq" type="text" class="text" value="$admin_list[admin_qq]"></td>
           </tr> 
 		  <tr> 
-            <td class="list1_text">MSN</td>
-            <td colspan="2" class="list1_input"> <input name="msn" type="text" class="input" size="20" maxlength="50" value="$admin_list[admin_msn]"></td>
+            <td class="text">MSN</td>
+            <td colspan="2" class="input"> <input name="msn" type="text" class="text" value="$admin_list[admin_msn]"></td>
           </tr> 
 		  <tr> 
-            <td class="list1_text">{$lang_memberTaoBao}</td>
-            <td colspan="2" class="list1_input"> <input name="taobao" type="text" class="input" size="20" maxlength="30" value="$admin_list[admin_taobao]"></td>
+            <td class="text">{$lang_memberTaoBao}</td>
+            <td colspan="2" class="input"> <input name="taobao" type="text" class="text" value="$admin_list[admin_taobao]"></td>
           </tr> 
           <tr> 
-          <td class="list1_text" valign="middle">{$lang_memberIntro}</td>
-          <td colspan="2" class="list1_input" valign="top"> <textarea name="admin_introduction" cols="60" rows="5" >$admin_list[admin_introduction]</textarea></td>
+          <td class="text" valign="middle">{$lang_memberIntro}</td>
+          <td colspan="2" class="input" valign="top"> <textarea name="admin_introduction" class="textarea gen" cols="60" rows="5" >$admin_list[admin_introduction]</textarea></td>
           </tr>
 		  <tr> 
-          <td class="list1_text" valign="middle">{$lang_memberCompanyName}</td>
-          <td colspan="2" class="list1_input" valign="top"> <input name="companyname" type="text" class="input" size="30" value="$admin_list[companyname]"></td>
+          <td class="text" valign="middle">{$lang_memberCompanyName}</td>
+          <td colspan="2" class="input" valign="top"> <input name="companyname" type="text" class="text" value="$admin_list[companyname]"></td>
           </tr>
 		  <tr> 
-          <td class="list1_text" valign="middle">{$lang_memberCompanyFax}</td>
-          <td colspan="2" class="list1_input" valign="top"> <input name="companyfax" type="text" class="input" size="30"value="$admin_list[companyfax]"></td>
+          <td class="text" valign="middle">{$lang_memberCompanyFax}</td>
+          <td colspan="2" class="input" valign="top"> <input name="companyfax" type="text" class="text" value="$admin_list[companyfax]"></td>
           </tr>
 		  <tr> 
-          <td class="list1_text" valign="middle">{$lang_memberCompanyCode}</td>
-          <td colspan="2" class="list1_input" valign="top"> <input name="companycode" type="text" class="input" size="30" value="$admin_list[companycode]"></td>
+          <td class="text" valign="middle">{$lang_memberCompanyCode}</td>
+          <td colspan="2" class="input" valign="top"> <input name="companycode" type="text" class="text" value="$admin_list[companycode]"></td>
           </tr>
 		  <tr> 
-          <td class="list1_text" valign="middle">{$lang_memberCompanyAddress}</td>
-          <td colspan="2" class="list1_input" valign="top"> <input name="companyaddress" type="text" class="input" size="30" value="$admin_list[companyaddress]"></td>
+          <td class="text" valign="middle">{$lang_memberCompanyAddress}</td>
+          <td colspan="2" class="input" valign="top"> <input name="companyaddress" type="text" class="text" value="$admin_list[companyaddress]"></td>
           </tr>
 		  <tr> 
-          <td class="list1_text" valign="middle">{$lang_memberCompanyWebsite}</td>
-          <td colspan="2" class="list1_input" valign="top"> <input name="companywebsite" type="text" class="input" size="30" value="$admin_list[companywebsite]"></td>
+          <td class="text" valign="middle">{$lang_memberCompanyWebsite}</td>
+          <td colspan="2" class="input" valign="top"> <input name="companywebsite" type="text" class="text" value="$admin_list[companywebsite]"></td>
           </tr>
 		  <tr> 
          <tr> 
-          <td class="list1_text" valign="middle">{$lang_memberType}</td>
-          <td colspan="2" class="list1_input" valign="top">
+          <td class="text" valign="middle">{$lang_memberType}</td>
+          <td colspan="2" class="input" valign="top">
 		  <select name="usertype" id="usertype" >
 			 <option value="1" $access1>{$lang_access1}</option>
               <option value="2" $access2>{$lang_access2}</option>
@@ -109,18 +161,21 @@ EOT;
 		  </td>
           </tr>
 		  <tr>
-		  <td class="list1_text" valign="middle">{$lang_memberCheck}</td>
-          <td colspan="2" class="list1_input" valign="top"><input name="checkid" type="checkbox" value="1" $checkid></td>
+		  <td class="text" valign="middle">{$lang_memberCheck}</td>
+          <td colspan="2" class="input" valign="top"><input name="checkid" type="checkbox" value="1" $checkid></td>
           </tr>
 		  <tr> 
-            <td class="list1_text"></td>
-	      <td class="list1_submit"><input type="submit" name="Submit" value="{$lang_Submit}" class="tj" style="*padding-top:2px; *height:22px;"><input type="reset" name="Submit" value="{$lang_Reset}" class="tj" style="*padding-top:2px; *height:22px;"></td>
+            <td class="text"></td>
+			<td class="submit">
+		<input type="submit" name="submit" value="{$lang_Submit}" class="submit" onclick="return Smit($(this),'myform')" />
+		<input type="reset" name="reset" value="{$lang_Reset}" class="reset" />
+		  </td>
           </tr>
-        </form>
          <tr>
-		  <td class="list1_footer" colspan="2" align="center">$foot</td>
+		  <td class="footer" colspan="2">$foot</td>
 	  </tr>
 </table>
+        </form>
 </body>
 </html>
 <!--

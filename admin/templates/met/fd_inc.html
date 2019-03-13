@@ -7,28 +7,27 @@ echo <<<EOT
 <title>{$lang_fdincTitle}</title>
 </head>
 <body>
-<form method="POST" name="myform" action="" target="_self">
+<form method="POST" name="myform" action="inc.php?lang=$lang&class1=$class1" target="_self">
 		<input name="action" type="hidden" value="modify">
-		<input name="lang" type="hidden" value="$lang">
-<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
+<table cellpadding="2" cellspacing="1" class="table">
           <tr> 
-            <td colspan="3" align="center" class="list1_title">{$lang_fdincTitle}</td>
+            <td colspan="3" class="title">{$lang_fdincTitle}</td>
           </tr>	  
 		  <tr> 
-            <td class="list1_text">{$lang_fdincName}</td>
-            <td class="list1_input"><input name="met_fdtable" type="text" class="input" size="30"  value="$met_fdtable"></td>
+            <td class="text">{$lang_fdincName}</td>
+            <td class="input"><input name="met_fdtable" type="text" class="text" value="$met_fdtable"></td>
           </tr> 
 		   <tr> 
-            <td class="list1_text">{$lang_fdincTime}</td>
-            <td class="list1_input"><input name="met_fd_time" type="text" class="input" size="3"  value="$met_fd_time">{$lang_fdincTip4}</td>
+            <td class="text">{$lang_fdincTime}</td>
+            <td class="input"><input name="met_fd_time" type="text" class="text" value="$met_fd_time">{$lang_fdincTip4}</td>
           </tr> 
 		  <tr> 
-            <td class="list1_text">{$lang_fdincSlash}</td>
-            <td class="list1_input"><textarea name="met_fd_word" cols="50" rows="3" >$met_fd_word</textarea>{$lang_fdincTip5}</td>
+            <td class="text">{$lang_fdincSlash}</td>
+            <td class="input"><textarea name="met_fd_word" class="textarea gen" cols="50" rows="3" >$met_fd_word</textarea>{$lang_fdincTip5}</td>
           </tr>
 		   <tr> 
-            <td class="list1_text">{$lang_fdincClassName}</td>
-            <td class="list1_input">
+            <td class="text">{$lang_fdincClassName}</td>
+            <td class="input">
 			<select name="met_fd_class">
 <!--
 EOT;
@@ -47,20 +46,20 @@ echo <<<EOT
 			{$lang_fdincTip6}</td>
           </tr>
 		  <tr> 
-            <td class="list1_text">{$lang_fdincAcceptType}</td>
-            <td class="list1_input"><input name="met_fd_type" type="radio" value="0" $met_fd_type1[0]>{$lang_fdincAccept}  <input name="met_fd_type" type="radio" value="1" $met_fd_type1[1]>{$lang_fdincTip7}  <input name="met_fd_type" type="radio" value="2" $met_fd_type1[2]>{$lang_fdincTip8}</td>
+            <td class="text">{$lang_fdincAcceptType}</td>
+            <td class="input"><input name="met_fd_type" type="radio" class="radio" value="0" $met_fd_type1[0]>{$lang_fdincAccept}  <input name="met_fd_type" type="radio" class="radio" value="1" $met_fd_type1[1]>{$lang_fdincTip7}  <input name="met_fd_type" type="radio" value="2" $met_fd_type1[2]>{$lang_fdincTip8}</td>
           </tr> 
 		   <tr> 
-            <td class="list1_text">{$lang_fdincAcceptMail}</td>
-            <td class="list1_input"><input name="met_fd_to" type="text" class="input" size="30"  value="$met_fd_to">{$lang_fdincTip9}</td>
+            <td class="text">{$lang_fdincAcceptMail}</td>
+            <td class="input"><input name="met_fd_to" type="text" class="text" value="$met_fd_to">{$lang_fdincTip9}</td>
           </tr> 
 		 <tr> 
-            <td class="list1_text">{$lang_fdincAuto}</td>
-            <td class="list1_input"><input name="met_fd_back" type="checkbox" value="1" $met_fd_back1>{$lang_fdincTip10}</td>
+            <td class="text">{$lang_fdincAuto}</td>
+            <td class="input"><input name="met_fd_back" type="checkbox" class="checkbox" value="1" $met_fd_back1>{$lang_fdincTip10}</td>
           </tr>
 		  <tr> 
-            <td class="list1_text">{$lang_fdincEmailName}</td>
-            <td class="list1_input">
+            <td class="text">{$lang_fdincEmailName}</td>
+            <td class="input">
 			<select name="met_fd_email">
 <!--
 EOT;
@@ -79,22 +78,25 @@ echo <<<EOT
 			{$lang_fdincTip11}</td>
           </tr>
 		  <tr> 
-            <td class="list1_text">{$lang_fdincFeedbackTitle}</td>
-            <td class="list1_input"><input name="met_fd_title" type="text" class="input" size="30"  value="$met_fd_title">{$lang_fdincAutoFbTitle}</td>
+            <td class="text">{$lang_fdincFeedbackTitle}</td>
+            <td class="input"><input name="met_fd_title" type="text" class="text" value="$met_fd_title">{$lang_fdincAutoFbTitle}</td>
           </tr>
 		   <tr> 
-            <td class="list1_text">{$lang_fdincAutoContent}</td>
-            <td class="list1_input"><textarea name="met_fd_content" cols="50" rows="3" >$met_fd_content</textarea>{$lang_htmlok}</td>
+            <td class="text">{$lang_fdincAutoContent}</td>
+            <td class="input"><textarea name="met_fd_content" class="textarea gen" cols="50" rows="3" >$met_fd_content</textarea>{$lang_htmlok}</td>
           </tr>
 	      <tr> 
-            <td class="list1_text"></td>
-	      <td class="list1_submit"><input type="submit" name="Submit" value="{$lang_Submit}" class="tj" style="*padding-top:2px; *height:22px;"><input type="reset" name="Submit" value="{$lang_Reset}" class="tj" style="*padding-top:2px; *height:22px;"></td>
+            <td class="text"></td>
+	      <td class="submit">
+		  <input type="submit" name="Submit" value="{$lang_Submit}" class="submit" onclick="return Smit($(this),'myform')" />
+		  <input type="reset" name="Submit" value="{$lang_Reset}"  class="reset" />
+		  </td>
           </tr>
-        </form>
            <tr>
-		  <td class="list1_footer" colspan="2" align="center">$foot</td>
+		  <td class="footer" colspan="2">$foot</td>
 	  </tr>
 </table>
+        </form>
 </body>
 </html>
 <!--

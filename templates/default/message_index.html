@@ -1,25 +1,26 @@
 <!--<?php
 require_once template('head'); 
+require_once template('webbar');
+$messagelist=metlabel_messagelist();
 echo <<<EOT
 -->
-<div id="web">
-<div class="right">
-   <h3 class="title"><span>{$class_list[$classnow][name]}</span></h3>
-<div class="webcontent">
-<div class="message_line"><a href="$addmessage_url">{$lang_SubmitInfo}&gt;&gt;</a></div>
-<div class="message-main">
-$methtml_messagelist
-</div>
-<div class="web_bottom">$page_list</div>
-</div>
-</div>
+       <div class="messagelist webbox">
 <!--
 EOT;
-require_once template('webleft'); 
+if($class_list[$classnow][releclass]!=0){
 echo <<<EOT
 -->
-<div style="clear:both;"></div>
-
+            <div class="inside"><a href="$addmessage_url" class="hover-none">{$lang_SubmitInfo}</a><div class="clear"></div></div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+            {$messagelist}
+        </div>
+        <div id="flip">$page_list</div>
+    </div>
+    <div class="clear"></div>
 </div>
 <!--
 EOT;

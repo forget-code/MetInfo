@@ -4,7 +4,12 @@
 require_once '../include/common.inc.php';
 $settings = parse_ini_file('config_'.$lang.'.inc.php');
 @extract($settings);
-$classaccess= $db->get_one("SELECT * FROM $met_column WHERE module='8' and lang='$lang'");
+if(!$id){
+	$nwid=$db->get_one("SELECT * FROM $met_column WHERE module='8' and lang='$lang'");
+	$id=$nwid['id'];
+}
+
+$classaccess= $db->get_one("SELECT * FROM $met_column WHERE module='8' and lang='$lang' and id='$id'");
 $metaccess=$classaccess[access];
 $class1=$classaccess[id];
 require_once '../include/head.php';
@@ -20,10 +25,11 @@ else{
 $navtitle="[".$title."]".$met_fdtable;
 }
 if($action=="add"){
+$sid = $id;
 $addtime=$m_now_date;
 $ipok=$db->get_one("select * from $met_feedback where ip='$ip' order by addtime desc");
 if($ipok)
-$time1 = strtotime($ipok[addtime]);
+$time1 = strtotime($ipok['addtime']);
 else
 $time1 = 0;
 $time2 = strtotime($m_now_date);
@@ -33,8 +39,8 @@ if($timeok<=$met_fd_time){
 $fd_time="{$lang_Feedback1}".$met_fd_time."{$lang_Feedback2}";
 okinfo('javascript:history.back();',$fd_time);
 }
-$query = "SELECT * FROM $met_parameter where lang='$lang' and  module=8 order by no_order";
-if($met_member_use)$query = "SELECT * FROM $met_parameter where lang='$lang' and  module=8  and access<=$metinfo_member_type order by no_order";
+$query = "SELECT * FROM $met_parameter where lang='$lang' and module=8 and class1='$id' order by no_order";
+if($met_member_use)$query = "SELECT * FROM $met_parameter where lang='$lang' and  module=8 and class1='$id' and access<=$metinfo_member_type order by no_order";
 $result = $db->query($query);
 while($list= $db->fetch_array($result)){
 $list[para]="para".$list[id];
@@ -60,7 +66,6 @@ $fd_word="[".$fd_word."] {$lang_Feedback3}";
 if($fdok==true)okinfo('javascript:history.back();',$fd_word);
 
 require_once 'uploadfile_save.php';
-
 $fdto="para".$met_fd_email;
 $fdto=$$fdto;
 $fdclass2="para".$met_fd_class;
@@ -80,14 +85,13 @@ foreach($fd_para as $key=>$val){
 	}else{
 	  $para="";
 	  for($i=1;$i<=$$val[para];$i++){
-	  $para1="para".$val[id]."_".$i;
-	  $para2=$$para1;
-	  $para=($para2<>"")?$para.$para2."-":$para;
+	  $para1p="para".$val[id]."_".$i;
+	  $para2p=$$para1p;
+	  $para=($para2p<>"")?$para.$para2p."-":$para;
 	  }
 	  $para=substr($para, 0, -1);
 	}
 	$para=htmlspecialchars($para);
-
 if($val[type]!=5){
 $body=$body."<b>".$val[name]."</b>:".$para."<br>";
 }else{
@@ -95,7 +99,6 @@ $para=$para<>""?"<a href=".$met_weburl."upload/file/".$para." >".$met_weburl."up
 $body=$body."<b>".$val[name]."</b>:".$para."<br>";
 }
 }
-
 
 $body=$body."<b>{$lang_FeedbackProduct}</b>:".$fdtitle."<br>";
 $body=$body."<b>{$lang_IP}</b>:".$ip."<br>";
@@ -111,6 +114,7 @@ jmailsend($from,$fromname,$fdto,$met_fd_title,$met_fd_content,$usename,$usepassw
 if($met_fd_type!=0){
 if(!isset($metinfo_member_name) || $metinfo_member_name=='') $metinfo_member_name=0;
 $query = "INSERT INTO $met_feedback SET
+                      class1             = '$id',
                       fdtitle            = '$title',
 					  fromurl            = '$fromurl',
 					  ip                 = '$ip',
@@ -126,9 +130,9 @@ foreach($fd_para  as $key=>$val){
 	}else{
 	  $para="";
 	  for($i=1;$i<=$$val[para];$i++){
-	  $para1="para".$val[id]."_".$i;
-	  $para2=$$para1;
-	  $para=($para2<>"")?$para.$para2."-":$para;
+	  $para1p="para".$val[id]."_".$i;
+	  $para2p=$$para1p;
+	  $para=($para2p<>"")?$para.$para2p."-":$para;
 	  }
 	  $para=substr($para, 0, -1);
 	}
@@ -142,14 +146,17 @@ foreach($fd_para  as $key=>$val){
          $db->query($query);
  }
 }
-$returnurl=$met_webhtm?'index'.$met_htmtype:'index.php?lang='.$lang;
+$fname= $db->get_one("SELECT * FROM $met_column WHERE module='8' and lang='$lang' and id='$sid'");
+$fedfilename=$fname['filename']!=''?$fname['filename']:'index';
+$met_ahtmtype = $fname['filename']<>''?$met_chtmtype:$met_htmtype;
+$returnurl=$met_pseudo?'index-'.$lang.'.html':($met_webhtm?$fedfilename.$met_ahtmtype:'index.php?lang='.$lang.'&id='.$sid);
 okinfo($returnurl,"{$lang_Feedback4}");
 }
 else{
 
 
-$query = "SELECT * FROM $met_parameter where lang='$lang' and  module=8 order by no_order";
-if($met_member_use)$query = "SELECT * FROM $met_parameter where lang='$lang' and  module=8  and access<=$metinfo_member_type order by no_order";
+$query = "SELECT * FROM $met_parameter where lang='$lang' and  module=8 and class1='$id' order by no_order";
+if($met_member_use)$query = "SELECT * FROM $met_parameter where lang='$lang' and  module=8 and class1='$id'  and access<=$metinfo_member_type order by no_order";
 $result = $db->query($query);
 while($list= $db->fetch_array($result)){
  if($list[type]==2 or $list[type]==4 or $list[type]==6){
@@ -177,7 +184,7 @@ while($list= $db->fetch_array($result)){
 if($list[wr_ok]=='1')$list[wr_must]="*";
 switch($list[type]){
 case 1:
-$list[input]="<input name='para$list[id]' type='text' size='30' />";
+$list[input]="<input name='para$list[id]' type='text' size='30' class='input-text' />";
 break;
 case 2:
 $list[input]="<select name='para$list[id]'><option selected='selected' value=''>{$lang_Choice}</option>";
@@ -187,13 +194,13 @@ $list[input]=$list[input]."<option value='$val[info]'>$val[info]</option>";
 $list[input]=$list[input]."</select>";
 break;
 case 3:
-$list[input]="<textarea name='para$list[id]' cols='50' rows='5'></textarea>";
+$list[input]="<textarea name='para$list[id]' class='textarea-text' cols='50' rows='5'></textarea>";
 break;
 case 4:
 $i=0;
 foreach($paravalue[$list[id]] as $key=>$val){
 $i++;
-$list[input]=$list[input]."<input name='para$list[id]_$i' class='checboxcss' type='checkbox' value='$val[info]' />$val[info]&nbsp;&nbsp;";
+$list[input]=$list[input]."<input name='para$list[id]_$i' class='checboxcss' id='para$i$list[id]' type='checkbox' value='$val[info]' /><label for='para$i$list[id]'>$val[info]</label>&nbsp;&nbsp;";
 }
 $list[input]=$list[input]."<input name='para$list[id]' type='hidden' value='$i' />";
 $lagernum[$list[id]]=$i;
@@ -207,7 +214,7 @@ foreach($paravalue[$list[id]] as $key=>$val){
 $checked='';
 $i++;
 if($i==1)$checked="checked='checked'";
-$list[input]=$list[input]."<input name='para$list[id]' type='radio' value='$val[info]' $checked>$val[info]  ";
+$list[input]=$list[input]."<input name='para$list[id]' type='radio' id='para$i$list[id]' value='$val[info]' $checked /><label for='para$i$list[id]'>$val[info]</label>  ";
  }
 break;
 }
@@ -246,7 +253,8 @@ $class_info[name]=$class2_info[name]."--".$class1_info[name];
 
      $show[description]=$class_info[description]?$class_info[description]:$met_keywords;
      $show[keywords]=$class_info[keywords]?$class_info[keywords]:$met_keywords;
-	 $met_title=$navtitle."--".$met_title;
+	 $met_title=$met_title?$navtitle.'-'.$met_title:$navtitle;
+	 if($class_info['ctitle']!='')$met_title=$class_info['ctitle'];
 if(count($nav_list2[$classaccess[id]])){
 $k=count($nav_list2[$class1]);
 $nav_list2[$class1][$k]=$class1_info;
@@ -269,6 +277,7 @@ require_once '../public/php/methtml.inc.php';
      $methtml_feedback.="<input type='hidden' name='lang' value='".$lang."' />\n";
      $methtml_feedback.="<input type='hidden' name='ip' value='".$ip."' />\n";
 	 $methtml_feedback.="<input type='hidden' name='totnum' value='".count($fd_para)."' />\n";
+	 $methtml_feedback.="<input type='hidden' name='id' value='".$id."' />\n";
      $methtml_feedback.="<input type='submit' name='Submit' value='".$lang_Submit."' class='tj'>\n";
      $methtml_feedback.="<input type='reset' name='Submit' value='".$lang_Reset."' class='tj'></td></tr>\n";
      $methtml_feedback.="</table>\n";

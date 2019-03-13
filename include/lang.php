@@ -1,14 +1,17 @@
 <?php
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
-
+$packurl = 'http://'.$_SERVER['HTTP_HOST'].'/';
 foreach($met_langok as $key=>$val){
 $indexmark=($val[mark]==$met_index_type)?"index.":"index_".$val[mark].".";
 $val[met_weburl]=$val[met_weburl]<>""?$val[met_weburl]:$met_weburl;
 $val[met_htmtype]=$val[met_htmtype]<>""?$val[met_htmtype]:$met_htmtype;
 if($val[useok]){
    $met_index_url[$val[mark]]=$val[met_webhtm]?$val[met_weburl].$indexmark.$val[met_htmtype]:$val[met_weburl]."index.php?lang=".$val[mark];
+   if($met_pseudo)$met_index_url[$val['mark']] = $val['met_weburl'].'index-'.$val['mark'].'.html';
+   if($htmpack && $met_htmpack)$met_index_url[$val['mark']]=$packurl.$met_htmpack_url.$indexmark.$val['met_htmtype'];
    if($val[mark]==$met_index_type)$met_index_url[$val[mark]]=$val[met_weburl];
+   if($htmpack && $met_htmpack && $val[mark]==$met_index_type)$met_index_url[$val[mark]]=$packurl.$met_htmpack_url;
    if($val[link]!="")$met_index_url[$val[mark]]=$val[link];
    if(!strstr($val[flag], 'http://')){
    if($index=="index"){
@@ -56,7 +59,6 @@ $$name= trim($value);
 }
 fclose($fp) or die("Can't close file $file_basicname");
 }
-run_strtext(connect_sqlmysql($allclass[3]));
 if(!file_exists($file_name)){
   if(file_exists(ROOTPATH."templates/".$met_skin_user.'/lang/language_cn.ini')){
  $file_name           =ROOTPATH."templates/".$met_skin_user.'/lang/language_cn.ini';

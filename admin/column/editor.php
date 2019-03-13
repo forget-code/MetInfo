@@ -5,7 +5,7 @@ require_once '../login/login_check.php';
 $column_list = $db->get_one("SELECT * FROM $met_column WHERE id='$id'");
 $lev=0;//Highest authority
 if(!$column_list){
-okinfo('index.php?lang='.$lang,$lang_dataerror);
+okinfox('../column/index.php?lang='.$lang,$lang_dataerror);
 }
 $classtype=1;
 $list_order[0]="checked='checked'";
@@ -16,6 +16,7 @@ if($column_list[module]==2 || $column_list[module]==3 || $column_list[module]==4
 $module[$column_list[module]]="selected='selected'";
 $nav[$column_list[nav]]="checked='checked'";
 $if_in[$column_list[if_in]]="checked='checked'";
+if($column_list[wap_ok])$wap_ok="checked='checked'";
 $bigclass=$lang_modClass1;
 $addtitle=$lang_modClass1;
 $foldername="";
@@ -59,10 +60,10 @@ switch(intval($lev))
 }
 
 $isshowcheck=$column_list['isshow']==1?"checked='checked'":'';
-if($column_list['module']!=1) $filenameok="none";
-if((!$metadmin[pagename] and $column_list['module']!=1) or $column_list['module']==11)$filenameok1="none";
+if($column_list['module']!=1 || $column_list['releclass'] || $column_list['classtype']==3) $filenameok="none";
+if((!$metadmin['pagename'] and $column_list['module']>6) or $column_list['module']>8)$filenameok1="none";
 if($column_list['module']>6 and $column_list['module']<13) $filenameok="none";
-echo "<script language='javascript'>var metadminpagename=$metadmin[pagename];</script>";
+$edjs= "<script language='javascript'>var metadminpagename=$metadmin[pagename];</script>";
 $css_url="../templates/".$met_skin."/css";
 $img_url="../templates/".$met_skin."/images";
 include template('column_editor');

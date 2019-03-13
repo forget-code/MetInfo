@@ -52,14 +52,14 @@ $met_flash_module[$flashrec1[module]]="selected='selected'";
 $met_flash_type[$met_flasharray[$flashrec1[module]][type]]="checked='checked'";	
 $selected[$flashrec1['module']]='selected="selected"';
 if($met_flasharray[$flashrec1[module]][type]==0){
-   okinfo('flash.php?lang='.$lang,$lang_flashclosenow);
+   okinfox('../flash/flash.php?lang='.$lang,$lang_flashclosenow);
 }elseif($met_flasharray[$flashrec1[module]][type]==1&&$flashmode==2){
-   okinfo('flash.php?lang='.$lang,$lang_flasherrornow);
+   okinfox('../flash/flash.php?lang='.$lang,$lang_flasherrornow);
 }elseif($met_flasharray[$flashrec1[module]][type]==2&&$flashmode==1){
-   okinfo('flash.php?lang='.$lang,$lang_flasherrornow);
+   okinfox('../flash/flash.php?lang='.$lang,$lang_flasherrornow);
 }elseif($met_flasharray[$flashrec1[module]][type]==3){
    $style3="style='display:none;'";
-   if($flashmode==2)okinfo('flash.php?lang='.$lang,$lang_flasherrornow);
+   if($flashmode==2)okinfox('../flash/flash.php?lang='.$lang,$lang_flasherrornow);
 }
 $css_url="../templates/".$met_skin."/css";
 $img_url="../templates/".$met_skin."/images";

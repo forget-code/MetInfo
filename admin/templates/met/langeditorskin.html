@@ -9,33 +9,39 @@ echo <<<EOT
 <title>{$lang_langskineditor}</title>
 </head>
 <body>
-        <form method="POST" name="myform" action="" target="_self">
+        <form method="POST" name="myform" action="langeditorskin.php?lang=$lang" target="_self">
 		<input name="action" type="hidden" value="modify">
 		<input name="langnum" type="hidden" value="$j">
 		<input name="langeditor" type="hidden" value="$langeditor">
-<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1" >
+<table cellpadding="2" cellspacing="1" class="table">
 <tr>
-<td colspan="$colspan" align="center" class="list1_title">{$lang_langskineditor}【<b>{$met_langok[$langeditor][name]}</b>】</td>
+<td colspan="$colspan" class="title">{$lang_langskineditor}【<b>{$met_langok[$langeditor][name]}</b>】</td>
 </tr>
-   <tr><td class="list1_text" ><b>{$lang_langeditorinfo}</b></td>
-    <td colspan="$colspan1" class="list1_input">{$lang_langeditordetail1}<br>{$lang_langeditordetail2}<br>{$lang_langeditordetail3}</td></tr>
-<tr><td class="list1_text" colspan="$colspan"><a href="lang.php?lang=$lang">{$lang_indexlang}</a></td></tr>
+   <tr>
+      <td class="text">{$lang_langeditorinfo}</td>
+      <td colspan="$colspan1" class="input">{$lang_langeditordetail1}<br>{$lang_langeditordetail3}</td>
+	 </tr>
+<tr><td class="text" colspan="$colspan"><a href="lang.php?lang=$lang" title="{$lang_indexlang}">{$lang_indexlang}</a></td></tr>
 <tr>
-<td class="list1_text" width:20%><b>{$lang_langclass2}</b></td>
-<td class="list1_input" width:40%><b>{$lang_langvalue}</b></td>
-<td class="list1_input" width:40%><b>{$lang_langinfo}</b></td>
+<td class="text">说明</td>
+<td class="input" style="width:220px;">字段值</td>
+<td class="input">参数名</td>
 </tr>
 <input name="metinfolangid" type="hidden" value="$langid">
 <!--
 EOT;
 foreach($langtext[$langid] as $key=>$val){
+$inputhtm="<input name='{$val[name]}_metinfo' type='text' class='text' value='{$val[value]}' />";
+if(trim($val[value])=='#MetInfo'){
+$inputhtm="<span style='color:#f00; font-weight:bold;'>{$val[name]}</span>";
+$val[name]='';
+}
 echo <<<EOT
 -->
-
  <tr> 
- <td class="list1_text">$val[name]</td>
- <td class="list1_input"><input name="$val[name]_metinfo" type="text" value="$val[value]" size="30"></td>
- <td class="list1_input"><input name="$val[name]_info_metinfo" type="text" value="$val[valueinfo]" size="40"></td>
+ <td class="text">$val[valueinfo]</td>
+ <td class="input">$inputhtm</td>
+ <td class="input">$val[name]</td>
  </tr>
 <!--
 EOT;
@@ -44,13 +50,14 @@ echo <<<EOT
 -->
 
 	      <tr> 
-	      <td class="list1_submit" colspan="$colspan" style="text-align:center;"><input type="submit" name="Submit" value="{$lang_Submit}" class="tj" style="*padding-top:2px; *height:22px;"><input type="reset" name="Submit" value="{$lang_Reset}" class="tj" style="*padding-top:2px; *height:22px;"></td>
+		  <td class="text"></td>
+	      <td class="submit" colspan="$colspan"><input type="submit" name="Submit" value="{$lang_Submit}" class="submit" onclick="return Smit($(this),'myform')" /><input type="reset" name="Submit" value="{$lang_Reset}" class="reset" /></td>
           </tr>
-        </form>
 		<tr>
-		  <td class="list1_footer" colspan="$colspan" align="center">$foot</td>
+		  <td class="footer" colspan="$colspan" align="center">$foot</td>
 	  </tr>
 </table>
+        </form>
 </body>
 </html>
 <!--

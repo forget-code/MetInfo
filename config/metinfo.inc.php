@@ -11,4 +11,5 @@ $metadmin[imgnew]=1;
 $metadmin[imgcom]=1; 
 $metadmin[downloadnew]=1; 
 $metadmin[downloadcom]=1; 
+$metadmin[pagename]=1;
 ?>

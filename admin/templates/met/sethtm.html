@@ -7,49 +7,126 @@ echo <<<EOT
 <title>{$lang_indexhtmset}</title>
 </head>
 <body>
-        <form method="POST" name="myform" action="" target="_self">
-		<input name="action" type="hidden" value="modify">
-<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
-
-            <td colspan="3" align="center" class="list1_title">{$lang_indexhtmset}</td>
-   </tr>
-		   
-		  <tr> 
-            <td class="list1_text">{$lang_sethtmok}</td>
-            <td class="list1_input"><input name="met_webhtm" type="radio" value="0" $met_webhtm1[0]>{$lang_close}&nbsp;&nbsp;&nbsp;<input name="met_webhtm" type="radio" value="1" $met_webhtm1[1]>{$lang_setbasicTip3}&nbsp;&nbsp;&nbsp;  <input name="met_webhtm"  type="radio" value="2"  $met_webhtm1[2]>{$lang_sethtmall}&nbsp;&nbsp;<span> <font color="#FF0000">{$lang_setbasicTip4}</font></span></td>
-          </tr> 
-		   <tr> 
-            <td class="list1_text">{$lang_sethtmway}</td>
-            <td class="list1_input"><input name="met_htmway" type="radio" value="0" $met_htmway1[0]>{$lang_sethtmway1}&nbsp;&nbsp;&nbsp;<input name="met_htmway" type="radio" value="1" $met_htmway1[1]>{$lang_sethtmway2}&nbsp;&nbsp; <span> <font color="#FF0000">{$lang_sethtmway3}</font></span></td>
-          </tr>
-		  	<tr> 
-            <td class="list1_text">{$lang_sethtmtype}</td>
-            <td class="list1_input"><input name="met_htmtype" type="radio" value="htm" $met_htmtype1[0]>htm&nbsp;&nbsp;&nbsp;&nbsp;<input name="met_htmtype" type="radio" value="html" $met_htmtype1[1]>html&nbsp;&nbsp;&nbsp;  <span> <font color="#FF0000">{$lang_sethtmtypetext}</font></span></td>
-          </tr>
-	      <tr> 
-            <td class="list1_text">{$lang_sethtmpage}</td>
-            <td class="list1_input"><input name="met_htmpagename" type="radio" value="0" $met_htmpagename1[0]>{$lang_sethtmpage1}<br><input name="met_htmpagename" type="radio" value="1" $met_htmpagename1[1]>{$lang_sethtmpage2}<br><input name="met_htmpagename"  type="radio" value="2"  $met_htmpagename1[2]>{$lang_sethtmpage3}<br><span> <font color="#FF0000">{$lang_sethtmpage4}</font></span></td>
-          </tr>
-		  	      <tr> 
-            <td class="list1_text">{$lang_sethtmlist}</td>
-            <td class="list1_input"><input name="met_htmlistname" type="radio" value="0" $met_htmlistname1[0]>{$lang_sethtmlist1}<br><input name="met_htmlistname" type="radio" value="1" $met_htmlistname1[1]>{$lang_sethtmlist2}<br><span> <font color="#FF0000">{$lang_sethtmpage4}</font></span></td>
-          </tr>
-		     <tr> 
-            <td class="list1_text">{$lang_sethtmsitemap}</td>
-            <td class="list1_input">{$lang_sethtmsitemap1}<input name="met_sitemap_html" type="radio" value="0" $met_sitemap_html1[0]>{$lang_close}&nbsp;<input name="met_sitemap_html" type="radio" value="1" $met_sitemap_html1[1]>{$lang_sethtmsitemap2}&nbsp; <input name="met_sitemap_html" type="radio" value="2" $met_sitemap_html1[2]>{$lang_sethtmsitemap3}&nbsp;<br>
-	{$lang_sethtmsitemap4}<input name="met_sitemap_xml" type="radio" value="0" $met_sitemap_xml1[0]>{$lang_close}&nbsp;&nbsp;<input name="met_sitemap_xml" type="radio" value="1" $met_sitemap_xml1[1]>{$lang_open}&nbsp;<br>
-	{$lang_sethtmsitemap5}<input name="met_sitemap_max" type="text" size="5" value="$met_sitemap_max"><span> <font color="#FF0000">{$lang_sethtmsitemap6}</font></span>
-			</td>
-          </tr>
-	      <tr> 
-            <td class="list1_text"></td>
-	      <td class="list1_submit"><input type="submit" name="Submit" value="{$lang_Submit}" class="tj" style="*padding-top:2px; *height:22px;"><input type="reset" name="Submit" value="{$lang_Reset}" class="tj" style="*padding-top:2px; *height:22px;"></td>
-          </tr>
-        </form>
-		<tr>
-		  <td class="list1_footer" colspan="2" align="center">$foot</td>
-	  </tr>
+<!--
+EOT;
+$littr=25;
+require_once template('metlangs');
+echo <<<EOT
+-->
+        <form method="POST" name="myform" action="sethtm.php?lang=$lang" target="_self">
+		<input name="action" type="hidden" value="modify" />
+<table cellpadding="2" cellspacing="1" class="table">
+    <tr> 
+        <td class="text"><a href="javascript:;" class="tips"><img src="{$img_url}/botton/faq.png" /></a>&nbsp;{$lang_sethtmok}</td>
+        <td class="input">
+		    <input name="met_webhtm" type="radio" id="label1" value="0" {$met_webhtm1[0]} />
+			<label for="label1">{$lang_close}</label>&nbsp;&nbsp;
+			<input name="met_webhtm" type="radio" id="label2" value="1" {$met_webhtm1[1]} />
+			<label for="label2">{$lang_setbasicTip3}</label>&nbsp;&nbsp;
+			<input name="met_webhtm"  type="radio" id="label3" value="2" {$met_webhtm1[2]} />
+			<label for="label3">{$lang_sethtmall}</label>&nbsp;&nbsp;
+			<div class="tips-text none">{$lang_setbasicTip4}</div>
+		</td>
+        </tr> 
+	<tr> 
+        <td class="text"><a href="javascript:;" class="tips"><img src="{$img_url}/botton/faq.png" /></a>&nbsp;{$lang_sethtmway}</td>
+        <td class="input">
+		    <input name="met_htmway" type="radio" id="label4" value="0" {$met_htmway1[0]} />
+			<label for="label4">{$lang_sethtmway1}</label>&nbsp;&nbsp;
+			<input name="met_htmway" type="radio" id="label5" value="1" {$met_htmway1[1]} />
+			<label for="label5">{$lang_sethtmway2}</label>&nbsp;&nbsp;
+			<div class="tips-text none">{$lang_sethtmway3}</div>
+		</td>
+    </tr>
+	<tr> 
+        <td class="text"><a href="javascript:;" class="tips"><img src="{$img_url}/botton/faq.png" /></a>&nbsp;{$lang_sethtmtype}</td>
+        <td class="input">
+		    <input name="met_htmtype" type="radio" id="label6" value="htm" {$met_htmtype1[0]} />
+			<label for="label6">htm</label>&nbsp;&nbsp;
+			<input name="met_htmtype" type="radio" id="label7" value="html" {$met_htmtype1[1]} />
+			<label for="label7">html</label>&nbsp;&nbsp;
+			<div class="tips-text none">{$lang_sethtmtypetext}</div>
+		</td>
+    </tr>
+	<tr> 
+        <td class="text"><a href="javascript:;" class="tips"><img src="{$img_url}/botton/faq.png" /></a>&nbsp;{$lang_sethtmpage}</td>
+        <td class="input">
+		    <input name="met_htmpagename" type="radio" id="label8" value="0" {$met_htmpagename1[0]} />
+			<label for="label8">{$lang_sethtmpage1}</label><br/>
+			<input name="met_htmpagename" type="radio" id="label9" value="1" {$met_htmpagename1[1]} />
+			<label for="label9">{$lang_sethtmpage2}</label><br/>
+			<input name="met_htmpagename"  type="radio" id="label10" value="2"  {$met_htmpagename1[2]} />
+			<label for="label10">{$lang_sethtmpage3}</label><br/>
+			<div class="tips-text none">{$lang_sethtmpage4}</div>
+		</td>
+    </tr>
+	<tr> 
+        <td class="text"><a href="javascript:;" class="tips"><img src="{$img_url}/botton/faq.png" /></a>&nbsp;{$lang_rewrite}</td>
+        <td class="input">
+		<span class="red">{$lang_rewriteok}<a href="http://www.metinfo.cn/faq/rewrite.htm" target="_blank" title="{$lang_rewritefaq}">{$lang_rewritefaq}</a></span><br/>
+		    <input name="met_pseudo" type="radio" value="0" id="label18" {$met_pseudo1[0]} />
+			<label for="label18">{$lang_close}</label>&nbsp;&nbsp;
+			<input name="met_pseudo" type="radio" value="1" id="label19" {$met_pseudo1[1]} />
+			<label for="label19">{$lang_open}</label><br/>
+		    <span class="tips">
+			{$lang_rewritefinfo1}
+			<a href="../../index-$lang.html" target="_blank">index-$lang.html</a>
+			</span>
+	        <div class="tips-text">{$lang_rewritefinfo2}</div>
+		</td>
+    </tr>
+	<tr> 
+        <td class="text"><a href="javascript:;" class="tips"><img src="{$img_url}/botton/faq.png" /></a>&nbsp;{$lang_sethtmlist}</td>
+        <td class="input">
+		    <input name="met_htmlistname" type="radio" value="0" id="label11" {$met_htmlistname1[0]} />
+			<label for="label11">{$lang_sethtmlist1}</label><br/>
+			<input name="met_htmlistname" type="radio" value="1" id="label12" {$met_htmlistname1[1]} />
+			<label for="label12">{$lang_sethtmlist2}</label><br/>
+			<div class="tips-text none">{$lang_sethtmpage4}</div>
+		</td>
+    </tr>
+	<tr>
+		<td class="text"><a href="javascript:;" class="tips"><img src="{$img_url}/botton/faq.png" /></a>&nbsp;{$lang_htmdabao}</td>
+		<td class="input">
+			<input type="radio" class="radio" name="met_htmpack" value="0" id="label20" {$met_htmpacks[0]} /><label for="label20">{$lang_close}</label>&nbsp;&nbsp;
+			<input type="radio" class="radio" name="met_htmpack" value="1" id="label21" {$met_htmpacks[1]} /><label for="label21">{$lang_open}</label>
+			<div>
+			<span class="tips">{$lang_htmdabaourl}：$webml</span>
+			<input type="text" class="anytext med" name="met_htmpack_url" value="{$met_htmpack_url}" />&nbsp;<span class="tips">{$lang_htmdabaoinfo1}：$webml{$webmp}</span>
+			<div class="tips-text">{$lang_htmdabaoinfo2}</div>
+			</div>
+		</td>
+	</tr>
+	<tr> 
+        <td class="text">{$lang_sethtmsitemap}</td>
+        <td class="input">
+            <p class="blues">{$lang_sethtmsitemap1}</p>
+			&nbsp;&nbsp;<input name="met_sitemap_html" type="radio" id="label13" value="0" {$met_sitemap_html1[0]} />
+			<label for="label13">{$lang_close}</label>&nbsp;&nbsp;
+			<input name="met_sitemap_html" type="radio" id="label14" value="1" {$met_sitemap_html1[1]} />
+			<label for="label14">{$lang_sethtmsitemap2}</label>&nbsp;&nbsp;
+			<input name="met_sitemap_html" type="radio" id="label15" value="2" {$met_sitemap_html1[2]} />
+			<label for="label15">{$lang_sethtmsitemap3}</label><br/>
+            <p class="blues">{$lang_sethtmsitemap4}</p>
+			&nbsp;&nbsp;<input name="met_sitemap_xml" type="radio" id="label16" value="0" {$met_sitemap_xml1[0]} />
+			<label for="label16">{$lang_close}</label>&nbsp;&nbsp;
+			<input name="met_sitemap_xml" type="radio" id="label17" value="1" {$met_sitemap_xml1[1]} />
+			<label for="label17">{$lang_open}</label><br/>
+	        <label>{$lang_sethtmsitemap5}</label>
+			<input name="met_sitemap_max" type="text" class="anytext mid" value="{$met_sitemap_max}" />
+			<span class="tips">{$lang_sethtmsitemap6}</span>
+		</td>
+    </tr>
+	<tr> 
+        <td class="text"></td>
+	    <td class="submit">
+		    <input type="submit" name="Submit" value="{$lang_Submit}" class="submit" onclick="return Smit($(this),'myform')" />
+			<input type="reset" class="reset" name="Submit" value="{$lang_Reset}" />
+		</td>
+    </tr>
 </table>
+</form>
+<div class="footer">$foot</div>
 </body>
 </html>
 <!--

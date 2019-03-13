@@ -62,6 +62,7 @@ switch ($action)
 		'../sitemap',
 		'../link',
 		'../member',
+		'../wap',
 		'../upload',
 		'../config',
 		'../config/config_db.php',
@@ -157,7 +158,7 @@ switch ($action)
                       admin_id           = '$regname',
                       admin_pass         = '$regpwd',
 					  admin_introduction = '创始人',
-				      admin_type         = 'metinfo',
+				      admin_type         = 'cn-metinfo,en-metinfo',
 					  admin_email        = '$email',
 					  admin_register_date= '$m_now_date',
 					  usertype        	 = '3',
@@ -207,6 +208,7 @@ $config_save .=  "$"."met_admin_type='cn';\n";
 $config_save .=  "$"."met_admin_type_ok='1';\n";
 $config_save .=  "$"."met_url_type='0';\n";
 $config_save .=  "$"."met_lang_mark='1';\n";
+$config_save .=  "$"."met_lang_editor='1';\n";
 $config_save .=  "$"."met_langok=array();\n";
 if($cndata=="yes")$config_save .="$"."met_langok[cn]=array(name=>'简体中文',useok=>'1',order=>'1',mark=>'cn',flag=>'',link=>'',newwindows=>'');\n";
 if($endata=="yes")$config_save .="$"."met_langok[en]=array(name=>'English',useok=>'1',order=>'2',mark=>'en',flag=>'',link=>'',newwindows=>'');\n";
@@ -231,6 +233,13 @@ if(!is_writable("../config/lang.inc.php"))@chmod('../config/lang.inc.php',0777);
  fputs($fp, $config_save);
  fclose($fp);
  }
+require_once '../config/tablepre.php';
+require_once '../include/mysql_class.php';
+$db = new dbmysql();
+$db->dbconn($con_db_host,$con_db_id,$con_db_pass,$con_db_name);
+require_once '../include/cache.func.php';
+cache_all('cn');
+cache_all('en');
 			include template('finished');
 		}else {
 		include template('adminsetup');

@@ -7,56 +7,68 @@ echo <<<EOT
 <title>{$lang_indexsetHomeSet}</title>
 </head>
 <body>
-<form method="POST" name="myform"  action="index_set.php?action=modify" target="_self">
-		<input name="lang" type="hidden" value="$lang">
-<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
-         <tr> 
-            <td colspan="3" align="center" class="list1_title">{$lang_indexsetHomeSet}</td>
-          </tr>
+<!--
+EOT;
+$littr=14;
+require_once template('metlangs');
+echo <<<EOT
+-->
+    <form method="POST" name="myform" action="index_set.php?lang=$lang" target="_self">
+	<input name="action" type="hidden" value="modify" />	
+<table cellpadding="2" cellspacing="1" class="table">
+        <tr class="none"> 
+            <td colspan="3" class="title">{$lang_indexsetHomeSet}</td>
+        </tr>
 		  <tr> 
-            <td class="list1_text"><b>{$lang_indexsetOnline}</b></td>
-            <td class="list1_input"><input name="index_online_type" type="radio" value="1" $online_type1[1] >{$lang_open} <input name="index_online_type" type="radio" value="0" $online_type1[0]>{$lang_close} </td></tr>
-			 <tr> 
-            <td class="list1_text"><b>{$lang_mod2}{$lang_indexsetnum}</b></td>
-            <td class="list1_input"><input name="index_news_no" type="text" size="4" value="$index_news_no">{$lang_item}</td></tr>
+            <td class="text">{$lang_indexsetOnline}</td>
+            <td class="input"><input name="index_online_type" type="radio" class="radio" id="label1" value="1" {$online_type1[1]} ><label for="label1">{$lang_open}</label>&nbsp;&nbsp;<input name="index_online_type" type="radio" value="0" class="radio" id="label2" {$online_type1[0]}><label for="label2">{$lang_close}</label></td></tr>
 			<tr> 
-            <td class="list1_text"><b>{$lang_mod3}{$lang_indexsetnum}</b></td>
-            <td class="list1_input"><input name="index_product_no" type="text" size="4" value="$index_product_no">{$lang_item}</td></tr>
+            <td class="text">{$lang_mod2}{$lang_indexsetnum}</td>
+            <td class="input"><input name="index_news_no" type="text" class="text mid" value="$index_news_no"><span class="tips">{$lang_item}</span></td>
+			</tr>
 			<tr> 
-            <td class="list1_text"><b>{$lang_mod5}{$lang_indexsetnum}</b></td>
-            <td class="list1_input"><input name="index_img_no" type="text" size="4" value="$index_img_no">{$lang_item}</td></tr>
+            <td class="text">{$lang_mod3}{$lang_indexsetnum}</td>
+            <td class="input"><input name="index_product_no" type="text" class="text mid" value="$index_product_no"><span class="tips">{$lang_item}</span></td></tr>
 			<tr> 
-            <td class="list1_text"><b>{$lang_mod4}{$lang_indexsetnum}</b></td>
-            <td class="list1_input"><input name="index_download_no" type="text" size="4" value="$index_download_no">{$lang_item}</td></tr>
+            <td class="text">{$lang_mod5}{$lang_indexsetnum}</td>
+            <td class="input"><input name="index_img_no" type="text" class="text mid" value="$index_img_no"><span class="tips">{$lang_item}</span></td></tr>
 			<tr> 
-            <td class="list1_text"><b>{$lang_mod6}{$lang_indexsetnum}</b></td>
-            <td class="list1_input"><input name="index_job_no" type="text" size="4" value="$index_job_no">{$lang_item}</td></tr>
+            <td class="text">{$lang_mod4}{$lang_indexsetnum}</td>
+            <td class="input"><input name="index_download_no" type="text" class="text mid" value="$index_download_no"><span class="tips">{$lang_item}</span></td></tr>
 			<tr> 
-            <td class="list1_text"><b>{$lang_indexsetFriendly}</b></td>
-            <td class="list1_input"><input name="index_link_ok" type="radio" value="1" $link_ok1[1] >{$lang_open} <input name="index_link_ok" type="radio" value="0" $link_ok1[0]>{$lang_close} </td></tr>
+            <td class="text">{$lang_mod6}{$lang_indexsetnum}</td>
+            <td class="input"><input name="index_job_no" type="text" class="text mid" value="$index_job_no"><span class="tips">{$lang_item}</span></td></tr>
+			<tr> 
+            <td class="text">{$lang_indexsetFriendly}</td>
+            <td class="input"><input name="index_link_ok" type="radio" class="radio" id="label3" value="1" {$link_ok1[1]} ><label for="label3">{$lang_open}</label>&nbsp;&nbsp;<input name="index_link_ok" type="radio" class="radio" id="label4" value="0" {$link_ok1[0]}><label for="label4">{$lang_close}</label></td></tr>
             <tr> 
-            <td class="list1_text"><b>{$lang_indexsetImgLink}</b></td>
-            <td class="list1_input"><input name="index_link_img" type="text" size="4" value="$index_link_img">{$lang_item}</td></tr>
+            <td class="text">{$lang_indexsetImgLink}</td>
+            <td class="input"><input name="index_link_img" type="text" class="text mid" value="$index_link_img"><span class="tips">{$lang_item}</span></td></tr>
 			<tr> 
-            <td class="list1_text"><b>{$lang_indexsetWordLink}</b></td>
-            <td class="list1_input"><input name="index_link_text" type="text" size="4" value="$index_link_text">{$lang_item}</td>
+            <td class="text">{$lang_indexsetWordLink}</td>
+            <td class="input"><input name="index_link_text" type="text" class="text mid" value="$index_link_text"><span class="tips">{$lang_item}</span></td>
 			</tr>
 <!--
 EOT;
-if(count($indexpage)){
+if(count($indexpages)){
 echo <<<EOT
 -->
 			<tr> 
-            <td class="list1_text"><b>{$lang_indexsetskin}</b></td>
-            <td class="list1_input">
+            <td class="text">{$lang_indexsetskin}</td>
+            <td class="input">
 			<ul class="indexskin">
 <!--
 EOT;
-foreach($indexpage as $key=>$val){
-if($met_indexskin==$val[1])$skinok="checked='checked'";
+$h=0;
+foreach($indexpages as $key=>$vall){
+if($met_indexskin==$vall[1])$skinok="checked='checked'";
+$h++;
 echo <<<EOT
 -->
-<li style="width:100%; height:auto; margin:10px 0px 5px 0px; border-bottom:1px solid #F2F2F2; float:left;"><img style="float:left; margin:5px; border:1px solid #E7E7E7;" src="../../templates/{$met_skin_user}/{$val[3]}" width="100" height="100"><span style="display:block; float:left; margin:0px 0px 0px 10px;"><input name="met_indexskin" type="radio" value="$val[1]" $skinok ><b>$val[0]</b><br>$val[2]</span></li>
+<input name="met_indexskin" type="radio" class="radio" id="label-$h" value="$vall[1]" $skinok ><label for="label-$h">$vall[0]</label>
+<a href="javascript:;" class="showimga">预览</a>
+<div class="showimg none" style="position: absolute;"><img width="280" height="300" src="../../templates/{$met_skin_user}/{$vall[3]}"></div>
+<p style="padding-left:17px; margin-bottom:5px;">$vall[2]</p>
 <!--
 EOT;
 $skinok='';
@@ -72,14 +84,16 @@ EOT;
 }
 echo <<<EOT
 -->		  
-<tr><td class="list1_text"></td>
-	      <td class="list1_submit"><input type="submit" name="Submit" value="{$lang_Submit}" class="tj"><input type="reset" name="Submit" value="{$lang_Reset}" class="tj"> </td>
-          </tr>
-        </form>
 		<tr>
-		  <td class="list1_footer" colspan="2" align="center">$foot</td>
-	  </tr>
+			<td class="text"></td>
+			<td class="submit">
+				<input type="submit" name="Submit" value="{$lang_Submit}" class="submit" onclick="return Smit($(this),'myform')">
+				<input type="reset" name="Submit" value="{$lang_Reset}" class="reset"> 
+			</td>
+        </tr>
 </table>
+</form>
+<div class="footer">$foot</div>
 </body>
 </html>
 <!--

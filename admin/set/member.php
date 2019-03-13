@@ -4,11 +4,10 @@
 require_once '../login/login_check.php';
 if($action=="modify"){
 if($met_member_force==""){
-okinfo('member.php?lang='.$lang,$lang_jsok);
+okinfox('member.php?lang='.$lang);
 }else{
 $met_memberforce=md5($met_member_force);
 }
-
 require_once 'configsave.php';
 if(!$met_member_use){
 $query = "update $met_column SET nav='0' where module=10 and lang='$lang'";
@@ -20,7 +19,7 @@ $query = "update $met_column SET nav='2' where module=10 and lang='$lang'";
 $db->query($query);
 }
 }
-okinfo('member.php?lang='.$lang,$lang_jsok);
+okinfo('member.php?lang='.$lang);
 }
 else{
 $met_member_use1[$met_member_use]="checked='checked'";

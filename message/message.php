@@ -1,6 +1,6 @@
 <?php
 # MetInfo Enterprise Content Management System 
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 require_once '../include/common.inc.php';
 $settings = parse_ini_file('config_'.$lang.'.inc.php');
 @extract($settings);
@@ -11,7 +11,7 @@ $class1=$message_column[id];
 require_once '../include/head.php';
 	$class1_info=$class_list[$class1][releclass]?$class_list[$class_list[$class1][releclass]]:$class_list[$class1];
 	$class2_info=$class_list[$class1][releclass]?$class_list[$class1]:$class_list[$class2];
-$navtitle=$message_column[name];
+$navtitle=$message_column['name'];
 if($action=="add"){
 $addtime=$m_now_date;
 $ipok=$db->get_one("select * from $met_message where ip='$ip' order by addtime desc");
@@ -19,11 +19,16 @@ $time1 = strtotime($ipok[addtime]);
 $time2 = strtotime($m_now_date);
 $timeok= (float)($time2-$time1);
 if($timeok<=$met_fd_time){
-
 $fd_time="{$lang_Feedback1} ".$met_fd_time." {$lang_Feedback2}";
-
 okinfo('javascript:history.back();',$fd_time);
 }
+
+/*bd*/
+$pname=strip_tags($pname);
+$email=strip_tags($email);
+$tel=strip_tags($tel);
+$contact=strip_tags($contact);
+/*bd*/
 
 $fdstr = $met_fd_word; 
 $fdarray=explode("|",$fdstr);
@@ -77,11 +82,13 @@ $query = "INSERT INTO $met_message SET
 					  customerid 		 = '$customerid',
 					  info               = '$info'";
          $db->query($query);
-$returnurl=($met_webhtm==2)?($met_htmlistname?"message_list_1":"index_list_1").$met_htmtype:"index.php?lang=".$lang;
+		 $fname=$db->get_one("select * from $met_column where module='7' and lang='$lang'");
+		 $met_ahtmtype = $fname['filename']<>''?$met_chtmtype:$met_htmtype;
+		 $msfilename=$fname['filename']<>''?$fname['filename'].'_1':($met_htmlistname?"message_list_1":"index_list_1");
+$returnurl=$met_pseudo?'index-'.$lang.'.html':($met_webhtm==2?$msfilename.$met_ahtmtype:"index.php?lang=".$lang);
 okinfo($returnurl,"{$lang_MessageInfo2}");
 
-}
-else{
+}else{
 
 
 $fdjs="<script language='javascript'>";
@@ -105,9 +112,9 @@ $class_info[name]=$class2_info[name]."--".$class1_info[name];
 }
      $show[description]=$class_info[description]?$class_info[description]:$met_keywords;
      $show[keywords]=$class_info[keywords]?$class_info[keywords]:$met_keywords;
-	 $met_title=$navtitle."--".$met_title;
+	 $met_title=$met_title?$navtitle.'-'.$met_title:$navtitle;
 	 
-$message[listurl]=($met_webhtm==2)?($met_htmlistname?"message_list_1":"index_list_1").$met_htmtype:"index.php?lang=".$lang;
+$message[listurl]=$met_pseudo?'index-'.$lang.'.html':(($met_webhtm==2)?($met_htmlistname?"message_list_1":"index_list_1").$met_htmtype:"index.php?lang=".$lang);
 if(count($nav_list2[$message_column[id]])){
 $k=count($nav_list2[$class1]);
 $nav_list2[$class1][$k]=$class1_info;
@@ -122,34 +129,35 @@ $k=count($nav_list2[$class1]);
    $nav_list2[$class1][1][name]=$lang_messageview;
    }
 }	 
+
 require_once '../public/php/methtml.inc.php';
 $methtml_message.=$fdjs;
 $methtml_message.="<form method='POST' name='myform' onSubmit='return Checkmessage();' action='message.php?action=add' target='_self'>\n";
 $methtml_message.="<table width='90%' cellpadding='2' cellspacing='1' bgcolor='#F2F2F2' align='center' class='message_table'>\n";
 $methtml_message.="<tr class='message_tr'>\n";
 $methtml_message.="<td width='20%' height='25' align='right' bgcolor='#FFFFFF' class='message_td1'>".$lang_Name."&nbsp;</td>\n";
-$methtml_message.="<td width='70%' bgcolor='#FFFFFF' class='message_input'><input name='pname' type='text' size='30' /></td>\n";
-$methtml_message.="<td bgcolor='#FFFFFF' style='color:#990000' class='message_info'>*</td>\n";
+$methtml_message.="<td width='70%' bgcolor='#FFFFFF' class='message_input'><input name='pname' type='text' size='30' />\n";
+$methtml_message.="<span class='message_info'>*</span></td>\n";
 $methtml_message.="</tr>\n";
 $methtml_message.="<tr class='message_tr'>\n";
 $methtml_message.="<td align='right' bgcolor='#FFFFFF' class='message_td1'>".$lang_Phone."&nbsp;</td>\n";
-$methtml_message.="<td bgcolor='#FFFFFF' class='message_input'><input name='tel' type='text' size='30' /></td>\n";
-$methtml_message.="<td bgcolor='#FFFFFF' style='color:#990000' class='message_info'></td>\n";
+$methtml_message.="<td bgcolor='#FFFFFF' class='message_input'><input name='tel' type='text' size='30' />\n";
+$methtml_message.="</td>\n";
 $methtml_message.="</tr>\n";
 $methtml_message.="<tr class='message_tr'>\n";
 $methtml_message.="<td align='right' bgcolor='#FFFFFF' class='message_td1'>".$lang_Email."&nbsp;</td>\n";
-$methtml_message.="<td bgcolor='#FFFFFF' class='message_input'><input name='email' type='text' size='30' /></td>\n";
-$methtml_message.="<td bgcolor='#FFFFFF' style='color:#990000' class='message_info'></td>\n";
+$methtml_message.="<td bgcolor='#FFFFFF' class='message_input'><input name='email' type='text' size='30' />\n";
+$methtml_message.="</td>\n";
 $methtml_message.="</tr>\n";
 $methtml_message.="<tr class='message_tr'>\n";
 $methtml_message.="<td align='right' bgcolor='#FFFFFF' class='message_td1'>".$lang_OtherContact."&nbsp;</td>\n";
-$methtml_message.="<td bgcolor='#FFFFFF' class='message_input'><input name='contact' type='text' size='30' />".$lang_Info5."</td>\n";
-$methtml_message.="<td bgcolor='#FFFFFF' style='color:#990000' class='message_info'></td>\n";
+$methtml_message.="<td bgcolor='#FFFFFF' class='message_input'><input name='contact' type='text' size='30' />".$lang_Info5."\n";
+$methtml_message.="</td>\n";
 $methtml_message.="</tr>\n";
 $methtml_message.="<tr class='message_tr'>\n";
 $methtml_message.="<td align='right' bgcolor='#FFFFFF' class='message_td1'>".$lang_SubmitContent."&nbsp;</td>\n";
-$methtml_message.="<td bgcolor='#FFFFFF' class='message_text'><textarea name='info' cols='50' rows='6'></textarea></td>\n";
-$methtml_message.="<td bgcolor='#FFFFFF' style='color:#990000' class='message_info'>*</td>\n";
+$methtml_message.="<td bgcolor='#FFFFFF' class='message_text'><textarea name='info' cols='50' rows='6'></textarea>\n";
+$methtml_message.="<span class='message_info'>*</span></td>\n";
 $methtml_message.="</tr>\n";
 $methtml_message.="<tr class='message_tr'><td colspan='3' bgcolor='#FFFFFF' class='message_submint' align='center'>\n";
 $methtml_message.="<input type='hidden' name='fromurl' value='".$fromurl."' />\n";
@@ -163,6 +171,7 @@ $methtml_message.="</form>\n";
 include template('message');
 footer();
 }
+
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

@@ -5,7 +5,7 @@ require_once '../login/login_check.php';
 
 $admin_list = $db->get_one("SELECT * FROM $met_admin_table WHERE id='$id'");
 if(!$admin_list){
-okinfo('index.php?lang='.$lang,$lang_dataerror);
+okinfox('../member/index.php?lang='.$lang,$lang_dataerror);
 }
 switch($admin_list['usertype'])
 {

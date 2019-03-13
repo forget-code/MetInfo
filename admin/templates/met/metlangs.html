@@ -1,0 +1,64 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved..
+echo <<<EOT
+-->
+<!--
+EOT;
+if($met_lang_editor){
+echo <<<EOT
+-->
+<div id="languge">
+	<ul id="langlist">
+<!--
+EOT;
+foreach($met_langok as $key=>$val){
+$metok = '';
+if($val['mark']==$lang)$metok = 'class="onlang"';
+if($langadminok=="metinfo" or (strstr($langadminok,"-".$val[mark]."-"))){
+echo <<<EOT
+-->
+        <li $metok><a class="lang" href="?lang=$val[mark]" onclick="return duolang('$val[mark]');" title="$val[name]">$val[name]</a></li>
+<!--
+EOT;
+}}
+echo <<<EOT
+-->
+        <div class="clear"></div>
+    </ul>
+</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<script type="text/javascript">
+$(document).ready(function()
+	{
+		$("form :input").change(function ()
+		{
+			$('form').data('changed',true);
+		});
+	}
+	);
+function duolang(lang){
+	if($('form').data('changed')){
+		if(!confirm(user_msg['js10']))return false;
+		else{
+			langCookie(lang); 
+		}
+	}else{
+		langCookie(lang); 
+	}
+}
+function langCookie(lang){
+	parent.$.cookie('langget',null);
+    parent.$.cookie('langget', $littr);
+	parent.location.href='../index.php?lang='+lang;
+}
+</script>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved..
+?>

@@ -6,6 +6,7 @@ echo <<<EOT
 -->
 <title>{$lang_editinfo}</title>
 </head>
+$listjs
 <body>
 <form  method="POST" name="myform" onSubmit="return Checkdownload();" action="save.php?action=$action" target="_self">
 		<input name="class1" type="hidden" value="$class1">
@@ -13,13 +14,13 @@ echo <<<EOT
 		<input name="lang" type="hidden"   value="$lang">
 		<input name="filenameold" type="hidden"  value="$download_list[filename]">
 		<input name="updatetimeold" type="hidden"  value="$download_list[updatetime]">
-<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
+<table cellpadding="2" cellspacing="1" class="table">
           <tr> 
-            <td colspan="3" align="center" class="list1_title">{$lang_editinfo}</td>
+            <td colspan="3" class="title">{$lang_editinfo}</td>
           </tr>		  
 		  <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_columnname}</b></td>
-            <td colspan="2" class="list1_input">
+            <td class="text"><font class="must">*</font>{$lang_columnname}</td>
+            <td colspan="2" class="input">
 <!--
 EOT;
 if(count($met_class22[$class1])){
@@ -60,7 +61,7 @@ EOT;
 }else{
 echo <<<EOT
 -->		 
-		 <font color="#FF0000">{$met_class[$class1][name]}</font>
+		 <font color="#f00">{$met_class[$class1][name]}</font>
 <!--
 EOT;
 }
@@ -75,15 +76,15 @@ echo <<<EOT
 -->		  
 
 		  <tr> 
-            <td class="list1_text"><b>{$lang_webaccess}</b></td>
-            <td class="list1_input" colspan="2" ><select name="access" id="access" >
+            <td class="text">{$lang_webaccess}</td>
+            <td class="input" colspan="2"><select name="access" id="access" >
              $level
             </select></td>
           </tr>
 		 
 		  <tr> 
-            <td class="list1_text"><b>{$lang_downloadaccess}</b></td>
-            <td class="list1_input" colspan="2" ><select name="downloadaccess" id="downloadaccess" >
+            <td class="text">{$lang_downloadaccess}</td>
+            <td class="input" colspan="2" ><select name="downloadaccess" id="downloadaccess" >
              $leve2
             </select></td>
           </tr>
@@ -93,17 +94,17 @@ EOT;
 echo <<<EOT
 -->	
 		  <tr> 
-            <td class="list1_text"><b>{$lang_top}</b></td>
-            <td colspan="2" class="list1_input"><input name="top_ok" type="checkbox" value="1" $top_ok>{$lang_modtopinfo}</td>
+            <td class="text">{$lang_top}</td>
+            <td colspan="2" class="input"><input name="top_ok" type="checkbox" class="checkbox" value="1" $top_ok>{$lang_modtopinfo}</td>
           </tr>  
 		  <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_downloadurl}</b></td>
-            <td colspan="2" class="list1_input"> <input name="downloadurl" type="text" class="input" size="30" maxlength="200" value="$download_list[downloadurl]"> 
-			<iframe style="padding-top:0px;" ID="UploadFiles" src="../include/upload_file.php?lang=$lang" frameborder=0 scrolling=no width="360" height="25"></iframe></td>
+            <td class="text"><font class="must">*</font>{$lang_downloadurl}</td>
+            <td colspan="2" class="input upload"> <input name="downloadurl" type="text" class="text" value="$download_list[downloadurl]"> 
+			<iframe ID="UploadFiles" src="../include/upload_file.php?lang=$lang" frameborder=0 scrolling=no></iframe></td>
           </tr> 
 			<tr> 
-            <td class="list1_text"><b>{$lang_downloadsize}</b></td>
-            <td colspan="2" class="list1_input"><input name="filesize" type="text" class="input" size="10" maxlength="200" value="$download_list[filesize]">K</td>
+            <td class="text">{$lang_downloadsize}</td>
+            <td colspan="2" class="input"><input name="filesize" type="text" class="text mid" value="$download_list[filesize]">KB</td>
           </tr>
 <!--
 EOT;
@@ -111,8 +112,8 @@ if($metadmin[downloadnew]){
 echo <<<EOT
 -->
 		  <tr> 
-            <td class="list1_text"><b>{$lang_new}</b></td>
-            <td colspan="2" class="list1_input"><input name="new_ok" type="checkbox" value="1"  $new_ok>{$lang_modcontentnew}</td>
+            <td class="text">{$lang_new}</td>
+            <td colspan="2" class="input"><input name="new_ok" type="checkbox" class="checkbox" value="1"  $new_ok>{$lang_modcontentnew}</td>
           </tr> 
 <!--
 EOT;
@@ -121,40 +122,58 @@ if($metadmin[downloadcom]){
 echo <<<EOT
 -->	
 		 <tr> 
-            <td class="list1_text"><b>{$lang_recom}</b></td>
-            <td colspan="2" class="list1_input"><input name="com_ok" type="checkbox" value="1" $com_ok>{$lang_modcontentcom}</td>
+            <td class="text">{$lang_recom}</td>
+            <td colspan="2" class="input"><input name="com_ok" type="checkbox" class="checkbox" value="1" $com_ok>{$lang_modcontentcom}</td>
           </tr> 
 <!--
 EOT;
 }
 echo <<<EOT
 -->	
+<!--
+EOT;
+if($met_wap && $met_wap_ok){
+echo <<<EOT
+-->	
+		<tr> 
+            <td class="text">WAP</td>
+            <td colspan="2" class="input">
+				<input name="wap_ok" type="checkbox" class="checkbox" id="label4" value="1" $wap_ok>
+				<label for="label4">{$lang_wapcontentcom}</label>
+			</td>
+        </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->	
 		  <tr> 
-            <td class="list1_text"><b>{$lang_modpublish}</b></td>
-            <td colspan="2" class="list1_input"><input name="issue" type="text" class="input" size="10"  value="$download_list[issue]"></td>
+            <td class="text">{$lang_modpublish}</td>
+            <td colspan="2" class="input"><input name="issue" type="text" class="text mid" value="$download_list[issue]"></td>
           </tr>
 		  <tr> 
-            <td class="list1_text"><b>{$lang_hits}</b></td>
-            <td colspan="2" class="list1_input"><input name="hits" type="text" class="input" size="10"  value="$download_list[hits]"> {$lang_modhits}</td>
-          </tr>
-		  <tr> 
-            <td class="list1_text"><b>{$lang_addtime}</b></td>
-            <td colspan="2" class="list1_input"><input name="addtime" type="text" class="input" size="20"  value="$download_list[addtime]">{$lang_modtimenow}$m_now_date {$lang_modtimenow1}</td>
-          </tr>
-		  <tr> 
-            <td class="list1_text"><b>{$lang_updatetime}</b></td>
-            <td colspan="2" class="list1_input"><input name="updatetime" type="text" class="input" size="20"  value="$m_now_date">{$lang_modtimenow}$m_now_date {$lang_modtimenow1}</td>
+            <td class="text">{$lang_hits}</td>
+            <td colspan="2" class="input"><input name="hits" type="text" class="text mid" value="$download_list[hits]"> {$lang_modhits}</td>
           </tr>
 		   <tr> 
-            <td class="list1_text"><b>{$lang_hits}</b></td>
-            <td colspan="2" class="list1_input">{$lang_modorderinfo}</td>
+            <td class="text">{$lang_sort}</td>
+            <td colspan="2" class="input"><input type="text" name="no_order" class="text mid" value="$download_list[no_order]" />
+			<span class="tips">{$lang_ordernumber}</span></td>
           </tr>
 		  <tr> 
-				<td colspan="3" align="center" class="list1_title"><b>{$lang_content}</b></td>
+            <td class="text">{$lang_addtime}</td>
+            <td colspan="2" class="input"><input name="addtime" type="text" class="text" style="width:120px;" value="$download_list[addtime]">{$lang_modtimenow}$m_now_date {$lang_modtimenow1}</td>
+          </tr>
+		  <tr> 
+            <td class="text">{$lang_updatetime}</td>
+            <td colspan="2" class="input"><input name="updatetime" type="text" class="text" style="width:120px;" value="$m_now_date">{$lang_modtimenow}$m_now_date {$lang_modtimenow1}</td>
+          </tr>
+		  <tr> 
+				<td colspan="3" class="title">{$lang_content}</td>
 		  </tr>
 		  <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_title}</b></td>
-            <td colspan="2" class="list1_input"> <input name="title" type="text" class="input" size="50"  value="$download_list[title]"></td>
+            <td class="text"><font class="must">*</font>{$lang_title}</td>
+            <td colspan="2" class="input"> <input name="title" type="text" class="text" value="$download_list[title]"></td>
           </tr>
 <!--
 EOT;
@@ -167,8 +186,8 @@ case 1:
 echo <<<EOT
 -->
          <tr> 
-            <td class="list1_text">$wrok<b>$val[name]</b></td>
-			 <td colspan="2" class="list1_input"><input name="para$val[id]" type="text" class="input" size="50" value="$download_list[$para]"></td>
+            <td class="text">$wrok$val[name]</td>
+			 <td colspan="2" class="input"><input name="para$val[id]" type="text" class="text" value="$download_list[$para]"></td>
         </tr>
 <!--
 EOT;
@@ -185,8 +204,8 @@ $tmp=$tmp."</select>";
 echo <<<EOT
 -->
          <tr> 
-            <td class="list1_text">$wrok<b>$val[name]</b></td>
-            <td colspan="2" class="list1_input">$tmp</td>
+            <td class="text">$wrok$val[name]</td>
+            <td colspan="2" class="input">$tmp</td>
           </tr>
 <!--
 EOT;
@@ -195,8 +214,8 @@ case 3:
 echo <<<EOT
 -->
          <tr> 
-            <td class="list1_text">$wrok<b>$val[name]</b></td>
-            <td colspan="2" class="list1_input"><textarea name="para$val[id]" cols="60" rows="5">$download_list[$para]</textarea></td>
+            <td class="text">$wrok$val[name]</td>
+            <td colspan="2" class="input"><textarea name="para$val[id]" class="textarea gen" cols="60" rows="5">$download_list[$para]</textarea></td>
           </tr>
 <!--
 EOT;
@@ -209,13 +228,13 @@ foreach($paravalue[$val[id]] as $key=>$val1){
 $checked='';
 $i++;
 if(strstr($nowinfo, "-".$val1[info]."-")) $checked="checked='checked'";
-$tmp1=$tmp1."<input name='para$val[id]_$i' type='checkbox' value='$val1[info]' $checked>$val1[info]  ";
+$tmp1=$tmp1."<input name='para$val[id]_$i' type='checkbox' class='text' value='$val1[info]' $checked>$val1[info]  ";
 }
 echo <<<EOT
 -->
          <tr> 
-            <td class="list1_text">$wrok<b>$val[name]</b></td>
-            <td colspan="2" class="list1_input">$tmp1</td>
+            <td class="text">$wrok$val[name]</td>
+            <td colspan="2" class="input">$tmp1</td>
           </tr>
 
 <!--
@@ -226,11 +245,11 @@ $paraname=$para."name";
 echo <<<EOT
 -->
          <tr> 
-            <td class="list1_text">$wrok<b>$val[name]</b></td>
-            <td colspan="2" class="list1_input">
-			<input name="para{$val[id]}name" type="text" class="input" size="30"  value="$download_list[$paraname]">{$lang_imagename} <br>
-			<input name="para$val[id]" type="text" class="input" size="30"  value="$download_list[$para]">
-			<iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_photo.php?returnid=para$val[id]&flash=flash&met_arrayimg=1&lang=$lang" frameborder=0 scrolling=no width="340" height="25"></iframe>
+            <td class="text">$wrok$val[name]</td>
+            <td colspan="2" class="input upload">
+			<div style="height:30px;"><input name="para{$val[id]}name" type="text" class="text med" value="$download_list[$paraname]">{$lang_imagename}</div>
+			<input name="para$val[id]" type="text" class="text" value="$download_list[$para]">
+			<iframe id="UploadFiles" src="../include/upload_photo.php?returnid=para$val[id]&flash=flash&met_arrayimg=1&lang=$lang" frameborder=0 scrolling=no ></iframe>
 			
 			</td>
           </tr>
@@ -245,13 +264,13 @@ $checked='';
 $i++;
 if($action=="add" && $i==1)$checked="checked='checked'";
 if($download_list["$para"]==$val2['info']) $checked="checked='checked'";
-$tmp2=$tmp2."<input name='para$val[id]' type='radio' value='$val2[info]' $checked>$val2[info]  ";
+$tmp2=$tmp2."<input name='para$val[id]' type='radio' class='radio' value='$val2[info]' $checked>$val2[info]  ";
 }
 echo <<<EOT
 -->
          <tr> 
-            <td class="list1_text">$wrok<b>$val[name]</b></td>
-            <td colspan="2" class="list1_input">$tmp2</td>
+            <td class="text">$wrok$val[name]</td>
+            <td colspan="2" class="input">$tmp2</td>
           </tr>
 <!--
 EOT;
@@ -267,8 +286,8 @@ if($metadmin[pagename]){
 echo <<<EOT
 -->	
 		  <tr> 
-            <td class="list1_text"><b>{$lang_columnhtmlname}</b></td>
-            <td colspan="2" class="list1_input"><input name="filename" type="text" class="input" size="40"  value="$download_list[filename]">{$lang_contenthtml}</td>
+            <td class="text">{$lang_columnhtmlname}</td>
+            <td colspan="2" class="input"><input name="filename" type="text" class="text" value="$download_list[filename]">{$lang_contenthtml}</td>
           </tr>
 <!--
 EOT;
@@ -276,41 +295,42 @@ EOT;
 echo <<<EOT
 -->	
 		  <tr> 
-            <td class="list1_text"><b>{$lang_keywords}</b></td>
-            <td colspan="2" class="list1_input"><input name="keywords" type="text" class="input" size="40"  value="$download_list[keywords]">{$lang_descriptioninfo},{$lang_keywordsinfo}</td>
+            <td class="text">{$lang_keywords}</td>
+            <td colspan="2" class="input"><input name="keywords" type="text" class="text" value="$download_list[keywords]">{$lang_descriptioninfo},{$lang_keywordsinfo}</td>
           </tr>
 		  <tr> 
-            <td class="list1_text"><b>{$lang_description}</b><br>{$lang_descriptioninfo}
+            <td class="text">{$lang_description}<br>{$lang_descriptioninfo}
 			</td>
-            <td class="list1_input" colspan="2"><textarea name="description" cols="60" rows="5" >$download_list[description]</textarea></td>
+            <td class="input" colspan="2"><textarea name="description" class="textarea gen" cols="60" rows="5" >$download_list[description]</textarea></td>
 			</tr> 
 			 <tr> 
-            <td class="list1_text"><b>{$lang_contentdetail}</b></td>
-            <td class="list1_input" colspan="2">
-<!--
-EOT;
-echo "-->";
-$oFCKeditor = new FCKeditor('content'); 
-$oFCKeditor->BasePath = '../../fckeditor/';
-$oFCKeditor->Config['AutoDetectLanguage']	= false ;
-$oFCKeditor->Config['DefaultLanguage']		= $langusenow ;
-$oFCKeditor->Value = $download_list[content];
-$oFCKeditor->Width = '100%';   
-$oFCKeditor->Height = '300';
-$oFCKeditor->Create();
-echo <<<EOT
+            <td class="text">{$lang_contentdetail}</td>
+            <td class="input" colspan="2">
+			<div class="edir-hide">
+			<div class="left-hiden"></div>
+<script type="text/javascript" src="../ckeditor/ckeditor.js"></script>
+			<textarea class="ckeditor" name="content">$download_list[content]</textarea>
+<script type="text/javascript">
+CKEDITOR.replace('content', {
+	filebrowserBrowseUrl : '../ckeditor/ckfinder/ckfinder.html',
+	filebrowserImageBrowseUrl : '../ckeditor/ckfinder/ckfinder.html?Type=Images',
+	filebrowserFlashBrowseUrl : '../ckeditor/ckfinder/ckfinder.html?Type=Flash',
+	filebrowserUploadUrl : '../ckeditor/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
+	filebrowserImageUploadUrl : '../ckeditor/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
+	filebrowserFlashUploadUrl : '../ckeditor/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash'
+});
+</script>
+</div>
 </td></tr>
-		   
-
 		  <tr> 
-            <td class="list1_text"></td>
-	      <td class="list1_submit"><input type="submit" name="Submit" value="{$lang_Submit}" class="tj" style="*padding-top:2px; *height:22px;"><input type="reset" name="Submit" value="{$lang_Reset}" class="tj" style="*padding-top:2px; *height:22px;"> </td>
+            <td class="text"></td>
+	      <td class="submit"><input type="submit" name="Submit" value="{$lang_Submit}" class="submit" onclick="return Smit($(this),'myform')" /><input type="reset" name="Submit" value="{$lang_Reset}" class="reset" /> </td>
           </tr>
-        </form>
 		<tr>
-		  <td class="list1_footer" colspan="2" align="center">$foot</td>
+		  <td class="footer" colspan="2">$foot</td>
 	  </tr>
 </table>
+        </form>
 </body>
 </html>
 <!--

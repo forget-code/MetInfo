@@ -1,3 +1,7 @@
+//onchange select
+function changes(th){
+    location.href = th.val();	
+}
 //add admin
 function CheckForm()
 {   
@@ -68,15 +72,14 @@ function displayid(onid,offid)
  setCheckedValue('if_in','1');
 }
 
-function displayall(onid1,onid2)
-{ 
-if(document.myform.img_ok.checked==false){
- document.getElementById(onid1).style.display="";
- document.getElementById(onid2).style.display="";
+function displayall(my,onid1,onid2){ 
+if(my.attr('checked')){
+	$(onid1).show();
+	$(onid2).show();
 }
 else{
- document.getElementById(onid1).style.display="none";
- document.getElementById(onid2).style.display="none";
+	$(onid1).hide();
+	$(onid2).hide();
 }
 }
 
@@ -148,24 +151,20 @@ function changelocation1(locationid,classtype)
 
 } 	
 //templates linkage
-function changecss(locationid)
+function changecss(my)
  {
-	
-    document.myform.met_skin_css.length = 0; 
-    var locationid=locationid;
-    var i;
-	var lev;
-    for (i=0;i < onecount; i++)
+    my.next("select").empty();	
+    for (var i=0;i < onecount; i++)
         {
-			if (subcat[i][0] == locationid)
+			if (subcat[i][0] == my.val())
             { 
-                document.myform.met_skin_css.options[document.myform.met_skin_css.length] = new Option(subcat[i][1], subcat[i][2]);
+                my.next("select").append("<option value='"+subcat[i][2]+"'>"+subcat[i][1]+"</option>");
             }
         }
 	
 }
 //online skin linkage
-function changeonline(locationid)
+function changeonline(locationid,onecount,subcat)
  {
 	
     document.myform.met_online_color.length = 0; 
@@ -251,16 +250,6 @@ function CheckFormflash()
 		return false;
 	}
 }
-//job check
-function CheckFormjob()
-
-{   
-	if (document.myform.position.value==null || document.myform.position.value.length == 0) {
-		alert(user_msg['js17']);
-		document.myform.position.focus();
-		return false;
-	}	
-}
 //content check
 function CheckFormarticle()
 {   
@@ -275,46 +264,6 @@ function CheckFormarticle()
 		return false;
 	}
 }
-
-//add templates
-function CheckForm_skin()
-{   
-	if (document.myform.skin_name.value.length == 0) {
-		alert(user_msg['js8']);
-		document.myform.skin_name.focus();
-		return false;
-	}
-   if (document.myform.skin_file.value.length == 0 && document.myform.skin_files.value.length == 0) {
-		alert(user_msg['js9']);
-		document.myform.skin_file.focus();
-		return false;
-	}
-}
-//add label
-function CheckForm_label()
-{   
-	if (document.myform.oldwords.value.length == 0) {
-		alert(user_msg['js18']);
-		document.myform.oldwords.focus();
-		return false;
-	}
-}
-
-//add module
-function CheckForm_moudle()
-{   
-	if (document.myform.name.value==null || document.myform.name.value.length == 0) {
-		alert(user_msg['js11']);
-		document.myform.name.focus();
-		return false;
-	}
-	if (document.myform.module.value=='1' && document.getElementById('if_in1').checked && document.myform.filename.value.length == 0) {
-		alert(user_msg['js33']);
-		document.myform.filename.focus();
-		return false;
-	}
-	
-}
 //add friendly link
 function CheckFormlink()
 {   
@@ -327,20 +276,6 @@ function CheckFormlink()
 	if (document.myform.weburl.value.length == 0 || document.myform.weburl.value =='http://' ) {
 		alert(user_msg['js20']);
 		document.myform.weburl.focus();
-		return false;
-	}
-}
-
-function CheckForm_e()
-{   
-   if (document.myform.pass1.value !== document.myform.pass2.value) {
-		alert(user_msg['js6']);
-		document.myform.pass1.focus();
-		return false;
-	}
-   if (document.myform.email.value.length == 0) {
-		alert(user_msg['js5']);
-		document.myform.email.focus();
 		return false;
 	}
 }
@@ -370,28 +305,6 @@ function ConfirmChange()
    else
      return false;
 	return false; 
-}
-function ConfirmDelall()
-{   
-   var flag=0;
-   for (var i=0;i<document.del.elements.length;i++)
-    {
-    var e = document.del.elements[i]; 
-    if (e.name=="id"&&e.checked){
-       document.del.allid.value=document.del.allid.value+e.value+",";
-	   flag=1;
-	 }
-    }
-	
-	if(flag==0)
-	{
-		alert(user_msg['js23']);
-		return false;
-	}
-	if(confirm(user_msg['js7']))
-     return true;
-   else
-     return false;
 }
 
 function Confirmall()
@@ -489,4 +402,54 @@ function makeRequest(url, functionName, httpType, sendData) {
 	http_request.open(httpType, url, true);
 	http_request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 	http_request.send(null);
+}
+//column
+function linkage(m,p){
+    var id     = "."+p;
+    var inputs = $(id);
+	var num    = m.attr("checked")==true?true:false;
+        if(inputs.length>0){
+	        inputs.attr("checked",num);
+			for(var i=0;i<inputs.length;i++){
+				var ed = ".bgid_"+inputs.eq(i).val();
+				    if($(ed).length>0){
+					    $(ed).attr("checked",num);
+					}
+			}
+        }		
+}
+//copy
+function copyform(){  
+	var flag=0;
+   for (var i=0;i<document.del.elements.length;i++)
+    {
+    var e = document.del.elements[i]; 
+    if (e.name=="id"&&e.checked){
+       document.myform.allid.value=document.myform.allid.value+e.value+",";
+	   flag=1;
+	 }
+    }
+	if(flag==0)
+	{
+		alert(user_msg['js23']);
+		return false;
+	}
+	if(document.myform.copylang.value==""){
+		alert(user_msg['js36']);
+		return false;
+	}
+    if(confirm(user_msg['js24']))
+     return true;
+   else
+     return false;	
+}
+function copyother(){
+	if(document.myform.copylang.value==""){
+		alert(user_msg['js36']);
+		return false;
+	}
+    if(confirm(user_msg['js24']))
+     return true;
+   else
+     return false;
 }

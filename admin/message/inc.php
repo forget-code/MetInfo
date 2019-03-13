@@ -4,11 +4,10 @@
 require_once '../login/login_check.php';
 if($action=="modify"){
 require_once 'configsave.php';
-onepagehtm('message','message');
-classhtm('message',0,0);
-okinfo('inc.php?lang='.$lang,$lang_jsok);
-}
-else{
+$htmljs = onepagehtm('message','message');
+$htmljs.= classhtm($class1,0,0);
+okinfoh('../message/inc.php?lang='.$lang,$htmljs);
+}else{
 $settings = parse_ini_file('../../message/config_'.$lang.'.inc.php');
 @extract($settings);
 $met_fd_email1=($met_fd_email)?"checked='checked'":"";

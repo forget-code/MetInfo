@@ -9,7 +9,7 @@ if($action=="add"){
 
 $admin_if=$db->get_one("SELECT * FROM $met_admin_table WHERE admin_id='$useid'");
 if($admin_if){
-okinfo('javascript:history.back();',$lang_loginUserMudb1);
+okinfox('../member/add.php?lang='.$lang,$lang_loginUserMudb1);
 }
  $pass1=md5($pass1);
  $query = "INSERT INTO $met_admin_table SET
@@ -35,7 +35,7 @@ okinfo('javascript:history.back();',$lang_loginUserMudb1);
 					  checkid            = '$checkid',
 					  lang               = '$lang'";
          $db->query($query);
-okinfo('index.php?lang='.$lang,$lang_jsok);
+okinfo('../member/index.php?lang='.$lang);
 }
 
 if($action=="editor"){
@@ -67,7 +67,7 @@ $query .=", admin_pass         = '$pass1'";
 }
 $query .="  where id='$id'";
 $db->query($query);
-okinfo('index.php?$lang='.$lang,$lang_jsok);
+okinfo('../member/index.php?lang='.$lang);
 }
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.

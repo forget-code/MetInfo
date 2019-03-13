@@ -6,7 +6,7 @@ include_once("../../fckeditor/fckeditor.php");
 if($action=='editor'){
 $link_list=$db->get_one("select * from $met_link where id='$id'");
 if(!$link_list){
-okinfo('index.php?$lang='.$lang,$lang_dataerror);
+okinfox('../link/index.php?$lang='.$lang,$lang_dataerror);
 }
 $link_type[$link_list[link_type]]="checked='checked'";
 $link_lang[$link_list[link_lang]]="checked='checked'";
@@ -14,7 +14,6 @@ $show_ok1=$link_list[show_ok]?"checked='checked'":"";
 $com_ok1=$link_list[com_ok]?"checked='checked'":"";
 }else{
 $link_list[weburl]="http://";
-$link_list[weblogo]="http://";
 }
 $css_url="../templates/".$met_skin."/css";
 $img_url="../templates/".$met_skin."/images";

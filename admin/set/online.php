@@ -3,8 +3,9 @@
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 require_once '../login/login_check.php';
 if($action=="modify"){
+$met_onlinenameok=$met_onlinenameok2;
 require_once 'configsave.php';
-okinfo('online.php?lang='.$lang,$lang_jsok);
+okinfo('online.php?lang='.$lang);
 }
 else{
 $met_online_skinarray[]=array(1,$lang_onlineblue,1);
@@ -27,20 +28,18 @@ $met_online_skinarray[]=array(4,$lang_onlinered,2);
 $met_online_skinarray[]=array(4,$lang_onlinepurple,3);
 $met_online_skinarray[]=array(4,$lang_onlinegreen,4);
 $met_online_skinarray[]=array(4,$lang_onlinegray,5);
-echo "<script language = 'JavaScript'>\n";
-echo "var onecount;\n";
-echo "subcat = new Array();\n";
+$jslist = "<script language = 'JavaScript'>\n";
+$jslist .= "var onecount;\n";
+$jslist .= "subcat = new Array();\n";
 $i=0;
 foreach($met_online_skinarray as $key=>$val){
-echo "subcat[".$i."] = new Array('".$val[0]."','".$val[1]."','".$val[2]."');\n";
+$jslist .= "subcat[".$i."] = new Array('".$val[0]."','".$val[1]."','".$val[2]."');\n";
 if($val[0]==$met_online_skin)$met_online_skinarray1[]=$val;
 $met_online_count[$val[0]]=$val[0];
 $i++;
 }
-
-echo "onecount=".$i.";\n";
-echo "</script>";
-
+$jslist .= "onecount=".$i.";\n";
+$jslist .= "</script>";
 $met_online_type1[$met_online_type]="checked='checked'";
 $met_online_skin1[$met_online_skin]="selected='selected'";
 $met_online_color1[$met_online_color]="selected='selected'";

@@ -7,11 +7,8 @@ if($action=="modify"){
 $query = "update $met_index SET content= '$content' where id='$id'";
 if($id=="")$query = "INSERT INTO $met_index SET content= '$content', lang='$lang'";
 $db->query($query);
-indexhtm();
-okinfo('index_content.php?lang='.$lang,$lang_jsok);
-}
-else
-{
+okinfoh('index_content.php?lang='.$lang,indexhtm());
+}else{
 $index = $db->get_one("SELECT * FROM $met_index where lang='$lang' ");
 }
 $rooturl="..";

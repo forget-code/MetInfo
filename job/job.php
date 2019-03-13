@@ -47,6 +47,7 @@ require_once '../include/head.php';
 	if(intval($list[useful_life])==0)$list[useful_life]=$lang_Nolimit;
 	$list[top]=$list[top_ok]?"<img class='listtop' src='".$img_url."top.gif"."' />":"";
 	$list[news]=$list[top_ok]?"":((((strtotime($m_now_date)-strtotime($list[addtime]))/86400)<$met_newsdays)?"<img class='listnews' src='".$img_url."news.gif"."' />":"");
+	$pagename1=$list['addtime'];
 	$list[addtime] = date($met_listtime,strtotime($list[addtime]));
 	if($met_webhtm){
 	switch($met_htmpagename){
@@ -54,7 +55,7 @@ require_once '../include/head.php';
 	$htmname="showjob".$list[id];	
 	break;
 	case 1:
-	$list[updatetime1] = date('Ymd',strtotime($list[addtime]));
+	$list[updatetime1] = date('Ymd',strtotime($pagename1));
 	$htmname=$list[updatetime1].$list[id];	
 	break;
 	case 2:
@@ -63,41 +64,43 @@ require_once '../include/head.php';
 	}
    $htmname=($list[filename]<>"" and $metadmin[pagename])?$list[filename]."_".$htmname:$htmname;
    }	
-	$phpname="showjob.php?id=".$list[id];
-	$list[url]=$met_webhtm?$htmname.$met_htmtype:$phpname."&lang=".$lang;
+	$phpname="showjob.php?".$langmark."&id=".$list[id];
+	$panyid = $list['filename']!=''?$list['filename']:$list['id'];
+	$list[url]=$met_pseudo?$panyid.'-'.$lang.'.html':($met_webhtm?$htmname.$met_htmtype:$phpname);
 	 if($met_submit_type==1){
-	   $list[cv]=$cv[url].$list[id];
+	   $list[cv]=$met_pseudo?'jobcv-'.$panyid.'-'.$lang.'.html':$cv['url'].$list['id'];
 	   }else{
 	   $list[cv]=$cv[url];
 	   }
 	$job_list[]=$list;
 }
 if($met_webhtm==2){
-$met_pagelist=(($metadmin[pagename] and $class_list[$class1][filename]<>"")?$class_list[$class1][filename]:"job")."_".$class1."_";
-$page_list = $rowset->link($met_pagelist,$met_htmtype);
+	$met_pagelist=(($metadmin[pagename] and $class_list[$class1][filename]<>"")?$class_list[$class1][filename]:"job")."_".$class1."_";
+	$met_pagelist=$class_list[$class1]['filename']<>''?$class_list[$class1]['filename'].'_':$met_pagelist;
+	$met_ahtmtype = $class_list[$class1]['filename']<>''?$met_chtmtype:$met_htmtype;
+	$page_list = $rowset->link($met_pagelist,$met_ahtmtype);
 }else{			
-$page_list = $rowset->link("job.php?lang=$lang&page=");	
+	$page_list = $rowset->link("job.php?lang=$lang&page=");	
 }
 
 $class2=$class_list[$class1][releclass]?$class1:$class2;
 $class1=$class_list[$class1][releclass]?$class_list[$class1][releclass]:$class1;
 $class_info=$class2?$class2_info:$class1_info;
 if($class2!=""){
-$class_info[name]=$class2_info[name]."--".$class1_info[name];
+$class_info[name]=$class2_info[name]."-".$class1_info[name];
 }
 
      $show[description]=$class_info[description]?$class_info[description]:$met_keywords;
      $show[keywords]=$class_info[keywords]?$class_info[keywords]:$met_keywords;
-	 $met_title=$class_info[name]."--".$met_title;
+	 $met_title=$met_title?$class_info['name'].'-'.$met_title:$class_info['name'];
+	 if($class_info['ctitle']!='')$met_title=$class_info['ctitle'];
 if(count($nav_list2[$class1])){
 $k=count($nav_list2[$class1]);
 $nav_list2[$class1][$k]=array('id'=>10004,'url'=>$cv[url],'name'=>$lang_cvtitle);
 }else{
 $nav_list2[$class1][0]=$class1_info;
 $nav_list2[$class1][1]=array('id'=>10004,'url'=>$cv[url],'name'=>$lang_cvtitle);
-
 }
-
 require_once '../public/php/methtml.inc.php';
 require_once '../public/php/jobhtml.inc.php';
 include template('job');

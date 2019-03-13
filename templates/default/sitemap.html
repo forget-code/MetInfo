@@ -1,26 +1,14 @@
 <!--<?php
 require_once template('head'); 
+require_once template('webbar'); 
 echo <<<EOT
 -->
-<div id="web">
-<style type="text/css">
-#web .left{ display:none;}
-#web .right{ width:100%;}
-</style>
-<div class="right">
-   <h3 class="title"><span>{$class_list[$classnow][name]}</span></h3>
-        <div class="webcontent">
-        $methtml_sitemap
+        <div  class="sitemaplist webbox">
+            $methtml_sitemap
         </div>
+    </div>
+    <div class='clear'></div>
 </div>
-<!--
-EOT;
-require_once template('webleft'); 
-echo <<<EOT
--->
-<div style="clear:both;"></div>
-</div>
-
 <!--
 EOT;
 require_once template('foot'); 

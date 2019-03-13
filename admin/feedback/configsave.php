@@ -18,8 +18,8 @@ met_fdtable       = \"$met_fdtable\";
 met_fd_class      = \"$met_fd_class\";
 */
 ?>";
-if(!is_writable("../../feedback/config_".$lang.".inc.php"))@chmod("../../feedback/config_".$lang.".inc.php",0777);
-$fp = fopen("../../feedback/config_".$lang.".inc.php",w);
+if(!is_writable("../../".$foldename."/config_".$lang.".inc.php"))@chmod("../../".$foldename."/config_".$lang.".inc.php",0777);
+$fp = fopen("../../".$foldename."/config_".$lang.".inc.php",w);
     fputs($fp, $config_save);
     fclose($fp);
 # This program is an open source system, commercial use, please consciously to purchase commercial license.

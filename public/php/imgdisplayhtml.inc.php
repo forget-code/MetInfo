@@ -3,7 +3,7 @@
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 
 function methtml_imgdisplay($type='img'){
-global $img_paraimg,$img,$product,$product_paraimg,$lang_BigPicture,$met_url,$met_img_x,$met_img_y,$met_imgdetail_x,$met_imgdetail_y,$met_img_detail,$met_productdetail_x,$met_productdetail_y,$met_product_detail;
+global $img_paraimg,$img,$product,$product_paraimg,$lang_BigPicture,$met_url,$met_img_x,$met_img_y,$met_imgdetail_x,$met_imgdetail_y,$met_img_detail,$met_productdetail_x,$met_productdetail_y,$met_product_detail,$lang_displayimg,$lang_defualt;
 
 if($type=='product'){
 $img_paraimg=$product_paraimg;
@@ -20,6 +20,17 @@ $met_img_detail=$met_product_detail;
   $metinfoimglist=1;
    }}
  }
+$pg=0;
+if($img['displayimg']!=''){
+	$displayimg=explode(',',$img['displayimg']);
+	$pg=count($displayimg);
+	for($i=0;$i<$pg;$i++){
+		$newdisplay=explode('-',$displayimg[$i]);
+		$displaylist[$i]['title']=$newdisplay[0];
+		$displaylist[$i]['imgurl']=$newdisplay[1];
+	}
+	if($pg)$metinfoimglist=1;
+}
 if($metinfoimglist){
 switch($met_img_detail){
 case 1:
@@ -35,7 +46,7 @@ case 1:
    $metinfo.="document.getElementById('view_bigimg').href=document.getElementById(nowimg).src;\n";
    $metinfo.="}\n";
    $metinfo.="</script>\n";
-   $metinfo.="<span class='info_img' id='imgqwe'><a id='view_bigimg' href='".$img[imgurl]."' title=".$lang_BigPicture." target='_blank'><img id='view_img' border='0' width=".$met_imgdetail_x." height=".$met_imgdetail_y." src='".$img[imgurl]."'></a></span>\n";
+   $metinfo.="<span class='info_img' id='imgqwe'><a id='view_bigimg' href='".$img[imgurl]."' title=".$lang_BigPicture." target='_blank'><img id='view_img' border='0' alt='".$img[title]."' title='".$img[title]."' width=".$met_imgdetail_x." height=".$met_imgdetail_y." src='".$img[imgurl]."'></a></span>\n";
    $metinfo.="<script type='text/javascript'>";
    $metinfo.="var zoomImagesURI   = '".$met_url."images/zoom/';"; 
    $metinfo.="</script>\n"; 
@@ -43,12 +54,21 @@ case 1:
    $metinfo.="<script src='".$met_url."js/metzoomHTML.js' language='JavaScript' type='text/javascript'></script>\n";
    $metinfo.="<script type='text/javascript'>	window.onload==setupZoom();	</script>\n";
    $metinfo.="<div class='smallimg' style='text-align:center;'>\n";
+  if($pg){
+    $i=0;
+	foreach($displaylist as $key=>$val){
+	$i++;
+	$title=$val['title']==''?$lang_displayimg.$i:$val['title'];
+   $metinfo.="<span class='spic'><a href='javascript:;' onclick=metseeBig('smallimg".$i."') title='".$title."' style='cursor:pointer'><img border='0'  id='smallimg".$i."' src='".$val['imgurl']."' width='50' height='50' alt='".$title."' title='".$title."' ></a></span>\n";
+	}
+  }else{
    $i=0;
   foreach($img_paraimg as $key=>$val){
   if($img[$val[para]]<>''){
   $i++;
    $metinfo.="<span class='spic'><a href='###' onclick=metseeBig('smallimg".$i."')  style='cursor:pointer'><img border='0'  id='smallimg".$i."' src='".$img[$val[para]]."' width='50' height='50' alt='".$img[$val[paraname]]."' ></a></span>\n";
    }}
+   }
    $metinfo.="</div>\n";
 break;
 case 2:
@@ -96,13 +116,22 @@ case 2:
    $metinfo.="}\n";
    $metinfo.="</script>\n";
    $metinfo.="<form name=slideform>\n";
-   if($img[imgurl]<>"")$metinfo.="<span class='info_img'><img src='".$img[imgurl]."'  name='show' width=".$met_imgdetail_x." height=".$met_imgdetail_y." onclick='javascript:window.open(this.src);' style='cursor:pointer;'/></span>\n";
+   if($img[imgurl]<>"")$metinfo.="<span class='info_img'><img src='".$img[imgurl]."' alt='".$img[title]."' title='".$img[title]."'  name='show' width=".$met_imgdetail_x." height=".$met_imgdetail_y." onclick='javascript:window.open(this.src);' style='cursor:pointer;'/></span>\n";
    $metinfo.="<span class='info_select'  style=' display:block; width:100%; text-align:center;'><select name='slide' onChange='change();'>\n";
-   if($img[imgurl]<>"")$metinfo.="<option value='".$img[imgurl]."' selected>defualt</option>\n";
+   if($img[imgurl]<>"")$metinfo.="<option value='".$img[imgurl]."' selected>{$lang_defualt}</option>\n";
+  if($pg){
+    $i=0;
+	foreach($displaylist as $key=>$val){
+	$i++;
+	$title=$val['title']==''?$lang_displayimg.$i:$val['title'];
+	  $metinfo.="<option value='".$val['imgurl']."'>".$title."</option>\n";
+	}
+  }else{
  foreach($img_paraimg as $key=>$val){
   if($img[$val[para]]<>''){
   $metinfo.="<option value='".$img[$val[para]]."'>".$img[$val[paraname]]."</option>\n";
    }}
+   }
   $metinfo.="</select>\n";
   $metinfo.="<input type=button onClick='first();' value='|<<' title='Beginning'>\n";
   $metinfo.="<input type=button onClick='previous();' value='<<' title='Previous'>\n";
@@ -117,12 +146,22 @@ if($img[imgurl]<>""){
   $imglink.=$img[imgurl]."|";
   $imgtitle.=$img[title]."|";
   }
+  if($pg){
+    $i=0;
+	foreach($displaylist as $key=>$val){
+	$i++;
+	$title=$val['title']==''?$lang_displayimg.$i:$val['title'];
+	  $imgurl.=$val['imgurl']."|";
+	  $imglink.=$val['imgurl']."|";
+	  $imgtitle.=$title."|";
+	}
+  }else{
   foreach($img_paraimg as $key=>$val){
   if($img[$val[para]]<>''){
   $imgurl.=$img[$val[para]]."|";
   $imglink.=$img[$val[para]]."|";
   $imgtitle.=$img[$val[paraname]]."|";
-   }}
+   }}}
   $imgurl=substr($imgurl, 0, -1);
   $imglink=substr($imglink, 0, -1);
   $imgtitle=substr($imgtitle, 0, -1);
@@ -136,12 +175,22 @@ if($img[imgurl]<>""){
   $imglink.=$img[imgurl]."|";
   $imgtitle.=$img[title]."|";
   }
+  if($pg){
+    $i=0;
+	foreach($displaylist as $key=>$val){
+	$i++;
+	$title=$val['title']==''?$lang_displayimg.$i:$val['title'];
+	  $imgurl.=$val['imgurl']."|";
+	  $imglink.=$val['imgurl']."|";
+	  $imgtitle.=$title."|";
+	}
+  }else{
   foreach($img_paraimg as $key=>$val){
   if($img[$val[para]]<>''){
   $imgurl.=$img[$val[para]]."|";
   $imglink.=$img[$val[para]]."|";
   $imgtitle.=$img[$val[paraname]]."|";
-   }}
+   }}}
   $imgurl=substr($imgurl, 0, -1);
   $imglink=substr($imglink, 0, -1);
   $imgtitle=substr($imgtitle, 0, -1);
@@ -167,6 +216,19 @@ case 5:
   $metinfo.="</style>\n";
   $metinfo.="<div class=metinfo_slide>\n";
   $metinfo.="<div id=metbimg>\n";
+  if($pg){
+    $i=0;
+	foreach($displaylist as $key=>$val){
+	$i++;
+	$title=$val['title']==''?$lang_displayimg.$i:$val['title'];
+	$k=$i-1;
+  $metdis=($i==1)?'metdis':'unmetdis';
+  $metdis1=($i==1)?'':'f1';
+  $metinfo.="<div class='".$metdis."' name='f'><A  href='".$val['imgurl']."'  target=_blank ><IMG alt=".$title."  src='".$val['imgurl']."' width='".$met_imgdetail_x."' height='".$met_imgdetail_y."'></A></div>\n";
+  $metinfo1.="<div class='".$metdis."' name='f'><A  href='".$val['imgurl']."'   target=_blank >".$title."</A></div>\n";
+  $metinfo2.="<div class='".$metdis1."' onclick=metplay(x[".$k."],".$k.") name='f'>".$i."</div>\n";
+	}
+  }else{
 $i=0;
 foreach($img_paraimg as $key=>$val){
 if($img[$val[para]]<>''){
@@ -177,7 +239,7 @@ $k=$i-1;
   $metinfo.="<div class='".$metdis."' name='f'><A  href='".$img[$val[para]]."'  target=_blank ><IMG alt=".$img[$val[paraname]]."  src='".$img[$val[para]]."' width='".$met_imgdetail_x."' height='".$met_imgdetail_y."'></A></div>\n";
   $metinfo1.="<div class='".$metdis."' name='f'><A  href='".$img[$val[para]]."'   target=_blank >".$img[$val[paraname]]."</A></div>\n";
   $metinfo2.="<div class='".$metdis1."' onclick=metplay(x[".$k."],".$k.") name='f'>".$i."</div>\n";
-  }}
+  }}}
   $metinfo.="</div>\n";
   $metinfo.="<div class='imgbottom' >\n";
   $metinfo.="<div id='metimginfo'>\n";
@@ -227,11 +289,19 @@ case 6:
   $metinfo.="<div id='carousel_btn_lastgroup'><a href='#1'></a></div>\n";
   $metinfo.="<div id='carousel_container'>\n";
   $metinfo.="<ul id='samples_list'>\n";
-  $metinfo.="<li><a href='".$img[imgurl]."' target='_blank'><img src='".$img[imgurl]."' id='carousel_photo' width=".$met_imgdetail_x." height=".$met_imgdetail_y."  alt='".$lang_BigPicture."' /></a></li>\n";
+  $metinfo.="<li><a href='".$img[imgurl]."' target='_blank'><img src='".$img[imgurl]."' alt='".$img[title]."' title='".$img[title]."' id='carousel_photo' width=".$met_imgdetail_x." height=".$met_imgdetail_y."  alt='".$lang_BigPicture."' /></a></li>\n";
+  if($pg){
+    $i=0;
+	foreach($displaylist as $key=>$val){
+	$i++;
+	$title=$val['title']==''?$lang_displayimg.$i:$val['title'];
+  $metinfo.="<li><a href='".$val['imgurl']."' title='".$title."'><img src='".$val['imgurl']."' alt='".$title."' title='".$title."' width=".$met_img_x." height=".$met_img_y." /></a></li>\n";
+	}
+  }else{
 foreach($img_paraimg as $key=>$val){
 if($img[$val[para]]<>''){
   $metinfo.="<li><a href='".$img[$val[para]]."'><img src='".$img[$val[para]]."' width=".$met_img_x." height=".$met_img_y." /></a></li>\n";
-}}
+}}}
   $metinfo.="</ul>\n";
   $metinfo.="</div>\n";
   $metinfo.="<div id='carousel_btn_nextgroup'><a href='#1'>&nbsp;</a></div>\n";
@@ -258,7 +328,7 @@ break;
  $met_imgdetail_x1=$imgarr[0]*($met_imgdetail_y/$imgarr[1]);
  $met_imgdetail_y1=$met_imgdetail_y;
  }
- $metinfo.="<span class='info_img' id='imgqwe'><a href='".$img[imgurl]."' target='_blank'><img src=".$img[imgurl]." alt=".$lang_BigPicture." width=".$met_imgdetail_x1." height=".$met_imgdetail_y1."  /></a></span>\n";
+ $metinfo.="<span class='info_img' id='imgqwe'><a href='".$img[imgurl]."' title=".$lang_BigPicture." target='_blank'><img src=".$img[imgurl]." alt='".$img[title]."' title='".$img[title]."' width=".$met_imgdetail_x1." height=".$met_imgdetail_y1."  /></a></span>\n";
  $metinfo.="<script type='text/javascript'>";
  $metinfo.="var zoomImagesURI   = '".$met_url."images/zoom/';"; 
  $metinfo.="</script>\n"; 

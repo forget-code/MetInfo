@@ -7,106 +7,80 @@ echo <<<EOT
 <title>{$lang_labelTitle}</title>
 </head>
 <body>
-<br>
 <!--
 EOT;
-if($action=="modify"){
+$littr=29;
+require_once template('metlangs');
 echo <<<EOT
 -->
-<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
-          <tr> 
-            <td colspan="3" align="center" class="list1_title">{$lang_labelTitle}</td>
+	<table cellpadding="2" cellspacing="1" class="table">
+        <tr> 
+            <td colspan="3" class="title">{$lang_labelTitle}</td>
+        </tr>
+        <tr>
+            <td class="centle" colspan="3">
+				<a href="strcontent.php?lang=$lang&action=add" onclick="return addsave($(this),0);" style="margin:0px 5px;" title="{$lang_labelAdd}">{$lang_labelAdd}</a>
+			</td>
           </tr>
-          <tr>
-            <td class="au" colspan="6" >
-			  <form method="POST" name="myform"  action="strcontent.php?action=editor&id=$id&lang=$lang" onSubmit="return CheckForm_label();" target="_self">
-			  <b>{$lang_modifyfy}</b>
-			    {$lang_labelOld}
-			    <input name="oldwords" type="text" size="10" value="$label_m[oldwords]">
-			     {$lang_labelNew}
-  <input name="newwords" type="text" size="10"  value="$label_m[newwords]">
-  {$lang_labelUrl}:
-  <input name="url" type="text" size="30"  value="$label_m[url]">
-  <input type="submit" name="Submit2" value="{$lang_modify}" class="tj">  
-	        </form></td>
-          </tr>
-		  <tr>
-		  <td class="list1_footer" colspan="6" align="center">$foot</td>
-	  </tr>
-</table>
-</body>
-</html>
-<!--
-EOT;
-}
-else{
-echo <<<EOT
--->
-<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
-          <tr> 
-            <td colspan="6" align="center" class="list1_title">{$lang_labelTitle}</td>
-          </tr>
-          <tr>
-            <td class="au" colspan="6">
-			  <form method="POST" name="myform"  action="strcontent.php?action=add&lang=$lang" onSubmit="return CheckForm_label();" target="_self">
-			  <b>{$lang_labelAdd}</b>
-			    {$lang_labelOld}:
-			    <input name="oldwords" type="text" size="10">
-			     {$lang_labelNew}:
-  <input name="newwords" type="text" size="10">
-  {$lang_labelUrl}:
-  <input name="url" type="text" size="30">
-  <input type="submit" name="Submit2" value="{$lang_add}" class="tj">  
-	        </form></td>
-          </tr>
-              <tr>
-                <td width="5%" class="list1_top" align="center">{$lang_selected}</td>
-                <td width="5%" class="list1_top" align="center">ID</td>
-                <td width="20%" class="list1_top" align="center" >{$lang_labelOld}</td>
-                <td width="20%" class="list1_top" align="center" >{$lang_labelNew}</td>
-                <td width="40%" class="list1_top" align="center" >{$lang_labelUrl}</td>
-				<td width="10%" class="list1_top" align="center" >{$lang_operate}</td>
+			 <tr>
+			 <td colspan="3">
+<form name="del" method="Post" action="strcontent.php?lang=$lang">
+<input type="hidden" name="action" value="" />
+<table cellpadding="0" cellspacing="0" class="table neitable" style="margin:0px; border:none;">
+              <tr id="list-top">
+                <td width="40" class="list">{$lang_selected}</td>
+                <td width="50" class="list">ID</td>
+                <td width="20%" class="list" >{$lang_labelOld}</td>
+                <td width="20%" class="list" >{$lang_labelNew}</td>
+                <td width="20%" class="list" >{$lang_labelNewtitle}</td>
+                <td class="list" >{$lang_labelUrl}</td>
+				<td width="10%" class="list" >{$lang_operate}</td>
               </tr>
-			  <form name="del" method="Post" action="strcontent.php?action=delete&lang=$lang" onSubmit="return ConfirmDelall();">
 <!--
 EOT;
 foreach ($skin_list as $key=>$val){
 echo <<<EOT
 -->          
-              <tr class="tdbg">
-              <td class="list1_content_titile" align="center"><input name='id' type='checkbox' onClick="unselectall()" id="id" value='$val[id]' class="xz"></td>
-                <td align="center" class="list1_content">$val[id]</td>
-                <td class="list1_content" align="center">$val[oldwords]</td>
-                <td class="list1_content" align="center">$val[newwords]</td>
-                <td align="center" class="list1_content">$val[url]</td>
-				<td align="center" class="list1_content" style="color:#0066FF;"><a href="strcontent.php?id=$val[id]&action=modify&lang=$lang" >{$lang_editor}</a> | <a href="strcontent.php?id=$val[id]&action=delete&lang=$lang" onClick="return ConfirmDel();" >{$lang_delete}</a></td>
+              <tr class="mouse click">
+				<td class="list-text"><input name='id' type='checkbox' id="id" value='$val[id]' /></td>
+                <td class="list-text">$val[id]</td>
+                <td class="list-text"><input type="text" name="oldwords_$val[id]" class="text max nonull" value="$val[oldwords]" /></td>
+                <td class="list-text"><input type="text" name="newwords_$val[id]" class="text max" value="$val[newwords]" /></td>
+                <td class="list-text"><input type="text" name="newtitle_$val[id]" class="text max" value="$val[newtitle]" /></td>
+                <td class="list-text"><input type="text" name="url_$val[id]" class="text max" value="$val[url]" /></td>
+				<td class="list-text"><a href="strcontent.php?id=$val[id]&action=delete&lang=$lang" onClick="return linkSmit($(this),1);" >{$lang_delete}</a></td>
               </tr>
 <!--
 EOT;
 }
 echo <<<EOT
 -->
-       
- 
-   	   <tr> 
-            <td align="center"  class="input_bottom"><input name="chkAll" class="xz" type="checkbox" id="chkAll" onclick=CheckAll(this.form) value="checkbox"></td>
-            <td align="center"  class="input_bottom">{$lang_selectall}</td>
-			<td align="left" colspan="6"  class="input_bottom"><input name="submit" type='submit' value='{$lang_deleteselected}'> 
-              <input name="action_type" type="hidden" id="action_type" value="del">
-			  <input name="allid" type="hidden" id="allid" value=""></form></td>
-          </tr>
-		     	   <tr>
-   	     <td height="0" align="center" colspan="6" class="list1_input">$page_list</td>
+</table> 
+			<input name="action_type" type="hidden" id="action_type" value="del" />
+			<input name="allid" type="hidden" id="allid" value="" /> 
+</form>
+		</td> 
+		</tr> 
+		<tr> 
+            <td class="all" width="40"><input name="chkAll" type="checkbox" id="chkAll" onclick="CheckAllx($(this),'del')" value="checkbox" /></td>
+            <td class="all" width="50"><label for="chkAll">{$lang_selectall}</label></td>
+			<td align="left" class="all-submit">
+				<input name="submit" type='submit' value='{$lang_deleteselected}' class="submit li-submit" onclick="return met_modify($(this),'del','delete');" /> 
+				<input name="saveorder" type='submit' value='{$lang_Submit}' class="submit li-submit" onclick="return met_modify($(this),'del','editor');" />
+			  <div class="page_list">
+			  $page_list
+			  </div>
+			</td>
         </tr>
    	   <tr>
-		  <td class="list1_footer" colspan="6" align="center">$foot</td>
+		  <td class="footer" colspan="6">$foot</td>
 	  </tr>
 </table>
+
 </body>
 </html>
 <!--
 EOT;
-}
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>-->

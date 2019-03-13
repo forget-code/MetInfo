@@ -4,20 +4,25 @@
 require_once '../login/login_check.php';
 include_once("../../fckeditor/fckeditor.php");
 if($action=="modify"){ 
+$filename=preg_replace("/\s/","_",trim($filename)); 
+if($filename!='' && $filename != $filenameold){
+	$filenameok = $db->get_one("SELECT * FROM $met_column WHERE filename='$filename'");
+	if($filenameok)okinfox('../about/about.php?lang='.$lang.'&id='.$id,$lang_modFilenameok);
+}
 $query = "update $met_column SET 
                       content     = '$content',
 					  keywords    = '$keywords',
+					  filename    = '$filename',
+					  ctitle      = '$ctitle',
 					  description = '$description'
 					  where id='$id'";
 $db->query($query);
-//html
-showhtm($id);
-okinfo('about.php?lang='.$lang.'&id='.$id,$lang_jsok);
+okinfoh('../about/about.php?lang='.$lang.'&id='.$id,showhtm($id));
 }
 else{
 $about = $db->get_one("SELECT * FROM $met_column WHERE id='$id'");
 if(!$about){
-okinfo('../site/sysadmin.php?lang='.$lang,$lang_dataerror);
+okinfox('../site/sysadmin.php?lang='.$lang,$lang_dataerror);
 }
 }
 $rooturl="..";

@@ -5,10 +5,10 @@ require_once '../login/login_check.php';
 require_once '../../config/flash_'.$lang.'.inc.php';
 
 $path=($met_flasharray[$module][type]==2)?"flash_path":"img_path"; 
-if($$path=='')okinfo('javascript:history.back();',$lang_js27);
+if($$path=='')okinfox('../flash/flash.php?lang='.$lang,$lang_js27);
 $width=$met_flasharray[$module][x];
 $height=$met_flasharray[$module][y];
-$flash=$met_flasharray[$module][type];
+$flash=$met_flasharray[$module][type]==2?2:1;
 if($action=="add"){
 $query = "INSERT INTO $met_flash SET
                       module             = '$module',
@@ -22,7 +22,7 @@ $query = "INSERT INTO $met_flash SET
 					  height			 = '$height',
 					  lang               = '$lang'";
          $db->query($query);
-okinfo('flash.php?lang='.$lang.'&flashmode='.$flash,$lang_jsok);
+okinfo('../flash/flash.php?lang='.$lang.'&flashmode='.$flash);
 }
 
 if($action=="editor"){
@@ -40,7 +40,7 @@ $query = "update $met_flash SET
 					  where id='$id'";
 
 $db->query($query);
-okinfo('flash.php?lang='.$lang.'&flashmode='.$flash,$lang_jsok);
+okinfo('../flash/flash.php?lang='.$lang.'&flashmode='.$flash);
 }
 
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
