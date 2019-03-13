@@ -199,7 +199,7 @@ class PHPMailer {
    * Sets SMTP authentication. Utilizes the Username and Password variables.
    * @var bool
    */
-  var $SMTPAuth     = false;
+  var $SMTPAuth     = true;
 
   /**
    * Sets SMTP username.
@@ -218,7 +218,7 @@ class PHPMailer {
    * work with the win32 version.
    * @var int
    */
-  var $Timeout      = 10;
+  var $Timeout      = 3;
 
   /**
    * Sets SMTP class debugging on or off.
@@ -613,12 +613,17 @@ class PHPMailer {
           }
         }
       }
+	  else{
+		$connection = false;
+		$this->SetError($this->Lang('connect_host'));
+	  }
       $index++;
     }
+	/*
     if(!$connection) {
       $this->SetError($this->Lang('connect_host'));
     }
-
+	*/
     return $connection;
   }
 

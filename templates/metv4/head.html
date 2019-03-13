@@ -1,0 +1,62 @@
+<!--<?php
+//在线交流标签
+$metonline=methtml_online();
+//语言切换标签
+$langsub=methtml_lang('<span>|</span>');$metlang=$langsub?$langsub:'';
+$metlang=$methtml_hadd?'<span>|</span>'.$metlang:$metlang;
+//顶部搜索框标签
+$topsearch=methtml_search('1','0','','','botton.gif');
+//导航宽度计算
+$liwd=((950-10)/(count($nav_list)+1))-12-20;$listyle=$lang_navtype==1?"width:{$liwd}px;":'padding:0px 16px 0px 10px;';
+//顶部导航标签
+$metnav=metlabel_nav(1,'<li class="line"></li>');
+//子栏目
+if(count($nav_list2[$class1])==0)$metnavnow=$met_seo;//不存在子栏目则显示SEO头部文字
+else{
+$metnavnow=metlabel_navnow(1,'<li class="line">|</li>');//子栏目标签
+}
+echo <<<EOT
+-->
+{$methtml_head}
+<script src="{$navurl}public/js/metinfo-min.js" language="javascript" type="text/javascript"></script>
+<script src="{$img_url}js/fun.inc.js" type="text/javascript"></script>
+<style type="text/css">
+#top{ background:url({$otherinfo[imgurl2]}) no-repeat;}
+#nav li a span{ $listyle }
+</style>
+<body>
+    <div id="metinfo">
+        <div id="top">		 
+			<div class="floatl">
+				<a href="{$index_url}" title="{$met_webname}"><img 
+					src="{$met_logo}" 
+					alt="{$met_webname}" 
+					title="{$met_webname}" 
+					style="margin-top:{$lang_LogoTop}px; margin-left:{$lang_LogoLeft}px;"
+				/></a>
+			</div>
+			<div class="floatr">
+				<div class="top">{$methtml_hadd}{$metlang}</div>
+				<div class="search">$topsearch</div>
+			</div>
+			<div class="clear" style="height:5px; width:10px;"></div>
+			<div id="nav">	
+				<div class="nava">{$metnav}</div>
+				<script type="text/javascript">metaddclass($("#nav_{$navdown}"),'navdown');proxy($("#nav li"),'hover');</script>
+			</div>
+<!--
+EOT;
+if($lang_nav2ok){
+echo <<<EOT
+-->
+			<div class="navnow">{$metnavnow}<div class="clear"></div></div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+		</div>
+		<div id='flash'>{$methtml_flash}</div>
+<!--
+EOT;
+?>

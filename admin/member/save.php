@@ -6,11 +6,8 @@ require_once '../login/login_check.php';
 if(!isset($checkid)) $checkid=0;
 
 if($action=="add"){
-
 $admin_if=$db->get_one("SELECT * FROM $met_admin_table WHERE admin_id='$useid'");
-if($admin_if){
-okinfox('../member/add.php?lang='.$lang,$lang_loginUserMudb1);
-}
+if($admin_if)metsave('-1',$lang_loginUserMudb1);
  $pass1=md5($pass1);
  $query = "INSERT INTO $met_admin_table SET
                       admin_id           = '$useid',
@@ -35,7 +32,7 @@ okinfox('../member/add.php?lang='.$lang,$lang_loginUserMudb1);
 					  checkid            = '$checkid',
 					  lang               = '$lang'";
          $db->query($query);
-okinfo('../member/index.php?lang='.$lang);
+	metsave('../member/index.php?lang='.$lang.'&anyid='.$anyid);
 }
 
 if($action=="editor"){
@@ -67,7 +64,7 @@ $query .=", admin_pass         = '$pass1'";
 }
 $query .="  where id='$id'";
 $db->query($query);
-okinfo('../member/index.php?lang='.$lang);
+metsave('../member/index.php?lang='.$lang.'&anyid='.$anyid);
 }
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.

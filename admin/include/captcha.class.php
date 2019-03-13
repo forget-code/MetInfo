@@ -1,6 +1,7 @@
 <?php
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+error_reporting(E_ERROR | E_PARSE);
 class Captcha
 {
  var  $mCheckCodeNum  = 4;
@@ -16,7 +17,7 @@ class Captcha
   var $mCheckImageHeight  = '20';
   
   //font
-  var $FNT="../../font/arial.ttf";
+  var $FNT="../../font/verdana.ttf";
 
  function OutFileHeader()
  {

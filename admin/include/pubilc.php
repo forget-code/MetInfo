@@ -20,6 +20,7 @@ $met_module[$list['module']][]=$list;
 $query="select * from $met_column order by no_order";
 $result= $db->query($query);
 while($list = $db->fetch_array($result)){
+if($list[classtype]==1 || $list[releclass])$column_pop[$list[lang]][]=$list;
 if(($list[classtype]>=1 or ($list[releclass]>0 and $list[module]<7)) and $list[if_in]==0)$column_lang[$list[module]][]=$list;
 }
 # This program is an open source system, commercial use, please consciously to purchase commercial license.

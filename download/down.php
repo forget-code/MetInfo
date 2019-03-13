@@ -12,6 +12,9 @@ if($type=='para'){
 	$metinfoparadown=$db->get_one("select * from $met_plist where id='$listid' and module='4'");
 	$download[downloadurl]=$metinfoparadown[info];
 	}
+$query="select * from $met_admin_array where id='$download[downloadaccess]'";
+$memberacess=$db->get_one($query);
+$download[downloadaccess]=$memberacess[user_webpower];
 if(intval($metinfo_member_type)>=intval($download[downloadaccess])){
     header("location:$download[downloadurl]");exit;
 	}else{

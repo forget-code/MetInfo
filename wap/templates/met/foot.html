@@ -20,13 +20,14 @@ echo <<<EOT
 <div style="text-align:center; font-size:12px; padding:2px 0px;">
 <!--
 EOT;
+if(count($met_langok)>0 && $met_lang_mark){
 foreach($met_langok as $key=>$val){
 echo <<<EOT
 --> 
 <a href="$val[wapurl]" title="$val[name]" class="langs">$val[name]</a>
 <!--
 EOT;
-}
+}}
 echo <<<EOT
 --> 
 </div>

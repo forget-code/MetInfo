@@ -2,7 +2,7 @@
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 require_once 'login_check.php';
-
+require_once ROOTPATH.'member/index_member.php';
 $serch_sql=" where customerid='$metinfo_member_name' and lang='$lang' ";
 	$order_sql=" order by id desc ";
 	$total_count = $db->counter($met_message, "$serch_sql", "*");
@@ -20,9 +20,8 @@ $serch_sql=" where customerid='$metinfo_member_name' and lang='$lang' ";
     }
 $page_list = $rowset->link("message.php?search=$search&lang=$lang&page=");
 
-$css_url="templates/".$met_skin."/css";
-$img_url="templates/".$met_skin."/images";
-include templatemember('message');
+$mfname='message';
+include template('member');
 footermember();
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.

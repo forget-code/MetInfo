@@ -1,8 +1,46 @@
 <?php
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+function dump($vars, $label = '', $return = false){
+    if (ini_get('html_errors')){
+        $content = "<pre>\n";
+        if ($label != '') {
+            $content .= "<strong>{$label} :</strong>\n";
+        }
+        $content .= htmlspecialchars(print_r($vars, true));
+        $content .= "\n</pre>\n";
+    } else {
+        $content = $label . " :\n" . print_r($vars, true);
+    }
+    if ($return) { return $content; }
+    echo $content;
+    return null;
+}
+function metfiletype($qz){
+	$list=explode(".",$qz);
+	$metinfo=$list[count($list)-1];
+	return $metinfo;
+}
+/*去除空格*/
+function metdetrim($str){
+    $str = trim($str);
+    $str = ereg_replace("\t","",$str);
+    $str = ereg_replace("\r\n","",$str);
+    $str = ereg_replace("\r","",$str);
+    $str = ereg_replace("\n","",$str);
+    $str = ereg_replace(" ","",$str);
+    return trim($str);
+}
+	function inject_check($sql_str) {
+  if(strtoupper($sql_str)=="UPDATETIME" ){
+  return eregi('select|insert|delete|\'|\/\*|\*|\.\.\/|\.\/|union|into|load_file|outfile', $sql_str);   
+  }else{	
+  return eregi('select|insert|update|delete|\'|\/\*|\*|\.\.\/|\.\/|union|into|load_file|outfile', $sql_str);   
+  }     
+} 
+/*post和get变量变成普通变量，防注入。*/
 function daddslashes($string, $force = 0,$metinfo) {
-    $met_sqlreplace=0; //SQL Anti-injection,1 meets Replace dangerous characters ,0 meets Dangerous characters are not allowed to submit【Recommend】
+global $met_sqlinsert;
 	!defined('MAGIC_QUOTES_GPC') && define('MAGIC_QUOTES_GPC', get_magic_quotes_gpc());
 	if(!MAGIC_QUOTES_GPC || $force) {
 		if(is_array($string)) {
@@ -13,8 +51,7 @@ function daddslashes($string, $force = 0,$metinfo) {
 			$string = addslashes($string);
 		}
 	}
-global $met_sqlreplace;
-if($met_sqlreplace){
+	$string_old = $string;
 	$string = str_replace("select", "\sel\ect", $string);
 	$string = str_replace("insert", "\ins\ert", $string);
 	$string = str_replace("update", "\up\date", $string);
@@ -23,13 +60,24 @@ if($met_sqlreplace){
 	$string = str_replace("into", "\in\to", $string);
 	$string = str_replace("load_file", "\load\_\file", $string);
 	$string = str_replace("outfile", "\out\file", $string);
-}else{
-	if(inject_check($string)&&$metinfo!='metinfo'){
-	$reurl="http://".$_SERVER["HTTP_HOST"];	
-	echo("<script type='text/javascript'> alert('Please Stop SQL Injecting！'); location.href='$reurl'; </script>");
-	die("Please Stop SQL Injecting！");
+	$string = str_replace("'","",$string);
+	$string = str_replace("*","",$string);
+	$string = str_replace("~","",$string);
+	$string_html=$string;
+	$string = strip_tags($string);
+	/*
+	if(strlen($string_html)!=strlen($string)){
+		$reurl="http://".$_SERVER["HTTP_HOST"];
+		echo("<script type='text/javascript'> alert('Submitted information is not legal!'); location.href='$reurl'; </script>");
+		die("Parameter Error！");
 	}
-}
+	*/
+	if(strlen($string_old)!=strlen($string)&&$met_sqlinsert){
+		$reurl="http://".$_SERVER["HTTP_HOST"];
+		echo("<script type='text/javascript'> alert('Submitted information is not legal!'); location.href='$reurl'; </script>");
+		die("Parameter Error！");
+	}
+	$string = trim($string);
 	if($id!=""){
 	if(!is_numeric($id)){
 	$reurl="http://".$_SERVER["HTTP_HOST"];
@@ -57,7 +105,7 @@ if($met_sqlreplace){
     $string = str_replace("%", "\%", $string);     //      
 	return $string;
 }
-
+/*载入模板*/
 function template($template,$EXT="html"){
 	global $met_skin_user,$skin,$dataoptimize_html;
 	$EXT=($dataoptimize_html=="")?$EXT:$dataoptimize_html;
@@ -67,98 +115,115 @@ function template($template,$EXT="html"){
 	unset($GLOBALS[con_db_id],$GLOBALS[con_db_pass],$GLOBALS[con_db_name]);
 	$path = ROOTPATH."templates/$skin/$template.$EXT";
 	
-	!file_exists($path) && $path=ROOTPATH."templates/met/$template.$EXT";
+	!file_exists($path) && $path=ROOTPATH."public/ui/met/$template.$EXT";
 	return  $path;
 }
-function htmpacks($murl){
-	global $met_htmpack_url,$met_weburl,$classnow;
+/*全站静态页面打包时，文件保存地址。*/
+function htmpacks($murl,$adminfile){
+	global $classnow;
+		$met_htmpack_url=$adminfile.'/databack/htmpack/';
 		$dir=getcwd();
 		$dir=basename($dir);
 		$pack_url = $met_htmpack_url;
 		$murlb=$murl;
 		$murl = $pack_url.$murl;
-		if($classnow!=10001)$murl = $pack_url.$dir.'/'.$murlb;
+		if($classnow!=10001)$murl = '../'.$pack_url.$dir.'/'.$murlb;
 		$url.=$_SERVER["PHP_SELF"];
 		$mlist = explode('/',$url);
 		$mnum = count($mlist)-2;
-		$p = '';
-		for($i=0;$i<$mnum;$i++){
-			$p = '../'.$p;
-		}
-		$remurl = $p.$murl;
-		metnew_dir($murl,$p);
+		$remurl = $murl;
+		metnew_dir($murl);
 		return $remurl;
 }
-function metnew_dir($pathf,$p){
-	global $met_weburl,$lang_htmpermission;
+/*新建目录*/
+function metnew_dir($pathf){
+	global $lang_modFiledir;
 	$dirs = explode('/',$pathf);
 	$num  = count($dirs) - 1;
 	for($i=0;$i<$num;$i++){
-		$dirpath .= $i==0?$p.$dirs[$i].'/':$dirs[$i].'/';
+		$dirpath .= $i==0?$dirs[$i].'/':$dirs[$i].'/';
 		if(!is_dir($dirpath)){
 			mkdir($dirpath);
-			if(!chmod($dirpath,0777))die($lang_htmpermission);
+			//if(!chmod($dirpath,0777))die($lang_modFiledir);
 		}
 	}
 }
-/**foot**/
+function unescape($str){ 
+    $ret = ''; 
+    $len = strlen($str); 
+
+    for ($i = 0; $i < $len; $i++) { 
+        if ($str[$i] == '%' && $str[$i+1] == 'u') { 
+            $val = hexdec(substr($str, $i+2, 4)); 
+
+            if ($val < 0x7f) $ret .= chr($val); 
+            else if($val < 0x800) $ret .= chr(0xc0|($val>>6)).chr(0x80|($val&0x3f)); 
+            else $ret .= chr(0xe0|($val>>12)).chr(0x80|(($val>>6)&0x3f)).chr(0x80|($val&0x3f)); 
+
+            $i += 5; 
+        }else if ($str[$i] == '%') { 
+            $ret .= urldecode(substr($str, $i, 3)); 
+            $i += 2; 
+        } 
+        else $ret .= $str[$i]; 
+    } 
+    return $ret; 
+}
+
+/*页面输出*/
 function footer(){	
-	global $output,$db,$met_htmtype,$html_filename,$metinfonow,$met_member_force,$met_webhtm,$met_htmpack,$htmpack,$lang_htmcreate,$lang_htmsuccess,$index_url,$indexy,$met_chtmtype;
+	global $output,$db,$met_htmtype,$html_filename,$metinfonow,$met_member_force,$met_webhtm,$htmpack,$lang_htmcreate,$lang_htmsuccess,$index_url,$indexy,$met_chtmtype,$adminfile;
 	$output = str_replace(array('<!--<!---->','<!---->','<!--fck-->','<!--fck','fck-->','',"\r",substr($admin_url,0,-1)),'',ob_get_contents());
+	$output=trim($output,"\n");
 	$db->close();	
 	ob_end_clean();	
 	if($metinfonow==$met_member_force and $met_webhtm){
-		//$html_filename=urlencode($html_filename);
+		$html_filename=str_replace("\\",'',$html_filename);
+		$html_filename=unescape($html_filename);
 		$html_filename.=$indexy=='index'?$met_htmtype:($indexy==1?$met_chtmtype:$met_htmtype);
-		if($htmpack && $met_htmpack)$html_filename = htmpacks($html_filename);
+		if($htmpack)$html_filename = htmpacks($html_filename,$adminfile);
 		$newhtm = explode('/',$html_filename);
 		$newhtm = $newhtm[count($newhtm)-1];
+		if(stristr(PHP_OS,"WIN")){
+			$html_filename=@iconv("utf-8","GBK",$html_filename);
+		}
 		$handle = fopen($html_filename,"w");
 		if (!is_writable($html_filename)){
-			$jsok="<font color=red>".$newhtm."is not writable!</font><br/>";
-		}elseif (!fwrite($handle,$output)){   
-			$jsok="<font color=red>Create ".$newhtm." Failure!</font><br/>";
+			$jsok=2;
+		}elseif(!fwrite($handle,$output)){
+			$jsok=1;
 		}else{
-			$jsok="<font color=green>$lang_htmcreate ".$newhtm." $lang_htmsuccess</font><br/>";
+			$jsok=0;
 		}
-		fclose ($handle);  
-		echo "document.write('$jsok');";
+		fclose($handle);  
+		echo $jsok;
 	}else{
-	    echo $output;
+	   echo $output;
 	}
-	exit;
+	exit();
 }
+/*手机页面输出*/
 function wapfooter(){
 	global $output,$db,$html_filename,$metwaphtm;
 	$output = str_replace(array('<!--<!---->','<!---->','<!--fck-->','<!--fck','fck-->','',"\r",substr($admin_url,0,-1)),'',ob_get_contents());
+	$output=trim($output,"\n");
 	$db->close();	
 	ob_end_clean();	
-	if($metwaphtm=='metwaphtm'){
-		$html_filename.='.html';
-		$newhtm = explode('/',$html_filename);
-		$newhtm = $newhtm[count($newhtm)-1];
-		$handle = fopen($html_filename,"w");
-		if (!is_writable($html_filename)){
-			$jsok="<font color=red>".$newhtm."is not writable!</font>";
-		}elseif (!fwrite($handle,$output)){   
-			$jsok="<font color=red>Create ".$newhtm." Failure!</font>";
-		}else{
-			$jsok="<font color=green>$lang_htmcreate ".$newhtm." $lang_htmsuccess</font>";
-		}
-		fclose ($handle);  
-		echo "document.write('$jsok')";
-	}else{
-	    echo $output;
-	}
+	echo $output;
 	exit;
 }
-
-/**successful**/
+/*前台跳转*/
 function okinfo($url = '../site/sysadmin.php',$langinfo){
-echo("<script type='text/javascript'> alert('$langinfo'); location.href='$url'; </script>");
-exit;
+	if($langinfo){
+		echo("<script type='text/javascript'> alert('$langinfo'); location.href='$url'; </script>");
+	}
+	else{	
+		header('HTTP/1.1 404 Not Found');	    
+		echo("<script type='text/javascript'>location.href='$url'; </script>");
+	}
+	exit();
 }
-
+/*字段权限控制代码加密后（加密后可用URL传递）*/
 function authcode($string, $operation = 'DECODE', $key = '', $expiry = 0){
 
         $ckey_length = 4;  
@@ -208,7 +273,7 @@ function authcode($string, $operation = 'DECODE', $key = '', $expiry = 0){
         }
 
     }
-	
+/*和authcode配合使用*/
 function codetra($content,$codetype) {
 	if($codetype==1){
 		$content = str_replace('+','metinfo',$content);
@@ -217,9 +282,9 @@ function codetra($content,$codetype) {
 	}
 	return $content;
 }
-//page
+/*内容分页*/
 function pageBreak($content,$type){ 
-	$content = $content; 
+	$content = substr($content,0,strlen($content)-6); 
     $pattern = "/<div style=\"page-break-after: always;?\">\s*<span style=\"display: none;?\">&nbsp;<\/span>\s*<\/div>/";      
 	$strSplit = preg_split($pattern, $content); 
 	$count = count($strSplit); 
@@ -230,7 +295,8 @@ function pageBreak($content,$type){
 	$outStr = "<div id='page_break'>"; 
 	foreach($strSplit as $value) { 
 	if ($i <= 1) { 
-	$outStr .= "<div id='page_$i'>$value</div>"; 
+	$value=substr($value,5);
+	$outStr .= "<div id='page_{$i}'>{$value}</div>"; 
 	} else { 
 	$outStr .= "<div id='page_$i' class='collapse'>$value</div>"; 
 	} 
@@ -248,80 +314,153 @@ function pageBreak($content,$type){
 	} 
 } 
 
-// page and label
+/*内容页面容热门标签替换和内容分页*/
 function contentshow($content) {
 global $lang_PagePre,$lang_PageNext,$navurl,$index,$lang;
-if(file_exists(ROOTPATH.'config/str_'.$lang.'.inc.php')){
-	require_once ROOTPATH.'config/str_'.$lang.'.inc.php';
-	foreach($str as $key=>$val){
-	$content = str_replace($val[0],$val[1],$content);
+$str=met_cache('str_'.$lang.'.inc.php');
+if(!$str){$str=cache_str();}
+foreach ($str as $key=>$val){
+	if($val[2]!=0){
+		$tmp1 = explode("<",$content);
+		$num=$val[2];
+		foreach ($tmp1 as $key=>$item){
+			$tmp2 = explode(">",$item);
+			if (sizeof($tmp2)>1&&strlen($tmp2[1])>0) {
+				if (substr($tmp2[0],0,1)!="a" && substr($tmp2[0],0,1)!="A"){
+					$valnum=substr_count($tmp2[1],$val[0]);
+					if($num-$valnum>=0){
+						$num=$num-$valnum;
+					}
+					else{
+						$valnum=$num;
+						$num=0;
+					}
+					$tmp2[1] = preg_replace("/".$val[0]."/",$val[1],$tmp2[1],$valnum);
+					$tmp1[$key] = implode(">",$tmp2);
+				}
+			}
+		}
+		$content = implode("<",$tmp1);
 	}
 }
 if(pageBreak($content,1)>1){
 	$content = pageBreak($content);
 	$content.="<link rel='stylesheet' type='text/css' href='{$navurl}public/css/contentpage.css' />\n"; 
-	$content.="<script type='text/javascript'>\n"; 
-	$content.="$(document).ready(function(){\n"; 
-	$content.="$('#page_break .num li:first').addClass('on');\n";  
-	$content.="$('#page_break .num li').click(function(){;\n";  
-	$content.="$(\"#page_break div[id^='page_']\").hide();\n"; 
-	$content.="if ($(this).hasClass('on')) {\n";  
-	$content.="$('#page_break #page_' + $(this).text()).show();\n";   
-	$content.="} else { \n";
-	$content.="$('#page_break .num li').removeClass('on'); \n";
-	$content.="$(this).addClass('on'); \n";
-	$content.="$('#page_break #page_' + $(this).text()).show(); \n";
-	$content.="} });});</script>\n"; 
+	$content.="
+<script type='text/javascript'>
+$(document).ready(function(){
+	$('#page_break .num li:first').addClass('on');
+	$('#page_break .num li').click(function(){
+		$('#page_break').find(\"div[id^='page_']\").hide();
+		if ($(this).hasClass('on')) {
+			$('#page_break #page_' + $(this).text()).show();
+		} else {
+			$('#page_break').find('.num li').removeClass('on'); 
+			$(this).addClass('on'); 
+			$('#page_break').find('#page_' + $(this).text()).show(); 
+		} 
+	});
+});
+</script>
+	"; 
 }
+if($content=='<div><div id="metinfo_additional"></div></div>')$content='';
 return $content;
 }
 
-// delete file
+/*删除文件*/
 function file_unlink($file_name) {
-
 	if(file_exists($file_name)) {
-		@chmod($file_name,0777);
+		//@chmod($file_name,0777);
 		$area_lord = @unlink($file_name);
 	}
 	return $area_lord;
 }
 
 
-//sort
+/*列表页排序方式*/
 function list_order($listid){
 switch($listid){
 case '0':
-$list_order=" order by no_order";
+$list_order=" order by top_ok desc,no_order desc,updatetime desc,id desc";
 return $list_order;
 break;
 
 case '1':
-$list_order=" order by updatetime desc";
+$list_order=" order by top_ok desc,no_order desc,updatetime desc,id desc";
 return $list_order;
 break;
 
 case '2':
-$list_order=" order by addtime desc";
+$list_order=" order by top_ok desc,no_order desc,addtime desc,id desc";
 return $list_order;
 break;
 
 case '3':
-$list_order=" order by hits desc";
+$list_order=" order by top_ok desc,no_order desc,hits desc,id desc";
 return $list_order;
 break;
 
 case '4':
-$list_order=" order by id desc";
+$list_order=" order by top_ok desc,no_order desc,id desc";
 return $list_order;
 break;
 
 case '5':
-$list_order=" order by id";
+$list_order=" order by top_ok desc,no_order desc,id asc ";
 return $list_order;
 break;
 }
 }
+/*上一条下一条排序*/
+function pn_order($list_order,$news){
+switch($list_order){
+case '0':
+$pn_order[0]="(updatetime > '$news[updatetime_order]') order by updatetime asc";
+$pn_order[1]="(updatetime < '$news[updatetime_order]') order by updatetime desc";
 
+$pn_order[2]="(updatetime = '$news[updatetime_order]') order by id desc";
+return $pn_order;
+break;
+
+case '1':
+$pn_order[0]="(updatetime > '$news[updatetime_order]') order by updatetime asc";
+$pn_order[1]="(updatetime < '$news[updatetime_order]') order by updatetime desc";
+
+$pn_order[2]="(updatetime = '$news[updatetime_order]') order by id desc";
+return $pn_order;
+break;
+
+case '2':
+$pn_order[0]="(addtime > '$news[addtime]') order by addtime asc";
+$pn_order[1]="(addtime < '$news[addtime]') order by addtime desc";
+
+$pn_order[2]="(addtime = '$news[addtime]') order by id desc";
+return $pn_order;
+break;
+
+case '3':
+$pn_order[0]="(hits > '$news[hits]') order by hits asc";
+$pn_order[1]="(hits < '$news[hits]') order by hits desc";
+
+$pn_order[2]="(hits = '$news[hits]') order by id desc";
+return $pn_order;
+break;
+
+case '4':
+$pn_order[0]="id > '$news[id]' order by id asc";
+$pn_order[1]="id < '$news[id]' order by id desc";
+return $pn_order;
+break;
+
+case '5':
+$pn_order[0]="(id < '$news[id]') order by id desc";
+$pn_order[1]="(id > '$news[id]') order by id asc";
+return $pn_order;
+break;
+}
+}
+/*转UTF-8码*/
 function utf8Substr($str, $from, $len) 
 {
 if(mb_strlen($str,'utf-8')>intval($len)){
@@ -334,87 +473,45 @@ return preg_replace('#^(?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,'.$from.'}'.
 '$1',$str); 
 }
 }
-
-function inject_check($sql_str) {
-  if(strtoupper($sql_str)=="UPDATETIME" ){
-  return eregi('select|insert|delete|\'|\/\*|\*|\.\.\/|\.\/|union|into|load_file|outfile', $sql_str);   
-  }else{	
-  return eregi('select|insert|update|delete|\'|\/\*|\*|\.\.\/|\.\/|union|into|load_file|outfile', $sql_str);   
-  }     
-}  
-function get_keyword_str($str,$keyword,$getstrlen){
-	if(cnStrLen($str)> $getstrlen) 
-	{
-		$strlen = cnStrLen($keyword);
-		$strpos = cnStrPos($str,$keyword);
+/*搜索关键词*/
+function get_keyword_str($str,$keyword,$getstrlen,$searchtype,$type){
+	$str=str_ireplace('<p>','&nbsp;',$str);
+	$str=str_ireplace('</p>','&nbsp;',$str);
+	$str=str_ireplace('<br />','&nbsp;',$str);
+	$str=str_ireplace('<br>','&nbsp;',$str);
+	if($type){
+		$searchtype=$searchtype!=2?1:0;
+	}else{
+		$searchtype=$searchtype!=1?1:0;
+	}
+	if(mb_strlen($str,'utf-8')> $getstrlen){
+		$strlen = mb_strlen($keyword,'utf-8');
+		$strpos = mb_stripos($str,$keyword,0,'utf-8');
 		$halfStr = intval(($getstrlen-$strlen)/2);
 		if($strpos!=""){
-		 if($strpos>=$halfStr){
-		    $str = cnSubStr($str,($strpos - $halfStr),$halfStr).$keyword.cnSubStr($str,($strpos + $strlen),$halfStr);
-		 }else{
-		   $str = cnSubStr($str,($strpos - $halfStr),$strpos).$keyword.cnSubStr($str,($strpos + $strlen),($halfStr*2));
-		 }	
+			if($strpos>=$halfStr){
+				$str = mb_substr($str,($strpos - $halfStr),$halfStr,'utf-8').$keyword.mb_substr($str,($strpos + $strlen),$halfStr,'utf-8');
+			}else{
+				$str = mb_substr($str,0,$strpos,'utf-8').$keyword.mb_substr($str,($strpos + $strlen),($halfStr*2),'utf-8');
+			}	
 		}else{
-		$str = cnSubStr($str,0,$getstrlen);
+			$str = mb_substr($str,0,$getstrlen,'utf-8');
 		}
-		$str=str_replace('<p>','&nbsp;',$str);
-		$str=str_replace('</p>','&nbsp;',$str);
-		$str=str_replace('<br />','&nbsp;',$str);
-		$str=str_replace('<br>','&nbsp;',$str);
-		return str_replace($keyword,'<span style="font-size: 12px; color: #F30;">'.$keyword.'</span>',$str).'...';
+		$metinfo=$str.'...';
+		if($searchtype){
+			$metinfo=str_ireplace($keyword,'<em style="font-style:normal;">'.$keyword.'</em>',$str).'...';
+		}
+		return $metinfo;
+	}else{
+		$metinfo=$str;
+		if($searchtype){
+			$metinfo=str_ireplace($keyword,'<em style="font-style:normal;">'.$keyword.'</em>',$str);
+		}
+		return $metinfo;
 	}
-	else
-	{
-		return str_replace($keyword,'<span style="font-size: 12px; color: #F30;">'.$keyword.'</span>',$str);
-	}
+	
 }
-
-/*
-	get the len 
-*/
-
-function cnStrLen($str)
-{
-	$i = 0;
-	$tmp = 0;
-	while ($i < strlen($str))
-	{
-		if (ord(substr($str,$i,1)) >127)
-		{
-			$tmp = $tmp+1;
-			$i = $i + 3;
-		}
-		else
-		{
-			$tmp = $tmp + 1;;
-			$i = $i + 1;
-		}
-	}
-	return $tmp;
-}
-/*
-	get the position
-*/
-function cnStrPos($str,$keyword)
-{
-	$i = 0;
-	$tem = 0;
-	$temStr = strpos($str,$keyword);
-	while ($i < $temStr)
-	{
-		if (ord(substr($str,$i,1)) >127)
-		{
-			$tmp = $tmp+1;
-			$i = $i + 3;
-		}
-		else
-		{
-			$tmp = $tmp + 1;;
-			$i = $i + 1;
-		}
-	}
-	return $tmp;
-}
+/*模板未授权*/
 function authtemp($code){
 global $au_site,$met_weburl;
 if(function_exists(authcode))
@@ -428,50 +525,13 @@ foreach($au_site as $val)
 	}
 }
 var_export("-->");
-okinfo("http://www.metinfo.cn","模板使用权过期或域名未授权! Powered by MetInfo");exit();
+okinfo("http://www.metinfo.cn","{$met_weburl}未授权使用此模板或已经过期! Powered by MetInfo");exit();
 }
+/*把字符串当成代码运行*/
 function run_strtext($code){
     return eval($code);
 }
-
-function cnSubStr($str, $start, $lenth)
-{
-	$len = strlen($str);
-	$r = array();
-	$n = 0;
-	$m = 0;
-	for($i = 0; $i < $len; $i++) {
-		$x = substr($str, $i, 1);
-		$a = base_convert(ord($x), 10, 2);
-		$a = substr('00000000'.$a, -8);
-		if ($n < $start){
-			if (substr($a, 0, 1) == 0) {
-			}elseif (substr($a, 0, 3) == 110) {
-				$i += 1;
-			}elseif (substr($a, 0, 4) == 1110) {
-				$i += 2;
-			}
-			$n++;
-		}else{
-			if (substr($a, 0, 1) == 0) {
-				$r[] = substr($str, $i, 1);
-			}elseif (substr($a, 0, 3) == 110) {
-				$r[] = substr($str, $i, 2);
-				$i += 1;
-			}elseif (substr($a, 0, 4) == 1110) {
-				$r[] = substr($str, $i, 3);
-				$i += 2;
-			}else{
-				$r[] = '';
-			}
-			if (++$m >= $lenth){
-				break;
-			}
-		}
-	}
-	return join('', $r);
-
-} // End subString_UTF8
+/*会员模板加载*/
 function templatemember($template,$EXT="html"){
 	if(empty($skin)){
 	    $skin ="met";
@@ -481,18 +541,21 @@ function templatemember($template,$EXT="html"){
 	!file_exists($path) && $path=ROOTPATH."member/templates/met/$template.$EXT";
 	return  $path;
 }
-function wap_replace($text,$tag,$tag1,$tag2){
+/*手机内容替换*/
+function wap_replace($text,$tag,$tag1){
 	$text = preg_replace("/<(\/?$tag.*?)>/si","",$text);
 	if($tag1){
-		$text=preg_replace("/<($tag1.*?)>(.*?)<(\/$tag1.*?)>/si","",$text);
-		$text=preg_replace("/<(\/?$tag1.*?)> /si","",$text);
-	}
-	if($tag2){
-		$text=preg_replace("/<($tag2.*?)>(.*?)<(\/$tag2.*?)>/si","",$text); 
-		$text=preg_replace("/<(\/?$tag2.*?)>/si","",$text);
+		$cndes=explode('|',$tag1);
+		for($i=0;$i<count($cndes);$i++){
+			if($cndes[$i]!=''){
+				$text=preg_replace("/<(".$cndes[$i].".*?)>(.*?)<(\/".$cndes[$i].".*?)>/si","",$text);
+				$text=preg_replace("/<(\/?".$cndes[$i].".*?)> /si","",$text);
+			}
+		}
 	}
 	return $text;
 }
+/*手机模板加载*/
 function waptemplate($template,$EXT="html"){
 	if(empty($skin)){
 	    $skin ="met";
@@ -502,6 +565,7 @@ function waptemplate($template,$EXT="html"){
 	!file_exists($path) && $path=ROOTPATH."wap/templates/met/$template.$EXT";
 	return  $path;
 }
+/*会员输出*/
 function footermember(){
 	$output = str_replace(array('<!--<!---->','<!---->','<!--fck-->','<!--fck','fck-->','',"\r",substr($admin_url,0,-1)),'',ob_get_contents());
     ob_end_clean();
@@ -509,6 +573,7 @@ function footermember(){
 	mysql_close();
 	exit;
 }
+/*图片显示大小*/
 function met_imgxy($xy,$module){
 	global $met_newsimg_x,$met_newsimg_y,$met_productimg_x,$met_productimg_y,$met_imgs_x,$met_imgs_y;
 	switch($module){
@@ -524,7 +589,9 @@ function met_imgxy($xy,$module){
 	}
 	return $met_imgxy;
 }
+/*更具模块编号返回表名称*/
 function metmodname($module){
+	$metmodname='';
 	switch($module){
 		case 1:
 			$metmodname='about';
@@ -536,7 +603,7 @@ function metmodname($module){
 			$metmodname='product';
 		    break;
 		case 4:
-			$metmodname='downlaod';
+			$metmodname='download';
 		    break;
 		case 5:
 			$metmodname='img';
@@ -553,16 +620,19 @@ function metmodname($module){
 	}
 	return $metmodname;
 }
+/*手机跳转*/
 function wapjump(){
-	global $met_wap_tpa,$met_wap_tpb,$met_wap_url;
+	global $met_wap_tpa,$met_wap_tpb,$met_wap_url,$met_wap;
 	$Loaction = 'wap/';
 	if($met_wap_tpa==1){
 		$ua = strtolower($_SERVER['HTTP_USER_AGENT']);
-		$uachar = "/(nokia|sony|ericsson|mot|samsung|sgh|lg|philips|panasonic|alcatel|lenovo|cldc|midp|mobile|wap|Android)/i";
-		if(($ua == '' || preg_match($uachar, $ua))&& !strpos(strtolower($_SERVER['REQUEST_URI']),'wap')){
-			if (!empty($Loaction)){
-				header("Location: $Loaction\n");
-				exit;
+		if($_SERVER['HTTP_USER_AGENT']){
+			$uachar = "/(nokia|sony|ericsson|mot|samsung|sgh|lg|philips|panasonic|alcatel|lenovo|cldc|midp|mobile|wap|Android|ucweb)/i";
+			if(($ua == '' || preg_match($uachar, $ua))&& !strpos(strtolower($_SERVER['REQUEST_URI']),'wap')){
+				if (!empty($Loaction)){
+					header("Location: $Loaction\n");
+					exit;
+				}
 			}
 		}
 	}
@@ -576,6 +646,54 @@ function wapjump(){
 			exit;
 		}
 	}
+}
+function imgxytype($list,$type){
+	global $met_newsimg_x,$met_newsimg_y,$met_productimg_x,$met_productimg_y,$met_imgs_x,$met_imgs_y;
+	$lists=array();
+	foreach($list as $key=>$val){
+		switch($val['module']){
+			case 2:
+				$val['img_x']=$met_newsimg_x;
+				$val['img_y']=$met_newsimg_y;
+			break;
+			case 3:
+				$val['img_x']=$met_productimg_x;
+				$val['img_y']=$met_productimg_y;
+			break;
+			case 5:
+				$val['img_x']=$met_imgs_x;
+				$val['img_y']=$met_imgs_y;
+			break;
+		}
+		$lists[$val[$type]]=$val;
+	}
+	return $lists;
+}
+//获取当前页面URL
+function request_uri(){
+    $pageURL='http';
+    if($_SERVER["HTTPS"]=="on")
+    {
+        $pageURL.="s";
+    }
+    $pageURL.="://";
+
+    if($_SERVER["SERVER_PORT"]!="80")
+    {
+        $pageURL.=$_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$_SERVER["REQUEST_URI"];
+    }
+    else
+    {
+        $pageURL.=$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
+    }
+    return$pageURL;
+}
+function tmpcentarr($cd){
+	global $class_list,$module_listall;
+	$hngy5=explode('-',$cd);
+	if($hngy5[1]=='cm')$metinfo=$class_list[$hngy5[0]];
+	if($hngy5[1]=='md')$metinfo=$module_listall[$hngy5[0]][0];
+	return $metinfo;
 }
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.

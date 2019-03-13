@@ -9,9 +9,6 @@ if($metinfo_member_name<>""){
    $member_title=$lang_memberIndex8;
    $member_loginok="<script type='text/javascript'>document.getElementById('login_x2').style.display='none';document.getElementById('login_x1').style.display='';</script>";
  }
- 
-
-
 switch($memberaction){
  case "control":
  $met_js=$member_title;
@@ -27,4 +24,4 @@ switch($memberaction){
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>
 $met_js="<?php echo $met_js; ?>";
-document.write($met_js) 
+document.write($met_js)

@@ -5,7 +5,11 @@ require_once template('webtop');
 echo <<<EOT
 -->
         <div id="member">
-            <iframe id="iframe" onload="Iframedom()" name="main" src="register_include.php?lang=$lang" frameborder="0" width="100%"  ></iframe>
+            <!--
+EOT;
+include templatemember($mfname);
+echo <<<EOT
+-->
         </div>
     </div>
 <!--

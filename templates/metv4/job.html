@@ -1,0 +1,22 @@
+<!--<?php
+require_once template('head'); 
+require_once template('webbar'); 
+$weblist=metlabel_job();
+echo <<<EOT
+-->
+        <div class="joblist webbox">
+			{$weblist}
+<script type="text/javascript">
+$(document).ready(function(){
+		proxy($('.joblist dd.list'),'hover');
+});
+</script>
+			<div id="flip">{$page_list}</div>
+		</div>
+	</div>
+    <div class="clear"></div>
+</div>
+<!--
+EOT;
+require_once template('foot'); 
+?>

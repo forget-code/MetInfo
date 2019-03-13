@@ -3,34 +3,15 @@
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 echo <<<EOT
 -->
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link href="templates/met/css/style.css" rel="stylesheet" />
-<link href="../public/css/reset.css" rel="stylesheet" />
-<style type="text/css">
-<!--
-body {
-	font-size: $lang_fontsize; 
-	font-family:$lang_fontfamily;
-	}
-
-
--->
-</style>
-</head>
-<body>
+<link href="../member/templates/met/css/style.css" rel="stylesheet" />
 <table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_member">
-          
-			
 			<tr> 
-            <td colspan="10" align="center" class="member_title">{$lang_memberIndex7}</td>
+            <td colspan="10" class="member_title">{$lang_memberIndex7}</td>
             </tr>
               <tr>
-                <td width="40%" class="member_text1" align="center"><b>{$lang_memberPosition}</b></td>
-                <td width="20%" class="member_text1" align="center" ><b>{$lang_memberAddTime}</b></td>
-				<td width="20%" class="member_text1" align="center" ><b>{$lang_memberOperate}</b></td>
+                <td width="40%" class="member_text1"><b>{$lang_memberPosition}</b></td>
+                <td width="20%" class="member_text1" ><b>{$lang_memberAddTime}</b></td>
+				<td width="20%" class="member_text1" ><b>{$lang_memberOperate}</b></td>
               </tr>
 <!--
 EOT;
@@ -38,9 +19,9 @@ foreach ($cv_list as $key=>$val){
 echo <<<EOT
 -->          
               <tr>
-			  <td align="center" class="member_text1">$val[position]</td>
-                <td   class="member_text1" align="center">$val[addtime]</td>
-				<td align="center"  class="member_text1" style="color:#0066FF;"></a> <a href="cv_detail.php?lang=$lang&id=$val[id]" >{$lang_memberDetail}</a> | <a href="cv_editor.php?lang=$lang&id=$val[id]" >{$lang_memberEdit}</a></td>
+			  <td class="member_text1">$val[position]</td>
+                <td   class="member_text1">$val[addtime]</td>
+				<td  class="member_text1"></a> <a href="cv_detail.php?lang=$lang&id=$val[id]" >{$lang_memberDetail}</a>&nbsp;&nbsp;<a href="cv_editor.php?lang=$lang&id=$val[id]" >{$lang_memberEdit}</a></td>
               </tr>
 <!--
 EOT;
@@ -50,14 +31,12 @@ echo <<<EOT
 
    	   
    	   <tr>
-   	     <td height="0" align="center" colspan="7" class="member_input">$page_list</td>
+   	     <td height="0" colspan="7" class="member_input">$page_list</td>
         </tr>
 
 </table>
-</body>
-</html>
 <!--
 EOT;
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
-?>-->
+?>

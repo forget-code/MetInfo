@@ -2,8 +2,7 @@
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 require_once 'login_check.php';
-
-
+require_once ROOTPATH.'member/index_member.php';
 if($action=="edit"){
 	//code
      if($met_memberlogin_code==1){
@@ -70,6 +69,7 @@ $cv_list=$db->get_one("select * from $met_cv where id='$id'");
 if(!$cv_list){
 okinfo('cv.php?lang='.$lang,$lang_NoidJS);
 }
+if($cv_list[readok]==1) okinfo('cv.php?lang='.$lang,$lang_js24);
 $query = "SELECT * FROM $met_parameter where lang='$lang' and module=6  order by no_order";
 if($met_member_use)$query = "SELECT * FROM $met_parameter where lang='$lang' and  module=6  and access<=$metinfo_member_type order by no_order";
 $result = $db->query($query);
@@ -126,9 +126,8 @@ $selectjob = "";
 	 }
 
 
-$css_url="templates/".$met_skin."/css";
-$img_url="templates/".$met_skin."/images";
-include templatemember('cv_editor');
+$mfname='cv_editor';
+include template('member');
 footermember();}
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.

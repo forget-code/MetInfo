@@ -1,11 +1,11 @@
 <?php
 # MetInfo Enterprise Content Management System 
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 
 //download list
 function methtml_download($type,$titlenum,$downurl=1,$filesize=1,$paranum,$detail,$time,$hits,$newwindow=1,$desription,$desnum,$classname,$news,$hot,$top,$listnav=0,$max,$topcolor){
  global $download_list,$download_list_com,$download_list_img,$download_class,$lang_Colunm,$lang_Hits,$lang_UpdateTime,$lang_Title,$lang_Detail,$lang_FileSize,$lang_Download;
- global $download_paralist,$addfeedback_url,$met_submit_type,$met_download_page;
+ global $download_paralist,$addfeedback_url,$met_download_page;
  global $class1,$class2,$class3,$nav_list2,$nav_list3,$class_list,$module_list1,$search;
  $listarray=($type=='new')?$download_list_new:(($type=='com')?$download_list_com:$download_list);
  $listtext.="<ul>\n";

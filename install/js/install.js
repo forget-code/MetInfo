@@ -108,8 +108,7 @@ function chkname(){
 		return  true;
 	}
 }
-function chkreg()
-{
+function chkreg(){
 	var m = document.adminsetup;
 	if(!chkname()){
 	    m.regname.focus();

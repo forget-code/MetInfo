@@ -10,18 +10,17 @@ $member_login_url="login".$met_htmtype;
 $member_register_url="register".$met_htmtype;
 }
 $navurl=($index=='index')?'':'../';
-$met_js_ac="<script type='text/javascript'> alert('".$lang_access."'); location.href='".$navurl."member/".$member_index_url."'; </script>";
+$met_js_ac=" document.body.innerHTML=''; alert('".$lang_access."'); location.href='".$navurl."member/".$member_index_url."&referer='+encodeURIComponent(window.location.href);";
+$query="select * from $met_admin_array where id='$metaccess'";
+$memberacess=$db->get_one($query);
+$metaccess=$memberacess[user_webpower];
 if($met_member_use!=0){
 if($metuser=='para'){
 if(intval($metinfo_member_type)>=intval($metaccess)){
 $listinfo=codetra($listinfo,0);
-$met_js_ac=authcode($listinfo, 'DECODE', $met_memberforce);
+$met_js_ac='document.write("'.authcode($listinfo, 'DECODE', $met_member_force).'")';
 }else{
-  if($paratype==5){
-    $met_js_ac=$navurl."public/images/metinfo.gif";
-	}else{
-	$met_js_ac="【<a href='".$navurl."member/$member_login_url'>$lang_login</a>】【<a href='".$navurl."member/$member_register_url'>$lang_register</a>】";
-	}
+	$met_js_ac='document.write("'."【<a href='".$navurl."member/$member_login_url'>$lang_login</a>】【<a href='".$navurl."member/$member_register_url'>$lang_register</a>】".'")';
 }
 }else{
 if(intval($metinfo_member_type)>=intval($metaccess)){
@@ -35,8 +34,7 @@ $_SESSION['metinfo_admin_name']=$metinfo_admin_name;
   }
 }
 }
+echo $met_js_ac;
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>
-$met_js="<?php echo $met_js_ac; ?>";
-document.write($met_js) 

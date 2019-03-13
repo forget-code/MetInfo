@@ -1,163 +1,260 @@
 <?php
-	    $modname   = $modulename[$list['module']][0];
-		$psid      = $list['id'];
-		$list['foldername'] = ereg_replace(" ","",$list['foldername']);
-		$list['filename'] = ereg_replace(" ","",$list['filename']);
-		if($list['filename'] && $list['filename']!=''){
-			$met_ahtmtype=$met_chtmtype;
-		}else{
-			$met_ahtmtype=$met_htmtype;
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+require_once substr(dirname(__FILE__), 0, -6).'common.inc.php';
+$modulename[1] = array(0=>'show',1=>'show');
+$modulename[2] = array(0=>'news',1=>'shownews');
+$modulename[3] = array(0=>'product',1=>'showproduct');
+$modulename[4] = array(0=>'download',1=>'showdownload');
+$modulename[5] = array(0=>'img',1=>'showimg');
+$modulename[6] = array(0=>'job',1=>'showjob');
+$modulename[7] = array(0=>'message',1=>'index');
+$modulename[8] = array(0=>'feedback',1=>'index');	
+$modulename[9] = array(0=>'link',1=>'index');	
+$modulename[10]= array(0=>'member',1=>'index');	
+$modulename[11]= array(0=>'search',1=>'search');	
+$modulename[12]= array(0=>'sitemap',1=>'sitemap');
+$modulename[100]= array(0=>'product',1=>'showproduct');
+$modulename[101]= array(0=>'img',1=>'showimg');
+
+$navurl    = $index=='index'?'':'../';
+$met_logox = explode('../',$met_logo);
+$weburly   = $index=='index'?'':'../';
+$met_logo  = $met_pseudo?$weburly.$met_logox[1]:($index=='index'?$met_logox[1]:$met_logo);
+$skinurl   = 'templates/'.$met_skin_user;
+$css_url   = $weburly.$skinurl.'/css/';
+$img_url   = $weburly.$skinurl.'/images/';
+$met_url   = $weburly.'public/';
+$metweburl = ROOTPATH;
+$weburly   = $index=='index'?'':'../';
+
+
+
+$countlang = count($met_langok);
+if($met_index_type==$lang)$countlang=1;
+require_once file_exists($navurl.$skinurl.'/metinfo.inc.php')?$navurl.$skinurl.'/metinfo.inc.php':ROOTPATH.'config/metinfo.inc.php';
+$metadmin[pagename]=1;
+$cache_column=met_cache(ROOTPATH.'cache/'."column_".$lang.".inc.php");
+if(!$cache_column){
+	$cache_column=cache_column();
+}
+reset($cache_column);
+while($columnid=current($cache_column)){
+	$langnums=$countlang;
+	$listc=&$cache_column[$columnid['id']];
+/*url地址*/
+	$listc['foldername'] = ereg_replace(" ","",$listc['foldername']);
+	$listc['filename'] = ereg_replace(" ","",$listc['filename']);
+	if($listc['filename'] && $listc['filename']!=''){
+		$met_ahtmtype=$met_chtmtype;
+	}else{
+		$met_ahtmtype=$met_htmtype;
+	}
+	if($metadmin['categorymarkimage']){
+		$listc['indeximgarray']=explode("../",$listc['indeximg']);
+		$listc['indeximg']=($index=="index")?$listc['indeximgarray'][1]:$listc['indeximg'];
+	}
+	if($metadmin['categorymage']){
+		$listc['columnimgarray']=explode("../",$listc['columnimg']);
+		$listc['columnimg']=($index=="index")?$listc['columnimgarray'][1]:$listc['columnimg'];
+	}
+	if($listc['samefile']||$cache_column[$listc['bigclass']]['samefile']||$cache_column[$cache_column[$listc['bigclass']]['bigclass']]['samefile']){
+		$langnums=2;
+	}
+	$urltop = $weburly.$listc['foldername'].'/';
+	if($langnums==1&&($listc['classtype']==1||$listc['releclass'])){
+		if($listc['url']==NULL){
+			if($listc['module']==0){$listc['url'] = (strstr($listc['out_url'],"http://"))?$listc['out_url']:$navurl.$listc['out_url'];}
+			else{$listc['url']=$urltop;}
 		}
-		$pudo_column = $list['foldername'].'/';
-		if($met_pseudo && $list['filename']!='')$psid=$list['filename'];
-		if($metadmin['categorymarkimage']){
-			$list['indeximgarray']=explode("../",$list['indeximg']);
-			$list['indeximg']=($index=="index")?$list['indeximgarray'][1]:$list['indeximg'];
-		}
-		if($metadmin['categorymage']){
-			$list['columnimgarray']=explode("../",$list['columnimg']);
-			$list['columnimg']=($index=="index")?$list['columnimgarray'][1]:$list['columnimg'];
-		}
-//3.0
-		$folderone=$db->get_one("SELECT * FROM $met_column WHERE foldername='$list[foldername]' and id !='$list[id]' and classtype='1' and lang='$lang'");
-		if($folderone)$langnums=2;
-//
-		if($list['releclass']){
-			$urllast=$modulename[$list[module]][0].".php"."?".$langmark."&class1=".$list['id'];
-			if($met_pseudo)$urllast = $pudo_column.'list-'.$psid.'-'.$lang.'.html';
-			if($langnums==1)$urllast='';
-			$htmlistpre="_";
-		}else{
-		    $urltop = $modname.'.php?'.$langmark;
-			switch($list['classtype']){
-				case 1:
-					$urllast   = $langnums>1?$urltop.'&class1='.$list['id']:'';
-					$htmlistpre= "_";
-					if($met_pseudo)$urllast = $pudo_column.'list-'.$psid.'-'.$lang.'.html';
-					if($langnums==1)$urllast='';
-				break;
-				case 2:
-					$urllast   = $urltop."&class2=".$list['id'];
-					$htmlistpre= "_".$list['bigclass']."_";
-					if($met_pseudo)$urllast = $pudo_column.'list-'.$psid.'-'.$lang.'.html';
-				break;
-				case 3:
-					$urlclass1 = $db->get_one("SELECT * FROM $met_column where id='$list[bigclass]'");
-					$urllast   = $urltop."&class3=".$list['id'];
-					$htmlistpre="_".$urlclass1['bigclass']."_".$list['bigclass']."_";
-					if($met_pseudo)$urllast = $pudo_column.'list-'.$psid.'-'.$lang.'.html';
-				break;
-			}
-		}
-		switch($list['module']){
+	}
+	else{
+		switch($listc['module']){
 			default:
-				if($list['filename']<>"" and $metadmin['pagename']){
-					$htmlng=$list['filename']."_1".$met_ahtmtype;
-					if($list['classtype']==1&&$met_index_type==$lang)$htmlng='';
-					$list['url'] = $met_webhtm==2?$htmlng:$urllast;
-					if($met_pseudo)$list['url']=$urllast;
-				}else{
-					$field       = !$met_htmlistname?$modname:$list['foldername'];
-					$htmlng=$field.$htmlistpre.$list['id']."_1".$met_ahtmtype;
-					if($list['classtype']==1&&$met_index_type==$lang)$htmlng='';
-					$list['url'] = $met_webhtm==2?$htmlng:$urllast;
-					if($met_pseudo)$list['url']=$urllast;
+				if($met_pseudo){
+					$psid= ($listc['filename']<>"" and $metadmin['pagename'])?$listc['filename']:$listc['id'];
+					$listc['url']=$urltop.'list-'.$psid.'-'.$lang.'.html';
+				}
+				else if($met_webhtm==2){
+					$pudo_type= !$met_htmlistname?$modulename[$listc['module']][0]:$listc['foldername'];
+					if($listc['filename']<>"" and $metadmin['pagename']){
+						$listc['url']=$urltop.$listc['filename'].'_1'.$met_ahtmtype;
+					}
+					else{
+						$psid=$pudo_type;
+						if($met_listhtmltype==0&&($listc['classtype']==2||$listc['classtype']==3)&&!$listc['releclass']){
+							if($listc['classtype']==2){
+								$listc['url']=$urltop.$psid.'_'.$listc['bigclass'].'_'.$listc['id'].'_1'.$met_ahtmtype;
+							}
+							else{
+								if($cache_column[$listc['bigclass']]['releclass']){
+									$listc['url']=$urltop.$psid.'_'.$listc['bigclass'].'_'.$listc['id'].'_1'.$met_ahtmtype;
+								}
+								else{
+									$listc['url']=$urltop.$psid.'_'.$cache_column[$listc['bigclass']]['bigclass'].'_'.$listc['bigclass'].'_'.$listc['id'].'_1'.$met_ahtmtype;
+								}
+							}								
+						}
+						else{
+							$listc['url']=$urltop.$psid.'_'.$listc['id'].'_1'.$met_ahtmtype;
+						}
+					}
+				}
+				else{
+				$urltop2 = $urltop.$modulename[$listc['module']][0].'.php?'.$langmark;
+					if($listc['releclass']){
+						$listc['url']=$urltop2."&class1=".$listc['id'];
+					}
+					else{
+						$classtypenum=$cache_column[$listc['bigclass']]['releclass']?$listc['classtype']-1:$listc['classtype'];
+						switch($classtypenum){
+						case 1:
+						$listc['url']=$urltop2."&class1=".$listc['id'];
+						break;
+						case 2:
+						$listc['url']=$urltop2."&class2=".$listc['id'];
+						break;
+						case 3:
+						$listc['url']=$urltop2."&class3=".$listc['id'];
+						break;
+						}
+					}
 				}
 				break;
 			case 0:	
-				$list['url'] = (strstr($list['out_url'],"http://"))?$list['out_url']:$navurl.$list['out_url'];
+				$listc['url'] = (strstr($listc['out_url'],"http://"))?$listc['out_url']:$navurl.$listc['out_url'];
 				break;
 			case 1:
-				if($list['isshow']!=1 && $list['classtype']==1){
-					$list['urllabel'] = 'metinfo_url';
-					$metinfo_about = 'metinfo';
-				}elseif($list['isshow']!=1&&$list['classtype']==2){
-					$list['urllabel2'] = 'metinfo_url2';
-					$metinfo_about2 = 'metinfo2';
-				}else{
-				    $urlpy ='show.php?'.$langmark.'&id='.$list['id'];
-					$list['url']=$met_webhtm?($list['filename']!=''?$list['filename'].$met_ahtmtype:$list['foldername'].$list['id'].$met_ahtmtype):$urlpy;
-					if($met_pseudo)$list['url'] = $pudo_column.$psid.'-'.$lang.'.html';
-					if(($list['classtype']==1 || $list['releclass'])&& $list['isshow']==1 && $langnums==1)$list['url']='';
+				if($listc['isshow']!=0){
+					if($met_pseudo){
+						$psid= ($listc['filename']<>"" and $metadmin['pagename'])?$listc['filename']:$listc['id'];
+						$listc['url']=$urltop.$psid.'-'.$lang.'.html';
+					}
+					else if($met_webhtm==2){
+						$pudo_type=$listc['foldername'];
+						$psid= ($listc['filename']<>"" and $metadmin['pagename'])?$listc['filename']:$pudo_type.$listc['id'];
+						$listc['url']=$urltop.$psid.$met_ahtmtype;
+					}
+					else{
+						$listc['url']=$urltop.'show.php?'.$langmark.'&id='.$listc['id'];
+					}
 				}
 				break;
 			case 6:
 				if($met_pseudo){
-					$list['url'] = $pudo_column.'list-'.$psid.'-'.$lang.'.html';
-					if($langnums==1)$list['url']='';
-				}elseif($list['filename']<>"" and $metadmin['pagename']){
-					$list['url']=$langnums>1?($met_webhtm==2?$list['filename']."_1".$met_ahtmtype:"job.php?".$langmark):'';
-				}else{
-				    $field =!$met_htmlistname?"job":$list['foldername'];
-					$list['url']=$langnums>1?($met_webhtm==2?$field."_".$list['id'].'_1'.$met_ahtmtype:'job.php?'.$langmark):'';
+					$psid= ($listc['filename']<>"" and $metadmin['pagename'])?$listc['filename']:$listc['id'];
+					$listc['url']=$urltop."list-".$psid.'-'.$lang.'.html';
+				}
+				else if($met_webhtm==2){
+					$pudo_type= !$met_htmlistname?$modulename[$listc['module']][0]:$listc['foldername'];
+					$psid= ($listc['filename']<>"" and $metadmin['pagename'])?$listc['filename']:$pudo_type.'_'.$listc['id'];
+					$listc['url']=$urltop.$psid.'_1'.$met_ahtmtype;
+				}
+				else{
+					$listc['url']=$urltop.'index.php?'.$langmark;
 				}
 				break;
 			case 7:
-			    if($met_pseudo){
-					$list['url'] = $pudo_column.'index-'.$lang.'.html';
-					$addmessage_url='message-'.$lang.'.html';
-					if($langnums==1)$list['url']='';
-				}else{
-					$field =!$met_htmlistname?"index":$list['foldername'];
-					$field1=!$met_htmlistname?"message":$list['foldername'];
-					$fieldurl=$field.'_list_1';
-					if($list['filename']!='')$fieldurl = $list['filename'].'_1';
-					$list['url']=$langnums>1?($met_webhtm==2?$fieldurl.$met_ahtmtype:'index.php?'.$langmark):'';
-					$addmessage_url=$met_webhtm?$field1.$met_htmtype:"message.php?".$langmark;
-					$addmessage_url=$navurl.$list['foldername']."/".$addmessage_url;
+				if($met_pseudo){
+					$listc['url']=$urltop.'index-'.$lang.'.html';
+				}
+				else if($met_webhtm==2){
+					$pudo_type= !$met_htmlistname?"index_list_1":"message_list_1";
+					$psid= ($listc['filename']<>"" and $metadmin['pagename'])?$listc['filename'].'_1':$pudo_type;
+					$listc['url']=$urltop.$psid.$met_ahtmtype;
+				}
+				else{
+					$listc['url']=$urltop.'index.php?'.$langmark;			
 				}
 				break;
 			case 8:
 				if($met_pseudo){
-					$list['url'] = $pudo_column.'index-'.$lang.'.html';
-					$addfeedback_url = $list['url'];
-					if($langnums==1)$list['url']='';
-				}else{
-					$feedfname = $list['filename']!=''?$list['filename']:'index';
-					$list['url']=$langnums>1?($met_webhtm?$feedfname.$met_ahtmtype:"index.php?".$langmark.'&id='.$list['id']):'';
-					$addfeedback_url=$navurl.$list['foldername']."/".$list[url];
+					$listc['url']=$urltop.'index-'.$lang.'.html';
 				}
+				else if($met_webhtm==2){
+					$pudo_type="index";
+					$psid= ($listc['filename']<>"" and $metadmin['pagename'])?$listc['filename']:$pudo_type;
+					$listc['url']=$urltop.$psid.$met_ahtmtype;
+				}
+				else{
+					$listc['url']=$urltop.'index.php?'.$langmark.'&id='.$listc['id'];
+				}	
 				break;
 			case 9:
-				$list['url']=$langnums>1?($met_webhtm?"index".$met_ahtmtype:"index.php?".$langmark):'';
-				if($met_pseudo)$list['url'] = $pudo_column.'index-'.$lang.'.html';
-				if($langnums==1)$list['url']='';
-				break;
 			case 10:
-				$list['url']=$langnums>1?($met_webhtm?"index".$met_ahtmtype:"index.php?".$langmark):'';
-				if($met_pseudo)$list['url'] =$pudo_column.'index-'.$lang.'.html';
-				if($langnums==1)$list['url']='';
-				break;
-			case 11:
-				$list['url']=$langnums>1?"search.php?".$langmark:'';
-				if($met_pseudo)$list['url'] =$pudo_column.'search-'.$lang.'.html';
-				if($langnums==1)$list['url']='';
-				break;
 			case 12:
-				$list['url']=$langnums>1?($met_webhtm?"sitemap".$met_ahtmtype:"sitemap.php?".$langmark):'';
-				if($met_pseudo)$list['url'] =$pudo_column.'sitemap-'.$lang.'.html';
-				if($langnums==1)$list['url']='';
-				break;
-			case 100:
-				if($list['filename']<>"" and $metadmin['pagename']){
-					$list['url']=$met_webhtm==2?$list['filename']."_".$list['id']."_1".$met_ahtmtype:"product.php?".$langmark;
-				}else{
-					$list['url']=$met_webhtm==2?"product_".$list['id']."_1".$met_ahtmtype:"product.php?".$langmark;
-				}
-				if($met_pseudo)$list['url'] =$pudo_column.'product-list-'.$lang.'.html';
-				break;
-			case 101:
-				if($list['filename']<>"" and $metadmin['pagename']){
-					$list['url']=$met_webhtm==2?$list['filename']."_".$list['id']."_1".$met_ahtmtype:"img.php?".$langmark;
-				}else{
-					$list['url']=$met_webhtm==2?"img_".$list['id']."_1".$met_ahtmtype:"img.php?".$langmark;
-				}
-				if($met_pseudo)$list['url'] =$pudo_column.'img-list-'.$lang.'.html';
+				$listc['url']=(($met_pseudo)?$urltop.'index-'.$lang.'.html':(($met_webhtm==2)?$urltop.'index'.$met_ahtmtype:$urltop.'index.php?'.$langmark));
+				break;	
+			case 11:
+				$listc['url']=($met_pseudo)?$urltop.'index-'.$lang.'.html':$urltop.'index.php?'.$langmark;
 				break;
 		}
-		if($met_pseudo && $langnums>1){
-			$list['url'] = $weburly.$list['url'];
-		}else{
-			$list['url'] = $list['module']?$navurl.$list['foldername']."/".$list['url']:$list['url'];
+	}	
+	if($listc['module']==100||$listc['module']==101){
+		$productimg= $listc['module']==100?'product':'img';
+		if($listc['module']==100){$productlistid=$listc['id'];}
+		else{$imglistid=$listc['id'];}
+		if($met_pseudo){
+			$listc['url']=$urltop.$productimg.'-list-'.$lang.'.html';
 		}
+		else if($met_webhtm==2){
+			$psid= ($listc['filename']<>"" and $metadmin['pagename'])?$listc['filename']:$productimg;
+			$listc['url']=$urltop.$psid.'_'.$listc['id']."_1".$met_ahtmtype;
+		}
+		else{
+			$listc['url']=$urltop.$productimg.'.php?'.$langmark;
+		}
+	}
+	if($listc['if_in'])$listc['url'] = $listc['out_url'];
+	//===============================简介栏目只做栏目*/
+	if($cache_column[$listc['bigclass']]['isshow']==0&&$cache_column[$listc['bigclass']]['url']==NULL&&$listc['classtype']!=1){
+		$cache_column[$listc['bigclass']]['url']=$listc['url'];
+	}
+	next($cache_column);	
+}
+
+foreach($cache_column as $key=>$val){
+	$column_no_order[$key]=$val['no_order'];
+}
+array_multisort($column_no_order,SORT_ASC,SORT_NUMERIC,$cache_column);
+foreach($cache_column as $key=>$list){			
+	$nav_listall[]=$list;
+	$class_list[$list['id']]=$list;
+	$module_listall[$list['module']][]=$list;
+	if($list['classtype']==1){
+		$nav_list_1[]=$list;
+		$module_list1[$list['module']][]=$list;
+		$class1_list[$list['id']]=$list;
+		if($list['module']==2 or $list['module']==3 or $list['module']==4 or $list['module']==5)$nav_search[]=$list; 
+	} 
+	if($list['classtype']==2){
+		$nav_list_2[]=$list;
+		$module_list2[$list['module']][]=$list;
+		$nav_list2[$list['bigclass']][]=$list;
+		$class2_list[$list['id']]=$list;
+	}
+	if($list['classtype']==3){
+		$nav_list_3[]=$list;
+		$module_list3[$list['module']][]=$list;
+		$nav_list3[$list['bigclass']][]=$list;
+		$class3_list[$list['id']]=$list;
+	}
+	if($list['nav']==1 or $list['nav']==3)$nav_list[]=$list;
+	if($list['nav']==2 or $list['nav']==3)$navfoot_list[]=$list;
+	if($list['classtype']==1&&$list['module']==1&&$list['isshow']==1){$nav_listabout[]=$list;}
+	if($list['index_num']!="" and $list['index_num']!=0){
+		$list['classtype']=$list['releclass']?"class1":"class".$list['classtype'];
+		$class_index[$list['index_num']]=$list;
+	}
+}
+
+$addmessage_url=$met_pseudo?$navurl.'message/message-'.$lang.'.html':($met_webhtm?$navurl.'message/message'.$met_htmtype:$navurl.'message/message.php?'.$langmark);
+$cv['url']=$met_pseudo?'jobcv-0-'.$lang.'.html':($met_webhtm?$navurl."job/cv".$met_htmtype:$navurl."job/cv.php?".$langmark);
+$addfeedback_url=$met_pseudo?$navurl.'feedback/index-'.$lang.'.html':($met_webhtm?$navurl.'feedback/'.$addfeedback_url.$met_htmtype:$navurl.'feedback/index.php?'.$langmark);
+$cv['url']=$met_pseudo?'jobcv-0-'.$lang.'.html':$navurl."job/cv.php?".$langmark."&selectedjob=";
+$addfeedback_url=$navurl."feedback/index.php?".$langmark."&title=";
+$member_indexurl=$navurl."member/".$member_index_url;
+$member_registerurl=$navurl."member/".$member_register_url;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

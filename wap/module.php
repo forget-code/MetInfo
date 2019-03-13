@@ -45,6 +45,7 @@ if(!$id){
 	$serch_sql=" where lang='$lang' and $clname = '$classwap' $qtext";
 	if($module==6)$serch_sql=" where lang='$lang' $qtext";
 	$order_sql=$class3?list_order($class_list[$class3]['list_order']):($class2?list_order($class_list[$class2]['list_order']):list_order($class_list[$class1]['list_order']));
+	if($module==6)$order_sql='order by no_order desc,addtime desc';
 	$total_count = $db->counter($dbname, "$serch_sql", "*");
 	$totaltop_count = $db->counter($dbname, "$serch_sql and top_ok='1'", "*");
 	require_once '../include/pager.class.php';
@@ -53,7 +54,7 @@ if(!$id){
     $rowset = new Pager($total_count,$list_num,$page);
     $from_record = $rowset->_offset();
 	$page = $page?$page:1;
-	$query = "SELECT * $dbname $serch_sql and top_ok='1' $order_sql LIMIT $from_record, $list_num";
+	$query = "SELECT * FROM $dbname $serch_sql and top_ok='1' $order_sql LIMIT $from_record, $list_num";
 	$result = $db->query($query);
 	while($list= $db->fetch_array($result)){
 		$modlistnow[]=$list;
@@ -90,7 +91,8 @@ if(!$id){
 	$waptitle=$modulename['name'].'-'.$wap_title;
 }else{
 	$show = $db->get_one("select * from $dbname where lang='$lang' and id = '$id'");
-	$show['content'] = wap_replace($show['content'],'img','object','script');
+	$show['content'] = wap_replace($show['content'],'img','object|script|span|strong|table|tr');
+	//$show['content'] =  preg_replace("/<(.*?)>/","",$show['content']);
 	$classnow   = $show['class3']?$show['class3']:($show['class2']?$show['class2']:$show['class1']);
 	if($module==1)$classnow = $id;
 	if($module==6)$classnow = $class1;

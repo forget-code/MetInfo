@@ -5,7 +5,7 @@ header("Content-type: text/html;charset=utf-8");
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
 @set_time_limit(0);
 set_magic_quotes_runtime(0);
-define('VERSION','4.1.0');
+define('VERSION','5.1.4');
 if(PHP_VERSION < '4.1.0') {
 	$_GET         = &$HTTP_GET_VARS;
 	$_POST        = &$HTTP_POST_VARS;
@@ -13,6 +13,15 @@ if(PHP_VERSION < '4.1.0') {
 	$_SERVER      = &$HTTP_SERVER_VARS;
 	$_ENV         = &$HTTP_ENV_VARS;
 	$_FILES       = &$HTTP_POST_FILES;
+}
+function randStr($i){
+  $str = "abcdefghijklmnopqrstuvwxyz";
+  $finalStr = "";
+  for($j=0;$j<$i;$j++)
+  {
+    $finalStr .= substr($str,mt_rand(0,25),1);
+  }
+  return $finalStr;
 }
 define('MAGIC_QUOTES_GPC', get_magic_quotes_gpc());
 isset($_REQUEST['GLOBALS']) && exit('Access Error');
@@ -43,12 +52,33 @@ switch ($action)
 			$mysql_support  = 'OFF';
 			$mysql_ver_class ='WARN';
 		}
-		if(PHP_VERSION<'4.1.0'){
+		if(PHP_VERSION<'5.0.0'){
 			$ver_class = 'WARN';
 			$errormsg['version']='php 版本过低';
 		}else {
 			$ver_class = 'OK';
 			$check=1;
+		}
+		$function='OK';
+		if(!function_exists('file_put_contents')){
+			$function='WARN';
+			$fstr.="<li class='WARN'>空间不支持file_put_contents函数，系统无法写文件。</li>";
+		}
+		if(!function_exists('fsockopen')&&!function_exists('pfsockopen')&&!function_exists('stream_socket_client')){
+			$function='WARN';
+			$fstr.="<li class='WARN'>空间不支持fsockopen，pfsockopen,stream_socket_client函数，系统邮件功能不能使用。请至少开启其中一个。</li>";
+		}
+		if(!function_exists('copy')){
+			$function='WARN';
+			$fstr.="<li class='WARN'>空间不支持copy函数，无法上传文件。</li>";
+		}
+		if(!function_exists('fsockopen')&&!function_exists('pfsockopen')&&!get_extension_funcs('curl')){
+			$function='WARN';
+			$fstr.="<li class='WARN'>空间不支持fsockopen，pfsockopen函数，curl模块，系统在线更新，短信发送功能无法使用。请至少开启其中一个。</li>";
+		}
+		if(!get_extension_funcs('gd')){
+			$function='WARN';
+			$fstr.="<li class='WARN'>空间不支持gd模块，图片打水印和缩略生成功能无法使用。</li>";
 		}
 		$w_check=array(
 		'../',
@@ -87,7 +117,7 @@ switch ($action)
 				$check_msg[$i].='777属性检测不通过'; $check=0;
 				$class_chcek[$i] = 'WARN';
 			}
-		if($check!=1 and $disabled!='disabled'){$disabled = 'disabled';}
+			if($check!=1 and $disabled!='disabled'){$disabled = 'disabled';}
 		}
 		include template('inspect');
 		break;
@@ -119,29 +149,55 @@ switch ($action)
 				mysql_query("CREATE DATABASE $db_name ") or die('创建数据库失败'.mysql_error());
 			}
 			mysql_select_db($db_name);
+			//
 			if(mysql_get_server_info()>='4.1'){
-			 mysql_query("set names utf8"); 
-			 $content=readover("install5.sql");
+				mysql_query("set names utf8"); 
+				$content=readover("sql.sql");
+				$content=preg_replace("/{#(.+?)}/eis",'$lang[\\1]',$content);	
+				$installinfo=creat_table($content);		
 			}else {
-			  echo "<SCRIPT language=JavaScript>alert('您的mysql版本过低，请确保你的数据库编码为utf-8,官方建议您升级到mysql4.1.0以上');</SCRIPT>";
-			  $content=readover("install4.sql");  
+				echo "<SCRIPT language=JavaScript>alert('您的mysql版本过低，请确保你的数据库编码为utf-8,官方建议您升级到mysql4.1.0以上');</SCRIPT>";
+				die();
+				$content=readover("sql.sql");
+				$content=str_replace('ENGINE=MyISAM DEFAULT CHARSET=utf8','TYPE=MyISAM',$content);
 			}
-			if($cndata=="yes")$content.=readover("cn.sql");
-            if($endata=="yes")$content.=readover("en.sql"); 			
-			$content=preg_replace("/{#(.+?)}/eis",'$lang[\\1]',$content);		
-			include template('db_setup');
-			exit();
+			if($cndata=="yes" or ($cndata<>"yes" and $endata<>"yes")){
+				$content=readover("cn_config.sql");
+				$content=preg_replace("/{#(.+?)}/eis",'$lang[\\1]',$content);	
+				$installinfo.=creat_table($content);	
+            }			
+		    if($endata=="yes"){
+				$content=readover("en_config.sql");
+				$content=preg_replace("/{#(.+?)}/eis",'$lang[\\1]',$content);	
+				$installinfo.=creat_table($content);	
+            }	
+			if($showdata=='yes'){
+				if($cndata=="yes" or ($cndata<>"yes" and $endata<>"yes")){
+					$content=readover("cn.sql");
+					$content=preg_replace("/{#(.+?)}/eis",'$lang[\\1]',$content);	
+					$installinfo.=creat_table($content);	
+				}
+				if($endata=="yes"){
+					$content=readover("en.sql"); 
+					$content=preg_replace("/{#(.+?)}/eis",'$lang[\\1]',$content);	
+					$installinfo.=creat_table($content);	
+				}
+			}		
+			header("location:index.php?action=adminsetup&cndata={$cndata}&endata={$endata}");exit;
 		}else {
-		include template('databasesetup');
+			include template('databasesetup');
 		}
 		break;
 	}
 	case 'adminsetup':
 	{
 		if($setup==1){
-			$regname              = trim(strip_tags($regname));
-			$regpwd               = md5(trim(strip_tags($regpwd)));
-			$email                = trim(strip_tags($email));
+			if($regname=='' || $regpwd=='' || $email==''){
+				echo("<script type='text/javascript'> alert('请填写管理员信息！'); history.go(-1); </script>");
+			}
+			$regname = trim(strip_tags($regname));
+			$regpwd  = md5(trim(strip_tags($regpwd)));
+			$email   = trim(strip_tags($email));
 		    $m_now_time = time();
 			$config = parse_ini_file('../config/config_db.php','ture');
 			@extract($config);
@@ -154,101 +210,158 @@ switch ($action)
 			 mysql_query("SET sql_mode=''",$link);
 			}
 			$met_admin_table = "{$tablepre}admin_table";
+			$met_config      = "{$tablepre}config";
+			$met_index       = "{$tablepre}index";
+			$met_column      = "{$tablepre}column";
 			 $query = " INSERT INTO $met_admin_table set
                       admin_id           = '$regname',
                       admin_pass         = '$regpwd',
 					  admin_introduction = '创始人',
-				      admin_type         = 'cn-metinfo,en-metinfo',
+					  admin_group        = '10000',
+				      admin_type         = 'metinfo',
 					  admin_email        = '$email',
+					  admin_mobile       = '$tel',
 					  admin_register_date= '$m_now_date',
 					  usertype        	 = '3',
 					  admin_ok           = '1'";
 			mysql_query($query) or die('写入数据库失败: ' . mysql_error());
+			$query = " UPDATE $met_config set value='$webname_cn' where name='met_webname' and lang='cn'";
+			mysql_query($query) or die('写入数据库失败: ' . mysql_error());
+			$query = " UPDATE $met_config set value='$webkeywords_cn' where name='met_keywords' and lang='cn'";
+			mysql_query($query) or die('写入数据库失败: ' . mysql_error());
+			$query = " UPDATE $met_config set value='$webname_en' where name='met_webname' and lang='en'";
+			mysql_query($query) or die('写入数据库失败: ' . mysql_error());
+			$query = " UPDATE $met_config set value='$webkeywords_en' where name='met_keywords' and lang='en'";
+			mysql_query($query) or die('写入数据库失败: ' . mysql_error());
+			$force =randStr(7);
+			$query = " UPDATE $met_config set value='$force' where name='met_member_force'";
+			mysql_query($query) or die('写入数据库失败: ' . mysql_error());
+			$install_url=str_replace("install/index.php","",$install_url);
+			$query = " UPDATE $met_config set value='$install_url' where name='met_weburl'";
+			mysql_query($query) or die('写入数据库失败: ' . mysql_error());
+			$adminurl=$install_url.'admin/';
+			$query = " UPDATE $met_column set out_url='$adminurl' where module='0'";
+			mysql_query($query) or die('写入数据库失败: ' . mysql_error());
+			if($cndata=="yes"&&$endata=="yes"){
+				$query = "UPDATE $met_config set value='$lang_index_type' where name='met_index_type' and lang='metinfo'";
+			}
+			else{
+				if($cndata=="yes" or ($cndata<>"yes" and $endata<>"yes")){
+					$query = "UPDATE $met_config set value='cn' where name='met_index_type' and lang='metinfo'";
+				}
+				else{
+					$query = "UPDATE $met_config set value='en' where name='met_index_type' and lang='metinfo'";
+				}
+			}
+			mysql_query($query) or die('写入数据库失败: ' . mysql_error());
 			@chmod('../config/config_db.php',0554);
-			$spt = '<script type="text/javascript" src="http://www.metinfo.cn/record.php?';
+			require_once '../include/mysql_class.php';
+			$db = new dbmysql();
+			$db->dbconn($con_db_host,$con_db_id,$con_db_pass,$con_db_name);
+			$conlist = $db->get_one("SELECT * FROM $met_config WHERE name='met_weburl'");
+			$met_weburl=$conlist[value];
+			$indexcont = $db->get_one("SELECT * FROM $met_index WHERE lang='cn'");
+			if($indexcont){
+				$index_content=str_replace("#metinfo#",$met_weburl,$indexcont[content]);
+				$query = "update $met_index SET content = '$index_content' where lang='cn'";
+				$db->query($query);
+			}
+			$showlist = $db->get_all("SELECT * FROM $met_column WHERE module='1'");
+			if($showlist){
+				foreach($showlist as $key=>$val){
+					$contentx=str_replace("#metinfo#",$met_weburl,$val[content]);
+					$query = "update $met_column SET content = '$contentx' where id='$val[id]'";
+					$db->query($query);
+				}
+			}
+			$webname=$webname_cn?$webname_cn:($webname_en?$webname_en:'');
+			$webkeywords=$webkeywords_cn?$webkeywords_cn:($webkeywords_en?$webkeywords_en:'');
+			$spt = '<script type="text/javascript" src="http://api.metinfo.cn/record_install.php?';
 			$spt .= "url=" .$install_url;
 			$spt .= "&email=".$email."&installtime=".$m_now_date."&softtype=1";
-			$spt .= "&version=".VERSION."&php_ver=" .PHP_VERSION. "&mysql_ver=" .mysql_get_server_info();
+			$spt .= "&webname=".$webname."&webkeywords=".$webkeywords."&tel=".$tel;
+			$spt .= "&version=".VERSION."&php_ver=" .PHP_VERSION. "&mysql_ver=" .mysql_get_server_info()."&browser=".$_SERVER['HTTP_USER_AGENT'].'|'.$se360;
 			$spt .= '"></script>';
-			echo $spt;			
-			define('ROOTPATH', substr(dirname(__FILE__), 0, -7));		
-			$localurl="http://";
-			$localurl.=$_SERVER['HTTP_HOST'].$_SERVER["PHP_SELF"];
-			$localurl_a=explode("/",$localurl);
-			unset($localurl_a[count($localurl_a)-1]);
-			unset($localurl_a[count($localurl_a)-1]);
-		    if($cndata=="yes" or ($cndata<>"yes" and $endata<>"yes")){
-		    $settings = parse_ini_file(ROOTPATH.'config/config_cn.inc.php');
-			@extract($settings);
-			$met_weburl=implode($localurl_a,"/")."/";
-			include 'configsave_cn.php';
-            }			
-		    if($endata=="yes" or ($cndata<>"yes" and $endata<>"yes")){
-		    $settings = parse_ini_file(ROOTPATH.'config/config_en.inc.php');
-			@extract($settings);
-			$met_weburl=implode($localurl_a,"/")."/";
-			include 'configsave_en.php';
-            }			
+			echo $spt;
 			$fp  = fopen('../config/install.lock', 'w');
 			fwrite($fp," ");
 			fclose($fp);
-			@chmod('../config/install.lock',0554);
-			
-//lang inc
-if($cndata=="yes" or $endata=="yes"){
-$config_save =  "<?php\n";
-$config_save .=  "# MetInfo Enterprise Content Management System \n";
-$config_save .=  "# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. \n";
-if($cndata=="yes")$config_save .=  "$"."met_ch_lang='1';\n";
-if($cndata=="yes")$config_save .=  "$"."met_ch_mark='cn';\n";
-$met_index_type1=($cndata=="yes")?'cn':'en';
-$config_save .=  "$"."met_index_type='$met_index_type1';\n";
-$met_admin_type1=$met_admin_type?($met_admin_type==1?'en':'other'):'cn';
-$config_save .=  "$"."met_admin_type='cn';\n";
-$config_save .=  "$"."met_admin_type_ok='1';\n";
-$config_save .=  "$"."met_url_type='0';\n";
-$config_save .=  "$"."met_lang_mark='1';\n";
-$config_save .=  "$"."met_lang_editor='1';\n";
-$config_save .=  "$"."met_langok=array();\n";
-if($cndata=="yes")$config_save .="$"."met_langok[cn]=array(name=>'简体中文',useok=>'1',order=>'1',mark=>'cn',flag=>'',link=>'',newwindows=>'');\n";
-if($endata=="yes")$config_save .="$"."met_langok[en]=array(name=>'English',useok=>'1',order=>'2',mark=>'en',flag=>'',link=>'',newwindows=>'');\n";
-$config_save .="$"."met_langadmin=array();\n";
-$config_save .="$"."met_langadmin[cn]=array(name=>'简体中文',useok=>'1',order=>'1',mark=>'cn');\n";
-$config_save .="$"."met_langadmin[en]=array(name=>'English',useok=>'1',order=>'1',mark=>'en');\n";
-if($cndata=="yes"){
-$config_save .="$"."met_langok[cn][met_webhtm]=0;\n";
-$config_save .="$"."met_langok[cn][met_htmtype]='html';\n";
-$config_save .="$"."met_langok[cn][met_weburl]='$met_weburl';\n";
-}
-if($endata=="yes"){
-$config_save .="$"."met_langok[en][met_webhtm]=0;\n";
-$config_save .="$"."met_langok[en][met_htmtype]='html';\n";
-$config_save .="$"."met_langok[en][met_weburl]='$met_weburl';\n";
-}
-$config_save       .="# This program is an open source system, commercial use, please consciously to purchase commercial license.\n";
-$config_save       .="# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.\n";
-$config_save       .="?>";
-if(!is_writable("../config/lang.inc.php"))@chmod('../config/lang.inc.php',0777);
- $fp = fopen("../config/lang.inc.php",w);
- fputs($fp, $config_save);
- fclose($fp);
- }
-require_once '../config/tablepre.php';
-require_once '../include/mysql_class.php';
-$db = new dbmysql();
-$db->dbconn($con_db_host,$con_db_id,$con_db_pass,$con_db_name);
-require_once '../include/cache.func.php';
-cache_all('cn');
-cache_all('en');
+			$metHOST=$_SERVER['HTTP_HOST'];
+			$m_now_year=date('Y');
+			$metcms_v=VERSION;
+$met404="
+<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">
+<html xmlns=\"http://www.w3.org/1999/xhtml\">
+<head>
+<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />
+<title>Page Not Found!</title>
+<meta http-equiv=\"refresh\" content=\"3; url='{$met_weburl}' \"> 
+<style type=\"text/css\">
+<!--
+body, td, th {  font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; margin: 0; padding: 0;}
+a:link,
+a:visited {color: #0240a3;}
+.top {height: 50px;	background-image:  url({$met_weburl}upload/image/top.gif); background-position: top right; background-repeat: no-repeat;	margin-bottom:40px;	padding-top: 5px;padding-left: 10px; color:#FFFFFF;}
+.top a{color:#FFFFFF; text-decoration:none;}
+.logo{ float:left; width:auto; height:auto; margin:5px 0px 0px 5px; overflow:hidden;}
+.copyright{ float:right; width:auto; margin:5px 5px 0px 0px; text-align:right;}
+.content {width: 652px;	margin: auto;	border: 1px solid #D1CBD0;	background: #F9F9F9 url({$met_weburl}upload/image/top1.gif) no-repeat right top;}
+.content_TOP {width: 600px; margin: auto;}
+.message {width: 98%; margin: 15px auto; padding-top:10px;}
+.banner {height:100px; text-align:center; background: #F9F9F9 url({$met_weburl}upload/image/foot.gif) no-repeat center; overflow:auto;}
+.bannertext{ width:95%; height:20px; margin-top:70px; line-height:20px; color:#FFFFFF; text-align:right;}
+.bannertext a{ color:#FFFFFF; text-decoration:none;}
+-->
+</style>
+</head>
+<body>
+<div class=\"top\">
+<div class=\"logo\"></div>
+<div class=\"copyright\">&copy;&nbsp;2008-{$m_now_year} {$webname}<br /> <a href=\"{$met_weburl}\" >{$metHOST}</a></div>
+</div>
+
+<div class=\"content_TOP\"></div>
+<div class=\"content\">
+  <div class=\"message\">
+  <table width=\"586\" height=\"220\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">
+    <tr>
+      <td width=\"134\" height=\"116\" valign=\"middle\"><img src=\"{$met_weburl}upload/image/notice.gif\" /></td>
+      <td width=\"452\" valign=\"middle\" >
+	  <br /><br />
+<p><big><b>Page Not Found!</b></big></p>
+<p>The requested URL was not found, please contact with your administrator. </p>
+<p><big><b>3 seconds, automatically jump to the home page.</b></big></p>
+<p>&raquo;&nbsp;<a href=\"{$met_weburl}\">Goto Home</a>
+</td>
+    </tr>
+  </table>
+<div class=\"banner\">
+<div class=\"bannertext\">
+<p style=\"font-family:arial;\">Powered by&nbsp;<a href=\"http://www.MetInfo.cn\" target=\"_blank\" ><b>MetInfo</b></a> {$metcms_v} &copy;&nbsp;2008-$m_now_year <a href=\"http://www.MetInfo.cn\" target=\"_blank\">www.MetInfo.cn</a></p></div></div>
+  </div>
+  
+</div>
+</body>
+</html>
+
+";
+
+
+$fp = fopen("../404.html",w);
+      fputs($fp, $met404);
+      fclose($fp);
+			@chmod('../config/install.lock',0554);				
 			include template('finished');
 		}else {
-		include template('adminsetup');
+			$langnum=($cndata=="yes"&&$endata=="yes")?2:1;
+			$lang=$langnum==2?'中文':($endata=="yes"&&$cndata<>"yes"?'英文':'中文');
+			include template('adminsetup');
 		}
 		break;
 	}
-   case 'license':
-   include template('license');
-   break;
+	case 'license':
+		include template('license');
+	break;
 	default:
 	{
 		include template('index');
@@ -271,6 +384,8 @@ function creat_table($content) {
 				$i++;
 			}
 			$query = str_replace('met_',$db_prefix,$query);
+			$query = str_replace('metconfig_','met_',$query);
+			//echo $query;
 			if(!mysql_query($query)){
 				$db_setup=0;
 				if($j!='0'){

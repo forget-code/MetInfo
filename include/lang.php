@@ -1,26 +1,34 @@
 <?php
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
+require_once 'common.inc.php';
 $packurl = 'http://'.$_SERVER['HTTP_HOST'].'/';
 foreach($met_langok as $key=>$val){
-$indexmark=($val[mark]==$met_index_type)?"index.":"index_".$val[mark].".";
-$val[met_weburl]=$val[met_weburl]<>""?$val[met_weburl]:$met_weburl;
-$val[met_htmtype]=$val[met_htmtype]<>""?$val[met_htmtype]:$met_htmtype;
-if($val[useok]){
-   $met_index_url[$val[mark]]=$val[met_webhtm]?$val[met_weburl].$indexmark.$val[met_htmtype]:$val[met_weburl]."index.php?lang=".$val[mark];
-   if($met_pseudo)$met_index_url[$val['mark']] = $val['met_weburl'].'index-'.$val['mark'].'.html';
-   if($htmpack && $met_htmpack)$met_index_url[$val['mark']]=$packurl.$met_htmpack_url.$indexmark.$val['met_htmtype'];
-   if($val[mark]==$met_index_type)$met_index_url[$val[mark]]=$val[met_weburl];
-   if($htmpack && $met_htmpack && $val[mark]==$met_index_type)$met_index_url[$val[mark]]=$packurl.$met_htmpack_url;
-   if($val[link]!="")$met_index_url[$val[mark]]=$val[link];
-   if(!strstr($val[flag], 'http://')){
-   if($index=="index"){
-   $met_langlogoarray=explode("../",$val[flag]);
-   $val[flag]=$met_langlogoarray[1];
-   }
-   }
-  $met_langok[$val[mark]]=$val;
- }
+	$indexmark=($val[mark]==$met_index_type)?"index.":"index_".$val[mark].".";
+	$val[met_weburl]=$val[met_weburl]<>""?$val[met_weburl]:$met_weburl;
+	$val[met_htmtype]=$val[met_htmtype]<>""?$val[met_htmtype]:$met_htmtype;
+	if($val[useok]){
+		$met_index_url[$val[mark]]=$val[met_webhtm]?$val[met_weburl].$indexmark.$val[met_htmtype]:$val[met_weburl]."index.php?lang=".$val[mark];
+		if($met_pseudo)$met_index_url[$val['mark']] = $val['met_weburl'].'index-'.$val['mark'].'.html';
+		if($htmpack){
+			$navurls = $index=='index'?'':'../';
+			$met_index_url[$val['mark']]=$navurls.$indexmark.$val['met_htmtype'];
+		}
+		if($val[mark]==$met_index_type)$met_index_url[$val[mark]]=$val[met_weburl];
+		if($htmpack && $val[mark]==$met_index_type){
+			$met_index_url[$val[mark]]=$navurls;
+		}
+		if($val[link]!="")$met_index_url[$val[mark]]=$val[link];
+		if(!strstr($val[flag], 'http://')){
+			$navurls = $index=='index'?'':'../';
+			if($index=="index"&&strstr($val[flag], '../')){
+				$met_langlogoarray=explode("../",$val[flag]);
+				$val[flag]=$met_langlogoarray[1];
+			}
+			if(!strstr($val[flag], 'http://')&&!strstr($val[flag], 'public/images/flag/'))$val[flag]=$navurls.'public/images/flag/'.$val[flag];
+		}
+		$met_langok[$val[mark]]=$val;
+	}
 }
 //2.0
 $index_c_url=$met_index_url[cn];

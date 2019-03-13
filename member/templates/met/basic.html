@@ -3,58 +3,35 @@
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 echo <<<EOT
 -->
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http：//www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http：//www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>{$lang_memberbasicTitle}</title>
-<link href="templates/met/css/style.css" rel="stylesheet" />
-<link href="../public/css/reset.css" rel="stylesheet" />
-<style type="text/css">
-<!--
-body {
-	font-size:$lang_fontsize; 
-	font-family:$lang_fontfamily;
-	}
--->
-</style>
-</head>
-<body>
+<link href="../member/templates/met/css/style.css" rel="stylesheet" />
+<div id="member_basic">
 <input name="useid" type="hidden"size="20" maxlength="20" value="$admin_list[admin_id]">
-<table cellpadding="2" cellspacing="1" align="center" border="0" width="95%" class="table_member">
-
-          <tr> 
-            <td class="member_text"><b>{$lang_memberIndex9}</b></td>
-            <td colspan="2" class="member_input">
-			{$lang_memberbasicUserName}: <span>$admin_list[admin_id]</span>&nbsp;&nbsp;
-			{$lang_memberbasicType}: <span>$access</span>&nbsp;&nbsp;<br/>
-			{$lang_memberbasicLoginNum}: <span>$admin_list[admin_login]</span>&nbsp;&nbsp;
-			{$lang_memberbasicLastLogin}: <span>$admin_list[admin_modify_date]</span>
-			
-			</td>
-          </tr>  
-		  <tr> 
-            <td class="member_text"><b>{$lang_memberIndex5}</b></td>
-            <td colspan="2" class="member_input">{$lang_memberIndex11}: <span>{$feedback_totalcount}</span> {$lang_memberIndex12}&nbsp;&nbsp;<span>{$feedback_totalcount_readyes}</span> {$lang_memberIndex12}{$lang_memberbasicType3}{$lang_memberIndex13}&nbsp;&nbsp;<span>{$feedback_totalcount_readno}</span> {$lang_memberIndex12}{$lang_memberbasicType3}{$lang_memberIndex14}</td>
-          </tr> 
-		   <tr> 
-            <td class="member_text"><b>{$lang_memberIndex6}</b></td>
-            <td colspan="2" class="member_input">{$lang_memberIndex11}: <span>{$message_totalcount}</span> {$lang_memberIndex12}&nbsp;&nbsp;<span>{$message_totalcount_readyes}</span> {$lang_memberIndex12}{$lang_memberbasicType3}{$lang_memberIndex13}&nbsp;&nbsp;<span>{$message_totalcount_readno}</span> {$lang_memberIndex12}{$lang_memberbasicType3}{$lang_memberIndex14}</td>
-          </tr> 
-		  <tr> 
-            <td class="member_text"><b>{$lang_memberIndex15}</b></td>
-            <td colspan="2" class="member_input">{$lang_memberIndex11}: <span>{$cv_totalcount}</span> {$lang_memberIndex12}&nbsp;&nbsp;<span>{$cv_totalcount_readyes}</span> {$lang_memberIndex12}{$lang_memberbasicType3}{$lang_memberIndex13}&nbsp;&nbsp;<span>{$cv_totalcount_readno}</span> {$lang_memberIndex12}{$lang_memberbasicType3}{$lang_memberIndex14}</td>
-          </tr> 
-		  <tr> 
-          <td class="member_text" valign="middle"><b>{$lang_memberIndex16}</b></td>
-          <td colspan="2" class="member_sy" valign="middle">$met_membercontrol</td>
-          </tr>
-
-</table>
-</body>
-</html>
+<h3 class="hrtl">{$lang_memberIndex9}</h3>
+<ul class="hrtl_txt">
+	<li><em>{$lang_memberbasicUserName}</em> <span>$admin_list[admin_id]</span></li>
+	<li><em>{$lang_memberbasicType}</em> <span>$access</span></li>
+	<li><em>{$lang_memberbasicLoginNum}</em> <span>$admin_list[admin_login]</span></li>
+	<li><em>{$lang_memberbasicLastLogin}</em> <span>$admin_list[admin_modify_date]</span></li>
+</ul>
+<h3 class="hrtl line">活跃情况</h3>
+<ul class="hrtl_txt">
+	<li>
+	{$lang_memberIndex5}(<span>{$feedback_totalcount}</span>)&nbsp;&nbsp;<span><span style="color:#f00;">{$feedback_totalcount_readyes}</span>{$lang_memberIndex12}{$lang_memberbasicType3}{$lang_memberIndex13}&nbsp;&nbsp;<span style="color:#f00;">{$feedback_totalcount_readno}</span>{$lang_memberIndex12}{$lang_memberbasicType3}{$lang_memberIndex14}</span> 
+	</li>
+	<li>
+	{$lang_memberIndex6}(<span>{$message_totalcount}</span>)&nbsp;&nbsp;<span><span style="color:#f00;">{$message_totalcount_readyes}</span>{$lang_memberIndex12}{$lang_memberbasicType3}{$lang_memberIndex13}&nbsp;&nbsp;<span style="color:#f00;">{$message_totalcount_readno}</span>{$lang_memberIndex12}{$lang_memberbasicType3}{$lang_memberIndex14}</span> 
+	</li>
+	<li>
+	{$lang_memberIndex15}(<span>{$cv_totalcount}</span>)&nbsp;&nbsp;<span><span style="color:#f00;">{$cv_totalcount_readyes}</span>{$lang_memberIndex12}{$lang_memberbasicType3}{$lang_memberIndex13}&nbsp;&nbsp;<span style="color:#f00;">{$cv_totalcount_readno}</span>{$lang_memberIndex12}{$lang_memberbasicType3}{$lang_memberIndex14}</span> 
+	</li>
+</ul>
+<h3 class="hrtl line">{$lang_memberIndex16}</h3>
+<div class="hrtl_txt">
+{$met_membercontrol}
+</div>
+</div>
 <!--
 EOT;
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
-?>-->
+?>

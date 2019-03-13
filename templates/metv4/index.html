@@ -1,0 +1,203 @@
+<!--<?php
+require_once template('head'); 
+//首页各个区块标题，调用lang目录下的语言配置文件参数
+$Index_Column1=$lang_Index_Column1;
+$Index_Column2=$lang_Index_Column2;
+$Index_Column3=$lang_Index_Column3;
+$Index_Column4=$lang_Index_Column4;
+$Index_Column5=$lang_Index_Column5;
+$Index_Column6=$lang_Index_Column6;
+$Index_Column7=$lang_Index_Column7;
+$Index_Column8=$lang_Index_Column8;
+//首页各个区块栏目标识和链接
+$Mark1=$lang_Index_Column1Mark;
+$Mark2=$lang_Index_Column2Mark;
+$Mark3=$lang_Index_Column3Mark;
+$Mark4=$lang_Index_Column4Mark;
+$Mark5=$lang_Index_Column5Mark;
+$Mark6=$lang_Index_Column6Mark;
+$Mark7=$lang_Index_Column7Mark;
+$Url2=$class_index[$Mark2]['url'];
+$Url3=$class_index[$Mark3]['url'];
+$Url4=$class_index[$Mark4]['url'];
+$Url5=$class_index[$Mark5]['url'];
+$Url6=$class_index[$Mark6]['url'];
+$Url7=$class_index[$Mark7]['url'];
+//子栏目标签
+$metnavnow=metlabel_navnow($lang_leftnavtype,'',$Mark1,$lang_leftnavlist,$lang_leftnavmax);
+//产品展示标签
+$indexproduct=metlabel_list('img',$Mark3,'com');
+//文章列表标签
+$indexnews1=metlabel_list('text',$Mark4,'','time','',1);
+$indexnews2=metlabel_list('text',$Mark5,'','time','',1);
+$indexnews3=metlabel_list('text',$Mark6,'','time','',1);
+//成功案例标签
+$indexcase=metlabel_list('img',$Mark7,'','','','',0);
+//友情链接标签
+$metlinkimg=methtm_link('img','com');
+$metlinktxt=methtm_link('text','com');
+echo <<<EOT
+-->
+<div id="index">
+<!--
+EOT;
+if($lang_Column1ok){
+echo <<<EOT
+-->
+	<div class="floatl left" id="leftnav">
+		<h3 class="titled"><span>{$Index_Column1}</span></h3>
+		<div class="listbox">{$metnavnow}</div>
+<script type="text/javascript">
+$(document).ready(function(){
+	var leftnavtype={$lang_Column1ok}==1?{$lang_leftnavtype}:'';
+	if(leftnavtype==2)proxy($("#leftnav dl.navnow"),'hover',1);
+});
+</script>
+	</div>
+<!--
+EOT;
+}else{
+$tclass='metwd100';
+}
+echo <<<EOT
+-->
+<!--
+EOT;
+if($lang_Column2ok || $lang_Column3ok){
+echo <<<EOT
+-->
+	<div class="floatr right {$tclass}">
+<!--
+EOT;
+if($lang_Column2ok){
+$tclass2='line';
+echo <<<EOT
+-->
+		<h3 class="title"><a href="{$Url2}" class="more">{$lang_Index_Detailed}</a><span>{$Index_Column2}</span></h3>
+		<div class="editor border">{$index[content]}<div class="clear"></div></div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<!--
+EOT;
+if($lang_Column3ok){
+echo <<<EOT
+-->
+		<h3 class="title {$tclass2}"><a href="{$Url3}" class="more">{$lang_Index_More}</a><span>{$Index_Column3}</span></h3>
+		<div class="box border1" id="indexpdt">
+			{$indexproduct}
+			<div class="clear"></div>
+			<script type="text/javascript">metaddwdht($('#indexpdt .metlist li'),8);</script>
+		</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+	</div>
+	<div class="clear"></div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<!--
+EOT;
+if($lang_Column4ok){
+echo <<<EOT
+-->
+	<div class="floatl newsbox metheit">
+		<h3 class="title"><a href="{$Url4}" class="more">{$lang_Index_More}</a><span>{$Index_Column4}</span></h3>
+		{$indexnews1}
+	</div>
+	<div class="floatl newsbox newscenter metheit">
+		<h3 class="title"><a href="{$Url5}" class="more">{$lang_Index_More}</a><span>{$Index_Column5}</span></h3>
+		{$indexnews2}
+	</div>
+	<div class="floatr newsbox metheit">
+		<h3 class="title"><a href="{$Url6}" class="more">{$lang_Index_More}</a><span>{$Index_Column6}</span></h3>
+		{$indexnews3}
+	</div>
+	<script type='text/javascript'>metHeight($(".metheit .metlist")); </script>
+	<div class="clear"></div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<!--
+EOT;
+if($lang_Column7ok){
+echo <<<EOT
+-->
+	<div class="indecase">
+		<h3 class="title"><div><a class="next" id="next4" href="javascript:void(0);"></a><a class="prev" id="prev4" href="javascript:void(0);"></a><p id="trigger4"></p></div><span>{$Index_Column7}</span></h3>
+		<div class="border"><div class="imglist" id="panel4">{$indexcase}</div></div>
+		<script src="{$img_url}js/switchable.js" language="javascript" type="text/javascript"></script>
+		<script type="text/javascript">
+			var list=$('#panel4');
+				list.height(list.find('li').height()+20);
+			$("#trigger4").switchable("#panel4 > ol > li", {
+				triggerType: "click",
+				effect: "scroll",
+				steps: 1,
+				visible: 5
+			}).autoplay().carousel().mousewheel();
+			var api4 = $("#trigger4").switchable();
+			$("#next4").click(function(){
+				api4.next();
+			});
+			$("#prev4").click(function(){
+				api4.prev();
+			});
+		</script>
+	</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<!--
+EOT;
+if($index_link_ok==1){
+echo <<<EOT
+-->
+	<div class="indexlink denggao">
+	    <h3 class="linktd">{$Index_Column8}</h3>
+		<div class="text denggao" id='linksandy' style='overflow:hidden;'>
+		<div class="list">
+<!--
+EOT;
+$linkimgnum=count($link_img_com);
+if($linkimgnum>0){
+echo <<<EOT
+-->
+		<div class="img">{$metlinkimg}<div class="clear"></div></div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+		<div class="text">{$metlinktxt}<div class="clear"></div></div>
+		</div>
+		</div>
+		<div class="clear"></div>
+		<script type="text/javascript">
+			$('#linksandy').width($('div.indexlink').width()-$('h3.linktd').width()-20);
+			metHeight($('.denggao'));
+			var mhei = $('.indexlink .denggao').height()-12+'px';
+			$('.indexlink .linktd').css('line-height',mhei);
+		</script>
+	</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</div>
+<!--
+EOT;
+require_once template('foot');
+?>

@@ -1,0 +1,40 @@
+<!--<?php
+require_once template('head'); 
+require_once template('sidebar');
+$met_product=methtml_imgdisplay('product');
+$met_productnext=methtml_prenextinfo(1);
+$methits=methtml_hits('product');
+echo <<<EOT
+-->
+        <div class="active" id="showproduct">
+			<h1 class='title'>{$product[title]}</h1>
+            <dl class='pshow'>
+                <dt>{$met_product}</dt>
+		        <dd>
+		            <ul class="list-none">
+<!--
+EOT;
+foreach($product_paralist as $key=>$val2){
+echo <<<EOT
+-->
+                        <li><span>{$val2[name]}</span>{$product[$val2[para]]}<div style="clear:both;"></div></li>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+			        </ul>
+		        </dd>
+	        </dl>
+			<div style="clear:both;"></div>
+			<div class="editor">$product[content]<div class="clear"></div></div>
+			<div class="met_hits">$methits</div>
+			<div class="met_page">$met_productnext</div>
+	    </div>
+    </div>
+    <div class="clear"></div>
+</div>
+<!--
+EOT;
+require_once template('foot'); 
+?>

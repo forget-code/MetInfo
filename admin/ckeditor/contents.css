@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -16,31 +16,24 @@ body
 	background-color: #fff;
 }
 
-/* preserved spaces for rtl list item bullets. (#6249)*/
 ol,ul,dl
 {
-    padding-right:40px;
+	/* IE7: reset rtl list margin. (#7334) */
+	*margin-right:0px;
+	/* preserved spaces for list items with text direction other than the list. (#6249,#8049)*/
+    padding:0 40px;
 }
-
-html
-{
-	/* #3658: [IE6] Editor document has horizontal scrollbar on long lines
-	To prevent this misbehavior, we show the scrollbar always */
-	_overflow-y: scroll;
-	/* #6341: The text cursor must be set on the editor area. */
-	cursor: text;
-	/* #6632: Avoid having "text" shape of cursor in IE7 scrollbars.*/
-	*cursor:auto;
-}
-
-img:-moz-broken
-{
-	-moz-force-broken-image-icon : 1;
-	width : 24px;
-	height : 24px;
-}
-img, input, textarea
-{
-	cursor: default;
-}
+html,body{ font:12px/2 'Microsoft YaHei',Tahoma,Verdana,'Simsun';}
 p{ margin:0px; padding:0px;}
+blockquote{ background:#f9f9f9; padding:5px 8px; border-color:#f9f9f9;}
+blockquote{
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	border-width: 1px;
+	border-style: solid;
+}
+blockquote{
+	-moz-box-shadow: rgba(200,200,200,0.7) 0 4px 10px -1px;
+	-webkit-box-shadow: rgba(200,200,200,0.7) 0 4px 10px -1px;
+	box-shadow: rgba(200,200,200,0.7) 0 4px 10px -1px;
+}

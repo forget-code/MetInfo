@@ -1,0 +1,35 @@
+<!--<?php
+$metfootnav=methtml_footnav('<span>|</span>');
+echo <<<EOT
+-->
+	<div id="footer">
+            <div class="nav">
+			    {$metfootnav}
+			</div>
+            <div class="text">
+                {$methtml_foot}
+<!--以下是版权信息，购买商业授权之后方可去除！-->
+                <div class="powered_by_metinfo">
+				    Powered&nbsp;by&nbsp;
+					<a href="http://www.MetInfo.cn" target="_blank" title="{$lang_Info1}">
+					    <b>MetInfo</b>
+					</a>
+					&nbsp;{$metcms_v}&nbsp;&copy;2008-$m_now_year&nbsp;
+					<a href="http://www.MetInfo.cn" target="_blank" title="{$lang_Info3}">
+					    www.MetInfo.cn
+					</a>
+				</div>
+<!--版权信息结束-->
+            </div>
+	</div>
+</div>
+<!--[if IE 6]>
+<script src="{$img_url}js/IE6-png.js" type="text/javascript"></script>
+<script type="text/javascript">DD_belatedPNG.fix('.bg,img');</script>
+<![endif]-->
+{$metonline}
+</body>
+</html>
+<!--
+EOT;
+?>-->

@@ -1,5 +1,4 @@
 <?php
-
 include('mail/class.phpmailer.php');
 //include("class.smtp.php"); // optional, gets called from within class.phpmailer.php if not already loaded
 if ( ! function_exists('jmailsend'))
@@ -13,10 +12,20 @@ if ( ! function_exists('jmailsend'))
 		$mail->Encoding   = "base64";
 
 		$mail->IsSMTP(); // telling the class to use SMTP
-
+		
 		//system
+		if(stripos($smtp,'.gmail.com')===false){
+			$mail->Port       = 25;
+			$mail->Host       = $smtp; // SMTP server
+		}
+		else{
+			$mail->Port       = 465;
+			$mail->Host       = $smtp; // SMTP server
+			$mail->SMTPSecure = "ssl";
+			//$mail->Host       = 'ssl://'.$smtp; // SMTP server
+		}
+
 		$mail->SMTPAuth   = true;
-		$mail->Host       = $smtp; // SMTP server
 		$mail->Username   = $usename; // SMTP account username
 		$mail->Password   = $usepassword;        // SMTP account password
 
@@ -40,7 +49,6 @@ if ( ! function_exists('jmailsend'))
 		$body             = eregi_replace("[\]",'',$body);
 		$mail->MsgHTML($body);
         
-		
 		//to
 		if($to)
 		{
@@ -60,10 +68,12 @@ if ( ! function_exists('jmailsend'))
 			//}			
 		//}
 		if(!$mail->Send()) {
-		  //echo "Mailer Error: " . $mail->ErrorInfo;
+			$mail->SmtpClose();
+		  //return "Mailer Error: " . $mail->ErrorInfo;
 		  return false;
 		} else {
-		  //echo "Message sent!";
+			$mail->SmtpClose();
+		  //return "Message sent!";
 		  return true;
 		}
 	}

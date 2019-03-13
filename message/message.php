@@ -2,34 +2,45 @@
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 require_once '../include/common.inc.php';
-$settings = parse_ini_file('config_'.$lang.'.inc.php');
-@extract($settings);
 $ip=$m_user_ip;
 $message_column=$db->get_one("select * from $met_column where module='7' and lang='$lang'");
 $metaccess=$message_column[access];
 $class1=$message_column[id];
-require_once '../include/head.php';
+foreach($settings_arr as $key=>$val){
+	if($val['columnid']==$class1){
+		$tingname    =$val['name'].'_'.$val['columnid'];
+		$$val['name']=$$tingname;
+	}
+}
+require_once ROOTPATH.'include/head.php';
 	$class1_info=$class_list[$class1][releclass]?$class_list[$class_list[$class1][releclass]]:$class_list[$class1];
 	$class2_info=$class_list[$class1][releclass]?$class_list[$class1]:$class_list[$class2];
 $navtitle=$message_column['name'];
 if($action=="add"){
+if(!$met_fd_ok)okinfo('javascript:history.back();',"{$lang_Feedback5}");
+if($met_memberlogin_code==1){
+	require_once ROOTPATH."{$met_adminfile}/include/captcha.class.php";
+	$Captcha= new  Captcha();
+	if(!$Captcha->CheckCode($code)){
+	echo("<script type='text/javascript'> alert('$lang_membercode');window.history.back();</script>");
+	   exit;
+	}
+}
 $addtime=$m_now_date;
 $ipok=$db->get_one("select * from $met_message where ip='$ip' order by addtime desc");
 $time1 = strtotime($ipok[addtime]);
 $time2 = strtotime($m_now_date);
 $timeok= (float)($time2-$time1);
-if($timeok<=$met_fd_time){
+$timeok2=(float)($time2-$_COOKIE['submit']);
+if($timeok<=$met_fd_time&&$timeok2<=$met_fd_time){
 $fd_time="{$lang_Feedback1} ".$met_fd_time." {$lang_Feedback2}";
 okinfo('javascript:history.back();',$fd_time);
 }
 
-/*bd*/
 $pname=strip_tags($pname);
 $email=strip_tags($email);
 $tel=strip_tags($tel);
 $contact=strip_tags($contact);
-/*bd*/
-
 $fdstr = $met_fd_word; 
 $fdarray=explode("|",$fdstr);
 $fdarrayno=count($fdarray);
@@ -43,17 +54,17 @@ break;
 }
 }
 
-$fd_word="[".$fd_word."] {$lang_Feedback3} ";
+$fd_word=" {$lang_Feedback3} [".$fd_word."]";
 
 if($fdok==true)okinfo('javascript:history.back();',$fd_word);
-
+setcookie('submit',$time2);
 $from=$met_fd_usename;
 $fromname=$met_fd_fromname;
 $to=$met_fd_to;
 $usename=$met_fd_usename;
 $usepassword=$met_fd_password;
 $smtp=$met_fd_smtp;
-
+require_once '../include/jmail.php';
 if($met_fd_email==1){
 $fromurl=$_SERVER['HTTP_REFERER'];
 $title=$pname."{$lang_MessageInfo1}";
@@ -70,6 +81,16 @@ jmailsend($from,$fromname,$to,$title,$body,$usename,$usepassword,$smtp,$email);
 if($met_fd_back==1 and $email!=""){
 jmailsend($from,$fromname,$email,$met_fd_title,$met_fd_content,$usename,$usepassword,$smtp);
 }
+/*短信提醒*/
+if($met_nurse_massge){
+require_once ROOTPATH.'include/export.func.php';
+if(maxnurse()<$met_nurse_max){
+$domain = strdomain($met_weburl);
+$message="您网站[{$domain}]收到了新的留言[{$title}]:".utf8substr($info,0,9)."，请尽快登录网站后台查看";
+sendsms($met_nurse_massge_tel,$message,4);
+}
+}
+/**/
 $customerid=$metinfo_member_name!=''?$metinfo_member_name:0;
 $query = "INSERT INTO $met_message SET
 					  ip                 = '$ip',
@@ -159,6 +180,14 @@ $methtml_message.="<td align='right' bgcolor='#FFFFFF' class='message_td1'>".$la
 $methtml_message.="<td bgcolor='#FFFFFF' class='message_text'><textarea name='info' cols='50' rows='6'></textarea>\n";
 $methtml_message.="<span class='message_info'>*</span></td>\n";
 $methtml_message.="</tr>\n";
+if($met_memberlogin_code==1){  
+	 $methtml_message.="<tr class='message_tr'><td align='right' bgcolor='#FFFFFF' class='message_td1'>".$lang_memberImgCode."</td>\n";
+     $methtml_message.="<td bgcolor='#FFFFFF' class='message_text'><input name='code' onKeyUp='pressCaptcha(this)' type='text' class='code' id='code' size='6' maxlength='8' style='width:50px' />";
+     $methtml_message.="<img align='absbottom' src='../member/ajax.php?action=code'  onclick=this.src='../member/ajax.php?action=code&'+Math.random() style='cursor: pointer;' title='".$lang_memberTip1."'/>";
+     $methtml_message.="<span class='message_info'>*</span>";
+	 $methtml_message.="</td>\n";
+     $methtml_message.="</tr>\n";
+}
 $methtml_message.="<tr class='message_tr'><td colspan='3' bgcolor='#FFFFFF' class='message_submint' align='center'>\n";
 $methtml_message.="<input type='hidden' name='fromurl' value='".$fromurl."' />\n";
 $methtml_message.="<input type='hidden' name='ip' value='".$ip."' />\n";

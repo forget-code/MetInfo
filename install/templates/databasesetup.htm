@@ -10,41 +10,45 @@ parent.document.getElementById("inspect").className='stepnowno';
 parent.document.getElementById("databasesetup").className='stepnow';
 </script>
 <body>
-<div class="contenttext databasesetup">
-<p style="font-weight:bold;">检查您的数据库设置情况，请在相应栏目仔细输入配置内容，点击 <b style="color:red;">保存数据库设置</b> 继续。</p>
+<div id="jsheit">
+<div class="contenttext databasesetup round">
+<p style="font-size:14px;">检查您的数据库设置情况，请在相应栏目仔细输入配置内容。</p>
     <form method="post" action="">
     <input name="setup" type="hidden" value="1">
 	 <input name="db_type" type="hidden" value="mysql">
 	  <fieldset style="padding-bottom:0px;">
 	  <legend><strong>数据库信息</strong></legend>
-		<div class="section">
-		  <input type="text" id="db_prefix" class="text" name="db_prefix" tabindex="2" value="met_" size="18" />
-		  <label for="db_prefix">数据表前缀</label>
-		  <p>例如：met_ 请不要留空，且使用“_”结尾。<br />
-		  </p>
+		<div class="section1">
+		  <p>数据表前缀</p>
+		  <input type="text" class="text" name="db_prefix" value="met_" size="18" />
+		  <span>例如：met_ 请不要留空，且使用“_”结尾</span>
 		</div>
-
-                <div class="section">
-		  <input type="text" id="db_host" class="text" name="db_host" tabindex="3" value="localhost" size="18" />
-		  <label for="db_host">数据库主机</label>
-		  <p>数据库主机地址，数据库与程序同在一服务器则为localhost，一般不需要更改。</p>
+        <div class="section1">
+		  <p>数据库主机</p>
+		  <input type="text" class="text" name="db_host" value="localhost" size="18" />
+		  <span>数据库主机地址，一般不需要更改</span>
 		</div>
-		<div class="section">
-		 <input type="text" id="db_name" name="db_name" class="text" tabindex="6"  size="18" />
-		  <label for="db_name">数据库名 </label>
-		  <p>例如'met'或'my_met',请确保用字母开头</p>
+		<div class="section1">
+		  <p>数据库名 </p>
+		 <input type="text" name="db_name" class="text" size="18" />
+		  <span>例如'met'或'my_met',请确保用字母开头</span>
 		</div>
-		<div class="section">
-		  <input type="text" id="db_username" class="text" name="db_username" tabindex="4" value="root" size="18" />
-		  <label for="db_username">数据库用户名</label>
+		<div class="section1">
+		  <p>数据库用户名</p>
+		  <input type="text" class="text" name="db_username" value="root" size="18" />
 		</div>
-		<div class="section" style="margin-bottom:0px;">
-		  <input type="password" id="db_pass" class="text" name="db_pass" tabindex="5" />
-		  <label for="db_pass">数据库密码</label>
+		<div class="section1" style="margin-bottom:0px;">
+		  <p>数据库密码</p>
+		  <input type="password" class="text" name="db_pass" />
 		</div>
-		<div style="padding:4px 0px;">
-		<input name="cndata" type="checkbox" value="yes" id="label1" checked="checked"/>&nbsp;<label for="label1" style="margin-right:20px;">安装中文演示数据</label> 
-		<input name="endata" type="checkbox" value="yes" id="label2" checked="checked" />&nbsp;<label for="label2">安装英文演示数据</label> 
+		<div class="section1" style="margin-bottom:0px;">
+		  <p>选项</p>
+		<label style="margin-right:20px; font-weight:normal;"><input name="cndata" type="checkbox" value="yes" checked="checked"/>&nbsp;安装中文语言包</label> 
+		<label style="margin-right:20px; font-weight:normal;"><input name="endata" type="checkbox" value="yes" checked="checked"/>&nbsp;安装英文语言包</label>
+		<label style=" font-weight:normal;"><input name="showdata" type="checkbox" value="yes" checked="checked"/>&nbsp;安装官方演示数据</label>
+		</div>
+		<div style="padding:8px 0px 8px 80px;">
+		
 		</div>
       </fieldset>
 	  <div style="text-align:center; margin-top:5px;">
@@ -52,7 +56,9 @@ parent.document.getElementById("databasesetup").className='stepnow';
 	 </div>
     </form>
 </div>
+</div>
 </body>
+</html>
 <!--
 EOT;
 # This program is an open source system, commercial use, please consciously to purchase commercial license.

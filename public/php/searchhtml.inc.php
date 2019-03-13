@@ -30,15 +30,15 @@ return $metinfo;
 }
 
 //Product and Image and download module  parameter search function
-function methtml_parasearch($type,$para1=100,$para2=100,$para4=100,$para6=100,$paraimg,$classid=0,$class1=0,$class2=0,$class3=0,$title=0,$content=0,$searchtype){
-global $module_listall,$module_list1,$module_list2,$module_list3,$product_paralist,$download_paralist,$img_paralist,$para_select,$class_index,$lang_Title,$lang_Content;
+function methtml_parasearch($type,$para1=100,$para2=100,$para4=100,$para6=100,$paraimg,$classid=0,$class1x=0,$class2=0,$class3=0,$title=0,$content=0,$searchtype){
+global $module_listall,$module_list1,$module_list2,$module_list3,$product_paralist,$download_paralist,$img_paralist,$para_select,$class_index,$lang_Title,$lang_Content,$class1;
 global $lang_AllBigclass,$navurl,$lang,$lang_AllThirdclass,$lang_AllSmallclass,$lang_search,$lang_Nolimit,$img_url,$metinfo_member_type,$met_member_use;
   $module=($type=='img')?5:(($type=='download')?4:3);
   $type_para=($type=='img')?$img_paralist:(($type=='download')?$download_paralist:$product_paralist);
-if(intval($classid)==0 || $class1 || $class2 || $class3){
+if(intval($classid)==0 || $class1x || $class2 || $class3){
   if($type=='')$type='product';
   $metinfo.="<script language = 'JavaScript'>\n";
- if($class1&&$class2){
+ if($class1x&&$class2){
   $metinfo.="var ".$type."_onecount;\n";
   $metinfo.=$type."_subcat = new Array();\n";
 $j=0;
@@ -58,7 +58,7 @@ $j++;
 }
   $metinfo.=$type."_onecount2=".$j.";\n";
  }
- if($class1&&$class2){
+ if($class1x&&$class2){
   $metinfo.="function ".$type."_changelocation(locationid){\n";
   $metinfo.="document.".$type."_myformsearch.class2.length = 1;\n"; 
   $metinfo.="var locationid=locationid;\n";
@@ -88,9 +88,10 @@ $j++;
   $metinfo.="<form method='get' name='".$type."_myformsearch' action='".$navurl.$type."/".$type.".php' >\n";
   $metinfo.="<input type='hidden' name='search' value='search' />\n";
   $metinfo.="<input type='hidden' name='lang' value='".$lang."' />\n";
+if(!$class1x)$metinfo.="<input type='hidden' name='class1' value='".$class1."' />\n";
   $metinfo.="<input type='hidden' name='searchtype' value='".$searchtype."' />\n";
-if(intval($classid)==0 || $class1 || $class2 || $class3){
- if($class1){
+if(intval($classid)==0 || $class1x || $class2 || $class3){
+ if($class1x){
   $metinfo.="<li>\n";
   $metinfo.="<span class='parasearch_class1'>\n";
   $metinfo.="<select name='class1' ";
@@ -115,7 +116,7 @@ foreach($module_list1[$module] as $key=>$val){
  if($class3)$metinfo.="onChange='".$type."_changelocation2(document.".$type."_myformsearch.class2.options[document.".$type."_myformsearch.class2.selectedIndex].value)'";
   $metinfo.="size='1'>\n";
   $metinfo.="<option selected value=''>".$lang_AllSmallclass."</option>\n";
- if(!$class1){
+ if(!$class1x){
    foreach($module_list2[$module] as $key=>$val){
    if(intval($classid)&&$class_index[$classid][classtype]=='class1'){
      if($val[bigclass]==$class_index[$classid][id])$metinfo.="<option value='".$val[id]."'>".$val[name]."</option>\n";
@@ -227,7 +228,7 @@ if($paraimg<>''){
 //adv search
 function methtml_advsearch($module,$classid,$class1=1,$class2=1,$class3=1,$searchimg,$searchtype){
 global $nav_list_2,$nav_list_3,$lang_Keywords,$searchurl,$lang_AllBigclass,$nav_search,$lang_AllSmallclass,$lang_AllThirdclass,$lang_Title,$lang_And,$lang_Content,$lang,$lang_search;
-global $module_listall,$module_list1,$module_list2,$module_list3,$class_index,$nav_list2,$nav_list3,$class_list,$img_url;
+global $module_listall,$module_list1,$module_list2,$module_list3,$class_index,$nav_list2,$nav_list3,$class_list,$img_url,$searchword;
  $metinfo.="<script language = 'JavaScript'>\n";
 if($class1&&$class2){
     $metinfo.="var onecount;\n";
@@ -280,7 +281,7 @@ if($class2&&$class3){
     $metinfo.="     }}} \n";
 }
     $metinfo.="function select1(){\n";
-    $metinfo.="document.myformsearch.searchword.value='';\n";
+    $metinfo.="if($(\"input[name='searchword']\").val()=='{$lang_Keywords}')document.myformsearch.searchword.value='';\n";
     $metinfo.="} \n";  
     $metinfo.="function Checksearch(){\n";
     $metinfo.="if(document.myformsearch.searchword.value=='".$lang_Keywords."'){\n";
@@ -334,6 +335,7 @@ if($searchtype==""){
 }else{
     $metinfo.="<input type='hidden' name='searchtype' value='".$searchtype."' />\n";
 }
+	if($searchword)$lang_Keywords=$searchword;
     $metinfo.="<li><span class='advsearch_searchword'><input id='searchword' type='text' class='input-text' name='searchword' value='".$lang_Keywords."' maxlength='50' onmousedown='select1()'></span></li>\n"; 
     $metinfo.="<input type='hidden' name='lang' value='".$lang."' />\n";
 	if($module)$metinfo.="<input type=\"hidden\" name=\"module\" value='$module'/>&nbsp;";
@@ -356,7 +358,7 @@ if($searchtype==""){
 	if($searchimg<>''){
       $metinfo.="<input class='searchimage' type='image' src='".$img_url.$searchimg."' />";
     }else{
-      $metinfo.="<input type='submit'  value='".$lang_search."' class='searchgo'/>";
+      $metinfo.="<input type='submit'  value='".$lang_search."' class='searchgo button orange'/>";
     }
     $metinfo.="</select></span></li>\n";
 	$metinfo.="</ul>\n";

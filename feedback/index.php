@@ -2,17 +2,21 @@
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.  
 require_once '../include/common.inc.php';
-$settings = parse_ini_file('config_'.$lang.'.inc.php');
-@extract($settings);
 if(!$id){
-	$nwid=$db->get_one("SELECT * FROM $met_column WHERE module='8' and lang='$lang'");
+	$filpy = basename(dirname(__FILE__));
+	$nwid=$db->get_one("SELECT * FROM $met_column WHERE module='8' and foldername='$filpy' and lang='$lang'");
 	$id=$nwid['id'];
 }
-
 $classaccess= $db->get_one("SELECT * FROM $met_column WHERE module='8' and lang='$lang' and id='$id'");
 $metaccess=$classaccess[access];
 $class1=$classaccess[id];
-require_once '../include/head.php';
+foreach($settings_arr as $key=>$val){
+	if($val['columnid']==$class1){
+		$tingname    =$val['name'].'_'.$val['columnid'];
+		$$val['name']=$$tingname;
+	}
+}
+require_once ROOTPATH.'include/head.php';
 	$class1_info=$class_list[$class1][releclass]?$class_list[$class_list[$class1][releclass]]:$class_list[$class1];
 	$class2_info=$class_list[$class1][releclass]?$class_list[$class1]:$class_list[$class2];
 $fromurl=$_SERVER['HTTP_REFERER'];
@@ -25,6 +29,15 @@ else{
 $navtitle="[".$title."]".$met_fdtable;
 }
 if($action=="add"){
+if(!$met_fd_ok)okinfo('javascript:history.back();',"{$lang_Feedback5}");
+if($met_memberlogin_code==1){
+	require_once ROOTPATH."{$met_adminfile}/include/captcha.class.php";
+	$Captcha= new  Captcha();
+	if(!$Captcha->CheckCode($code)){
+	echo("<script type='text/javascript'> alert('$lang_membercode');window.history.back();</script>");
+	   exit;
+	}
+}
 $sid = $id;
 $addtime=$m_now_date;
 $ipok=$db->get_one("select * from $met_feedback where ip='$ip' order by addtime desc");
@@ -34,8 +47,8 @@ else
 $time1 = 0;
 $time2 = strtotime($m_now_date);
 $timeok= (float)($time2-$time1);
-
-if($timeok<=$met_fd_time){
+$timeok2=(float)($time2-$_COOKIE['submit']);
+if($timeok<=$met_fd_time||$timeok2<=$met_fd_time){
 $fd_time="{$lang_Feedback1}".$met_fd_time."{$lang_Feedback2}";
 okinfo('javascript:history.back();',$fd_time);
 }
@@ -61,23 +74,75 @@ $fd_word=$fdarray[$i];
 break;
 }
 }
-
-$fd_word="[".$fd_word."] {$lang_Feedback3}";
+$fd_word="{$lang_Feedback3} [".$fd_word."]";
 if($fdok==true)okinfo('javascript:history.back();',$fd_word);
-
+setcookie('submit',$time2);
+require_once '../include/jmail.php';
 require_once 'uploadfile_save.php';
 $fdto="para".$met_fd_email;
 $fdto=$$fdto;
 $fdclass2="para".$met_fd_class;
 $fdclass=$$fdclass2;
-$title=$fdclass."--".$fdtitle;
+$title=$fdclass." - ".$fdtitle;
 $from=$met_fd_usename;
 $fromname=$met_fd_fromname;
 $to=$met_fd_to;
 $usename=$met_fd_usename;
 $usepassword=$met_fd_password;
 $smtp=$met_fd_smtp;
+if($met_fd_type!=0){
+if(!isset($metinfo_member_name) || $metinfo_member_name=='') $metinfo_member_name=0;
+$query = "INSERT INTO $met_feedback SET
+                      class1             = '$id',
+                      fdtitle            = '$title',
+					  fromurl            = '$fromurl',
+					  ip                 = '$ip',
+					  addtime            = '$addtime',
+					  customerid         = '$metinfo_member_name',
+					  lang               = '$lang'";					  
+$db->query($query);
+$id=mysql_insert_id();
+foreach($fd_para  as $key=>$val){
+    if($val[type]!=4){
+	  $para=$$val[para];
+	}else{
+	  $para="";
+	  for($i=1;$i<=$$val[para];$i++){
+	  $para1p="para".$val[id]."_".$i;
+	  $para2p=$$para1p;
+	  $para=($para2p<>"")?$para.$para2p."-":$para;
+	  }
+	  $para=substr($para, 0, -1);
+	}
+	
+	if($val[type]==5){$para="../upload/file/$para";}
+	$para=strip_tags($para);
+    $query = "INSERT INTO $met_flist SET
+                      listid   ='$id',
+					  paraid   ='$val[id]',
+					  info     ='$para',
+					  module   ='8',
+					  lang     ='$lang'";
+    $db->query($query);
+ }
+}
+/**/
+$fname= $db->get_one("SELECT * FROM $met_column WHERE module='8' and lang='$lang' and id='$sid'");
+$fedfilename=$fname['filename']!=''?$fname['filename']:'index';
+$met_ahtmtype = $fname['filename']<>''?$met_chtmtype:$met_htmtype;
+$returnurl=$met_pseudo?'index-'.$lang.'.html':($met_webhtm?$fedfilename.$met_ahtmtype:'index.php?lang='.$lang.'&id='.$sid);
+if($fid_url)$returnurl=$fid_url;//5.0.4
 
+/*短信提醒*/
+if($met_nurse_feed){
+	require_once ROOTPATH.'include/export.func.php';
+	if(maxnurse()<$met_nurse_max){
+		$domain = strdomain($met_weburl);
+		$message="您网站[{$domain}]收到了新的反馈信息[{$title}]，请尽快登录网站后台查看";
+		sendsms($met_nurse_feed_tel,$message,4);
+	}
+}
+/*邮件提醒*/
 if($met_fd_type==0 or $met_fd_type==2){
 foreach($fd_para as $key=>$val){
     if($val[type]!=4){
@@ -91,7 +156,7 @@ foreach($fd_para as $key=>$val){
 	  }
 	  $para=substr($para, 0, -1);
 	}
-	$para=htmlspecialchars($para);
+	$para=strip_tags($para);
 if($val[type]!=5){
 $body=$body."<b>".$val[name]."</b>:".$para."<br>";
 }else{
@@ -106,50 +171,10 @@ $body=$body."<b>{$lang_AddTime}</b>:".$addtime."<br>";
 $body=$body."<b>{$lang_SourcePage}</b>:".$fromurl;
 jmailsend($from,$fromname,$to,$title,$body,$usename,$usepassword,$smtp,$fdto);
 }
-
 if($met_fd_back==1){
 jmailsend($from,$fromname,$fdto,$met_fd_title,$met_fd_content,$usename,$usepassword,$smtp);
 }
 
-if($met_fd_type!=0){
-if(!isset($metinfo_member_name) || $metinfo_member_name=='') $metinfo_member_name=0;
-$query = "INSERT INTO $met_feedback SET
-                      class1             = '$id',
-                      fdtitle            = '$title',
-					  fromurl            = '$fromurl',
-					  ip                 = '$ip',
-					  addtime            = '$addtime',
-					  customerid         = '$metinfo_member_name',
-					  lang               = '$lang'";		
-         $db->query($query);
-$later_fd=$db->get_one("select * from $met_feedback where lang='$lang' order by addtime desc");
-$id=$later_fd[id];
-foreach($fd_para  as $key=>$val){
-    if($val[type]!=4){
-	  $para=$$val[para];
-	}else{
-	  $para="";
-	  for($i=1;$i<=$$val[para];$i++){
-	  $para1p="para".$val[id]."_".$i;
-	  $para2p=$$para1p;
-	  $para=($para2p<>"")?$para.$para2p."-":$para;
-	  }
-	  $para=substr($para, 0, -1);
-	}
-	$para=htmlspecialchars($para);
-    $query = "INSERT INTO $met_flist SET
-                      listid   ='$id',
-					  paraid   ='$val[id]',
-					  info     ='$para',
-					  module   ='8',
-					  lang     ='$lang'";
-         $db->query($query);
- }
-}
-$fname= $db->get_one("SELECT * FROM $met_column WHERE module='8' and lang='$lang' and id='$sid'");
-$fedfilename=$fname['filename']!=''?$fname['filename']:'index';
-$met_ahtmtype = $fname['filename']<>''?$met_chtmtype:$met_htmtype;
-$returnurl=$met_pseudo?'index-'.$lang.'.html':($met_webhtm?$fedfilename.$met_ahtmtype:'index.php?lang='.$lang.'&id='.$sid);
 okinfo($returnurl,"{$lang_Feedback4}");
 }
 else{
@@ -271,6 +296,13 @@ require_once '../public/php/methtml.inc.php';
      $methtml_feedback.="<td class=feedback_info style='color:#990000'>".$val[wr_must]."</td>\n";
      $methtml_feedback.="</tr>\n";
     }
+if($met_memberlogin_code==1){  
+     $methtml_feedback.="<tr><td class='text'>".$lang_memberImgCode."</td>\n";
+     $methtml_feedback.="<td class='input'><input name='code' onKeyUp='pressCaptcha(this)' type='text' class='code' id='code' size='6' maxlength='8' style='width:50px' />";
+     $methtml_feedback.="<img align='absbottom' src='../member/ajax.php?action=code'  onclick=this.src='../member/ajax.php?action=code&'+Math.random() style='cursor: pointer;' title='".$lang_memberTip1."'/>";
+     $methtml_feedback.="</td>\n";
+     $methtml_feedback.="</tr>\n";
+}
      $methtml_feedback.="<tr><td colspan='3' bgcolor='#FFFFFF' class=feedback_submit align='center'>\n";
      $methtml_feedback.="<input type='hidden' name='fdtitle' value='".$title."' />\n";
      $methtml_feedback.="<input type='hidden' name='fromurl' value='".$fromurl."' />\n";

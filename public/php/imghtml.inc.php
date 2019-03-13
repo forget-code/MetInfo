@@ -5,7 +5,7 @@
 //img list 
 function methtml_img($listtype,$type,$titlenum,$paranum,$detail,$feedback,$time,$hits,$newwindow=1,$desription,$desnum,$classname,$news,$hot,$top,$listnav=1,$max,$topcolor){
  global $img_list,$img_list_com,$img_list_img,$img_class,$lang_Colunm,$lang_Hits,$lang_UpdateTime,$lang_Title,$lang_Detail,$lang_Buy,$lang_ProductTitle;
- global $img_para,$img_paralist,$met_img_x,$met_img_y,$addfeedback_url,$met_submit_type,$met_img_page;
+ global $img_para,$img_paralist,$met_img_x,$met_img_y,$addfeedback_url,$met_img_page;
  global $class1,$class2,$class3,$nav_list2,$nav_list3,$class_list,$module_list1,$search;
  $listarray=($type=='new')?$img_list_new:(($type=='com')?$img_list_com:$img_list);
  $metimgok=0;
@@ -43,7 +43,7 @@ function methtml_img($listtype,$type,$titlenum,$paranum,$detail,$feedback,$time,
  foreach($listarray as $key=>$val){
  $val[title]=($val[title]=='')?$val[name]:$val[title];
  $val[name]=($val[name]=='')?$val[title]:$val[name];
- $addfeedback_url1=$met_submit_type?$addfeedback_url.$val[title]:addfeedback_url;
+ $addfeedback_url1=$addfeedback_url.$val[title];
  $i++;
  if(intval($titlenum)<>0)$val[title]=utf8substr($val[title], 0, $titlenum); 
  if(intval($desnum)<>0)$val[description]=utf8substr($val[description], 0, $desnum); 
@@ -118,8 +118,8 @@ if($listtype=='img'){
 
 function methtml_showimg($type,$feedback=0,$desription){
  global $img,$lang_Colunm,$lang_Hits,$lang_UpdateTime,$lang_Title,$lang_Detail,$lang_Buy,$lang_BigPicture;
- global $imgpara,$img_paralist,$met_img_x,$met_img_y,$addfeedback_url,$met_submit_type,$met_url,$img_paraimg;
- $addfeedback_url1=$met_submit_type?$addfeedback_url.$img[title]:addfeedback_url;
+ global $imgpara,$img_paralist,$met_img_x,$met_img_y,$addfeedback_url,$met_url,$img_paraimg;
+ $addfeedback_url1=$addfeedback_url.$img[title];
 if($type=='all'){
    $listtext.=methtml_imgdisplay('img');
  $j=0;

@@ -1,62 +1,47 @@
 <!--<?php
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved..
-echo <<<EOT
--->
-<!--
-EOT;
-if($met_lang_editor){
-echo <<<EOT
--->
-<div id="languge">
-	<ul id="langlist">
-<!--
-EOT;
-foreach($met_langok as $key=>$val){
-$metok = '';
-if($val['mark']==$lang)$metok = 'class="onlang"';
-if($langadminok=="metinfo" or (strstr($langadminok,"-".$val[mark]."-"))){
-echo <<<EOT
--->
-        <li $metok><a class="lang" href="?lang=$val[mark]" onclick="return duolang('$val[mark]');" title="$val[name]">$val[name]</a></li>
-<!--
-EOT;
-}}
-echo <<<EOT
--->
-        <div class="clear"></div>
-    </ul>
-</div>
-<!--
-EOT;
-}
+if($title)$title=' > '.$title;
 echo <<<EOT
 -->
 <script type="text/javascript">
-$(document).ready(function()
-	{
-		$("form :input").change(function ()
-		{
-			$('form').data('changed',true);
-		});
-	}
-	);
-function duolang(lang){
-	if($('form').data('changed')){
-		if(!confirm(user_msg['js10']))return false;
-		else{
-			langCookie(lang); 
-		}
+function metreturn(url){
+	url=false;
+	if(url){
+		location.href=url;
+	}else if($.browser.msie){
+		history.go(-1);
 	}else{
-		langCookie(lang); 
+		history.go(-1);
 	}
-}
-function langCookie(lang){
-	parent.$.cookie('langget',null);
-    parent.$.cookie('langget', $littr);
-	parent.location.href='../index.php?lang='+lang;
 }
 </script>
+	<div class="metinfotop">
+	<div class="position">{$met_langok[$lang][name]}：{$toplace[$letplace[$anyid][bigclass]][name]} > <a href="{$depth}../{$letplace[$anyid][url]}">{$letplace[$anyid][name]}</a>{$title}</div>
+<!--
+EOT;
+if($title){
+echo <<<EOT
+-->
+	<div class="return"><a href="javascript:metreturn('{$rurl}');">&lt;&lt;{$lang_js55}</a></div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+	</div>
+	<div class="clear"></div>
+<!--
+EOT;
+if($turnovertext){
+echo <<<EOT
+-->
+	<div class="returnover">{$turnovertext}</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
 <!--
 EOT;
 # This program is an open source system, commercial use, please consciously to purchase commercial license.

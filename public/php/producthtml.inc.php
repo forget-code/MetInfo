@@ -5,7 +5,7 @@
 //product list 
 function methtml_product($listtype,$type,$titlenum,$paranum,$detail,$feedback,$time,$hits,$newwindow=1,$desription,$desnum,$classname,$news,$hot,$top,$listnav=1,$max,$topcolor){
  global $product_list,$product_list_com,$product_list_img,$product_class,$lang_Colunm,$lang_Hits,$lang_UpdateTime,$lang_Title,$lang_Detail,$lang_Buy,$lang_ProductTitle;
- global $product_paralist,$met_img_x,$met_img_y,$addfeedback_url,$met_submit_type,$met_product_page;
+ global $product_paralist,$met_img_x,$met_img_y,$addfeedback_url,$met_product_page;
  global $class1,$class2,$class3,$nav_list2,$nav_list3,$class_list,$module_list1,$search,$metblank;
  $listarray=($type=='new')?$product_list_new:(($type=='com')?$product_list_com:$product_list);
  $metproductok=0;
@@ -43,8 +43,7 @@ function methtml_product($listtype,$type,$titlenum,$paranum,$detail,$feedback,$t
  foreach($listarray as $key=>$val){
  $val[title]=($val[title]=='')?$val[name]:$val[title];
  $val[name]=($val[name]=='')?$val[title]:$val[name];
- $val[titlef]=urlencode($val[title]);
- $addfeedback_url1=$met_submit_type?$addfeedback_url.$val[titlef]:addfeedback_url;
+ $addfeedback_url1=$addfeedback_url.$val[title];
  $i++;
  if(intval($titlenum)<>0)$val[title]=utf8substr($val[title], 0, $titlenum); 
  if(intval($desnum)<>0)$val[description]=utf8substr($val[description], 0, $desnum); 
@@ -119,8 +118,8 @@ if($listtype=='img'){
 
 function methtml_showproduct($type,$feedback=1,$desription){
  global $product,$lang_Colunm,$lang_Hits,$lang_UpdateTime,$lang_Title,$lang_Detail,$lang_Buy,$lang_BigPicture;
- global $productpara,$product_paralist,$met_img_x,$met_img_y,$addfeedback_url,$met_submit_type,$met_url,$product_paraimg;
- $addfeedback_url1=$met_submit_type?$addfeedback_url.$product[title]:addfeedback_url;
+ global $productpara,$product_paralist,$met_img_x,$met_img_y,$addfeedback_url,$met_url,$product_paraimg;
+ $addfeedback_url1=$addfeedback_url.$product[title];
 if($type=='all'){
    $listtext.=methtml_imgdisplay('product');
  $j=0;

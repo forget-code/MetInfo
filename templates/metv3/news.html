@@ -12,7 +12,7 @@ EOT;
 foreach($news_list as $key=>$val){
 echo <<<EOT
 -->
-         <div><img src="$val[imgurls]" width="$met_img_x" height="$met_img_y" /><span>$val[top] $val[news] $val[hot]$val[updatetime]</span><a href="$val[url]" target="_blank">$val[title]</a></div>
+         <li><span>$val[top] $val[news] $val[hot]$val[updatetime]</span><a href="$val[url]" target="_blank">$val[title]</a></li>
 <!--
 EOT;
 }

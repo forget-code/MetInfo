@@ -1,0 +1,20 @@
+<!--<?php
+# 文件名称
+require_once template('head'); 
+require_once template('webbar'); 
+echo <<<EOT
+-->
+        <div class="memberbox webbox">
+            <!--
+EOT;
+include templatemember($mfname);
+echo <<<EOT
+-->
+        </div>
+    </div>
+    <div style="clear:both;"></div>
+</div>
+<!--
+EOT;
+require_once template('foot'); 
+?>

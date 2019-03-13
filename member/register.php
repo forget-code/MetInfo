@@ -28,11 +28,15 @@ $member_index_url="index.php?lang=".$lang;
 }else{
 $member_index_url="index".$met_htmtype;
 }
+$mfname='register';
+include template('member');
+/*
 if(file_exists("../templates/".$met_skin_user."/login.".$dataoptimize_html)){
     include template('register');
 }else{
 include templatemember('register_metinfo');
  }
+ */
 footer();
 }else{
 okinfo('../',$lang_memberclose);

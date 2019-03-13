@@ -9,33 +9,22 @@ echo <<<EOT
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link href="$img_url/css/reset.css" rel="stylesheet" />
 <link rel="stylesheet" type="text/css" href="$img_url/css/metinfo.css" />
-<script type="text/javascript"src="../include/metvar.js"></script>
-<script type="text/javascript" src="../include/metinfo.js"></script>
-<script type="text/javascript" src="../../public/js/metinfo-min.js"></script>
-<script type="text/javascript" src="$img_url/js/iframes.js"></script>
-<script type="text/javascript" src="$img_url/js/cookie.js"></script>
-<style type="text/css">
-body{
-	font-size: $lang_fontsize; 
-	font-family:$lang_fontfamily;
-	text-align:center;
-}
-</style>
+<script type="text/javascript">var basepath='{$img_url}';</script>
+<script type="text/javascript"src="{$depth}../include/metvar.js"></script>
+<script type="text/javascript" src="{$depth}../../public/js/jQuery1.7.2.js"></script>
+<script type="text/javascript" src="{$img_url}/js/iframes.js"></script>
+<script type="text/javascript" src="{$img_url}/js/cookie.js"></script>
 <script type="text/javascript">
-//ajax执行时间
-var time=200;
+/*ajax执行*/
 var lang = '$lang';
-var metimgurl='$img_url/';
-</script>
-<script type="text/javascript">
-	$(document).keypress(function(e){  
-	var type = e.keyCode||e.which||e.charCode;
-		if(type==27){ 		
-			parent.sitemp('set/sitemap.php?lang=$lang&admintp=$admin_list[id]&langset=$langset');  
-		}				
-	});
+var metimgurl='{$img_url}/';
+var depth='{$depth}';
+var metinfo_admin_id='{$admin_list[id]}';
+var metinfo_admin_pass='{$_SESSION[metinfo_admin_pass]}';
+$(document).ready(function(){
+	ifreme_methei();
+});
 </script>
 <!--
 EOT;

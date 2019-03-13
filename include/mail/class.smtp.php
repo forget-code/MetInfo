@@ -115,11 +115,24 @@ class SMTP
     }
 
     #connect to the smtp server
-    $this->smtp_conn = pfsockopen($host,    # the host of the server
+	if(function_exists(fsockopen)){
+		$this->smtp_conn = fsockopen($host,    # the host of the server
+									$port,    # the port to use
+									$errno,   # error number if any
+									$errstr,  # error message if any
+									$tval);   # give up after ? secs
+	}elseif(function_exists(pfsockopen)){
+	    $this->smtp_conn = pfsockopen($host,    # the host of the server
                                  $port,    # the port to use
                                  $errno,   # error number if any
                                  $errstr,  # error message if any
                                  $tval);   # give up after ? secs
+	}else{
+	    $this->smtp_conn = stream_socket_client("tcp://".$host.":".$port,    # the port to use
+                                 $errno,   # error number if any
+                                 $errstr,  # error message if any
+                                 $tval);   # give up after ? secs
+	}
     # verify we connected properly
     if(empty($this->smtp_conn)) {
       $this->error = array("error" => "Failed to connect to server",

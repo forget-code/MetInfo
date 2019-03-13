@@ -1,195 +1,80 @@
-function changes(th){
-    location.href = th.val();	
-}
-//Point Navigation
-function clicknav(nav,lang,id){
-    var li = 0;
-	    if(lang instanceof jQuery)li=2;
-    var next = new Array();
-        next[0] = $("#leftnav ul,#leftnav div.post");
-        next[1] = nav;
-		for(var k=0;k<2;k++){
-		    next[k].each(function(i){
-		        var th = $(this);
-		        if(i==id){
-			        if(k==0){
-					    var la = th.find("li a");
-					    var url = la.eq(li).attr("href");
-						if(lang instanceof jQuery)url=lang.attr("href");
-						la.removeClass("on");
-					    th.show();
-						if(url){
-						    $("#content div.iframe").append(loadingimg);
-							$('#loading').height($('#main').height());
-							la.eq(li).addClass("on");
-						    $("#main").attr("src",url);
-						}else{ 
-						    $("#main").attr("src","site/sysadmin.php?lang="+lang); 
-						}
-				    }
-			        if(k==1)th.addClass("onnav");
-			    }else{
-			        if(k==0){
-					    var la = th.find("li a");
-					    th.hide();
-						la.removeClass("on");
-					}
-			        if(k==1)th.removeClass("onnav");
-			    }
-			});
-		}
-}
-function clickula(ula,id){
-    ula.each(function(i){
-	    var th  = $(this);
-	    if(i==id){
-			th.addClass("on");
-		}else{
-		    th.removeClass("on");
-		}
-	});
-}
-function dldown(dom,dd,p){
-    dd.each(function(i){
-	    if(i==p){
-		    var ft = $(this).is(":hidden");
-		    if(ft){
-			    $(this).show();
-				dom.addClass("on");
-			}else{
-			    $(this).hide();
-				dom.removeClass("on");
-			}
-		}else{
-		    $(this).hide();
-		}
-	});
-}
-//metinfo
-function metclse(my,imgurl){
-    $("#metleft").toggleClass("none");
-    $("#metright").toggleClass("metclse");
-	$('#metright .metbox').toggleClass("metclse");
-	var src = $("#metleft").is(".none")?imgurl+"botton/show.gif":imgurl+"botton/hide.gif";
-	my.attr("src",src);
-}
+(function($){var jspath=$('script').last().attr('src');var basepath='';if(jspath.indexOf('/')!=-1){basepath+=jspath.substr(0,jspath.lastIndexOf('/')+1);}$.fn.fixpng=function(options){function _fix_img_png(el,emptyGIF){var images=$('img[src*="png"]',el||document),png;images.each(function(){png=this.src;width=this.width;height=this.height;this.src=emptyGIF;this.width=width;this.height=height;this.style.filter="progid:DXImageTransform.Microsoft.AlphaImageLoader(src='"+png+"',sizingMethod='scale')";});}function _fix_bg_png(el){var bg=$(el).css('background-image');if(/url\([\'\"]?(.+\.png)[\'\"]?\)/.test(bg)){var src=RegExp.$1;$(el).css('background-image','none');$(el).css("filter","progid:DXImageTransform.Microsoft.AlphaImageLoader(src='"+src+"',sizingMethod='scale')");}}if($.browser.msie&&$.browser.version<7){return this.each(function(){var opts={scope:'',emptyGif:basepath+'blank.gif'};$.extend(opts,options);switch(opts.scope){case'img':_fix_img_png(this,opts.emptyGif);break;case'all':_fix_img_png(this,opts.emptyGif);_fix_bg_png(this);break;default:_fix_bg_png(this);break;}});}}})(jQuery);function timehide(dom,time){if(!dom.is(':hidden')){t=setTimeout(function(){dom.hide();},time);dom.hover(function(){clearTimeout(t);},function(){timehide(dom,time);});}}
+function mhover(dom,cs){if(dom)dom.hover(function(){$(this).addClass(cs);},function(){$(this).removeClass(cs);});}
+function cknav(d){if(d instanceof jQuery){if(d.attr("id")!='top_quick_a'){$('#topnav a').removeClass("onnav");d.addClass("onnav");$("ul[id^='ul_']").hide();var u=String(d.attr('id'));u=u.split('_');u=u[1];$.cookie('conav',null);$.cookie('conav',u,{path:'/'});$("#ul_"+u).show();u=$("#ul_"+u).find('li a').eq(0);frameget(u);}}else{cknav($('#nav_'+d));}}
+function frameget(u){if(u.attr('target')){if(u.attr('target')=='_blank')return false;$("#leftnav a").removeClass("on");$("#main").attr("src",u.attr('href'));$("#main").src=$("#main").src;u.addClass("on");var l=u.attr('id');l=l.split('_');$.cookie('coul',null);$.cookie('coul',l[2],{path:'/'});}}
+function dheight(){var l=$(document).height()-77;var m=$("#main").contents().find("body").height();l=m>l?m:l;if(m<700&&l>700)l=700;$('#metleft').height(l);$('#metright').height(l);$('#main').height(l);var n=l-10-25-35;$('#leftnav').height(n);}
+function qielang(lt,msg){var l=$('#langcion').attr('title');lt.empty().append(msg);var m=$('div.langlist li');mhover(m,'hv');m.each(function(){var d=$(this);d.attr('title')==l?d.addClass('dlang'):d.removeClass('dlang');});lt.show();$('div.langlist li').click(function(){var d=$(this);var t=d.attr('title');var l=$('#langcion').attr('title');if(t!=l){var h=$('#leftnav li a.on').attr('href');if(!h){h='system/sysadmin.php?anyid=8&';}else{h=h.split('lang=');h=h[0];}
+var n=$("#leftnav a[id^='nav_']");n.each(function(){var a=$(this).attr('href');a=a.split('lang=');a=a[0]+'lang='+t;$(this).attr('href',a);});$('#langcion').attr('title',t);var hr=h+'lang='+t;$('#main').attr('src',hr);$('.langtxt #langcion').empty().append(d.text());m.removeClass('dlang');d.addClass('dlang');if(t!=l)$.cookie('clang',t);adminp(l,t);}
+lt.hide();});}
+function adminp(l,t){if(langar[l]==langar[t]){}else{window.location.href='index.php?lang='+t;}}
+function commercial_license(){$.ajax({url:'system/authcode.php?lang='+lang+'&autcod=1&cs=1&action_ajax=1',type:"GET",success:function(data){if(data==0){var txt='未'+'购'+'买'+'商'+'业'+'授'+'权';if(!window.atop){data=txt;}else{data=atop==''?txt:atop;}}
+$(".top-"+"r-t").append('<div id="met'+'info'+'_lice'+'nse"></div>');var met=$("#metinfo_license");met.html('<a href="javascript:;" title="'+data+'" id="license_isok">'+data+'</a>');met.find('a').css({'color':'#f2fb02'});$('#license_isok').live('click',function(){$('#nav_1').click();$('#nav_1_15').click();});}});}
 
-//sitemp
-function sitemp(url){
-	if($('#sitemap').html()==''){
+var conav = $.cookie('conav');
+var coul = $.cookie('coul');
+if (conav) {
+	cknav(conav);
+	if (coul) frameget($('#nav_' + conav + '_' + coul));
+}
+$("#main").load(function() {
+	dheight();
+})
+ $('#topnav a').click(function() {
+	cknav($(this));
+});
+$("#leftnav a").click(function() {
+	frameget($(this));
+});
+var lg = $('#langcig');
+var lt = lg.next('div.langlist');
+lg.click(function() {
+	lt.empty().append('<div style="text-align:center; color:#666;">' + user_msg['jsx1'] + '</div>');
+	if (lt.is(':hidden')) {
 		$.ajax({
-		url : url, 
-		type: "POST",
-		data: '', 
-		success: function(data){
-			$('#sitemap').empty();
-			$('#sitemap').append(data);
-		}
+			type: "POST",
+			url: "include/return.php?type=lang",
+			success: function(msg) {
+				if (msg != '') {
+					qielang(lt, msg);
+				}
+			}
 		});
 	}
-	if($('#sitemap').is(':hidden')){
-	$('#sitemap').show();
-	}else{
-	$('#sitemap').hide();
-	}
-}
-function drag(C){
-	var dx, dy, moveout;
-	var T = C;
-	T.bind("selectstart", function(){
-		return false;
-	});            
-	T.mousedown(function(e){
-		dx = e.clientX - parseInt(C.css("left"));
-		dy = e.clientY - parseInt(C.css("top"));
-		C.mousemove(move).mouseout(out);
-		T.mouseup(up);
-	});
-	function move(e){
-		moveout = false;
-		if (e.clientX - dx < 0) {
-			l = 0;
-		}
-		else 
-			if (e.clientX - dx > $(window).width() - C.width()) {
-				l = $(window).width() - C.width();
-			}
-			else {
-				l = e.clientX - dx
-			}
-		C.css({
-			left: l,
-			top: e.clientY - dy
-		});              
-	}
-	function out(e){
-		moveout = true;
-		setTimeout(function(){
-			checkout(e);
-		}, 100);
-	}
-	function up(e){
-		C.unbind("mousemove", move).unbind("mouseout", out);
-		T.unbind("mouseup", up);
-	}
-	function checkout(e){
-		moveout && up(e);
-	}
-}
-function targetload(my,loadingimg){var url = my.attr('href'); $("#content div.iframe").append(loadingimg);$('#loading').height($('#main').height()); $("#main").attr("src",url);}
-//Tied Navigation
-    var nav = $("#topnav a");
-	    nav.each(function(i){ var dom = $(this);dom.click(function(){ clicknav(nav,lang,i);});});	
-//侧栏点击效果
-	var ula = $("#leftnav ul a");
-	    ula.each(function(i){ var dom = $(this);dom.click(function(){ clickula(ula,i);});});
-//内容管理展开
-	var dt = $("#leftnav div.post dt");
-	var dd = $("#leftnav div.post dd");
-	    dt.each(function(i){var dom = $(this);dom.click(function(){ dldown(dom,dd,i);});});
-    var dta = dt.find("a");
-        dta.focus(function(){ this.blur(); });
-/////
-    $("#content div.iframe").append(loadingimg);
-	$('#loading').height($('#main').height());
-    $("#leftnav li a,#leftnav dd a").click(function(){
-		if($(this).attr("target")!='_blank')targetload($(this),loadingimg);
-	});
-	$("#leftnav li a,#leftnav dd a").bind('focus',function(){if(this.blur)this.blur();});
-    $("#main").load(function(){ $("#content div").remove("#loading");}); 
-	$("#sitemap a").live('click', function() {
-		if(!$(this).attr("target")){
-			var dtt = $(this).parent().parent();
-			if(dtt.attr("tagName")=='DL'){
-				dtt = dtt.parent().parent();
-			}
-			if(dtt.attr("tagName")=='DD'){
-				var dtm = dtt;
-				dtt = dtt.parent().parent().parent();
-			}
-			var ik = dtt.index();
-			clicknav($('#topnav a'),lang,ik);
-			var dta = $("#leftnav ul a");
-			var ic = $("#sitemap div.nav li::not(.ddcs) a").index(this);
-			clickula(dta,ic);
-			if(dtm && dtm.attr("tagName")=='DD'){
-				var dom = $("#leftnav div.post dt");
-				var dtp = $("#leftnav div.post dd");
-				var im  = $("#sitemap dd").index(dtm);
-				dldown(dom,dtp,im);
-			}
-			targetload($(this),loadingimg);
-			return false;
-		}
-    });
-    var sitemap = $('#sitemap');
-    if(sitemap){
-		drag(sitemap);
-		sitemap.find('dl').live('hover',function(tm){	
-			if(tm.type=='mouseover'){
-				$(this).find('dd').show();
-				$(this).find('dd').css('left',$(this).width());
-			}
-			if(tm.type=='mouseout')$(this).find('dd').hide();
-		});
-	}
+	lt.is(':hidden') ? $("#langcig").addClass('nowt') : $("#langcig").removeClass('nowt');
+	lt.is(':hidden') ? lt.show() : lt.hide();
+	return false;
+});
+$('#hthome').click(function() {
+	$.cookie('conav', 1);
+	$.cookie('coul', 8);
+});
+$('#met_logo').click(function() {
+	$.cookie('conav', 1);
+	$.cookie('coul', 8);
+});
+$('#mydata').click(function() {
+	$.cookie('conav', 7);
+	$.cookie('coul', 48);
+});
+$('#qthome').click(function() {
+	var h = '../index.php?lang=';
+	var l = $('#langcion').attr('title') ? $('#langcion').attr('title') : lang;
+	$(this).attr('href', h + l);
+});
+$('#outhome').click(function() {
+	$.cookie('conav', null);
+	$.cookie('clang', null);
+});
+$("body").click(function() {
+	$("#langcig").removeClass('nowt');
+	$(".langlist").hide();
+})
+ $(".langkkkbox").hover(function() {
+	$(this).addClass('now');
+},
+function() {
+	$(this).removeClass('now');
+});
+$(document).ready(function() {
+	commercial_license();
+});

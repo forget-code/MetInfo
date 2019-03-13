@@ -1,6 +1,9 @@
 <?php
-$news=$db->get_one("select * from $dbname where id='$id'");
-if(!$news)okinfo('../',$lang_error);
+require_once substr(dirname(__FILE__), 0, -6).'common.inc.php';
+if(!is_numeric($id)){okinfo('../404.html');exit();}
+$news=$db->get_one("select * from $dbname where id=$id and lang='$lang' and (recycle='0' or recycle='-1')");
+if(!$news){okinfo('../404.html');exit();}
+$news['updatetime_order']=$news['updatetime'];
 $news['updatetime'] = date($met_contenttime,strtotime($news['updatetime']));
 $news['imgurls']=($news['imgurls']<>"")?$news['imgurls']:'../public/images/metinfo.gif';
 $news['imgurl']=($news['imgurl']<>"")?$news['imgurl']:'../public/images/metinfo.gif';
@@ -14,7 +17,6 @@ if($imgproduct=='download'){
 	}
 }
 require_once '../include/head.php';
-$news['content']=contentshow($news['content']);
 $class1_info=$class_list[$class1]['releclass']?$class_list[$class_list[$class1]['releclass']]:$class_list[$class1];
 $class2_info=$class_list[$class1]['releclass']?$class_list[$class1]:$class_list[$class2];
 $class3_info=$class_list[$class3];
@@ -26,8 +28,19 @@ if($mdmendy){
 		$nowpara1="para".$list1['paraid'];
 		$news[$nowpara1]=$list1['info'];
 		$metparaaccess=$metpara[$list1['paraid']]['access'];
+		if($metpara[$list1['paraid']]['type']==5){
+			$fltp=metfiletype($list1['info']);
+			$fltp=$fltp?'met_annex_'.$fltp:'';
+			if(!$list1['imgname']){
+				$listinfos=explode('/',$list1['info']);
+				$listinfoss=explode('.',$listinfos[3]);
+				$list1['imgname']=$listinfoss[0];
+			}
+			$news[$nowpara1]="<a href='{$list1['info']}' {$metblank} class='met_annex {$fltp}' title='{$list1['imgname']}'>{$list1['imgname']}</a>";
+			$news[$nowpara1.'s']=$list1['info'];
+		}
 		if(intval($metparaaccess)>0&&$met_member_use){
-			$paracode=authcode($news[$nowpara1], 'ENCODE', $met_memberforce);
+			$paracode=authcode($news[$nowpara1], 'ENCODE', $met_member_force);
 			$paracode=codetra($paracode,1); 
 			$news[$nowpara1]="<script language='javascript' src='../include/access.php?metuser=para&metaccess=".$metparaaccess."&lang=".$lang."&listinfo=".$paracode."&paratype=".$metpara[$list1['paraid']]['type']."'></script>";
 		}
@@ -36,15 +49,35 @@ if($mdmendy){
 		$news[$nowparaname]=($list1['imgname']<>"")?$list1['imgname']:$metpara[$list1['paraid']]['name'];
 	}
 }
-
 if($dataoptimize[$pagemark]['nextlist']){
-	if($met_member_use==2){
-		$prenews=$db->get_one("select $listitem[$mdname] from $dbname where  class1=$class1 and class2=$class2 and class3=$class3 and lang='$lang' and (access<=$metinfo_member_type) and (id > $id) limit 0,1");
-		$nextnews=$db->get_one("select $listitem[$mdname] from $dbname where class1=$class1 and class2=$class2 and class3=$class3 and lang='$lang' and (access<=$metinfo_member_type) and (id < $id) order by id desc limit 0,1");
-	}else{
-		$prenews=$db->get_one("select $listitem[$mdname] from $dbname where  class1=$class1 and class2=$class2 and class3=$class3 and lang='$lang' and (id > $id) limit 0,1");
-		$nextnews=$db->get_one("select $listitem[$mdname] from $dbname where class1=$class1 and class2=$class2 and class3=$class3 and lang='$lang' and (id < $id) order by id desc limit 0,1");
+	if($met_pnorder==1){
+		$csql="class1='$class1' and class2='$class2' and class3='$class3'";
+		$cpnorder=$class3?$class_list[$class3]['list_order']:($class2?$class_list[$class2]['list_order']:$class_list[$class1]['list_order']);
 	}
+	else{
+		$csql="class1=$class1";
+		$cpnorder=$class_list[$class1]['list_order'];
+	}
+	$acc_sql=$met_member_use==2?"(access<=$metinfo_member_type) and":" ";
+	$pn_sql=pn_order($cpnorder,$news);
+	if($cpnorder<4){
+		$allnews=$db->get_all("select * from $dbname where $csql and lang='$lang' and (recycle='0' or recycle='-1') and $acc_sql $pn_sql[2]");
+		$allnum=count($allnews);
+		if($allnum>1){
+			foreach($allnews as $keyall=>$valall){
+				if($valall['id']==$id){
+					if(is_array($allnews[$keyall-1])){
+						if($keyall-1>=0){$prenews=$allnews[$keyall-1];}
+					}
+					if(is_array($allnews[$keyall+1])){
+						if($keyall+1<=$allnum){$nextnews=$allnews[$keyall+1];}
+					}
+				}
+			}
+		}
+	}
+	if(!is_array($prenews))$prenews=$db->get_one("select * from $dbname where $csql and lang='$lang' and (recycle='0' or recycle='-1') and $acc_sql $pn_sql[0] limit 0,1");
+	if(!is_array($nextnews))$nextnews=$db->get_one("select * from $dbname where $csql and lang='$lang' and (recycle='0' or recycle='-1') and $acc_sql $pn_sql[1] limit 0,1");
 }
 if($dataoptimize[$pagemark]['otherlist']){	
 	$serch_sql=" where lang='$lang' and class1=$class1 ";
@@ -52,7 +85,7 @@ if($dataoptimize[$pagemark]['otherlist']){
 	if($class3)$serch_sql .= " and class3=$class3"; 
 	if($met_member_use==2)$serch_sql .= " and access<=$metinfo_member_type";
 	$order_sql=$class3?list_order($class_list[$class3]['list_order']):($class2?list_order($class_list[$class2]['list_order']):list_order($class_list[$class1]['list_order']));
-    $query = "SELECT $listitem[$mdname] FROM $dbname $serch_sql $order_sql LIMIT 0, $listnum";
+    $query = "SELECT * FROM $dbname $serch_sql and (recycle='0' or recycle='-1') $order_sql LIMIT 0, $listnum";
     $result = $db->query($query);
 	while($list= $db->fetch_array($result)){
 		if($dataoptimize[$pagemark]['classname']){
@@ -80,7 +113,7 @@ if($dataoptimize[$pagemark]['otherlist']){
 				$list[$nowpara1]=$list1['info'];
 				$metparaaccess=$metpara[$list1['paraid']]['access'];
 				if(intval($metparaaccess)>0&&$met_member_use){
-					$paracode=authcode($list[$nowpara1], 'ENCODE', $met_memberforce);
+					$paracode=authcode($list[$nowpara1], 'ENCODE', $met_member_force);
 					$paracode=codetra($paracode,1); 
 					$list[$nowpara1]="<script language='javascript' src='../include/access.php?metuser=para&metaccess=".$metparaaccess."&lang=".$lang."&listinfo=".$paracode."&paratype=".$metpara[$list1['paraid']]['type']."'></script>";
 				}
@@ -135,8 +168,8 @@ if($dataoptimize[$pagemark]['nextlist']){
 			$nexthtmname=$showname;
 			break;
 		case 1:
-			$prehtmname = date('Ymd',strtotime($prenews['updatetime']));	
-			$nexthtmname = date('Ymd',strtotime($nextnews['updatetime']));
+			$prehtmname = date('Ymd',strtotime($prenews['addtime']));	
+			$nexthtmname = date('Ymd',strtotime($nextnews['addtime']));
 			break;
 		case 2:
 			$prehtmname=$class_list[$prenews['class1']]['foldername'];
@@ -157,7 +190,18 @@ $class2=$class_list[$class1]['releclass']?$class1:$class2;
 $class1=$class_list[$class1]['releclass']?$class_list[$class1]['releclass']:$class1;	
 $show['description']= $news['description']?$news['description']:$met_keywords;
 $show['keywords']   = $news['keywords']?$news['keywords']:$met_keywords;
-$met_title          = $met_title?$news['title'].'-'.$met_title:$news['title'];
+$met_title          = $news['ctitle']?$news['ctitle']:($met_title?$news['title'].'-'.$met_title:$news['title']);
 $nav_x['name']      = $nav_x['name']." > ".$news['title'];
+$class_concent=$metadmin[fujiatype]?'':'<div id="metinfo_additional">'.($class_list[$news[class3]]['content']?$class_list[$news[class3]]['content']:($class_list[$news[class2]]['content']?$class_list[$news[class2]]['content']:$class_list[$news[class1]]['content'])).'</div>';
+$news['content'].=$class_concent;
+$news['content1'].=$class_concent;
+$news['content2'].=$class_concent;
+$news['content3'].=$class_concent;
+$news['content4'].=$class_concent;
+$news['content']=contentshow('<div>'.$news['content'].'</div>');
+$news['content1']=contentshow('<div>'.$news['content1'].'</div>');
+$news['content2']=contentshow('<div>'.$news['content2'].'</div>');
+$news['content3']=contentshow('<div>'.$news['content3'].'</div>');
+$news['content4']=contentshow('<div>'.$news['content4'].'</div>');
 require_once '../public/php/methtml.inc.php';
 ?>

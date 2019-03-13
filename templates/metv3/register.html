@@ -8,21 +8,23 @@ echo <<<EOT
 <div class="left">
 	    <h3 class="title"><span>{$class_list[$classnow][name]}</span></h3>
 <div class="webcontent">
-<iframe frameborder="0" width="100%" style="height:auto !important; height:500px; min-height:500px;" id="main" name="main" src="register_include.php?lang=$lang" class="iframe_main" >
-</iframe>
+<!--
+EOT;
+include templatemember($mfname);
+echo <<<EOT
+-->
 </div>
 </div>
 <div class="right">
 	    <h3 class="title"><span>{$class_list[$classnow][name]}</span></h3>
 		 <div class="webnav">
-   <ul>
-   <li><a target="main" onfocus="if(this.blur)this.blur();" href="basic.php?lang=$lang">{$lang_memberIndex3}</a></li>
-   <li><a target="main" onfocus="if(this.blur)this.blur();" href="editor.php?lang=$lang">{$lang_memberIndex4}</a></li>
-   <li><a target="main" onfocus="if(this.blur)this.blur();" href="feedback.php?lang=$lang">{$lang_memberIndex5}</a></li>
-   <li><a target="main" onfocus="if(this.blur)this.blur();" href="message.php?lang=$lang">{$lang_memberIndex6}</a></li>
-   <li><a target="main" onfocus="if(this.blur)this.blur();" href="cv.php?lang=$lang">{$lang_memberIndex7}</a></li>
-   <li><a href="login_out.php?lang=$lang">{$lang_memberIndex10}</a></li>
-   </ul>
+   <!--
+EOT;
+$met_mermber_metinfo_news_left_class='';
+$mermber_metinfo_news_left=membernavlist();
+echo <<<EOT
+-->
+$mermber_metinfo_news_left
 		 </div>
 			    <h3 class="title line"><span>{$title7}</span></h3>
 				<div class="bg-top"><div></div></div>

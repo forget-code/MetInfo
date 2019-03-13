@@ -4,32 +4,39 @@
 $memberindex="metinfo";
 require_once 'login_check.php';
 if(!$metid)$metid='index';
+if(!preg_match("/^[0-9a-zA-Z\_\-]*$/",$metid))die();
 if($metid!='index'){
 require_once $metid.'.php';
 }else{
-$member_column=$db->get_one("select * from $met_column where module='10' and lang='$lang'");
-$metaccess=$member_column[access];
-$classnow=$member_column[id];
-require_once '../include/head.php';
-$class1_info=$class_list[$classnow];
-$class_info=$class1_info;
-     $show[description]=$class_info[description]?$class_info[description]:$met_keywords;
-     $show[keywords]=$class_info[keywords]?$class_info[keywords]:$met_keywords;
-	 $met_title=$met_title?$class_info['name'].'-'.$met_title:$class_info['name'];
-	 if($class_info['ctitle']!='')$met_title=$class_info['ctitle'];
-$member_title="<script language='javascript' src='member.php?memberaction=control&lang=".$lang."'></script>";
-require_once '../public/php/methtml.inc.php';
-if($met_webhtm==0){
-$member_index_url="index.php?lang=".$lang;
-}else{
-$member_index_url="index".$met_htmtype;
+require_once ROOTPATH.'member/index_member.php';
+//
+$admin_list = $db->get_one("SELECT * FROM $met_admin_table WHERE admin_id='$metinfo_member_name' ");
+if(!$admin_list){
+    session_unset();
+    $returnurl="login.php?lang=".$lang.'&referer='.$referer;
+	header("Location: $returnurl");
+	exit();
 }
-require_once 'list.php';
-if(file_exists("../templates/".$met_skin_user."/member.".$dataoptimize_html)){
-    include template('member');
-}else{
-include templatemember('index_metinfo');
- }
+switch($admin_list['usertype']){
+	case '1':$access=$lang_memberbasicType1;break;
+	case '2':$access=$lang_memberbasicType2;break;
+	case '3':$access=$lang_memberbasicType3;break;
+	default:$access=$lang_memberbasicType1;break;
+}
+$feedback_totalcount = $db->counter($met_feedback, " where customerid='$metinfo_member_name' and lang='$lang' ", "*");
+$feedback_totalcount_readyes = $db->counter($met_feedback, " where customerid='$metinfo_member_name' and readok='1' and lang='$lang' ", "*");
+$feedback_totalcount_readno = $db->counter($met_feedback, " where customerid='$metinfo_member_name' and readok='0' and lang='$lang' ", "*");
+
+$message_totalcount = $db->counter($met_message, " where customerid='$metinfo_member_name' and lang='$lang' ", "*");
+$message_totalcount_readyes = $db->counter($met_message, " where customerid='$metinfo_member_name' and readok='1' and lang='$lang' ", "*");
+$message_totalcount_readno = $db->counter($met_message, " where customerid='$metinfo_member_name' and readok='0' and lang='$lang' ", "*");
+
+$cv_totalcount = $db->counter($met_cv, " where customerid='$metinfo_member_name' and lang='$lang' ", "*");
+$cv_totalcount_readyes = $db->counter($met_cv, " where customerid='$metinfo_member_name' and readok='1' and lang='$lang' ", "*");
+$cv_totalcount_readno = $db->counter($met_cv, " where customerid='$metinfo_member_name' and readok='0' and lang='$lang' ", "*");
+//
+$mfname='basic';
+include template('member');
 footer();
 }
 # This program is an open source system, commercial use, please consciously to purchase commercial license.

@@ -1,5 +1,4 @@
 /* CSS Document */
-html,body{ font:12px/1.8 Arial; color:#666;}
 input,textarea{ font-size:12px;}
 /*--------------会员中心----------------------------------------*/
 .user_main{ width:900px;  margin:auto; }
@@ -81,19 +80,34 @@ input,textarea{ font-size:12px;}
 .zcm input{border:1px solid #D7D6D4;}
 .zcm img{ position:relative; bottom:4px; *bottom:1px; }
 
-
+.table_member td input.input,.table_member td textarea{ background:#fff; color:#333; border:1px solid #eee; border-top-color:#999; border-left-color:#999; padding:1px; vertical-align:middle; height:22px; line-height:22px; margin-right:5px;}
+.table_member td textarea{ height:50px; line-height:1.5;}
+input.submit{ height:28px; line-height:20px; font-size:12px; padding:0px 20px;}
 /*------------------会员信息--------------------------------------*/
-.table_member{ margin:0px 0px 0px 0px; text-align:left; width:600px; border:1px solid #CCCCCC;}
+.table_member{ margin:0px 0px 0px 0px; text-align:left; width:600px;}
 .table_member{ width:100%; margin:0px auto;}
-.table_member td.member_text{ text-align:right; font-size:12px; width:20%; background:#F3F3F3; color:#333; padding:3px 5px;}
-.table_member td.member_input{ padding-left:3px; background:#FAFAFA; color:#333333;}
+.table_member td.member_text{ text-align:right; font-size:12px; width:20%; padding:5px;}
+.table_member td.member_input{ padding:5px 0px;}
 .table_member td.member_input a{ text-decoration:none;}
 .table_member td.member_input span{color:#FF6600; font-weight:600;}
-.table_member td.member_input input{ border:1px solid #E2E0E0;}
-.table_member td.member_input textarea{ background:#FFFFFF; border:1px solid #E2E0E0;}
 .table_member td.member_sm{ color:#FF0000; padding-left:3px;  background:#FAFAFA; }
 .table_member td.member_sy{ color:#0099FF; padding-left:3px;  background:#FAFAFA;}
 .table_member td.member_submit{ padding-left:3px; width:80%; background:#FAFAFA; color:#333333;}
 .table_member td.member_submit input{ margin-right:6px;}
-.table_member td.member_title{ text-align:center; height:25px; background-color:#E1E1E1; font-size:14px; font-weight:bold;}
-.table_member td.member_text1{text-align:center; font-size:12px; background:#F2F2F2; color:#333333; height:25px; line-height:25px; padding-right:3px;}
+.table_member td.member_title{ font-size:14px; font-weight:bold; padding:5px 10px; background:#f5f5f5;}
+.table_member td.member_text1{text-align:left; font-size:12px; background:#f5f5f5; padding:3px 10px;}
+.table_member td.text_list{ padding:3px 10px;}
+.table_member td.text_list a{ color:#1C57C4;}
+.hrtl_txt{ padding-bottom:3px; padding-left:15px; margin-bottom:5px;}
+h3.hrtl{ font-size:14px;}
+h3.line{ border-top:1px dashed #CDCDCD; padding-top:5px; clear:both;}
+.hrtl_txt em{ float:left; min-width:100px; width:100px; white-space:nowrap;}
+
+/*-找回密码---*/
+.zhaohui{ padding-bottom:20px;}
+.zhaohui h3{ padding:5px 10px; font-size:14px; height:25px; line-height:25px;}
+.zhaohui p.txt{ padding:5px 10px; }
+.zhaohui .put{ height:25px; line-height:25px; padding:5px 0px; margin:0px 10px;}
+.zhaohui .put span{ float:left; width:70px; text-align:right; padding-right:5px}
+.zhaohui .put input{ border:1px solid #999; width:130px; height:25px; line-height:25px; padding:0px 3px;}
+.zhaohui input.submit{ margin-left:85px; margin-top:5px;}

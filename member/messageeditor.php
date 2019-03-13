@@ -2,6 +2,7 @@
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 require_once 'login_check.php';
+require_once ROOTPATH.'member/index_member.php';
 if($action=="editor"){
 	//code
      if($met_memberlogin_code==1){
@@ -22,9 +23,7 @@ $query = "update $met_message SET
 
 $db->query($query);
 okinfo('message.php?lang='.$lang,$lang_js21);
-}
-else
-{
+}else{
 $message_list=$db->get_one("select * from $met_message where id='$id'");
 if(!$message_list){
 okinfo('message.php?lang='.$lang, $lang_js1);
@@ -34,9 +33,8 @@ if($message_list[readok]==1 || $message_list[useinfo]!='') okinfo('message.php?l
 if(!$message_list){
 okinfo('message.php?lang='.$lang, $lang_js1);
 }
-$css_url="templates/".$met_skin."/css";
-$img_url="templates/".$met_skin."/images";
-include templatemember('message_editor');
+$mfname='message_editor';
+include template('member');
 footermember();
 }
 # This program is an open source system, commercial use, please consciously to purchase commercial license.

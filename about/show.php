@@ -3,9 +3,9 @@
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 require_once '../include/common.inc.php';
 if(!$id && $class1)$id = $class1;
-$show = $db->get_one("SELECT * FROM $met_column WHERE id='$id'");
-if(!$show){
-okinfo('../',$lang_error);
+$show = $db->get_one("SELECT * FROM $met_column WHERE id=$id and module=1");
+if(!$show||!$show['isshow']){
+okinfo('../404.html');
 }
 $metaccess=$show[access];
 if($show[classtype]==3){
@@ -24,7 +24,7 @@ $class1_info=$class_list[$class1];
 $class1_list=$class1_info;
 $class2_info=$class_list[$class2];
 $class3_info=$class_list[$class3];
-$show[content]=contentshow($show[content]);
+$show[content]=contentshow('<div>'.$show[content].'</div>');
 $show[description]=$show[description]?$show[description]:$met_keywords;
 $show[keywords]=$show[keywords]?$show[keywords]:$met_keywords;
 $met_title=$met_title?$show['name'].'-'.$met_title:$show['name'];

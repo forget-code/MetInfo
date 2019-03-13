@@ -38,7 +38,7 @@ return @preg_replace ($search, $replace, $document);
 }
 
 if($searchword==""){
-$search_list[0][title]="<font color=red>{$lang_SearchInfo1}</font>";
+$search_list[0][title]="<em style='font-style:normal;'>{$lang_SearchInfo1}</em>";
 $search_list[0][updatetime]=$m_now_date;  
 $search_list[0][url]=$index_url; 
 $class_info=$class1_info=$class_list[$search_column[id]];
@@ -62,8 +62,8 @@ if(($class1=="" || $class1==10000 || $class1==10001 || $class1==0) and (intval($
    }
 $serch_sql.= "and lang='$lang' "; 
 if($met_member_use==2)$serch_sql.= " and access<=$metinfo_member_type";
-$searchitem="id,title,content,updatetime,filename,hits,imgurls,class1";
-$searchitem1="id,title,content,updatetime,filename,hits,class1";
+$searchitem="id,title,top_ok,com_ok,content,updatetime,filename,hits,imgurls,class1";
+$searchitem1="id,title,top_ok,com_ok,content,updatetime,filename,hits,class1";
 switch($met_htmpagename){
 case 0:   
 	$pagename="news";
@@ -150,7 +150,6 @@ case 2:
 	$filenamenow=$class_list[$list[class1]][foldername];
     require 'searchlist.php';
 	}
-	
 	$pagename="product";
     $query = "SELECT $searchitem FROM $met_product $serch_sql order by updatetime desc";
     $result = $db->query($query);
@@ -183,16 +182,27 @@ break;
 	$query1 = "SELECT * FROM $met_column $serch_sql1 order by id";
     $result = $db->query($query1);
 	while($list= $db->fetch_array($result)){
-	if($list[filename]=='')$list[filename]=$list[foldername].$list[id];
-	$url1="../".$list[foldername]."/show.php?lang=".$lang."&id=".$list[id];
-	$url2="../".$list[foldername]."/".$list[filename].$met_htmtype;	
-	$list[url]=$met_webhtm?$url2:$url1;
-	$list[title]=get_keyword_str($list[name],$searchword,50);
-	$list[content]=get_keyword_str($list[content],$searchword,68);
-	$list[updatetime]=$m_now_date;
-    $search_list[]=$list;
+		if($list[filename]=='')$list[filename]=$list[foldername].$list[id];
+		$url1="../".$list[foldername]."/show.php?lang=".$lang."&id=".$list[id];
+		$url2="../".$list[foldername]."/".$list[filename].$met_htmtype;	
+		$list[url]=$met_webhtm?$url2:$url1;
+		$list[updatetime]=$m_now_date;
+		$list[top_ok]=2;
+		$list[com_ok]=2;
+		$search_list[]=$list;
     }
-
+	foreach ($search_list as $key=>$value){
+		if($value[name])$value[title]=$value[name];
+		$value['content']=html_entity_decode(strip_tags($value['content']),ENT_QUOTES,'UTF-8');
+		$value[title]=get_keyword_str($value[title],$searchword,50,$searchtype,1);
+		$value[content]=get_keyword_str($value[content],$searchword,75,$searchtype);
+		$top_ok[$key] = $value['top_ok'];
+		$com_ok[$key] = $value['com_ok'];
+		$updatetime[$key] = $value['updatetime'];
+		$search_list_1[]=$value;
+	}
+	$search_list=$search_list_1;
+	array_multisort($top_ok,SORT_NUMERIC,SORT_DESC,$com_ok,SORT_NUMERIC,SORT_DESC,$updatetime,SORT_STRING,SORT_DESC,$search_list);
    	$total_count = count($search_list);
     require_once '../include/pager.class.php';
     $page = (int)$page;
@@ -201,8 +211,20 @@ break;
     $rowset = new Pager($total_count,$list_num,$page);
     $from_record = $rowset->_offset();
 	$searchok=$search_list;
+	foreach($search_list as $key=>$val){
+		if(stripos($val['title'],$searchword)!==false){
+			$search_list_title[]=$val;
+		}
+		else{
+			$search_list_content[]=$val;
+		}
+	}
+	$search_list=$search_list_title;
+	foreach($search_list_content as $key=>$val){
+		$search_list[]=$val;
+	}
 	$search_list=array_slice($search_list,$from_record,$list_num);		
-    $page_list = $rowset->link("search.php?lang=$lang&class1=$class1&class2=$class2&class3=$class3&searchword=".trim($searchword)."&searchtype=$searchtype&page=");	
+    $page_list = $rowset->link("search.php?lang=$lang&class1=$class1&class2=$class2&class3=$class3&searchword=".trim($searchword)."&searchtype=$searchtype&page=");
 	$class_info=$class1_info=$class_list[$search_column[id]];
 }else{
     if($class1)$module=0;
@@ -211,10 +233,10 @@ break;
 	}else{
 	$class1_info=$class_list[$class1];
 	if(!$class1_info)okinfo('../',$pagelang[noid]);
-	$serch_sql=" where lang='$lang' and class1=$class1 ";
-	if($class2)$serch_sql .= " and class2=$class2";
-	if($class3)$serch_sql .= " and class3=$class3"; 
-	$order_sql=list_order($class1_info[list_order]); 
+	$serch_sql=" where lang='$lang' and class1='$class1' ";
+	if($class2)$serch_sql .= " and class2='$class2'";
+	if($class3)$serch_sql .= " and class3='$class3'"; 
+	$order_sql=" order by top_ok desc,com_ok desc,no_order desc,updatetime desc,id desc";
 	}
  switch($searchtype){
    default:
@@ -250,12 +272,37 @@ break;
 	$class2_info=$class2?$class_list[$class2]:"";
     $class3_info=$class3?$class_list[$class3]:"";
     $class_info=intval($module)?$class_list[$search_column[id]]:($class3?$class3_info:($class2?$class2_info:$class1_info));
-	
+	foreach ($search_list as $key=>$value){
+		if($value[name])$value[title]=$value[name];
+		$value['content']=html_entity_decode(strip_tags($value['content']),ENT_QUOTES,'UTF-8');
+		$value[title]=get_keyword_str($value[title],$searchword,50,$searchtype,1);
+		$value[content]=get_keyword_str($value[content],$searchword,75,$searchtype);
+		$top_ok[$key] = $value['top_ok'];
+		$com_ok[$key] = $value['com_ok'];
+		$updatetime[$key] = $value['updatetime'];
+		$search_list_1[]=$value;
+	}
+	$search_list=$search_list_1;
+	array_multisort($top_ok,SORT_NUMERIC,SORT_DESC,$com_ok,SORT_NUMERIC,SORT_DESC,$updatetime,SORT_STRING,SORT_DESC,$search_list);
+	$searchok=$search_list;
+	foreach($search_list as $key=>$val){
+		if(stripos($val['title'],$searchword)!==false){
+			$search_list_title[]=$val;
+		}
+		else{
+			$search_list_content[]=$val;
+		}
+	}
+	$search_list=$search_list_title;
+	foreach($search_list_content as $key=>$val){
+		$search_list[]=$val;
+	}
+	$search_list=array_slice($search_list,$from_record,$list_num);
 }
 }
 
 if(!count($search_list)){
-$search_list[0][title]="{$lang_SearchInfo3}[<font color=red>$searchword</font>]{$lang_SearchInfo4}";
+$search_list[0][title]="{$lang_SearchInfo3}[<em style='font-style:normal;'>$searchword</em>]{$lang_SearchInfo4}";
 $search_list[0][updatetime]=$m_now_date;  
 $search_list[0][url]=$index_url; 
 }
@@ -267,7 +314,6 @@ if($class_info[name]=="")$class_info=array('name'=>$lang_search,'url'=>'search.p
 
 
 require_once '../public/php/methtml.inc.php';
-
 function methtml_searchlist($content=1,$time=1,$detail=1,$img=0){
 global $search_list,$met_img_x,$met_img_y,$lang_Detail;
    $methtml_searchlist.="<ul>\n";
@@ -276,7 +322,6 @@ global $search_list,$met_img_x,$met_img_y,$lang_Detail;
    $methtml_searchlist.="<li><span class='search_title'><a href='".$val[url]."' target='_blank'>".$val[title]."</a></span>";
    if($content)$methtml_searchlist.="<span class='search_content'>".$val[content]."</span>";
    if($time)$methtml_searchlist.="<span class='search_updatetime'>".$val[updatetime]."</span>";
-   if($detail)$methtml_searchlist.="<span class='search_detail'><a href='".$val[url]."' target='_blank'>".$lang_Detail."</a></span>";
    }
    $methtml_searchlist.="</li>\n";
    $methtml_searchlist.="</ul>\n";

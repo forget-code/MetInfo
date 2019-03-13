@@ -3,26 +3,10 @@
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 echo <<<EOT
 -->
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-
-<link href="templates/met/css/style.css" rel="stylesheet" />
-<style type="text/css">
-<!--
-body {
-	font-size: $lang_fontsize; 
-	font-family:$lang_fontfamily;
-	}
-
-
--->
-</style>
-</head>
-<body>
+<link href="../member/templates/met/css/style.css" rel="stylesheet" />
 <table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_member">
 		<tr> 
-            <td colspan="10" align="center" class="member_title">{$lang_memberShowFD}</td>
+            <td colspan="10" class="member_title">{$lang_memberShowFD}</td>
           </tr>
 <!--
 EOT;
@@ -30,7 +14,7 @@ foreach($feedback_para as $key=>$val){
 echo <<<EOT
 -->
          <tr> 
-            <td class="member_text"><b>$val[name]&nbsp;</b></td>
+            <td class="member_text">$val[name]：</td>
             <td colspan="2" class="member_input">$val[content]</td>
           </tr>
 <!--
@@ -39,18 +23,16 @@ EOT;
 echo <<<EOT
 -->
          <tr> 
-            <td class="member_text"><b>{$lang_memberAddTime}&nbsp;</b></td>
+            <td class="member_text">{$lang_memberAddTime}：</td>
             <td colspan="2" class="member_input">$feedback_list[addtime]</td>
           </tr>	
          <tr> 
-            <td class="member_text"><b>{$lang_messageeditorReply}&nbsp;</b></td>
+            <td class="member_text">{$lang_messageeditorReply}：</td>
             <td colspan="2" class="member_input">$feedback_list[useinfo]</td>
           </tr>	
 </table>
-</body>
-</html>
 <!--
 EOT;
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
-?>-->
+?>

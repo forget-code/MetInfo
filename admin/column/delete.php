@@ -2,71 +2,32 @@
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 require_once '../login/login_check.php';
+require_once 'global.func.php';
 if($action=="del"){
-$allidlist=explode(',',$allid);
-foreach($allidlist as $key=>$val){
-if($val!=0){
-$admin_list2=$db->get_one("SELECT * FROM $met_column WHERE bigclass='$val'");
-if($admin_list2){
-okinfox('../column/index.php?lang='.$lang,$lang_modBigclass1);
-}
-}
-$admin_list = $db->get_one("SELECT * FROM $met_column WHERE id='$val'");
-$classtype="class".$admin_list[classtype];
-switch ($admin_list[module]){
-case 2:
-$listok=$db->get_one("SELECT * FROM $met_news WHERE $classtype='$admin_list[id]'");
-if($listok)okinfox('../column/index.php?lang='.$lang,"{$lang_deleteTip1}$admin_list[name]{$lang_deleteTip2}");
-break;
-case 3:
-$listok=$db->get_one("SELECT * FROM $met_product WHERE $classtype='$admin_list[id]'");
-if($listok)okinfox('../column/index.php?lang='.$lang,"{$lang_deleteTip1}$admin_list[name]{$lang_deleteTip2}");
-$query = "delete from $met_parameter where module='$admin_list[module]' and class1='$admin_list[id]' and lang='$lang'";
-$db->query($query);
-break;
-case 4:
-$listok=$db->get_one("SELECT * FROM $met_download WHERE $classtype='$admin_list[id]'");
-if($listok)okinfox('../column/index.php?lang='.$lang,"{$lang_deleteTip1}$admin_list[name]{$lang_deleteTip2}");
-$query = "delete from $met_parameter where module='$admin_list[module]' and class1='$admin_list[id]' and lang='$lang'";
-$db->query($query);
-break;
-case 5:
-$listok=$db->get_one("SELECT * FROM $met_img WHERE $classtype='$admin_list[id]'");
-if($listok)okinfox('../column/index.php?lang='.$lang,"{$lang_deleteTip1}$admin_list[name]{$lang_deleteTip2}");
-$query = "delete from $met_parameter where module='$admin_list[module]' and class1='$admin_list[id]' and lang='$lang'";
-$db->query($query);
-break;
-case 6:
-$listok=$db->get_one("SELECT * FROM $met_job WHERE lang='$lang'");
-if($listok)okinfox('../column/index.php?lang='.$lang,"{$lang_deleteTip1}$admin_list[name]{$lang_deleteTip2}");
-$query = "delete from $met_parameter where module='$admin_list[module]' and lang='$lang'";
-$db->query($query);
-break;
-case 8:
-$query = "delete from $met_parameter where module='$admin_list[module]' and class1='$admin_list[id]' and lang='$lang'";
-$db->query($query);
-break;
-}
-$query = "delete from $met_column where id='$val'";
-$db->query($query);
-$admin_lists = $db->get_one("SELECT * FROM $met_column WHERE foldername='$admin_list[foldername]'");
-//delete foldername
-if(!$admin_lists[id] && ($admin_list['classtype'] == 1 || $admin_list['releclass'])){
-	if($admin_list['foldername']!='' && ($admin_list['module']<6 || $admin_list['module']==8)){
-		if(!unkmodule($admin_list['foldername'])){
-			$foldername="../../".$admin_list['foldername'];
-			if(!deldir($foldername))okinfox('../column/index.php?lang='.$lang,$lang_columntip9);
+	$allidlist=explode(',',$allid);
+	foreach($allidlist as $key=>$val){
+		$admin_list = $db->get_one("SELECT * FROM $met_column WHERE id='$val'");
+		if($admin_list){
+			$query1 = "select * from $met_column where bigclass='$admin_list[id]'";
+			$result1 = $db->query($query1);
+			while($list1= $db->fetch_array($result1)){
+				if($list1['releclass']||$list1['classtype']==3){
+					delcolumn($list1);
+				}else{
+					$query2 = "select * from $met_column where bigclass='$list1[id]'";
+					$result2 = $db->query($query2);
+					while($list2= $db->fetch_array($result2)){
+						delcolumn($list2);
+					}
+					delcolumn($list1);
+				}
+			}
+			delcolumn($admin_list);
 		}
 	}
-}
-if($met_deleteimg){
-file_unlink("../".$admin_list[indeximg]);
-file_unlink("../".$admin_list[columnimg]);
-}
-}
-okinfo('../column/index.php?lang='.$lang,20);
-}
-elseif($action=="editor"){
+	file_unlink("../../cache/column_$lang.inc.php");
+	metsave('../column/index.php?anyid='.$anyid.'&lang='.$lang);
+}elseif($action=="editor"){
 	$tesumods[6] = 'job';
 	$tesumods[7] = 'message';
 	$tesumods[9] = 'link';
@@ -77,35 +38,32 @@ elseif($action=="editor"){
 	$tesumods[101] = 'img';
 	$allidlist=explode(',',$allid);
 	$adnum = count($allidlist)-1;
-	$bigc='';
+	$metinfo='';
 	for($i=0;$i<$adnum;$i++){
+		/*获取参数*/
 		$name        = 'name_'.$allidlist[$i];        $name        = $$name;
-		//$namemark    = 'namemark_'.$allidlist[$i];    $namemark    = $$namemark;
-		//$keywords    = 'keywords_'.$allidlist[$i];    $keywords    = $$keywords;
-		//$description = 'description_'.$allidlist[$i]; $description = $$description;
 		$no_order    = 'no_order_'.$allidlist[$i];    $no_order    = $$no_order;
-		//$list_order  = 'list_order_'.$allidlist[$i];  $list_order  = $$list_order;
-		//$new_windows = 'new_windows_'.$allidlist[$i]; $new_windows = $$new_windows;
 		$bigclass    = 'bigclass_'.$allidlist[$i];    $bigclass    = $$bigclass;		
-		//$releclass   = 'releclass_'.$allidlist[$i];   $releclass   = $$releclass;		
 		$nav         = 'nav_'.$allidlist[$i];         $nav         = $$nav;		
-		//$filename  = 'filename_'.$allidlist[$i];    $filename    = $$filename;
 		$foldername  = 'foldername_'.$allidlist[$i];  $foldername  = $$foldername;
 		$module      = 'module_'.$allidlist[$i];  	  $module      = $$module;
 		$out_url     = 'out_url_'.$allidlist[$i];     $out_url     = $$out_url;
 		$if_in       = 'if_in_'.$allidlist[$i];       $if_in       = $$if_in;
- if(!$if_in)$if_in   = $module==999?1:0;
+		if(!$if_in)$if_in   = $module==999?1:0;
 		$index_num   = 'index_num_'.$allidlist[$i];   $index_num   = $$index_num;
 		$classtype   = 'classtype_'.$allidlist[$i];   $classtype   = $$classtype;
 		$access      = 'access_'.$allidlist[$i];      $access      = $$access;
-		//$indeximg    = 'indeximg_'.$allidlist[$i];    $indeximg    = $$indeximg;
-		//$columnimg   = 'columnimg_'.$allidlist[$i];   $columnimg   = $$columnimg;
-		//$isshow      = 'isshow_'.$allidlist[$i];      $isshow      = $$isshow; 
+		
+		$foldername=metdetrim($foldername);
+		$ertxt = $name.'|';/*错误提示前缀*/
 		$releclass=0;
 		$releok=0;
+		$tpif = is_numeric($allidlist[$i])?1:0;
+		$sql = $tpif?"id='$allidlist[$i]'":'';
+		if($sql!='')$skin_m=$db->get_one("SELECT * FROM $met_column WHERE $sql");
 		$releclassok=$db->get_one("SELECT * FROM $met_column WHERE id='$bigclass'");
 		if($classtype==2){
-			if($module!=$releclassok['module']){
+			if($skin_m['releclass']||$module!=$releclassok['module']){
 				$releclass=$bigclass;
 				if(($module>0 && $module<6) || $module==8)$releok=1;
 			}else{
@@ -115,179 +73,162 @@ elseif($action=="editor"){
 		if($classtype==3)$foldername=$releclassok['foldername'];
 		if($module==999)$module=0;
 		if(!$if_in)$if_in=0;
-		if($if_in==1 && $out_url=="")okinfox('../column/index.php?lang='.$lang,$lang_modOuturl);
-		$tpif = is_numeric($allidlist[$i])?1:0;
+		if($if_in==1 && $out_url=="")$metinfo.=$ertxt.'out_url_'.$allidlist[$i].'|'.$lang_modOuturl.'$';
 		if($module>5 && $module!=8)$foldername = $tesumods[$module];
-		$sql = $tpif?"id='$allidlist[$i]'":'';
-		if($sql!='')$skin_m=$db->get_one("SELECT * FROM $met_column WHERE $sql");
+
 		if($if_in==0){
 			$out_url='';
-
 			if($tpif){
-				if(!$skin_m){okinfox('../column/index.php?lang='.$lang,$lang_dataerror);}
+				if(!$skin_m){$metinfo.=$ertxt.'|'.$lang_dataerror.'$';}
 				$id = $allidlist[$i];
 				if($met_member_use)require_once 'check.php';
 				if($filename!=''){
-				$filenameok = $db->get_one("SELECT * FROM $met_column WHERE filename='$filename'");
-				if($filenameok)okinfox('../column/index.php?lang='.$lang,$lang_modFilenameok);
+					$filenameok = $db->get_one("SELECT * FROM $met_column WHERE filename='$filename'");
+					if($filenameok)$metinfo.=$ertxt.'|'.$lang_modFilenameok.'$';
 				}
 			}else{
-				if($foldername==""){okinfox('../column/index.php?lang='.$lang,$lang_modFoldername);}
-				if($module==""){okinfox('../column/index.php?lang='.$lang,$lang_modModule);}
-				$filedir="../../".$foldername;
-				if($module>5 && $module!=8){	
-					$modulewy = $db->get_one("SELECT * FROM $met_column WHERE module='$module' and lang='$lang'");
-					if($modulewy['id'])okinfox('../column/index.php?lang='.$lang,$lang_modmodulewyok);
-				}
-				if($bigclass==0 || $releok){
-					$folder_m=$db->get_one("SELECT * FROM $met_column WHERE foldername='$foldername' and lang='$lang'");
-					if($folder_m){
-						if($module<13 && file_exists($filedir))okinfox('../column/index.php?lang='.$lang,$lang_loginSkin);
-					}
-					if(!$folder_m && file_exists($filedir))$folder_m=1;
-					$folder_ms=$db->get_one("SELECT * FROM $met_column WHERE foldername='$foldername' and lang!='$lang'");
-					if($folder_ms){
-						if($folder_ms['module']!=$module && $module<13)okinfox('../column/index.php?lang='.$lang,$lang_loginSkin);
-					}
-					if(!file_exists($filedir)){ @mkdir($filedir, 0777); } 		
-					if(!file_exists($filedir)){ okinfox('../column/index.php?lang='.$lang,$lang_modFiledir);}
-					if(!$folder_m){
-						switch($module){
-							case 1:
-								$oldfile  ="../../about/show.php";   //模块原始文件路径
-								$newfile  ="../../".$foldername."/show.php";  //新路径
-								$address  ="../about/show.php";		//新文件require_once路径	
-								Copyfile($address,$newfile);
-							break;
-							case 2:
-								$oldfile ="../../news/news.php";   
-								$newfile ="../../".$foldername."/news.php"; 
-								$address ="../news/news.php"; 
-								Copyfile($address,$newfile);
-								$oldfile ="../../news/shownews.php";   
-								$newfile ="../../".$foldername."/shownews.php"; 
-								$address  ="../news/shownews.php"; 
-								Copyfile($address,$newfile);
-							break;
-							case 3:
-								$oldfile ="../../product/product.php";   
-								$newfile ="../../".$foldername."/product.php";  
-								$address  ="../product/product.php"; 
-								Copyfile($address,$newfile);
-								$oldfile ="../../product/showproduct.php";   
-								$newfile ="../../".$foldername."/showproduct.php";  
-								$address  ="../product/showproduct.php"; 
-								Copyfile($address,$newfile);
-							break;
-							case 4:
-								$oldfile ="../../download/download.php";   
-								$newfile ="../../".$foldername."/download.php";  
-								$address  ="../download/download.php"; 
-								Copyfile($address,$newfile);
-								$oldfile ="../../download/showdownload.php";   
-								$newfile ="../../".$foldername."/showdownload.php";  
-								$address  ="../download/showdownload.php"; 
-								Copyfile($address,$newfile);
-							break;
-							case 5:
-								$oldfile ="../../img/img.php";   
-								$newfile ="../../".$foldername."/img.php";  
-								$address  ="../img/img.php"; 
-								Copyfile($address,$newfile);
-								$oldfile ="../../img/showimg.php";   
-								$newfile ="../../".$foldername."/showimg.php";  
-								$address  ="../img/showimg.php"; 
-								Copyfile($address,$newfile);
-							break;
-							case 8:
-								$oldfile ="../../feedback/uploadfile_save.php";   
-								$newfile ="../../".$foldername."/uploadfile_save.php";  
-								$address ="../feedback/uploadfile_save.php"; 
-								Copyfile($address,$newfile);
-								$oldfile ="../../feedback/config_$lang.inc.php";   
-								$newfile ="../../".$foldername."/config_$lang.inc.php";  
-								if(!file_exists($newfile)){  
-									if (!copy($oldfile,$newfile))okinfox('../column/index.php?lang='.$lang,$lang_columntip13);
+				if($foldername=="")$metinfo.=$ertxt.'foldername_'.$allidlist[$i].'|'.$lang_modFoldername.'$';
+				if(!preg_match('/^[a-z0-9_-]+$/i',$foldername)){
+					$metinfo.=$ertxt.'foldername_'.$allidlist[$i].'|'.$lang_columnerr1.'$';
+				}else{
+					if($bigclass==0 || $releclass){
+						for($s=0;$s<$adnum;$s++){
+							$foldernamess= 'foldername_'.$allidlist[$s];
+							$foldernamess= $$foldernamess;
+							$modules     = 'module_'.$allidlist[$s];
+							$modules     = $$modules;
+							$names       = 'name_'.$allidlist[$s];
+							$names       = $$names;
+							if($modules>5 && $modules!=8)$foldernamess = $tesumods[$modules]; 
+							if((($modules<100 && $module<100) && $modules != $module && $foldername==$foldernamess) && ($allidlist[$s] != $allidlist[$i])){
+								$metinfo.=$ertxt.'foldername_'.$allidlist[$i].'|'.$names.$lang_columnerr2.'$';
+								break;
+							}
+							if(($modules == $module && $foldername==$foldernamess) && ($allidlist[$s] != $allidlist[$i])){
+								if($modules>5 && $module!=8){
+									$metinfo.=$ertxt.'foldername_'.$allidlist[$i].'|'.$lang_columnerr3.module($module).'$';
+								}else{
+									$metinfo.=$ertxt.'foldername_'.$allidlist[$i].'|'.$names.$lang_columnerr2.'$';
 								}
-							break;
-						}  
-						Copyindx("../../".$foldername."/index.php");
-					}  
+								break;
+							}
+						}
+					}
+					if($module=="")$metinfo.=$ertxt.'module_'.$allidlist[$i].'|'.$lang_modModule.'$';
+					$filedir="../../".$foldername;
+					if($module>5 && $module!=8){
+						$modulewy = $db->get_one("SELECT * FROM $met_column WHERE module='$module' and lang='$lang'");
+						if($modulewy['id'])$metinfo.=$ertxt.'module_'.$allidlist[$i].'|'.$lang_modmodulewyok.'$';
+					}
+					if($bigclass==0 && (($module>0 && $module<6) || $module==8))$releok=1;
+					if($releok){
+						$folder_m=$db->get_one("SELECT * FROM $met_column WHERE foldername='$foldername' and lang='$lang'");
+						if($folder_m){
+							if($module<13 && file_exists($filedir))$metinfo.=$ertxt.'foldername_'.$allidlist[$i].'|'.$lang_columnerr4.'$';
+						}elseif(file_exists($filedir)){
+							$folder_m=1;
+						}
+						$folder_ms=$db->get_one("SELECT * FROM $met_column WHERE foldername='$foldername' and lang!='$lang'");
+						if($folder_ms){
+							if($folder_ms['module']!=$module && $module<13)$metinfo.=$ertxt.'foldername_'.$allidlist[$i].'|'.$lang_columnerr4.'$';
+						}elseif($folder_m && morenfod($foldername,$module)){
+							$metinfo.=$ertxt.'foldername_'.$allidlist[$i].'|'.$lang_columnerr4.'$';
+						}
+					}
 				}
 			}
 		}
-		$uptp = $tpif?"update":"insert into";
-		$upbp = $tpif?"where id='$allidlist[$i]'":"";
+		if($metinfo==''){
+			$column[$i]['id']        = $allidlist[$i];
+			$column[$i]['name']      = $name;
+			$column[$i]['out_url']   = $out_url;
+			$column[$i]['no_order']  = $no_order;
+			$column[$i]['bigclass']  = $bigclass;
+			$column[$i]['nav']       = $nav;
+			$column[$i]['foldername']= $foldername;
+			$column[$i]['module']    = $module;
+			$column[$i]['index_num'] = $index_num;
+			$column[$i]['classtype'] = $classtype;
+			$column[$i]['access']    = $access;
+			$column[$i]['if_in']     = $if_in;
+			$column[$i]['releclass'] = $releclass;
+			$column[$i]['releok']    = $releok;
+			$column[$i]['folder_m']  = $folder_m;
+			$column[$i]['tpif']      = $tpif;
+		}
+	}	
+	if($ajaxmetinfo){
+		echo $metinfo==''?0:$metinfo;
+		die();
+	}
+	if($metinfo!='')metsave('../column/index.php?anyid='.$anyid.'&lang='.$lang,$lang_loginFail);
+	$metinfo_admin_pop1='';
+	foreach($column as $key=>$val){
+		if($if_in==0){
+			$filedir="../../".$val['foldername'];
+			if(!file_exists($filedir))@mkdir($filedir, 0777); 		
+			if(!file_exists($filedir))metsave('../column/index.php?anyid='.$anyid.'&lang='.$lang,$lang_modFiledir);
+		}
+		$uptp = $val['tpif']?"update":"insert into";
+		$upbp = $val['tpif']?"where id='$val[id]'":"";
 		$query="$uptp $met_column set
-				name               = '$name',
-				out_url            = '$out_url',
-				no_order           = '$no_order',
-				bigclass           = '$bigclass',
-				nav                = '$nav',
-				if_in              = '$if_in',
-				foldername         = '$foldername',
-				module             = '$module',
-				index_num          = '$index_num',					  
-				classtype          = '$classtype',					  
-				releclass          = '$releclass',					  
-				access      	   = '$access',
+				name               = '$val[name]',
+				out_url            = '$val[out_url]',
+				no_order           = '$val[no_order]',
+				bigclass           = '$val[bigclass]',
+				nav                = '$val[nav]',
+				if_in              = '$val[if_in]',
+				foldername         = '$val[foldername]',
+				module             = '$val[module]',
+				index_num          = '$val[index_num]',					  
+				classtype          = '$val[classtype]',					  
+				releclass          = '$val[releclass]',					  
+				access      	   = '$val[access]',
 				lang			   = '$lang'
 			$upbp";
 		$db->query($query);
-		$bigc.=$bigclass.',';
-	}	
-		okinfo('../column/index.php?lang='.$lang.'&bigc='.$bigc,20);
-}else{
-$admin_list = $db->get_one("SELECT * FROM $met_column WHERE id='$id'");
-if(!$admin_list){
-okinfox('../column/index.php?lang='.$lang,$lang_dataerror);
-}
-$classtype="class".$admin_list[classtype];
-switch ($admin_list['module']){
-case 2:
-$listok=$db->get_one("SELECT * FROM $met_news WHERE $classtype='$admin_list[id]'");
-if($listok)okinfox('../column/index.php?lang='.$lang,"{$lang_deleteTip1}$admin_list[name]{$lang_deleteTip2}");
-break;
-case 3:
-$listok=$db->get_one("SELECT * FROM $met_product WHERE $classtype='$admin_list[id]'");
-if($listok)okinfox('../column/index.php?lang='.$lang,"{$lang_deleteTip1}$admin_list[name]{$lang_deleteTip2}");
-break;
-case 4:
-$listok=$db->get_one("SELECT * FROM $met_download WHERE $classtype='$admin_list[id]'");
-if($listok)okinfox('../column/index.php?lang='.$lang,"{$lang_deleteTip1}$admin_list[name]{$lang_deleteTip2}");
-break;
-case 5:
-$listok=$db->get_one("SELECT * FROM $met_img WHERE $classtype='$admin_list[id]'");
-if($listok)okinfox('../column/index.php?lang='.$lang,"{$lang_deleteTip1}$admin_list[name]{$lang_deleteTip2}");
-break;
-case 6:
-$listok=$db->get_one("SELECT * FROM $met_job WHERE $classtype='$admin_list[id]'");
-if($listok)okinfox('../column/index.php?lang='.$lang,"{$lang_deleteTip1}$admin_list[name]{$lang_deleteTip2}");
-break;
-}
-$admin_list2=$db->get_one("SELECT * FROM $met_column WHERE bigclass='$admin_list[id]'");
-if($admin_list2){
-okinfox('../column/index.php?lang='.$lang,$lang_modBigclass);
-}
-
-$query = "delete from $met_column where id='$id'";
-$db->query($query);
-$admin_lists = $db->get_one("SELECT * FROM $met_column WHERE foldername='$admin_list[foldername]'");
-//delete foldername
-if(!$admin_lists[id] && ($admin_list['classtype'] == 1 || $admin_list['releclass'])){
-	if($admin_list['foldername']!='' && ($admin_list['module']<6 || $admin_list['module']==8)){
-		if(!unkmodule($admin_list['foldername'])){
-			$foldername="../../".$admin_list['foldername'];
-			if(!deldir($foldername))okinfox('../column/index.php?lang='.$lang,$lang_columntip9);
+		$upid=$val['tpif']?$val[id]:mysql_insert_id();
+		if(($val['classtype']==1 || $val['releclass']) && !$val['tpif'])$metinfo_admin_pop1.=$upid.'-';
+		column_copyconfig($val['foldername'],$val['module'],$upid);
+	}
+	if($metinfo_admin_pop1!=''){
+		if($metinfo_admin_pop!="metinfo"){
+			$metinfo_admin_pop1=$metinfo_admin_pop.$metinfo_admin_pop1;
+			$metinfo_admin_pop1=metdetrim($metinfo_admin_pop1);
+			$query = "update $met_admin_table SET admin_type = '$metinfo_admin_pop1' where id='$admin_list[id]'";
+			$db->query($query);
+		}
+		$admin_list = $db->get_all("SELECT * FROM $met_admin_table where usertype = 3 && admin_type!='metinfo' &&  admin_type like '%9999%' and id!='$admin_list[id]'");
+		foreach($admin_list as $key=>$val){
+			$val['admin_type1']=$val['admin_type'].$metinfo_admin_pop1;
+			$val['admin_type1']=metdetrim($val['admin_type1']);
+			$query = "update $met_admin_table SET admin_type = '$val[admin_type1]' where id='$val[id]'";
+			$db->query($query);
 		}
 	}
-}
-//delete images
-if($met_deleteimg){
-file_unlink("../".$admin_list['indeximg']);
-file_unlink("../".$admin_list['columnimg']);
-}
-okinfo('../column/index.php?lang='.$lang,20);
+	file_unlink("../../cache/column_$lang.inc.php");
+	metsave('../column/index.php?anyid='.$anyid.'&lang='.$lang);
+}else{
+	$admin_list = $db->get_one("SELECT * FROM {$met_column} WHERE id='$id'");
+	if(!$admin_list)metsave('../column/index.php?anyid='.$anyid.'&lang='.$lang,$lang_dataerror);
+	$query1 = "select * from $met_column where bigclass='$admin_list[id]'";
+	$result1 = $db->query($query1);
+	while($list1= $db->fetch_array($result1)){
+		if($list1['releclass']||$list1['classtype']==3){
+			delcolumn($list1);
+		}
+		else{
+			$query2 = "select * from $met_column where bigclass='$list1[id]'";
+			$result2 = $db->query($query2);
+			while($list2= $db->fetch_array($result2)){
+				delcolumn($list2);
+			}
+			delcolumn($list1);
+		}
+	}
+	delcolumn($admin_list);
+	file_unlink("../../cache/column_$lang.inc.php");
+	metsave('../column/index.php?anyid='.$anyid.'&lang='.$lang);
 }
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.

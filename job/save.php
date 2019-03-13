@@ -4,16 +4,16 @@
 require_once '../include/common.inc.php';
 
 if($action=="add"){
-$settings = parse_ini_file('config_'.$lang.'.inc.php');
+$settings = parse_ini_file('../config/job_'.$lang.'.inc.php');
 @extract($settings);
-     if($met_memberlogin_code==1){
-         require_once 'captcha.class.php';
-         $Captcha= new  Captcha();
-         if(!$Captcha->CheckCode($code)){
-         echo("<script type='text/javascript'> alert('$lang_membercode');window.history.back();</script>");
-		       exit;
-         }
-     }
+if($met_memberlogin_code==1){
+ require_once 'captcha.class.php';
+ $Captcha= new  Captcha();
+ if(!$Captcha->CheckCode($code)){
+ echo("<script type='text/javascript'> alert('$lang_membercode');window.history.back();</script>");
+	   exit;
+ }
+}
 $ip=$m_user_ip;
 $addtime=$m_now_date;
 $ipok=$db->get_one("select * from $met_cv where ip='$ip' order by addtime desc");
@@ -23,10 +23,12 @@ else
 $time1 = 0;
 $time2 = strtotime($m_now_date);
 $timeok= (float)($time2-$time1);
-if($timeok<=$met_cv_time){
+$timeok2=(float)($time2-$_COOKIE['submit']);
+if($timeok<=$met_cv_time&&$timeok2<=$met_cv_time){
 $fd_time="{$lang_Feedback1}".$met_cv_time."{$lang_Feedback2}";
 okinfo('javascript:history.back();',$fd_time);
 }
+
 $query = "SELECT * FROM $met_parameter where lang='$lang' and module=6 order by no_order";
 $result = $db->query($query);
 while($list= $db->fetch_array($result)){
@@ -52,10 +54,12 @@ $cv_word=$cvarray[$i];
 break;
 }
 }
-
-$cv_word="[".$cv_word."] {$lang_cv1}";
+$cvto="para".$met_cv_email;
+$cvto=$$cvto;
+$cv_word="工作简历中不能包含 [".$cv_word."] ";
 if($cvok==true)okinfo('javascript:history.back();',$cv_word);
-	 
+setcookie('submit',$time2);
+require_once '../include/jmail.php';	 
 require_once 'uploadfile_save.php';
 $customerid=$metinfo_member_name!=''?$metinfo_member_name:0;
 if($met_cv_type==1 or $met_cv_type==2){
@@ -75,7 +79,7 @@ foreach($cv_para as $key=>$val){
 	  }
 	  $para=substr($para, 0, -1);
 	}
-	$para=htmlspecialchars($para);
+	$para=strip_tags($para);
     $query = "INSERT INTO $met_plist SET
                       listid   ='$id',
 					  paraid   ='$val[id]',
@@ -105,7 +109,9 @@ if($met_cv_type==0 or $met_cv_type==2){
 	$body .= 'table.metinfo_cv td.footer a{  color:#666; }'."\n";
 	$body .= '</style>'."\n";
 	$body .= '<table cellspacing="1" cellpadding="2" class="metinfo_cv">'."\n";
-	$body .= '<tr><td class="title" colspan="3">'.$lang_cv.'</td></tr>'."\n";
+	$body_title=$cv_para[0][para];
+	$body_title=$$body_title;
+	$body .= '<tr><td class="title" colspan="3">'.$body_title.'的简历</td></tr>'."\n";
 $j=0;
 if($met_cv_image){
 foreach($cv_para as $key=>$val){
@@ -131,7 +137,7 @@ if($j>1)$bt = '';
 	  }
 	  $para=substr($para, 0, -1);
 	}
-	$para=htmlspecialchars($para);
+	$para=strip_tags($para);
 
 if($val[type]!=5){
 $body=$body.'<tr><td class="l">'.$val[name].'</td><td class="r">'.$para.'</td>'.$bt.'</tr>'."\n";
@@ -145,10 +151,22 @@ $body=$body.'<tr><td class="l">'.$val[name].'</td><td class="r">'.$para.'</td>'.
 }
 $body.='<tr><td class="footer" colspan="3">Powered by <a target="_blank" href="http://www.metinfo.cn">MetInfo '.$metcms_v.'</a> &copy;2008-2011 &nbsp;<a target="_blank" href="http://www.metinfo.cn">MetInfo Inc.</a></td></tr>';
 $body.='</table>';
-    require_once '../include/jmail.php';
-    jmailsend($from,$fromname,$to,$title,$body,$usename,$usepassword,$smtp); 
+if($met_cv_back==1){
+jmailsend($from,$fromname,$cvto,$met_cv_title,$met_cv_content,$usename,$usepassword,$smtp);
 }
-$backurl=$metinfo_member_name==""?'../':'../member/'.$member_index_url;					  
+jmailsend($from,$fromname,$to,$title,$body,$usename,$usepassword,$smtp); 
+}
+/*短信提醒*/
+if($met_nurse_job){
+require_once ROOTPATH.'include/export.func.php';
+if(maxnurse()<$met_nurse_max){
+$domain = strdomain($met_weburl);
+$message="您网站[{$domain}]收到了新的简历[{$job_list[position]}]，请尽快登录网站后台查看";
+sendsms($met_nurse_job_tel,$message,4);
+}
+}
+/**/
+$backurl=$metinfo_member_name==""?'../index.php?lang='.$lang:'../member/'.$member_index_url;					  
 okinfo($backurl,$lang_js21);
 }
 

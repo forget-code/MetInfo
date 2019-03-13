@@ -1,10 +1,10 @@
 <!--<?php
 require_once template('head'); 
-require_once template('webbar'); 
-$weblist=metlabel_news();
+require_once template('sidebar');
+$weblist=metlabel_news(1,1,50);
 echo <<<EOT
 -->
-        <div class="newslist webbox">
+        <div class="active" id="newslist">
 			{$weblist}
 			<div id="flip">{$page_list}</div>
 		</div>

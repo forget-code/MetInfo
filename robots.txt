@@ -5,6 +5,7 @@ Disallow: /config/
 Disallow: /include/
 Disallow: /lang/
 Disallow: /public/
+Disallow: /install/
 Disallow: /templates/
 Disallow: /upload/
 Disallow: /sitemap/templates/

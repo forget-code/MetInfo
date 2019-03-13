@@ -7,12 +7,9 @@ if($class1)$selectedjob=$class1;
 $classaccess= $db->get_one("SELECT * FROM $met_column WHERE module='6' and lang='$lang' ");
 $metaccess=$classaccess[access];
 $class1=$classaccess[id];
- 	if($met_submit_type==1){
-	   $job[cv]=$cv[url].$job[id];
-	   }else{
-	   $job[cv]=$cv[url];
-	   }
+$job[cv]=$cv[url].$job[id];
 require_once '../include/head.php';
+$guanlian=$class_list[$class1][releclass];
     $class1_info=$class_list[$class1][releclass]?$class_list[$class_list[$class1][releclass]]:$class_list[$class1];
 	$class2_info=$class_list[$class1][releclass]?$class_list[$class1]:$class_list[$class2];	
 	
@@ -38,6 +35,10 @@ $cv_para[]=$list;
 }
 $fdjs="<script language='javascript'>";
 $fdjs=$fdjs."function Checkcv(){ ";
+$fdjs=$fdjs."if (document.myform.jobid.value.length == 0) {
+alert('{$lang_memberPosition} {$lang_Empty}');
+document.myform.jobid.focus();
+return false;}";
 foreach($fdwr_list as $key=>$val){
 if($val[type]==1 or $val[type]==2 or $val[type]==3 or $val[type]==5){
 $fdjs=$fdjs."if (document.myform.para$val[id].value.length == 0) {\n";
@@ -79,6 +80,7 @@ $class_info[name]=$class2_info[name]."--".$class1_info[name];
      $show[description]=$met_keywords;
      $show[keywords]=$met_keywords;
 	 $met_title=$met_title?$lang_cvtitle.'-'.$met_title:$lang_cvtitle;
+if(!$guanlian){
      if(count($nav_list2)){
        $nav_list2[$class1][0]=$class1_info;
        $nav_list2[$class1][1]=array('id'=>10004,'url'=>$cv[url],'name'=>$lang_cvtitle);
@@ -86,6 +88,7 @@ $class_info[name]=$class2_info[name]."--".$class1_info[name];
         $k=count($nav_list2);
         $nav_list2[$class1][$k]=array('id'=>10004,'url'=>$cv[url],'name'=>$lang_cvtitle);
      }
+}
      require_once '../public/php/methtml.inc.php';
 	 $nav_x[name]=$lang_cvtitle;
 		 
@@ -180,11 +183,9 @@ if($met_memberlogin_code==1){
      $methtml_cv.="</tr>";		
      $methtml_cv.="</table>";
      $methtml_cv.="</form>";
-if(file_exists("../templates/".$met_skin_user."/cv.".$dataoptimize_html)){
-    include template('cv');
-}else{
- include 'templates/met/cv.html';
- }
+
+$csnow=$cvidnow?$cvidnow:$classnow;
+include template('cv');
 footer();
 
 # This program is an open source system, commercial use, please consciously to purchase commercial license.

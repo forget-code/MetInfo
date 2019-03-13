@@ -3,26 +3,7 @@
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 echo <<<EOT
 -->
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>{$lang_membereditorTitle}</title>
-<link href="templates/met/css/style.css" rel="stylesheet" />
-<link href="../public/css/reset.css" rel="stylesheet" />
-<style type="text/css">
-<!--
-body {
-	font-size: $lang_fontsize; 
-	font-family:$lang_fontfamily;
-
-	}
-
-
--->
-</style>
-</head>
-<body>
+<link href="../member/templates/met/css/style.css" rel="stylesheet" />
 <form method="POST" name="myform" action="save.php?action=editor" target="_self">
 		<input name="useid" type="hidden"size="20" maxlength="20" value="$admin_list[admin_id]">
 		<input name="lang" type="hidden" value="$lang">
@@ -38,7 +19,7 @@ body {
 		   <tr> 
             <td class="member_text"><font color="#FF0000">*</font>{$lang_membereditorPs1}&nbsp;</td>
             <td colspan="2" class="member_input"> <input name="pass2" type="password" class="input" size="20" maxlength="20">{$lang_membereditorTip}</td>
-          </tr> 
+          </tr>
 		  <tr> 
             <td class="member_text">{$lang_memberbasicReadlName}&nbsp;</td>
             <td colspan="2" class="member_input"> <input name="realname" type="text" class="input" size="20" maxlength="20" value="$admin_list[admin_name]"></td>
@@ -51,7 +32,7 @@ EOT;
 if($admin_list[admin_sex]==0){
 echo <<<EOT
 -->	
-		<input name="sex" type="radio" value="0" checked="checked" style="border&nbsp;none;">{$lang_memberbasicMan} &nbsp;<input name="sex" type="radio" value="1" style="border&nbsp;none;">{$lang_memberbasicWoman}
+		<label><input name="sex" type="radio" value="0" checked="checked" style="border&nbsp;none;">{$lang_memberbasicMan}</label> &nbsp;<label><input name="sex" type="radio" value="1" style="border&nbsp;none;">{$lang_memberbasicWoman}</label>
 <!--
 EOT;
 }else{
@@ -114,15 +95,13 @@ EOT;
           </tr>
  		  <tr> 
             <td class="member_text"></td>
-	      <td class="member_submit"><input type="submit" name="Submit" value="{$lang_Submit}" class="tj" style="*padding-top:2px; *height:22px;"><input type="reset" name="Submit" value="{$lang_Reset}" class="tj" style="*padding-top:2px; *height:22px;"></td>
+	      <td class="member_submit"><input type="submit" name="Submit" value="{$lang_Submit}" class="submit"></td>
           </tr>
         </form>
          
 </table>
-</body>
-</html>
 <!--
 EOT;
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
-?>-->
+?>

@@ -1,15 +1,15 @@
 <!--<?php
 require_once template('head'); 
-require_once template('webbar'); 
-$weblist=metlabel_img();
+require_once template('sidebar');
+$iw=$met_imgs_x+12;//12为图片的边框
+$weblist=metlabel_img(735,$iw);//参数说明:容器总宽度/单个产品容器的总宽度/每行显示数量
 echo <<<EOT
 -->
-        <div class="imglist webbox" id="metimgli">
+        <div class="active" id="imglist">
 			{$weblist}
-			<script type="text/javascript">metaddwdht($('#metimgli li.list'),8);</script>
 			<div class="clear"></div>
-			<div id="flip">{$page_list}</div>
 		</div>
+		<div id="flip">{$page_list}</div>
 	</div>
     <div class="clear"></div>
 </div>

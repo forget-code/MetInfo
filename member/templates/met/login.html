@@ -3,65 +3,13 @@
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 echo <<<EOT
 -->
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>{$lang_memberLogin}--$met_webname</title>
-</head>
-<script type="text/javascript">
-   function form_zc(){
-        window.open("register.php","_blank");  
-          window.close();
-   }
-   function check_main_login()
-{
-	var m=document.main_login;
-	if(m.login_name.value.length=="")
-	{
-		alert("{$lang_memberRegisterName}");
-		m.login_name.focus();
-		return false;
-	}
-	if(m.login_pass.value.length=="")
-	{
-		alert("{$lang_memberPassword}");
-		m.login_pass.focus();
-		return false;
-	}
-}
-function pressCaptcha(obj)//MetInfo
-  {
-    obj.value = obj.value.toUpperCase();
-  }
-function checkcookie()
-{
-	if (document.cookie == "") 
-	{	
-		var tmp=document.getElementById('remember');
-		alert('{$lang_memberCookie}');
-		tmp.checked=false;
-	}
-
-}
-</script>
-<link href="templates/met/css/style.css" type="text/css" rel="stylesheet" />
-<link href="../public/css/reset.css" rel="stylesheet" />
-<style type="text/css">
-<!--
-body {
-	font-size: $lang_fontsize; 
-	font-family:$lang_fontfamily;
-	}
--->
-</style>
-<body>
-
+<link href="../member/templates/met/css/style.css" type="text/css" rel="stylesheet" />
 <div class="main_deng">
    <div class="login_top">{$lang_memberLogin}</div>
   <form method="post" action="login_check.php?lang=$lang" name="main_login" onSubmit="javascript: return check_main_login()">
 	<input type="hidden" name="action" value="login"/>
 	<input type="hidden" name="lang" value="$lang"/>
+	<input type="hidden" name="refererok" value="{$referer}"/>
 	<br />
 	<p>
 		<span style="display:block; float:right; margin:0px 30px 0px 0px; _margin:0px 15px 0px 0px;"><label>{$lang_memberName}:
@@ -98,11 +46,8 @@ echo <<<EOT
 </form>
 
 </div>
-
-</body>
-</html>
 <!--
 EOT;
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
-?>-->
+?>

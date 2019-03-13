@@ -2,20 +2,28 @@
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 require_once '../include/common.inc.php';
+$fmodule=7;
+if($list==1){
+require_once '../include/module.php';
+$metid='';
+}
 if(!$metid)$metid='index';
 if($metid!='index'){
-require_once $metid.'.php';
+require_once 'message.php';
 }else{
-
-$settings = parse_ini_file('config_'.$lang.'.inc.php');
-@extract($settings);
 $message_column=$db->get_one("select * from $met_column where module='7' and lang='$lang'");
 $metaccess=$message_column[access];
 $class1=$message_column[id];
+foreach($settings_arr as $key=>$val){
+	if($val['columnid']==$class1){
+		$tingname    =$val['name'].'_'.$val['columnid'];
+		$$val['name']=$$tingname;
+	}
+}
 require_once '../include/head.php';
 	$class1_info=$class_list[$class1][releclass]?$class_list[$class_list[$class1][releclass]]:$class_list[$class1];
 	$class2_info=$class_list[$class1][releclass]?$class_list[$class1]:$class_list[$class2];
-$navtitle=$message_column[name];
+	$navtitle=$message_column[name];
     $serch_sql=" where lang='$lang' ";
 	if($met_fd_type==1) $serch_sql.=" and readok='1' ";
 	if($met_member_use==2)$serch_sql .= " and access<=$metinfo_member_type";

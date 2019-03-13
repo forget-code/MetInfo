@@ -3,15 +3,15 @@ function SetHome(obj,vrl){
             obj.style.behavior='url(#default#homepage)';obj.setHomePage(vrl);
             }
         catch(e){
-                if(window.netscape) {
-                        try { 
-						netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");  
+                if(window.netscape){
+                        try{
+							netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");  
                         }  
                         catch (e){ 
-                                alert("Your Browser does not support ");
+                            alert("Your Browser does not support");
                         }
-                        var prefs = Components.classes['@mozilla.org/preferences-service;1'].getService(Components.interfaces.nsIPrefBranch);
-                        prefs.setCharPref('browser.startup.homepage',vrl);
+						var prefs = Components.classes['@mozilla.org/preferences-service;1'].getService(Components.interfaces.nsIPrefBranch);
+						prefs.setCharPref('browser.startup.homepage',vrl);
                  }
         }
 }
@@ -58,6 +58,14 @@ function addlinksubmit(info2,info3){
 		document.myform.weburl.focus();
 		return false;
 	}
+}
+function textWrap(my){
+	var text='',txt = my.text();
+		txt = txt.split("");
+		for(var i=0;i<txt.length;i++){
+			text+=txt[i]+'<br/>';
+		}
+		my.html(text);
 }
 function pressCaptcha(obj){ obj.value = obj.value.toUpperCase();}
 function ResumeError() { return true; } 

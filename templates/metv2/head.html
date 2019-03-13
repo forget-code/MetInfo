@@ -5,6 +5,7 @@ $met_online=methtml_online();
 $metseo=$classnow==10001?'<h1>'.$met_seo.'</h1>':'<h2>'.$met_seo.'</h2>';
 $navdown=$class1;
 if($class1 == 0 || $class_list[$class1][nav] == 2)$navdown="10001";
+$metlang=$methtml_hadd?'<span>|</span>'.$metlang:$metlang;
 echo <<<EOT
 -->
 {$methtml_head}
@@ -50,7 +51,7 @@ $(function(){
 			</a>
 		</div>
 		<div class="sidebar">
-		    <div class="lang"><span class="time">{$methtml_now}</span>{$methtml_sethome}<span>|</span>{$methtml_addfavorite}<span>|</span>{$metlang}</div>
+		    <div class="lang"><span class="time">{$methtml_now}</span>{$methtml_hadd}{$metlang}</div>
 		    $metseo
 		    <div class="login">$methtml_login </div> 
         </div>

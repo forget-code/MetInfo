@@ -3,23 +3,23 @@
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 require_once '../include/common.inc.php';
 if($class1)$id=$class1;
-    $job=$db->get_one("select * from $met_job where id='$id'");
-	if(!$job){
-	okinfo('../',$lang_error);
-	}
-    if(intval($job[useful_life])==0)$job[useful_life]=$lang_Nolimit;
-    $classaccess= $db->get_one("SELECT * FROM $met_column WHERE module='6' and lang='$lang'");
-    $class1=$classaccess[id];	
+if(!is_numeric($id)){okinfo('../404.html');exit();}
+$job=$db->get_one("select * from $met_job where id=$id and lang='$lang'");
+if(!$job){
+	okinfo('../404.html');exit();
+}
+$job[useful_life_a]=$job[useful_life];
+if(intval($job[useful_life])==0)$job[useful_life]=$lang_Nolimit;
+$classaccess= $db->get_one("SELECT * FROM $met_column WHERE module='6' and lang='$lang'");
+$class1=$classaccess[id];	
 $metaccess=$job[access];
 require_once '../include/head.php';
-$job[content]=contentshow($job[content]);
- 	if($met_submit_type==1){
-	   $job[cv]=$met_pseudo?'jobcv-'.$job[id].'-'.$lang.'.html':$cv[url].$job[id];
-	   }else{
-	   $job[cv]=$cv[url];
-	   }
-    $class1_info=$class_list[$class1][releclass]?$class_list[$class_list[$class1][releclass]]:$class_list[$class1];
-	$class2_info=$class_list[$class1][releclass]?$class_list[$class1]:$class_list[$class2];	
+$guanlian=$class_list[$class1][releclass];
+$job[content]=contentshow('<div>'.$job[content].'</div>');
+$job[cv]=$met_pseudo?'jobcv-'.$job[id].'-'.$lang.'.html':$cv[url].$job[id];
+$job[count]=$job[count]?$job[count]:$lang_several;
+$class1_info=$class_list[$class1][releclass]?$class_list[$class_list[$class1][releclass]]:$class_list[$class1];
+$class2_info=$class_list[$class1][releclass]?$class_list[$class1]:$class_list[$class2];	
 if($dataoptimize[$pagemark][nextlist]){
 if($met_member_use==2){
     $prejob=$db->get_one("select * from $met_job where lang='$lang' and (access<=$metinfo_member_type) and id > $id limit 0,1");
@@ -60,11 +60,7 @@ if($dataoptimize[6][otherlist]){
 	$list[title]=$list[position];
 	if($prejob[id]==$list[id])$preinfo=$list;  
 	if($nextjob[id]==$list[id])$nextinfo=$list;
-	 if($met_submit_type==1){
-	   $list[cv]=$met_pseudo?'cv-'.$lang.'-'.$list[id].'.html':$cv[url].$list[id];
-	   }else{
-	   $list[cv]=$cv[url];
-	   }
+	$list[cv]=$met_pseudo?'cv-'.$lang.'-'.$list[id].'.html':$cv[url].$list[id];
 	$job_list[]=$list;
     }
 }elseif($dataoptimize[$pagemark][nextlist]){
@@ -74,12 +70,12 @@ if($dataoptimize[6][otherlist]){
 	$nexthtmname="showjob";
 	break;
 	case 1:
-	$prehtmname = date('Ymd',strtotime($prejob[updatetime]));	
-	$nexthtmname = date('Ymd',strtotime($nextjob[updatetime]));
+	$prehtmname = date('Ymd',strtotime($prejob[addtime]));	
+	$nexthtmname = date('Ymd',strtotime($nextjob[addtime]));
 	break;
 	case 2:
-	$prehtmname=$class_list[$prejob[class1]][foldername];
-    $nexthtmname=$class_list[$nextjob[class1]][foldername];		
+	$prehtmname='job';
+    $nexthtmname='job';		
 	break;
 	}
 	$preid = $prejob['filename']!=''?$prejob['filename']:$prejob['id'];
@@ -101,13 +97,16 @@ $class_info[name]=$class2_info[name]."--".$class1_info[name];
      $show[description]=$job[description]?$job[description]:$met_keywords;
      $show[keywords]=$job[keywords]?$job[keywords]:$met_keywords;
 	 $met_title=$met_title?$job['position'].'-'.$met_title:$job['position'];
-if(count($nav_list2)){
-$nav_list2[$class1][0]=$class1_info;
-$nav_list2[$class1][1]=array('id'=>10004,'url'=>$cv[url],'name'=>$lang_cvtitle);
-}else{
-$k=count($nav_list2);
-$nav_list2[$class1][$k]=array('id'=>10004,'url'=>$cv[url],'name'=>$lang_cvtitle);
+if(!$guanlian){
+	if(count($nav_list2)){
+	$nav_list2[$class1][0]=$class1_info;
+	$nav_list2[$class1][1]=array('id'=>10004,'url'=>$cv[url],'name'=>$lang_cvtitle);
+	}else{
+	$k=count($nav_list2);
+	$nav_list2[$class1][$k]=array('id'=>10004,'url'=>$cv[url],'name'=>$lang_cvtitle);
+	}
 }
+$csnow=$cvidnow?$cvidnow:$classnow;
 	 require_once '../public/php/methtml.inc.php';
 	 require_once '../public/php/jobhtml.inc.php';
 	 $nav_x[name]=$nav_x[name]." > ".$job[position];

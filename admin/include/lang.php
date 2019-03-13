@@ -14,7 +14,6 @@ function daddslashes1($string, $force = 0) {
 	}
 	return $string;
 }
-
 if($_GET[langset]!="" and $met_admin_type_ok==1){
 $languser = $_GET[langset];
 }

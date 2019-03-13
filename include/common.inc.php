@@ -19,61 +19,43 @@ if(PHP_VERSION < '4.1.0') {
 }
 $db_settings = parse_ini_file(ROOTPATH.'config/config_db.php');
 @extract($db_settings);
-require_once ROOTPATH.'config/tablepre.php';
 require_once ROOTPATH.'include/mysql_class.php';
 $db = new dbmysql();
 $db->dbconn($con_db_host,$con_db_id,$con_db_pass,$con_db_name);
-require_once dirname(__file__).'/global.func.php';
-require_once dirname(__file__).'/cache.func.php';
-require_once dirname(__file__).'/jmail.php';
 define('MAGIC_QUOTES_GPC', get_magic_quotes_gpc());
 isset($_REQUEST['GLOBALS']) && exit('Access Error');
+require_once ROOTPATH.'include/global.func.php';
 foreach(array('_COOKIE', '_POST', '_GET') as $_request) {
 	foreach($$_request as $_key => $_value) {
 		$_key{0} != '_' && $$_key = daddslashes($_value);
 	}
 }
-require_once ROOTPATH.'config/lang.inc.php';
-if($met_url_type and $lang==""){ 
-foreach($met_langok as $key=>$val){
-if(strstr($val[met_weburl],"http://".$_SERVER["HTTP_HOST"]."/"))$lang=$val[mark];
+$query="select * from {$tablepre}config where name='met_tablename' and lang='metinfo'";
+$mettable=$db->get_one($query);
+$mettables=explode('|',$mettable[value]);
+foreach($mettables as $key=>$val){
+	$tablename='met_'.$val;	
+	$$tablename=$tablepre.$val;
 }
-}
-
-//1.5
-$lang=($lang=="")?$met_index_type:$lang;
-$settings = parse_ini_file(ROOTPATH."config/config_".$lang.".inc.php");
-@extract($settings);
-$settings = parse_ini_file(ROOTPATH."wap/config_".$lang.".inc.php");
-@extract($settings);
-if(count($met_langok)==1)$lang=$met_index_type;
-require_once ROOTPATH.'config/flash_'.$lang.'.inc.php';
-function dump($vars, $label = '', $return = false)
-{
-    if (ini_get('html_errors')){
-        $content = "<pre>\n";
-        if ($label != '') {
-            $content .= "<strong>{$label} :</strong>\n";
-        }
-        $content .= htmlspecialchars(print_r($vars, true));
-        $content .= "\n</pre>\n";
-    } else {
-        $content = $label . " :\n" . print_r($vars, true);
-    }
-    if ($return) { return $content; }
-    echo $content;
-    return null;
+require_once ROOTPATH.'include/cache.func.php';
+require_once ROOTPATH.'config/config.inc.php';
+session_start();
+$metmemberforce==$met_member_force;
+if($metmemberforce==$met_member_force){
+	$_SESSION['metinfo_member_name']="force";
+	$_SESSION['metinfo_member_pass']="force";
+	$_SESSION['metinfo_member_type']="256";
 }
 if($met_member_use!=0){
-$metinfo_member_type=0;
-session_start();
-$metinfo_member_name     =($_SESSION['metinfo_admin_name']=="")?$_SESSION['metinfo_member_name']:$_SESSION['metinfo_admin_name'];
-$metinfo_member_pass     =($_SESSION['metinfo_admin_pass']=="")?$_SESSION['metinfo_member_pass']:$_SESSION['metinfo_admin_pass'];
-$metinfo_member_type     =($_SESSION['metinfo_admin_type']=="")?$_SESSION['metinfo_member_type']:$_SESSION['metinfo_admin_type'];
-$metinfo_admin_name      =$_SESSION['metinfo_admin_name'];
-if($metinfo_member_name=='' or  $metinfo_member_pass=='')$metinfo_member_type=0;
+	$metinfo_member_type=0;
+	$metinfo_member_id     =($_SESSION['metinfo_admin_id']=="")?$_SESSION['metinfo_member_id']:$_SESSION['metinfo_admin_id'];
+	$metinfo_member_name     =($_SESSION['metinfo_admin_name']=="")?$_SESSION['metinfo_member_name']:$_SESSION['metinfo_admin_name'];
+	$metinfo_member_pass     =($_SESSION['metinfo_admin_pass']=="")?$_SESSION['metinfo_member_pass']:$_SESSION['metinfo_admin_pass'];
+	$metinfo_member_type     =($_SESSION['metinfo_admin_type']=="")?$_SESSION['metinfo_member_type']:'256';
+	$metinfo_admin_name      =$_SESSION['metinfo_admin_name'];
+	if($metinfo_member_name=='' or  $metinfo_member_pass=='')$metinfo_member_type=0;
 }else{
-$metinfo_member_type="100";
+	$metinfo_member_type="256";
 }
 (!MAGIC_QUOTES_GPC) && $_FILES = daddslashes($_FILES);
 $REQUEST_URI  = $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'];
@@ -87,27 +69,9 @@ $m_now_counter  = date('Ymd',$m_now_time);
 $m_now_month    = date('Ym',$m_now_time);
 $m_now_year     = date('Y',$m_now_time);
 $m_user_agent   =  $_SERVER['HTTP_USER_AGENT'];
-if($_SERVER['HTTP_X_FORWARDED_FOR']){
-	$m_user_ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-} elseif($_SERVER['HTTP_CLIENT_IP']){
-	$m_user_ip = $_SERVER['HTTP_CLIENT_IP'];
-} else{
-	$m_user_ip = $_SERVER['REMOTE_ADDR'];
-}
+$m_user_ip = $_SERVER['REMOTE_ADDR'];
 $m_user_ip  = preg_match('/^([0-9]{1,3}\.){3}[0-9]{1,3}$/',$m_user_ip) ? $m_user_ip : 'Unknown';
 $PHP_SELF = $_SERVER['PHP_SELF'] ? $_SERVER['PHP_SELF'] : $_SERVER['SCRIPT_NAME'];
-if(md5($metmemberforce)==$met_memberforce)$metinfo_member_type="100";
-$metcms_v="4.0";
-$met_seo=stripslashes($met_seo);
-$met_foottext=stripslashes($met_foottext);
-$met_footright=stripslashes($met_footright);
-$met_footother=stripslashes($met_footother);
-$met_foottel=stripslashes($met_foottel);
-$met_footaddress=stripslashes($met_footaddress);
-$met_footstat=stripslashes($met_footstat);
-$wap_description=stripslashes($wap_description);
-$wap_footertext=stripslashes($wap_footertext);
-$met_webname=$met_webname;
 require_once ROOTPATH.'include/lang.php';
 $index_url=$met_index_url[$lang];
 $met_chtmtype=".".$met_htmtype;
@@ -118,26 +82,30 @@ switch($met_title_type){
 		$webtitle = '';
 		break;
     case 1:
-		$webtitle = $met_title_keywords;
+		$webtitle = $met_keywords;
 		break;
 	case 2:
 		$webtitle = $met_webname;
 		break;
 	case 3:
-		$webtitle = $met_title_keywords.'-'.$met_webname;
+		$webtitle = $met_keywords.'-'.$met_webname;
 }
 $met_title=$webtitle;
 if($index=='index'){
-wapjump();
-$met_title=$met_webname?($met_title_keywords?$met_title_keywords.'-'.$met_webname:$met_webname):$met_title_keywords;
+$met_title=$met_webname?($met_keywords?$met_keywords.'-'.$met_webname:$met_webname):$met_keywords;
+$met_title=$met_hometitle!=''?$met_hometitle:$met_title;
 }
-if($met_webhtm==0){
+
 $member_index_url="index.php?lang=".$lang;
 $member_register_url="register.php?lang=".$lang;
-}else{
-$member_index_url="index".$met_htmtype;
-$member_register_url="register".$met_htmtype;
+
+if($met_oline!=1){
+	$file_site = explode('|',$app_file[1]);
+	foreach($file_site as $keyfile=>$valflie){
+		if(file_exists(ROOTPATH."$met_adminfile".$valflie)&&!is_dir(ROOTPATH."$met_adminfile".$valflie)){require_once ROOTPATH."$met_adminfile".$valflie;}
+	}
 }
+if($index=='index'&&$met_wap)wapjump();
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

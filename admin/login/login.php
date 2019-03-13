@@ -10,7 +10,11 @@ Header("Location: ../index.php");
 if($met_admin_type_ok==0)$met_admin_type_display="none";
 $css_url="../templates/".$met_skin."/css";
 $img_url="../templates/".$met_skin."/images";
+if($metinfo_mobile){
+include template('mobile/login');
+}else{
 include template('login');
+}
 footer();
 }
 # This program is an open source system, commercial use, please consciously to purchase commercial license.

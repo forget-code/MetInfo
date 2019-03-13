@@ -1,0 +1,17 @@
+<!--<?php
+require_once template('head'); 
+require_once template('webbar'); 
+$weblist=metlabel_download();
+echo <<<EOT
+-->
+        <div class="downloadlist webbox">
+			{$weblist}
+			<div id="flip">{$page_list}</div>
+		</div>
+	</div>
+    <div class="clear"></div>
+</div>
+<!--
+EOT;
+require_once template('foot'); 
+?>

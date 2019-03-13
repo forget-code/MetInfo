@@ -8,7 +8,6 @@ echo <<<EOT
 		<div class="nav">
 <!--
 EOT;
-if($wap_skin_1){
 foreach($wap_nav as $key=>$val){
 echo <<<EOT
 --> 
@@ -16,7 +15,6 @@ echo <<<EOT
 				<div class="navtitle"><a href="$val[url]">$val[name]</a></div>
 <!--
 EOT;
-if($wap_skin_2){
 foreach($wap_nav2[$val['id']] as $key=>$val2){
 echo <<<EOT
 --> 
@@ -24,7 +22,6 @@ echo <<<EOT
 					<div class="title2" style="padding-left:8px;"><a href="$val2[url]">$val2[name]</a></div>
 <!--
 EOT;
-if($wap_skin_3){
 foreach($wap_nav3[$val2['id']] as $key=>$val3){
 echo <<<EOT
 --> 
@@ -32,20 +29,17 @@ echo <<<EOT
 <!--
 EOT;
 }
-}
 echo <<<EOT
 -->
 				</div>
 <!--
 EOT;
 }
-}
 echo <<<EOT
 -->
 			</div>       
 <!--
 EOT;
-}
 }
 echo <<<EOT
 -->

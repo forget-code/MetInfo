@@ -89,7 +89,8 @@ function link($url, $exc='')
  if($met_pageskin=='' or $met_pageskin==0 or $met_pageskin>9)$met_pageskin=1;
   switch($met_pageskin){
 case 1:
-            $text= "$lang_PageTotal<span>$this->pages</span>$lang_Page $lang_PageLocation<span style='color:#990000'>$this->_cur_page</span>$lang_Page ";
+	$metpgs=$this->pages==0?1:$this->pages;
+            $text= "$lang_PageTotal<span>$metpgs</span>$lang_Page $lang_PageLocation<span style='color:#990000'>$this->_cur_page</span>$lang_Page ";
       if ($this->_cur_page == 1 && $this->pages>1) 
         {
             //first page
@@ -106,7 +107,7 @@ case 1:
              $text.= "<a href=".$url.'1'.$exc.">$lang_PageHome</a> <a href=".$url.($this->_cur_page-1).$exc.">$lang_PagePre</a> <a href=".$url.($this->_cur_page+1).$exc.">$lang_PageNext</a>  <a href=".$url.$this->pages.$exc.">$lang_PageEnd</a>";
         }
             $text.=" $lang_PageGo <select onchange='javascript:window.location.href=this.options[this.selectedIndex].value'>";
-         for($i=1;$i<=$this->pages;$i++){
+         for($i=1;$i<=$metpgs;$i++){
             if($i==$this->_cur_page){
               $text.="<option selected='selected' value='".$url.$i.$exc."' >".$i."</option>";
             }else{
@@ -132,14 +133,18 @@ case 1:
         {
              $text.= "<a href=".$url.'1'.$exc.">$lang_PageHome</a> <a href=".$url.($this->_cur_page-1).$exc.">$lang_PagePre</a> <a href=".$url.($this->_cur_page+1).$exc.">$lang_PageNext</a>  <a href=".$url.$this->pages.$exc.">$lang_PageEnd</a>";
         }
-		
-		 $text .="&nbsp;&nbsp;".$lang_PageTotal."<span>$this->_total</span>$lang_Total $lang_PageLocation<span style='color:#990000'>$this->_cur_page</span>/".$this->pages.$lang_Pagenum;
+		$metpgs=$this->pages==0?1:$this->pages;
+		 $text .="&nbsp;&nbsp;".$lang_PageTotal."<span>$this->_total</span>$lang_Total $lang_PageLocation<span style='color:#990000'>$this->_cur_page</span>/".$metpgs.$lang_Pagenum;
         
   break;
   
   case 3:
     if ($this->_cur_page == 1){
-         $text="<a style='font-family: Tahoma, Verdana;' href=".$url."1".$exc."><b>«</b></a> <a style='font-size:12px;font-family: Tahoma, Verdana;' href=".$url.'1'.$exc.">‹</a>";
+			if($this->pages==0){
+				$text="<span style='font-family: Tahoma, Verdana;'><b>«</b></span> <span style='font-size:12px;font-family: Tahoma, Verdana;'>‹</span>";
+			}else{
+			 $text="<a style='font-family: Tahoma, Verdana;' href=".$url."1".$exc."><b>«</b></a> <a style='font-size:12px;font-family: Tahoma, Verdana;' href=".$url.'1'.$exc.">‹</a>";
+			}
 		}else{
 		 $text="<a style='font-family: Tahoma, Verdana;' href=".$url."1".$exc."><b>«</b></a> <a style='font-family: Tahoma, Verdana;' href=".$url.($this->_cur_page-1).$exc.">‹</a>";
 		}
@@ -168,7 +173,11 @@ case 1:
 	 if ($this->_cur_page == $this->pages){
         $text.="<a style='font-family: Tahoma, Verdana;' href=".$url.$this->pages.$exc.">›</a> <a style='font-family: Tahoma, Verdana;' href=".$url.$this->pages.$exc."><b>»</b></a>";
 	  }else{
+		if($this->pages==0){
+			$text.="<span style='font-family: Tahoma, Verdana;'>›</span> <span style='font-family: Tahoma, Verdana;'><b>»</b></span>";
+		}else{
 	    $text.="<a style='font-family: Tahoma, Verdana;' href=".$url.($this->_cur_page+1).$exc.">›</a> <a style='font-family: Tahoma, Verdana;'  href=".$url.$this->pages.$exc."><b>»</b></a>";
+		}
 	   }
   break;
   
@@ -176,7 +185,7 @@ case 1:
   if($met_pageskin==4){
    $text.="<style>";
    $text.=".digg4 { padding:3px; margin:3px; text-align:center; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px;}";
-   $text.=".digg4 a { border:1px solid #aaaadd; padding:2px 5px 2px 5px; margin:2px; color:#000099; text-decoration:none;}";
+   $text.=".digg4 a,.digg4 span.miy{ border:1px solid #aaaadd; padding:2px 5px 2px 5px; margin:2px; color:#000099; text-decoration:none;}";
    $text.=".digg4 a:hover { border:1px solid #000099; color:#000000;}";
    $text.=".digg4 a:active {border:1px solid #000099; color:#000000;}";
    $text.=".digg4 span.current { border:1px solid #000099; background-color:#000099; padding:2px 5px 2px 5px; margin:2px; color:#FFFFFF; text-decoration:none;}";
@@ -185,7 +194,7 @@ case 1:
   }elseif($met_pageskin==5){
    $text.="<style>";
    $text.=".digg4 { padding:3px; margin:3px; text-align:center; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px;}";
-   $text.=".digg4  a { border:1px solid #ccdbe4; padding:2px 8px 2px 8px; background-position:50%; margin:2px; color:#0061de; text-decoration:none;}";
+   $text.=".digg4  a,.digg4 span.miy{ border:1px solid #ccdbe4; padding:2px 8px 2px 8px; background-position:50%; margin:2px; color:#0061de; text-decoration:none;}";
    $text.=".digg4  a:hover { border:1px solid #2b55af; color:#fff; background-color:#3666d4;}";
    $text.=".digg4  a:active {border:1px solid #000099; color:#000000;}";
    $text.=".digg4  span.current { padding:2px 8px 2px 8px; margin:2px; color:#000; text-decoration:none;}";
@@ -194,7 +203,7 @@ case 1:
   }elseif($met_pageskin==6){
    $text.="<style>";
    $text.=".digg4 { padding:3px; color:#ff6500; margin:3px; text-align:center; font-family: Tahoma, Arial, Helvetica, Sans-serif; font-size: 12px;}";
-   $text.=".digg4 a { border:1px solid  #ff9600; padding:2px 7px 2px 7px; background-position:50% bottom; margin:2px; color:#ff6500; background-image:url(".$met_url."images/page6.jpg); text-decoration:none;}";
+   $text.=".digg4 a,.digg4 span.miy{ border:1px solid  #ff9600; padding:2px 7px 2px 7px; background-position:50% bottom; margin:2px; color:#ff6500; background-image:url(".$met_url."images/page6.jpg); text-decoration:none;}";
    $text.=".digg4 a:hover { border:1px solid #ff9600; color:#ff6500; background-color:#ffc794;}";
    $text.=".digg4 a:active {border:1px solid #ff9600; color:#ff6500; background-color:#ffc794;}";
    $text.=".digg4 span.current {border:1px solid #ff6500; padding:2px 7px 2px 7px; margin:2px; color:#ff6500; background-color:#ffbe94; text-decoration:none;}";
@@ -203,7 +212,7 @@ case 1:
   }elseif($met_pageskin==7){
    $text.="<style>";
    $text.=".digg4  { padding:3px; margin:3px; text-align:center; font-family: Tahoma, Arial, Helvetica, Sans-serif, sans-serif; font-size: 12px;}";
-   $text.=".digg4  a { border:1px solid  #2c2c2c; padding:2px 5px 2px 5px; background:url(".$met_url."images/page7.gif) #2c2c2c; margin:2px; color:#fff; text-decoration:none;}";
+   $text.=".digg4  a,.digg4 span.miy{ border:1px solid  #2c2c2c; padding:2px 5px 2px 5px; background:url(".$met_url."images/page7.gif) #2c2c2c; margin:2px; color:#fff; text-decoration:none;}";
    $text.=".digg4  a:hover { border:1px solid #aad83e; color:#fff;background:url(".$met_url."images/page7_2.gif) #aad83e;}";
    $text.=".digg4  a:active { border:1px solid #aad83e; color:#fff;background:urlurl(".$met_url."images/page7_2.gif) #aad83e;}";
    $text.=".digg4  span.current {border:1px solid #aad83e; padding:2px 5px 2px 5px; margin:2px; color:#fff;background:url(".$met_url."images/page7_2.gif) #aad83e; text-decoration:none;}";
@@ -212,7 +221,7 @@ case 1:
   }elseif($met_pageskin==8){
    $text.="<style>";
    $text.=".digg4  { padding:3px; margin:3px; text-align:center; font-family:Tahoma, Arial, Helvetica, Sans-serif;  font-size: 12px;}";
-   $text.=".digg4  a { border:1px solid #ddd; padding:2px 5px 2px 5px; margin:2px; color:#aaa; text-decoration:none;}";
+   $text.=".digg4  a,.digg4 span.miy{ border:1px solid #ddd; padding:2px 5px 2px 5px; margin:2px; color:#aaa; text-decoration:none;}";
    $text.=".digg4  a:hover { border:1px solid #a0a0a0; }";
    $text.=".digg4  a:hover { border:1px solid #a0a0a0; }";
    $text.=".digg4  span.current {border:1px solid #e0e0e0; padding:2px 5px 2px 5px; margin:2px; color:#aaa; background-color:#f0f0f0; text-decoration:none;}";
@@ -221,7 +230,7 @@ case 1:
   }elseif($met_pageskin==9){
    $text.="<style>";
    $text.=".digg4 { padding:3px; margin:3px; text-align:center; font-family:Tahoma, Arial, Helvetica, Sans-serif;  font-size: 12px;}"; 
-   $text.=".digg4  a { border:1px solid #ddd; padding:2px 5px 2px 5px; margin:2px; color:#88af3f; text-decoration:none;}"; 
+   $text.=".digg4  a,.digg4 span.miy{ border:1px solid #ddd; padding:2px 5px 2px 5px; margin:2px; color:#88af3f; text-decoration:none;}"; 
    $text.=".digg4  a:hover { border:1px solid #85bd1e; color:#638425; background-color:#f1ffd6; }"; 
    $text.=".digg4  a:hover { border:1px solid #85bd1e; color:#638425; background-color:#f1ffd6; }"; 
    $text.=".digg4  span.current {border:1px solid #b2e05d; padding:2px 5px 2px 5px; margin:2px; color:#fff; background-color:#b2e05d; text-decoration:none;}"; 
@@ -231,7 +240,7 @@ case 1:
    if($this->pages >12 ){
      $startnum=floor(($this->_cur_page/10))*10+1;
 	 if(floor(($this->_cur_page/10))==($this->_cur_page/10))$startnum=floor(($this->_cur_page/10))*10+1-10;
-	   if(($this->pages-$startnum)>12){
+	   if(($this->pages-$startnum)>=12){
 	      if($startnum!=1){
 		    $endnum=$startnum+9;
 			$middletext="...";
@@ -280,12 +289,20 @@ case 1:
 	if($this->pages==$this->_cur_page){
 	     $text.="<span class='current'>".$this->pages."</span>";
 	 }else{
-        $text.=" <a href=".$url.$this->pages.$exc.">".$this->pages."</a> ";
+		if($this->pages==0){
+			$text.=" <span class='disabled'>".$this->pages."</a></span> ";
+		}else{
+			$text.=" <a href=".$url.$this->pages.$exc.">".$this->pages."</a> ";
+		}
 	 }
     if ($this->_cur_page == $this->pages){
          $text.=$nextpagenow."<span class='disabled' style='font-family: Tahoma, Verdana;'><b>»</b></span>";
 		}else{
-		$text.=$nextpagenow."<a style='font-family: Tahoma, Verdana;' href=".$url.$this->pages.$exc."><b>»</b></a>";
+			if($this->pages==0){
+				$text.=$nextpagenow."<span style='font-family: Tahoma, Verdana;' class='disabled'><b>»</b></span>";
+			}else{
+			$text.=$nextpagenow."<a style='font-family: Tahoma, Verdana;' href=".$url.$this->pages.$exc."><b>»</b></a>";
+			}
 		}  
         $text.="</div>";
   break;
@@ -299,4 +316,3 @@ case 1:
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>
-   

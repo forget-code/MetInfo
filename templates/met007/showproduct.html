@@ -34,11 +34,10 @@ echo <<<EOT
 <!--
 EOT;
 if($lang_PrdctFd==1){
-$product[title]=urlencode($product[title]);
 echo <<<EOT
 -->
 <div class="feedback">
-<a href="{$addfeedback_url}{$product[title]}" target="$Blank" title="{$lang_Product_Column3}">{$lang_Product_Column3}</a>
+<a href="{$addfeedback_url}$product[title]" target="$Blank" title="{$lang_Product_Column3}">{$lang_Product_Column3}</a>
 </div>
 <!--
 EOT;

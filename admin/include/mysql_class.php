@@ -80,6 +80,15 @@ class dbmysql {
 		return $rs ;
 	}
 	
+	function get_all($sql, $type = '')
+	{
+		$query = $this->query($sql, $type);
+		while($list = $this->fetch_array($query)){
+			$rs[]=$list;
+		}
+		$this->free_result($query);
+		return $rs ;
+	}
 
 
 	function query($sql, $type = '') {
@@ -172,6 +181,7 @@ class dbmysql {
 	     $sqlerror = mysql_error();
 		 $sqlerrno = mysql_errno();
 		 $sqlerror = str_replace($dbhost,'dbhost',$sqlerror);
+		 header('HTTP/1.1 500 Internal Server Error');
 		 echo"<html><head><title>MetInfo</title><style type='text/css'>P,BODY{FONT-FAMILY:tahoma,arial,sans-serif;FONT-SIZE:10px;}A { TEXT-DECORATION: none;}a:hover{ text-decoration: underline;}TD { BORDER-RIGHT: 1px; BORDER-TOP: 0px; FONT-SIZE: 16pt; COLOR: #000000;}</style><body>\n\n";
 		echo"<table style='TABLE-LAYOUT:fixed;WORD-WRAP: break-word'><tr><td>";
 		echo"<br><br><b>The URL Is</b>:<br>http://$_SERVER[HTTP_HOST]$REQUEST_URI";

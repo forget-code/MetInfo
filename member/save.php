@@ -1,31 +1,25 @@
 <?php
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
-
 require_once '../include/common.inc.php';
-
 if($action=="add"){
-
-	//code
-     if($met_memberlogin_code==1){
-         require_once 'captcha.class.php';
-         $Captcha= new  Captcha();
-         if(!$Captcha->CheckCode($code)){
-         echo("<script type='text/javascript'> alert('$lang_membercode'); window.history.back();</script>");
-		       exit;
-         }
-     }
-	 
+ if($met_memberlogin_code==1){
+	 require_once ROOTPATH.'member/captcha.class.php';
+	 $Captcha= new  Captcha();
+	 if(!$Captcha->CheckCode($code)){
+	 echo("<script type='text/javascript'> alert('$lang_membercode'); window.history.back();</script>");
+		exit;
+	 }
+ } 
 $admin_if=$db->get_one("SELECT * FROM $met_admin_table WHERE admin_id='$yhid'");
 if($admin_if){
 okinfo('javascript:history.back();',$lang_js15);
 }
+require_once '../include/jmail.php';
 $checkid=0;
-if($met_member_login==1)
-{
+if($met_member_login==1){
 	$checkid=1;
 }
-
 if($met_member_login==2)
 {
 $array = explode("-",$m_now_date);
@@ -47,12 +41,21 @@ $usepassword=$met_fd_password;
 $smtp=$met_fd_smtp;
 
 $check=md5($timestamp);
-$met_webnamearray=explode('--Powered by MetInfo',$met_webname);
-$met_webname1=$met_webnamearray[0];
+$met_webname1=$met_webname;
 $title=$met_webname1.$lang_js16;
 $body="$yhid,<br><br> {$met_memberemail}<br><br><b>{$lang_js17}</b>{$lang_js18}[<a href='{$met_weburl}member/register_include.php?username=$yhid&code=$check&lang=$lang'>{$lang_js16} {$met_weburl}member/register_include.php?username=$yhid&code=$check&lang=$lang</a>] {$lang_js19}<br><div align='right'>$fromname</div> ";
 jmailsend($from,$fromname,$to,$title,$body,$usename,$usepassword,$smtp);
 }
+/*短信提醒*/
+if($met_nurse_member){
+require_once ROOTPATH.'include/export.func.php';
+if(maxnurse()<$met_nurse_max){
+$domain = strdomain($met_weburl);
+$message="您网站[{$domain}]有新会员注册了！请尽快登录网站后台查看。";
+sendsms($met_nurse_member_tel,$message,4);
+}
+}
+/**/
 $pass1=md5($mm);
  $query = "INSERT INTO $met_admin_table SET
                       admin_id           = '$yhid',
@@ -70,20 +73,21 @@ $pass1=md5($mm);
 					  lang               = '$lang',
 					  checkid            = '$checkid'";
          $db->query($query);
-if($met_member_login==2)
-{
-	okinfo('login_member.php?lang='.$lang,$lang_js20);
+if($met_member_login==2){
+	okinfo('login.php?lang='.$lang,$lang_js20);
 	exit();
 }elseif($met_member_login==3){	 
-okinfo('login_member.php?lang='.$lang, $lang_js25);
+	okinfo('login.php?lang='.$lang, $lang_js25);
 exit();
 }
-	 
-okinfo('login_member.php?lang='.$lang,$lang_js21);
+	okinfo('login.php?lang='.$lang,$lang_js21);
 }
 
 if($action=="editor"){
-
+require_once 'login_check.php';
+if($_SESSION['metinfo_admin_id']!=$useid){
+	Header("Location:$returnurl");
+}
 $query = "update $met_admin_table SET
                       admin_id           = '$useid',
 					  admin_name         = '$realname',

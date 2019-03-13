@@ -1,0 +1,20 @@
+<!--<?php
+require_once template('head'); 
+require_once template('sidebar');
+$pzw=$sidebar?720:940;
+$pw=$met_productimg_x+12;//12为产品图片的边框，这里需要获取单个产品容器的总宽
+$weblist=metlabel_product($pzw,$pw);//参数说明:容器总宽度/单个产品容器的总宽度/每行显示数量
+echo <<<EOT
+-->
+        <div class="active" id="productlist">
+			{$weblist}
+		</div>
+		<div class="clear"></div>
+		<div id="flip">{$page_list}</div>
+	</div>
+    <div class="clear"></div>
+</div>
+<!--
+EOT;
+require_once template('foot'); 
+?>

@@ -15,33 +15,31 @@ $id=1;
 if($type==1){
 	$typey = '';
 	$bigs = 0;
-	$imgs = "<img src='$img_url/columnnox.gif' style='margin:0px 5px;' />";
+	$imgs = "<div style='width:22px; height:10px; overflow:hidden; float:left;'></div>";
 }else{
 	$imgcss = 'padding-left:10px;';
 	$imycss = "columnz_$id";
 	$typey = $type;
 	$bigs = $id;
 }
-	if($type==2)$imgs = "<div style='float:left; width:12px; height:10px;'></div><img src='{$img_url}/bg_column.gif' style='float:left; margin-right:3px;' />";
-	if($type==3)$imgs = "<div style='float:left; width:12px; height:10px;'></div><img src='{$img_url}/bg_column1.gif' style='float:left;' /><img src='{$img_url}/bg_column.gif' style='float:left; margin-right:3px;' />";
+$widthx=$type==3?'style="width:121px;"':($type==2?'style="width:141px;"':'style="width:144px;"');
+	if($type==2)$imgs = "<img src='{$img_url}/bg_column.gif' style='position:relative; top:6px; margin-right:4px;' />";
+	if($type==3)$imgs = "<img src='{$img_url}/bg_column1.gif' style='position:relative; top:6px; margin-right:3px;' />";
 		$newlist = "<tr class='mouse click $imycss newlist column_$type'>";
-		$newlist.= "<td class='list-text$typey'><input name='id' type='checkbox' checked='checked' id='id' value='new-$lp' /></td>";
-		$newlist.= "<td class='list-text$typey'><input type='text' class='text no_order' value='0' name='no_order_new-$lp' /><input type='hidden' value='$type' name='classtype_new-$lp' /><input type='hidden' value='$bigs' name='bigclass_new-$lp' /></td>";
-		$newlist.= "<td class='list-text$typey' style='text-align:left; $imgcss'>$imgs<input type='text' class='text namenonull' value='' name='name_new-$lp' />";
+		$newlist.= "<td class='list-text$typey'><input name='id' type='checkbox' checked='checked' id='id' value='new_$lp' /></td>";
+		$newlist.= "<td class='list-text$typey'><input type='text' class='text no_order' value='0' name='no_order_new_$lp' /><input type='hidden' value='$type' name='classtype_new_$lp' /><input type='hidden' value='$bigs' name='bigclass_new_$lp' /><input type='hidden' value='0' name='access_new_$lp' /></td>";
+		$newlist.= "<td class='list-text$typey' style='text-align:left; $imgcss'>$imgs<input {$widthx} type='text' class='text namenonull' value='' name='name_new_$lp' />";
 		$newlist.= "</td>";
 		$newlist.= "<td class='list-text$typey'>";
-		$newlist.= "<select name='nav_new-$lp'>";
+		$newlist.= "<select name='nav_new_$lp'>";
 for($u=0;$u<4;$u++){
 		$navtypes = navdisplay($u);
 		$newlist.= "<option value='$u'>$navtypes</option>";
 }
 		$newlist.= "</select>";
 		$newlist.= "</td>";
-if($met_wap && $met_wap_ok){
-		$newlist.= "<td class='list-text$typey'></td>";
-}
 		$newlist.= "<td class='list-text$typey'>";
-		$newlist.= "<select name='module_new-$lp' onchange='newmodule($(this),$module,$type)'>";
+		$newlist.= "<select name='module_new_$lp' onchange='newmodule($(this),$module,$type)'>";
 if($type==2)$newlist.= "<option value='$module'>".module($module)."</option>";			
 for($i=1;$i<=14;$i++){
 $j=($i<13)?$i:($i+87);
@@ -59,21 +57,13 @@ if(count($met_module[$j])==0 or ($j<=5 || $j==8)){
 		$newlist.= "</td>";
 		$newlist.= "<td class='list-text$typey'>";
 if($type==1){
-$newlist.= "<input type='text' class='text foldernonull' value='' name='foldername_new-$lp' />";
+$newlist.= "<input type='text' class='text max foldernonull' value='' name='foldername_new_$lp' />";
 }else{
-$newlist.= "<span>$foldername</span><input type='text' value='' class='text none foldernonull' name='foldername_new-$lp' />";
+$newlist.= "<span>$foldername</span><input type='text' value='' class='text max none foldernonull' name='foldername_new_$lp' />";
 }
-		$newlist.= "<input type='text' class='text none max nonull out_url_new' style='font-weight:normal;' value='{$lang_columnOutLink}' name='out_url_new-$lp' /><font style='font-size:12px; font-weight:normal;'></font></td>";
+		$newlist.= "<input type='text' class='text none max nonull out_url_new' style='font-weight:normal;' value='{$lang_columnOutLink}' name='out_url_new_$lp' /><font style='font-size:12px; font-weight:normal;'></font></td>";
 		$newlist.= "<td class='list-text$typey'>";
-		$newlist.= "<input type='text' class='text no_order' value='0' name='index_num_new-$lp' /></td>";
-if($met_member_use){
-		$newlist.= "<td class='list-text$typey'><select name='access_new-$lp'>";
-for($u=0;$u<4;$u++){
-		$accesstype=accessdisplay($u);
-		$newlist.= "<option value='$u' $navselect>$accesstype</option>";
-}	
-		$newlist.= "</select></td>";
-}
+		$newlist.= "<input type='text' class='text no_order' value='0' name='index_num_new_$lp' /></td>";
 		$newlist.= "<td class='list-text$typey'><a href='javascript:;' class='hovertips' onclick='delettr($(this));'>{$lang_js49}</a>";
 		$newlist.= "</td>";
 		$newlist.="</tr>";

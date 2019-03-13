@@ -26,14 +26,13 @@ EOT;
 if($Conw==10){
 echo <<<EOT
 -->
-   <ul class="memberul">
-        <li><a target="main" href="basic.php?lang=$lang" title="{$lang_memberIndex3}">{$lang_memberIndex3}</a></li>
-        <li><a target="main" href="editor.php?lang=$lang" title="{$lang_memberIndex4}">{$lang_memberIndex4}</a></li>
-        <li><a target="main" href="feedback.php?lang=$lang" title="{$lang_memberIndex5}">{$lang_memberIndex5}</a></li>
-        <li><a target="main" href="message.php?lang=$lang" title="{$lang_memberIndex6}">{$lang_memberIndex6}</a></li>
-        <li><a target="main" href="cv.php?lang=$lang" title="{$lang_memberIndex7}">{$lang_memberIndex7}</a></li>
-        <li><a href="login_out.php?lang=$lang" title="{$lang_memberIndex10}">{$lang_memberIndex10}</a></li>
-   </ul>
+   <!--
+EOT;
+$met_mermber_metinfo_news_left_class='memberul';
+$mermber_metinfo_news_left=membernavlist();
+echo <<<EOT
+-->
+$mermber_metinfo_news_left
 <!--
 EOT;
 }

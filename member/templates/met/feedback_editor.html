@@ -3,37 +3,15 @@
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 echo <<<EOT
 -->
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>{$lang_memberModifyCV}</title>
-<link href="templates/met/css/style.css" rel="stylesheet" />
-<style type="text/css">
-<!--
-body {
-	font-size: $lang_fontsize; 
-	font-family:$lang_fontfamily;
-	}
--->
-</style>
-<script type="text/javascript">
-
-function pressCaptcha(obj)//MetInfo
-  {
-    obj.value = obj.value.toUpperCase();
-  }
-</script>
-$fdjs
-</head>
-<body>
+{$fdjs}
+<link href="../member/templates/met/css/style.css" rel="stylesheet" />
 <form  enctype="multipart/form-data" method="POST" onSubmit="return Checkfeedback();" name="myform" action="fdeditor.php?action=edit" target="_self">
 <input name="id" type="hidden" value="$id">
 <input name="lang" type="hidden" value="$lang">
 <table cellpadding="2" cellspacing="1" border="0" class="table_member">
 		
 		  <tr> 
-            <td colspan="10" align="center" class="member_title">{$lang_memberModifyFD}</td>
+            <td colspan="10" class="member_title">{$lang_memberModifyFD}</td>
           </tr>
 		 
 <!--
@@ -44,7 +22,7 @@ case 1:
 echo <<<EOT
 -->
          <tr> 
-            <td class="member_text"><b>$val[name]:</b></td>
+            <td class="member_text">$val[name]：</td>
             <td colspan="2" class="member_input"><input name="$val[para]" type="text" class="input" size="40"  value='$val[content]'></td>
 			<td class="member_input" bgcolor="#FFFFFF" style="color:#990000">$val[wr_must]</td>
 		 </tr>
@@ -55,7 +33,7 @@ case 2:
 echo <<<EOT
 -->
 			<tr> 
-            <td class="member_text"><b>$val[name]:</b></td>
+            <td class="member_text">$val[name]：</td>
             <td colspan="2" class="member_input">
 			<select name='para$val[id]'> 
 			<option value=''>$lang_Nolimit</option>
@@ -83,9 +61,9 @@ case 3:
 echo <<<EOT
 -->
          <tr> 
-            <td class="member_text"><b>$val[name]:</b></td>
+            <td class="member_text">$val[name]：</td>
             <td colspan="2"  class="member_input"><textarea name="$val[para]" cols="60" rows="5">$val[content]</textarea></td>
-			<td class="member_input" bgcolor="#FFFFFF" style="color:#990000">$val[wr_must]</td>
+			<td class="member_input">$val[wr_must]</td>
 			</tr>
 <!--
 EOT;
@@ -102,9 +80,9 @@ $i=0;
 echo <<<EOT
 -->
          <tr> 
-            <td class="member_text"><b>$val[name]:</b></td>
+            <td class="member_text">$val[name]：</td>
             <td colspan="2"  class="member_input">$tmp1</td>
-			<td class="member_input" bgcolor="#FFFFFF" style="color:#990000">$val[wr_must]</td>
+			<td class="member_input">$val[wr_must]</td>
 			</tr>
 <!--
 EOT;
@@ -113,7 +91,7 @@ case 5:
 echo <<<EOT
 -->
 			<tr> 
-            <td class="member_text"><b>$val[name]:</b></td>
+            <td class="member_text">$val[name]：</td>
             <td colspan="2" class="member_input"><a href="../upload/file/$val[content]" target="_blank" />$val[content] </a><input name="$val[para]" type='file' class="input" size="20"  ></td>
 			<td class="member_input" bgcolor="#FFFFFF" style="color:#990000">$val[wr_must]</td>
 			</tr>
@@ -133,7 +111,7 @@ $tmp2="";
 echo <<<EOT
 -->
 			<tr> 
-            <td class="member_text"><b>$val[name]:</b></td>
+            <td class="member_text">$val[name]：</td>
             <td colspan="2" class="member_input"> $tmp2</td>
 			<td class="member_input" bgcolor="#FFFFFF" style="color:#990000">$val[wr_must]</td>
 			</tr>
@@ -144,7 +122,7 @@ break;
 echo <<<EOT
 -->       
 		  <tr> 
-            <td class="member_text"><b>{$lang_memberAddTime}:</b></td>
+            <td class="member_text">{$lang_memberAddTime}：</td>
             <td colspan="2" class="member_input">$feedback_list[addtime]</td>
           </tr>
 		 
@@ -154,7 +132,7 @@ if($met_memberlogin_code==1){
 echo <<<EOT
 -->
 		  <tr>    
-         <td class="member_text"><b>{$lang_memberImgCode}:</b></td>
+         <td class="member_text">{$lang_memberImgCode}：</td>
          <td colspan="2" class="member_input"><input name="code" onKeyUp="pressCaptcha(this)" type="text" class="inp" id="code" size="6" maxlength="8" style="width:50px" />
          <img align="absbottom" src="ajax.php?action=code"  onclick=this.src="ajax.php?action=code&"+Math.random() style="cursor: pointer;" title="{$lang_memberTip1}"/>
 		</td>
@@ -166,13 +144,11 @@ echo <<<EOT
 -->
 		<tr> 
             <td class="member_text"></td>
-	      <td class="cv_submit"><input type="submit" name="Submit" value="{$lang_Submit}" class="tj" style="*padding-top:2px; *height:22px;"><input type="reset" name="Submit" value="{$lang_Reset}" class="tj" style="*padding-top:2px; *height:22px;"> </td>
+	      <td class="cv_submit"><input type="submit" name="Submit" value="{$lang_Submit}" class="submit"></td>
         </tr>
 </table>
-</body>
-</html>
 <!--
 EOT;
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
-?>-->
+?>

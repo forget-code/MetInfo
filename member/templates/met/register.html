@@ -3,16 +3,11 @@
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 echo <<<EOT
 -->
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>{$lang_memberReg}--{$met_webname}</title>
-</head>
-<script src="templates/met/common.js" ></script>
+<link href="../member/templates/met/css/style.css" type="text/css" rel="stylesheet" />
+<script src="../member/templates/met/common.js" ></script>
 <script>
-function form_submit(id,delid)
- {var str="";
+function form_submit(id,delid){
+var str="";
    if(id==0)
    { //====n等于1表示可以增加
     if(formcheck())
@@ -95,20 +90,6 @@ function pressCaptcha(obj)//字母变大写
     obj.value = obj.value.toUpperCase();
   }
 </script>
-
-<link href="templates/met/css/style.css" type="text/css" rel="stylesheet" />
-<link href="../public/css/reset.css" rel="stylesheet" />
-<style type="text/css">
-<!--
-body {
-	font-size: $lang_fontsize; 
-	font-family:$lang_fontfamily;
-	}
-
--->
-</style>
-<body>
-
 <div class="main_zhuce">
    <div class="main_top"><span>{$lang_memberReg}</span></div>
   <form method="POST"  name="theform"  >
@@ -187,14 +168,9 @@ echo <<<EOT
     </tr>
 	</table>
 </form>
-
 </div>
-
-</body>
-</html>
 <!--
-EOT;
 EOT;
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
-?>-->
+?>
