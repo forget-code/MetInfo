@@ -5,19 +5,19 @@
 require_once '../login/login_check.php';
 switch($type){
 case "3";
-$p_title=$lang_parameterName1;
+$p_title=$lang_mod3.$lang_parameterName;
 $k=25;
 break;
 case "4";
-$p_title=$lang_parameterName2;
+$p_title=$lang_mod4.$lang_parameterName;
 $k=11;
 break;
 case "5";
-$p_title=$lang_parameterName3;
+$p_title=$lang_mod5.$lang_parameterName;
 $k=25;
 break;
 case "10000";
-$p_title=$lang_parameterName4;
+$p_title=$lang_mod13.$lang_parameterName;
 $k=31;
 break;
 }

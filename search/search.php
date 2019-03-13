@@ -12,11 +12,42 @@ $searchpre=($lang=="en")?'e':(($lang=="other")?'o':'c');
 
 $searchword=$searchword?$searchword:(($lang=="en")?$e_searchword:(($lang=="other")?$o_searchword:$c_searchword));
 
+function replaceHtmlAndJs($document)
+{
+$document = trim($document);
+if (strlen($document) <= 0)
+{
+   return $document;
+}
+$search = array ("'<script[^>]*?>.*?</script>'si",  // 去掉 javascript
+                  "'<[\/\!]*?[^<>]*?>'si",          // 去掉 HTML 标记
+                  "'([\r\n])[\s]+'",                // 去掉空白字符
+                  "'&(quot|#34);'i",                // 替换 HTML 实体
+                  "'&(amp|#38);'i",
+                  "'&(lt|#60);'i",
+                  "'&(gt|#62);'i",
+                  "'&(nbsp|#160);'i"
+                  );                    // 作为 PHP 代码运行
+
+$replace = array ("",
+                   "",
+                   "\\1",
+                   "\"",
+                   "&",
+                   "<",
+                   ">",
+                   " "
+                   );
+
+return @preg_replace ($search, $replace, $document);
+}
 
 if($searchword==""){
 $search_list[0][title]="<font color=red>{$lang_SearchInfo1}</font>";
 $search_list[0][updatetime]=$m_now_date;  
 $search_list[0][url]=$index_url; 
+$class_info=$class1_info=$class_list[$search_column[id]];
+
 //兼容1.5
 $search_list[0][c_title]="<font color=red>{$lang_SearchInfo1}</font>";
 $search_list[0][e_title]="<font color=red>{$lang_SearchInfo1}</font>";
@@ -26,21 +57,21 @@ $search_list[0][e_url]=$index_url;
 }
 else
 {
-if($class1=="" || $class1==10000 || $class1==10001 || $class1==$classnow || $class1==0){
+if(($class1=="" || $class1==10000 || $class1==10001 || $class1==$classnow || $class1==0) and (intval($module)==0)){
    switch($searchtype){
    default:
-   if($searchword<>'')$serch_sql=" where $searchpre"."_title like '%".trim($searchword)."%' or $searchpre"."_content like '%".trim($searchword)."%' ";
-   if($searchword<>'')$serch_sql1=" where $searchpre"."_name like '%".trim($searchword)."%' or $searchpre"."_content like '%".trim($searchword)."%' ";
+   if($searchword<>'')$serch_sql=" where ($searchpre"."_title like '%".trim($searchword)."%' or $searchpre"."_content like '%".trim($searchword)."%') ";
+   if($searchword<>'')$serch_sql1=" where ($searchpre"."_name like '%".trim($searchword)."%' or $searchpre"."_content like '%".trim($searchword)."%') ";
    break;
    case 1:
    if($searchword<>'')$serch_sql=" where $searchpre"."_title like '%".trim($searchword)."%' ";
    if($searchword<>'')$serch_sql1=" where $searchpre"."_name like '%".trim($searchword)."%' ";
    break;
    case 2:
-   if($searchword<>'')$serch_sql=" where $searchpre"."_content like '%".trim($searchword)."% ";
-   if($searchword<>'')$serch_sql1=" where $searchpre"."_content like '%".trim($searchword)."% ";
+   if($searchword<>'')$serch_sql=" where $searchpre"."_content like '%".trim($searchword)."%' ";
+   if($searchword<>'')$serch_sql1=" where $searchpre"."_content like '%".trim($searchword)."%' ";
    break;
-   }  
+   }   
 switch($met_htmpagename){
 case 0:   
 	$pagename="news";
@@ -49,7 +80,7 @@ case 0:
 	while($list= $db->fetch_array($result)){
 	$filename=$navurl.$class_list[$list[class1]][foldername];
 	$filenamenow="shownews";
-    require 'infolist.php';
+    require 'searchlist.php';
 	}
 	
 	$pagename="product";
@@ -58,7 +89,7 @@ case 0:
 	while($list= $db->fetch_array($result)){
 	$filename=$navurl.$class_list[$list[class1]][foldername];
 	$filenamenow="showproduct";
-    require 'infolist.php';
+    require 'searchlist.php';
 	}
 	
 	$pagename="download";
@@ -67,7 +98,7 @@ case 0:
 	while($list= $db->fetch_array($result)){
 	$filename=$navurl.$class_list[$list[class1]][foldername];
 	$filenamenow="showdownload";
-    require 'infolist.php';
+    require 'searchlist.php';
 	}
     
 	$pagename="img";
@@ -76,7 +107,7 @@ case 0:
 	while($list= $db->fetch_array($result)){
 	$filename=$navurl.$class_list[$list[class1]][foldername];
 	$filenamenow="showdownload";
-    require 'infolist.php';
+    require 'searchlist.php';
 	}
 break;
 
@@ -87,7 +118,7 @@ case 1:
 	while($list= $db->fetch_array($result)){
 	$filename=$navurl.$class_list[$list[class1]][foldername];
 	$filenamenow=date('Ymd',strtotime($list[updatetime]));
-    require 'infolist.php';
+    require 'searchlist.php';
 	}
 	
 	$pagename="product";
@@ -96,7 +127,7 @@ case 1:
 	while($list= $db->fetch_array($result)){
 	$filename=$navurl.$class_list[$list[class1]][foldername];
 	$filenamenow=date('Ymd',strtotime($list[updatetime]));
-    require 'infolist.php';
+    require 'searchlist.php';
 	}
 	
 	$pagename="download";
@@ -105,7 +136,7 @@ case 1:
 	while($list= $db->fetch_array($result)){
 	$filename=$navurl.$class_list[$list[class1]][foldername];
 	$filenamenow=date('Ymd',strtotime($list[updatetime]));
-    require 'infolist.php';
+    require 'searchlist.php';
 	}
     
 	$pagename="img";
@@ -114,7 +145,7 @@ case 1:
 	while($list= $db->fetch_array($result)){
 	$filename=$navurl.$class_list[$list[class1]][foldername];
 	$filenamenow=date('Ymd',strtotime($list[updatetime]));
-    require 'infolist.php';
+    require 'searchlist.php';
 	}
 break;
 
@@ -124,8 +155,8 @@ case 2:
     $result = $db->query($query);
 	while($list= $db->fetch_array($result)){
 	$filename=$navurl.$class_list[$list[class1]][foldername];
-	$filenamenow=$filename;
-    require 'infolist.php';
+	$filenamenow=$class_list[$list[class1]][foldername];
+    require 'searchlist.php';
 	}
 	
 	$pagename="product";
@@ -133,8 +164,8 @@ case 2:
     $result = $db->query($query);
 	while($list= $db->fetch_array($result)){
 	$filename=$navurl.$class_list[$list[class1]][foldername];
-	$filenamenow=$filename;
-    require 'infolist.php';
+	$filenamenow=$class_list[$list[class1]][foldername];
+    require 'searchlist.php';
 	}
 	
 	$pagename="download";
@@ -142,8 +173,8 @@ case 2:
     $result = $db->query($query);
 	while($list= $db->fetch_array($result)){
 	$filename=$navurl.$class_list[$list[class1]][foldername];
-	$filenamenow=$filename;
-    require 'infolist.php';
+	$filenamenow=$class_list[$list[class1]][foldername];
+    require 'searchlist.php';
 	}
     
 	$pagename="img";
@@ -151,8 +182,8 @@ case 2:
     $result = $db->query($query);
 	while($list= $db->fetch_array($result)){
 	$filename=$navurl.$class_list[$list[class1]][foldername];
-	$filenamenow=$filename;
-    require 'infolist.php';
+	$filenamenow=$class_list[$list[class1]][foldername];
+    require 'searchlist.php';
 	}
 break;
 }
@@ -196,25 +227,33 @@ break;
     $e_page_list = $rowset->link("search.php?lang=en&class1=$class1&class2=$class2&class3=$class3&e_searchword=".trim($searchword)."&searchtype=$searchtype&page=");	
 	$o_page_list = $rowset->link("search.php?lang=other&class1=$class1&class2=$class2&class3=$class3&o_searchword=".trim($searchword)."&searchtype=$searchtype&page=");
 	$page_list=($lang=="en")?$e_page_list:(($lang=="other")?$o_page_list:$c_page_list);
+	
+	$class_info=$class1_info=$class_list[$search_column[id]];
 }else{
+    if($class1)$module=0;
+    if(!intval($module)){
     $class1_info=$class_list[$class1];
 	if(!$class1_info)okinfo('../',$pagelang[noid]);
 	$serch_sql=" where class1=$class1 ";
 	if($class2)$serch_sql .= " and class2=$class2";
 	if($class3)$serch_sql .= " and class3=$class3"; 
 	$order_sql=list_order($class1_info[list_order]); 
+	}else{
+	$serch_sql.=" where 1=1 ";
+	}
  switch($searchtype){
    default:
-   if($searchword<>'')$serch_sql.=" and $searchpre"."_title like '%$searchword%' or $searchpre"."_content like '%$searchword%' ";
+   if($searchword<>'')$serch_sql.=" and ($searchpre"."_title like '%$searchword%' or $searchpre"."_content like '%$searchword%') ";
    break;
    case 1:
    if($searchword<>'')$serch_sql.=" and $searchpre"."_title like '%$searchword%' ";
    break;
    case 2:
-   if($searchword<>'')$serch_sql.=" and $searchpre"."_content like '%$searchword% ";
+   if($searchword<>'')$serch_sql.=" and $searchpre"."_content like '%$searchword%' ";
    break;
   } 
-  	$table_name="met_".$modulename[$class1_info[module]][0];
+    $module_name=intval($module)?$module:$class1_info[module];
+  	$table_name="met_".$modulename[$module_name][0];
 	$table_name=$$table_name;
     $total_count = $db->counter($table_name, "$serch_sql", "*");
     require_once '../include/pager.class.php';
@@ -225,15 +264,21 @@ break;
     $from_record = $rowset->_offset();
     $query = "SELECT * FROM $table_name $serch_sql $order_sql LIMIT $from_record, $list_num";
     $result = $db->query($query);
+	$pagename=$modulename[$module_name][0];
 	while($list= $db->fetch_array($result)){
     $filename=$navurl.$class_list[$list[class1]][foldername];
-	$filenamenow=($met_htmpagename==2)?$filename:($met_htmpagename?date('Ymd',strtotime($list[updatetime])):$modulename[$class1_info[module]][1]);
-    require 'infolist.php';
+	$filenamenow=($met_htmpagename==2)?$filename:($met_htmpagename?date('Ymd',strtotime($list[updatetime])):$modulename[$module_name][1]);
+    require 'searchlist.php';
 	}
 	$c_page_list = $rowset->link("search.php?class1=$class1&class2=$class2&class3=$class3&c_searchword=$searchword&searchtype=$searchtype&page=");		
     $e_page_list = $rowset->link("search.php?lang=en&class1=$class1&class2=$class2&class3=$class3&e_searchword=$searchword&searchtype=$searchtype&page=");	
     $o_page_list = $rowset->link("search.php?lang=other&class1=$class1&class2=$class2&class3=$class3&o_searchword=$searchword&searchtype=$searchtype&page=");
     $page_list=($lang=="en")?$e_page_list:(($lang=="other")?$o_page_list:$c_page_list);
+	$class1_info=$class1?$class_list[$class1]:"";
+	$class2_info=$class2?$class_list[$class2]:"";
+    $class3_info=$class3?$class_list[$class3]:"";
+    $class_info=intval($module)?$class_list[$search_column[id]]:($class3?$class3_info:($class2?$class2_info:$class1_info));
+	
 }
 
 
@@ -251,9 +296,7 @@ $search_list[0][e_url]=$index_url;
 //兼容1.5
 }
 
-$class2_info=$class2?$class_list[$class2]:"";
-$class3_info=$class3?$class_list[$class3]:"";
-$class_info=$class1_info=$class_list[$search_column[id]];
+
 
 	 $class_info[name]=($lang=="en")?$class_info[e_name]:(($lang=="other")?$class_info[o_name]:$class_info[c_name]);
      $show[description]=$class_info[description]?$class_info[description]:$met_keywords;
@@ -271,7 +314,7 @@ global $search_list,$met_img_x,$met_img_y,$lang_Detail;
    $methtml_searchlist.="<li><span class='search_title'><a href='".$val[url]."' target='_blank'>".$val[title]."</a></span>";
    if($content)$methtml_searchlist.="<span class='search_content'>".$val[content]."</span>";
    if($time)$methtml_searchlist.="<span class='search_updatetime'>".$val[updatetime]."</span>";
-   if($img)$methtml_searchlist.="<span class='search_detail'><a href='".$val[url]." target='_blank'>".$lang_Detail."</a></span>";
+   if($detail)$methtml_searchlist.="<span class='search_detail'><a href='".$val[url]."' target='_blank'>".$lang_Detail."</a></span>";
    }
    $methtml_searchlist.="</li>\n";
    $methtml_searchlist.="</ul>\n";

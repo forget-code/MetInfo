@@ -15,32 +15,32 @@ echo <<<EOT
             <td colspan="3" align="center" class="list1_title">{$lang_indexsetHomeSet}</td>
           </tr>
 		  <tr> 
-            <td class="list1_text"><b>{$lang_indexsetOnline}：</b></td>
-            <td class="list1_input"><input name="online_type" type="radio" value="1" $online_type1[1] >{$lang_indexsetOpen} <input name="online_type" type="radio" value="0" $online_type1[0]>{$lang_indexsetClose} </td></tr>
+            <td class="list1_text"><b>{$lang_indexsetOnline}</b></td>
+            <td class="list1_input"><input name="online_type" type="radio" value="1" $online_type1[1] >{$lang_open} <input name="online_type" type="radio" value="0" $online_type1[0]>{$lang_close} </td></tr>
 			 <tr> 
-            <td class="list1_text"><b>{$lang_indexsetArticle}：</b></td>
-            <td class="list1_input"><input name="news_no" type="text" size="4" value="$index[news_no]">{$lang_indexsetItem}</td></tr>
+            <td class="list1_text"><b>{$lang_mod2}{$lang_indexsetnum}</b></td>
+            <td class="list1_input"><input name="news_no" type="text" size="4" value="$index[news_no]">{$lang_item}</td></tr>
 			<tr> 
-            <td class="list1_text"><b>{$lang_indexsetProduct}：</b></td>
-            <td class="list1_input"><input name="product_no" type="text" size="4" value="$index[product_no]">{$lang_indexsetItem}</td></tr>
+            <td class="list1_text"><b>{$lang_mod3}{$lang_indexsetnum}</b></td>
+            <td class="list1_input"><input name="product_no" type="text" size="4" value="$index[product_no]">{$lang_item}</td></tr>
 			<tr> 
-            <td class="list1_text"><b>{$lang_indexsetImg}：</b></td>
-            <td class="list1_input"><input name="img_no" type="text" size="4" value="$index[img_no]">{$lang_indexsetItem}</td></tr>
+            <td class="list1_text"><b>{$lang_mod5}{$lang_indexsetnum}</b></td>
+            <td class="list1_input"><input name="img_no" type="text" size="4" value="$index[img_no]">{$lang_item}</td></tr>
 			<tr> 
-            <td class="list1_text"><b>{$lang_indexsetDownload}：</b></td>
-            <td class="list1_input"><input name="download_no" type="text" size="4" value="$index[download_no]">{$lang_indexsetItem}</td></tr>
+            <td class="list1_text"><b>{$lang_mod4}{$lang_indexsetnum}</b></td>
+            <td class="list1_input"><input name="download_no" type="text" size="4" value="$index[download_no]">{$lang_item}</td></tr>
 			<tr> 
-            <td class="list1_text"><b>{$lang_indexsetjob}：</b></td>
-            <td class="list1_input"><input name="job_no" type="text" size="4" value="$index[job_no]">{$lang_indexsetItem}</td></tr>
+            <td class="list1_text"><b>{$lang_mod6}{$lang_indexsetnum}</b></td>
+            <td class="list1_input"><input name="job_no" type="text" size="4" value="$index[job_no]">{$lang_item}</td></tr>
 			<tr> 
-            <td class="list1_text"><b>{$lang_indexsetFriendly}：</b></td>
-            <td class="list1_input"><input name="link_ok" type="radio" value="1" $link_ok1[1] >{$lang_indexsetOpen} <input name="link_ok" type="radio" value="0" $link_ok1[0]>{$lang_indexsetClose} </td></tr>
+            <td class="list1_text"><b>{$lang_indexsetFriendly}</b></td>
+            <td class="list1_input"><input name="link_ok" type="radio" value="1" $link_ok1[1] >{$lang_open} <input name="link_ok" type="radio" value="0" $link_ok1[0]>{$lang_close} </td></tr>
             <tr> 
-            <td class="list1_text"><b>{$lang_indexsetImgLink}：</b></td>
-            <td class="list1_input"><input name="link_img" type="text" size="4" value="$index[link_img]">{$lang_indexsetItem}</td></tr>
+            <td class="list1_text"><b>{$lang_indexsetImgLink}</b></td>
+            <td class="list1_input"><input name="link_img" type="text" size="4" value="$index[link_img]">{$lang_item}</td></tr>
 			<tr> 
-            <td class="list1_text"><b>{$lang_indexsetWordLink}：</b></td>
-            <td class="list1_input"><input name="link_text" type="text" size="4" value="$index[link_text]">{$lang_indexsetItem}</td>
+            <td class="list1_text"><b>{$lang_indexsetWordLink}</b></td>
+            <td class="list1_input"><input name="link_text" type="text" size="4" value="$index[link_text]">{$lang_item}</td>
 			</tr>
 <!--
 EOT;
@@ -48,7 +48,7 @@ if(count($indexpage)){
 echo <<<EOT
 -->
 			<tr> 
-            <td class="list1_text"><b>{$lang_indexsetskin}：</b></td>
+            <td class="list1_text"><b>{$lang_indexsetskin}</b></td>
             <td class="list1_input">
 			<ul class="indexskin">
 <!--

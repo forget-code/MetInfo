@@ -1,0 +1,31 @@
+<!--<?php
+require_once template('head'); 
+$met_img=methtml_showimg('all');
+$methits=methtml_hits('img');
+echo <<<EOT
+-->
+<div class="web">
+<!--
+EOT;
+require_once template('webleft'); 
+echo <<<EOT
+-->
+<h1>$img[title]</h1>
+  <div class="imgcontent">
+{$met_img}
+</div>
+<div class="pcontent">$img[content]</div>
+
+<div class="hits">$methits</div>
+
+</div>
+<div class="main_bottom_bgb"><div></div></div>
+</div>
+<div style="clear:both;"></div>
+
+
+</div>
+<!--
+EOT;
+require_once template('foot'); 
+?>

@@ -21,10 +21,10 @@ $no_order=$$no_order;
 if($use_ok==1&&$met_c_lang_ok==1&&$c_name==""){
 okinfo("javascript:history.go(-1)",$lang_modmark.'['.$met_c_lang.']');
 }
-if($use_ok==1&&$met_c_lang_ok!=1&&$met_e_lang_ok==1&&$e_mark==""){
+if($use_ok==1&&$met_c_lang_ok!=1&&$met_e_lang_ok==1&&$e_name==""){
 okinfo("javascript:history.go(-1)",$lang_modmark.'['.$met_e_lang.']');
 }
-if($use_ok==1&&$met_c_lang_ok!=1&&$met_e_lang_ok!=1&&$met_o_lang_ok==1&&$o_mark==""){
+if($use_ok==1&&$met_c_lang_ok!=1&&$met_e_lang_ok!=1&&$met_o_lang_ok==1&&$o_name==""){
 okinfo("javascript:history.go(-1)",$lang_modmark.'['.$met_o_lang.']');
 }
 $query = "update $met_fdparameter SET ";
@@ -38,6 +38,7 @@ $query=$query.  "
         where id='$i'";
 
 $db->query($query);
+$e_mark="";
 }
 onepagehtm('feedback','index');
 okinfo('parameter.php',$lang_loginUserAdmin);

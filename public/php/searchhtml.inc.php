@@ -4,34 +4,35 @@
 # Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
 
 //搜索条
-function methtml_search($type,$searchimg){
-global $searchurl,$lang_searchall,$nav_search,$lang_search,$lang,$img_url;
-switch($type){
-case 1:
-$methtml_search[1]="";
-$methtml_search[1].="<form method=\"POST\" name=\"myform1\" action=\"".$searchurl."\"  target=\"_self\">";
-$methtml_search[1].="<input type=\"hidden\" name=\"lang\" value='$lang'/>&nbsp;";
-$methtml_search[1].="<span class='navsearch_input'><input type=\"text\" name=\"searchword\" size='20'/></span>&nbsp;";
-$methtml_search[1].="<span class='navsearch_class'><select name=\"class1\">";
-$methtml_search[1].="<option value=''>".$lang_searchall."</option>";
+function methtml_search($classok=1,$searchtype=0,$classid=0,$module,$searchimg){
+global $searchurl,$lang_searchall,$nav_search,$lang_search,$lang,$img_url,$class_index;
+$metinfo="";
+$metinfo.="<form method=\"POST\" name=\"myform1\" action=\"".$searchurl."\"  target=\"_self\">";
+$metinfo.="<input type=\"hidden\" name=\"lang\" value='$lang'/>&nbsp;";
+$metinfo.="<input type=\"hidden\" name=\"searchtype\" value='$searchtype'/>&nbsp;";
+if($module)$metinfo.="<input type=\"hidden\" name=\"module\" value='$module'/>&nbsp;";
+if($classid)$metinfo.="<input type=\"hidden\" name='".$class_index[$classid][classtype]."' value='".$class_index[$classid][id]."'/>&nbsp;";
+$metinfo.="<span class='navsearch_input'><input type=\"text\" name=\"searchword\" size='20'/></span>&nbsp;";
+if($classok){
+$metinfo.="<span class='navsearch_class'><select name=\"class1\">";
+$metinfo.="<option value=''>".$lang_searchall."</option>";
 foreach($nav_search as $key=>$val){
-$methtml_search[1].="<option value='".$val[id]."'>".$val[name]."</option>";
+$metinfo.="<option value='".$val[id]."'>".$val[name]."</option>";
 }
-$methtml_search[1].="</select>&nbsp;";
+$metinfo.="</select>&nbsp;";
+}
 if($searchimg<>''){
-$methtml_search[1].="<input class='searchimage' type='image' src='".$img_url.$searchimg."' />";
+$metinfo.="<input class='searchimage' type='image' src='".$img_url.$searchimg."' />";
 }else{
-$methtml_search[1].="<input type='submit' name='Submit' value='".$lang_search."' class=\"searchgo\" />";
+$metinfo.="<input type='submit' name='Submit' value='".$lang_search."' class=\"searchgo\" />";
 }
-$methtml_search[1].="</form>";
-return $methtml_search[1];
-break;
-}
+$metinfo.="</form>";
+return $metinfo;
 }
 
 //产品及图片含参数搜索函数
-function methtml_parasearch($type,$para200,$paraselect,$paraimg,$classid=0,$class1=0,$class2=0,$class3=0,$searchtype){
-global $module_listall,$module_list1,$module_list2,$module_list3,$product_para200,$img_para200,$para_select,$class_index;
+function methtml_parasearch($type,$para200=100,$paraselect=100,$paraimg,$classid=0,$class1=0,$class2=0,$class3=0,$title=0,$content=0,$searchtype){
+global $module_listall,$module_list1,$module_list2,$module_list3,$product_para200,$img_para200,$para_select,$class_index,$lang_Title,$lang_Content;
 global $lang_AllBigclass,$navurl,$lang,$lang_AllThirdclass,$lang_AllSmallclass,$lang_search,$lang_Nolimit,$img_url;
   $module=($type=='img')?5:3;
   $type_para200=($type=='img')?$img_para200:$product_para200;
@@ -152,20 +153,22 @@ foreach($module_list1[$module] as $key=>$val){
   }
 }
 if(intval($classid))$metinfo.="<input type='hidden' name='".$class_index[$classid][classtype]."' value='".$class_index[$classid][id]."' />\n";
-if(intval($para200))
+if($title)$metinfo.="<li><span class='parasearch_title'>".$lang_Title."</span><span class='parasearch_input'><input type='text' name='title'  /></span></li>\n";
+if($content)$metinfo.="<li><span class='parasearch_title'>".$lang_Content."</span><span class='parasearch_input'><input type='text' name='content'  /></span></li>\n";
+if(intval($para200) or intval($paraselect)){
 $i=0;
 $j=0;
 foreach($type_para200 as $key=>$val){
 if($val[id]<=80){
   $i++;
-  if(intval($para200)&&$i>intval($para200)){
+  if((!intval($para200)) or $i>intval($para200)){
      next;
    }else{
    $metinfo.="<li><span class='parasearch_title'>".$val[mark]."</span><span class='parasearch_input'><input type='text' name='".$val[name]."'  /></span></li>\n";
     }
    }else{
      $j++;
-  if(intval($paraselect)&&$j>intval($paraselect)){
+  if((!intval($paraselect)) or $j>intval($paraselect)){
      next;
    }else{
   $metinfo.="<li><span class='parasearch_title'>".$val[mark]."</span><span class='parasearch_input'><select name='".$val[name]."'>\n";
@@ -175,7 +178,7 @@ foreach($para_select[$val[id]] as $key=>$val1){
 }
   $metinfo.="</select></span></li>\n";
   }
-}}
+}}}
   $metinfo.="<li><span class='parasearch_search'>";
 if($paraimg<>''){
   $metinfo.="<input class='searchimage' type='image' src='".$img_url.$paraimg."' />";
@@ -300,6 +303,7 @@ if($searchtype==""){
 }
     $metinfo.="<li><span class='advsearch_searchword'><input id='searchword' type='text' name='searchword' value='".$lang_Keywords."' maxlength='50' onmousedown='select1()'></span></li>\n"; 
     $metinfo.="<input type='hidden' name='lang' value='".$lang."' />\n";
+	if($module)$metinfo.="<input type=\"hidden\" name=\"module\" value='$module'/>&nbsp;";
 	if($classid){
 	switch($class_index[$classid][classtype]){
 	case 'class1':

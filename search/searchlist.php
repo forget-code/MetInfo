@@ -3,12 +3,12 @@
 # MetInfo企业网站管理系统 
 # Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn)). All rights reserved.
 	
-	 $list[c_title]=get_keyword_str($list[c_title],$searchword,50);
-	 $list[c_content]=get_keyword_str($list[c_content],$searchword,68);
-	 $list[e_title]=get_keyword_str($list[e_title],$searchword,50);
-	 $list[e_content]=get_keyword_str($list[e_content],$searchword,68);
-	 $list[o_title]=get_keyword_str($list[o_title],$searchword,50);
-	 $list[o_content]=get_keyword_str($list[o_content],$searchword,68);
+	 $list[c_title]=get_keyword_str(replaceHtmlAndJs($list[c_title]),$searchword,50);
+	 $list[c_content]=get_keyword_str(replaceHtmlAndJs($list[c_content]),$searchword,68);
+	 $list[e_title]=get_keyword_str(replaceHtmlAndJs($list[e_title]),$searchword,50);
+	 $list[e_content]=get_keyword_str(replaceHtmlAndJs($list[e_content]),$searchword,68);
+	 $list[o_title]=get_keyword_str(replaceHtmlAndJs($list[o_title]),$searchword,50);
+	 $list[o_content]=get_keyword_str(replaceHtmlAndJs($list[o_content]),$searchword,68);
 	 
 	$list[title]=($lang=="en")?$list[e_title]:(($lang=="other")?$list[o_title]:$list[c_title]);
 	$list[content]=($lang=="en")?$list[e_content]:(($lang=="other")?$list[o_content]:$list[c_content]);

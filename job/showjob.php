@@ -70,6 +70,7 @@ require_once '../include/head.php';
 	$list[e_url]=$met_webhtm?$htmname.$met_e_htmtype:$phpname."&lang=en";
 	$list[o_url]=$met_webhtm?$htmname.$met_o_htmtype:$phpname."&lang=other";
 	$list[url]=($lang=="en")?$list[e_url]:(($lang=="other")?$list[o_url]:$list[c_url]);
+	$list[title]=$list[position];
 	if($prejob[id]==$list[id])$preinfo=$list;  
 	if($nextjob[id]==$list[id])$nextinfo=$list;
 	 if($met_submit_type==1){

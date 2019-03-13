@@ -28,6 +28,7 @@ if($i>=$met_sitemap_max)break;
 }
 }else{
 foreach($nav_list_1 as $key=>$val){
+if($val[nav]){
 echo <<<EOT
 -->
 <div class="sitemapclass">
@@ -58,7 +59,7 @@ echo <<<EOT
 </div>
 <!--
 EOT;
-}}
+}}}
 echo <<<EOT
 -->
 

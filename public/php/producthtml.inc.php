@@ -56,7 +56,8 @@ if($listtype=='img'){
  if($metproductok){
  $listtext.=" ".$val[new_windows]."><img src=".$val[columnimg]." alt=".$val[name]." width=".$met_img_x." height=".$met_img_y." /></a></span>";
  $listtext.="<span class='info_title' ><a title='".$val[name]."' href=".$val[url]." ".$val[new_windows]." >".$val[name]."</a></span>";
- $listtext.="<span class='info_description' class='info_para' ><a title='".$val[name]."' href=".$val[url]." ".$val[new_windows]." >".$val[description]."</a></span>";
+ 
+ if($paranum)$listtext.="<span class='info_description' ><a title='".$val[name]."' href=".$val[url]." ".$val[new_windows]." >".$val[description]."</a></span>";
  if($detail==1)$listtext.="<span class='info_detail' ><a href=".$val[url]." ".$val[new_windows]." >".$lang_Detail."</a></span>";
  if($feedback==1)$listtext.="<span class='info_feedback'><a href='".$addfeedback_url1."' >".$lang_Buy."</a></span>";
  }else{

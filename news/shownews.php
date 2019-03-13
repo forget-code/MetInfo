@@ -33,12 +33,13 @@ require_once '../include/head.php';
 
     $prenews=$db->get_one("select * from $met_news where class1=$class1 and class2=$class2 and class3=$class3 and (id > $id) limit 0,1");
     $nextnews=$db->get_one("select * from $met_news where class1=$class1 and class2=$class2 and class3=$class3 and (id < $id) order by id desc limit 0,1");
+if($dataoptimize[2][otherlist]){	
 	$serch_sql=" where class1=$class1 ";
 	if($class2)$serch_sql .= " and class2=$class2";
 	if($class3)$serch_sql .= " and class3=$class3"; 
 	$serch_sql .=($lang=="en")?" and e_title<>'' ":(($lang=="other")?" and o_title<>'' ":" and c_title<>'' ");
 	$order_sql=$class3?list_order($class3_info[list_order]):($class2?list_order($class2_info[list_order]):list_order($class1_info[list_order]));
-    $query = "SELECT * FROM $met_news $serch_sql $order_sql";
+    $query = "SELECT * FROM $met_news $serch_sql $order_sql LIMIT 0, $met_news_list";
     $result = $db->query($query);
 	while($list= $db->fetch_array($result)){
     $list[class1_name]=$class_list[$list[class1]][name];
@@ -78,6 +79,17 @@ require_once '../include/head.php';
 	$list[url]=($lang=="en")?$list[e_url]:(($lang=="other")?$list[o_url]:$list[c_url]);
 	if($prenews[id]==$list[id])$preinfo=$list;  
 	if($nextnews[id]==$list[id])$nextinfo=$list;
+if($met_member_use==2){
+   if($list[class3]!=0&&$class3_list[$list[class3]][name]==""){
+   $nowaccess=100;
+   }elseif($list[class2]!=0&&$class2_list[$list[class2]][name]==""){
+   $nowaccess=101;
+   }elseif($list[class1]!=0&&$class1_list[$list[class1]][name]==""){
+   $nowaccess=102;
+   }else{
+   $nowaccess=max(intval($list[access]),intval($class3_list[$list[class3]][access]),intval($class2_list[$list[class2]][access]),intval($class1_list[$list[class1]][access]));
+   }
+ if(intval($metinfo_member_type)>=intval($nowaccess)){ 
 	if($list[img_ok] == 1){
 	$news_list_new[]=$list;
     if($list[class1]!=0)$news_class_new[$list[class1]][]=$list;
@@ -95,6 +107,26 @@ require_once '../include/head.php';
 	if($list[class3]!=0)$news_class[$list[class3]][]=$list;
     $news_list[]=$list;
     }
+   }else{
+	if($list[img_ok] == 1){
+	$news_list_new[]=$list;
+    if($list[class1]!=0)$news_class_new[$list[class1]][]=$list;
+	if($list[class2]!=0)$news_class_new[$list[class2]][]=$list;
+	if($list[class3]!=0)$news_class_new[$list[class3]][]=$list;
+	}
+	if($list[com_ok] == 1){
+	$news_list_com[]=$list;
+	if($list[class1]!=0)$news_class_com[$list[class1]][]=$list;
+	if($list[class2]!=0)$news_class_com[$list[class2]][]=$list;
+	if($list[class3]!=0)$news_class_com[$list[class3]][]=$list;
+	}
+	if($list[class1]!=0)$news_class[$list[class1]][]=$list;
+	if($list[class2]!=0)$news_class[$list[class2]][]=$list;
+	if($list[class3]!=0)$news_class[$list[class3]][]=$list;
+    $news_list[]=$list;
+}	
+}
+}
     $news_class_img=$news_class_new;
 	$news_list_img=$news_list_new;
 	

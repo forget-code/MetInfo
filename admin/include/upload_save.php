@@ -115,6 +115,24 @@ echo "'; </script>";
 if($_FILES['imgurl']['name']!=''&&$flash=="flash") { 
             $f->savepath = $f->savepath;
             $imgurls = $f->upload('imgurl');
+     if($met_big_wate && $met_arrayimg){
+            if($met_wate_class==2){
+                $img->met_image_name = $met_wate_img;//水印图片
+                $img->met_image_pos  = $met_watermark;
+            }else {
+                $img->met_text       = $met_text_wate;
+                $img->met_text_size  = $met_text_size;
+                $img->met_text_color = $met_text_color;
+                $img->met_text_angle = $met_text_angle;
+                $img->met_text_pos   = $met_watermark;
+                $img->met_text_font  = $met_text_fonts;
+            }
+            $img->src_image_name ="../".$imgurls;
+            $img->save_file = $f->waterpath.$f->savename;
+            $img->create();
+			$imgurls ="../upload/".date('Ym')."/watermark/".$f->savename;
+
+        }					
 echo "<SCRIPT language=javascript>\n";
 echo "parent.document.myform.".$returnid.".value='".$imgurls."';\n";
 echo "alert('$lang_upfileSuccess";

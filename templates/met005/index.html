@@ -1,0 +1,206 @@
+<!--<?php
+require_once template('head');
+$title1=$class_index[1][name]; 
+$title2=$class_index[2][name]; 
+$title3=$class_index[3][name];
+$title4=$class_index[4][name]; 
+$title5=$class_index[5][name]; 
+$more1=$class_index[1][url]; 
+$more2=$class_index[2][url]; 
+$more3=$class_index[3][url]; 
+$more4=$class_index[4][url]; 
+$more5=$class_index[5][url]; 
+$metlinkimg=methtm_link('img','com');
+$metlinktext=methtm_link('text','com');
+echo <<<EOT
+-->
+<div class="main"> 
+	  <div class="main_top">
+	     {$methtml_flash}
+		 <div class="main_top_right">
+		   <div class="title"><span>{$lang_Column}</span></div>
+		   <div class="main_content">
+		     $index[content]
+		   </div>
+		 </div>
+		 <div style="clear:both;"></div>
+	  </div>
+	  <div class="main_center">
+	      <div class="cdiv1 md">
+		       <div class="title">
+			     <div><a href="$more1">{$lang_Column1}&gt;&gt;</a></div><span>{$title1}</span>
+			   </div>
+			   <div class="main_content">
+<ul class="index_newslist" id="heigh1">				   
+<!--
+EOT;
+$i=0;
+foreach(methtml_getarray('1','com','time','') as $key=>$val){
+$i++;
+echo <<<EOT
+-->
+<li><span>$val[top] $val[news] $val[hot] {$val[updatetime]}</span><a href="$val[url]" target="_blank" title="$val[title]">$val[title]</a></li>
+<!--
+EOT;
+if($i>=$index[news_no])break;
+}
+echo <<<EOT
+-->
+</ul>
+			   </div>
+			   <div class="b"><div></div></div>
+		  </div>
+		  <div class="cdiv2 md">
+		       <div class="title">
+			   <div><a href="$more2">{$lang_Column1}&gt;&gt;</a></div><span>{$title2}</span> 
+			   </div>
+			   <div class="main_content">
+<ul class="index_newslist" id="heigh2">				   
+<!--
+EOT;
+$i=0;
+foreach(methtml_getarray('2','com','time','') as $key=>$val){
+$i++;
+echo <<<EOT
+-->
+<li><span>$val[top] $val[news] $val[hot] {$val[updatetime]}</span><a href="$val[url]" target="_blank" title="$val[title]">$val[title]</a></li>
+<!--
+EOT;
+if($i>=$index[news_no])break;
+}
+echo <<<EOT
+-->
+</ul>
+			   </div>
+			   <div class="b"><div></div></div>
+		  </div>
+		  <div class="cdiv3 md">
+		       <div class="title">
+			   <div><a href="$more3">{$lang_Column1}&gt;&gt;</a></div><span>{$title3}</span> 
+			   </div>
+			   <div class="main_content">
+<ul class="index_newslist" id="heigh3">				   
+<!--
+EOT;
+$i=0;
+foreach(methtml_getarray('3','com','time','') as $key=>$val){
+$i++;
+echo <<<EOT
+-->
+<li><span>$val[top] $val[news] $val[hot] {$val[updatetime]}</span><a href="$val[url]" target="_blank" title="$val[title]">$val[title]</a></li>
+<!--
+EOT;
+if($i>=$index[news_no])break;
+}
+echo <<<EOT
+-->
+</ul>
+			   </div>
+			   <div class="b"><div></div></div>
+		  </div>
+		  <div style="clear:both;"></div>
+	  </div>
+<!--
+EOT;
+if($otherinfo[imgurl1] !=''){
+echo <<<EOT
+-->
+		   <div class="main_obj">
+<img src="$otherinfo[imgurl1]" alt=""/>
+           </div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+           <div class="main_bottom">
+       		  <div class="bleft md">
+		       <div class="title">
+			   <div><a href="$more4">{$lang_Column1}&gt;&gt;</a></div><span>{$title4}</span> 
+			   </div>
+			   <div class="main_content">
+<ul class="index_newslist" id="heigh4">				   
+<!--
+EOT;
+$i=0;
+foreach(methtml_getarray('4','com','time','') as $key=>$val){
+$i++;
+echo <<<EOT
+-->
+<li><a href="$val[url]" target="_blank" title="$val[title]">$val[title]</a></li>
+<!--
+EOT;
+if($i>=$index[news_no])break;
+}
+echo <<<EOT
+-->
+</ul>
+			   </div>
+			   <div class="b"><div></div></div>
+		       </div>
+			   <div class="bright md">
+			        <div class="title">
+			        <div><a href="$more5">{$lang_Column1}&gt;&gt;</a></div><span>{$title5}</span> 
+			        </div>
+					<div class="main_content">
+					<style>
+					 .main_bottom div.md ul.index_case li{ width:{$lang_imgwidth}px;}
+					</style>
+<ul class="index_case" id="heigh5">				   
+<!--
+EOT;
+$i=0;
+foreach(methtml_getarray('5','com','time','') as $key=>$val){
+$i++;
+echo <<<EOT
+-->
+<li><a href="$val[url]" target="_blank" title="$val[title]"><img src="$val[imgurls]" width="{$lang_imgwidth}" height="{$lang_imgheight}" /></a><span><a href="$val[url]" target="_blank" title="$val[title]">$val[title]</a></span></li>
+<!--
+EOT;
+if($i>=$index[news_no])break;
+}
+echo <<<EOT
+-->
+<div style="clear:both;"></div>
+</ul>
+			        </div>
+			        <div class="b"><div></div></div>
+			   </div>
+		  </div>
+		  <div class="indexlinks">
+		     <div class="linkcontent">
+		         <div class="linkimg">$metlinkimg</div>
+		         <div class="linktext">$metlinktext</div>
+			 </div>
+		  </div>
+</div>
+<script>
+  var h1= document.getElementById('heigh1');
+  var h2= document.getElementById('heigh2');
+  var h3= document.getElementById('heigh3');	 
+   if(h1.scrollHeight > h2.scrollHeight && h1.scrollHeight > h3.scrollHeight){
+		        h2.style.height = h1.scrollHeight + "px";
+				h3.style.height = h1.scrollHeight + "px";	 	
+		}
+		else if( h2.scrollHeight > h1.scrollHeight && h2.scrollHeight > h3.scrollHeight){
+		        h1.style.height = h2.scrollHeight + "px";
+				h3.style.height = h2.scrollHeight + "px";	   
+		}
+		else if( h3.scrollHeight > h1.scrollHeight && h3.scrollHeight > h2.scrollHeight){
+		        h1.style.height = h3.scrollHeight + "px";
+				h2.style.height = h3.scrollHeight + "px";	  
+		}
+  var h4= document.getElementById('heigh4');
+  var h5= document.getElementById('heigh5');
+	if( h4.scrollHeight > h5.scrollHeight ){
+	       h5.style.height = h4.scrollHeight + "px";
+	}
+	else{
+	       h4.style.height = h5.scrollHeight + "px";
+	}
+</script>
+$met_online
+<!--
+EOT;
+require_once template('foot'); 
+?>

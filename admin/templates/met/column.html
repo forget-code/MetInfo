@@ -13,19 +13,19 @@ echo <<<EOT
             <td colspan="9" align="center" class="list1_title">{$lang_columnTitle}</td>
           </tr>
           <tr>
-            <td class="list1_text_title" colspan="6" align="left">&nbsp;&nbsp;<a href="add.php">{$lang_columnAddOne}</a></td>
-			<td colspan="5"><img src="$img_url/1.gif" />&nbsp;{$lang_columnOne}&nbsp;<img src="$img_url/2.gif" />&nbsp;{$lang_columnTwo}&nbsp;<img src="$img_url/3.gif" />&nbsp;{$lang_columnThree}</td>
+            <td class="list1_text_title" colspan="6" align="left">&nbsp;&nbsp;<a href="add.php">{$lang_add}{$lang_modClass1}</a></td>
+			<td colspan="5"><img src="$img_url/1.gif" />&nbsp;{$lang_modClass1}&nbsp;<img src="$img_url/2.gif" />&nbsp;{$lang_modClass2}&nbsp;<img src="$img_url/3.gif" />&nbsp;{$lang_modClass3}</td>
           </tr>
               <tr> 
-				<td width="4%" class="list1_lm" align="center">{$lang_columnSelect}</td>
+				<td width="4%" class="list1_lm" align="center">{$lang_selected}</td>
 			    <td width="3%" align="center" class="list1_lm">ID</td>
-                <td width="23%" align="center" class="list1_lm">{$lang_columnName}</td>
-                <td width="11%" align="center" class="list1_lm">{$lang_columnNav}</td>
-                <td width="7%" align="center" class="list1_lm">{$lang_columnModule}</td>
-				<td width="9%" align="center" class="list1_lm">{$lang_columnDocument}</td>
-				<td width="4%" align="center" class="list1_lm">{$lang_columnMark}</td>
-				<td width="7%"  class="list1_lm" align="center" >{$lang_columnAccess}</td>				
-				<td width="22%" align="center" class="list1_lm">{$lang_columnOperate}</td>
+                <td width="23%" align="center" class="list1_lm">{$lang_columnname}[{$lang_ordernum}]</td>
+                <td width="11%" align="center" class="list1_lm">{$lang_columnnav}</td>
+                <td width="7%" align="center" class="list1_lm">{$lang_columnmodule}</td>
+				<td width="9%" align="center" class="list1_lm">{$lang_columndocument}</td>
+				<td width="4%" align="center" class="list1_lm">{$lang_columnmark1}</td>
+				<td width="7%"  class="list1_lm" align="center" >{$lang_access}</td>				
+				<td width="22%" align="center" class="list1_lm">{$lang_operate}</td>
               </tr>
 			   <form name="del" method="Post" action="delete.php" onSubmit="return ConfirmDelall();">
 <!--
@@ -50,21 +50,21 @@ EOT;
 if($val[module1]>5){			
 echo <<<EOT
 -->  						
-				<td align="center" class="list1_lm1" style="color:#000000;"><a href="editor.php?id=$val[id]" >{$lang_columnEdit}</a></td>
+				<td align="center" class="list1_lm1" style="color:#000000;"><a href="editor.php?id=$val[id]" >{$lang_editor}</a></td>
               </tr>
 <!--
 EOT;
 }else if($val[module1]==0){			
 echo <<<EOT
 -->  						
-				<td align="center" class="list1_lm1" style="color:#000000;"><a href="editor.php?id=$val[id]" >{$lang_columnEdit}</a> | <a href="delete.php?id=$val[id]" onClick="return ConfirmDel();" >{$lang_columnDelete}</a></td>
+				<td align="center" class="list1_lm1" style="color:#000000;"><a href="editor.php?id=$val[id]" >{$lang_editor}</a> | <a href="delete.php?id=$val[id]" onClick="return ConfirmDel();" >{$lang_delete}</a></td>
               </tr>
 <!--
 EOT;
 }else{			
 echo <<<EOT
 -->  						
-				<td align="center" class="list1_lm1" style="color:#000000;"><span class="list2"><a href="add.php?class1=$val[id]">{$lang_columnAddTwo}</a></span>| <a href="editor.php?id=$val[id]" >{$lang_columnEdit}</a> | <a href="delete.php?id=$val[id]" onClick="return ConfirmDel();" >{$lang_columnDelete}</a></td>
+				<td align="center" class="list1_lm1" style="color:#000000;"><span class="list2"><a href="add.php?class1=$val[id]">{$lang_add}{$lang_modClass2}</a></span>| <a href="editor.php?id=$val[id]" >{$lang_editor}</a> | <a href="delete.php?id=$val[id]" onClick="return ConfirmDel();" >{$lang_delete}</a></td>
               </tr>			  
 			  
 <!--
@@ -85,7 +85,7 @@ echo <<<EOT
 				<td class="list1_lm2" align="center" >$val2[foldername] </td>
 				<td class="list1_lm2" align="center"  >$val2[index_num]</td>
 				<td class="list1_lm2" align="center"  >$val2[access]</td>				
-				<td align="center" class="list1_lm2" style="color:#000000;"><span class="list8"><a href="add.php?class2=$val2[id]">{$lang_columnAddThree}</a></span>|<a href="editor.php?id=$val2[id]" >{$lang_columnEdit}</a>|<a href="delete.php?id=$val2[id]" onClick="return ConfirmDel();" >{$lang_columnDelete}</a></td>
+				<td align="center" class="list1_lm2" style="color:#000000;"><span class="list8"><a href="add.php?class2=$val2[id]">{$lang_add}{$lang_modClass3}</a></span>|<a href="editor.php?id=$val2[id]" >{$lang_editor}</a>|<a href="delete.php?id=$val2[id]" onClick="return ConfirmDel();" >{$lang_delete}</a></td>
               </tr>
 <!--
 EOT;
@@ -104,7 +104,7 @@ echo <<<EOT
 				<td class="list1_lm3" align="center" >$val3[foldername] </td>
 				<td class="list1_lm3" align="center"  >$val3[index_num]</td>
 				<td class="list1_lm3" align="center"  >$val3[access]</td>				
-				<td align="center" class="list1_lm3" style="color:#000000;"> <a href="editor.php?id=$val3[id]" >{$lang_columnEdit}</a> | <a href="delete.php?id=$val3[id]" onClick="return ConfirmDel();" >{$lang_columnDelete}</a></td>
+				<td align="center" class="list1_lm3" style="color:#000000;"> <a href="editor.php?id=$val3[id]" >{$lang_editor}</a> | <a href="delete.php?id=$val3[id]" onClick="return ConfirmDel();" >{$lang_delete}</a></td>
               </tr>
 
 <!--
@@ -116,8 +116,8 @@ echo <<<EOT
    	   <tr> 
             <td class="input_bottom" align="center">
 			<input name="chkAll" class="xz" type="checkbox" id="chkAll" onclick=CheckAll(this.form) value="checkbox"></td>
-			<td class="input_bottom" align="left">{$lang_columnSelectAll}</td>
-			<td colspan="9" class="input_bottom"><input name="submit" type='submit' value='{$lang_columnDeleteSelected}' style="*padding-top:2px; *height:22px;"> 
+			<td class="input_bottom" align="left">{$lang_selectall}</td>
+			<td colspan="9" class="input_bottom"><input name="submit" type='submit' value='{$lang_deleteselected}' style="*padding-top:2px; *height:22px;"> 
               <input name="action" type="hidden" id="action" value="del">
 			  <input name="allid" type="hidden" id="allid" value=""></form></td>
           </tr>

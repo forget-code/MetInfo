@@ -5,42 +5,42 @@
 require_once template('head');
 echo <<<EOT
 -->
-<title>{$lang_jobTitle}</title>
+<title>{$lang_mod6}{$lang_manager}</title>
 </head>
 <body>
 <table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
           <tr> 
-            <td colspan="10" align="center" class="list1_title">$class1_info[name]{$lang_jobManage}</td>
+            <td colspan="10" align="center" class="list1_title">$class1_info[name]{$lang_manager}</td>
           </tr>  
 			<tr align="right">
 			<form method="POST" name="filterform"  action="index.php?search=detail_search" target="_self">
 			<input name="class1" type="hidden" size="30" value="$class1">
 			<td colspan="10">				
-				<b>{$lang_jobTop}{$lang_jobTitle}:</b>	
+				<b>{$lang_top}{$lang_mod6}</b>	
 				<select name="top" id="top" onChange="autosubmit()">
-					<option value="all" $top0>{$lang_jobAll}</option>
+					<option value="all" $top0>{$lang_selectnow}</option>
 					<option value="1" $top1>{$lang_YES}</option>
 					<option value="0" $top2>{$lang_NO}</option>
 				</select>
-				<b>{$lang_jobLang}:</b>
+				<b>{$lang_langbelong}</b>
 				<select name="langtype" id="langtype" onChange="autosubmit()">
-					<option value="all" $langtype0>{$lang_jobLang}</option>
+					<option value="all" $langtype0>{$lang_selectnow}</option>
 					$selectlang
 				</select>
 			</td>	
 			</form>
 		</tr>
               <tr>
-                <td width="5%" class="list1_top" align="center">{$lang_jobSelect}</td>
+                <td width="5%" class="list1_top" align="center">{$lang_selected}</td>
 				<td width="5%" class="list1_top" align="center">ID</td>
-                <td width="10%" class="list1_top" align="center">{$lang_jobPosition}</td>
-                <td width="4%" class="list1_top" align="center" >{$lang_jobNum}</td>
-				<td width="15%" class="list1_top" align="center" >{$lang_jobAddress}</td>
-                <td width="8%" class="list1_top" align="center" >{$lang_jobLife}</td>
-				<td width="4%"  class="list1_top" align="center" >{$lang_jobTop}</td>
-                <td width="13%" class="list1_top" align="center" >{$lang_jobPublish}</td>
-				<td width="14%"  class="list1_top" align="center" >{$lang_jobAccess}</td>
-				<td width="18%" class="list1_top" align="center" >{$lang_jobOperate}</td>
+                <td width="10%" class="list1_top" align="center">{$lang_jobposition}</td>
+                <td width="4%" class="list1_top" align="center" >{$lang_jobnum}</td>
+				<td width="15%" class="list1_top" align="center" >{$lang_jobaddress}</td>
+                <td width="8%" class="list1_top" align="center" >{$lang_joblife}</td>
+				<td width="4%"  class="list1_top" align="center" >{$lang_top}</td>
+                <td width="13%" class="list1_top" align="center" >{$lang_jobpublish}</td>
+				<td width="14%"  class="list1_top" align="center" >{$lang_webaccess}</td>
+				<td width="18%" class="list1_top" align="center" >{$lang_operate}</td>
               </tr>
 			  <form name="del" method="Post" action="delete.php?class1=$class1" onSubmit="return ConfirmDelall();">
 <!--
@@ -62,14 +62,14 @@ echo <<<EOT
               <tr>
               <td align="center"class="list1_content_titile"><input name='id' type='checkbox' onClick="unselectall()" id="id" value='$val[id]' class="xz"></td>
                 <td  align="center" class="list1_content">$val[id]</td>
-			    <td align="left" class="list1_content"><a href="../../job/showjob.php?lang=$urllang&id=$val[id]" title="{$lang_jobDetail}" target="_blank">$val[position]</a></td>
+			    <td align="left" class="list1_content"><a href="../../job/showjob.php?lang=$urllang&id=$val[id]" title="{$lang_preview}" target="_blank">$val[position]</a></td>
                 <td class="list1_content" align="center">$val[count]</td>
 				<td   class="list1_content" align="center">$val[place]</td>
                 <td   class="list1_content" align="center">$val[useful_life]</td>
 				<td   class="list1_content" align="center"><a href="changeState.php?top_ok=$val[top_ok]&id=$val[id]&class1=$class1" onClick="return ConfirmChange();">$val[top_ok1]</a></td>
                 <td   class="list1_content" align="center">$val[addtime]</td>
 				<td   class="list1_content" align="center">$val[access]</td>
-				<td align="center"  class="list1_content" style="color:#0066FF;"></a> <a href="editor.php?id=$val[id]&class1=$class1" >{$lang_jobEdit}</a> | <a href="cv.php?search=detail_search&jobid=$val[id]" >{$lang_jobCV}</a> | <a href="delete.php?id=$val[id]&class1=$class1" onClick="return ConfirmDel();" >{$lang_jobDelete}</a></td>
+				<td align="center"  class="list1_content" style="color:#0066FF;"></a> <a href="editor.php?id=$val[id]&class1=$class1" >{$lang_editor}</a> | <a href="cv.php?search=detail_search&jobid=$val[id]" >{$lang_jobCV}</a> | <a href="delete.php?id=$val[id]&class1=$class1" onClick="return ConfirmDel();" >{$lang_delete}</a></td>
               </tr>
 <!--
 EOT;
@@ -79,17 +79,17 @@ echo <<<EOT
 
    	   <tr> 
             <td class="input_bottom" align="center"><input name="chkAll" class="xz" type="checkbox" id="chkAll" onclick=CheckAll(this.form) value="checkbox"></td>
-             <td class="input_bottom" align="center">{$lang_jobSelectAll}</td>
-              <td class="input_bottom" align="left" colspan="10"><input name="submit" type='submit' value='{$lang_jobDelSelected}'><input name="action" type="hidden" id="action" value="del"><input name="allid" type="hidden" id="allid" value=""></form></td>
+             <td class="input_bottom" align="center">{$lang_selectall}</td>
+              <td class="input_bottom" align="left" colspan="10"><input name="submit" type='submit' value='{$lang_deleteselected}'><input name="action" type="hidden" id="action" value="del"><input name="allid" type="hidden" id="allid" value=""></form></td>
           </tr>
 		  <tr>
             <td align="left" colspan="10"  class="input_search">
 			<form method="POST" name="search"  action="index.php?search=detail_search" target="_self">
-			       <span><b>{$lang_jobSearch}：</b></span> 
+			       <span><b>{$lang_mod6}{$lang_search}</b></span> 
 				  <input name="class1" type="hidden" size="30" value="$class1">
 			    <input name="position" type="text" size="30">
-  <input type="submit" name="Submit2" value="{$lang_jobDo}" class="tj">  
-	        {$lang_jobTip1}</form></td>
+  <input type="submit" name="Submit2" value="{$lang_search}" class="tj">  
+	        {$lang_modsearch}</form></td>
           </tr>
    	   <tr>
    	     <td height="0" align="center" colspan="10" class="list1_input">$page_list</td>

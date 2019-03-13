@@ -63,10 +63,10 @@ require_once '../login/login_check.php';
 	while($list = $db->fetch_array($result)){
 	switch($list['access'])
     {
-    	case '1':$list['access']=$lang_articleAccess1;break;
-    	case '2':$list['access']=$lang_articleAccess2;break;
-    	case '3':$list['access']=$lang_articleAccess3;break;
-		default:$list['access']=$lang_articleAccess0;break;
+    	case '1':$list['access']=$lang_access1;break;
+    	case '2':$list['access']=$lang_access2;break;
+    	case '3':$list['access']=$lang_access3;break;
+		default:$list['access']=$lang_access0;break;
 	}
 	$list[img_ok1] = $list[img_ok] ? $lang_YES : $lang_NO;
 	$list[com_ok1] = $list[com_ok] ? $lang_YES : $lang_NO;
@@ -74,7 +74,7 @@ require_once '../login/login_check.php';
 	$list[updatetime] = date('Y-m-d',strtotime($list[updatetime]));
     $news_list[]=$list;
     }
-$page_list = $rowset->link("index.php?class1=$class1&class2=$class2&class3=$class3&search=$search&c_title=$c_title&page=");
+$page_list = $rowset->link("index.php?class1=$class1&class2=$class2&class3=$class3&search=$search&title=$title&page=");
 switch($img)
 {
 	case '1':$img1="selected='selected'";break;

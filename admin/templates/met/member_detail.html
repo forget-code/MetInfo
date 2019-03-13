@@ -14,28 +14,28 @@ echo <<<EOT
             <td colspan="3" align="center" class="list1_title">{$lang_memberdetailTitle}</td>
           </tr>
           <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font>{$lang_memberdetailUserName}：</td>
+            <td class="list1_text"><font color="#FF0000">*</font>{$lang_memberUserName}</td>
             <td colspan="2" class="list1_input"> $admin_list[admin_id]</td>
           </tr>  
 		  <tr> 
-            <td class="list1_text">{$lang_memberdetailReadlName}：</td>
+            <td class="list1_text">{$lang_memberName}</td>
             <td colspan="2" class="list1_input">$admin_list[admin_name]</td>
           </tr> 
 		  <tr> 
-            <td class="list1_text">{$lang_memberdetailSex}：</td>
+            <td class="list1_text">{$lang_memberSex}</td>
             <td colspan="2" class="list1_input">
 <!--
 EOT;
 if($admin_list[admin_sex]==0){
 echo <<<EOT
 -->	
-{$lang_memberdetailMan} 
+{$lang_memberMan} 
 <!--
 EOT;
 }else{
 echo <<<EOT
 -->	
-{$lang_memberdetailWoman}
+{$lang_memberWoman}
 <!--
 EOT;
 }echo <<<EOT
@@ -43,85 +43,85 @@ EOT;
 			</td>
           </tr> 
 		  <tr> 
-            <td class="list1_text">{$lang_memberdetailTel}：</td>
+            <td class="list1_text">{$lang_memberTel}</td>
             <td colspan="2" class="list1_input"> $admin_list[admin_tel]</td>
           </tr> 
 		  <tr> 
-            <td class="list1_text">{$lang_memberdetailCell}：</td>
+            <td class="list1_text">{$lang_memberCell}</td>
             <td colspan="2" class="list1_input">$admin_list[admin_mobile]</td>
           </tr> 
 		  <tr> 
-            <td class="list1_text">email：</td>
+            <td class="list1_text">email</td>
             <td colspan="2" class="list1_input">$admin_list[admin_email]</td>
           </tr> 
 		  <tr> 
-            <td class="list1_text">QQ：</td>
+            <td class="list1_text">QQ</td>
             <td colspan="2" class="list1_input">$admin_list[admin_qq]</td>
           </tr> 
 		  <tr> 
-            <td class="list1_text">MSN：</td>
+            <td class="list1_text">MSN</td>
             <td colspan="2" class="list1_input">$admin_list[admin_msn]</td>
           </tr> 
 		  <tr> 
-            <td class="list1_text">{$lang_memberdetailTaoBao}：</td>
+            <td class="list1_text">{$lang_memberTaoBao}</td>
             <td colspan="2" class="list1_input">$admin_list[admin_taobao]</td>
           </tr> 
 		  <tr> 
-            <td class="list1_text">{$lang_memberdetailLoginNum}：</td>
+            <td class="list1_text">{$lang_memberLoginNum}</td>
             <td colspan="2" class="list1_input">$admin_list[admin_login]</td>
           </tr> 
 		  <tr> 
-            <td class="list1_text">{$lang_memberdetailLastLogin}：</td>
+            <td class="list1_text">{$lang_memberLastLogin}</td>
             <td colspan="2" class="list1_input">$admin_list[admin_modify_date]</td>
           </tr> 
 		  <tr> 
-            <td class="list1_text">{$lang_memberdetailLastIP}：</td>
+            <td class="list1_text">{$lang_memberLastIP}</td>
             <td colspan="2" class="list1_input">$admin_list[admin_modify_ip]</td>
           </tr> 
 		  <tr> 
-            <td class="list1_text">{$lang_memberdetailRegisterTime}：</td>
+            <td class="list1_text">{$lang_memberRegisterTime}</td>
             <td colspan="2" class="list1_input">$admin_list[admin_register_date]</td>
           </tr>
           <tr> 
-          <td class="list1_text" valign="middle">{$lang_memberdetailIntro}:</td>
+          <td class="list1_text" valign="middle">{$lang_memberIntro}</td>
           <td colspan="2" class="list1_input" valign="top"> $admin_list[admin_introduction]</td>
           </tr>
-		  <td class="list1_text" valign="middle">{$lang_memberdetailCompanyName}:</td>
+		  <td class="list1_text" valign="middle">{$lang_memberCompanyName}</td>
           <td colspan="2" class="list1_input" valign="top"> $admin_list[companyname] </td>
           </tr>
 		  <tr> 
-          <td class="list1_text" valign="middle">{$lang_memberdetailCompanyFax}:</td>
+          <td class="list1_text" valign="middle">{$lang_memberCompanyFax}</td>
           <td colspan="2" class="list1_input" valign="top"> $admin_list[companyfax] </td>
           </tr>
 		  <tr> 
-          <td class="list1_text" valign="middle">{$lang_memberdetailCompanyCode}:</td>
+          <td class="list1_text" valign="middle">{$lang_memberCompanyCode}</td>
           <td colspan="2" class="list1_input" valign="top"> $admin_list[companycode] </td>
           </tr>
 		  <tr> 
-          <td class="list1_text" valign="middle">{$lang_memberdetailCompanyAddress}:</td>
+          <td class="list1_text" valign="middle">{$lang_memberCompanyAddress}</td>
           <td colspan="2" class="list1_input" valign="top"> $admin_list[companyaddress] </td>
           </tr>
 		  <tr> 
-          <td class="list1_text" valign="middle">{$lang_memberdetailCompanyWebsite}:</td>
+          <td class="list1_text" valign="middle">{$lang_memberCompanyWebsite}</td>
           <td colspan="2" class="list1_input" valign="top"> $admin_list[companywebsite] </td>
           </tr>
 		  <tr> 
-          <td class="list1_text" valign="middle">{$lang_memberdetailType}:</td>
+          <td class="list1_text" valign="middle">{$lang_memberType}</td>
           <td colspan="2" class="list1_input" valign="top">
 		  <select name="usertype" id="usertype" disabled=disabled>
-			 <option value="1" $access1>{$lang_memberdetailType1}</option>
-              <option value="2" $access2>{$lang_memberdetailType2}</option>
+			 <option value="1" $access1>{$lang_access1}</option>
+              <option value="2" $access2>{$lang_access2}</option>
             </select>
 		  </td>
           </tr>
 		  <tr>
-		  <td class="list1_text" valign="middle">{$lang_memberdetailCheck}:</td>
+		  <td class="list1_text" valign="middle">{$lang_memberCheck}</td>
           <td colspan="2" class="list1_input" valign="top">$checkid</td>
           </tr>
 		   
 		  <tr> 
 		  <td class="list1_text"></td>
-            <td class="list1_input" align="left" colspan="2"><a href="editor.php?id=$id" class="editormenu">{$lang_memberdetailModify}</a> &nbsp;&nbsp; <a href="index.php" class="editormenu" >{$lang_memberdetailBackup}</a>
+            <td class="list1_input" align="left" colspan="2"><a href="editor.php?id=$id" class="editormenu">{$lang_memberModify}</a> &nbsp;&nbsp; <a href="index.php" class="editormenu" >{$lang_memberBackup}</a>
 			</td>
           </tr>
             <tr>

@@ -5,17 +5,17 @@
 require_once template('head');
 echo <<<EOT
 -->
-<title>$class1_info[name]{$lang_downloadManage}</title>
+<title>$class1_info[name]{$lang_manager}</title>
 </head>
 <body>
    <div class="div_top">
-	              <div class="div_title">$class1_info[name]{$lang_downloadManage}</div>      
+	              <div class="div_title">$class1_info[name]{$lang_manager}</div>      
 <!--
 EOT;
 if($class2_listok==1){
 echo <<<EOT
 -->	
-<div class="div_content" align="left"><span>{$lang_downloadTwo}：</span>
+<div class="div_content" align="left"><span>{$lang_modClass2}</span>
 <!--
 EOT;
 foreach($class2_list as $key=>$val){
@@ -34,7 +34,7 @@ EOT;
 if($class3_listok==1){
 echo <<<EOT
 -->	
-<div class="div_content1" align="left"><span>{$lang_downloadThree}：</span>
+<div class="div_content1" align="left"><span>{$lang_modClass3}</span>
 <!--
 EOT;
 foreach($class3_list as $key=>$val){
@@ -59,42 +59,42 @@ echo <<<EOT
 				<input name="class1" type="hidden" size="30" value="$class1">
 				<input name="class2" type="hidden" size="30" value="$class2">
 				<input name="class3" type="hidden" size="30" value="$class3">
-				<span><b>{$lang_downloadNew}{$lang_downloadTitle}:</b></span>
+				<span><b>{$lang_new}{$lang_mod4}</b></span>
 			    <select name="new" id="new" onChange="autosubmit()">
-					<option value="all" $new0>{$lang_downloadAll}</option>
+					<option value="all" $new0>{$lang_selectnow}</option>
 					<option value="1" $new1>{$lang_YES}</option>
 					<option value="0" $new2>{$lang_NO}</option>
 				</select>
-				<span><b>{$lang_downloadRecommend}{$lang_downloadTitle}:</b></span>
+				<span><b>{$lang_recom}{$lang_mod4}</b></span>
 				<select name="recommend" id="recommend" onChange="autosubmit()">
-					<option value="all" $recommend0>{$lang_downloadAll}</option>
+					<option value="all" $recommend0>{$lang_selectnow}</option>
 					<option value="1" $recommend1>{$lang_YES}</option>
 					<option value="0" $recommend2>{$lang_NO}</option>
 				</select>
-				<span><b>{$lang_downloadTop}{$lang_downloadTitle}:</b></span>
+				<span><b>{$lang_top}{$lang_mod4}</b></span>
 				<select name="top" id="top" onChange="autosubmit()">
-					<option value="all" $top0>{$lang_downloadAll}</option>
+					<option value="all" $top0>{$lang_selectnow}</option>
 					<option value="1" $top1>{$lang_YES}</option>
 					<option value="0" $top2>{$lang_NO}</option>
 				</select>
-				<span><b>{$lang_downloadLang}:</b></span>
+				<span><b>{$lang_langbelong}</b></span>
 				<select name="langtype" id="langtype" onChange="autosubmit()">
-					<option value="all" $langtype0>{$lang_downloadAll}</option>
+					<option value="all" $langtype0>{$lang_selectnow}</option>
 					$selectlang
 				</select>
 				</form>
 		</div>
 			<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
               <tr>
-                <td width="5%" class="list1_top" align="center">{$lang_downloadSelect}</td>
+                <td width="5%" class="list1_top" align="center">{$lang_selected}</td>
 				<td width="5%" class="list1_top" align="center">ID</td>
-                <td width="40%" class="list1_top" align="center">{$lang_downloadName}</td>
-                <td width="5%" class="list1_top" align="center" >{$lang_downloadNew}</td>
-                <td width="5%" class="list1_top" align="center" >{$lang_downloadRecommend}</td>
-				<td width="6%"  class="list1_top" align="center" >{$lang_downloadTop}</td>				
-                <td width="10%" class="list1_top" align="center" >{$lang_downloadUpdateDate}</td>
-				<td width="14%"  class="list1_top" align="center" >{$lang_downloadAccess}</td>
-				<td width="10%" class="list1_top" align="center" >{$lang_downloadOperate}</td>
+                <td width="40%" class="list1_top" align="center">{$lang_title}</td>
+                <td width="5%" class="list1_top" align="center" >{$lang_new}</td>
+                <td width="5%" class="list1_top" align="center" >{$lang_recom}</td>
+				<td width="6%"  class="list1_top" align="center" >{$lang_top}</td>				
+                <td width="10%" class="list1_top" align="center" >{$lang_updatedate}</td>
+				<td width="14%"  class="list1_top" align="center" >{$lang_webaccess}</td>
+				<td width="10%" class="list1_top" align="center" >{$lang_operate}</td>
               </tr>
 			  <form name="del" method="Post" action="delete.php?class1=$class1&class2=$class2&class3=$class3" onSubmit="return ConfirmDelall();">
 <!--
@@ -122,7 +122,7 @@ echo <<<EOT
 				<td class="list1_content" align="center"><a href="changeState.php?top_ok=$val[top_ok]&id=$val[id]&class1=$class1&class2=$class2&class3=$class3" onClick="return ConfirmChange();">$val[top_ok1]</a></td>
                 <td  class="list1_content" align="center">$val[updatetime]</td>
 				<td class="list1_content" align="center">$val[access]</td>
-				<td align="center" class="list1_content" style="color:#0066FF;"></a> <a href="editor.php?id=$val[id]" >{$lang_downloadEdit}</a> | <a href="delete.php?id=$val[id]&class1=$class1&class2=$class2&class3=$class3" onClick="return ConfirmDel();" >{$lang_downloadDelete}</a></td>
+				<td align="center" class="list1_content" style="color:#0066FF;"></a> <a href="editor.php?id=$val[id]" >{$lang_editor}</a> | <a href="delete.php?id=$val[id]&class1=$class1&class2=$class2&class3=$class3" onClick="return ConfirmDel();" >{$lang_delete}</a></td>
               </tr>
 <!--
 EOT;
@@ -132,8 +132,8 @@ echo <<<EOT
 		   
    	   <tr> 
             <td class="input_bottom" align="center"><input name="chkAll" class="xz" type="checkbox" id="chkAll" onclick=CheckAll(this.form) value="checkbox"></td>
-            <td class="input_bottom" align="center">{$lang_downloadSelectAll}</td>
-			<td class="input_bottom" align="left" colspan="7"><input name="submit" type='submit' value='{$lang_downloadDelSelected}'> 
+            <td class="input_bottom" align="center">{$lang_selectall}</td>
+			<td class="input_bottom" align="left" colspan="7"><input name="submit" type='submit' value='{$lang_deleteselected}'> 
               <input name="action" type="hidden" id="action" value="del">
 			  <input name="allid" type="hidden" id="allid" value=""></form></td>
           </tr>
@@ -143,22 +143,22 @@ echo <<<EOT
 			<input name="class1" type="hidden" size="30" value="$class1">
 				  <input name="class2" type="hidden" size="30" value="$class2">
 				  <input name="class3" type="hidden" size="30" value="$class3">
-			       <span><b>{$lang_downloadSearch}：</b></span> 				  
+			       <span><b>{$lang_mod4}{$lang_search}</b></span> 				  
 			    <input name="title" type="text" size="30">
-				<input type="submit" name="Submit2" value="{$lang_downloadDo}" class="tj">  
-	        {$lang_downloadTip1}</form></td>
+				<input type="submit" name="Submit2" value="{$lang_search}" class="tj"> {$lang_modsearch} 
+	        </form></td>
           </tr>
 	   <tr>
 				<td align="left" colspan="8"  class="input_search">
 			   <form method="POST" name="myform"  action="changeState.php?action=moveto" target="_self" onSubmit="return Confirmall();">
 			   <input name="allid" type="hidden" id="allid" value="">
-				<span><b>{$lang_downloadMoveto}：</b></span>				  
+				<span><b>{$lang_mod4}{$lang_move}</b></span>				  
 <!--
 EOT;
 echo <<<EOT
 -->	
 <select name="class1" onChange="changelocation1(document.myform.class1.options[document.myform.class1.selectedIndex].value,1)" size="1">
-<option value=0 >{$lang_downloadOne}</option>
+<option value=0 >{$lang_modClass1}</option>
 <!--
 EOT;
 foreach($classlev1 as $key=>$val2){
@@ -177,19 +177,19 @@ EOT;
 echo <<<EOT
 -->	
 <select name="class2" onChange="changelocation1(document.myform.class2.options[document.myform.class2.selectedIndex].value,2)" size="1">
-<option value=0 >{$lang_downloadTwo}</option>
+<option value=0 >{$lang_modClass2}</option>
 
               </select>
 			<select name="class3"> 
-			<option value=0 >{$lang_downloadThree}</option>
+			<option value=0 >{$lang_modClass3}</option>
 		
              </select>
 <!--
 EOT;
 
 echo <<<EOT
--->				<input type="submit" name="Submit3" value="{$lang_downloadMove}" class="tj" >
-				{$lang_downloadTip2}
+-->				<input type="submit" name="Submit3" value="{$lang_move}" class="tj" >
+				{$lang_rehtml}
 				<br />
 				</td>
 	        </form>

@@ -99,12 +99,14 @@ $fdjs=$fdjs."}</script>";
      $methtml_cv.="</tr>\n";
     }
    }
+if($met_memberlogin_code==1){
      $methtml_cv.="<tr class='cv_tr'> \n";   
      $methtml_cv.="<td class='cv_td1'>".$lang_memberImgCode.":</b></td>\n";
      $methtml_cv.="<td class='cv_code' colspan='2'><input name='code' onKeyUp='pressCaptcha(this)' type='text' class='code' id='code' size='6' maxlength='8' style='width:50px' />";
      $methtml_cv.="<img align='absbottom' src='ajax.php?action=code'  onclick=this.src='ajax.php?action=code&'+Math.random() style='cursor: pointer;' title='".$lang_memberTip1."'/>";
      $methtml_cv.="</td>\n";
      $methtml_cv.="</tr>\n";
+}	 
      $methtml_cv.="<tr class='cv_tr'>\n"; 
      $methtml_cv.="<td class='cv_td1'></td>\n";
      $methtml_cv.="<td class='cv_submit' colspan='2'><input type='submit' name='Submit' value='".$lang_Submit."' class='tj'><input type='reset' name='Submit' value='".$lang_Reset."' class='tj'> </td>\n";

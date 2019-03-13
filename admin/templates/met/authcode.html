@@ -22,10 +22,10 @@ echo <<<EOT
 		   {$lang_authDifferent1}；<br>
 		   {$lang_authDifferent2}；<br>
 		   {$lang_authDifferent3}<br>
-		   {$lang_authDifferent4}：<a href="http://www.metinfo.cn/web/product.htm" target="_blank"  style="color:#ff0000; ">{$lang_authDetail}</a></td>
+		   {$lang_authDifferent4}<a href="http://www.metinfo.cn/web/product.htm" target="_blank"  style="color:#ff0000; ">{$lang_authDetail}</a></td>
           </tr>
 		  <tr> 
-           <td colspan="3" class="au_text"><b>{$lang_authGetLicense}：</b><br>
+           <td colspan="3" class="au_text"><b>{$lang_authGetLicense}</b><br>
 		   {$lang_authGet1}；<br>
 		   {$lang_authGet2}；<br>
 		   {$lang_authGet3}；<br>
@@ -34,7 +34,7 @@ echo <<<EOT
 		   </td>
           </tr>
 		  <tr bgcolor="#e3f5ff"> 
-           <td colspan="3"  class="au_text"><form method="POST" name="myform"  action="http://www.metinfo.cn/code/code.php" target="_blank"><b>{$lang_authQuery}：</b>
+           <td colspan="3"  class="au_text"><form method="POST" name="myform"  action="http://www.metinfo.cn/code/code.php" target="_blank"><b>{$lang_authQuery}</b>
 <input name="url" type="text" size="30" style="border:1px solid #000033" value="$authurlself" /> <input type="submit" name="Submit" value="{$lang_authSubmitQuery}" style="background-color:#279cd8; color:#FFFFFF">
 </form></td>
           </tr>
@@ -45,13 +45,13 @@ echo <<<EOT
 		  <form method="POST" name="myform"  action="authcode.php?action=modify" target="_self">
 		  <input name="id" type="hidden" value="$authinfo[id]">
 			<tr> 
-            <td class="list1_text"><b>{$lang_authDomain}</b>：</td>
+            <td class="list1_text"><b>{$lang_authDomain}</b></td>
             <td class="list1_input" ><input name="authurlself" type="text" size="30" value="$authurlself" disabled="disabled"></td></tr>
 			<tr>
-			<td class="list1_text"><b>{$lang_authKey}</b>：</td>
+			<td class="list1_text"><b>{$lang_authKey}</b></td>
             <td class="list1_input"><input name="authpass" type="text" size="30" value="$authinfo[authpass]"></td></tr>
 			<tr> 
-            <td class="list1_text"><b>{$lang_authAuthorizedCode}</b>({$lang_authTip1})：</td>
+            <td class="list1_text"><b>{$lang_authAuthorizedCode}</b>({$lang_authTip1})</td>
             <td class="list1_input"><textarea name="authcode" cols="60" rows="5" style="font-size:12px; color:#333333;">$authinfo[authcode]</textarea></td></tr>
 		  
 <tr><td class="list1_text"></td>

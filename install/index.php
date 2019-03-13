@@ -77,6 +77,9 @@ switch ($action)
 		'../feedback',
 		'../feedback/config.inc.php',
 		'../admin/databack',
+		'../lang/language_cn.ini',
+		'../lang/language_en.ini',
+		'../lang/language_other.ini',
 		);
 		$class_chcek=array();
 		$check_msg = array();

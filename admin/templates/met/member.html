@@ -14,23 +14,23 @@ echo <<<EOT
           </tr>
           <tr>
             <td class="list1_input" height="20" colspan="5"><a href="add.php">{$lang_memberAdd}</a></td>
-            <td width="60%" align="right" colspan="5" class="list1_input">			
+            <td width="60%" align="right" colspan="5" class="list1_input"><div style="text-align:right">		
 			<form method="POST" name="myform" action="index.php?search=detail_search" target="_self">
 			<span><b>{$lang_memberType}:</b></span>
 			<select name="usertype" id="usertype" onChange="autosubmit()">
 			<option value="" $user0>{$lang_memberSelectType}</option>
-			 <option value="1" $user1>{$lang_memberUserType1}</option>
-              <option value="2" $user2>{$lang_memberUserType2}</option>
-            </select></form></td>
+			 <option value="1" $user1>{$lang_access1}</option>
+              <option value="2" $user2>{$lang_access2}</option>
+            </select></form></div></td>
           </tr>
               <tr>
-                <td width="5%" class="list1_top" align="center">{$lang_memberSelect}</td>
+                <td width="5%" class="list1_top" align="center">{$lang_selected}</td>
                 <td width="16%" class="list1_top" align="center">{$lang_memberUserName}</td>
                 <td width="10%" class="list1_top" align="center" >{$lang_memberType}</td>
                 <td width="6%" class="list1_top" align="center" >{$lang_memberActive}</td>
                 <td width="8%" class="list1_top" align="center" >{$lang_memberNum}</td>
 				<td width="17%" class="list1_top" align="center" >{$lang_memberLastLogin}</td>
-				<td width="37%" class="list1_top" align="center" >{$lang_memberOperate}</td>
+				<td width="37%" class="list1_top" align="center" >{$lang_operate}</td>
               </tr>
 			  <form name="del" method="Post" action="delete.php" onSubmit="return ConfirmDelall();">
 <!--
@@ -40,12 +40,12 @@ echo <<<EOT
 -->          
               <tr>
               <td align="center" class="list1_content_titile"><input name='id' type='checkbox' onClick="unselectall()" id="id" value='$val[id]' class="xz"></td>
-                <td align="center" class="list1_content"><a href="detail.php?id=$val[id]" title="{$lang_memberReadDetail}">$val[admin_id]</a></td>
+                <td align="center" class="list1_content"><a href="detail.php?id=$val[id]" title="{$lang_detail}">$val[admin_id]</a></td>
                 <td class="list1_content" align="center">$val[usertype]</td>
                 <td class="list1_content" align="center">$val[checked]</td>
                 <td align="center" class="list1_content">$val[admin_login]</td>
 				<td class="list1_content" align="center" >$val[admin_modify_date] </td>
-				<td align="center" class="list1_content" style="color:#0066FF;"><a href="detail.php?id=$val[id]" >{$lang_memberDetail}</a> | <a href="editor.php?id=$val[id]" >{$lang_memberEdit}</a> | <a href="../message/index.php?search=detail_search&customerid=$val[admin_id]" >{$lang_memberMessage}</a> | <a href="../feedback/index.php?search=detail_search&customerid=$val[admin_id]" >{$lang_memberFD}</a> | <a href="../job/cv.php?search=detail_search&customerid=$val[admin_id]" >{$lang_memberCV}</a> | <a href="delete.php?id=$val[id]" onClick="return ConfirmDel();" >{$lang_memberDel}</a></td>
+				<td align="center" class="list1_content" style="color:#0066FF;"><a href="detail.php?id=$val[id]" >{$lang_memberDetail}</a> | <a href="editor.php?id=$val[id]" >{$lang_editor}</a> | <a href="../message/index.php?search=detail_search&customerid=$val[admin_id]" >{$lang_memberMessage}</a> | <a href="../feedback/index.php?search=detail_search&customerid=$val[admin_id]" >{$lang_memberFD}</a> | <a href="../job/cv.php?search=detail_search&customerid=$val[admin_id]" >{$lang_memberCV}</a> | <a href="delete.php?id=$val[id]" onClick="return ConfirmDel();" >{$lang_delete}</a></td>
               </tr>
 <!--
 EOT;
@@ -54,8 +54,8 @@ echo <<<EOT
 -->
    	   <tr> 
             <td class="input_bottom" align="center"><input name="chkAll" class="xz" type="checkbox" id="chkAll" onclick=CheckAll(this.form) value="checkbox"></td>
-             <td class="input_bottom" align="center">{$lang_memberSelectAll}</td>
-			 <td colspan="9" class="input_bottom" align="left"><input name="submit" type='submit' value='{$lang_memberDelSelected}' style="*padding-top:2px; *height:22px;"> 
+             <td class="input_bottom" align="center">{$lang_selectall}</td>
+			 <td colspan="9" class="input_bottom" align="left"><input name="submit" type='submit' value='{$lang_deleteselected}' style="*padding-top:2px; *height:22px;"> 
               <input name="action" type="hidden" id="action" value="del">
 			  <input name="allid" type="hidden" id="allid" value=""></form></td>
        </tr>
@@ -63,7 +63,7 @@ echo <<<EOT
             <td align="left" colspan="5" class="list1_input">
 			<form method="POST" name="search" action="index.php?search=detail_search" target="_self">
 			<span><b>{$lang_memberSearch}:</b></span>&nbsp;<input name="admin_id" type="text" size="6">
-			<input type="submit" name="Submit2" value="{$lang_memberDo}" class="tj">&nbsp;</form></td>
+			<input type="submit" name="Submit2" value="{$lang_search}" class="tj">&nbsp;</form></td>
           </tr>
    	   <tr>
    	     <td class="list1_input" colspan="9" align="center">$page_list</td>

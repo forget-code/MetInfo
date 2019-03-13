@@ -2,19 +2,20 @@
 # 文件名称:login.html 2009-08-15 14:34:57
 # MetInfo企业网站管理系统 
 # Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
-
+$lang_fontfamily=str_replace("'","\"",$lang_fontfamily);
+$lang_fontfamily=str_replace("&quot;","\"",$lang_fontfamily);
 echo <<<EOT
 -->
 <html xmlns="http://www.w3.org/1999/xhtml" lang="zh-cn">
 <head>
-<title>MetInfo{$lang_loginTitle}</title>
+<title>MetInfo{$lang_metinfo}{$lang_loginTitle}</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <meta http-equiv="Content-Language" content="zh-cn"/>
 <meta name="author" content="www.metinfo.cn"/>
 <meta name="copyright" content="www.metinfo.cn"/>
-<meta name="keywords" content="{$lang_loginKeywords}"/>
-<meta name="description" content="{$lang_loginDescription}"/>
-<meta content="{$lang_loginContent}"/>
+<meta name="keywords" content="MetInfo{$lang_metinfo}{$lang_loginTitle}"/>
+<meta name="description" content="MetInfo{$lang_metinfo}{$lang_loginTitle}"/>
+<meta content="MetInfo{$lang_metinfo}{$lang_loginTitle}"/>
 <link rel="stylesheet" type="text/css" href="$img_url/metinfo.css">
 <style type="text/css">
 body {
@@ -48,7 +49,7 @@ function pressCaptcha(obj)//字母变大写
 </script>
 <body>
 <div class="loginlang" style="display:$met_admin_type_display;">
-&nbsp;&nbsp;<b>MetInfo Corporation Website Management System</b> Administrator Language
+&nbsp;&nbsp;<b>MetInfo Enterprise Web Management System</b> Administrator Language
 <select name="loginlang" onchange=javascript:window.location.href=this.options[this.selectedIndex].value >
 <!--
 EOT;
@@ -78,23 +79,23 @@ echo <<<EOT
 -->
 </select></div>
 <div class="login">
-<div class="login_title"><font style="font-family:Arial, Helvetica, sans-serif">MetInfo</font>{$lang_loginTip1} V$metcms_v</div>
+<div class="login_title"><font style="font-family:Arial, Helvetica, sans-serif">MetInfo</font>{$lang_metinfo} V{$metcms_v}</div>
 <div class="login_img">
-<a href="http://www.metinfo.cn"  target="_blank" title="{$lang_loginTip1}" ><img src="$img_url/logosmall.gif"></a><br><br>
-<span><a href="http://www.metinfo.cn"  target="_blank" title="{$lang_loginTip2}" style="font-family:Arial, Helvetica, sans-serif">MetInfo Co.,Ltd</a> </span>
+<a href="http://www.metinfo.cn"  target="_blank" ><img  alt="MetInfo{$lang_metinfo}" src="$img_url/logosmall.gif"></a><br><br>
+<span><a href="http://www.metinfo.cn"  target="_blank" title="MetInfo{$lang_metinfo}" style="font-family:Arial, Helvetica, sans-serif">MetInfo Co.,Ltd</a> </span>
 </div>
 <div class="login_right">
 <div class="login_log">{$lang_loginTip3}</div>
 <form method="post" action="login_check.php?langset=$langset" name="main_login" onSubmit="javascript: return check_main_login()">
 <input type="hidden" name="action" value="login"/>
-<div class="login_text">{$lang_loginTip4}：<input type="text" name="login_name" value="$check_name" $disabled size="20"/></div>
-<div class="login_text">{$lang_loginTip5}：<input type="password" name="login_pass"  size="21"/></div>
+<div class="login_text">{$lang_loginTip4} <input type="text" name="login_name" value="$check_name" $disabled size="20"/></div>
+<div class="login_text">{$lang_loginTip5} <input type="password" name="login_pass"  size="21"/></div>
 <!--
 EOT;
 if($met_login_code==1){
 echo <<<EOT
 -->
-<div class="login_text">{$lang_loginTip6}：<input name="code" onKeyUp="pressCaptcha(this)" type="text" class="inp" id="code" size="6" maxlength="8" style="width:50px" />
+<div class="login_text">{$lang_loginTip6} <input name="code" onKeyUp="pressCaptcha(this)" type="text" class="inp" id="code" size="6" maxlength="8" style="width:50px" />
 <img align="absbottom" src="../include/ajax.php?action=code"  onclick=this.src="../include/ajax.php?action=code&"+Math.random() style="cursor: pointer;" title="{$lang_loginTip7}"/></div>
 <!--
 EOT;

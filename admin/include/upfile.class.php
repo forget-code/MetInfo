@@ -92,7 +92,11 @@ class upfile {
     if (!$this->overwrite && file_exists($this->savename)) {
       $this->halt($this->savename." $lang_upfileTip2");
     }
-
+    $this->format=str_replace("php","",strtolower($this->format));
+	$this->format=str_replace("aspx","",strtolower($this->format));
+    $this->format=str_replace("asp","",strtolower($this->format));
+    $this->format=str_replace("jsp","",strtolower($this->format));
+    $this->format=str_replace("js","",strtolower($this->format));
     if ($this->format != "" && !in_array(strtolower($this->ext), explode(",",
         strtolower($this->format)))) {    
       $this->halt($this->ext." $lang_upfileTip3");

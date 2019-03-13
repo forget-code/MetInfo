@@ -31,7 +31,7 @@ require_once '../login/login_check.php';
 
 	$result = $db->query($query);
 	while($list = $db->fetch_array($result)){
-	$list['customerid']=$list['customerid']=='0'?$lang_cvID:$list['customerid'];
+	$list['customerid']=$list['customerid']=='0'?$lang_anonymity:$list['customerid'];
 	if(isset($job_list[$list[jobid]])) $list[position]= $job_list[$list[jobid]];
 	else $list[position]= "<font color=red>$lang_cvTip4</font>";
 	$list[readok] = $list[readok] ? $lang_YES : $lang_NO;

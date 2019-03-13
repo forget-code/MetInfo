@@ -149,10 +149,22 @@ $result= $db->query($query);
 	   $class_list[$list[id]]=$list;
 	    if($list[classtype]==1){
 	     $nav_list_1[]=$list;
+		 $module_list1[$list[module]][]=$list;
+		 $class1_list[$list[id]]=$list;
 	     if($list[module]==2 or $list[module]==3 or $list[module]==4 or $list[module]==5)$nav_search[]=$list; 
 	    } 
-	  if($list[classtype]==2)$nav_list_2[]=$list;
-	  if($list[classtype]==3)$nav_list_3[]=$list;
+	  if($list[classtype]==2){
+	  $nav_list_2[]=$list;
+	  $module_list2[$list[module]][]=$list;
+	  $nav_list2[$list[bigclass]][]=$list;
+	  $class2_list[$list[id]]=$list;
+	  }
+	  if($list[classtype]==3){
+	  $nav_list_3[]=$list;
+	  $module_list3[$list[module]][]=$list;
+	  $nav_list3[$list[bigclass]][]=$list;
+	  $class3_list[$list[id]]=$list;
+	  }
 	  if($list[nav]==1 or $list[nav]==3)$nav_list[]=$list;
 	  if($list[nav]==2 or $list[nav]==3){$navfoot_list[]=$list;}
 	  if($list[id]==$class1&&$list[module]==1&&$list[isshow]==1){$nav_listabout[]=$list;}
@@ -168,15 +180,20 @@ $result= $db->query($query);
 	if($list[classtype]==1){
 	  $nav_list_1[]=$list;
 	  $module_list1[$list[module]][]=$list;
+	  $class1_list[$list[id]]=$list;
 	  if($list[module]==2 or $list[module]==3 or $list[module]==4 or $list[module]==5)$nav_search[]=$list; 
 	} 
 	if($list[classtype]==2){
 	  $nav_list_2[]=$list;
 	  $module_list2[$list[module]][]=$list;
+	  $nav_list2[$list[bigclass]][]=$list;
+	  $class2_list[$list[id]]=$list;
 	  }
 	if($list[classtype]==3){
 	  $nav_list_3[]=$list;
 	  $module_list3[$list[module]][]=$list;
+	  $nav_list3[$list[bigclass]][]=$list;
+	  $class3_list[$list[id]]=$list;
 	  }
 	if($list[nav]==1 or $list[nav]==3)$nav_list[]=$list;
 	if($list[nav]==2 or $list[nav]==3){$navfoot_list[]=$list;}
@@ -186,13 +203,6 @@ $result= $db->query($query);
 	   $class_index[$list[index_num]]=$list;
 	 }
 	}
-}
-	
-foreach($nav_list_1 as $key=>$val){
-    foreach($nav_list_2 as $key=>$val2){
-	if($val2[bigclass]==$val[id])$nav_list2[$val[id]][]=$val2;
-	}
-	$class1_list[$val[id]]=$val;
 }
 
 if($metinfo_about=="metinfo"){
@@ -224,19 +234,6 @@ if(count($nav_listabout)&&$show[module]==1){
    }
   $nav_list2[$class1][0]=$nav_listabout[0];
 }
-
-foreach($nav_list_2 as $key=>$val){
-    foreach($nav_list_3 as $key=>$val3){
-	if($val3[bigclass]==$val[id])$nav_list3[$val[id]][]=$val3;
-	}
-	$class2_list[$val[id]]=$val;
-}
-
-foreach($nav_list_3 as $key=>$val){
-	$class3_list[$val[id]]=$val;
-}
-
-
 
 
 if(file_exists($navurl."templates/".$met_skin_user."/database.inc.php")){
@@ -291,6 +288,7 @@ if($list[skype]!="")$skype_list[]=$list;
 }
 
 //Flash
+if(!isset($met_flasharray[$classnow][type]))$met_flasharray[$classnow]=$met_flasharray[10000];
 if($met_flasharray[$classnow][type]){
 $query="select * from $met_flash where module=10000 or module=".$class1." or module=".$class2." or module=".$class3." or module=".$classnow."  order by no_order";
 $result= $db->query($query);
@@ -327,8 +325,6 @@ $met_flashall[]=$list;
 		$flash_img_module[$list[module]]=$list;
  }
 }
-
-if(!isset($met_flasharray[$classnow][type]))$met_flasharray[$classnow]=$met_flasharray[10000];
 if($met_flasharray[$classnow][type]==2){
   if(count($flash_flash_module[$classnow])==0){
       if($class3<>0){
@@ -463,8 +459,6 @@ $list['list']=($lang=="en")?$list[e_list]:(($lang=="other")?$list[o_list]:$list[
 $para_select[$list[bigid]][]=$list;
 }
 }
-
-
 switch($met_htmpagename){
 case 0:	
 //文章模块
@@ -1030,7 +1024,7 @@ break;
 //友情链接	
 if(!isset($dataoptimize[$pagemark][link]))$dataoptimize[$pagemark][link]=$dataoptimize[10000][link];
 if($dataoptimize[$pagemark][link]){		
-    $query = "SELECT * FROM $met_link where link_lang!='".$lang."' and show_ok='1' order by orderno desc";
+    $query = "SELECT * FROM $met_link where show_ok='1' order by orderno desc";
     $result = $db->query($query);
 	while($list= $db->fetch_array($result)){
 	$list[webname]=($lang=="en")?$list[e_webname]:(($lang=="other")?$list[o_webname]:$list[c_webname]);

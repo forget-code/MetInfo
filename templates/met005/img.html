@@ -1,0 +1,30 @@
+<!--<?php
+require_once template('head'); 
+$metimg=methtml_img('img','all');
+echo <<<EOT
+-->	
+<div class="web">
+<!--
+EOT;
+require_once template('webleft');
+echo <<<EOT
+-->
+<div class="img_list12">
+<style>
+.img_list12 ul li{ width:{$met_img_x}px;}
+</style>
+$metimg
+<div style=" clear:both;"></div>
+</div>
+<div class="web_bottom">$page_list</div>
+</div>
+       <div class="main_bottom_bgb"><div></div></div>
+</div>
+<div style="clear:both;"></div>
+
+
+</div>
+<!--
+EOT;
+require_once template('foot'); 
+?>

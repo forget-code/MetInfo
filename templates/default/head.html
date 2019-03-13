@@ -1,12 +1,12 @@
 <!--<?php
-$metlang=methtml_lang('&nbsp;&nbsp;|&nbsp;&nbsp;');
+$metlang=methtml_lang('&nbsp;&nbsp;|&nbsp;&nbsp;'); //语言选项
 if($navurl == "../"){$asd="&gt;";}
 $methtml_login=methtml_login();
 $met_online=methtml_online();
 echo <<<EOT
 -->
 {$methtml_head}
-
+<link href="$img_url/css/reset.css" rel="stylesheet" type="text/css" />
 <body>
 <div class="content">
    <div class="top" style="background:url($otherinfo[imgurl1]) no-repeat 0px 0px;">
@@ -36,10 +36,20 @@ echo <<<EOT
 -->
 <div style="clear:both;"></div>
 			</ul>
+<!--
+EOT;
+if($navdown){
+echo <<<EOT
+-->
 <script language=JavaScript type=text/JavaScript>
             document.getElementById('$navdown').className="navdn";
 			document.getElementById('$navdown').style.color="#111111";
 </script>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
 <div class="index_search">
 <form method="POST" name="myform1" action="$searchurl"  target="_self">
 <input type="text" name="searchword" size="20"  class="navtext" />
@@ -60,24 +70,31 @@ echo <<<EOT
 -->		
    </div>
  <div class="main_top">
-<span>{$lang_YouPosition}：<a href="$index_url">{$lang_home}</a>&nbsp;{$asd}&nbsp;$nav_x[name]</span>
 <div class="notice">
-<marquee scrollAmount=2 scrollDelay=4 width=500 align="left" onMouseOver="this.stop()" onMouseOut="this.start()">
+<div class="nticebg">
+<div class="pos" id="width2"><span>{$lang_YouPosition}:<a href="$index_url">{$lang_home}</a>&nbsp;{$asd}&nbsp;$nav_x[name]</span></div>
+<div class="notmar" id="width1">
+<marquee scrollAmount=2 scrollDelay=4 align="left" onMouseOver="this.stop()" onMouseOut="this.start()">
 <!--
 EOT;
-$i=0;
 foreach(methtml_getarray('5','','time','') as $key=>$val){
-$i++;
 echo <<<EOT
 -->
 <a href="$val[url]" target="_blank" title="$val[title]">$val[title]</a>
 <!--
 EOT;
-if($i>=$index[news_no])break;
 }
 echo <<<EOT
 -->
 </marquee>
+</div>
+<div style="clear:both;"></div>
+</div>
+<script>
+   var width1=document.getElementById('width1');
+   var width2=document.getElementById('width2');
+      width1.style.width= 999 - width2.scrollWidth - 10 + 'px'; 
+</script>
 </div>
 </div>  
 <!--

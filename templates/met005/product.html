@@ -1,0 +1,29 @@
+<!--<?php
+require_once template('head');
+$met_product=methtml_product('img','all');
+echo <<<EOT
+-->
+<div class="web">
+<!--
+EOT;
+require_once template('webleft'); 
+echo <<<EOT
+--> 
+<div class="pro_content">
+<style>
+.pro_content ul li{ width:{$met_img_x}px;}
+</style>
+$met_product
+<div style="clear:both;"></div>
+</div>
+<div class="web_bottom">$page_list</div>
+</div>
+       <div class="main_bottom_bgb"><div></div></div>
+</div>
+<div style="clear:both;"></div>
+
+</div>
+<!--
+EOT;
+require_once template('foot'); 
+?>

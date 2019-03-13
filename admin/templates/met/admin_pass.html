@@ -16,36 +16,36 @@ echo <<<EOT
             <td colspan="3" align="center" class="list1_title">{$lang_adminpassTitle}</td>
           </tr>
           <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font>{$lang_adminpassUserName}：</td>
+            <td class="list1_text"><font color="#FF0000">*</font>{$lang_adminusername}</td>
             <td class="list1_input"> <input name="useid" type="text" class="input" size="20" maxlength="20" value="$admin_list[admin_id]" disabled="disabled"></td>
           </tr> 
 		  <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font>{$lang_adminpassPS}：</td>
+            <td class="list1_text"><font color="#FF0000">*</font>{$lang_adminpassword}</td>
             <td class="list1_input"> <input name="pass1" type="password" class="input" size="20" maxlength="20">{$lang_adminpassTip1}</td>
           </tr> 
 		   <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font>{$lang_adminpassConfirm}：</td>
+            <td class="list1_text"><font color="#FF0000">*</font>{$lang_adminpassword1}</td>
             <td class="list1_input"> <input name="pass2" type="password" class="input" size="20" maxlength="20">{$lang_adminpassTip1}</td>
           </tr> 
 		  <tr> 
-            <td class="list1_text">{$lang_adminpassName}：</td>
+            <td class="list1_text">{$lang_adminname}</td>
             <td class="list1_input"> <input name="name" type="text" class="input" size="20" maxlength="20" value="$admin_list[admin_name]"></td>
           </tr> 
 		  <tr> 
-            <td class="list1_text">{$lang_adminpassSex}：</td>
+            <td class="list1_text">{$lang_adminSex}</td>
             <td class="list1_input">
 <!--
 EOT;
 if($admin_list[admin_sex]==0){
 echo <<<EOT
 -->	
-		<input name="sex" type="radio" value="0" checked="checked">{$lang_adminpassMan} &nbsp;<input name="sex" type="radio" value="1">{$lang_adminpassWoman}
+		<input name="sex" type="radio" value="0" checked="checked">{$lang_adminMan} &nbsp;<input name="sex" type="radio" value="1">{$lang_adminWoman}
 <!--
 EOT;
 }else{
 echo <<<EOT
 -->	
-		<input name="sex" type="radio" value="0" >{$lang_adminpassMan} &nbsp;<input name="sex" type="radio" value="1" checked="checked">{$lang_adminpassWoman}
+		<input name="sex" type="radio" value="0" >{$lang_adminMan} &nbsp;<input name="sex" type="radio" value="1" checked="checked">{$lang_adminWoman}
 <!--
 EOT;
 }echo <<<EOT
@@ -53,45 +53,45 @@ EOT;
 			</td>
           </tr> 
 		  <tr> 
-            <td class="list1_text">{$lang_adminpassContact}：</td>
+            <td class="list1_text">{$lang_admintel}</td>
             <td class="list1_input"> <input name="tel" type="text" class="input" size="20" maxlength="20" value="$admin_list[admin_tel]"></td>
           </tr> 
 		  <tr> 
-            <td class="list1_text">{$lang_adminpassCell}：</td>
+            <td class="list1_text">{$lang_adminmobile}</td>
             <td class="list1_input"> <input name="mobile" type="text" class="input" size="20" maxlength="20" value="$admin_list[admin_mobile]"></td>
           </tr> 
 		  <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font>email：</td>
-            <td class="list1_input"> <input name="email" type="text" class="input" size="20" maxlength="50" value="$admin_list[admin_email]">{$lang_adminpassTip2}</td>
+            <td class="list1_text"><font color="#FF0000">*</font>email</td>
+            <td class="list1_input"> <input name="email" type="text" class="input" size="20" maxlength="50" value="$admin_list[admin_email]">{$lang_adminTip1}</td>
           </tr> 
 		  <tr> 
-            <td class="list1_text">QQ：</td>
+            <td class="list1_text">QQ</td>
             <td class="list1_input"> <input name="qq" type="text" class="input" size="20" maxlength="20" value="$admin_list[admin_qq]"></td>
           </tr> 
 		  <tr> 
-            <td class="list1_text">MSN：</td>
+            <td class="list1_text">MSN</td>
             <td class="list1_input"> <input name="msn" type="text" class="input" size="20" maxlength="50" value="$admin_list[admin_msn]"></td>
           </tr> 
 		  <tr> 
-            <td class="list1_text">{$lang_adminpassTaoBao}：</td>
+            <td class="list1_text">{$lang_adminTaoBao}</td>
             <td class="list1_input"> <input name="taobao" type="text" class="input" size="20" maxlength="30" value="$admin_list[admin_taobao]"></td>
           </tr> 
           <tr> 
-          <td class="list1_text" valign="middle">{$lang_adminpassIntro}:</td>
+          <td class="list1_text" valign="middle">{$lang_adminIntro}</td>
           <td class="list1_input" valign="top"> <textarea name="admin_introduction" cols="60" rows="5" >$admin_list[admin_introduction]</textarea></td>
           </tr>
 		   <tr> 
-          <td class="list1_text" valign="middle"><font color="#FF0000">*</font>{$lang_adminpassPower}:</td>
-          <td class="list1_input" valign="top"><input name="admin_issue" type="checkbox" value="yes" $admin_issue_ok disabled="disabled">{$lang_adminpassTip3}</td>
+          <td class="list1_text" valign="middle"><font color="#FF0000">*</font>{$lang_adminPower}</td>
+          <td class="list1_input" valign="top"><input name="admin_issue" type="checkbox" value="yes" $admin_issue_ok disabled="disabled">{$lang_adminTip2}</td>
           </tr>
 		  <tr> 
-          <td class="list1_text" valign="middle"><font color="#FF0000">*</font>{$lang_adminpassOperate}:</td>
-          <td class="list1_input" valign="top"><font color="#FF0000"><input name="admin_op0" type="checkbox" value="metinfo" $admin_op_0 disabled="disabled">{$lang_admineditorOperate1}</font>&nbsp;&nbsp;<input name="admin_op1" type="checkbox" value="add" $admin_op_1 disabled="disabled">{$lang_adminpassOperate2}&nbsp;&nbsp;<input name="admin_op2" type="checkbox" value="editor" $admin_op_2 disabled="disabled">{$lang_adminpassOperate3}&nbsp;&nbsp;<input name="admin_op3" type="checkbox" value="del" $admin_op_3 disabled="disabled">{$lang_adminpassOperate4}</td>
+          <td class="list1_text" valign="middle"><font color="#FF0000">*</font>{$lang_adminOperate}</td>
+          <td class="list1_input" valign="top"><font color="#FF0000"><input name="admin_op0" type="checkbox" value="metinfo" $admin_op_0 disabled="disabled">{$lang_admineditorOperate1}</font>&nbsp;&nbsp;<input name="admin_op1" type="checkbox" value="add" $admin_op_1 disabled="disabled">{$lang_adminOperate2}&nbsp;&nbsp;<input name="admin_op2" type="checkbox" value="editor" $admin_op_2 disabled="disabled">{$lang_adminOperate3}&nbsp;&nbsp;<input name="admin_op3" type="checkbox" value="del" $admin_op_3 disabled="disabled">{$lang_adminOperate4}</td>
           </tr>
 		   <tr> 
-          <td class="list1_text" valign="middle"><font color="#FF0000">*</font>{$lang_adminpassColumn}:</td>
+          <td class="list1_text" valign="middle"><font color="#FF0000">*</font>{$lang_adminColumn}</td>
           <td class="list1_input" valign="top"><font color="#FF0000">
-<input name="admin_pop" type="checkbox" value="yes" $admin_pop disabled="disabled">{$lang_adminpassSelectAll}</font><br>
+<input name="admin_pop" type="checkbox" value="yes" $admin_pop disabled="disabled">{$lang_adminSelectAll}</font><br>
 <b>{$lang_indexbasic}:</b>
 <input name="admin_pop1001" type="checkbox" value="1001" $admin_pop1001 disabled="disabled">{$lang_indexbasicinfo}&nbsp;
 <input name="admin_pop1002" type="checkbox" value="1002" $admin_pop1002 disabled="disabled">{$lang_indexlang}&nbsp;
@@ -110,9 +110,9 @@ EOT;
 
 <b>{$lang_indexcolumn}:</b>
 <input name="admin_pop1201" type="checkbox" value="1201" $admin_pop1201 disabled="disabled">{$lang_indexcolumn}&nbsp;
-<input name="admin_pop1202" type="checkbox" value="1202" $admin_pop1202 disabled="disabled">{$lang_indexproduct}&nbsp;
-<input name="admin_pop1203" type="checkbox" value="1203" $admin_pop1203 disabled="disabled">{$lang_indexdownload}&nbsp;
-<input name="admin_pop1204" type="checkbox" value="1204" $admin_pop1204 disabled="disabled">{$lang_indeximages}&nbsp;
+<input name="admin_pop1202" type="checkbox" value="1202" $admin_pop1202 disabled="disabled">{$lang_mod3}{$lang_mod}{$lang_parameter}&nbsp;
+<input name="admin_pop1203" type="checkbox" value="1203" $admin_pop1203 disabled="disabled">{$lang_mod4}{$lang_mod}{$lang_parameter}&nbsp;
+<input name="admin_pop1204" type="checkbox" value="1204" $admin_pop1204 disabled="disabled">{$lang_mod5}{$lang_mod}{$lang_parameter}&nbsp;
 <input name="admin_pop1205" type="checkbox" value="1205" $admin_pop1205 disabled="disabled">{$lang_indexcv}<br>
 
 <b>{$lang_indexcontent}:</b>

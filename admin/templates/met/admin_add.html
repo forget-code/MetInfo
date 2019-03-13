@@ -5,74 +5,74 @@
 require_once template('head');
 echo <<<EOT
 -->
-<title>{$lang_adminaddTitle}</title>
+<title>{$lang_add}{$lang_metadmin}</title>
 </head>
 <body>
 <form method="POST" name="myform" onSubmit="return CheckForm();" action="save.php?action=add" target="_self">
 <table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
           <tr> 
-            <td colspan="3" align="center" class="list1_title">{$lang_adminaddTitle}</td>
+            <td colspan="3" align="center" class="list1_title">{$lang_add}{$lang_metadmin}</td>
           </tr>
           <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font>{$lang_adminaddUserName}：</td>
-            <td colspan="2" class="list1_input"> <input id="useid" name="useid" type="text" class="input" size="20" maxlength="20"><input name="" type="button" class="btn2" value="{$lang_adminaddCheckID}" onClick="javascript: Usercheck('useid')" /><span id="div_name"></span></td>
+            <td class="list1_text"><font color="#FF0000">*</font>{$lang_adminusername}</td>
+            <td colspan="2" class="list1_input"> <input id="useid" name="useid" type="text" class="input" size="20" maxlength="20"><input name="" type="button" class="btn2" value="{$lang_adminCheckID}" onClick="javascript: Usercheck('useid')" /><span id="div_name"></span></td>
           </tr> 
 		  <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font>{$lang_adminaddPs}：</td>
+            <td class="list1_text"><font color="#FF0000">*</font>{$lang_adminpassword}</td>
             <td colspan="2" class="list1_input"> <input name="pass1" type="password" class="input" size="20" maxlength="20"></td>
           </tr> 
 		   <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font>{$lang_adminaddPs1}：</td>
+            <td class="list1_text"><font color="#FF0000">*</font>{$lang_adminpassword1}</td>
             <td colspan="2" class="list1_input"> <input name="pass2" type="password" class="input" size="20" maxlength="20"></td>
           </tr> 
 		  <tr> 
-            <td class="list1_text">{$lang_adminaddReadlName}：</td>
+            <td class="list1_text">{$lang_adminname}</td>
             <td colspan="2" class="list1_input"> <input name="name" type="text" class="input" size="20" maxlength="20"></td>
           </tr> 
 		  <tr> 
-            <td class="list1_text">{$lang_adminaddSex}：</td>
-            <td colspan="2" class="list1_input"><input name="sex" type="radio" value="0" checked="checked">{$lang_adminaddMan} &nbsp;<input name="sex" type="radio" value="1">{$lang_adminaddWoman}</td>
+            <td class="list1_text">{$lang_adminSex}</td>
+            <td colspan="2" class="list1_input"><input name="sex" type="radio" value="0" checked="checked">{$lang_adminMan} &nbsp;<input name="sex" type="radio" value="1">{$lang_adminWoman}</td>
           </tr> 
 		  <tr> 
-            <td class="list1_text">{$lang_adminaddTel}：</td>
+            <td class="list1_text">{$lang_admintel}</td>
             <td colspan="2" class="list1_input"> <input name="tel" type="text" class="input" size="20" maxlength="20"></td>
           </tr> 
 		  <tr> 
-            <td class="list1_text">{$lang_adminaddCell}：</td>
+            <td class="list1_text">{$lang_adminmobile}</td>
             <td colspan="2" class="list1_input"> <input name="mobile" type="text" class="input" size="20" maxlength="20"></td>
           </tr> 
 		  <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font>email：</td>
-            <td colspan="2" class="list1_input"> <input name="email" type="text" class="input" size="20" maxlength="50">{$lang_adminaddTip1}</td>
+            <td class="list1_text"><font color="#FF0000">*</font>email</td>
+            <td colspan="2" class="list1_input"> <input name="email" type="text" class="input" size="20" maxlength="50">{$lang_adminTip1}</td>
           </tr> 
 		  <tr> 
-            <td class="list1_text">QQ：</td>
+            <td class="list1_text">QQ</td>
             <td colspan="2" class="list1_input"> <input name="qq" type="text" class="input" size="20" maxlength="20"></td>
           </tr> 
 		  <tr> 
-            <td class="list1_text">MSN：</td>
+            <td class="list1_text">MSN</td>
             <td colspan="2" class="list1_input"> <input name="msn" type="text" class="input" size="20" maxlength="50"></td>
           </tr> 
 		  <tr> 
-            <td class="list1_text">{$lang_adminaddTaoBao}：</td>
+            <td class="list1_text">{$lang_adminTaoBao}</td>
             <td colspan="2" class="list1_input"> <input name="taobao" type="text" class="input" size="20" maxlength="30"></td>
           </tr> 
           <tr> 
-          <td class="list1_text" valign="middle">{$lang_adminaddIntro}:</td>
+          <td class="list1_text" valign="middle">{$lang_adminIntro}</td>
           <td colspan="2" class="list1_input" valign="top"> <textarea name="admin_introduction" cols="60" rows="5" ></textarea></td>
           </tr>
 		  <tr> 
-          <td class="list1_text" valign="middle"><font color="#FF0000">*</font>{$lang_adminaddPower}:</td>
-          <td colspan="2" class="list1_input" valign="top"><input name="admin_issue" type="checkbox" value="yes">{$lang_adminaddTip2}</td>
+          <td class="list1_text" valign="middle"><font color="#FF0000">*</font>{$lang_adminPower}</td>
+          <td colspan="2" class="list1_input" valign="top"><input name="admin_issue" type="checkbox" value="yes">{$lang_adminTip2}</td>
           </tr>
 		  <tr> 
-          <td class="list1_text" valign="middle"><font color="#FF0000">*</font>{$lang_adminaddOperate}:</td>
-          <td colspan="2" class="list1_input" valign="top"><font color="#FF0000"><input name="admin_op0" type="checkbox" value="metinfo" checked="checked">{$lang_adminaddOperate1}</font>&nbsp;&nbsp;<input name="admin_op1" type="checkbox" value="add">{$lang_adminaddOperate2}&nbsp;&nbsp;<input name="admin_op2" type="checkbox" value="editor">{$lang_adminaddOperate3}&nbsp;&nbsp;<input name="admin_op3" type="checkbox" value="del">删除信息</td>
+          <td class="list1_text" valign="middle"><font color="#FF0000">*</font>{$lang_adminOperate}</td>
+          <td colspan="2" class="list1_input" valign="top"><font color="#FF0000"><input name="admin_op0" type="checkbox" value="metinfo" checked="checked">{$lang_adminOperate1}</font>&nbsp;&nbsp;<input name="admin_op1" type="checkbox" value="add">{$lang_adminOperate2}&nbsp;&nbsp;<input name="admin_op2" type="checkbox" value="editor">{$lang_adminOperate3}&nbsp;&nbsp;<input name="admin_op3" type="checkbox" value="del">{$lang_adminOperate4}</td>
           </tr>
 		   <tr> 
-          <td class="list1_text" valign="middle"><font color="#FF0000">*</font>{$lang_adminaddColumn}:</td>
+          <td class="list1_text" valign="middle"><font color="#FF0000">*</font>{$lang_adminColumn}</td>
           <td colspan="2" class="list1_input" valign="top"><font color="#FF0000">
-<input name="admin_pop" type="checkbox" value="yes">{$lang_adminaddSelectAll}</font><br>
+<input name="admin_pop" type="checkbox" value="yes">{$lang_adminSelectAll}</font><br>
 <b>{$lang_indexbasic}:</b>
 <input name="admin_pop1001" type="checkbox" value="1001">{$lang_indexbasicinfo}&nbsp;
 <input name="admin_pop1002" type="checkbox" value="1002">{$lang_indexlang}&nbsp;
@@ -91,9 +91,9 @@ echo <<<EOT
 
 <b>{$lang_indexcolumn}:</b>
 <input name="admin_pop1201" type="checkbox" value="1201">{$lang_indexcolumn}&nbsp;
-<input name="admin_pop1202" type="checkbox" value="1202">{$lang_indexproduct}&nbsp;
-<input name="admin_pop1203" type="checkbox" value="1203">{$lang_indexdownload}&nbsp;
-<input name="admin_pop1204" type="checkbox" value="1204">{$lang_indeximages}&nbsp;
+<input name="admin_pop1202" type="checkbox" value="1202">{$lang_mod3}{$lang_mod}{$lang_parameter}&nbsp;
+<input name="admin_pop1203" type="checkbox" value="1203">{$lang_mod4}{$lang_mod}{$lang_parameter}&nbsp;
+<input name="admin_pop1204" type="checkbox" value="1204">{$lang_mod5}{$lang_mod}{$lang_parameter}&nbsp;
 <input name="admin_pop1205" type="checkbox" value="1205">{$lang_indexcv}<br>
 
 <b>{$lang_indexcontent}:</b>

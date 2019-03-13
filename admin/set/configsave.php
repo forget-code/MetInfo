@@ -2,6 +2,10 @@
 # 文件名称:configsave.php 2009-08-01 22:01:57
 # MetInfo企业网站管理系统 
 # Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn)). All rights reserved.
+require_once '../login/login_check.php';
+$met_c_footstat    =str_replace("\\\"","",$met_c_footstat);
+$met_e_footstat    =str_replace("\\\"","",$met_e_footstat);
+$met_o_footstat    =str_replace("\\\"","",$met_o_footstat);
 $met_c_webname     =str_replace("\"","'",$met_c_webname);
 $met_e_webname     =str_replace("\"","'",$met_e_webname);
 $met_o_webname     =str_replace("\"","'",$met_o_webname);

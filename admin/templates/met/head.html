@@ -2,6 +2,8 @@
 # 文件名称:head.html 2009-08-15 14:54:57
 # MetInfo企业网站管理系统 
 # Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+$lang_fontfamily=str_replace("'","\"",$lang_fontfamily);
+$lang_fontfamily=str_replace("&quot;","\"",$lang_fontfamily);
 echo <<<EOT
 -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -15,7 +17,6 @@ echo <<<EOT
 body {
 	font-size: $lang_fontsize; 
 	font-family:$lang_fontfamily;
-	background-color:$lang_backgroundcolor;
 }
 </style>
 <!--

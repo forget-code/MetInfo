@@ -156,9 +156,9 @@ A:hover { COLOR:#FF6600}
 
 /*图片模块开始*/
 .img_list{ width:100%; height:auto;}
-.img_list li{ width:200px; height:auto; text-align:center; float:left; margin:15px; overflow:auto; list-style:none;}
-.img_list li .info_img{ overflow:hidden; width:100%; float:left;}
-.img_list li .info_title{ width:200px; height:25px; line-height:25px; font-weight:bold;}
+.img_list li{ width:200px; text-align:center; float:left; margin:15px; _margin:10px; overflow:hidden; list-style:none;}
+.img_list li .info_img{ overflow:hidden; display:block;}
+.img_list li .info_title{ width:200px; height:25px; display:block; line-height:25px; font-weight:bold;}
 .img_content{ width:100%; float:left; margin-left:3px; height: auto; line-height:22px; border-bottom:1px dashed #666666; overflow:hidden; padding-bottom:5px; }
 .img_content .info_img{ width:98%; height:auto; margin:5px; float:left; text-align:center;}
 .img_content .info_img img{ border:0px;}

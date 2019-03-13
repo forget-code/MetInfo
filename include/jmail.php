@@ -1,36 +1,69 @@
 <?php
-# 文件名称:jmail.php 2009-08-18 08:53:03
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
 
-function jmailsend($from,$fromname,$to,$title,$body,$usename,$usepassword,$smtp){
-global $met_c_charset,$met_e_charset,$met_o_charset,$lang;
-$charset=$lang=="en"?$met_e_charset:($lang=="other"?$met_o_charset:$met_c_charset);
-$jmail=new COM("JMail.Message")or die("Jmail is disable");
-//屏蔽例外错误，静默处理
-$jmail->silent=true;
-//编码必须设置，否则中文会乱码
-$jmail->charset="$charset";
-//发信人邮件地址和名称，能自定义，可以和邮件发送账号不同
-$jmail->From=$from;
-$jmail->FromName=$fromname;
-//添加多个邮件接受者
-$toarray=explode("|",$to);
-$tocount=count($toarray);
-for($k=0;$k<$tocount;$k++){
-$jmail->AddRecipient($toarray[$k]);
+include('mail/class.phpmailer.php');
+//include("class.smtp.php"); // optional, gets called from within class.phpmailer.php if not already loaded
+if ( ! function_exists('jmailsend'))
+{
+	function jmailsend($from,$fromname,$to,$title,$body,$usename,$usepassword,$smtp,$repto,$repname)
+	{
+		$mail             = new PHPMailer();
+		//$mail->SMTPDebug  = 3;
+		
+		$mail->CharSet    = "UTF-8"; // charset
+		$mail->Encoding   = "base64";
+
+		$mail->IsSMTP(); // telling the class to use SMTP
+
+		//邮件系统配置
+		$mail->SMTPAuth   = true;
+		$mail->Host       = $smtp; // SMTP server
+		$mail->Username   = $usename; // SMTP account username
+		$mail->Password   = $usepassword;        // SMTP account password
+
+		$mail->From       = $from;//必填，发件人Email 
+		$mail->FromName   = $fromname; //必填，发件人昵称或姓名 
+
+		//回复
+		if($repto!=""){
+			$name = isset($repname)?$repname:$repto;
+			$mail->AddReplyTo($repto, $name);
+		}
+		$mail->WordWrap   = 50; // 自动换行的字数
+		
+		//主题
+		$mail->Subject		= (isset($title)) ? $title : '';//必填，邮件标题（主题）
+
+		
+		//$mail->AltBody    = "To view the message, please use an HTML compatible email viewer!"; // 可选，纯文本形势下用户看到的内容
+
+		//邮件主体
+		$body             = eregi_replace("[\]",'',$body);
+		$mail->MsgHTML($body);
+        
+		
+		//发送地址
+		if($to)
+		{
+			$address = explode("|",$to);
+			foreach($address AS $key => $val)
+			{
+				$mail->AddAddress($val, "");
+			}
+		}
+		//发送附件
+		//if(isset($data['attach']))
+		//{
+			//$attach = explode("|",$data['attach']);
+			//foreach($attach AS $key => $val)
+			//{
+				//$mail->AddAttachment($val,"");             // 附件
+			//}			
+		//}
+		if(!$mail->Send()) {
+		  //echo "Mailer Error: " . $mail->ErrorInfo;
+		} else {
+		 // echo "Message sent!";
+		}
+	}
 }
-//邮件主题和正文信息
-$jmail->ContentType ='text/html';   //设置邮件格式为html格式
-$jmail->Subject = mb_convert_encoding($title, "$charset", 'UTF-8'); 
-$jmail->Body = mb_convert_encoding($body, "$charset", 'UTF-8'); 
-//发信邮件账号和密码
-$jmail->MailServerUserName=$usename;
-$jmail->MailServerPassword=$usepassword;
-    $email = $jmail->Send($smtp);
-    if($email)$msg= '发送成功';
-    else $msg= '发送失败';
-}
-# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
 ?>

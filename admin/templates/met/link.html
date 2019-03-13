@@ -25,16 +25,16 @@ if($show_ok==0 && $show_ok<>""){
  }
 echo <<<EOT
 -->
-<title>{$lang_linkTitle}</title>
+<title>{$lang_indexlink}{$lang_manager}</title>
 </head>
 <body>
 <br>
 <table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
           <tr> 
-            <td colspan="9" align="center" class="list1_title">{$lang_linkTitle}</td>
+            <td colspan="9" align="center" class="list1_title">{$lang_indexlink}{$lang_manager}</td>
           </tr>
        <tr>
-	        <td align="left" class="list1_input list9" colspan="9">{$lang_linkType}：
+	        <td align="left" class="list1_input list9" colspan="9">{$lang_linkType}
 			<a href="index.php?show_ok=0" $style1>{$lang_linkType1}</a>&nbsp;|&nbsp;
 			<a href="index.php?com_ok=1" $style2>{$lang_linkType2}</a>&nbsp;|&nbsp;
 			<a href="index.php" $style3>{$lang_linkType3}</a>&nbsp;|&nbsp;
@@ -68,15 +68,15 @@ echo <<<EOT
 
 </td> </tr>
               <tr>
-                <td width="5%" class="list1_top" align="center">{$lang_linkSelect}</td>
+                <td width="5%" class="list1_top" align="center">{$lang_selected}</td>
 				<td width="5%" class="list1_top" align="center">ID</td>
                 <td width="8%" class="list1_top" align="center">{$lang_linkType}</td>
                 <td width="18%" class="list1_top" align="center" >{$lang_linkName}</td>
                 <td width="26%" class="list1_top" align="center" >{$lang_linkKeys}</td>
-                <td width="6%" class="list1_top" align="center" >{$lang_linkSort}</td>
+                <td width="6%" class="list1_top" align="center" >{$lang_ordernum}</td>
 				<td width="6%" class="list1_top" align="center" >{$lang_linkCheck}</td>
-				<td width="6%" class="list1_top" align="center" >{$lang_linkRecommend}</td>
-				<td width="10%" class="list1_top" align="center" >{$lang_linkOperate}</td>
+				<td width="6%" class="list1_top" align="center" >{$lang_recom}</td>
+				<td width="10%" class="list1_top" align="center" >{$lang_operate}</td>
               </tr>
 			  <form name="del" method="Post" action="delete.php" onSubmit="return ConfirmDelall();">
 <!--
@@ -93,7 +93,7 @@ echo <<<EOT
 				<td class="list1_content" align="center">$val[orderno]</td>
                 <td class="list1_content" align="center">$val[show_ok]</td>
                 <td class="list1_content" align="center">$val[com_ok]</td>          
-				<td align="center" class="list1_content" style="color:#0066FF;"></a> <a href="editor.php?id=$val[id]" >{$lang_linkEdit}</a> | <a href="delete.php?id=$val[id]" onClick="return ConfirmDel();" >{$lang_linkDel}</a></td>
+				<td align="center" class="list1_content" style="color:#0066FF;"></a> <a href="editor.php?id=$val[id]" >{$lang_editor}</a> | <a href="delete.php?id=$val[id]" onClick="return ConfirmDel();" >{$lang_delete}</a></td>
               </tr>
 <!--
 EOT;
@@ -103,17 +103,17 @@ echo <<<EOT
 		   
    	   <tr> 
             <td class="input_bottom" align="center"><input name="chkAll" class="xz" type="checkbox" id="chkAll" onclick=CheckAll(this.form) value="checkbox"></td>
-            <td class="input_bottom" align="center">{$lang_linkSelectAll}</td>
-			<td class="input_bottom" align="left" colspan="8"><input name="submit" type='submit' value='{$lang_linkDelSelected}' style="*padding-top:2px; *height:22px;"> 
+            <td class="input_bottom" align="center">{$lang_selectall}</td>
+			<td class="input_bottom" align="left" colspan="8"><input name="submit" type='submit' value='{$lang_deleteselected}' style="*padding-top:2px; *height:22px;"> 
               <input name="action" type="hidden" id="action" value="del">
 			  <input name="allid" type="hidden" id="allid" value=""></form></td>
           </tr>
 		  <tr>
             <td class="input_search" colspan="9" align="left">
 			<form method="POST" name="myform"  action="index.php?search=detail_search" target="_self">
-			       <span><b>{$lang_linkSearch}：</b></span>
-			    <input name="c_webname" type="text" size="30">
-  <input type="submit" name="Submit2" value="{$lang_linkDo}" class="tj" style="*padding-top:2px; *height:22px;">  
+			       <span><b>{$lang_indexlink}{$lang_search}</b></span>
+			    <input name="webname" type="text" size="30">
+  <input type="submit" name="Submit2" value="{$lang_search}" class="tj" style="*padding-top:2px; *height:22px;">  
 	        {$lang_linkTip2}</form></td>
           </tr>
    	   <tr>

@@ -8,10 +8,10 @@ require_once '../login/login_check.php';
 	 while($list = $db->fetch_array($result)) {
 	 switch($list['access'])
      {
-    	case '1':$list['access']=$lang_columnAccess1;break;
-    	case '2':$list['access']=$lang_columnAccess2;break;
-    	case '3':$list['access']=$lang_columnAccess3;break;
-		default:$list['access']=$lang_columnAccess0;break;
+    	case '1':$list['access']=$lang_access1;break;
+    	case '2':$list['access']=$lang_access2;break;
+    	case '3':$list['access']=$lang_access3;break;
+		default:$list['access']=$lang_access0;break;
 	 }
 	 $list['name']=$langusenow=="en"?$list['e_name']:($langusenow=="other"?$list['o_name']:$list['c_name']);
 	 if($langusenow=="en" && $met_e_lang_ok!=1) $list['name']=$met_c_lang_ok==1?$list['c_name']:$list['o_name'];

@@ -38,6 +38,8 @@ if($index[online_type]=="1" and $met_online_type=="0" )$met_online_type=2;
 if($index[online_type]=="0" )$met_online_type=3;
 $index[content]=($lang=="en")?$index[e_content]:(($lang=="other")?$index[o_content]:$index[c_content]);	
 
+if(!isset($dataoptimize[$pagemark][job]))$dataoptimize[$pagemark][job]=$dataoptimize[10000][job];
+if($dataoptimize[$pagemark][job]){
     $query = "SELECT * FROM $met_job where top_ok='1' order by addtime desc";
     $result = $db->query($query);
 	while($list= $db->fetch_array($result)){
@@ -48,6 +50,11 @@ if($list[position]<>""){
 	$list[content]=($lang=="en")?$list[e_content]:(($lang=="other")?$list[o_content]:$list[c_content]);
 	$list[top]="<img src='".$navurl.$img_url."top.gif"."' />";
 	$list[news]="";
+	 if($met_submit_type==1){
+	   $list[cv]=$cv[url].$list[id];
+	   }else{
+	   $list[cv]=$cv[url];
+	   }
 	 switch($met_htmpagename){
      case 0:
 	 $htmname="job/showjob".$list[id];
@@ -71,8 +78,6 @@ if($list[position]<>""){
 	}
 }
 
-if(!isset($dataoptimize[$pagemark][job]))$dataoptimize[$pagemark][job]=$dataoptimize[10000][job];
-if($dataoptimize[$pagemark][job]){
     $query = "SELECT * FROM $met_job where top_ok='0' order by addtime desc";
 	nave1_1();
     $result = $db->query($query);
@@ -98,7 +103,11 @@ if($list[position]<>""){
 	 $phpname="job/showjob.php?id=".$list[id];	
 	 break;
 	 }
-
+	 if($met_submit_type==1){
+	   $list[cv]=$cv[url].$list[id];
+	   }else{
+	   $list[cv]=$cv[url];
+	   }
 	 $list[c_url]=$met_webhtm?$htmname.$met_c_htmtype:$phpname;
 	 $list[e_url]=$met_webhtm?$htmname.$met_e_htmtype:$phpname."&lang=en";
 	 $list[o_url]=$met_webhtm?$htmname.$met_o_htmtype:$phpname."&lang=other";

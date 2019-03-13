@@ -32,12 +32,12 @@ function form_submit(id,delid)
 		   document.theform.yhid.select(); 
            return false;
          }
-       else if(/[^0-9a-zA-Z]/g.test(document.theform.yhid.value))
-		  {alert("{$lang_js6}");
-		   document.theform.yhid.focus();
-		   document.theform.yhid.select(); 
-		   return false;
-		   }
+       //else if(/[^0-9a-zA-Z]/g.test(document.theform.yhid.value))
+		  //{alert("{$lang_js6}");
+		  // document.theform.yhid.focus();
+		  // document.theform.yhid.select(); 
+		 //  return false;
+		 //  }
 	   if(trim(document.theform.yhid.value).length<3) 
          { alert("{$lang_js7}");
 		   document.theform.yhid.focus();

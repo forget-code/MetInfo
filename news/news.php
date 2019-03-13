@@ -84,7 +84,17 @@ require_once '../include/head.php';
 	$list[e_url]=$met_webhtm?$htmname.$met_e_htmtype:$phpname."&lang=en";
 	$list[o_url]=$met_webhtm?$htmname.$met_o_htmtype:$phpname."&lang=other";
 	$list[url]=($lang=="en")?$list[e_url]:(($lang=="other")?$list[o_url]:$list[c_url]);
-	
+if($met_member_use==2){
+   if($list[class3]!=0&&$class3_list[$list[class3]][name]==""){
+   $nowaccess=100;
+   }elseif($list[class2]!=0&&$class2_list[$list[class2]][name]==""){
+   $nowaccess=101;
+   }elseif($list[class1]!=0&&$class1_list[$list[class1]][name]==""){
+   $nowaccess=102;
+   }else{
+   $nowaccess=max(intval($list[access]),intval($class3_list[$list[class3]][access]),intval($class2_list[$list[class2]][access]),intval($class1_list[$list[class1]][access]));
+   }
+ if(intval($metinfo_member_type)>=intval($nowaccess)){   
 	if($list[img_ok] == 1){
 	$news_list_new[]=$list;
     if($list[class1]!=0)$news_class_new[$list[class1]][]=$list;
@@ -102,7 +112,24 @@ require_once '../include/head.php';
 	if($list[class3]!=0)$news_class[$list[class3]][]=$list;
     $news_list[]=$list;
 	}
-
+ }else{
+ 	if($list[img_ok] == 1){
+	$news_list_new[]=$list;
+    if($list[class1]!=0)$news_class_new[$list[class1]][]=$list;
+	if($list[class2]!=0)$news_class_new[$list[class2]][]=$list;
+	if($list[class3]!=0)$news_class_new[$list[class3]][]=$list;
+	}
+	if($list[com_ok] == 1){
+	$news_list_com[]=$list;
+	if($list[class1]!=0)$news_class_com[$list[class1]][]=$list;
+	if($list[class2]!=0)$news_class_com[$list[class2]][]=$list;
+	if($list[class3]!=0)$news_class_com[$list[class3]][]=$list;
+	}
+	if($list[class1]!=0)$news_class[$list[class1]][]=$list;
+	if($list[class2]!=0)$news_class[$list[class2]][]=$list;
+	if($list[class3]!=0)$news_class[$list[class3]][]=$list;
+    $news_list[]=$list;
+ }}
 if($met_webhtm==2){
 if($class3<>0){
 $met_pagelist=((!$met_htmlistname)?$modulename[$class1_info[module]][0]:$class1_info[foldername])."_".$class1."_".$class2."_".$class3."_";
@@ -121,7 +148,7 @@ $o_page_list = $rowset->link("news.php?lang=other&class1=$class1&class2=$class2&
 }
 $page_list=($lang=="en")?$e_page_list:(($lang=="other")?$o_page_list:$c_page_list);
 
-$class_info=$class3?$class3_info:($class2?$$class2_info:$class1_info);
+$class_info=$class3?$class3_info:($class2?$class2_info:$class1_info);
 
 
 $class_info[e_name]=$class1_info[e_name];

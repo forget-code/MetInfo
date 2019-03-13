@@ -1,70 +1,72 @@
 ﻿<!--<?php
-# 文件名称:sysadmin.html 2009-08-15 14:34:57
+# 文件名称sysadmin.html 2009-08-15 14:34:57
 # MetInfo企业网站管理系统 
 # Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
 require_once template('head');
 echo <<<EOT
 -->
-<title>{$lang_sysadminTitle}</title>
+<title>{$lang_sysadminSystemInfo}</title>
 </head>
 <body>
 <table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
   <tr> 
     <td colspan="3" align="center" class="list1_title">{$lang_sysadminSystemInfo}</td>
   </tr>
-  <tr><td class="list1_text in">{$lang_sysadminUnread}:</td>
-      <td class="list1_input"><span class="span_index">{$lang_sysadminFeedbackInfo}:<font class="t6">$feedback</font>{$lang_sysadminItem}</span>
-	                          <span class="span_index">{$lang_sysadminLeaveMessage}:<font class="t6">$message</font>{$lang_sysadminItem}</span>
-	                          <span class="span_index">{$lang_sysadminFriendlyLink}:<font class="t6">$link</font>{$lang_sysadminItem}</span>
-							  <span class="span_index">{$lang_sysadminMember}:<font class="t6">$member</font>{$lang_sysadminItem}</span>
+  <tr><td class="list1_text in">{$lang_sysadminUnread}</td>
+      <td class="list1_input"><span class="span_index">{$lang_sysadminFeedbackInfo}<font class="t6">$feedback</font>{$lang_item}</span>
+	                          <span class="span_index">{$lang_sysadminLeaveMessage}<font class="t6">$message</font>{$lang_item}</span>
+	                          <span class="span_index">{$lang_sysadminFriendlyLink}<font class="t6">$link</font>{$lang_item}</span>
+							  <span class="span_index">{$lang_sysadminMember}<font class="t6">$member</font>{$lang_item}</span>
 	  </td>
   </tr>
   <tr>
-       <td class="list1_text in">{$lang_sysadminUserInfo}:</td>
+       <td class="list1_text in">{$lang_sysadminUserInfo}</td>
 	   <td class="list1_input">
-	   <span class="span_index">{$lang_sysadminUsername}：<font class="t4">$metinfo_admin_name</font></span>
-	   <span class="span_index">IP:<font class="t4">$m_user_ip</font></span>
-	   <span class="span_index">{$lang_sysadminLoginNum}:<font class="t4">$admin_login</font></span>
-	   <span class="span_index">{$lang_sysadminLoginTime}:<font class="t4">$admin_modify_date</font></span>
+	   <span class="span_index">{$lang_sysadminUsername}<font class="t4">$metinfo_admin_name</font></span>
+	   <span class="span_index">IP<font class="t4">$m_user_ip</font></span>
+	   <span class="span_index">{$lang_sysadminLoginNum}<font class="t4">$admin_login</font></span>
+	   <span class="span_index">{$lang_sysadminLoginTime}<font class="t4">$admin_modify_date</font></span>
 	   </td>
   </tr>
   <tr>
-       <td class="list1_text in">{$lang_sysadminSystemInfo}:</td>
+       <td class="list1_text in">{$lang_sysadminSystemInfo}</td>
 	   <td class="list1_input">
-	   <span class="span_index">{$lang_sysadminDBVersion}:<font class="t4">$mysql1</font></span>
-	   <span class="span_index">{$lang_sysadminServer}：<font class="t4">$SERVER_SIGNATURE1</font></span>
+	   <span class="span_index">{$lang_sysadminDBVersion} <font class="t4">$mysql1</font></span>
+	   <span class="span_index">{$lang_sysadminServer} <font class="t4">$SERVER_SIGNATURE1</font></span>
 	   </td>
 	   </tr>
   <tr>
-       <td class="list1_text in">{$lang_sysadminTechnicalSupport}:</td>
+       <td class="list1_text in">{$lang_sysadminSupport}</td>
 	   <td class="list1_input">
-	   <span class="span_index">{$lang_sysadminForum}:<a href="http://bbs.metinfo.cn" target="_blank">bbs.metinfo.cn</a></span>
-	   <span class="span_index">{$lang_sysadminTechnicalEmail}:support@metinfo.cn</span>
+	   <span class="span_index">{$lang_indexbbs} <a href="http://bbs.metinfo.cn" target="_blank">bbs.metinfo.cn</a></span>
+	   <span class="span_index">{$lang_indexebook} <a href="http://www.metinfo.cn/ebook" target="_blank">http://www.metinfo.cn/ebook</a></span>
 	   </td>
   </tr>
    <tr>
-       <td class="list1_text in">{$lang_sysadminBuyProducts}:</td>
+       <td class="list1_text in">{$lang_sysadminBuyProducts}</td>
 	   <td class="list1_input">
-	   <span class="span_index">{$lang_sysadminOfficialWebsite}:<a href="http://www.metinfo.cn" target="_blank">www.metinfo.cn</a></span>
-	   <span class="span_index">QQ:426507856&nbsp;&nbsp;Email:sales@metinfo.cn</td></span>
+	   <span class="span_index">{$lang_sysadminOfficialWebsite} <a href="http://www.metinfo.cn" target="_blank">www.metinfo.cn</a></span>
+	   <span class="span_index">Email <a href="mailto:sales@metinfo.cn">sales@metinfo.cn</a></td></span>
    </tr>
   <tr>
-       <td class="list1_text in">{$lang_sysadminHelp}:</td>
+       <td class="list1_text in">{$lang_sysadminHelp}</td>
 	   <td class="list1_input">
-	   <span class="span_index">{$lang_sysadminHelp1}； <br>
-        {$lang_sysadminHelp2}；<br>
-		{$lang_sysadminHelp3}；<br>
-		{$lang_sysadminHelp4}；<br>
-		{$lang_sysadminHelp5}；<br></span>
+	   <span class="span_index">{$lang_sysadminHelp1} <br>
+        {$lang_sysadminHelp2}<br>
+		{$lang_sysadminHelp3}<br>
+		{$lang_sysadminHelp4}<br>
+		{$lang_sysadminHelp5}<br></span>
       </td>
   </tr>
   <tr>
-       <td class="list1_text in">{$lang_sysadminUseAgreement}:</td>
+       <td class="list1_text in">{$lang_sysadminUseAgreement}</td>
 	   <td class="list1_input"><span class="span_index">
-        {$lang_sysadminAgreement1}； <br>
-        {$lang_sysadminAgreement2}；<br>
-        {$lang_sysadminAgreement3}；<br>
-        {$lang_sysadminAgreement4}；</span>
+        {$lang_sysadminAgreement1}<br>
+        {$lang_sysadminAgreement2}<br>
+        {$lang_sysadminAgreement3}<br>
+        {$lang_sysadminAgreement4}<br>
+		<a href="http://www.metinfo.cn/ebook/introduction/license.html" target="_blank">{$lang_sysadminlicense}</a><br>
+		</span>
       </td>
   </tr>
   <tr>

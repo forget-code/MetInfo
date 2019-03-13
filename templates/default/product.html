@@ -2,7 +2,7 @@
 $navdown="nav_".$class1_info[id];
 if($class_list[$classnow][nav]==1||$class_list[$classnow][nav]==3)$navdown="nav_".$class_list[$classnow][id];
 require_once template('head');
-$met_product=methtml_product('img','all','','4','1','0','0','0');
+$met_product=methtml_product('img','all','','4','1','0','0','0'); //调用产品列表
 echo <<<EOT
 -->
 <div class="web">
@@ -12,6 +12,11 @@ require_once template('webleft');
 echo <<<EOT
 -->
 <div class="webcontent"> 
+<style>
+.pro_content ul li{ height:{$met_img_y}px;}
+.pro_content ul li img{ width:{$met_img_x}px; height:{$met_img_y}px;}
+.pro_content ul li span.info_img{  width:{$met_img_x}px;}
+</style>
 <div class="pro_content">
 $met_product
 </div>
@@ -19,9 +24,6 @@ $met_product
 </div>
 </div>
 <div style="clear:both;"></div>
-
-
-
 </div>
 <!--
 EOT;

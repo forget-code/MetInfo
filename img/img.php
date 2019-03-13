@@ -28,30 +28,39 @@ require_once '../include/head.php';
 	if($class2)$serch_sql .= " and class2=$class2";
 	if($class3)$serch_sql .= " and class3=$class3"; 
 	$paralang=($lang=="en")?'e_':(($lang=="other")?'o_':'c_');
-	if($title<>''){
-	  $serch_sql .= " and $paralang"."title='".trim($title)."'"; 
+if($searchtype){
+   if($title<>''){
+	  $serch_sql .= " and ".$paralang."title='".trim($title)."' "; 
 	  $serchpage .= "&".$paralang."title=".trim($title); 
 	  }
 	foreach($img_para200 as $key=>$val){
 	$paratitle=$$val[name];
-	if($searchtype){
 	  if(trim($paratitle)<>''){
-	   $serch_sql .= " and $paralang"."$val[name]='".trim($paratitle)."'"; 
+	   $serch_sql .= " and ".$paralang.$val[name]."='".trim($paratitle)."'"; 
 	   $serchpage .= "&".$paralang.$val[name]."=".trim($paratitle);
 	   }
-	}else{
-	  if(trim($paratitle)<>''){
-	   $serch_sql .= " and $paralang"."$val[name] like '%".trim($paratitle)."%'"; 
+     }
+}else{
+    if($title<>''){
+	  $serch_sql .= " and ".$paralang."title like '%".trim($title)."%'"; 
+	  $serchpage .= "&".$paralang."title=".trim($title); 
+	  }
+    if($content<>''){
+	   $serch_sql .= " and (".$paralang."content like '%".trim($content)."%' or ".$paralang."title like '%".trim($content)."%')"; 
+	   $serchpage .= "&".$paralang."content=".trim($content); 
+	   }
+	foreach($img_para200 as $key=>$val){
+	$paratitle=$$val[name];
+	if(trim($paratitle)<>''){
+	   $serch_sql .= " and ".$paralang."$val[name] like '%".trim($paratitle)."%'"; 
 	   $serchpage .= "&".$paralang.$val[name]."=".trim($paratitle);
 	   }
 	 }
+}  
 	
-	}
+	
 	$serchpage .= "&searchtype=".$searchtype;
-	if($content<>''){
-	   $serch_sql .= " and $paralang"."content like '%".trim($content)."%'"; 
-	   $serchpage .= "&".$paralang."content=".trim($content); 
-	   }
+
 	$serch_sql .=($lang=="en")?" and e_title<>'' ":(($lang=="other")?" and o_title<>'' ":" and c_title<>'' ");
 	$order_sql=$class3?list_order($class3_info[list_order]):($class2?list_order($class2_info[list_order]):list_order($class1_info[list_order]));
     $total_count = $db->counter($met_img, "$serch_sql", "*");
@@ -131,7 +140,17 @@ require_once '../include/head.php';
 	$list[e_url]=$met_webhtm?$htmname.$met_e_htmtype:$phpname."&lang=en";
 	$list[o_url]=$met_webhtm?$htmname.$met_o_htmtype:$phpname."&lang=other";
 	$list[url]=($lang=="en")?$list[e_url]:(($lang=="other")?$list[o_url]:$list[c_url]);
-	
+if($met_member_use==2){
+   if($list[class3]!=0&&$class3_list[$list[class3]][name]==""){
+   $nowaccess=100;
+   }elseif($list[class2]!=0&&$class2_list[$list[class2]][name]==""){
+   $nowaccess=101;
+   }elseif($list[class1]!=0&&$class1_list[$list[class1]][name]==""){
+   $nowaccess=102;
+   }else{
+   $nowaccess=max(intval($list[access]),intval($class3_list[$list[class3]][access]),intval($class2_list[$list[class2]][access]),intval($class1_list[$list[class1]][access]));
+   }
+ if(intval($metinfo_member_type)>=intval($nowaccess)){	
 	if($list[new_ok] == 1){
 	$img_list_new[]=$list;
     if($list[class1]!=0)$img_class_new[$list[class1]][]=$list;
@@ -149,7 +168,25 @@ require_once '../include/head.php';
 	if($list[class3]!=0)$img_class[$list[class3]][]=$list;
     $img_list[]=$list;
 	}
-	
+}else{
+	if($list[new_ok] == 1){
+	$img_list_new[]=$list;
+    if($list[class1]!=0)$img_class_new[$list[class1]][]=$list;
+	if($list[class2]!=0)$img_class_new[$list[class2]][]=$list;
+	if($list[class3]!=0)$img_class_new[$list[class3]][]=$list;
+	}
+	if($list[com_ok] == 1){
+	$img_list_com[]=$list;
+	if($list[class1]!=0)$img_class_com[$list[class1]][]=$list;
+	if($list[class2]!=0)$img_class_com[$list[class2]][]=$list;
+	if($list[class3]!=0)$img_class_com[$list[class3]][]=$list;
+	}
+	if($list[class1]!=0)$img_class[$list[class1]][]=$list;
+	if($list[class2]!=0)$img_class[$list[class2]][]=$list;
+	if($list[class3]!=0)$img_class[$list[class3]][]=$list;
+    $img_list[]=$list;
+}
+}	
 if($search=='search'){
 
 $c_page_list = $rowset->link("img.php?class1=$class1&class2=$class2&class3=$class3".$serchpage."search=search&page=");		
@@ -186,7 +223,7 @@ if($class2 && count($nav_list3[$class2])&& (!$class3) ){
 }else{	
 $page_list=($lang=="en")?$e_page_list:(($lang=="other")?$o_page_list:$c_page_list);
 }
-$class_info=$class3?$class3_info:($class2?$$class2_info:$class1_info);
+$class_info=$class3?$class3_info:($class2?$class2_info:$class1_info);
 
 
 $class_info[e_name]=$class1_info[e_name];

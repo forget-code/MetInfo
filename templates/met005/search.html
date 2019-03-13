@@ -1,0 +1,56 @@
+<!--<?php
+require_once template('head'); 
+$methtml_searchlist=methtml_searchlist();
+$metsearchadv=methtml_advsearch();
+echo <<<EOT
+-->
+<div class="web">
+<div class="webleft">
+<div class="web_left_title"><span>$class1_info[name]</span></div>
+	 <div class="webleft_content">
+<div class="selist">
+$metsearchadv
+</div>
+        		<div class="aq" style="margin-top:8px;">
+<div class="web_left_title"><span>{$lang_Column2}</span></div>
+	<div>
+<ul>
+<!--
+EOT;
+foreach(methtml_getarray('','com','time','product') as $key=>$val){
+echo <<<EOT
+-->
+<li><a href="$val[url]" target="_blank" title="$val[title]">$val[title]</a></li>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</ul>
+	</div>
+        </div>
+     $met_online
+     </div>
+<div class="b"><div></div></div>
+
+ 
+</div>
+
+<div class="webright">
+   <div class="web_right_title"><span>{$class_list[$classnow][name]}</span></div>
+  <div class="webcontent">
+<div class="searchul">
+$methtml_searchlist
+</div>
+<div class="web_bottom">$page_list</div>
+</div>
+<div class="main_bottom_bgb"><div></div></div>
+</div>
+
+<div style="clear:both;"></div>
+
+</div>
+<!--
+EOT;
+require_once template('foot'); 
+?>

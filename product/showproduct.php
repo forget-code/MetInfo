@@ -45,12 +45,13 @@ for($j=1;$j<=24;$j++){
 }
     $preproduct=$db->get_one("select * from $met_product where class1=$class1 and class2=$class2 and class3=$class3 and (id > $id) limit 0,1");
     $nextproduct=$db->get_one("select * from $met_product where class1=$class1 and class2=$class2 and class3=$class3 and (id < $id) order by id desc limit 0,1");
+if($dataoptimize[3][otherlist]){	
 	$serch_sql=" where class1=$class1 ";
 	if($class2)$serch_sql .= " and class2=$class2";
 	if($class3)$serch_sql .= " and class3=$class3"; 
 	$serch_sql .=($lang=="en")?" and e_title<>'' ":(($lang=="other")?" and o_title<>'' ":" and c_title<>'' ");
 	$order_sql=$class3?list_order($class3_info[list_order]):($class2?list_order($class2_info[list_order]):list_order($class1_info[list_order]));
-    $query = "SELECT * FROM $met_product $serch_sql $order_sql";
+    $query = "SELECT * FROM $met_product $serch_sql $order_sql LIMIT 0, $met_product_list";
     $result = $db->query($query);
 	while($list= $db->fetch_array($result)){
 	$list[title]=($lang=="en")?$list[e_title]:(($lang=="other")?$list[o_title]:$list[c_title]);
@@ -103,6 +104,17 @@ for($j=1;$j<=24;$j++){
 	$list[url]=($lang=="en")?$list[e_url]:(($lang=="other")?$list[o_url]:$list[c_url]);
 	if($preproduct[id]==$list[id])$preinfo=$list;  
 	if($nextproduct[id]==$list[id])$nextinfo=$list;
+if($met_member_use==2){
+   if($list[class3]!=0&&$class3_list[$list[class3]][name]==""){
+   $nowaccess=100;
+   }elseif($list[class2]!=0&&$class2_list[$list[class2]][name]==""){
+   $nowaccess=101;
+   }elseif($list[class1]!=0&&$class1_list[$list[class1]][name]==""){
+   $nowaccess=102;
+   }else{
+   $nowaccess=max(intval($list[access]),intval($class3_list[$list[class3]][access]),intval($class2_list[$list[class2]][access]),intval($class1_list[$list[class1]][access]));
+   }
+ if(intval($metinfo_member_type)>=intval($nowaccess)){
 	if($list[new_ok] == 1){
 	$product_list_new[]=$list;
     if($list[class1]!=0)$product_class_new[$list[class1]][]=$list;
@@ -120,6 +132,26 @@ for($j=1;$j<=24;$j++){
 	if($list[class3]!=0)$product_class[$list[class3]][]=$list;
     $product_list[]=$list;
     }
+ }else{
+	if($list[new_ok] == 1){
+	$product_list_new[]=$list;
+    if($list[class1]!=0)$product_class_new[$list[class1]][]=$list;
+	if($list[class2]!=0)$product_class_new[$list[class2]][]=$list;
+	if($list[class3]!=0)$product_class_new[$list[class3]][]=$list;
+	}
+	if($list[com_ok] == 1){
+	$product_list_com[]=$list;
+	if($list[class1]!=0)$product_class_com[$list[class1]][]=$list;
+	if($list[class2]!=0)$product_class_com[$list[class2]][]=$list;
+	if($list[class3]!=0)$product_class_com[$list[class3]][]=$list;
+	}
+	if($list[class1]!=0)$product_class[$list[class1]][]=$list;
+	if($list[class2]!=0)$product_class[$list[class2]][]=$list;
+	if($list[class3]!=0)$product_class[$list[class3]][]=$list;
+    $product_list[]=$list;
+   }
+  }   
+}
      $show[description]=$product[description]?$product[description]:$met_keywords;
      $show[keywords]=$product[keywords]?$product[keywords]:$met_keywords;
 	 $met_title=$product[title]."--".$met_title;

@@ -11,31 +11,31 @@ echo <<<EOT
 <input name="useid" type="hidden"size="20" maxlength="20" value="$admin_list[admin_id]">
 <table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
           <tr> 
-            <td colspan="3" align="center" class="list1_title">{$lang_admindetailTitle}</td>
+            <td colspan="3" align="center" class="list1_title">{$lang_admindetailitle}</td>
           </tr>
           <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font>{$lang_admindetailUserName}：</td>
+            <td class="list1_text"><font color="#FF0000">*</font>{$lang_adminusername}</td>
             <td colspan="2" class="list1_input"> $admin_list[admin_id]</td>
           </tr>  
 		  <tr> 
-            <td class="list1_text">{$lang_admindetailReadlName}：</td>
+            <td class="list1_text">{$lang_adminname}</td>
             <td colspan="2" class="list1_input">$admin_list[admin_name]</td>
           </tr> 
 		  <tr> 
-            <td class="list1_text">{$lang_admindetailSex}：</td>
+            <td class="list1_text">{$lang_adminSex}</td>
             <td colspan="2" class="list1_input">
 <!--
 EOT;
 if($admin_list[admin_sex]==0){
 echo <<<EOT
 -->	
-{$lang_admindetailMan} 
+{$lang_adminMan} 
 <!--
 EOT;
 }else{
 echo <<<EOT
 -->	
-{$lang_admindetailWoman}
+{$lang_adminWoman}
 <!--
 EOT;
 }echo <<<EOT
@@ -43,61 +43,61 @@ EOT;
 			</td>
           </tr> 
 		  <tr> 
-            <td class="list1_text">{$lang_admindetailTel}：</td>
+            <td class="list1_text">{$lang_admintel}</td>
             <td colspan="2" class="list1_input"> $admin_list[admin_tel]</td>
           </tr> 
 		  <tr> 
-            <td class="list1_text">{$lang_admindetailCell}：</td>
+            <td class="list1_text">{$lang_adminmobile}</td>
             <td colspan="2" class="list1_input">$admin_list[admin_mobile]</td>
           </tr> 
 		  <tr> 
-            <td class="list1_text">email：</td>
+            <td class="list1_text">email</td>
             <td colspan="2" class="list1_input">$admin_list[admin_email]</td>
           </tr> 
 		  <tr> 
-            <td class="list1_text">QQ：</td>
+            <td class="list1_text">QQ</td>
             <td colspan="2" class="list1_input">$admin_list[admin_qq]</td>
           </tr> 
 		  <tr> 
-            <td class="list1_text">MSN：</td>
+            <td class="list1_text">MSN</td>
             <td colspan="2" class="list1_input">$admin_list[admin_msn]</td>
           </tr> 
 		  <tr> 
-            <td class="list1_text">{$lang_admindetailTaoBao}：</td>
+            <td class="list1_text">{$lang_adminTaoBao}</td>
             <td colspan="2" class="list1_input">$admin_list[admin_taobao]</td>
           </tr> 
 		  <tr> 
-            <td class="list1_text">{$lang_admindetailLoginNum}：</td>
+            <td class="list1_text">{$lang_adminLoginNum}</td>
             <td colspan="2" class="list1_input">$admin_list[admin_login]</td>
           </tr> 
 		  <tr> 
-            <td class="list1_text">{$lang_admindetailLastLogin}：</td>
+            <td class="list1_text">{$lang_adminLastLogin}</td>
             <td colspan="2" class="list1_input">$admin_list[admin_modify_date]</td>
           </tr> 
 		  <tr> 
-            <td class="list1_text">{$lang_admindetailLastIP}：</td>
+            <td class="list1_text">{$lang_adminLastIP}</td>
             <td colspan="2" class="list1_input">$admin_list[admin_modify_ip]</td>
           </tr> 
 		  <tr> 
-            <td class="list1_text">{$lang_admindetailRegisterTime}：</td>
+            <td class="list1_text">{$lang_adminRegisterTime}</td>
             <td colspan="2" class="list1_input">$admin_list[admin_register_date]</td>
           </tr>
           <tr> 
-          <td class="list1_text" valign="middle">{$lang_admindetailIntro}:</td>
+          <td class="list1_text" valign="middle">{$lang_adminIntro}</td>
           <td colspan="2" class="list1_input" valign="top"> $admin_list[admin_introduction]</td>
           </tr>
 		  <tr> 
-          <td class="list1_text" valign="middle"><font color="#FF0000">*</font>{$lang_admindetailPower}:</td>
-          <td colspan="2" class="list1_input" valign="top"><input name="admin_issue" type="checkbox" value="yes" $admin_issue_ok disabled="disabled">{$lang_admindetailTip2}</td>
+          <td class="list1_text" valign="middle"><font color="#FF0000">*</font>{$lang_adminPower}</td>
+          <td colspan="2" class="list1_input" valign="top"><input name="admin_issue" type="checkbox" value="yes" $admin_issue_ok disabled="disabled">{$lang_adminTip2}</td>
           </tr>
 		  <tr> 
-          <td class="list1_text" valign="middle"><font color="#FF0000">*</font>{$lang_admindetailOperate}:</td>
-          <td colspan="2" class="list1_input" valign="top"><font color="#FF0000"><input name="admin_op0" type="checkbox" value="metinfo" $admin_op_0 disabled="disabled">{$lang_admineditorOperate1}</font>&nbsp;&nbsp;<input name="admin_op1" type="checkbox" value="add" $admin_op_1 disabled="disabled">{$lang_admindetailOperate2}&nbsp;&nbsp;<input name="admin_op2" type="checkbox" value="editor" $admin_op_2 disabled="disabled">{$lang_admindetailOperate3}&nbsp;&nbsp;<input name="admin_op3" type="checkbox" value="del" $admin_op_3 disabled="disabled">{$lang_admindetailOperate4}</td>
+          <td class="list1_text" valign="middle"><font color="#FF0000">*</font>{$lang_adminOperate}</td>
+          <td colspan="2" class="list1_input" valign="top"><font color="#FF0000"><input name="admin_op0" type="checkbox" value="metinfo" $admin_op_0 disabled="disabled">{$lang_admineditorOperate1}</font>&nbsp;&nbsp;<input name="admin_op1" type="checkbox" value="add" $admin_op_1 disabled="disabled">{$lang_adminOperate2}&nbsp;&nbsp;<input name="admin_op2" type="checkbox" value="editor" $admin_op_2 disabled="disabled">{$lang_adminOperate3}&nbsp;&nbsp;<input name="admin_op3" type="checkbox" value="del" $admin_op_3 disabled="disabled">{$lang_adminOperate4}</td>
           </tr>
 		   <tr> 
-          <td class="list1_text" valign="middle"><font color="#FF0000">*</font>{$lang_admindetailAdminPower}:</td>
+          <td class="list1_text" valign="middle"><font color="#FF0000">*</font>{$lang_adminColumn}</td>
           <td colspan="2" class="list1_input" valign="top"><font color="#FF0000">
-<input name="admin_pop" type="checkbox" value="yes" disabled="disabled" $admin_pop>{$lang_admindetailSelectAll}</font><br>
+<input name="admin_pop" type="checkbox" value="yes" disabled="disabled" $admin_pop>{$lang_adminSelectAll}</font><br>
 
 <b>{$lang_indexbasic}:</b>
 <input name="admin_pop1001" type="checkbox" value="1001" $admin_pop1001 disabled="disabled">{$lang_indexbasicinfo}&nbsp;
@@ -117,9 +117,9 @@ EOT;
 
 <b>{$lang_indexcolumn}:</b>
 <input name="admin_pop1201" type="checkbox" value="1201" $admin_pop1201 disabled="disabled">{$lang_indexcolumn}&nbsp;
-<input name="admin_pop1202" type="checkbox" value="1202" $admin_pop1202 disabled="disabled">{$lang_indexproduct}&nbsp;
-<input name="admin_pop1203" type="checkbox" value="1203" $admin_pop1203 disabled="disabled">{$lang_indexdownload}&nbsp;
-<input name="admin_pop1204" type="checkbox" value="1204" $admin_pop1204 disabled="disabled">{$lang_indeximages}&nbsp;
+<input name="admin_pop1202" type="checkbox" value="1202" $admin_pop1202 disabled="disabled">{$lang_mod3}{$lang_mod}{$lang_parameter}&nbsp;
+<input name="admin_pop1203" type="checkbox" value="1203" $admin_pop1203 disabled="disabled">{$lang_mod4}{$lang_mod}{$lang_parameter}&nbsp;
+<input name="admin_pop1204" type="checkbox" value="1204" $admin_pop1204 disabled="disabled">{$lang_mod5}{$lang_mod}{$lang_parameter}&nbsp;
 <input name="admin_pop1205" type="checkbox" value="1205" $admin_pop1205 disabled="disabled">{$lang_indexcv}<br>
 
 <b>{$lang_indexcontent}:</b>
@@ -170,7 +170,7 @@ echo <<<EOT
           </tr>
 		  <tr> 
 		  <td class="list1_text"></td>
-            <td class="list1_input" align="left" colspan="2"><a href="editor.php?id=$id" class="editormenu">{$lang_admindetailModify}</a> &nbsp;&nbsp; <a href="index.php" class="editormenu" >{$lang_admindetailBackup}</a>
+            <td class="list1_input" align="left" colspan="2"><a href="editor.php?id=$id" class="editormenu">{$lang_modify}</a> &nbsp;&nbsp; <a href="index.php" class="editormenu" >{$lang_adminBackup}</a>
 			</td>
           </tr>
             <tr>

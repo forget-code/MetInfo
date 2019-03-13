@@ -22,13 +22,18 @@
     }
 	//取得扩展名
 	$ext = explode(".", $filear["name"]);
-	$ext = $ext[1];
+	$extnum=count($ext)-1;
+	$ext = $ext[$extnum];
 	//设置保存文件名
 	  srand((double)microtime() * 1000000);
       $rnd = rand(100, 999);
       $name = date('U') + $rnd;
       $name = $name.".".$ext;
-
+    $met_file_format=str_replace("php","",strtolower($met_file_format));
+	$met_file_format=str_replace("aspx","",strtolower($met_file_format));
+    $met_file_format=str_replace("asp","",strtolower($met_file_format));
+    $met_file_format=str_replace("jsp","",strtolower($met_file_format));
+    $met_file_format=str_replace("js","",strtolower($met_file_format));
     if ($met_file_format != "" && !in_array(strtolower($ext), explode("|",
         strtolower($met_file_format)))) { 
 		okinfo('javascript:history.go(-1);',$lang_FormatFailJS);      

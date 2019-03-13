@@ -16,21 +16,24 @@ echo <<<EOT
 -->
 <table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
           <tr> 
-            <td colspan="3" align="center" class="list1_title">{$lang_skinManager}</td>
+            <td align="center" class="list1_title">{$lang_skinManager}</td>
           </tr>
           <tr>
             <td height="20" align="left" >
 			  <form method="POST" name="myform"  action="skin_manager.php?action=editor&id=$id" onSubmit="return CheckForm_skin();" target="_self">
-			  <b>{$lang_skinModifyTemplate}：</b>
-			    {$lang_skinName}:
+			  <b>{$lang_modifyTemplate}</b>
+			    {$lang_name} 
 			    <input name="skin_name" type="text" size="16" value="$skin_m[skin_name]">
-			     {$lang_skinDocument}:
+			     {$lang_skinDocument} 
   <input name="skin_file" type="text" size="10"  value="$skin_m[skin_file]">
-  {$lang_skinIntroduce}:
+  {$lang_skinIntroduce} 
   <input name="skin_info" type="text" size="30"  value="$skin_m[skin_info]">
-  <input type="submit" name="Submit2" value="{$lang_skinModify}" class="tj">  
+  <input type="submit" name="Submit2" value="{$lang_modify}" class="tj">  
 	        </form></td>
           </tr>
+		  		<tr>
+		  <td class="list1_footer"  align="center">$foot</td>
+	  </tr>
 </table>
 </body>
 </html>
@@ -47,24 +50,24 @@ echo <<<EOT
           <tr>
             <td  class="list1_input" colspan="7">
 			  <form method="POST" name="myform"  action="skin_manager.php?action=add" onSubmit="return CheckForm_skin();" target="_self">
-			  <b>{$lang_skinAddNew}：</b>
-			    {$lang_skinName}:
+			  <b>{$lang_skinAddNew}</b>
+			    {$lang_name} 
 			    <input name="skin_name" type="text" size="16">
-			     {$lang_skinDocument}:
+			     {$lang_skinDocument} 
   <input name="skin_file" type="text" size="10">
-  {$lang_skinIntroduce}:
+  {$lang_skinIntroduce} 
   <input name="skin_info" type="text" size="30">
-  <input type="submit" name="Submit2" value="{$lang_skinAdd}" class="tj">  
+  <input type="submit" name="Submit2" value="{$lang_add}" class="tj">  
 	        </form></td>
           </tr>
               <tr>
-                <td  class="list1_lm" align="center">{$lang_skinSelect}</td>
-                <td  class="list1_lm" align="center">{$lang_skinNO}</td>
-                <td  class="list1_lm" align="center" >{$lang_skinName}</td>
+                <td  class="list1_lm" align="center">{$lang_selected}</td>
+                <td  class="list1_lm" align="center">{$lang_order}</td>
+                <td  class="list1_lm" align="center" >{$lang_name}</td>
                 <td  class="list1_lm" align="center" >{$lang_skinDocument}</td>
                 <td  class="list1_lm" align="center" >{$lang_skinIntroduce}</td>
-				<td  class="list1_lm" align="center" >{$lang_skinPreView}</td>
-				<td  class="list1_lm" align="center" >{$lang_skinOperate}</td>
+				<td  class="list1_lm" align="center" >{$lang_preview}</td>
+				<td  class="list1_lm" align="center" >{$lang_operate}</td>
               </tr>
 			  <form name="del" method="Post" action="skin_manager.php?action=delete" onSubmit="return ConfirmDelall();">
 <!--
@@ -78,8 +81,8 @@ echo <<<EOT
                 <td  class="list1_content" align="center">$val[skin_name]</a></td>
                 <td  class="list1_content" align="center">$val[skin_file]</td>
                 <td align="center" class="list1_content">$val[skin_info]</td>
-				<td align="center" class="list1_content"><a href="../../templates/$val[skin_file]/view.jpg" target="_blank">{$lang_skinPreView}</a></td>
-				<td align="center" class="list1_content" style="color:#0066FF;"><a href="skin_manager.php?id=$val[id]&action=modify" >{$lang_skinEdit}</a> | <a href="skin_manager.php?id=$val[id]&action=delete" onClick="return ConfirmDel();" >{$lang_skinDelete}</a></td>
+				<td align="center" class="list1_content"><a href="../../templates/$val[skin_file]/view.jpg" target="_blank">{$lang_preview}</a></td>
+				<td align="center" class="list1_content" style="color:#0066FF;"><a href="skin_manager.php?id=$val[id]&action=modify" >{$lang_editor}</a> | <a href="skin_manager.php?id=$val[id]&action=delete" onClick="return ConfirmDel();" >{$lang_delete}</a></td>
               </tr>
 <!--
 EOT;
@@ -93,9 +96,9 @@ echo <<<EOT
    	   <tr> 
 	        <td  class="input_bottom" align="center"><input name="chkAll" class="xz" type="checkbox" id="chkAll" onclick=CheckAll(this.form) value="checkbox"></td>
             <td  class="input_bottom" >
-              {$lang_skinTip1}  
+              {$lang_selectall}  
               </td>
-			  <td  class="input_bottom" colspan="6"><input name="submit" type='submit' value='{$lang_skinDeleteSelected}' style="*padding-top:4px;"><input name="action_type" type="hidden" id="action_type" value="del"><input name="allid" type="hidden" id="allid" value=""></form></td>
+			  <td  class="input_bottom" colspan="6"><input name="submit" type='submit' value='{$lang_deleteselected}' style="*padding-top:4px;"><input name="action_type" type="hidden" id="action_type" value="del"><input name="allid" type="hidden" id="allid" value=""></form></td>
           </tr>
    	   <tr>
    	     <td height="0" align="center"  colspan="7">$page_list</td>

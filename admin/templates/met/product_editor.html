@@ -5,7 +5,7 @@
 require_once template('head');
 echo <<<EOT
 -->
-<title>{$lang_producteditorTitle}</title>
+<title>{$lang_modify}{$lang_mod3}</title>
 </head>
 <body>
         <form  method="POST" name="myform" onSubmit="return CheckFormarticle();" action="save.php?action=editor" target="_self">
@@ -13,10 +13,10 @@ echo <<<EOT
 		<input name="id" type="hidden" value="$id">
 <table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
           <tr> 
-            <td colspan="3" align="center" class="list1_title">{$lang_producteditorTitle}</td>
+            <td colspan="3" align="center" class="list1_title">{$lang_modify}{$lang_mod3}</td>
           </tr>          
 		  <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_producteditorBelong}：</b></td>
+            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_columnname}</b></td>
             <td colspan="2" class="list1_input">
 <!--
 EOT;
@@ -24,7 +24,7 @@ if($class2_ok==TRUE){
 echo <<<EOT
 -->	
 <select name="class2" onChange="changelocation(document.myform.class2.options[document.myform.class2.selectedIndex].value)" size="1">
-<option value=0 $class2[0]>{$lang_producteditorTwo}</option>
+<option value=0 $class2[0]>{$lang_modClass2}</option>
 <!--
 EOT;
 foreach($column_list2 as $key=>$val2){
@@ -39,7 +39,7 @@ echo <<<EOT
 -->
               </select>
 			<select name="class3" onChange="changelocation2(document.myform.class3.options[document.myform.class3.selectedIndex].value)"> 
-			<option value=0 $class3[0]>{$lang_producteditorThree}</option>
+			<option value=0 $class3[0]>{$lang_modClass3}</option>
 <!--
 EOT;
 foreach($class3_list as $key=>$val3){
@@ -69,57 +69,57 @@ echo <<<EOT
 		 </td>
           </tr>
 		  <tr> 
-            <td class="list1_text"><b>{$lang_producteditorAccess}：</b></td>
-            <td class="list1_input"><select name="access" id="access" >
+            <td class="list1_text"><b>{$lang_webaccess}</b></td>
+            <td class="list1_input"  colspan="2"><select name="access" id="access" >
              $level
             </select></td>
           </tr>
 		  <tr> 
-            <td class="list1_text"><b>{$lang_producteditorTop}：</b></td>
-            <td colspan="2" class="list1_input"><input name="top_ok" type="checkbox" value="1" $top_ok>{$lang_producteditorTip7}</td>
+            <td class="list1_text"><b>{$lang_top}</b></td>
+            <td colspan="2" class="list1_input"><input name="top_ok" type="checkbox" value="1" $top_ok>{$lang_modtopinfo}</td>
           </tr>
 		  <tr id="imgurl"> 
-            <td class="list1_text">{$lang_producteditorImgUrl}<br /><font color='red' $styletip>{$lang_producteditorCreateThumb}</span></td>
+            <td class="list1_text">{$lang_modimgurl}<br /><font color='red' $styletip>{$lang_modimgauto}</span></td>
             <td colspan="2" class="list1_input"> <input name="imgurl" type="text" class="input" size="30" maxlength="200" value="$product_list[imgurl]"> 
 			<iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_photo.php?returnid=big&create_samll=$met_autothumb_ok" frameborder=0 scrolling=no width="280" height="25"></iframe></td>
           </tr> 
 		  <tr id="imgurls" > 
-            <td class="list1_text"><b>{$lang_producteditorThumb}：</b></td>
+            <td class="list1_text"><b>{$lang_modimgurls}</b></td>
             <td colspan="2" class="list1_input"> <input name="imgurls" type="text" class="input" size="30" maxlength="200" value="$product_list[imgurls]"><iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_photo.php?returnid=small" frameborder=0 scrolling=no width="280" height="25"></iframe></td>
           </tr>
 		   <tr> 
-            <td class="list1_text"><b>{$lang_producteditorShowNew}：</b></td>
-            <td colspan="2" class="list1_input"><input name="new_ok" type="checkbox" value="1" $new_ok>{$lang_producteditorTip2}</td>
+            <td class="list1_text"><b>{$lang_new}{$lang_mod3}</b></td>
+            <td colspan="2" class="list1_input"><input name="new_ok" type="checkbox" value="1" $new_ok>{$lang_modcontent1}{$lang_new}{$lang_mod3}{$lang_modcontent2}</td>
           </tr>  
 		 <tr> 
-            <td class="list1_text"><b>{$lang_producteditorRecommend}：</b></td>
-            <td colspan="2" class="list1_input"><input name="com_ok" type="checkbox" value="1" $com_ok>{$lang_producteditorTip3}</td>
+            <td class="list1_text"><b>{$lang_recom}{$lang_mod3}</b></td>
+            <td colspan="2" class="list1_input"><input name="com_ok" type="checkbox" value="1" $com_ok>{$lang_modcontent1}{$lang_recom}{$lang_mod3}{$lang_modcontent2}</td>
           </tr> 
 		  
 		  <tr> 
-            <td class="list1_text"><b>{$lang_producteditorHits}：</b></td>
-            <td colspan="2" class="list1_input"><input name="hits" type="text" class="input" size="10" maxlength="200" value="$product_list[hits]"> {$lang_producteditorTip4}</td>
+            <td class="list1_text"><b>{$lang_hits}</b></td>
+            <td colspan="2" class="list1_input"><input name="hits" type="text" class="input" size="10" maxlength="200" value="$product_list[hits]"> {$lang_modhits}</td>
           </tr>
 		  <tr> 
-            <td class="list1_text"><b>{$lang_producteditorPublishTime}：</b></td>
-            <td colspan="2" class="list1_input"><input name="addtime" type="text" class="input" size="20" maxlength="200" value="$product_list[addtime]">{$lang_producteditorNow}$m_now_date {$lang_producteditorTip5}</td>
+            <td class="list1_text"><b>{$lang_addtime}</b></td>
+            <td colspan="2" class="list1_input"><input name="addtime" type="text" class="input" size="20" maxlength="200" value="$product_list[addtime]">{$lang_modtimenow}$m_now_date {$lang_modtimenow1}</td>
           </tr>
 		  <tr> 
-            <td class="list1_text"><b>{$lang_producteditorUpdateTime}：</b></td>
-            <td colspan="2" class="list1_input"><input name="updatetime" type="text" class="input" size="20" maxlength="200" value="$m_now_date">{$lang_producteditorNow}$m_now_date {$lang_producteditorTip5}</td>
+            <td class="list1_text"><b>{$lang_updatetime}</b></td>
+            <td colspan="2" class="list1_input"><input name="updatetime" type="text" class="input" size="20" maxlength="200" value="$m_now_date">{{$lang_modtimenow}$m_now_date {$lang_modtimenow1}</td>
           </tr>
 		   <tr> 
-            <td class="list1_text"><b>{$lang_producteditorSort}：</b></td>
-            <td colspan="2" class="list1_input">{$lang_producteditorTip6}</td>
+            <td class="list1_text"><b>{$lang_mod3}{$lang_ordernum}</b></td>
+            <td colspan="2" class="list1_input">{$lang_modorderinfo}</td>
           </tr>
 <!--
 EOT;
 if($met_c_lang_ok==1){
 echo <<<EOT
 -->
-          <tr> <td colspan="3" align="center" class="list1_title"><b>{$lang_producteditorContent}[$met_c_lang]</b></td></tr>
+          <tr> <td colspan="3" align="center" class="list1_title"><b>{$lang_content}[$met_c_lang]</b></td></tr>
            <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_producteditorName}：</b></td>
+            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_mod3}{$lang_title}</b></td>
             <td colspan="2" class="list1_input"> <input name="c_title" type="text" class="input" size="50" maxlength="200" value="$product_list[c_title]"></td>
           </tr> 
 <!--
@@ -130,7 +130,7 @@ $para="c_".$val[name];
 if(80<$val[id] && $val[id]<85)
 {
 $tmp="<select name='c_$val[name]'>";
-$tmp=$tmp."<option value=''>$lang_productnull</option>";
+$tmp=$tmp."<option value=''>$lang_modnull</option>";
 foreach($fdlist as $key1=>$val1){
 $selected='';
 if($product_list["$para"]==$val1['c_list']) $selected="selected=selected";
@@ -142,7 +142,7 @@ $tmp=$tmp."</select>";
 echo <<<EOT
 -->
          <tr> 
-            <td class="list1_text"><b>$val[mark]：</b></td>
+            <td class="list1_text"><b>$val[mark]</b></td>
             <td colspan="2" class="list1_input">$tmp
 			</td>
           </tr>
@@ -152,7 +152,7 @@ EOT;
 echo <<<EOT
 -->
          <tr> 
-            <td class="list1_text"><b>$val[mark]：</b></td>
+            <td class="list1_text"><b>$val[mark]</b></td>
             <td colspan="2" class="list1_input"><input name="c_$val[name]" type="text" class="input" size="50" maxlength="200" value="$product_list[$para]"></td>
           </tr>
 <!--
@@ -161,9 +161,9 @@ EOT;
 echo <<<EOT
 -->
          <tr> 
-            <td class="list1_text"><b>$val[mark]：</b></td>
+            <td class="list1_text"><b>$val[mark]</b></td>
             <td colspan="2" class="list1_input"><input name="c_$val[name]" type="text" class="input" size="30" maxlength="200" value="$product_list[$para]">
-			<iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_photo.php?returnid=c_$val[name]&flash=flash" frameborder=0 scrolling=no width="280" height="25"></iframe>
+			<iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_photo.php?returnid=c_$val[name]&flash=flash&met_arrayimg=1" frameborder=0 scrolling=no width="280" height="25"></iframe>
 			
 			</td>
           </tr>
@@ -173,7 +173,7 @@ EOT;
 echo <<<EOT
 -->
          <tr> 
-            <td class="list1_text"><b>$val[mark]：</b></td>
+            <td class="list1_text"><b>$val[mark]</b></td>
             <td colspan="2" class="list1_input"><textarea name="c_$val[name]" cols="60" rows="5">$product_list[$para]</textarea></td>
           </tr>
 <!--
@@ -184,17 +184,17 @@ echo <<<EOT
 -->
 
 		  <tr> 
-            <td class="list1_text"><b>{$lang_producteditorKeys}：</b></td>
-            <td colspan="2" class="list1_input"><input name="c_keywords" type="text" class="input" size="50" maxlength="200" value="$product_list[c_keywords]">{$lang_producteditorTip1}</td>
+            <td class="list1_text"><b>{$lang_content}{$lang_keywords}</b></td>
+            <td colspan="2" class="list1_input"><input name="c_keywords" type="text" class="input" size="50" maxlength="200" value="$product_list[c_keywords]">{$lang_descriptioninfo},{$lang_keywordsinfo}</td>
           </tr>
 		  <tr> 
-            <td class="list1_text"><b>{$lang_producteditorIntroduce}：</b><br>{$lang_producteditorSEO}
+            <td class="list1_text"><b>{$lang_content}{$lang_description}</b><br>{$lang_descriptioninfo}
 			</td>
-            <td class="list1_input" ><textarea name="c_description" cols="60" rows="5">$product_list[c_description]</textarea></td>
+            <td class="list1_input"  colspan="2"><textarea name="c_description" cols="60" rows="5">$product_list[c_description]</textarea></td>
 			</tr> 
 			 <tr> 
-            <td class="list1_text"><b>{$lang_producteditorDetail}：</b></td>
-            <td class="list1_input">
+            <td class="list1_text"><b>{$lang_contentdetail}</b></td>
+            <td class="list1_input"  colspan="2">
 <!--
 EOT;
 echo "-->";
@@ -203,7 +203,7 @@ $oFCKeditor->BasePath = '../../fckeditor/';
 $oFCKeditor->Config['AutoDetectLanguage']	= false ;
 $oFCKeditor->Config['DefaultLanguage']		= $langusenow ;
 $oFCKeditor->Value = $product_list[c_content];
-$oFCKeditor->Width = '100%';   
+$oFCKeditor->Width = '502';   
 $oFCKeditor->Height = '300';
 $oFCKeditor->Create();
 echo <<<EOT
@@ -215,9 +215,9 @@ EOT;
 if($met_e_lang_ok==1){
 echo <<<EOT
 -->
-          <tr> <td colspan="3" align="center" class="list1_title"><b>{$lang_producteditorContent}[$met_e_lang]</b></td></tr>
+          <tr> <td colspan="3" align="center" class="list1_title"><b>{$lang_content}[$met_e_lang]</b></td></tr>
            <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_producteditorName}：</b></td>
+            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_mod3}{$lang_title}</b></td>
             <td colspan="2" class="list1_input"> <input name="e_title" type="text" class="input" size="50" maxlength="200" value="$product_list[e_title]"></td>
           </tr> 
 <!--
@@ -227,7 +227,7 @@ $para="e_".$val[name];
 if(80<$val[id] && $val[id]<85)
 {
 $tmp="<select name='e_$val[name]'>";
-$tmp=$tmp."<option value=''>$lang_productnull</option>";
+$tmp=$tmp."<option value=''>$lang_modnull</option>";
 foreach($fdlist as $key1=>$val1){
 $selected='';
 if($product_list["$para"]==$val1['e_list']) $selected="selected=selected";
@@ -239,7 +239,7 @@ $tmp=$tmp."</select>";
 echo <<<EOT
 -->
          <tr> 
-            <td class="list1_text"><b>$val[mark]：</b></td>
+            <td class="list1_text"><b>$val[mark]</b></td>
             <td colspan="2" class="list1_input">$tmp
 			</td>
           </tr>
@@ -249,7 +249,7 @@ EOT;
 echo <<<EOT
 -->
          <tr> 
-            <td class="list1_text"><b>$val[mark]：</b></td>
+            <td class="list1_text"><b>$val[mark]</b></td>
             <td colspan="2" class="list1_input"><input name="e_$val[name]" type="text" class="input" size="50" maxlength="200" value="$product_list[$para]"></td>
           </tr>
 <!--
@@ -258,9 +258,9 @@ EOT;
 echo <<<EOT
 -->
          <tr> 
-            <td class="list1_text"><b>$val[mark]：</b></td>
+            <td class="list1_text"><b>$val[mark]</b></td>
             <td colspan="2" class="list1_input"><input name="e_$val[name]" type="text" class="input" size="30" maxlength="200" value="$product_list[$para]">
-			<iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_photo.php?returnid=e_$val[name]&flash=flash" frameborder=0 scrolling=no width="280" height="25"></iframe>
+			<iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_photo.php?returnid=e_$val[name]&flash=flash&met_arrayimg=1" frameborder=0 scrolling=no width="280" height="25"></iframe>
 			
 			</td>
           </tr>
@@ -270,7 +270,7 @@ EOT;
 echo <<<EOT
 -->
          <tr> 
-            <td class="list1_text"><b>$val[mark]：</b></td>
+            <td class="list1_text"><b>$val[mark]</b></td>
             <td colspan="2" class="list1_input"><textarea name="e_$val[name]" cols="60" rows="5">$product_list[$para]</textarea></td>
           </tr>
 <!--
@@ -280,17 +280,17 @@ EOT;
 echo <<<EOT
 -->
 		  <tr> 
-            <td class="list1_text"><b>{$lang_producteditorKeys}：</b></td>
-            <td colspan="2" class="list1_input"><input name="e_keywords" type="text" class="input" size="50" maxlength="200" value="$product_list[e_keywords]">{$lang_producteditorTip1}</td>
+            <td class="list1_text"><b>{$lang_content}{$lang_keywords}</b></td>
+            <td colspan="2" class="list1_input"><input name="e_keywords" type="text" class="input" size="50" maxlength="200" value="$product_list[e_keywords]">{$lang_descriptioninfo},{$lang_keywordsinfo}</td>
           </tr>
 		  <tr> 
-            <td class="list1_text"><b>{$lang_producteditorIntroduce}：</b><br>{$lang_producteditorSEO}
+            <td class="list1_text"><b>{$lang_content}{$lang_description}</b><br>{$lang_descriptioninfo}
 			</td>
-            <td class="list1_input"><textarea name="e_description" cols="60" rows="5">$product_list[e_description]</textarea></td>
+            <td class="list1_input"  colspan="2"><textarea name="e_description" cols="60" rows="5">$product_list[e_description]</textarea></td>
 			</tr> 
 			 <tr> 
-            <td class="list1_text"><b>{$lang_producteditorDetail}：</b></td>
-            <td class="list1_input">
+            <td class="list1_text"><b>{$lang_contentdetail}</b></td>
+            <td class="list1_input"  colspan="2">
 <!--
 EOT;
 echo "-->";
@@ -299,7 +299,7 @@ $oFCKeditor->BasePath = '../../fckeditor/';
 $oFCKeditor->Config['AutoDetectLanguage']	= false ;
 $oFCKeditor->Config['DefaultLanguage']		= $langusenow ;
 $oFCKeditor->Value = $product_list[e_content];
-$oFCKeditor->Width = '100%';   
+$oFCKeditor->Width = '502';   
 $oFCKeditor->Height = '300';
 $oFCKeditor->Create();
 echo <<<EOT
@@ -311,9 +311,9 @@ EOT;
 if($met_o_lang_ok==1){
 echo <<<EOT
 -->
-          <tr> <td colspan="3" align="center" class="list1_title"><b>{$lang_producteditorContent}[$met_o_lang]</b></td></tr>
+          <tr> <td colspan="3" align="center" class="list1_title"><b>{$lang_content}[$met_o_lang]</b></td></tr>
            <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_producteditorName}：</b></td>
+            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_mod3}{$lang_title}</b></td>
             <td colspan="2" class="list1_input"> <input name="o_title" type="text" class="input" size="50" maxlength="200" value="$product_list[o_title]"></td>
           </tr> 
 <!--
@@ -323,7 +323,7 @@ $para="o_".$val[name];
 if(80<$val[id] && $val[id]<85)
 {
 $tmp="<select name='o_$val[name]'>";
-$tmp=$tmp."<option value=''>$lang_productnull</option>";
+$tmp=$tmp."<option value=''>$lang_modnull</option>";
 foreach($fdlist as $key1=>$val1){
 $selected='';
 if($product_list["$para"]==$val1['o_list']) $selected="selected=selected";
@@ -335,7 +335,7 @@ $tmp=$tmp."</select>";
 echo <<<EOT
 -->
          <tr> 
-            <td class="list1_text"><b>$val[mark]：</b></td>
+            <td class="list1_text"><b>$val[mark]</b></td>
             <td colspan="2" class="list1_input">$tmp
 			</td>
           </tr>
@@ -345,7 +345,7 @@ EOT;
 echo <<<EOT
 -->
          <tr> 
-            <td class="list1_text"><b>$val[mark]：</b></td>
+            <td class="list1_text"><b>$val[mark]</b></td>
             <td colspan="2" class="list1_input"><input name="o_$val[name]" type="text" class="input" size="50" maxlength="200" value="$product_list[$para]"></td>
           </tr>
 <!--
@@ -354,9 +354,9 @@ EOT;
 echo <<<EOT
 -->
          <tr> 
-            <td class="list1_text"><b>$val[mark]：</b></td>
+            <td class="list1_text"><b>$val[mark]</b></td>
             <td colspan="2" class="list1_input"><input name="o_$val[name]" type="text" class="input" size="30" maxlength="200" value="$product_list[$para]">
-			<iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_photo.php?returnid=o_$val[name]&flash=flash" frameborder=0 scrolling=no width="280" height="25"></iframe>
+			<iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_photo.php?returnid=o_$val[name]&flash=flash&met_arrayimg=1" frameborder=0 scrolling=no width="280" height="25"></iframe>
 			
 			</td>
           </tr>
@@ -366,7 +366,7 @@ EOT;
 echo <<<EOT
 -->
          <tr> 
-            <td class="list1_text"><b>$val[mark]：</b></td>
+            <td class="list1_text"><b>$val[mark]</b></td>
             <td colspan="2" class="list1_input"><textarea name="o_$val[name]" cols="60" rows="5">$product_list[$para]</textarea></td>
           </tr>
 <!--
@@ -376,17 +376,17 @@ EOT;
 echo <<<EOT
 -->
 		  <tr> 
-            <td class="list1_text"><b>{$lang_producteditorKeys}：</b></td>
-            <td colspan="2" class="list1_input"><input name="o_keywords" type="text" class="input" size="50" maxlength="200" value="$product_list[o_keywords]">{$lang_producteditorTip1}</td>
+            <td class="list1_text"><b>{$lang_content}{$lang_keywords}</b></td>
+            <td colspan="2" class="list1_input"><input name="o_keywords" type="text" class="input" size="50" maxlength="200" value="$product_list[o_keywords]">{$lang_descriptioninfo},{$lang_keywordsinfo}</td>
           </tr>
 		  <tr> 
-            <td class="list1_text"><b>{$lang_producteditorIntroduce}：</b><br>{$lang_producteditorSEO}
+            <td class="list1_text"><b>{$lang_content}{$lang_description}</b><br>{$lang_descriptioninfo}
 			</td>
-            <td class="list1_input"><textarea name="o_description" cols="60" rows="5">$product_list[o_description]</textarea></td>
+            <td class="list1_input"  colspan="2"><textarea name="o_description" cols="60" rows="5">$product_list[o_description]</textarea></td>
 			</tr> 
 			 <tr> 
-            <td class="list1_text"><b>{$lang_producteditorDetail}：</b></td>
-            <td class="list1_input">
+            <td class="list1_text"><b>{$lang_contentdetail}</b></td>
+            <td class="list1_input"  colspan="2">
 <!--
 EOT;
 echo "-->";
@@ -395,7 +395,7 @@ $oFCKeditor->BasePath = '../../fckeditor/';
 $oFCKeditor->Config['AutoDetectLanguage']	= false ;
 $oFCKeditor->Config['DefaultLanguage']		= $langusenow ;
 $oFCKeditor->Value = $product_list[o_content];
-$oFCKeditor->Width = '100%';   
+$oFCKeditor->Width = '502';   
 $oFCKeditor->Height = '300';
 $oFCKeditor->Create();
 echo <<<EOT

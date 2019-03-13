@@ -5,61 +5,58 @@
 require_once template('head');
 echo <<<EOT
 -->
-<title>{$lang_linkeditorTitle}</title>
+<title>{$lang_modify}{$lang_indexlink}</title>
 </head>
 <body>
 <form  method="POST" name="myform" onSubmit="return CheckFormlink();" action="save.php?action=editor" target="_self">
 <table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
           <tr> 
-            <td colspan="9" align="center" class="list1_title">{$lang_linkeditorTitle}</td>
+            <td colspan="9" align="center" class="list1_title">{$lang_modify}{$lang_indexlink}</td>
           </tr>
 		  <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_linkeditorType}：</b></td>
-            <td colspan="2" class="list1_input"> <input name="link_type" type="radio" class="input" value="0"  $link_type[0]>{$lang_linkeditorType1}  <input name="link_type" type="radio" class="input" value="1" $link_type[1]>{$lang_linkeditorType2}</td>
+            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_linkType}</b></td>
+            <td colspan="2" class="list1_input"> <input name="link_type" type="radio" class="input" value="0"  $link_type[0]>{$lang_linkType4}  <input name="link_type" type="radio" class="input" value="1" $link_type[1]>{$lang_linkType5}</td>
           </tr> 
           
 		   <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_linkeditorUrl}：</b></td>
+            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_linkUrl}</b></td>
             <td colspan="2" class="list1_input"> <input name="weburl" type="text" class="input" size="50" maxlength="200" value="$link_list[weburl]"></td>
           </tr> 
 		   <tr> 
-            <td class="list1_text"><b>{$lang_linkeditorLOGO}：</b></td>
+            <td class="list1_text"><b>{$lang_linkLOGO}</b></td>
             <td colspan="2" class="list1_input"> <input name="weblogo" type="text" class="input" size="50" maxlength="200" value="$link_list[weblogo]"></td>
           </tr> 		  
 		  <tr> 
-            <td class="list1_text"><b>{$lang_linkeditorContact}：</b>
+            <td class="list1_text"><b>{$lang_linkcontact}</b>
 			</td>
             <td class="list1_input"><textarea name="contact" cols="60" rows="5">$link_list[contact]</textarea></td>
 			</tr> 
 			<tr> 
-			<td class="list1_text"><b>{$lang_linkeditorSort}：</b></td>
-            <td colspan="2" class="list1_input"> <input name="orderno" type="text" class="input" size="5" maxlength="250" value="$link_list[orderno]">{$lang_linkeditorTip1}</td>
+			<td class="list1_text"><b>{$lang_linksort}</b></td>
+            <td colspan="2" class="list1_input"> <input name="orderno" type="text" class="input" size="5" maxlength="250" value="$link_list[orderno]">{$lang_linktip1}</td>
           </tr> 
 		  <tr> 
-			<td class="list1_text"><b>{$lang_linkeditorPass}：</b></td>
-            <td colspan="2" class="list1_input"> <input name="show_ok" type="checkbox" class="input" value="1" $show_ok1>{$lang_linkeditorYes}</td>
+			<td class="list1_text"><b>{$lang_linkPass}</b></td>
+            <td colspan="2" class="list1_input"> <input name="show_ok" type="checkbox" class="input" value="1" $show_ok1>{$lang_linkYes}</td>
           </tr> 
 		   <tr> 
-			<td class="list1_text"><b>{$lang_linkeditorRecommend}：</b></td>
-            <td colspan="2" class="list1_input"> <input name="com_ok" type="checkbox" class="input" value="1"  $com_ok1>{$lang_linkeditorYes}</td>
+			<td class="list1_text"><b>{$lang_linkRecommend}</b></td>
+            <td colspan="2" class="list1_input"> <input name="com_ok" type="checkbox" class="input" value="1"  $com_ok1>{$lang_linkYes}</td>
           </tr> 
-		  <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_linkeditorUrl}：</b></td>
-            <td colspan="2" class="list1_input"> <input name="link_lang" type="radio" class="input" value="1" $link_lang[1]>{$lang_linkaddShow1}  <input name="link_lang" type="radio" class="input" value="2" $link_lang[2] >{$lang_linkaddShow2}</td>
-          </tr>
+
 			 
 <!--
 EOT;
 if($met_c_lang_ok==1){
 echo <<<EOT
 -->			
-		  <tr> <td colspan="9" align="center" class="list1_title"><b>{$lang_linkaddContent}[$met_c_lang]</b></td></tr>
+		  <tr> <td colspan="9" align="center" class="list1_title"><b>{$lang_content}[$met_c_lang]</b></td></tr>
 		  <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_linkeditorName}：</b></td>
+            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_linkName}</b></td>
             <td colspan="2" class="list1_input"> <input name="c_webname" type="text" class="input" size="50" maxlength="200" value="$link_list[c_webname]"></td>
           </tr> 
 		  <tr> 
-            <td class="list1_text"><b>{$lang_linkeditorKeys}：</b></td>
+            <td class="list1_text"><b>{$lang_linkKeys}</b></td>
             <td colspan="2" class="list1_input"> <input name="c_info" type="text" class="input" size="50" maxlength="250" value="$link_list[c_info]"></td>
           </tr> 
 <!--
@@ -68,14 +65,14 @@ EOT;
 if($met_e_lang_ok==1){
 echo <<<EOT
 -->
-          <tr> <td colspan="3" align="center" class="list1_title"><b>{$lang_linkeditorContent}[$met_e_lang]</b></td></tr>
+          <tr> <td colspan="3" align="center" class="list1_title"><b>{$lang_content}[$met_e_lang]</b></td></tr>
 		   
 		  <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_linkeditorName}：</b></td>
+            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_linkName}</b></td>
             <td colspan="2" class="list1_input"> <input name="e_webname" type="text" class="input" size="50" maxlength="200" value="$link_list[e_webname]"></td>
           </tr> 
 		  <tr> 
-            <td class="list1_text"><b>{$lang_linkeditorKeys}：</b></td>
+            <td class="list1_text"><b>{$lang_linkKeys}</b></td>
             <td colspan="2" class="list1_input"><input name="e_info" type="text" class="input" size="50" maxlength="250" value="$link_list[e_info]"></td>
           </tr>
 <!--
@@ -84,14 +81,14 @@ EOT;
 if($met_o_lang_ok==1){
 echo <<<EOT
 -->
-          <tr> <td colspan="3" align="center" class="list1_title"><b>{$lang_linkeditorContent}[$met_o_lang]</b></td></tr>
+          <tr> <td colspan="3" align="center" class="list1_title"><b>{$lang_content}[$met_o_lang]</b></td></tr>
 		   
 		  <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_linkeditorName}：</b></td>
+            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_linkName}</b></td>
             <td colspan="2" class="list1_input"> <input name="o_webname" type="text" class="input" size="50" maxlength="200" value="$link_list[o_webname]"></td>
           </tr> 
 		  <tr> 
-            <td class="list1_text"><b>{$lang_linkeditorKeys}：</b></td>
+            <td class="list1_text"><b>{$lang_linkKeys}</b></td>
             <td colspan="2" class="list1_input"><input name="o_info" type="text" class="input" size="50" maxlength="250" value="$link_list[o_info]"></td>
           </tr>
 <!--

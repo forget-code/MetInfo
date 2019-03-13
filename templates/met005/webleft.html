@@ -1,0 +1,55 @@
+<!--<?php
+$webnav=methtml_classlist('1');
+echo <<<EOT
+-->
+   <div class="webleft">
+     
+	 <div class="webleft_content">
+
+<!--
+EOT;
+if(count($nav_list2[$class1]) !=0){
+echo <<<EOT
+-->
+
+     <div class="web_left_title"><span>$class1_info[name]</span></div>
+	<div class="leftlist">{$webnav}</div>
+
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+  		<div class="aq" style="margin-top:8px;">
+<div class="web_left_title"><span>{$lang_Column2}</span></div>
+	<div>
+<ul>
+<!--
+EOT;
+$i=0;
+foreach(methtml_getarray('','com','time','product') as $key=>$val){
+$i++;
+echo <<<EOT
+-->
+<li><a href="$val[url]" target="_blank" title="$val[title]">$val[title]</a></li>
+<!--
+EOT;
+if($i>=$lang_HotMax)break;
+}
+echo <<<EOT
+-->
+</ul>
+	</div>
+        </div>
+     $met_online
+	  
+    </div>
+	<div class="b"><div></div></div>	
+   
+   </div>
+   <div class="webright">
+   <div class="web_right_title"><span>{$class_list[$classnow][name]}</span></div>
+  <div class="webcontent">
+<!--
+EOT;
+?>

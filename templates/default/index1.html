@@ -1,9 +1,13 @@
 <!--<?php
 $navdown="nav_0";
 require_once template('head'); 
+$title1=$class_index[1][name];
+
+$title4=$class_index[4][name];
+$title6=$class_index[6][name];
 $moreur1=$class_index[2][url];
 $moreur2=$class_index[4][url];
-$moreur3=$class_index[5][url];
+$moreur3=$class_index[6][url];
 $metlinkimg=methtm_link('img','com');
 $metlinktext=methtm_link('text','com');
 echo <<<EOT
@@ -19,11 +23,10 @@ echo <<<EOT
 EOT;
 $i=0;
 foreach(methtml_getarray('1','com','time','') as $key=>$val){
-$val[title]=utf8substr($val[title], 0, $lang_listnews); 
 $i++;
 echo <<<EOT
 -->
-<li><a href="$val[url]" target="_blank" title="$val[title]">$val[title]</a></li>
+<li style="overflow:hidden;"><a href="$val[url]" target="_blank" title="$val[title]">$val[title]</a></li>
 <!--
 EOT;
 if($i>=$index[news_no])break;
@@ -56,7 +59,6 @@ $otherinfo[info10]
 EOT;
 $i=0;
 foreach(methtml_getarray('2','com','time','') as $key=>$val){
-$val[title]=utf8substr($val[title], 0, $lang_listnews1); 
 $i++;
 echo <<<EOT
 -->
@@ -72,8 +74,7 @@ echo <<<EOT
 <!--
 EOT;
 $i=0;
-foreach(methtml_getarray('3','com','time','') as $key=>$val){
-$val[title]=utf8substr($val[title], 0, $lang_listnews1); 
+foreach(methtml_getarray('3','com','time','') as $key=>$val){ 
 $i++;
 echo <<<EOT
 -->
@@ -111,13 +112,12 @@ echo <<<EOT
      <div class="right_div1"></div>
 	 <div class="right_content">
 	       <div class="right_top">
-		         <div class="news_title"><span>{$lang_Column5}</span></div>
+		         <div class="news_title"><span>{$title4}</span></div>
 <ul class="index_newslist">				   
 <!--
 EOT;
 $i=0;
 foreach(methtml_getarray('4','com','time','') as $key=>$val){
-$val[title]=utf8substr($val[title], 0, $lang_newsnum); 
 $i++;
 echo <<<EOT
 -->
@@ -133,14 +133,13 @@ echo <<<EOT
 </ul>
 		   </div>
 		   <div class="right_bottom">
-		        <div class="news_title"><span>{$lang_Column6}</span></div>
+		        <div class="news_title"><span>{$title6}</span></div>
 <div class="case">
 <ul  class="index_newslist">
 <!--
 EOT;
 $i=0;
-foreach(methtml_getarray('5','com','time','') as $key=>$val){
-$val[title]=utf8substr($val[title], 0, $lang_newsnum); 
+foreach(methtml_getarray('6','com','time','') as $key=>$val){
 $i++;
 echo <<<EOT
 -->

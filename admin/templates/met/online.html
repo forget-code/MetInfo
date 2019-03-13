@@ -17,15 +17,15 @@ echo <<<EOT
             <td class="list1_text_title" colspan="9" align="left">&nbsp;&nbsp;<a href="add.php">{$lang_onlineAdd}</a></td>
           </tr>  
               <tr>
-                <td class="list1_lm" width="30" align="center">{$lang_onlineSelect}</td>
-				<td class="list1_lm" width="30" align="center">{$lang_onlineSort}</td>
-                <td class="list1_lm" width="60" align="center">{$lang_onlineName}</td>
-                <td class="list1_lm" width="30" align="center" >QQ</td>
-				<td class="list1_lm" width="30" align="center" >MSN</td>
-                <td class="list1_lm" width="60" align="center" >{$lang_onlineWangWang1}</td>
-                <td class="list1_lm" width="60" align="center" >{$lang_onlineWangWang2}</td>
-				<td class="list1_lm" width="30" align="center" >SKYPE</td>
-				<td class="list1_lm" width="110" align="center" >{$lang_onlineOperate}</td>
+                <td class="list1_lm"   align="center">{$lang_selected}</td>
+				<td class="list1_lm"   align="center">{$lang_ordernum}</td>
+                <td class="list1_lm"   align="center">{$lang_onlineName}</td>
+                <td class="list1_lm"   align="center" >QQ</td>
+				<td class="list1_lm"  align="center" >MSN</td>
+                <td class="list1_lm"  align="center" >{$lang_onlinetaobao}</td>
+                <td class="list1_lm"  align="center" >{$lang_onlinealibaba}</td>
+				<td class="list1_lm"  align="center" >SKYPE</td>
+				<td class="list1_lm"  align="center" >{$lang_operate}</td>
               </tr>
 			  <form name="del" method="Post" action="delete.php?class1=$class1" onSubmit="return ConfirmDelall();">
 <!--
@@ -42,7 +42,7 @@ echo <<<EOT
                 <td class="list1_content" align="center">$val[taobao]</td>
                 <td class="list1_content" align="center">$val[alibaba]</td>
 				<td class="list1_content" align="center">$val[skype]</td>
-				<td align="center" class="list1_content" style="color:#0066FF;"></a> <a href="editor.php?id=$val[id]" >{$lang_onlineEdit}</a> | <a href="delete.php?id=$val[id]" onClick="return ConfirmDel();" >{$lang_onlineDelete}</a></td>
+				<td align="center" class="list1_content" style="color:#0066FF;"></a> <a href="editor.php?id=$val[id]" >{$lang_editor}</a> | <a href="delete.php?id=$val[id]" onClick="return ConfirmDel();" >{$lang_delete}</a></td>
               </tr>
 <!--
 EOT;
@@ -53,8 +53,8 @@ echo <<<EOT
    	   <tr> 
             <td  class="input_bottom" align="center"><input name="chkAll" class="xz" type="checkbox" id="chkAll" onclick=CheckAll(this.form) value="checkbox">
               </td>
-			  <td  class="input_bottom" align="center">{$lang_onlineSelectAll}</td>
-			  <td  class="input_bottom" align="left" colspan="7"><input name="submit" type='submit' value='{$lang_onlineDeleteSelected}' style="color:#333333;"> 
+			  <td  class="input_bottom" align="center">{$lang_selectall}</td>
+			  <td  class="input_bottom" align="left" colspan="7"><input name="submit" type='submit' value='{$lang_deleteselected}' style="color:#333333;"> 
               <input name="action" type="hidden" id="action" value="del">
 			  <input name="allid" type="hidden" id="allid" value=""></form></td>
           </tr>
@@ -63,7 +63,7 @@ echo <<<EOT
 			<form method="POST" name="myform"  action="index.php?search=detail_search" target="_self">
 			       <b>{$lang_onlineSearchByName}：</b> 
 			    <input name="name" type="text" size="30">
-  <input type="submit" name="Submit2" value="{$lang_onlineSearch}" class="tj" style="color:#333333;">  
+  <input type="submit" name="Submit2" value="{$lang_search}" class="tj" style="color:#333333;">  
 	        {$lang_onlineTip1}</form></td>
           </tr>
    	   <tr>

@@ -47,7 +47,7 @@ for($j=1;$j<=10;$j++){
 }
     $predownload=$db->get_one("select * from $met_download where class1=$class1 and class2=$class2 and class3=$class3 and (id > $id) limit 0,1");
     $nextdownload=$db->get_one("select * from $met_download where class1=$class1 and class2=$class2 and class3=$class3 and (id < $id) order by id desc limit 0,1");
-	
+if($dataoptimize[4][otherlist]){	
 	$serch_sql=" where class1=$class1 ";
 	if($class2)$serch_sql .= " and class2=$class2";
 	if($class3)$serch_sql .= " and class3=$class3";
@@ -107,6 +107,17 @@ for($j=1;$j<=10;$j++){
 	$list[url]=($lang=="en")?$list[e_url]:(($lang=="other")?$list[o_url]:$list[c_url]);
 	if($predownload[id]==$list[id])$preinfo=$list;  
 	if($nextdownload[id]==$list[id])$nextinfo=$list;
+if($met_member_use==2){
+   if($list[class3]!=0&&$class3_list[$list[class3]][name]==""){
+   $nowaccess=100;
+   }elseif($list[class2]!=0&&$class2_list[$list[class2]][name]==""){
+   $nowaccess=101;
+   }elseif($list[class1]!=0&&$class1_list[$list[class1]][name]==""){
+   $nowaccess=102;
+   }else{
+   $nowaccess=max(intval($list[access]),intval($class3_list[$list[class3]][access]),intval($class2_list[$list[class2]][access]),intval($class1_list[$list[class1]][access]));
+   }
+ if(intval($metinfo_member_type)>=intval($nowaccess)){
 	if($list[new_ok] == 1){
 	$download_list_new[]=$list;
     if($list[class1]!=0)$download_class_new[$list[class1]][]=$list;
@@ -124,6 +135,26 @@ for($j=1;$j<=10;$j++){
 	if($list[class3]!=0)$download_class[$list[class3]][]=$list;
     $download_list[]=$list;
     }
+}else{
+	if($list[new_ok] == 1){
+	$download_list_new[]=$list;
+    if($list[class1]!=0)$download_class_new[$list[class1]][]=$list;
+	if($list[class2]!=0)$download_class_new[$list[class2]][]=$list;
+	if($list[class3]!=0)$download_class_new[$list[class3]][]=$list;
+	}
+	if($list[com_ok] == 1){
+	$download_list_com[]=$list;
+	if($list[class1]!=0)$download_class_com[$list[class1]][]=$list;
+	if($list[class2]!=0)$download_class_com[$list[class2]][]=$list;
+	if($list[class3]!=0)$download_class_com[$list[class3]][]=$list;
+	}
+	if($list[class1]!=0)$download_class[$list[class1]][]=$list;
+	if($list[class2]!=0)$download_class[$list[class2]][]=$list;
+	if($list[class3]!=0)$download_class[$list[class3]][]=$list;
+    $download_list[]=$list;
+}
+}
+}
      $show[description]=$download[description]?$download[description]:$met_keywords;
      $show[keywords]=$download[keywords]?$download[keywords]:$met_keywords;
 	 $met_title=$download[title]."--".$met_title;

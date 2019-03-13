@@ -20,7 +20,7 @@ else
 $message_list1=$db->get_one("SELECT * FROM $met_column where id=22 order by no_order");
 $lev=$message_list1[access];
 $message_list=$db->get_one("select * from $met_message where id='$id'");
-$message_list['customerid']=$message_list['customerid']==0?$lang_messageeditorAccessy:$list['customerid'];
+$message_list['customerid']=$message_list['customerid']==0?$lang_messageAccessy:$list['customerid'];
 switch($message_list['access'])
 {
 	case '1':$access1="selected='selected'";break;
@@ -36,10 +36,10 @@ okinfo('index.php',$lang_loginNoid);
 $level="";
 switch(intval($lev))
 {
-	case 0:$level.="<option value='all' $access0>$lang_messageeditorAccess0</option>";
-	case 1:$level.="<option value='1' $access1>$lang_messageeditorAccess1</option>";
-	case 2:$level.="<option value='2' $access2>$lang_messageeditorAccess2</option>";
-	case 3:$level.="<option value='3' $access3>$lang_messageeditorAccess3</option>";
+	case 0:$level.="<option value='all' $access0>$lang_access0</option>";
+	case 1:$level.="<option value='1' $access1>$lang_access1</option>";
+	case 2:$level.="<option value='2' $access2>$lang_access2</option>";
+	case 3:$level.="<option value='3' $access3>$lang_access3</option>";
 }
 
 

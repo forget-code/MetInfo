@@ -57,10 +57,10 @@ $classtype=3;
 $level="";
 switch(intval($lev))
 {
-	case 0:$level.="<option value='all' >$lang_columnaddAccess0</option>";
-	case 1:$level.="<option value='1' >$lang_columnaddAccess1</option>";
-	case 2:$level.="<option value='2' >$lang_columnaddAccess2</option>";
-	case 3:$level.="<option value='3' >$lang_columnaddAccess3</option>";
+	case 0:$level.="<option value='all' >$lang_access0</option>";
+	case 1:$level.="<option value='1' >$lang_access1</option>";
+	case 2:$level.="<option value='2' >$lang_access2</option>";
+	case 3:$level.="<option value='3' >$lang_access3</option>";
 }
 
 if($foldername=="")$foldername="about";

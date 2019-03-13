@@ -16,17 +16,17 @@ echo <<<EOT
    </tr>
 
    <tr> 
-         <td class="list1_text"><font color="#FF0000" size="2" style="padding-right:5px;">*</font>{$lang_memberuse}:</td>
+         <td class="list1_text"><font color="#FF0000" size="2" style="padding-right:5px;">*</font>{$lang_memberuse}</td>
          <td class="list1_input">
-		 <input name="met_member_use" type="radio" $met_member_use1[0] value="0">{$lang_memberuseok1}<br>
+		 <input name="met_member_use" type="radio" $met_member_use1[0] value="0">{$lang_close}<br>
 		 <input name="met_member_use" type="radio" $met_member_use1[1] value="1">{$lang_memberuseok2} <br>
 		 <input name="met_member_use" type="radio" $met_member_use1[2] value="2">{$lang_memberuseok3}</td>
    </tr> 
     <tr> 
-         <td class="list1_text"><font color="#FF0000" size="2" style="padding-right:5px;">*</font>{$lang_memberlogin}:</td>
+         <td class="list1_text"><font color="#FF0000" size="2" style="padding-right:5px;">*</font>{$lang_memberlogin}</td>
          <td class="list1_input">
-		 <input name="met_member_login" type="radio" $met_member_login1[0] value="0">{$lang_memberloginok1} 
-		 <input name="met_member_login" type="radio" $met_member_login1[1] value="1">{$lang_memberloginok2}  
+		 <input name="met_member_login" type="radio" $met_member_login1[0] value="0">{$lang_close} 
+		 <input name="met_member_login" type="radio" $met_member_login1[1] value="1">{$lang_open}  
 		 <input name="met_member_login" type="radio" $met_member_login1[2] value="2">{$lang_memberloginok3}  
 		 <input name="met_member_login" type="radio" $met_member_login1[3] value="3">{$lang_memberloginok4}</td>
    </tr> 
@@ -36,7 +36,7 @@ if($met_c_lang_ok==1){
 echo <<<EOT
 -->
    <tr> 
-         <td class="list1_text">{$lang_memberregisteremail}[<b>{$met_c_lang}</b>]:</td>
+         <td class="list1_text">{$lang_memberregisteremail}[<b>{$met_c_lang}</b>]</td>
          <td class="list1_input"><textarea name="met_c_memberemail" cols="50" rows="3">$met_c_memberemail</textarea>$lang_setfootTip1</td>
    </tr> 
 <!--
@@ -46,7 +46,7 @@ if($met_e_lang_ok==1){
 echo <<<EOT
 -->
 		  <tr> 
-            <td class="list1_text">{$lang_memberregisteremail}[<b>{$met_e_lang}</b>]:</td>
+            <td class="list1_text">{$lang_memberregisteremail}[<b>{$met_e_lang}</b>]</td>
             <td class="list1_input"> <textarea name="met_e_memberemail" cols="50" rows="3">$met_e_memberemail</textarea>$lang_setfootTip1</td>
           </tr>
 <!--
@@ -56,7 +56,7 @@ if($met_o_lang_ok==1){
 echo <<<EOT
 -->
 		  <tr> 
-            <td class="list1_text">{$lang_memberregisteremail}[<b>{$met_o_lang}</b>]:</td>
+            <td class="list1_text">{$lang_memberregisteremail}[<b>{$met_o_lang}</b>]</td>
             <td class="list1_input"><textarea name="met_o_memberemail" cols="50" rows="3">$met_o_memberemail</textarea>$lang_setfootTip1</td>
           </tr>
 <!--
@@ -66,7 +66,7 @@ if($met_c_lang_ok==1){
 echo <<<EOT
 -->
    <tr> 
-         <td class="list1_text">{$lang_membercontrol}[<b>{$met_c_lang}</b>]:</td>
+         <td class="list1_text">{$lang_membercontrol}[<b>{$met_c_lang}</b>]</td>
          <td class="list1_input"><textarea name="met_c_membercontrol" cols="50" rows="5">$met_c_membercontrol</textarea>$lang_setfootTip1</td>
    </tr> 
 <!--
@@ -76,7 +76,7 @@ if($met_e_lang_ok==1){
 echo <<<EOT
 -->
 		  <tr> 
-            <td class="list1_text">{$lang_membercontrol}[<b>{$met_e_lang}</b>]:</td>
+            <td class="list1_text">{$lang_membercontrol}[<b>{$met_e_lang}</b>]</td>
             <td class="list1_input"> <textarea name="met_e_membercontrol" cols="50" rows="5">$met_e_membercontrol</textarea>$lang_setfootTip1</td>
           </tr>
 <!--
@@ -86,7 +86,7 @@ if($met_o_lang_ok==1){
 echo <<<EOT
 -->
 		  <tr> 
-            <td class="list1_text">{$lang_membercontrol}[<b>{$met_o_lang}</b>]:</td>
+            <td class="list1_text">{$lang_membercontrol}[<b>{$met_o_lang}</b>]</td>
             <td class="list1_input"><textarea name="met_o_membercontrol" cols="50" rows="5">$met_o_membercontrol</textarea>$lang_setfootTip1</td>
           </tr>
 <!--
@@ -95,7 +95,7 @@ EOT;
 echo <<<EOT
 -->
     <tr> 
-         <td class="list1_text"><font color="#FF0000" size="2" style="padding-right:5px;">*</font>{$lang_memberforce}:</td>
+         <td class="list1_text"><font color="#FF0000" size="2" style="padding-right:5px;">*</font>{$lang_memberforce}</td>
          <td class="list1_input">
 		 <input name="met_member_force" type="text"  value="$met_member_force" size="8">{$lang_memberforceinfo} {$met_weburl}index.php?metmemberforce=$met_member_force
 	       </td>

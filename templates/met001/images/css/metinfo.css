@@ -23,9 +23,9 @@ input{ border:1px solid #EBEBEB;}
 A:hover { COLOR:#FF6600}
 /*头部开始*/
 .head{height:80px; width:100%; border-top:3px solid #000000;  background-color:#E9E9E9;  margin:0 auto; display: block; overflow:hidden;}
-.head1{ height:80px; width:1000px; margin:0 auto; display: block; }
+.head1{ height:80px; width:1000px; margin:0 auto; display: block; overflow:hidden;}
 .logo{width:auto; height:60px; float:left; margin:8px 0px 0px 0px;}
-.headright{height:70px; width:650px; float:right; text-align:right; }
+.headright{height:70px; width:790px; float:right; text-align:right;}
 .headright1{ height:18px; width:590px; float:right; margin:5px 0px 0px 0px; padding:0px 10px 0px 0px;  line-height:15px; color:#000000;}
 .headright1 a{ color:#000000;}
 .headright2{ height:20px;  width:590px; float:right; margin:3px 0px 0px 0px;  padding:0px 10px 0px 0px; color: #2C2C2C; font-size:13px;  line-height:20px; text-align:right; }

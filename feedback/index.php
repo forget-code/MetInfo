@@ -63,6 +63,10 @@ if($fdok==true)okinfo('javascript:history.back();',$fd_word);
 
 require_once 'uploadfile_save.php';
 
+$fdemail= $db->get_one("SELECT * FROM $met_fdparameter WHERE c_name='$met_fd_email'");
+$fdto="para".$fdemail[id];
+$fdto=$$fdto;
+
 for($i=21;$i<25;$i++){
 $para="para".$i;
 for($j=1;$j<=$$para;$j++){
@@ -117,35 +121,11 @@ $body=$body."<b>{$lang_FeedbackProduct}</b>:".$fdtitle."<br>";
 $body=$body."<b>{$lang_IP}</b>:".$ip."<br>";
 $body=$body."<b>{$lang_AddTime}</b>:".$addtime."<br>";
 $body=$body."<b>{$lang_SourcePage}</b>:".$fromurl;
-if(PATH_SEPARATOR==':'){
-$toarray=explode("|",$to);
-$to_no=count($toarray);
-for($i=0;$i<$to_no;$i++){
-$toemail.=$toarray[$i].", ";
-}
-$headers  = 'MIME-Version: 1.0' . "\r\n";
-$headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
-$headers .= 'From: '.$fromname.' <'.$from.'>' . "\r\n";
-mail("$toemail", "$title", "$body", "$headers");
-}else{
-jmailsend($from,$fromname,$to,$title,$body,$usename,$usepassword,$smtp);
-}
-
-
+jmailsend($from,$fromname,$to,$title,$body,$usename,$usepassword,$smtp,$fdto);
 }
 
 if($met_fd_back==1){
-$fdemail= $db->get_one("SELECT * FROM $met_fdparameter WHERE c_name='$met_fd_email'");
-$fdto="para".$fdemail[id];
-$fdto=$$fdto;
-if(PATH_SEPARATOR==':'){
-$headers  = 'MIME-Version: 1.0' . "\r\n";
-$headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
-$headers .= 'From: '.$fromname.' <'.$from.'>' . "\r\n";
-mail("$fdto", "$met_fd_title", "$met_fd_content", "$headers");
-}else{
 jmailsend($from,$fromname,$fdto,$met_fd_title,$met_fd_content,$usename,$usepassword,$smtp);
-}
 }
 
 if($met_fd_type!=0){

@@ -38,7 +38,7 @@ EOT;
 echo <<<EOT
 -->
  <tr>
-    <td colspan="4" bgcolor="#ECF5FF"  align="center">{$lang_setdbEveryoneSize}：<input type=text name="sizelimit" value="2048" size=5> K <input type="submit" name="dosubmit" value=" {$lang_setdbStart} "></td>
+    <td colspan="4" bgcolor="#ECF5FF"  align="center">{$lang_setdbEveryoneSize}<input type=text name="sizelimit" value="2048" size=5> K <input type="submit" name="dosubmit" value=" {$lang_setdbStart} "></td>
   </tr>
         </form>
 		<tr>
@@ -97,7 +97,7 @@ echo <<<EOT
 -->
 <tr bgcolor="#ECF5FF" >
 <form enctype="multipart/form-data" method="POST" name="myform" action="database.php?action=uploadsql" target="_self">
-            <td  height="25" colspan="2" align="center" class="sjk"><b>{$lang_setdbUploadDB}：</b>{$lang_setdbFilesize}<input name="met_sqlname" type="text" class="input" size="16" maxlength="200" ></td>
+            <td  height="25" colspan="2" align="center" class="sjk"><b>{$lang_setdbUploadDB}</b> &nbsp; {$lang_setdbFilesize}<input name="met_sqlname" type="text" class="input" size="16" maxlength="200" ></td>
             <td colspan="4" class="sjk"><input name="met_upsql" type="file" class="input" size="30" maxlength="200" ><input type="submit" name="Submit" value="{$lang_Submit}" class="tj"></td>
 			</form>
           </tr> 

@@ -53,14 +53,7 @@ $met_webname1=$met_webnamearray[0];
 $title=$met_webname1.$lang_js16;
 $met_memberemail=($lang=="en")?$met_e_memberemail:(($lang=="other")?$met_o_memberemail:$met_c_memberemail);
 $body="$yhid,<br><br> {$met_memberemail}<br><br><b>{$lang_js17}</b>{$lang_js18}[<a href='{$met_weburl}member/register_include.php?username=$yhid&code=$check&lang=$lang'>{$lang_js16} {$met_weburl}member/register_include.php?username=$yhid&code=$check&lang=$lang</a>] {$lang_js19}<br><div align='right'>$fromname</div> ";
-if(PATH_SEPARATOR==':'){
-$headers  = 'MIME-Version: 1.0' . "\r\n";
-$headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
-$headers .= 'From: '.$fromname.' <'.$from.'>' . "\r\n";
-mail("$to", "$title", "$body", "$headers");
-}else{
 jmailsend($from,$fromname,$to,$title,$body,$usename,$usepassword,$smtp);
-}
 }
 $pass1=md5($mm);
  $query = "INSERT INTO $met_admin_table SET

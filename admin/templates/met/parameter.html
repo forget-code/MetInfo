@@ -18,16 +18,16 @@ echo <<<EOT
           <tr> 
             <td width="8%" class="list1_top" align="center">{$lang_parameterSort}</td>
             <td width="8%" class="list1_top" align="center">{$lang_parameterCode}</td>
-            <td width="15%" class="list1_top" align="center">$met_c_lang{$lang_parameterName}</td>
-			<td width="15%" class="list1_top" align="center">$met_e_lang{$lang_parameterName}</td>
-			<td width="15%" class="list1_top" align="center">$met_o_lang{$lang_parameterName}</td>
+            <td width="15%" class="list1_top" align="center">$met_c_lang{$lang_parametername1}</td>
+			<td width="15%" class="list1_top" align="center">$met_e_lang{$lang_parametername1}</td>
+			<td width="15%" class="list1_top" align="center">$met_o_lang{$lang_parametername1}</td>
 			<td width="16%" class="list1_top" align="center">{$lang_parameterMax}</td>
 <!--
 EOT;
 if($type!=10000)
 echo <<<EOT
 -->	
-			<td width="15%" class="list1_top" align="center">{$lang_parameterAccess}</td>
+			<td width="15%" class="list1_top" align="center">{$lang_webaccess}</td>
 <!--
 EOT;
 else
@@ -38,7 +38,7 @@ echo <<<EOT
 EOT;
 echo <<<EOT
 -->	
-            <td width="8%" class="list1_top" align="center">{$lang_parameterEnable}</td>
+            <td width="8%" class="list1_top" align="center">{$lang_open}</td>
           </tr>
 <!--
 EOT;
@@ -59,10 +59,10 @@ if($type!=10000)
 echo <<<EOT
 -->				
 			<td class="list1_content"><select name="access_$val[name]" id="access" >
-              <option value="all" $val[access0]>{$lang_parameterAccess0}</option>
-			  <option value="1" $val[access1]>{$lang_parameterAccess1}</option>
-              <option value="2" $val[access2]>{$lang_parameterAccess2}</option>
-              <option value="3" $val[access3]>{$lang_parameterAccess3}</option>
+              <option value="all" $val[access0]>{$lang_access0}</option>
+			  <option value="1" $val[access1]>{$lang_access1}</option>
+              <option value="2" $val[access2]>{$lang_access2}</option>
+              <option value="3" $val[access3]>{$lang_access3}</option>
             </select></td>
 <!--
 EOT;

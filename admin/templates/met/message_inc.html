@@ -15,28 +15,28 @@ echo <<<EOT
             <td colspan="3" align="center" class="list1_title">{$lang_messageincTitle}</td>
           </tr>
 		   <tr> 
-            <td  class="list1_text">{$lang_messageincTime}：</td>
-            <td class="list1_input"><input name="met_fd_time" type="text" class="input" size="3" maxlength="20" value="$met_fd_time">{$lang_messageincTip1}</td>
+            <td  class="list1_text">{$lang_fdincTime}</td>
+            <td class="list1_input"><input name="met_fd_time" type="text" class="input" size="3" maxlength="20" value="$met_fd_time">{$lang_fdincTip4}</td>
           </tr> 
 		  <tr> 
-            <td  class="list1_text">{$lang_messageincSlash}：</td>
-            <td class="list1_input"><textarea name="met_fd_word" cols="50" rows="3" >$met_fd_word</textarea>{$lang_messageincTip2}</td>
+            <td  class="list1_text">{$lang_fdincSlash}</td>
+            <td class="list1_input"><textarea name="met_fd_word" cols="50" rows="3" >$met_fd_word</textarea>{$lang_fdincTip5}</td>
           </tr>
 		  <tr> 
-            <td  class="list1_text">{$lang_messageincShow}：</td>
+            <td  class="list1_text">{$lang_messageincShow}</td>
             <td class="list1_input"><input name="met_fd_type" type="checkbox" value="1" $met_fd_type1>{$lang_messageincTip3}</td>
           </tr>
 		  <tr> 
-            <td  class="list1_text">{$lang_messageincSend}：</td>
+            <td  class="list1_text">{$lang_messageincSend}</td>
             <td class="list1_input"><input name="met_fd_email" type="checkbox" value="1" $met_fd_email1>{$lang_messageincTip4}</td>
           </tr> 
 		   <tr> 
-            <td  class="list1_text">{$lang_messageincReceive}：</td>
-            <td class="list1_input"><input name="met_fd_to" type="text" class="input" size="30" maxlength="200" value="$met_fd_to">{$lang_messageincTip5}</td>
+            <td  class="list1_text">{$lang_fdincAcceptMail}</td>
+            <td class="list1_input"><input name="met_fd_to" type="text" class="input" size="30" maxlength="200" value="$met_fd_to">{$lang_fdincTip9}</td>
           </tr> 
 		 <tr> 
-            <td  class="list1_text">{$lang_messageincAuto}:</td>
-            <td class="list1_input"><input name="met_fd_back" type="checkbox" value="1" $met_fd_back1>{$lang_messageincTip6}</td>
+            <td  class="list1_text">{$lang_fdincAuto}</td>
+            <td class="list1_input"><input name="met_fd_back" type="checkbox" value="1" $met_fd_back1>{$lang_fdincTip10}</td>
           </tr>
 <!--
 EOT;
@@ -45,8 +45,8 @@ echo <<<EOT
 -->
 			  
 		  <tr> 
-            <td class="list1_text">{$lang_messageincName}[$met_c_lang]:</td>
-            <td class="list1_input"><input name="met_c_fd_title" type="text" class="input" size="30" maxlength="200" value="$met_c_fd_title">{$lang_messageincAutoName}</td>
+            <td class="list1_text">{$lang_fdincFeedbackTitle}[$met_c_lang]</td>
+            <td class="list1_input"><input name="met_c_fd_title" type="text" class="input" size="30" maxlength="200" value="$met_c_fd_title">{$lang_fdincAutoFbTitle}</td>
           </tr>
 <!--
 EOT;
@@ -55,8 +55,8 @@ if($met_e_lang_ok==1){
 echo <<<EOT
 -->
 		  <tr> 
-            <td class="list1_text">{$lang_messageincName}[$met_e_lang]:</td>
-            <td class="list1_input"><input name="met_e_fd_title" type="text" class="input" size="30" maxlength="200" value="$met_e_fd_title">{$lang_messageincAutoName}</td>
+            <td class="list1_text">{$lang_fdincFeedbackTitle}[$met_e_lang]</td>
+            <td class="list1_input"><input name="met_e_fd_title" type="text" class="input" size="30" maxlength="200" value="$met_e_fd_title">{$lang_fdincAutoFbTitle}</td>
           </tr>
 <!--
 EOT;
@@ -65,8 +65,8 @@ if($met_o_lang_ok==1){
 echo <<<EOT
 -->
 		  <tr> 
-            <td class="list1_text">{$lang_messageincName}[$met_o_lang]:</td>
-            <td class="list1_input"><input name="met_o_fd_title" type="text" class="input" size="30" maxlength="200" value="$met_o_fd_title">{$lang_messageincAutoName}</td>
+            <td class="list1_text">{$lang_fdincFeedbackTitle}[$met_o_lang]</td>
+            <td class="list1_input"><input name="met_o_fd_title" type="text" class="input" size="30" maxlength="200" value="$met_o_fd_title">{$lang_fdincAutoFbTitle}</td>
           </tr>
 <!--
 EOT;
@@ -76,8 +76,8 @@ echo <<<EOT
 -->
 	
 		   <tr> 
-            <td class="list1_text">{$lang_messageincContent}[$met_c_lang]:</td>
-            <td class="list1_input"><textarea name="met_c_fd_content" cols="50" rows="3" >$met_c_fd_content</textarea>{$lang_messageincTip7}</td>
+            <td class="list1_text">{$lang_fdincAutoContent}[$met_c_lang]</td>
+            <td class="list1_input"><textarea name="met_c_fd_content" cols="50" rows="3" >$met_c_fd_content</textarea>{$lang_htmlok}</td>
           </tr>
 <!--
 EOT;
@@ -87,8 +87,8 @@ echo <<<EOT
 -->
 	
 		   <tr> 
-            <td class="list1_text">{$lang_messageincContent}[$met_e_lang]:</td>
-            <td class="list1_input"><textarea name="met_e_fd_content" cols="50" rows="3" >$met_e_fd_content</textarea>{$lang_messageincTip7}</td>
+            <td class="list1_text">{$lang_fdincAutoContent}[$met_e_lang]</td>
+            <td class="list1_input"><textarea name="met_e_fd_content" cols="50" rows="3" >$met_e_fd_content</textarea>{$lang_htmlok}</td>
           </tr>
 <!--
 EOT;
@@ -98,8 +98,8 @@ echo <<<EOT
 -->
 	
 		   <tr> 
-            <td class="list1_text">{$lang_messageincContent}[$met_o_lang]:</td>
-            <td class="list1_input"><textarea name="met_o_fd_content" cols="50" rows="3" >$met_o_fd_content</textarea>{$lang_messageincTip7}</td>
+            <td class="list1_text">{$lang_fdincAutoContent}[$met_o_lang]</td>
+            <td class="list1_input"><textarea name="met_o_fd_content" cols="50" rows="3" >$met_o_fd_content</textarea>{$lang_htmlok}</td>
           </tr>
 <!--
 EOT;

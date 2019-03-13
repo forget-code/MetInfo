@@ -12,7 +12,7 @@ echo <<<EOT
 		<input name="id" type="hidden" value="$index[id]">
 <table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
          <tr> 
-            <td colspan="3" align="center" class="list1_title">{$lang_indexsetIntroduce}</td>
+            <td colspan="2" align="center" class="list1_title">{$lang_indexsetIntroduce}</td>
           </tr>
 <!--
 EOT;
@@ -30,7 +30,7 @@ $oFCKeditor->BasePath = '../../fckeditor/';
 $oFCKeditor->Config['AutoDetectLanguage']	= false ;
 $oFCKeditor->Config['DefaultLanguage']		= $langusenow ;
 $oFCKeditor->Value = $index[c_content];
-$oFCKeditor->Width = '100%';   
+$oFCKeditor->Width = '502';   
 $oFCKeditor->Height = '300';
 $oFCKeditor->Create();
 echo "</td></tr>" ;
@@ -48,7 +48,7 @@ $oFCKeditor->BasePath = '../../fckeditor/';
 $oFCKeditor->Config['AutoDetectLanguage']	= false ;
 $oFCKeditor->Config['DefaultLanguage']		= $langusenow ;
 $oFCKeditor->Value = $index[e_content];
-$oFCKeditor->Width = '100%';   
+$oFCKeditor->Width = '502';   
 $oFCKeditor->Height = '300';
 $oFCKeditor->Create();
 echo "</td></tr>" ; 
@@ -66,7 +66,7 @@ $oFCKeditor->BasePath = '../../fckeditor/';
 $oFCKeditor->Config['AutoDetectLanguage']	= false ;
 $oFCKeditor->Config['DefaultLanguage']		= $langusenow ;
 $oFCKeditor->Value = $index[o_content];
-$oFCKeditor->Width = '100%';   
+$oFCKeditor->Width = '502';   
 $oFCKeditor->Height = '300';
 $oFCKeditor->Create();
 echo "</td></tr>" ; 

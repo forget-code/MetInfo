@@ -59,7 +59,7 @@ echo <<<EOT
 --> 
 </td> </tr>
               <tr>
-                <td width="5%" class="list1_top" align="center">{$lang_messageSelect}</td>
+                <td width="5%" class="list1_top" align="center">{$lang_selected}</td>
 				<td width="5%" class="list1_top" align="center">ID</td>
 				<td width="12%" class="list1_top" align="center" >{$lang_messageID}</td>
                 <td width="10%" class="list1_top" align="center">{$lang_messageName}</td>
@@ -68,7 +68,7 @@ echo <<<EOT
 				<td width="8%" class="list1_top" align="center" >{$lang_messageReply}</td>                
                 <td width="19%" class="list1_top" align="center" >{$lang_messageTime}</td>
 				<td width="8%"  class="list1_top" align="center" >{$lang_messageAccess}</td>
-				<td width="13%" class="list1_top" align="center" >{$lang_messageOperate}</td>
+				<td width="13%" class="list1_top" align="center" >{$lang_operate}</td>
               </tr>
 			  <form name="del" method="Post" action="delete.php" onSubmit="return ConfirmDelall();">
 <!--
@@ -86,7 +86,7 @@ echo <<<EOT
                 <td  class="list1_content" align="center">$val[readok]</td>				
                 <td  class="list1_content" align="center">$val[addtime]</td>
 				<td  class="list1_content" align="center">$val[access]</td>
-				<td align="center" class="list1_content" style="color:#0066FF" ></a> <a href="editor.php?id=$val[id]" >{$lang_messageEdit}</a> | <a href="delete.php?id=$val[id]" onClick="return ConfirmDel();" >{$lang_messageDel}</a></td>
+				<td align="center" class="list1_content" style="color:#0066FF" ></a> <a href="editor.php?id=$val[id]" >{$lang_editor}</a> | <a href="delete.php?id=$val[id]" onClick="return ConfirmDel();" >{$lang_delete}</a></td>
               </tr>
 <!--
 EOT;
@@ -96,18 +96,18 @@ echo <<<EOT
     
    	   <tr> 
             <td class="input_bottom" align="center"><input name="chkAll" class="xz" type="checkbox" id="chkAll" onclick=CheckAll(this.form) value="checkbox"></td>
-              <td class="input_bottom" align="center">{$lang_messageSelectAll}</td>
+              <td class="input_bottom" align="center">{$lang_selectall}</td>
 			  <td class="input_bottom" align="left" colspan="8">
-			  <input name="submit" type='submit' value='{$lang_messageDelSelected}' style="*padding-top:2px; *height:22px;"> 
+			  <input name="submit" type='submit' value='{$lang_deleteselected}' style="*padding-top:2px; *height:22px;"> 
               <input name="action" type="hidden" id="action" value="del">
 			  <input name="allid" type="hidden" id="allid" value=""></form></td>
           </tr>
 		  <tr>
             <td align="left" class="input_search" colspan="10">
 			<form method="POST" name="myform"  action="index.php?search=detail_search" target="_self">
-			       <span><b>{$lang_messageSearch}：</b></span> 
+			       <span><b>{$lang_messageSearch}</b></span> 
 			    <input name="useinfo" type="text" size="30">
-  <input type="submit" name="Submit2" value="{$lang_messageGo}" class="tj" style="*padding-top:2px; *height:22px;">  
+  <input type="submit" name="Submit2" value="{$lang_search}" class="tj" style="*padding-top:2px; *height:22px;">  
 	        {$lang_messageTip1}</form></td>
           </tr>
    	   <tr>

@@ -2,51 +2,29 @@
 # 文件名称:langeditor.php 2009-08-01 21:01:57
 # MetInfo企业网站管理系统 
 # Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn)). All rights reserved.
+
 require_once '../login/login_check.php';
-if($action=="modify"){
-$config_save="";
-   for($i=0;$i<$langnum;$i++){
-   $langtext[$i]=str_replace("\"","&quot;",$langtext[$i]);
-   $langtext[$i]=stripslashes($langtext[$i]);
-   $config_save=$config_save."#".$langarray[$i].chr(13).$langtext[$i];
-   }
-$config_save=$linetop.$config_save;
+
 switch($langeditor){
 case "cn";
-$file_nameupdate="../../templates/".$met_skin_user."/lang/language_china.ini";
-break;
-case "en";
-$file_nameupdate="../../templates/".$met_skin_user."/lang/language_en.ini";
-break;
-case "other";
-$file_nameupdate="../../templates/".$met_skin_user."/lang/language_other.ini";
-break;}
-$fp = fopen($file_nameupdate,w);
-    fputs($fp, $config_save);
-    fclose($fp);
-okinfo('lang.php',$lang_loginUserAdmin);
-}
-else{
-switch($langeditor){
-case "cn";
-$file_nameupdate="../../templates/".$met_skin_user."/lang/language_china.ini";
+$file_nameupdate="../../lang/language_cn.ini";
 $met_lang=$met_c_lang;
 break;
 case "en";
-$file_nameupdate="../../templates/".$met_skin_user."/lang/language_en.ini";
+$file_nameupdate="../../lang/language_en.ini";
 $met_lang=$met_e_lang;
 break;
 case "other";
-$file_nameupdate="../../templates/".$met_skin_user."/lang/language_other.ini";
+$file_nameupdate="../../lang/language_other.ini";
 $met_lang=$met_o_lang;
 break;
 }
-if(!file_exists($file_nameupdate))$file_nameupdate="../../templates/".$met_skin_user."/lang/language_china.ini";
 $fp = @fopen($file_nameupdate, "r") or die("Cannot open $file_nameupdate");
 $i=0;
 $j=0;
+
 while ($conf_line = @fgets($fp, 1024)){  
-if($i<4){
+if($i<4 && substr($conf_line,0,1)=="#"){
 $i++;  
 $linetop=$linetop.$conf_line;
 $lineno = ereg_replace("#.*$", "", $conf_line);
@@ -60,14 +38,70 @@ if (trim($line) == "") continue;
    $j++;
    }else{
    $k=$j-1;
-   $langtext[$k]=$langtext[$k].$line;
+   $linearray=explode ('=', $line);
+   $linenum=count($linearray);
+   if($linenum==2){
+   list($name, $value) = explode ('=', $line);
+     }else{
+    for($n=0;$n<$linenum;$n++){
+      $linetra=$n?$linetra."=".$linearray[$n]:$linearray[$n].'metinfo_';
+      }
+    list($name, $value) = explode ('metinfo_=', $linetra);
+   }
+   $value=str_replace("\"","&quot;",$value);
+   list($value, $valueinfo)=explode ('/*', $value);
+   list($valueinfo)=explode ('*/', $valueinfo);
+   $name = daddslashes(trim($name),1,'metinfo');
+   $langtext[$k][]=array(name=>$name,value=>$value,valueinfo=>$valueinfo);
    }
 }
+
+if($action=="modify"){
+$config_save="";
+if($metinfo_langtitle=="metinfolangtitle"){
+   for($m=0;$m<$langnum;$m++){
+   $config_save=$config_save."#".$langarray1[$m]."\n";
+   $config_list='';
+   foreach($langtext[$m] as $key=>$val){
+    $val[valueinfo]=($val[valueinfo]=="")?"":"/*".$val[valueinfo]."*/"."\n";
+    $config_list.=$val[name]."=".$val[value].$val[valueinfo];
+    }
+   $config_save=$config_save.$config_list."\n";
+   }
+   $reurl='langeditor.php?langeditor='.$langeditor;
+ }else{
+    for($m=0;$m<$j;$m++){
+   $config_save=$config_save."#".$langarray[$m];
+   $config_list='';
+   foreach($langtext[$m] as $key=>$val){
+    $namelist=$val[name]."_metinfo";
+	$namemetinfo=$$namelist;
+	if($namemetinfo!="")$namemetinfo=stripslashes($namemetinfo);
+    $val[value]=($namemetinfo=="")?$val[value]:$namemetinfo;
+	$nameinfolist=$val[name]."_info_metinfo";
+	$nameinfometinfo=$$nameinfolist;
+	if($nameinfometinfo!="")$nameinfometinfo=stripslashes($nameinfometinfo);
+	$val[valueinfo]=($nameinfometinfo=="")?$val[valueinfo]:$nameinfometinfo;
+    $val[valueinfo]=($val[valueinfo]=="")?"":"/*".$val[valueinfo]."*/"."\n";
+	if($val[valueinfo]=="" and $nameinfometinfo=="" and $namemetinfo!="")$val[valueinfo]="\n";
+    $config_list.=$val[name]."=".$val[value].$val[valueinfo];
+    }
+   $config_save=$config_save.$config_list."\n";
+   }
+   $reurl="langeditor.php?langeditor=".$langeditor."&langnowok=metinfo&langid=".$metinfolangid;
+ }
+$config_save=$linetop."\n".$config_save;
+$fp = fopen($file_nameupdate,w);
+    fputs($fp, $config_save);
+    fclose($fp);
+okinfo($reurl,$lang_loginUserAdmin);
+}else{
 $css_url="../templates/".$met_skin."/css";
 $img_url="../templates/".$met_skin."/images";
 include template('langeditor');
 footer();
 }
+
 # 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
 # Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
 ?>

@@ -6,16 +6,16 @@ require_once template('head');
 if($column_list[module]==100 or $column_list[module]==101)$bigclass=$lang_funMod100;
 echo <<<EOT
 -->
-<title>{$lang_columneditorTitle}$addtitle</title>
+<title>{$lang_modify}$addtitle</title>
 </head>
 <body>
  <form method="POST" name="myform" onSubmit="return CheckForm_moudle();" action="save.php?action=editor" target="_self">
 <table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
          <tr> 
-            <td colspan="3" align="center" class="list1_title">{$lang_columneditorTitle}$addtitle</td>
+            <td colspan="3" align="center" class="list1_title">{$lang_modify}$addtitle</td>
           </tr>
 		  <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font>{$lang_columneditorPreName}：</td>
+            <td class="list1_text"><font color="#FF0000">*</font>{$lang_columnPreName}</td>
             <td class="list1_input" > <input name="bigclass1" type="text" class="input" size="20" maxlength="50" value="$bigclass" disabled="disabled"></td>
 			<input name="bigclass" type="hidden"  value="$class">
 			<input name="id" type="hidden" value="$id">
@@ -27,11 +27,11 @@ echo <<<EOT
 			
           </tr> 		   
 		  <tr>
-			<td class="list1_text">{$lang_columnaddImg1}：</td>
+			<td class="list1_text">{$lang_columnImg1}</td>
             <td class="list1_input"><input name="indeximg" type="text" class="input" size="30" maxlength="200" value="$column_list[indeximg]"><iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_photo.php?returnid=indeximg&flash=flash" frameborder=0 scrolling=no width="280" height="25"></iframe>			</td>
           </tr>
 		  <tr>
-			<td class="list1_text">{$lang_columnaddImg2}：</td>
+			<td class="list1_text">{$lang_columnImg2}</td>
             <td class="list1_input"><input name="columnimg" type="text" class="input" size="30" maxlength="200" value="$column_list[columnimg]"><iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_photo.php?returnid=columnimg&flash=flash" frameborder=0 scrolling=no width="280" height="25"></iframe>			</td>
           </tr>
 <!--
@@ -40,7 +40,7 @@ if($met_c_lang_ok==1){
 echo <<<EOT
 -->
 		  <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font>{$lang_columneditorName}[<b>$met_c_lang</b>]：</td>
+            <td class="list1_text"><font color="#FF0000">*</font>{$lang_columnname}[<b>$met_c_lang</b>]</td>
             <td class="list1_input"> <input name="c_name" type="text" class="input" size="20" maxlength="50" value="$column_list[c_name]"></td>
           </tr> 
 <!--
@@ -50,7 +50,7 @@ if($met_e_lang_ok==1){
 echo <<<EOT
 -->
 		  <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font>{$lang_columneditorName}[<b>$met_e_lang</b>]：</td>
+            <td class="list1_text"><font color="#FF0000">*</font>{$lang_columnname}[<b>$met_e_lang</b>]</td>
             <td class="list1_input"> <input name="e_name" type="text" class="input" size="20" maxlength="50" value="$column_list[e_name]"></td>
           </tr> 
 <!--
@@ -60,7 +60,7 @@ if($met_o_lang_ok==1){
 echo <<<EOT
 -->
 		  <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font>{$lang_columneditorName}[<b>$met_o_lang</b>]：</td>
+            <td class="list1_text"><font color="#FF0000">*</font>{$lang_columnname}[<b>$met_o_lang</b>]</td>
             <td class="list1_input"> <input name="o_name" type="text" class="input" size="20" maxlength="50" value="$column_list[o_name]"></td>
           </tr> 
 <!--
@@ -69,24 +69,24 @@ EOT;
 echo <<<EOT
 -->			  
 		  <tr> 
-            <td class="list1_text">{$lang_columneditorSort}：</td>
+            <td class="list1_text">{$lang_columnorder}</td>
             <td class="list1_input"> <input name="no_order" type="text" class="input" size="2" maxlength="20" value="$column_list[no_order]"></td>
           </tr>
 		  <tr> 
-            <td class="list1_text">{$lang_columneditorIndexMark}：</td>
-            <td class="list1_input"> <input name="index_num" type="text" class="input" size="2" maxlength="20" value="$column_list[index_num]">{$lang_columneditorTip1}“<a href="../set/info.php">{$lang_columneditorTip2}</a>”{$lang_columneditorTip3}</td>
+            <td class="list1_text">{$lang_columnmark}</td>
+            <td class="list1_input"> <input name="index_num" type="text" class="input" size="2" maxlength="20" value="$column_list[index_num]">{$lang_columntip1}“<a href="../set/info.php">{$lang_columntip2}</a>”{$lang_columntip3}</td>
           </tr>
 		  <tr> 
-            <td class="list1_text">{$lang_columneditorNav}：</td>
-            <td class="list1_input"><input name="nav" type="radio" value="0" $nav[0] >{$lang_columneditorNav1} &nbsp;<input name="nav" type="radio" value="1" $nav[1]>{$lang_columneditorNav2}<input name="nav" type="radio" value="2" $nav[2]>{$lang_columneditorNav3}<input name="nav" type="radio" value="3" $nav[3]>{$lang_columneditorNav4}</td>
+            <td class="list1_text">{$lang_columnnav}</td>
+            <td class="list1_input"><input name="nav" type="radio" value="0" $nav[0] >{$lang_columnnav1} &nbsp;<input name="nav" type="radio" value="1" $nav[1]>{$lang_columnnav2}<input name="nav" type="radio" value="2" $nav[2]>{$lang_columnnav3}<input name="nav" type="radio" value="3" $nav[3]>{$lang_columnnav4}</td>
           </tr> 
 		   <tr> 
-            <td class="list1_text">{$lang_columneditorNewWindow}：</td>
-            <td class="list1_input"><input name="new_windows" type="checkbox" $new_windows value="target='_blank'">{$lang_columneditorYes}</td>
+            <td class="list1_text">{$lang_columnnewwindow}</td>
+            <td class="list1_input"><input name="new_windows" type="checkbox" $new_windows value="target='_blank'">{$lang_yes}</td>
           </tr>
 		  <tr> 
-            <td class="list1_text">{$lang_columneditorAttribute}：</td>
-            <td class="list1_input"><input name="if_in" type="radio" id="if_in1" value="0" onMouseDown="displayid('columnin','columnout')" $if_in[0] disabled="disabled">{$lang_columneditorSysModule} &nbsp;<input name="if_in" type="radio" value="1" onMouseDown="displayid('columnout','columnin')" $if_in[1] disabled="disabled">{$lang_columneditorOutLink}</td>
+            <td class="list1_text">{$lang_columnattribute}</td>
+            <td class="list1_input"><input name="if_in" type="radio" id="if_in1" value="0" onMouseDown="displayid('columnin','columnout')" $if_in[0] disabled="disabled">{$lang_columnSysModule} &nbsp;<input name="if_in" type="radio" value="1" onMouseDown="displayid('columnout','columnin')" $if_in[1] disabled="disabled">{$lang_columnOutLink}</td>
           </tr>
 		  <tbody id="columnin" style=" width:100%; display:$if_in_p">
 <!--
@@ -95,17 +95,17 @@ if($column_list[module]<5 && $column_list[module]!=0){
 echo <<<EOT
 -->	
 		   <tr > 
-            <td class="list1_text"><font color="#FF0000">*</font>{$lang_columneditorBelongModule}：</td>
+            <td class="list1_text"><font color="#FF0000">*</font>{$lang_columnmodule}</td>
             <td class="list1_input"><select name="module1" disabled="disabled">
-              <option value="1" $module[1]>{$lang_columneditorModule1}</option>
-              <option value="2" $module[2]>{$lang_columneditorModule2}</option>
-              <option value="3" $module[3]>{$lang_columneditorModule3}</option>
-              <option value="4" $module[4]>{$lang_columneditorModule4}</option>
-              <option value="5" $module[5]>{$lang_columneditorModule5}</option>
+               <option value="1" $module[1]>{$lang_mod1}{$lang_mod}</option>
+              <option value="2" $module[2]>{$lang_mod2}{$lang_mod}</option>
+              <option value="3" $module[3]>{$lang_mod3}{$lang_mod}</option>
+              <option value="4" $module[4]>{$lang_mod4}{$lang_mod}</option>
+              <option value="5" $module[5]>{$lang_mod5}{$lang_mod}</option>
             </select></td>
           </tr> 
 		    <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font>{$lang_columneditorDocumentName}：</td>
+            <td class="list1_text"><font color="#FF0000">*</font>{$lang_columndocument}</td>
             <td class="list1_input"> <input name="foldername" type="text" class="input" size="20" maxlength="20" value="$column_list[foldername]" disabled="disabled"></td>
           </tr> 
 <!--
@@ -114,20 +114,20 @@ EOT;
 echo <<<EOT
 -->		  
 		  <tr id="list_order" style="display:$list_orderok"> 
-            <td class="list1_text"><font color="#FF0000">*</font>{$lang_columneditorContentSort}：</td>
-            <td class="list1_input"><input name="list_order" type="radio" value="0" $list_order[0] >{$lang_columneditorDefault} &nbsp; <input name="list_order" type="radio" value="1" $list_order[1] >{$lang_columneditorUpdateTime} &nbsp; <input name="list_order" type="radio" value="2" $list_order[2]>{$lang_columneditorPublish} &nbsp;<input name="list_order" type="radio" value="3" $list_order[3]>{$lang_columneditorHits} &nbsp; <input name="list_order" type="radio" value="4" $list_order[4]>ID{$lang_columneditorReverseSort} &nbsp; <input name="list_order" type="radio" value="5" $list_order[5]>ID{$lang_columneditorOrder}</td>
+            <td class="list1_text"><font color="#FF0000">*</font>{$lang_columncontentorder}</td>
+            <td class="list1_input"><input name="list_order" type="radio" value="0" $list_order[0] >{$lang_default} &nbsp; <input name="list_order" type="radio" value="1" $list_order[1] >{$lang_updatetime} &nbsp; <input name="list_order" type="radio" value="2" $list_order[2]>{$lang_addtime} &nbsp;<input name="list_order" type="radio" value="3" $list_order[3]>{$lang_hits} &nbsp; <input name="list_order" type="radio" value="4" $list_order[4]>ID{$lang_columnReverseSort} &nbsp; <input name="list_order" type="radio" value="5" $list_order[5]>ID{$lang_columnaddOrder}</td>
           </tr>
 		  <tr id="static1" style="display:$filenameok"> 
-            <td class="list1_text"><font color="#FF0000">*</font>{$lang_columneditorStaticPage}：</td>
+            <td class="list1_text"><font color="#FF0000">*</font>{$lang_columnhtmlname}</td>
             <td class="list1_input"> <input name="filename" type="text" class="input" size="20" maxlength="20" value="$column_list[filename]" disabled="disabled"></td>
           </tr>
 		  <tr id="static2" style="display:$filenameok"> 
-            <td class="list1_text">{$lang_columneditorShow}：</td>
-            <td class="list1_input"> <input name="isshow" type="checkbox" value="1" $isshowcheck>{$lang_columneditorTip8}</td>
+            <td class="list1_text">{$lang_columnshow}</td>
+            <td class="list1_input"> <input name="isshow" type="checkbox" value="1" $isshowcheck>{$lang_columntip8}</td>
           </tr>
 		  <tr> 
 		    <td class="list1_text"></td>
-            <td class="list1_input" style="color:#FF0000;"><b>{$lang_columneditorSEO}</b></td> 
+            <td class="list1_input" style="color:#FF0000;"><b>{$lang_columnSEO}</b></td> 
           </tr>
 <!--
 EOT;
@@ -135,11 +135,11 @@ if($met_c_lang_ok==1){
 echo <<<EOT
 -->
 		  <tr> 
-            <td class="list1_text">{$lang_columneditorKeys}[<b>$met_c_lang</b>]：</td>
-            <td class="list1_input"> <input name="c_keywords" type="text" class="input" size="20" maxlength="200" value="$column_list[c_keywords]">{$lang_columneditorTip6}</td>
+            <td class="list1_text">{$lang_keywords}[<b>$met_c_lang</b>]</td>
+            <td class="list1_input"> <input name="c_keywords" type="text" class="input" size="20" maxlength="200" value="$column_list[c_keywords]">{$lang_keywordsinfo}</td>
           </tr>
 		  <tr> 
-            <td class="list1_text">{$lang_columneditorIntroduce}[<b>$met_c_lang</b>]：</td>
+            <td class="list1_text">{$lang_description}[<b>$met_c_lang</b>]</td>
             <td class="list1_input"><textarea name="c_description" cols="50" rows="4" >$column_list[c_description]</textarea></td>
           </tr>
 <!--
@@ -149,11 +149,11 @@ if($met_e_lang_ok==1){
 echo <<<EOT
 -->
 		  <tr> 
-            <td class="list1_text">{$lang_columneditorKeys}[<b>$met_e_lang</b>]：</td>
-            <td class="list1_input"> <input name="e_keywords" type="text" class="input" size="20" maxlength="200" value="$column_list[e_keywords]">{$lang_columneditorTip6}</td>
+            <td class="list1_text">{$lang_keywords}[<b>$met_e_lang</b>]</td>
+            <td class="list1_input"> <input name="e_keywords" type="text" class="input" size="20" maxlength="200" value="$column_list[e_keywords]">{$lang_keywordsinfo}</td>
           </tr>
 		  <tr> 
-            <td class="list1_text">{$lang_columneditorIntroduce}[<b>$met_e_lang</b>]：</td>
+            <td class="list1_text">{$lang_description}[<b>$met_e_lang</b>]</td>
             <td class="list1_input"><textarea name="e_description" cols="50" rows="4" >$column_list[e_description]</textarea></td>
           </tr>
 <!--
@@ -163,11 +163,11 @@ if($met_o_lang_ok==1){
 echo <<<EOT
 -->
 		  <tr> 
-            <td class="list1_text">{$lang_columneditorKeys}[<b>$met_o_lang</b>]：</td>
-            <td class="list1_input"> <input name="o_keywords" type="text" class="input" size="20" maxlength="200" value="$column_list[o_keywords]">{$lang_columneditorTip6}</td>
+            <td class="list1_text">{$lang_keywords}[<b>$met_o_lang</b>]</td>
+            <td class="list1_input"> <input name="o_keywords" type="text" class="input" size="20" maxlength="200" value="$column_list[o_keywords]">{$lang_keywordsinfo}</td>
           </tr>
 		  <tr> 
-            <td class="list1_text">{$lang_columneditorIntroduce}[<b>$met_o_lang</b>]：</td>
+            <td class="list1_text">{$lang_description}[<b>$met_o_lang</b>]</td>
             <td class="list1_input"><textarea name="o_description" cols="50" rows="4" >$column_list[o_description]</textarea></td>
           </tr>
 <!--
@@ -176,7 +176,7 @@ EOT;
 echo <<<EOT
 -->
 		<tr> 
-            <td class="list1_text">{$lang_columnaddAccess}：</td>
+            <td class="list1_text">{$lang_webaccess}</td>
             <td class="list1_input"><select name="access" id="access" >
 			 $level
             </select></td>
@@ -193,7 +193,7 @@ if($met_c_lang_ok==1){
 echo <<<EOT
 -->
 		<tr> 
-            <td class="list1_text"><font color="#FF0000">*</font>{$lang_columneditorHref}[<b>$met_c_lang</b>]：</td>
+            <td class="list1_text"><font color="#FF0000">*</font>{$lang_columnhref}[<b>$met_c_lang</b>]</td>
             <td class="list1_input"> <input name="c_out_url" type="text" class="input" size="20" maxlength="200" value="$column_list[c_out_url]">{$lang_columnaddTip7}</td>
         </tr>   
 <!--
@@ -203,7 +203,7 @@ if($met_e_lang_ok==1){
 echo <<<EOT
 -->
 		<tr> 
-            <td class="list1_text"><font color="#FF0000">*</font>{$lang_columneditorHref}[<b>$met_e_lang</b>]：</td>
+            <td class="list1_text"><font color="#FF0000">*</font>{$lang_columnhref}[<b>$met_e_lang</b>]</td>
             <td class="list1_input"> <input name="e_out_url" type="text" class="input" size="20" maxlength="200" value="$column_list[e_out_url]">{$lang_columnaddTip7}</td>
         </tr>   
 <!--
@@ -213,7 +213,7 @@ if($met_o_lang_ok==1){
 echo <<<EOT
 -->
 		<tr> 
-            <td class="list1_text"><font color="#FF0000">*</font>{$lang_columneditorHref}[<b>$met_o_lang</b>]：</td>
+            <td class="list1_text"><font color="#FF0000">*</font>{$lang_columnhref}[<b>$met_o_lang</b>]</td>
             <td class="list1_input"> <input name="o_out_url" type="text" class="input" size="20" maxlength="200" value="$column_list[o_out_url]">{$lang_columnaddTip7}</td>
         </tr>   
 <!--

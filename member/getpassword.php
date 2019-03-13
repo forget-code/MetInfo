@@ -31,14 +31,7 @@ $met_webname1=$met_webnamearray[0];
 
 $title=$met_webname1.$lang_getNotice;
 $body="$lang_getTip1 [".$met_webname1."]".$met_weburl.$lang_getTip2.$getpass.$lang_getTip3;
-if(PATH_SEPARATOR==':'){
-$headers  = 'MIME-Version: 1.0' . "\r\n";
-$headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
-$headers .= 'From: '.$fromname.' <'.$from.'>' . "\r\n";
-mail("$to", "$title", "$body", "$headers");
-}else{
 jmailsend($from,$fromname,$to,$title,$body,$usename,$usepassword,$smtp);
-}
 okinfo('login_member.php?lang='.$lang,$lang_NewPassJS);
 }
 }else{

@@ -31,17 +31,17 @@ require_once '../login/login_check.php';
 	$list['place']=$langusenow=="en"?$list['e_place']:($langusenow=="other"?$list['o_place']:$list['c_place']);
 	switch($list['access'])
     {
-    	case '1':$list['access']=$lang_jobAccess1;break;
-    	case '2':$list['access']=$lang_jobAccess2;break;
-    	case '3':$list['access']=$lang_jobAccess3;break;
-		default:$list['access']=$lang_jobAccess0;break;
+    	case '1':$list['access']=$lang_access1;break;
+    	case '2':$list['access']=$lang_access2;break;
+    	case '3':$list['access']=$lang_access3;break;
+		default:$list['access']=$lang_access0;break;
 	}
 	$list[top_ok1] = $list[top_ok] ? $lang_YES : $lang_NO;
 	if($list[count]==0)$list[count]=$lang_josAlways;
 	if($list[useful_life]==0)$list[useful_life]=$lang_josAlways;
     $job_list[]=$list;
     }
-$page_list = $rowset->link("index.php?class1=$class1&search=$search&c_position=$c_position&page=");
+$page_list = $rowset->link("index.php?class1=$class1&search=$search&position=$position&page=");
 switch($top)
 {
 	case '1':$top1="selected='selected'";break;

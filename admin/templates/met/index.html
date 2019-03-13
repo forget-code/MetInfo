@@ -8,23 +8,19 @@ echo <<<EOT
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>MetInfo{$lang_indexmetinfo}</title>
+<title>MetInfo{$lang_metinfo}</title>
 <link href="$img_url/metinfo.css" rel="stylesheet" />
 <style type="text/css">
 body {
 	font-size: $lang_fontsize; 
 	font-family:$lang_fontfamily;
-	background-color:$lang_backgroundcolor;
 }
 </style>
 </head>
 <body>
 <div class="top">
 <div style="width:100%;">
-<marquee scrollAmount="3" scrollDelay="4" width="50%" align="left" onMouseOver="this.stop()" onMouseOut="this.start()"
-style="position:absolute; height:30px; line-height:30px; right:20px; top:0px; z-index:100; color:#FF0000;">
-<script language="javascript" src="http://www.metinfo.cn/metnews.php?fromurl=$met_weburl&softtype=1"></script>
-</marquee>
+<iframe allowtransparency="true" style="padding-top:0px; margin-top:0px; position:absolute; height:30px; width:50%; line-height:30px; right:20px; top:0px; z-index:100; background-color=transparent " src="http://www.metinfo.cn/metnewslist.php?fromurl=$met_weburl&softtype=1" frameborder=0 scrolling=no ></iframe>
 </div> 
    <div class="top_bottom">
    <div class="top_left"><a href="http://www.metinfo.cn" target="_blank" hidefocus="true"><img src="$img_url/logo.gif" alt="MetInfo"  /></a></div>
@@ -134,7 +130,8 @@ $k1=$k+1;
 echo <<<EOT
 --> 
 		   <li><a target="main" onfocus="if(this.blur)this.blur();"  id="list0_$k2" href="set/authcode.php" onclick="san1(1,$k)">{$lang_indexcode}</a></li>
-		   <li><a  target="_blank" onfocus="if(this.blur)this.blur();" id="list0_$k3" href="http://bbs.metinfo.cn/" onclick="san1(1,$k1)">{$lang_indexsupport}</a></li>
+		   <li><a  target="_blank" onfocus="if(this.blur)this.blur();" id="list0_$k3" href="http://www.metinfo.cn/ebook" onclick="san1(1,$k1)">{$lang_indexebook}</a></li>
+		   <li><a  target="_blank" onfocus="if(this.blur)this.blur();" id="list0_$k4" href="http://bbs.metinfo.cn/" onclick="san1(1,$k1)">{$lang_indexbbs}</a></li>
 		</ul>	
 	</div>
 <!--***************************************栏目一结束***************************************-->
@@ -225,7 +222,7 @@ $k++;
 if($metinfo_admin_pop=="metinfo" || $admin_pop1202=="metinfo"){
 echo <<<EOT
 -->      
-<li><a target="main" id="list2_$k" onfocus="if(this.blur)this.blur();" href="parameter/parameter.php?type=3" onclick="san1(3,$k)">{$lang_indexproduct}</a></li>
+<li><a target="main" id="list2_$k" onfocus="if(this.blur)this.blur();" href="parameter/parameter.php?type=3" onclick="san1(3,$k)">{$lang_mod3}{$lang_mod}{$lang_parameter}</a></li>
  <!--
 EOT;
 $k++;
@@ -233,7 +230,7 @@ $k++;
 if($metinfo_admin_pop=="metinfo" || $admin_pop1203=="metinfo"){
 echo <<<EOT
 --> 
-<li><a target="main" id="list2_$k" onfocus="if(this.blur)this.blur();" href="parameter/parameter.php?type=4" onclick="san1(3,$k)">{$lang_indexdownload}</a></li>
+<li><a target="main" id="list2_$k" onfocus="if(this.blur)this.blur();" href="parameter/parameter.php?type=4" onclick="san1(3,$k)">{$lang_mod4}{$lang_mod}{$lang_parameter}</a></li>
  <!--
 EOT;
 $k++;
@@ -241,7 +238,7 @@ $k++;
 if($metinfo_admin_pop=="metinfo" || $admin_pop1204=="metinfo"){
 echo <<<EOT
 --> 
-<li><a target="main" id="list2_$k" onfocus="if(this.blur)this.blur();" href="parameter/parameter.php?type=5" onclick="san1(3,$k)">{$lang_indeximages}</a></li>
+<li><a target="main" id="list2_$k" onfocus="if(this.blur)this.blur();" href="parameter/parameter.php?type=5" onclick="san1(3,$k)">{$lang_mod5}{$lang_mod}{$lang_parameter}</a></li>
  <!--
 EOT;
 $k++;
@@ -343,8 +340,8 @@ echo <<<EOT
 -->
           <li onclick="san4($i)"><a onfocus="if(this.blur)this.blur();" target="_self" href="#">$val[name]</a></li>
 		   <span style="display:none;">	
-		   <li><a target="main"  onfocus="if(this.blur)this.blur();" href="article/add.php?class1=$val[id]">{$lang_indexadd}$val[name]</a></li>
-		   <li><a target="main" onfocus="if(this.blur)this.blur();"  href="article/index.php?class1=$val[id]">{$lang_indexindex}$val[name]</a></li>
+		   <li><a target="main"  onfocus="if(this.blur)this.blur();" href="article/add.php?class1=$val[id]">{$lang_add}$val[name]</a></li>
+		   <li><a target="main" onfocus="if(this.blur)this.blur();"  href="article/index.php?class1=$val[id]">{$lang_manager}$val[name]</a></li>
 		   </span>
 <!--
 EOT;
@@ -364,8 +361,8 @@ echo <<<EOT
 -->	
              <li onclick="san4($i)"><a onfocus="if(this.blur)this.blur();" target="_self" href="#">$val[name]</a></li>
 		   <span style="display:none;">	
-		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="product/add.php?class1=$val[id]">{$lang_indexadd}$val[name]</a></li>
-		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="product/index.php?class1=$val[id]">{$lang_indexindex}$val[name]</a></li>
+		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="product/add.php?class1=$val[id]">{$lang_add}$val[name]</a></li>
+		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="product/index.php?class1=$val[id]">{$lang_manager}$val[name]</a></li>
 		   </span>
 <!--
 EOT;
@@ -385,8 +382,8 @@ echo <<<EOT
 -->	
             <li onclick="san4($i)"><a onfocus="if(this.blur)this.blur();" target="_self" href="#">$val[name]</a></li>
 		   <span style="display:none;">	
-		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="download/add.php?class1=$val[id]">{$lang_indexadd}$val[name]</a></li>
-		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="download/index.php?class1=$val[id]">{$lang_indexindex}$val[name]</a></li>
+		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="download/add.php?class1=$val[id]">{$lang_add}$val[name]</a></li>
+		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="download/index.php?class1=$val[id]">{$lang_manager}$val[name]</a></li>
 		   </span>
 <!--
 EOT;
@@ -406,8 +403,8 @@ echo <<<EOT
 -->	
             <li onclick="san4($i)"><a onfocus="if(this.blur)this.blur();" target="_self" href="#">$val[name]</a></li>
 		   <span style="display:none;">	
-		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="img/add.php?class1=$val[id]">{$lang_indexadd}$val[name]</a></li>
-		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="img/index.php?class1=$val[id]">{$lang_indexindex}$val[name]</a></li>
+		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="img/add.php?class1=$val[id]">{$lang_add}$val[name]</a></li>
+		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="img/index.php?class1=$val[id]">{$lang_manager}$val[name]</a></li>
 		   </span>
 <!--
 EOT;
@@ -427,8 +424,8 @@ echo <<<EOT
 -->	
            <li onclick="san4($i)"><a onfocus="if(this.blur)this.blur();" target="_self" href="#">$val[name]</a></li>
 		   <span style="display:none;">	
-		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="job/add.php?class1=$val[id]">{$lang_indexadd}$val[name]</a></li>
-		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="job/index.php?class1=$val[id]">{$lang_indexindex}$val[name]</a></li>
+		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="job/add.php?class1=$val[id]">{$lang_add}$val[name]</a></li>
+		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="job/index.php?class1=$val[id]">{$lang_manager}$val[name]</a></li>
 		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="job/cv.php?class1=$val[id]">{$lang_indexCv}</a></li>
 		   </span>
 <!--
@@ -499,8 +496,8 @@ if($metinfo_admin_pop=="metinfo" || $admin_pop1404=="metinfo"){
 $k1=$k+1;
 echo <<<EOT
 -->	
-<li><a target="main" id="list4_$k" onfocus="if(this.blur)this.blur();" href="link/index.php" onclick="san1(5,$k)">{$lang_indexlink}{$lang_indexindex}</a></li>
-<li><a target="main" id="list4_$k1" onfocus="if(this.blur)this.blur();" href="link/add.php" onclick="san1(5,$k1)">{$lang_indexadd}{$lang_indexlink}</a></li>
+<li><a target="main" id="list4_$k" onfocus="if(this.blur)this.blur();" href="link/index.php" onclick="san1(5,$k)">{$lang_indexlink}{$lang_manager}</a></li>
+<li><a target="main" id="list4_$k1" onfocus="if(this.blur)this.blur();" href="link/add.php" onclick="san1(5,$k1)">{$lang_add}{$lang_indexlink}</a></li>
 <!--
 EOT;
 }
@@ -530,7 +527,7 @@ echo <<<EOT
 -->	
            <li onclick="san6($i)"><a onfocus="if(this.blur)this.blur();" target="_self" href="#">$val[name]</a></li>
 		   <span style="display:none;">	
-		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="feedback/inc.php">{$lang_indexfeedbackset}</a></li>
+		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="feedback/inc.php">$val[name]{$lang_set}</a></li>
 		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="feedback/parameter.php">{$lang_indexfeedbackp}</a></li>
 		   <li><a target="main" id="list5_$j" onfocus="if(this.blur)this.blur();" href="feedback/index.php">{$lang_indexfeedbackm}</a></li>
 		   </span>
@@ -552,7 +549,7 @@ echo <<<EOT
 -->	
            <li onclick="san6($i)"><a onfocus="if(this.blur)this.blur();" target="_self" href="#">$val[name]</a></li>
 		   <span style="display:none;">	
-		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="message/inc.php">$val[name]{$lang_indexset}</a></li>
+		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="message/inc.php">$val[name]{$lang_set}</a></li>
 		   <li><a target="main" onfocus="if(this.blur)this.blur();" id="list5_$j" href="message/index.php">{$lang_indexmessage}</a></li>
 		   </span>
 <!--

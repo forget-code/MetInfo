@@ -21,14 +21,15 @@ $member_index_url="index.php?lang=".$lang;
 }else{
 $member_index_url=($lang=="en")?"index".$met_e_htmtype:(($lang=="other")?"index".$met_o_htmtype:"index".$met_c_htmtype);
 }
- $methtl_membernav.="<ul>\n";
- $methtl_membernav.="<li><a target='main' onfocus='if(this.blur)this.blur();' href='basic.php?lang=".$lang."'>".$lang_memberIndex3."</a></li>\n";
- $methtl_membernav.="<li><a target='main' onfocus='if(this.blur)this.blur();' href='editor.php?lang=".$lang."'>".$lang_memberIndex4."</a></li>\n";
- $methtl_membernav.="<li><a target='main' onfocus='if(this.blur)this.blur();' href='feedback.php?lang=".$lang."'>".$lang_memberIndex5."</a></li>\n";
- $methtl_membernav.="<li><a target='main' onfocus='if(this.blur)this.blur();' href='message.php?lang=".$lang."'>".$lang_memberIndex6."</a></li>\n";
- $methtl_membernav.="<li><a target='main' onfocus='if(this.blur)this.blur();' href='cv.php?lang=".$lang."'>".$lang_memberIndex7."</a></li>\n";
- $methtl_membernav.="<li><a href='login_out.php?lang=".$lang."'>".$lang_memberIndex10."</a></li>\n";
- $methtl_membernav.="</ul>\n";
+ $methtml_membernav.="<ul>\n";
+ $methtml_membernav.="<li><a target='main' onfocus='if(this.blur)this.blur();' href='basic.php?lang=".$lang."'>".$lang_memberIndex3."</a></li>\n";
+ $methtml_membernav.="<li><a target='main' onfocus='if(this.blur)this.blur();' href='editor.php?lang=".$lang."'>".$lang_memberIndex4."</a></li>\n";
+ $methtml_membernav.="<li><a target='main' onfocus='if(this.blur)this.blur();' href='feedback.php?lang=".$lang."'>".$lang_memberIndex5."</a></li>\n";
+ $methtml_membernav.="<li><a target='main' onfocus='if(this.blur)this.blur();' href='message.php?lang=".$lang."'>".$lang_memberIndex6."</a></li>\n";
+ $methtml_membernav.="<li><a target='main' onfocus='if(this.blur)this.blur();' href='cv.php?lang=".$lang."'>".$lang_memberIndex7."</a></li>\n";
+ $methtml_membernav.="<li><a href='login_out.php?lang=".$lang."'>".$lang_memberIndex10."</a></li>\n";
+ $methtml_membernav.="</ul>\n";
+ $methtl_membernav=$methtml_membernav;
 if(file_exists("../templates/".$met_skin_user."/member.html")){
     include template('member');
 }else{

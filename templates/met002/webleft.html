@@ -40,7 +40,17 @@ echo <<<EOT
 </ul>
 </div> 
 <script type="text/javascript">
+<!--
+EOT;
+if($class2){
+echo <<<EOT
+-->
 document.getElementById($class2).style.display="block";
+<!--
+EOT;
+}
+echo <<<EOT
+-->
 function showhide(d)
 {       
         var d1=document.getElementById(d);

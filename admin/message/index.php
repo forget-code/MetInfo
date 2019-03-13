@@ -33,10 +33,10 @@ require_once '../login/login_check.php';
 	$list['customerid']=$list['customerid']=='0'?$lang_messageAccessy:$list['customerid'];
 	switch($list['access'])
     {
-    	case '1':$list['access']=$lang_messageAccess1;break;
-    	case '2':$list['access']=$lang_messageAccess2;break;
-    	case '3':$list['access']=$lang_messageAccess3;break;
-		default: $list['access']=$lang_messageAccess0;break;
+    	case '1':$list['access']=$lang_access1;break;
+    	case '2':$list['access']=$lang_access2;break;
+    	case '3':$list['access']=$lang_access3;break;
+		default: $list['access']=$lang_access0;break;
 	}                               
 	$list[readok] = $list[readok] ? $lang_YES : $lang_NO;
 	//$list[addtime] = date('Y-m-d',strtotime($list[addtime]));

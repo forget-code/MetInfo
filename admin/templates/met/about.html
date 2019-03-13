@@ -5,7 +5,7 @@
 require_once template('head');
 echo <<<EOT
 -->
-<title>{$lang_aboutTitle}</title>
+<title>{$lang_modify}$about[name]</title>
 </head>
 <body>
 <form method="POST" name="myform" onSubmit="return CheckForm_moudle();" action="about.php?action=modify" target="_self">
@@ -18,17 +18,17 @@ if($met_c_lang_ok==1){
 echo <<<EOT
 -->          
 		  <tr> 
-            <td colspan="6" align="center" class="list1_title">{$lang_aboutModify}$about[name][$met_c_lang]</td>
+            <td colspan="6" align="center" class="list1_title">{$lang_modify}$about[name][$met_c_lang]</td>
           </tr>
 		  <tr> 
-            <td  class="list1_text"><b>{$lang_aboutKeys}：</b></td>
-            <td  class="list1_input"><input name="c_keywords" type="text" size="40" value="$about[c_keywords]">{$lang_aboutTip1}</td></tr>
+            <td  class="list1_text"><b>{$lang_keywords}</b></td>
+            <td  class="list1_input"><input name="c_keywords" type="text" size="40" value="$about[c_keywords]">{$lang_descriptioninfo},{$lang_keywordsinfo}</td></tr>
 			 <tr> 
-            <td class="list1_text"><b>{$lang_aboutIntro}：</b><br>{$lang_aboutTip2}
+            <td class="list1_text"><b>{$lang_description}</b><br>{$lang_descriptioninfo}
 			</td>
             <td class="list1_input"><textarea name="c_description" cols="60" rows="5">$about[c_description]</textarea></td></tr>
 		  <tr> 
-            <td class="list1_text"><b>{$lang_aboutContent}：</b></td>
+            <td class="list1_text"><b>{$lang_contentdetail}</b></td>
             <td class="list1_input">
 <!--
 EOT;
@@ -38,7 +38,7 @@ $oFCKeditor->BasePath = '../../fckeditor/';
 $oFCKeditor->Config['AutoDetectLanguage']	= false ;
 $oFCKeditor->Config['DefaultLanguage']		= $langusenow ;
 $oFCKeditor->Value = $about[c_content];
-$oFCKeditor->Width = '100%';   
+$oFCKeditor->Width = '502';   
 $oFCKeditor->Height = '300';
 $oFCKeditor->Create();
 echo "</td></tr><!--" ;
@@ -50,14 +50,14 @@ echo <<<EOT
             <td colspan="6" align="center" class="list1_title">{$lang_aboutModify}$about[name][$met_e_lang]</td>
           </tr> 
 
-            <td class="list1_text"><b>{$lang_aboutKeys}：</b></td>
-            <td class="list1_input"><input name="e_keywords" type="text" size="40" value="$about[e_keywords]">{$lang_aboutTip3}</td></tr>
+            <td class="list1_text"><b>{$lang_keywords}</b></td>
+            <td class="list1_input"><input name="e_keywords" type="text" size="40" value="$about[e_keywords]">{$lang_descriptioninfo},{$lang_keywordsinfo}</td></tr>
 			 <tr> 
-            <td class="list1_text"><b>{$lang_aboutIntro}：</b><br>{$lang_aboutTip2}
+            <td class="list1_text"><b>{$lang_description}</b><br>{$lang_descriptioninfo}
 			</td>
             <td class="list1_input"><textarea name="e_description" cols="60" rows="5">$about[e_description]</textarea></td></tr>
           <tr> 
-            <td class="list1_text">{$lang_aboutContent}：</td>
+            <td class="list1_text"><b>{$lang_contentdetail}</b></td>
             <td class="list1_input">
 <!--
 EOT;
@@ -67,7 +67,7 @@ $oFCKeditor->BasePath = '../../fckeditor/';
 $oFCKeditor->Config['AutoDetectLanguage']	= false ;
 $oFCKeditor->Config['DefaultLanguage']		= $langusenow ;
 $oFCKeditor->Value = $about[e_content];
-$oFCKeditor->Width = '100%';   
+$oFCKeditor->Width = '502';   
 $oFCKeditor->Height = '300';
 $oFCKeditor->Create();
 echo "</td></tr><!--" ; 
@@ -78,14 +78,14 @@ echo <<<EOT
 			<tr> 
             <td colspan="6" align="center" class="list1_title">{$lang_aboutModify}$about[name][$met_o_lang]</td>
           </tr> 
-            <td class="list1_text"><b>{$lang_aboutKeys}：</b></td>
-            <td class="list1_input"><input name="o_keywords" type="text" size="40" value="$about[o_keywords]">{$lang_aboutTip3}</td></tr>
+            <td class="list1_text"><b>{$lang_keywords}</b></td>
+            <td class="list1_input"><input name="o_keywords" type="text" size="40" value="$about[o_keywords]">{$lang_descriptioninfo},{$lang_keywordsinfo}</td></tr>
 			 <tr> 
-            <td class="list1_text"><b>{$lang_aboutIntro}：</b><br>{$lang_aboutTip2}
+            <td class="list1_text"><b>{$lang_description}</b><br>{$lang_descriptioninfo}
 			</td>
             <td class="list1_input"><textarea name="o_description" cols="60" rows="5">$about[o_description]</textarea></td></tr>
           <tr> 
-            <td class="list1_text">{$lang_aboutContent}：</td>
+            <td class="list1_text"><b>{$lang_contentdetail}</b></td>
             <td class="list1_input">
 <!--
 EOT;
@@ -95,7 +95,7 @@ $oFCKeditor->BasePath = '../../fckeditor/';
 $oFCKeditor->Config['AutoDetectLanguage']	= false ;
 $oFCKeditor->Config['DefaultLanguage']		= $langusenow ;
 $oFCKeditor->Value = $about[o_content];
-$oFCKeditor->Width = '100%';   
+$oFCKeditor->Width = '502';   
 $oFCKeditor->Height = '300';
 $oFCKeditor->Create();
 echo "</td></tr><!--" ; 

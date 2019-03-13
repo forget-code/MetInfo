@@ -19,61 +19,59 @@ echo <<<EOT
             <td colspan="3" align="center" class="list1_title">{$lang_setimgSet}</td>
           </tr>
           <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_setimgEnableFormat}：</b></td>
+            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_setimgEnableFormat}</b></td>
             <td class="list1_input"> <input name="met_img_type" type="text" class="input" size="30" maxlength="200" value="$met_img_type">{$lang_setimgTip1}</td>
           </tr> 
 		  <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_setimgEnableSize}：</b></td>
+            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_setimgEnableSize}</b></td>
             <td class="list1_input"> <input name="met_img_maxsize" type="text" class="input" size="15" maxlength="200" value="$met_img_maxsize">{$lang_setimgByte}</td>
           </tr>
 		  	<tr> 
-            <td class="list1_text"><b>{$lang_setimgWater}：</b></td>
+            <td class="list1_text"><b>{$lang_setimgWater}</b></td>
             <td class="list1_input"><input name="met_autothumb_ok" type="checkbox" value=1 $met_autothumb_ok1>{$lang_setimgWaterok} </td>
           </tr>
 		   <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_setimgThumbnail}：</b></td>
-            <td class="list1_input">{$lang_setimgWidth}：<input name="met_img_x" type="text" class="input" size="5" maxlength="200" value="$met_img_x">{$lang_setimgPixel}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {$lang_setimgHeight}：<input name="met_img_y" type="text" class="input" size="5" maxlength="200" value="$met_img_y">{$lang_setimgPixel} </td>
+            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_setimgThumbnail}</b></td>
+            <td class="list1_input">{$lang_setimgWidth}<input name="met_img_x" type="text" class="input" size="5" maxlength="200" value="$met_img_x">{$lang_setimgPixel}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {$lang_setimgHeight}<input name="met_img_y" type="text" class="input" size="5" maxlength="200" value="$met_img_y">{$lang_setimgPixel} </td>
           </tr>  
 		  <tr> 
-            <td class="list1_text"><b>{$lang_setimgWatermark}：</b></td>
+            <td class="list1_text"><b>{$lang_setimgWatermark}</b></td>
             <td class="list1_input"><input name="met_big_wate" type="checkbox" value=1 $met_big_wate1>{$lang_setimgBigImg}  <input name="met_thumb_wate" type="checkbox" value=1 $met_thumb_wate1>{$lang_setimgThumb}</td>
           </tr> 
 		  <tr> 
-            <td class="list1_text"><b>{$lang_setimgWatermarkType}：</b></td>
+            <td class="list1_text"><b>{$lang_setimgWatermarkType}</b></td>
             <td class="list1_input"><input name="met_wate_class" type="radio" value="1" $met_wate_class1>{$lang_setimgWordWatermark}  <input name="met_wate_class" type="radio" value="2" $met_wate_class2>{$lang_setimgImgWatermark}</td>
           </tr> 
 		  <tr> 
-            <td class="list1_text"><b>{$lang_setimgImg}：</b></td>
+            <td class="list1_text"><b>{$lang_setimgImg}</b></td>
             <td class="list1_input"><input name="met_wate_img" type="file" class="input" size="30" maxlength="200" >
 			<a href="$met_wate_img" target="_blank" title="{$lang_setimgBrowse}" ><img src="../images/picflag.gif" border="0"/></a>{$lang_setimgTip2}
 			</td>
           </tr>
 		  <tr> 
-            <td class="list1_text"><b>{$lang_setimgWord}：</b></td>
-            <td class="list1_input"><input name="met_text_wate" type="text" class="input" size="25" maxlength="200" value="$met_text_wate">{$lang_setimgTip3}</td>
+            <td class="list1_text"><b>{$lang_setimgWord}</b></td>
+            <td class="list1_input"><input name="met_text_wate" type="text" style="color:$met_text_color" class="input" size="25" maxlength="200" id="fontZoom" value="$met_text_wate">{$lang_setimgTip3}</td>
           </tr> 
 		   <tr> 
-            <td class="list1_text"><b>{$lang_setimgWordSize}：</b></td>
+            <td class="list1_text"><b>{$lang_setimgWordSize}</b></td>
             <td class="list1_input"> <input name="met_text_size" type="text" class="input" size="10" maxlength="200" value="$met_text_size"></td>
           </tr> 
 		  <tr> 
-            <td class="list1_text"><b>{$lang_setimgWordFont}：</b></td>
+            <td class="list1_text"><b>{$lang_setimgWordFont}</b></td>
             <td class="list1_input"> <input name="met_text_fonts" type="text" class="input" size="30" maxlength="200" value="$met_text_fonts">{$lang_setimgTip4}</td>
           </tr>
 		    <tr> 
-            <td class="list1_text"><b>{$lang_setimgWordAngle}：</b></td>
+            <td class="list1_text"><b>{$lang_setimgWordAngle}</b></td>
             <td class="list1_input"> <input name="met_text_angle" type="text" class="input" size="3" maxlength="200" value="$met_text_angle">{$lang_setimgTip5}</td>
           </tr> 
 		  <tr> 
-            <td class="list1_text"><b>{$lang_setimgWordColor}：</b></td>
+            <td class="list1_text"><b>{$lang_setimgWordColor}</b></td>
             <td class="list1_input"> <input name="met_text_color" id="met_text_color" type="text" class="input" size="30" maxlength="200" value="$met_text_color">
 			<SCRIPT language=javascript> 
-<!-- 
 function do_color(vobject,vvar) 
 { document.getElementById(vobject).style.color=vvar; 
   document.getElementById('met_text_color').value=vvar;
 }
---> 
 </SCRIPT>
 <select name='select_color' size=1 onChange="if(this.options[this.selectedIndex].value!='') 
 {do_color('fontZoom',this.options[this.selectedIndex].value);}"> 
@@ -106,7 +104,7 @@ function do_color(vobject,vvar)
 			</td>
           </tr>
 		   <tr> 
-            <td class="list1_text"><b>{$lang_setimgPosition}：</b></td>
+            <td class="list1_text"><b>{$lang_setimgPosition}</b></td>
             <td class="list1_input"> 
 <input type="radio" value="0" name="met_watermark" $met_watermark0/>{$lang_setimgMid}&nbsp;&nbsp;<input type="radio" value="1" name="met_watermark" $met_watermark1/>{$lang_setimgLeftTop}&nbsp;<input type="radio" value="2" name="met_watermark" $met_watermark2/>{$lang_setimgRightTop}&nbsp;<input type="radio" value="3" name="met_watermark" $met_watermark3/>{$lang_setimgRightLow}&nbsp;
 <input type="radio" value="4" name="met_watermark" $met_watermark4/>{$lang_setimgLeftLow}&nbsp;

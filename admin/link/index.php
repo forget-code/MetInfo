@@ -12,8 +12,8 @@ require_once '../login/login_check.php';
 	if($langusenow!="")$serch_sql.=($langusenow=="en")?" and e_webname<>'' ":($langusenow=="other"?" and o_webname<>'' ":" and c_webname<>'' ");
 	$order_sql=" order by orderno desc";
     if($search == "detail_search") {
-        
-        if($c_webname) { $serch_sql .= " and c_webname like '%$c_webname%' "; }
+        $item=$langusenow=="en"?"e_webname":($langusenow=="other"?"o_webname":"c_webname");		
+        if($webname) { $serch_sql .= " and $item like '%$webname%' "; }
         $total_count = $db->counter($met_link, "$serch_sql", "*");
     } else {
         $total_count = $db->counter($met_link, "$serch_sql", "*");
@@ -42,7 +42,7 @@ require_once '../login/login_check.php';
     $link_list[]=$list;
     }
 $met_weburl=substr($met_weburl, 0, -1);
-$page_list = $rowset->link("index.php?link_type=$link_type&com_ok=$com_ok&show_ok=$show_ok&link_lang=$link_lang&search=$search&c_webname=$c_webname&page=");
+$page_list = $rowset->link("index.php?link_type=$link_type&com_ok=$com_ok&show_ok=$show_ok&link_lang=$link_lang&search=$search&webname=$webname&page=");
 $css_url="../templates/".$met_skin."/css";
 $img_url="../templates/".$met_skin."/images";
 include template('link');

@@ -5,30 +5,30 @@
 require_once template('head');
 echo <<<EOT
 -->
-<title>{$lang_adminTitle}</title>
+<title>{$lang_metadmin}</title>
 </head>
 <body>
 <table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
           <tr> 
-            <td colspan="9" align="center" class="list1_title">{$lang_adminTitle}</td>
+            <td colspan="9" align="center" class="list1_title">{$lang_metadmin}{$lang_manager}</td>
           </tr>
           <tr>
-            <td class="list1_input" height="20" colspan="5"><a href="add.php">{$lang_adminAdd}</a></td>
-            <td width="60%" align="right" colspan="4" class="list1_input">
+            <td class="list1_input" height="20" colspan="5"><a href="add.php">{$lang_add}{$lang_metadmin}</a></td>
+            <td width="80%" align="right" colspan="4" class="list1_input"><div style=" width:480px;">
 			<form method="POST" name="myform" action="index.php?search=detail_search" target="_self">
-			{$lang_adminUserName}:&nbsp;<input name="admin_id" type="text" size="16">&nbsp;{$lang_adminName}:&nbsp;<input name="admin_name" type="text" size="16">
-<input type="submit" name="Submit2" value="{$lang_adminSearch}" class="tj">&nbsp;</form></td>
+			{$lang_adminusername}&nbsp;<input name="admin_id" type="text" size="16">&nbsp;{$lang_adminname}&nbsp;<input name="admin_name" type="text" size="16">
+<input type="submit" name="Submit2" value="{$lang_search}" class="tj">&nbsp;</form></div></td>
           </tr>
               <tr>
-                <td width="5%" class="list1_top" align="center">{$lang_adminSelect}</td>
-                <td width="6%" class="list1_top" align="center">{$lang_adminUserName}</td>
-                <td width="6%" class="list1_top" align="center" >{$lang_adminRealName}</td>
-                <td width="10%" class="list1_top" align="center" >{$lang_adminTel}</td>
-                <td width="10%" class="list1_top" align="center" >{$lang_adminCell}</td>
+                <td width="5%" class="list1_top" align="center">{$lang_selected}</td>
+                <td width="6%" class="list1_top" align="center">{$lang_adminusername}</td>
+                <td width="6%" class="list1_top" align="center" >{$lang_adminname}</td>
+                <td width="10%" class="list1_top" align="center" >{$lang_admintel}</td>
+                <td width="10%" class="list1_top" align="center" >{$lang_adminmobile}</td>
                 <td width="7%" class="list1_top" align="center" >{$lang_adminLoginNum}</td>
 				<td width="15%" class="list1_top" align="center" >{$lang_adminLastLogin}</td>
                 <td width="12%" class="list1_top" align="center" >{$lang_adminLastIP}</td>
-				<td width="15%" class="list1_top" align="center" >{$lang_adminOperate}</td>
+				<td width="15%" class="list1_top" align="center" >{$lang_operate}</td>
               </tr>
 			  <form name="del" method="Post" action="delete.php" onSubmit="return ConfirmDelall();">
 <!--
@@ -38,14 +38,14 @@ echo <<<EOT
 -->          
               <tr>
               <td align="center" class="list1_content_titile"><input name='id' type='checkbox' onClick="unselectall()" id="id" value='$val[id]' class="xz"></td>
-                <td align="center" class="list1_content"><a href="detail.php?id=$val[id]" title="{$lang_adminReadDetail}">$val[admin_id]</a></td>
-                <td class="list1_content" align="center"><a href="detail.php?id=$val[id]"  title="{$lang_adminReadDetail}">$val[admin_name]</a></td>
+                <td align="center" class="list1_content"><a href="detail.php?id=$val[id]" title="{$lang_detail}">$val[admin_id]</a></td>
+                <td class="list1_content" align="center"><a href="detail.php?id=$val[id]"  title="{$lang_detail}">$val[admin_name]</a></td>
                 <td class="list1_content" align="center">$val[admin_tel]</td>
                 <td class="list1_content" align="center">$val[admin_mobile]</td>
                 <td align="center" class="list1_content">$val[admin_login]</td>
 				<td class="list1_content" align="center" >$val[admin_modify_date] </td>
                 <td align="center" class="list1_content">$val[admin_modify_ip]</td>
-				<td align="center" class="list1_content" style="color:#0066FF;"><a href="detail.php?id=$val[id]" >{$lang_adminDetail}</a> | <a href="editor.php?id=$val[id]" >{$lang_adminEdit}</a> | <a href="delete.php?id=$val[id]" onClick="return ConfirmDel();" >{$lang_adminDel}</a></td>
+				<td align="center" class="list1_content" style="color:#0066FF;"><a href="detail.php?id=$val[id]" >{$lang_detail}</a> | <a href="editor.php?id=$val[id]" >{$lang_editor}</a> | <a href="delete.php?id=$val[id]" onClick="return ConfirmDel();" >{$lang_adminDel}</a></td>
               </tr>
 <!--
 EOT;
@@ -54,8 +54,8 @@ echo <<<EOT
 -->
    	   <tr> 
             <td class="input_bottom" align="center"><input name="chkAll" class="xz" type="checkbox" id="chkAll" onclick=CheckAll(this.form) value="checkbox"></td>
-             <td class="input_bottom" align="center">{$lang_adminSelectAll}</td>
-			 <td colspan="7" class="input_bottom" align="left"><input name="submit" type='submit' value='{$lang_adminDelSelected}' style="*padding-top:2px; *height:22px;"> 
+             <td class="input_bottom" align="center">{$lang_selectall}</td>
+			 <td colspan="7" class="input_bottom" align="left"><input name="submit" type='submit' value='{$lang_deleteselected}' style="*padding-top:2px; *height:22px;"> 
               <input name="action" type="hidden" id="action" value="del">
 			  <input name="allid" type="hidden" id="allid" value=""></form></td>
           </tr>

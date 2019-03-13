@@ -1,6 +1,6 @@
 <?php
 /*
-met_fd_time       = "2";
+met_fd_time       = "120";
 met_fd_word       = "法轮功|性爱|藏独";
 met_fd_type       = "2";
 met_fd_to         = "test@mail.metinfo.cn|demo@mail.metinfo.cn";

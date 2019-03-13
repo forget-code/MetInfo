@@ -62,31 +62,10 @@ $body=$body."<b>{$lang_OtherContact}</b>:".$contact."<br>";
 $body=$body."<b>{$lang_SubmitContent}</b>:".$info."<br>";
 $body=$body."<b>{$lang_IP}</b>:".$ip."<br>";
 $body=$body."<b>{$lang_AddTime}</b>:".$addtime."<br>";
-
-if(PATH_SEPARATOR==':'){
-$toarray=explode("|",$to);
-$to_no=count($toarray);
-for($i=0;$i<$to_no;$i++){
-$toemail.=$toarray[$i].", ";
+jmailsend($from,$fromname,$to,$title,$body,$usename,$usepassword,$smtp,$email);
 }
-$headers  = 'MIME-Version: 1.0' . "\r\n";
-$headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
-$headers .= 'From: '.$fromname.' <'.$from.'>' . "\r\n";
-mail("$toemail", "$title", "$body", "$headers");
-}else{
-jmailsend($from,$fromname,$to,$title,$body,$usename,$usepassword,$smtp);
-}
-}
-
 if($met_fd_back==1 and $email!=""){
-if(PATH_SEPARATOR==':'){
-$headers  = 'MIME-Version: 1.0' . "\r\n";
-$headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
-$headers .= 'From: '.$fromname.' <'.$from.'>' . "\r\n";
-mail("$email", "$met_fd_title", "$met_fd_content", "$headers");
-}else{
 jmailsend($from,$fromname,$email,$met_fd_title,$met_fd_content,$usename,$usepassword,$smtp);
-}
 }
 $langnow=($lang<>"")?$lang:"cn";
 $customerid=$metinfo_member_name!=''?$metinfo_member_name:0;

@@ -107,6 +107,7 @@ if($i>=$met_sitemap_max)break;
 }else{
 $methtml_sitemap.="<ul>\n";
 foreach($nav_list_1 as $key=>$val){
+if($val[nav]){
 $methtml_sitemap.="<li class='sitemapclass'>\n";
 $methtml_sitemap.="<span class='sitemapclass1' ><a href='".$val[url]."' title='".$val[name]."'>".$val[name]."</a></span>\n";
 foreach($nav_list2[$val[id]] as $key=>$val2){
@@ -117,7 +118,7 @@ $methtml_sitemap.="<br /><span class='sitemapclass3><a href='".$val3[url]."' cla
 $methtml_sitemap.="</span>\n";
 }
 $methtml_sitemap.="</li>\n";
-}
+}}
 $methtml_sitemap.="<ul>\n";
 }
 

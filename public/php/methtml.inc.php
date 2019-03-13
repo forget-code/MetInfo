@@ -15,12 +15,13 @@ $methtml_head.="<meta name=\"GOOGLEBOT\" content=\"all\">\n";
 $methtml_head.="<meta name=\"author\" content=\"$met_webname\">\n";
 $methtml_head.="<meta name=\"copyright\" content=\"Copyright 2008-".$m_now_year." MetInfo\">\n";
 $methtml_head.="<LINK href=\"".$navurl."favicon.ico\" rel=\"shortcut icon\">\n";
-$methtml_head.=$met_js_access;
+$methtml_head.=$met_js_access."\n";
 if($met_skin_css=='')$met_skin_css='metinfo.css';
 $methtml_head.="<link rel=\"stylesheet\" type=\"text/css\" href=\"".$img_url."css/".$met_skin_css."\">\n";
 $methtml_head.="<style type=\"text/css\">\n";
 $methtml_head.="<!--\n";
 $methtml_head.="body {\n";
+$lang_fontfamily=str_replace("&quot;","\"",$lang_fontfamily);
 $methtml_head.="    font-family:".$lang_fontfamily.";\n";
 $methtml_head.="	font-size:".$lang_fontsize.";\n"; 
 if($lang_backgroundcolor<>'')$methtml_head.="	background:".$lang_backgroundcolor."; \n";
@@ -34,7 +35,7 @@ $methtml_head.="-->\n";
 $methtml_head.="</style>\n";
 $methtml_head.="<TITLE>".$met_title."</TITLE>\n";
 $methtml_head.="</head>\n";
-
+$methtml_head.="<script type='text/javascript' src='".$navurl."public/js/public.js'></script>\n";
 
 //时间函数
 $methtml_now="";
@@ -63,15 +64,11 @@ $methtml_now.="''); \n";
 $methtml_now.="</script>\n";
 
 //设为首页
-$methtml_sethome="";
-$methtml_sethome.="<a href=\"#\" style=\"BEHAVIOR: url(#default#homepage)\" ";
-$methtml_sethome.="onClick=\"this.style.behavior='url(#default#homepage)';this.setHomePage('";
-$methtml_sethome.=$met_weburl."');return(false);\" title=\"".lang_sethomepage."\">".$lang_sethomepage."</a>";
+$methtml_sethome="<a href='#' onclick='SetHome(this,window.location);' style='cursor:pointer;' title='".$lang_sethomepage."'  >".$lang_sethomepage."</a>";
 
 //加为收藏
-$methtml_addfavorite="";
-$methtml_addfavorite.="<a href=\"javascript:window.external.AddFavorite('".$met_weburl."', '".$met_webname."')\" target=\"_self\" title=\"";
-$methtml_addfavorite.=$lang_bookmark."\">".$lang_bookmark."</a>";
+$methtml_addfavorite="<a href='#' onclick='addFavorite();' style='cursor:pointer;' title='".$lang_bookmark."'  >".$lang_bookmark."</a>";
+
 
 //语言切换
 function methtml_lang($label){
@@ -91,17 +88,156 @@ return $metinfo;
 }
 
 //头部导航
-function methtml_topnav($type,$label){
-global $index_url,$lang_home,$nav_list,$lang;
+function methtml_topnav($type,$label,$max=100,$maxclass2=100,$classtitlemax=100,$homeclass=1,$homeok=1){
+global $index_url,$lang_home,$nav_list,$lang,$classnow,$class1,$class_list,$class_index,$nav_list2;
 switch($type){
 case 1:
 $metinfo="";
-$metinfo.="<a href='".$index_url."'>".$lang_home."</a>".$label;
+if($homeok)$metinfo.="<a id='nav_10001' href='".$index_url."'>".$lang_home."</a>".$label;
+$i=$homeok;
 foreach($nav_list as $key=>$val){
-$metinfo.="<a href='".$val[url]."' ".$val[new_windows]." title='".$val[name]."'>".$val[name]."</a>".$label;
+$i++;
+$metinfo.="<a id='nav_".$val[id]."' href='".$val[url]."' ".$val[new_windows]." title='".$val[name]."'>".$val[name]."</a>".$label;
+if($i>=$max)break;
 }
 $labellen=strlen($label);
 $metinfo=$labellen?substr($metinfo, 0, -$labellen):$metinfo;
+return $metinfo;
+break;
+
+case 2:
+if($class_list[$classnow][nav]==1 or $class_list[$classnow][nav]==3 or $classnow==10001){
+    $navdown=$classnow;
+  }else{
+    $navdown=($class_list[$class1][nav]==1 or $class_list[$class1][nav]==3 )?$class1:'10001';
+  }
+$metinfo="<SCRIPT language=JavaScript type=text/JavaScript>\n";
+$metinfo.="function topnavMouseOver(param1)\n";
+$metinfo.="    {\n";
+$metinfo.="     var param2='".$navdown."' \n";
+$metinfo.="     document.getElementById('nav_'+param1).className='navdown';\n";
+$metinfo.="		document.getElementById('nav_'+param2).className='navup';\n";
+$metinfo.="    }	\n";
+$metinfo.="	    function topnavMouseOut(param3)\n";
+$metinfo.="    {   \n";
+$metinfo.="     var param4='".$navdown."' \n";
+$metinfo.="     document.getElementById('nav_'+param3).className='navup';\n";
+$metinfo.="		document.getElementById('nav_'+param4).className='navdown';\n";
+$metinfo.="    }\n";
+$metinfo.="</SCRIPT>\n";
+$metinfo.="<ul>\n";
+if($homeok)$metinfo.="<li class='navdown' id='nav_10001'><a href='".$index_url."' onMouseOver=topnavMouseOver('10001') onMouseOut=topnavMouseOut('10001') >".$lang_home."</a></li>".$label."\n";
+$i=$homeok;
+foreach($nav_list as $key=>$val){
+$i++;
+$metinfo.="<li class='navup' id='nav_".$val[id]."'><a href='".$val[url]."' ".$val[new_windows]." title='".$val[name]."' onMouseOver=topnavMouseOver('".$val[id]."') onMouseOut=topnavMouseOut('".$val[id]."')>".$val[name]."</a></li>".$label."\n";
+if($i>=$max)break;
+}
+$metinfo.="<div style='clear:both;'></div>\n";
+$metinfo.="</ul>\n";
+$metinfo.="<SCRIPT language=JavaScript type=text/JavaScript>\n";
+$metinfo.="     document.getElementById('nav_10001').className='navup';\n";
+$metinfo.="   	document.getElementById('nav_'+".$navdown.").className='navdown';\n";
+$metinfo.="</SCRIPT>\n";
+return $metinfo;
+break;
+
+case 3:
+if($homeok)$metinfo.="<div class='nav1'><a href='".$index_url."'  id='nav_10001'>".$lang_home."</a></div>".$label."\n";
+$i=$homeok;
+foreach($nav_list as $key=>$val){
+$i++;
+$metinfo.="<div class='nav1'  onmouseover=topnavMouseOver('".$val[id]."'); onMouseOut=topnavMouseOut('".$val[id]."');><a href='".$val[url]."' ".$val[new_windows]." title='".$val[name]."' id='nav_".$val[id]."'>".$val[name]."</a>\n";
+$metinfo.="<div class='nav2' style='display:none' id='nav2_".$val[id]."' >\n";
+$j=0;
+foreach($nav_list2[$val[id]] as $key=>$val2){
+$j++;
+$val2[name]=utf8substr($val2[name], 0, $classtitlemax); 
+$metinfo.="		<li><a href='".$val2[url]."' ".$val2[new_windows]." title='".$val2[name]."'>".$val2[name]."</a></li>\n";
+if($j>=$maxclass2)break;
+} 
+$metinfo.="</div>\n";	
+$metinfo.="</div>".$label."\n";		 
+if($i>=$max)break;
+}
+if($class_list[$classnow][nav]==1 or $class_list[$classnow][nav]==3 or $classnow==10001){
+    $navdown=$classnow;
+  }else{
+    $navdown=($class_list[$class1][nav]==1 or $class_list[$class1][nav]==3 )?$class1:'10001';
+  }
+$metinfo.="<SCRIPT language=JavaScript type=text/JavaScript>\n";
+$metinfo.="     document.getElementById('nav_".$navdown."').className='navdown';\n";
+$metinfo.="		function topnavMouseOver(id){document.getElementById('nav2_'+id).style.display = ''; }\n";
+$metinfo.="		function topnavMouseOut(id){document.getElementById('nav2_'+id).style.display = 'none';	 }\n";
+$metinfo.="</script>	\n";	
+$metinfo.="<div style='clear:both;'></div>\n";
+return $metinfo;
+break;
+
+case 4:
+$metinfo.="<ul>\n";
+if($homeok)$metinfo.="<li class='navl' id='nav_10001' onMouseOver=topnavMouseOver('10001') ><a class='' href='".$index_url."'  title='".$lang_home."' id='navq_10001'><span>".$lang_home."</span></a></li>".$label."\n";
+$i=$homeok;
+foreach($nav_list as $key=>$val){
+$i++;
+$metinfo.="<li class='navl'  id='nav_".$val[id]."' onMouseOver=topnavMouseOver('".$val[id]."') ><a class='' href='".$val[url]."' ".$val[new_windows]." title='".$val[name]."' id='navq_".$val[id]."'><span>".$val[name]."</span></a></li>".$label."\n";
+if($i>=$max)break;
+}
+$metinfo.="<div style='clear:both;'></div>\n";
+$metinfo.="</ul>\n";
+if($homeok){
+$metinfo.="<ul class='nav2' id='nav2_10001' style='display:none;' >\n";
+$i=0;
+foreach($nav_list2[$class_index[$homeclass][id]] as $key=>$val){
+$i++;
+$metinfo.="<li><a href='".$val[url]."' target='_blank' title='".$val[name]."'><span>".$val[name]."</span></a></li>\n";
+if($i>=$maxclass2)break;
+}
+$metinfo.="</ul>\n";
+}
+$i=0;
+foreach($nav_list as $key=>$val){
+$i++;
+$metinfo.="<ul id='nav2_".$val[id]."' class='nav2' style='display:none;' >\n";
+$d=0;
+foreach($nav_list2[$val[id]] as $key=>$val2){
+$val2[name]=utf8substr($val2[name], 0, $classtitlemax); 
+$d++;
+$metinfo.="<li><a href='".$val2[url]."' ".$val2[new_windows]." title='".$val2[name]."'><span>".$val2[name]."</span></a></li>\n";
+if($d>=$maxclass2)break;
+}		 
+$metinfo.="</ul>\n";
+if($i>=$max)break;
+}
+if($class_list[$classnow][nav]==1 or $class_list[$classnow][nav]==3 or $classnow==10001){
+    $navdown=$classnow;
+  }else{
+    $navdown=($class_list[$class1][nav]==1 or $class_list[$class1][nav]==3 )?$class1:'10001';
+  }
+$metinfo.="<script language=JavaScript type=text/JavaScript>\n";
+$metinfo.="document.getElementById('navq_'+'".$navdown."').className='navdown';\n";
+$metinfo.="document.getElementById('nav2_'+'".$navdown."').style.display = 'block';\n";
+$metinfo.="var navcount;\n";
+$metinfo.="subnav = new Array();\n";
+if($homeok)$metinfo.="subnav[0] ='10001';\n";
+$m=$homeok;
+foreach($nav_list as $key=>$val){
+$metinfo.="subnav[".$m."] = '".$val[id]."';\n";
+$m++;
+}
+$metinfo.="navcount=".$m.";\n";
+$metinfo.="function topnavMouseOver(ao){\n";
+$metinfo.="      for(j=0;j<=navcount;j++){\n";
+$metinfo.="			  if(ao==subnav[j]){\n";
+$metinfo.="		    document.getElementById('nav2_' + subnav[j]).style.display = 'block';\n";
+$metinfo.="			document.getElementById('navq_'+ subnav[j]).className='navdown';\n"; 
+$metinfo.="			}else{\n";
+$metinfo.="			document.getElementById('nav2_' + subnav[j]).style.display = 'none';\n";
+$metinfo.="			document.getElementById('navq_'+ subnav[j]).className=''; \n";
+$metinfo.="			} \n"; 
+$metinfo.="			}\n";
+$metinfo.="		   }\n";
+$metinfo.="</script>\n";
 return $metinfo;
 break;
 }
@@ -175,11 +311,11 @@ $nav_o_list.="<br />&nbsp;&nbsp;&nbsp;<font style='font-size:12px'><a href='$val
 $navlist_y1=($lang=="en")?$nav_e_list:(($lang=="other")?$nav_o_list:$nav_c_list);
 }
 
-function methtml_classlist($type,$namelen,$mark){
+function methtml_classlist($type,$namelen,$mark,$class3ok=1,$class3now=1,$class2char=1,$class3char=0){
 global $navlist_y1,$class1,$class2,$class3,$classnow,$nav_list2,$nav_list3,$class_index,$module_list1,$class_list;
   switch($type){
   default:
-  $metinfo=navlist_y1;
+  $metinfo=$navlist_y1;
   break;
   
   case 1:
@@ -191,8 +327,15 @@ global $navlist_y1,$class1,$class2,$class3,$classnow,$nav_list2,$nav_list3,$clas
   if($class_list[$class1][module]==101)$nav2=$module_list1[5];
   foreach($nav2 as $key=>$val){
     $val[name]=intval($namelen)?utf8substr($val[name], 0, $namelen):$val[name]; 
-	$metinfo.="<li class='li_class2' id='product".$val[id]."' onmousedown='met_showhide1".$mark."(".$val[id].")'><a href='".$val[url]."' >".$val[name]."</a></li>\n";
-	$metinfo.="<span id='".$val[id]."' style='display:none;' class='span_class3'>\n";
+	$metinfo.="<li class='li_class2' id='product".$val[id]."' ";
+	if($class3ok)$metinfo.="onmousedown='met_showhide1".$mark."(".$val[id].")'";
+	$metinfo.="><a href='".$val[url]."' >".$val[name]."</a></li>\n";
+	if($class3ok){
+	if($class3now){
+	  $metinfo.="<span id='".$val[id]."' style='display:none;' class='span_class3'>\n";
+	 }else{
+	  $metinfo.="<span id='".$val[id]."' class='span_class3'>\n";
+	 }
 	$nav3=$nav_list3[$val[id]];
 	if($class_list[$class1][module]==100 or $class_list[$class1][module]==101)$nav3=$nav_list2[$val[id]];
   foreach($nav3 as $key=>$val1){
@@ -200,9 +343,10 @@ global $navlist_y1,$class1,$class2,$class3,$classnow,$nav_list2,$nav_list3,$clas
     $metinfo.="<li class='li_class3' id='product".$val1[id]."' ><a href='".$val1[url]."'>".$val1[name]."</a></li>\n";
    }
     $metinfo.="</span>\n";
-   }
+   }}
     $metinfo.="</ul>\n";
     $metinfo.="<script type='text/javascript'>\n";
+  if($class3ok){
     $metinfo.="function met_showhide1".$mark."(d)\n";
     $metinfo.="{  \n";     
     $metinfo.="var d1=document.getElementById(d);\n";
@@ -212,9 +356,11 @@ global $navlist_y1,$class1,$class2,$class3,$classnow,$nav_list2,$nav_list3,$clas
     $metinfo.="d1.style.display='none';\n";
     $metinfo.="}\n";
     $metinfo.="}\n";
+	}
 	if($class2){
-	$metinfo.="document.getElementById('".$class2."').style.display='block';\n";
-	$metinfo.="document.getElementById('product".$class2."').className='classnow';\n";
+	if($class3ok)$metinfo.="document.getElementById('".$class2."').style.display='block';\n";
+	if($class2char)$metinfo.="document.getElementById('product".$class2."').className='classnow';\n";
+	if($class3 and $class3ok and $class3char)$metinfo.="document.getElementById('product".$class3."').className='classnow3';\n";
 	}
     $metinfo.="</script>\n";
 
@@ -685,7 +831,7 @@ function methtml_module($module){
   break;
   
   case 4:
-  return 'downlaod';
+  return 'download';
   break;
   
   case 5:
@@ -780,10 +926,9 @@ return $linktext;
 
 //尾部信息
 $methtml_foot="<ul>\n";
-if($met_footright<>"")$methtml_foot.="<li>".$met_footright."</li>\n";
+if($met_footright<>"" or $met_footstat<>"")$methtml_foot.="<li>".$met_footright." ".$met_footstat."</li>\n";
 if($met_footaddress<>"")$methtml_foot.="<li>".$met_footaddress."</li>\n";
 if($met_foottel<>"")$methtml_foot.="<li>".$met_foottel."</li>\n";
-if($met_footstat<>"")$methtml_foot.="<li>".$met_footstat."</li>\n";
 if($met_footother<>"")$methtml_foot.="<li>".$met_footother."</li>\n";
 if($met_foottext<>"")$methtml_foot.="<li>".$met_foottext."</li>\n";
 $methtml_foot.="</ul>\n";
@@ -968,6 +1113,7 @@ global $lang_Previous,$lang_Next,$lang_Noinfo,$preinfo,$nextinfo;
  }
  return $metinfo;
 }
+
 function methtml_login($type=1){
 global $met_member_use,$navurl,$lang,$lang_memberName,$lang_memberPs,$met_memberlogin_code,$lang_memberImgCode,$lang_memberTip1,$lang_register,$lang_memberGo,$lang_memberIndex2,$metinfo_member_name,$lang_memberIndex1,$member_index_url,$lang_memberIndex10,$member_registerurl;
 global $lang_memberPassword,$lang_memberRegisterName;
@@ -998,27 +1144,33 @@ if($met_member_use){
   $metinfo.="}}\n";
   $metinfo.="function pressCaptcha(obj){obj.value = obj.value.toUpperCase();}\n";
   $metinfo.="</script>\n";
+if($type){
   $metinfo.="<div class='login_x' id='login_x1' style='display:none'>";
+  }else{
+  $metinfo.="<div class='login_x' id='login_x1'>";
+  }
   $metinfo.="<form method='post' action='".$navurl."member/login_checkout.php?lang=".$lang."' name='main_login' onSubmit='javascript: return check_main_login()'>";
   $metinfo.="<input type='hidden' name='action' value='login'/>";
-  $metinfo.="<span class='log1'>".$lang_memberName.":<input type='text' name='login_name' />";
-  $metinfo.=$lang_memberPs.":<input type='password' name='login_pass' id='user_pass'/></span>";
+  $metinfo.="<span class='log1'><span class='log1_name'>".$lang_memberName."</span><input type='text' name='login_name' id='user_name' /></span>";
+  $metinfo.="<span class='log4'><span class='log4_name'>".$lang_memberPs."</span><input type='password' name='login_pass' id='user_pass'/></span>";
 if($met_memberlogin_code==1){
-  $metinfo.="<span class='log2'>".$lang_memberImgCode.":<input name='code' onKeyUp='pressCaptcha(this)' type='text' class='inp' id='code' maxlength='8' />";
+  $metinfo.="<span class='log2'><span class='log2_name'>".$lang_memberImgCode."</span><input name='code' onKeyUp='pressCaptcha(this)' type='text' class='inp' id='code' maxlength='8' />";
   $metinfo.="<img align='absbottom' src='".$navurl."member/outlogin/ajax.php?action=code'  onclick=this.src='".$navurl."member/outlogin/ajax.php?action=code&'+Math.random()  style='cursor: pointer;' title=".$lang_memberTip1."/>";
   $metinfo.="</span>";}
   $metinfo.="<span class='log3'><input type='submit' class='index_login1' value='".$lang_memberGo."' />";
-  $metinfo.="<a href='".$member_registerurl."' class='index_login2'/>".$lang_register."</a>";
+  $metinfo.="<span><a href='".$member_registerurl."' class='index_login2'/>".$lang_register."</a></span>";
   $metinfo.="</span>";
   $metinfo.="</form>";
   $metinfo.="</div>";
+if($type){
   $metinfo.="<div class='login_x' id='login_x2' style='display:none' >";
-  $metinfo.="<span class='login_okname' >".$lang_memberIndex2."<font style='color:red'>";
+  $metinfo.="<span class='login_okname' ><span class='login_okname1'>".$lang_memberIndex2."</span><span class='login_okname2'><font style='color:red'>";
   $metinfo.="<script language='javascript' src='".$navurl."member/member.php?memberaction=membername'></script>";
-  $metinfo.="</font></span>&nbsp;&nbsp;";
-  $metinfo.="<span class='login_okname' ><a href='".$navurl."member/".$member_index_url."' >".$lang_memberIndex1."</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='".$navurl."member/login_out.php?lang=".$lang."' >".$lang_memberIndex10."</a></span>";
+  $metinfo.="</font></span></span>&nbsp;&nbsp;";
+  $metinfo.="<span class='login_okmember' ><span class='login_okmember1'><a href='".$navurl."member/".$member_index_url."' >".$lang_memberIndex1."</a></span><span class='login_okmember2'>|</span><span class='login_okmember3'><a href='".$navurl."member/login_out.php?lang=".$lang."' >".$lang_memberIndex10."</a></span></span>";
   $metinfo.="</div>";
   $metinfo.="<script language='javascript' src='".$navurl."member/member.php?memberaction=login'></script>";
+ }
  }
   return $metinfo;
 }

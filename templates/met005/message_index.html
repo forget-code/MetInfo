@@ -1,0 +1,25 @@
+<!--<?php
+require_once template('head'); 
+echo <<<EOT
+-->
+<div class="web">
+<!--
+EOT;
+require_once template('webleft'); 
+echo <<<EOT
+-->
+<div class="message_line"><a href="$class1_info[url]">{$lang_SubmitInfo}</a>&nbsp;</div>
+<div class="message_list">
+$methtml_messagelist
+</div>
+<div class="web_bottom">$page_list</div>
+</div>
+       <div class="main_bottom_bgb"><div></div></div>
+</div>
+<div style="clear:both;"></div>
+
+</div>
+<!--
+EOT;
+require_once template('foot'); 
+?>

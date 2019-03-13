@@ -5,58 +5,62 @@
 require_once template('head');
 echo <<<EOT
 -->
-<title>{$lang_jobaddTitle}</title>
+<title>{$lang_add}{$lang_mod6}</title>
 </head>
 <body>
         <form  method="POST" name="myform" onSubmit="return CheckFormjob();" action="save.php?action=add" target="_self">
 		<input name="class1" type="hidden" value="$class1">
 <table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
           <tr> 
-            <td colspan="10" align="center" class="list1_title">{$lang_jobaddTitle}</td>
+            <td colspan="10" align="center" class="list1_title">{$lang_add}{$lang_mod6}</td>
           </tr>
 		  <tr> 
-            <td class="list1_text"><b>{$lang_jobaddAccess}：</b></td>
-            <td class="list1_input"><select name="access" id="access" >
+            <td class="list1_text"><b>{$lang_webaccess}</b></td>
+            <td class="list1_input" colspan="2"><select name="access" id="access" >
              $level
             </select></td>
           </tr>
 		  <tr> 
-            <td class="list1_text"><b>{$lang_jobaddTop}：</b></td>
-            <td colspan="2" class="list1_input"><input name="top_ok" type="checkbox" value="1">{$lang_jobaddTip5}</td>
+            <td class="list1_text"><b>{$lang_top}</b></td>
+            <td colspan="2" class="list1_input"><input name="top_ok" type="checkbox" value="1">{$lang_modtopinfo}</td>
           </tr>
 		  <tr > 
-            <td class="list1_text"><b>{$lang_jobaddNum}：</b></td>
-            <td colspan="2" class="list1_input"><input name="count" type="text" class="input" size="5" maxlength="200">{$lang_jobaddTip1}</td>
+            <td class="list1_text"><b>{$lang_mod6}{$lang_jobnum}</b></td>
+            <td colspan="2" class="list1_input"><input name="count" type="text" class="input" size="5" maxlength="200">{$lang_jobtip1}</td>
           </tr>
 		  <tr > 
-            <td class="list1_text"><b>{$lang_jobaddPublishDate}：</b></td>
-            <td colspan="2" class="list1_input"><input name="addtime" type="text" class="input" size="10" maxlength="200" value="$m_now_counter ">{$lang_jobaddNow}$m_now_counter {$lang_jobaddTip2}</td>
+            <td class="list1_text"><b>{$lang_jobpublish}</b></td>
+            <td colspan="2" class="list1_input"><input name="addtime" type="text" class="input" size="10" maxlength="200" value="$m_now_counter ">{$lang_jobnow}$m_now_counter {$lang_jobtip2}</td>
           </tr>
 		   <tr > 
-            <td class="list1_text"><b>{$lang_jobaddLife}：</b></td>
-            <td colspan="2" class="list1_input"><input name="useful_life" type="text" class="input" size="5" maxlength="200">{$lang_jobaddTip3}</td>
+            <td class="list1_text"><b>{$lang_joblife}</b></td>
+            <td colspan="2" class="list1_input"><input name="useful_life" type="text" class="input" size="5" maxlength="200">{$lang_jobtip3}</td>
+          </tr>
+		   <tr > 
+            <td class="list1_text"><b>{$lang_mod6}{$lang_ordernum}</b></td>
+            <td colspan="2" class="list1_input">{$lang_jobtip4}</td>
           </tr>
 <!--
 EOT;
 if($met_c_lang_ok==1){
 echo <<<EOT
 -->
-			<tr> <td colspan="3" align="center" class="list1_title"><b>{$lang_jobaddContent}[$met_c_lang]</b></td></tr>
+			<tr> <td colspan="3" align="center" class="list1_title"><b>{$lang_content}[$met_c_lang]</b></td></tr>
           <tr > 
-            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_jobaddPosition}：</b></td>
+            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_mod6}{$lang_jobposition}</b></td>
             <td colspan="2" class="list1_input"> <input name="c_position" type="text" class="input" size="40" maxlength="200"></td>
           </tr> 		  
 		  <tr > 
-            <td class="list1_text"><b>{$lang_jobaddAddress}：</b></td>
+            <td class="list1_text"><b>{$lang_jobaddress}</b></td>
             <td colspan="2" class="list1_input"><input name="c_place" type="text" class="input" size="40" maxlength="200"></td>
           </tr>
 		   <tr > 
-            <td class="list1_text"><b>{$lang_jobaddDeal}：</b></td>
+            <td class="list1_text"><b>{$lang_jobdeal}</b></td>
             <td colspan="2" class="list1_input"><input name="c_deal" type="text" class="input" size="40" maxlength="200"></td>
           </tr>		   
 			 <tr > 
-            <td class="list1_text"><b>{$lang_jobaddIntro}：</b></td>
-            <td class="list1_input">
+            <td class="list1_text"><b>{$lang_contentdetail}</b></td>
+            <td class="list1_input" colspan="2" >
 <!--
 EOT;
 echo "-->";
@@ -65,39 +69,35 @@ $oFCKeditor->BasePath = '../../fckeditor/';
 $oFCKeditor->Config['AutoDetectLanguage']	= false ;
 $oFCKeditor->Config['DefaultLanguage']		= $langusenow ;
 $oFCKeditor->Value = '';
-$oFCKeditor->Width = '100%';   
+$oFCKeditor->Width = '502';   
 $oFCKeditor->Height = '300';
 $oFCKeditor->Create();
 echo "<!--";
 echo <<<EOT
 -->
 </td></tr>
-		  
-		   <tr > 
-            <td class="list1_text"><b>{$lang_jobaddSort}：</b></td>
-            <td colspan="2" class="list1_input">{$lang_jobaddTip4}</td>
-          </tr>
+		 
 <!--
 EOT;
 }
 if($met_e_lang_ok==1){
 echo <<<EOT
--->         <tr> <td colspan="3" align="center" class="list1_title"><b>{$lang_jobaddContent}[$met_e_lang]</b></td></tr>
+-->         <tr> <td colspan="3" align="center" class="list1_title"><b>{$lang_content}[$met_e_lang]</b></td></tr>
           <tr > 
-            <td  class="list1_text"><font color="#FF0000">*</font><b>{$lang_jobaddPosition}：</b></td>
+            <td  class="list1_text"><font color="#FF0000">*</font><b>{$lang_mod6}{$lang_jobposition}</b></td>
             <td colspan="2" class="list1_input"> <input name="e_position" type="text" class="input" size="40" maxlength="200"></td>
           </tr> 
 		  <tr > 
-            <td class="list1_text"><b>{$lang_jobaddAddress}：</b></td>
+            <td class="list1_text"><b>{$lang_jobaddress}</b></td>
             <td colspan="2" class="list1_input"><input name="e_place" type="text" class="input" size="40" maxlength="200"></td>
           </tr>
 		   <tr > 
-            <td class="list1_text"><b>{$lang_jobaddDeal}：</b></td>
+            <td class="list1_text"><b>{$lang_jobdeal}</b></td>
             <td colspan="2" class="list1_input"><input name="e_deal" type="text" class="input" size="40" maxlength="200"></td>
           </tr>
 			 <tr > 
-            <td class="list1_text"><b>{$lang_jobaddIntro}：</b></td>
-            <td class="list1_input">
+            <td class="list1_text"><b>{$lang_contentdetail}</b></td>
+            <td class="list1_input" colspan="2" >
 <!--
 EOT;
 echo "-->";
@@ -106,29 +106,29 @@ $oFCKeditor->BasePath = '../../fckeditor/';
 $oFCKeditor->Config['AutoDetectLanguage']	= false ;
 $oFCKeditor->Config['DefaultLanguage']		= $langusenow ;
 $oFCKeditor->Value = '';
-$oFCKeditor->Width = '100%';   
+$oFCKeditor->Width = '502';   
 $oFCKeditor->Height = '300';
 $oFCKeditor->Create();
 echo "</td></tr><!--";
 }
 if($met_o_lang_ok==1){
 echo <<<EOT
--->         <tr> <td colspan="3" align="center" class="list1_title"><b>{$lang_jobaddContent}[$met_o_lang]</b></td></tr>
+-->         <tr> <td colspan="3" align="center" class="list1_title"><b>{$lang_content}[$met_o_lang]</b></td></tr>
           <tr > 
-            <td  class="list1_text"><font color="#FF0000">*</font><b>{$lang_jobaddPosition}：</b></td>
+            <td  class="list1_text"><font color="#FF0000">*</font><b>{$lang_mod6}{$lang_jobposition}</b></td>
             <td colspan="2" class="list1_input"> <input name="o_position" type="text" class="input" size="40" maxlength="200"></td>
           </tr> 
 		  <tr > 
-            <td class="list1_text"><b>{$lang_jobaddAddress}：</b></td>
+            <td class="list1_text"><b>{$lang_jobaddress}</b></td>
             <td colspan="2" class="list1_input"><input name="o_place" type="text" class="input" size="40" maxlength="200"></td>
           </tr>
 		   <tr > 
-            <td class="list1_text"><b>{$lang_jobaddDeal}：</b></td>
+            <td class="list1_text"><b>{$lang_jobdeal}</b></td>
             <td colspan="2" class="list1_input"><input name="o_deal" type="text" class="input" size="40" maxlength="200"></td>
           </tr>
 			 <tr > 
-            <td class="list1_text"><b>{$lang_jobaddIntro}：</b></td>
-            <td class="list1_input">
+            <td class="list1_text"><b>{$lang_contentdetail}</b></td>
+            <td class="list1_input" colspan="2" >
 <!--
 EOT;
 echo "-->";
@@ -137,7 +137,7 @@ $oFCKeditor->BasePath = '../../fckeditor/';
 $oFCKeditor->Config['AutoDetectLanguage']	= false ;
 $oFCKeditor->Config['DefaultLanguage']		= $langusenow ;
 $oFCKeditor->Value = '';
-$oFCKeditor->Width = '100%';   
+$oFCKeditor->Width = '502';   
 $oFCKeditor->Height = '300';
 $oFCKeditor->Create();
 echo "</td></tr><!--";

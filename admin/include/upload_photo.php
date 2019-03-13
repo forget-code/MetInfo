@@ -16,6 +16,7 @@ $img_url="../templates/".$met_skin."/images";
 <form enctype="multipart/form-data" method="POST" name="myform" onSubmit="return CheckFormupload();" action="upload_save.php?action=add" target="_self">
 <input name="imgurl" type="file" class="input" size="20" maxlength="200"> <input type="submit" name="Submit" value="<? echo $lang_upfileName; ?>" class="tj">
 <input name="returnid" type="hidden" value="<? echo $returnid; ?>" />
+<input name="met_arrayimg" type="hidden" value="<? echo $met_arrayimg; ?>" />
 <input name="create_samll" type="hidden" value="<? echo $create_samll; ?>" />
 <input name="flash" type="hidden" value="<? echo $flash; ?>" />
 </form>

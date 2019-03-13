@@ -51,10 +51,10 @@ switch($column_list['access'])
 $level="";
 switch(intval($lev))
 {
-	case 0:$level.="<option value='all' $access0>$lang_columneditorAccess0</option>";
-	case 1:$level.="<option value='1' $access1>$lang_columneditorAccess1</option>";
-	case 2:$level.="<option value='2' $access2>$lang_columneditorAccess2</option>";
-	case 3:$level.="<option value='3' $access3>$lang_columneditorAccess3</option>";
+	case 0:$level.="<option value='all' $access0>$lang_access0</option>";
+	case 1:$level.="<option value='1' $access1>$lang_access1</option>";
+	case 2:$level.="<option value='2' $access2>$lang_access2</option>";
+	case 3:$level.="<option value='3' $access3>$lang_access3</option>";
 }
 
 $isshowcheck=$column_list['isshow']==1?"checked='checked'":'';

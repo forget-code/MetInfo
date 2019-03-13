@@ -1,6 +1,4 @@
 <!--<?php
-$navdown="nav_".$class1_info[id];
-if($class_list[$classnow][nav]==1||$class_list[$classnow][nav]==3)$navdown="nav_".$class_list[$classnow][id];
 require_once template('head'); 
 $met_product=methtml_showproduct('all');
 $met_productnext=methtml_prenextinfo();
@@ -14,11 +12,13 @@ require_once template('webleft');
 echo <<<EOT
 -->
 <div class="webcontent">
+<h1>$product[title]</h1>
 <div class="product_list">$met_product</div>
-</div>
 <div class="pcontent">$product[content]</div>
-<br />$met_productnext
+<div class="web_page">$met_productnext</div>
 <div class="hits">$methits</div>
+</div>
+       <div class="main_bottom_bgb"><div></div></div>
 </div>
 <div style="clear:both;"></div>
 

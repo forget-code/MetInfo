@@ -59,10 +59,10 @@ location.href='flash.php';
 <table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
       
           <tr> 
-            <td colspan="4" align="center" class="list1_title">{$lang_setflashAdd}</td>
+            <td colspan="4" align="center" class="list1_title">Flash{$lang_add}</td>
           </tr>
 		  		  <tr> 
-            <td class="list1_text">{$lang_setflashBelong}：</td>
+            <td class="list1_text">{$lang_setflashBelong}</td>
             <td colspan="2" class="list1_input"><select name="module" id="module" onChange="changeflashclass(document.myform.module.options[document.myform.module.selectedIndex].label1,document.myform.module.options[document.myform.module.selectedIndex].value)" >
 <!--
 EOT;
@@ -90,20 +90,20 @@ echo <<<EOT
             </select></td>
           </tr> 
 		  <tr> 
-            <td class="list1_text">{$lang_setflashMode}：</td>
+            <td class="list1_text">{$lang_flashMode}</td>
             <td colspan="2" class="list1_input">
-			<input type="radio" id="met_flash_type_0" name="met_flash_type" disabled="disabled"  $met_flash_type[0]  >{$lang_setflashclose} 
-			<input type="radio" id="met_flash_type_1" name="met_flash_type" disabled="disabled"  $met_flash_type[1]  >{$lang_setflashMode1}  
-			<input type="radio" id="met_flash_type_2" name="met_flash_type" disabled="disabled"  $met_flash_type[2] >{$lang_setflashMode2}
+			<input type="radio" id="met_flash_type_0" name="met_flash_type" disabled="disabled"  $met_flash_type[0]  >{$lang_close} 
+			<input type="radio" id="met_flash_type_1" name="met_flash_type" disabled="disabled"  $met_flash_type[1]  >{$lang_flashMode1}  
+			<input type="radio" id="met_flash_type_2" name="met_flash_type" disabled="disabled"  $met_flash_type[2] >{$lang_flashMode2}
 			<input type="radio" id="met_flash_type_3" name="met_flash_type" disabled="disabled"  $met_flash_type[3] >{$lang_setflashMode3}
 			<span style="color:#FF0000">{$lang_flashmodify}</span>
 			</td>
           </tr> 
 		  <tr> 
-            <td class="list1_text">{$lang_setflashSize}：</td>
+            <td class="list1_text">{$lang_setflashSize}</td>
             <td colspan="2" class="list1_input">
-			{$lang_setflashWidth}：<input name="width" disabled="disabled"  id="met_flash_x" type="text" class="input" size="3" maxlength="200" value="{$met_flasharray[10000][x]}">{$lang_setflashPixel}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			{$lang_setflashHeight}：<input disabled="disabled"  id="met_flash_y" name="height" type="text" class="input" size="3" maxlength="200" value="{$met_flasharray[10000][y]}">{$lang_setflashPixel}
+			{$lang_setflashWidth}<input name="width" disabled="disabled"  id="met_flash_x" type="text" class="input" size="3" maxlength="200" value="{$met_flasharray[10000][x]}">{$lang_setflashPixel}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			{$lang_setflashHeight}<input disabled="disabled"  id="met_flash_y" name="height" type="text" class="input" size="3" maxlength="200" value="{$met_flasharray[10000][y]}">{$lang_setflashPixel}
 			<span style="color:#FF0000">{$lang_flashmodify}</span>
 			</td>
           </tr>
@@ -122,43 +122,43 @@ $o_access='style="display: none"';
 echo <<<EOT
 -->		<table id='flash1' $style1  cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
 		  <tr id="no_order" $style3>
-			<td class="list1_text">{$lang_setflashOrder}：</td>
-            <td colspan="2"  class="list1_input"><input name="no_order" type="text" class="input" size="2" maxlength="5" value="0"><font color=red>{$lang_flashTip1}</font></td>
+			<td class="list1_text">{$lang_ordernum}</td>
+            <td colspan="2"  class="list1_input"><input name="no_order" type="text" class="input" size="2" maxlength="5" value="0"><font color=red>{$lang_ordernumber}</font></td>
           </tr>
 		  <tr $c_access>
-			<td class="list1_text">[<b>$met_c_lang</b>]{$lang_setflashName}：</td>
+			<td class="list1_text">[<b>$met_c_lang</b>]{$lang_setflashName}</td>
             <td colspan="2" class="list1_input"><input name="c_img_title" type="text" class="input" size="30" maxlength="200" value=""></td>
           </tr>
 		  <tr $c_access>
-			<td class="list1_text">{$lang_setflashImgUrl}：</td>
+			<td class="list1_text">{$lang_setflashImgUrl}</td>
             <td colspan="2" class="list1_input"><input name="c_img_path" type="text" class="input" size="30" maxlength="200" value=""><iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_photo.php?returnid=c_img_path&flash=flash" frameborder=0 scrolling=no width="280" height="25"></iframe>			</td>
           </tr>
 		  <tr $c_access> 
-            <td class="list1_text">{$lang_setflashImgHref}：</td>
+            <td class="list1_text">{$lang_setflashImgHref}</td>
             <td colspan="2" class="list1_input"><input name="c_img_link" type="text" class="input" size="30" maxlength="200" value=""></td>
           </tr> 
 		  <tr $e_access>
-			<td class="list1_text">[<b>$met_e_lang</b>]{$lang_setflashName}：</td>
+			<td class="list1_text">[<b>$met_e_lang</b>]{$lang_setflashName}</td>
             <td colspan="2" class="list1_input"><input name="e_img_title" type="text" class="input" size="30" maxlength="200" value=""></td>
           </tr>
 		  <tr $e_access>
-		    <td class="list1_text">{$lang_setflashImgUrl}：</td>
+		    <td class="list1_text">{$lang_setflashImgUrl}</td>
 	        <td colspan="2" class="list1_input"><input name="e_img_path" type="text" class="input" size="30" maxlength="200" value=""><iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_photo.php?returnid=e_img_path&flash=flash" frameborder=0 scrolling=no width="280" height="25"></iframe>			</td>
 		  </tr>
 		  <tr $e_access> 
-            <td class="list1_text">{$lang_setflashImgHref}：</td>
+            <td class="list1_text">{$lang_setflashImgHref}</td>
             <td colspan="2" class="list1_input"><input name="e_img_link" type="text" class="input" size="30" maxlength="200" value=""></td>
           </tr> 
 		  <tr $o_access>
-			<td class="list1_text">[<b>$met_o_lang</b>]{$lang_setflashName}：</td>
+			<td class="list1_text">[<b>$met_o_lang</b>]{$lang_setflashName}</td>
             <td colspan="2" class="list1_input"><input name="o_img_title" type="text" class="input" size="30" maxlength="200" value=""></td>
           </tr>
 		  <tr $o_access>
-		    <td class="list1_text">{$lang_setflashImgUrl}：</td>
+		    <td class="list1_text">{$lang_setflashImgUrl}</td>
 	        <td colspan="2" class="list1_input"><input name="o_img_path" type="text" class="input" size="30" maxlength="200" value=""><iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_photo.php?returnid=o_img_path&flash=flash" frameborder=0 scrolling=no width="280" height="25"></iframe>			</td>
 		  </tr>
 		  <tr $o_access> 
-            <td class="list1_text">{$lang_setflashImgHref}：</td>
+            <td class="list1_text">{$lang_setflashImgHref}</td>
             <td colspan="2" class="list1_input"><input name="o_img_link" type="text" class="input" size="30" maxlength="200" value=""></td>
           </tr> 
 		  </table>
@@ -169,12 +169,12 @@ echo <<<EOT
 			<td colspan="2" class="list1_input"></td>
 		  </tr>
 		  <tr $c_access> 
-            <td class="list1_text" >{$lang_setflashUrl}：</td>
+            <td class="list1_text" >{$lang_setflashUrl}</td>
             <td colspan="2" class="list1_input"> <input name="c_flash_path" type="text" class="input" size="30" maxlength="200" value=""> 
 			<iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_file.php?uploadtype=flash&returnid=c_flash_path" frameborder=0 scrolling=no width="280" height="25"></iframe></td>
           </tr>
 		  <tr $c_access> 
-            <td class="list1_text" >{$lang_setflashBg}：</td>
+            <td class="list1_text" >{$lang_setflashBg}</td>
             <td colspan="2" class="list1_input"><input name="c_flash_back" type="text" class="input" size="30" maxlength="200" value="">
 			<iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_photo.php?returnid=c_flash_back&flash=flash" frameborder=0 scrolling=no width="280" height="25"></iframe>			</td>
           </tr>
@@ -183,12 +183,12 @@ echo <<<EOT
 			<td colspan="2" class="list1_input"></td>
 		  </tr>
 		   <tr $e_access> 
-            <td class="list1_text" >{$lang_setflashUrl}：</td>
+            <td class="list1_text" >{$lang_setflashUrl}</td>
             <td colspan="2" class="list1_input"> <input name="e_flash_path" type="text" class="input" size="30" maxlength="200" value=""> 
 			<iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_file.php?uploadtype=flash&returnid=e_flash_path" frameborder=0 scrolling=no width="280" height="25"></iframe></td>
           </tr>		  
 		  <tr $e_access> 
-            <td class="list1_text" >{$lang_setflashBg}：</td>
+            <td class="list1_text" >{$lang_setflashBg}</td>
             <td colspan="2" class="list1_input"><input name="e_flash_back" type="text" class="input" size="30" maxlength="200" value=""><iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_photo.php?returnid=e_flash_back&flash=flash" frameborder=0 scrolling=no width="280" height="25"></iframe>			</td>
           </tr>
 		  <tr $o_access>
@@ -196,12 +196,12 @@ echo <<<EOT
 			<td colspan="2" class="list1_input"></td>
 		  </tr>
 		   <tr $o_access> 
-            <td class="list1_text" >{$lang_setflashUrl}：</td>
+            <td class="list1_text" >{$lang_setflashUrl}</td>
             <td colspan="2" class="list1_input"> <input name="o_flash_path" type="text" class="input" size="30" maxlength="200" value=""> 
 			<iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_file.php?uploadtype=flash&returnid=o_flash_path" frameborder=0 scrolling=no width="280" height="25"></iframe></td>
           </tr>		  
 		  <tr $o_access> 
-            <td class="list1_text" >{$lang_setflashBg}：</td>
+            <td class="list1_text" >{$lang_setflashBg}</td>
             <td colspan="2" class="list1_input"><input name="o_flash_back" type="text" class="input" size="30" maxlength="200" value=""><iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_photo.php?returnid=o_flash_back&flash=flash" frameborder=0 scrolling=no width="280" height="25"></iframe>			</td>
           </tr>		  
 		  </table>

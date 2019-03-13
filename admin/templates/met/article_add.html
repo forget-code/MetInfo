@@ -5,17 +5,17 @@
 require_once template('head');
 echo <<<EOT
 -->
-<title>{$lang_articleaddTitle}</title>
+<title>{$lang_add}{$lang_mod2}</title>
 </head>
 <body>
 <form  method="POST" name="myform" onSubmit="return CheckFormarticle();" action="save.php?action=add" target="_self">
 		<input name="class1" type="hidden" value="$class1">
 <table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
           <tr> 
-            <td colspan="3" align="center" class="list1_title">{$lang_articleaddTitle}</td>
+            <td colspan="3" align="center" class="list1_title">{$lang_add}{$lang_mod2}</td>
           </tr>		  
 		  <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_articleaddBelong}：</b></td>
+            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_columnmodule}</b></td>
             <td colspan="2" class="list1_input">
 <!--
 EOT;
@@ -23,7 +23,7 @@ if($class2_ok==TRUE){
 echo <<<EOT
 -->	
 <select name="class2" onChange="changelocation(document.myform.class2.options[document.myform.class2.selectedIndex].value)" size="1">
-<option value=0 selected="selected">{$lang_articleaddTwo}</option>
+<option value=0 selected="selected">{$lang_modClass2}</option>
 <!--
 EOT;
 foreach($column_list2 as $key=>$val2){
@@ -37,7 +37,7 @@ echo <<<EOT
 -->
               </select>
 			<select name="class3" onChange="changelocation2(document.myform.class3.options[document.myform.class3.selectedIndex].value)"> 
-			<option value=0 $class3[0]>{$lang_articleeditorThree}</option>
+			<option value=0 $class3[0]>{$lang_modClass3}</option>
 <!--
 EOT;
 foreach($class3_list as $key=>$val3){
@@ -67,52 +67,52 @@ echo <<<EOT
 		 </td>
           </tr>
 		  <tr> 
-            <td class="list1_text"><b>{$lang_articleaddAccess}：</b></td>
-            <td class="list1_input"><select name="access" id="access" >
+            <td class="list1_text"><b>{$lang_webaccess}</b></td>
+            <td class="list1_input" colspan="2" ><select name="access" id="access" >
              $level
             </select></td>
           </tr>
 		  <tr> 
-            <td class="list1_text"><b>{$lang_articleaddTop}：</b></td>
-            <td colspan="2" class="list1_input"><input name="top_ok" type="checkbox" value="1">{$lang_articleaddTip6}</td>
+            <td class="list1_text"><b>{$lang_top}</b></td>
+            <td colspan="2" class="list1_input"><input name="top_ok" type="checkbox" value="1">{$lang_modtopinfo}</td>
           </tr>
 		  <tr> 
-            <td class="list1_text"><b>{$lang_articleaddImg}：</b></td>
-            <td colspan="2" class="list1_input"><input name="img_ok" type="checkbox" value="1" onMouseDown="displayall('imgurl','imgurls')">{$lang_articleaddTip1}</td>
+            <td class="list1_text"><b>{$lang_images}{$lang_mod2}</b></td>
+            <td colspan="2" class="list1_input"><input name="img_ok" type="checkbox" value="1" onMouseDown="displayall('imgurl','imgurls')">{$lang_modcontent1}{$lang_images}{$lang_mod2}{$lang_modcontent2}</td>
           </tr> 
 		  <tr id="imgurl" style="display:none"> 
-            <td class="list1_text"><b>{$lang_articleaddImgUrl}：</b><br><font color='red' $styletip>{$lang_articleaddCreateThumb}</span></td>
+            <td class="list1_text"><b>{$lang_modimgurl}</b><br><font color='red' $styletip>{$lang_modimgauto}</span></td>
             <td colspan="2" class="list1_input"> <input name="imgurl" type="text" class="input" size="30" maxlength="200"> 
 			<iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_photo.php?returnid=big&create_samll=$met_autothumb_ok" frameborder=0 scrolling=no width="280" height="25"></iframe>
 			</td>
           </tr> 
 		  <tr id="imgurls" style="display:none"> 
-            <td class="list1_text"><b>{$lang_articleaddThumb}：</b></td>
+            <td class="list1_text"><b>{$lang_modimgurls}</b></td>
             <td colspan="2" class="list1_input"> <input name="imgurls" type="text" class="input" size="30" maxlength="200"><iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_photo.php?returnid=small" frameborder=0 scrolling=no width="280" height="25"></iframe></td>
           </tr> 
 		 <tr> 
-            <td class="list1_text"><b>{$lang_articleaddRecommend}：</b></td>
-            <td colspan="2" class="list1_input"><input name="com_ok" type="checkbox" value="1">{$lang_articleaddTip2}</td>
+            <td class="list1_text"><b>{$lang_recom}{$lang_mod2}</b></td>
+            <td colspan="2" class="list1_input"><input name="com_ok" type="checkbox" value="1">{$lang_modcontent1}{$lang_top}{$lang_mod2}{$lang_modcontent2}</td>
           </tr> 
 		  <tr> 
-            <td class="list1_text"><b>{$lang_articleaddPublishPeople}：</b></td>
+            <td class="list1_text"><b>{$lang_modpublish}</b></td>
             <td colspan="2" class="list1_input"><input name="issue" type="text" class="input" size="10" maxlength="200" value="$metinfo_admin_name"></td>
           </tr>
 		  <tr> 
-            <td class="list1_text"><b>{$lang_articleaddHits}：</b></td>
-            <td colspan="2" class="list1_input"><input name="hits" type="text" class="input" size="10" maxlength="200" value="0"> {$lang_articleaddTip3}</td>
+            <td class="list1_text"><b>{$lang_hits}</b></td>
+            <td colspan="2" class="list1_input"><input name="hits" type="text" class="input" size="10" maxlength="200" value="0"> {$lang_modhits}</td>
           </tr>
 		  <tr> 
-            <td class="list1_text"><b>{$lang_articleaddPublishTime}：</b></td>
-            <td colspan="2" class="list1_input"><input name="addtime" type="text" class="input" size="20" maxlength="200" value="$m_now_date">{$lang_articleaddNow}$m_now_date {$lang_articleaddTip4}</td>
+            <td class="list1_text"><b>{$lang_addtime}</b></td>
+            <td colspan="2" class="list1_input"><input name="addtime" type="text" class="input" size="20" maxlength="200" value="$m_now_date">{$lang_modtimenow}$m_now_date {$lang_modtimenow1}</td>
           </tr>
 		  <tr> 
-            <td class="list1_text"><b>{$lang_articleaddUpdateTime}：</b></td>
-            <td colspan="2" class="list1_input"><input name="updatetime" type="text" class="input" size="20" maxlength="200" value="$m_now_date">{$lang_articleaddNow}$m_now_date {$lang_articleaddTip4}</td>
+            <td class="list1_text"><b>{$lang_updatetime}</b></td>
+            <td colspan="2" class="list1_input"><input name="updatetime" type="text" class="input" size="20" maxlength="200" value="$m_now_date">{$lang_modtimenow}$m_now_date {$lang_modtimenow1}</td>
           </tr>
 		   <tr> 
-            <td class="list1_text"><b>{$lang_articleaddSort}：</b></td>
-            <td colspan="2" class="list1_input">{$lang_articleaddTip5}</td>
+            <td class="list1_text"><b>{$lang_mod2}{$lang_ordernum}</b></td>
+            <td colspan="2" class="list1_input">{$lang_modorderinfo}</td>
           </tr>
 <!--
 EOT;
@@ -120,24 +120,24 @@ if($met_c_lang_ok==1):
 echo <<<EOT
 -->
 		  <tr> 
-				<td colspan="3" align="center" class="list1_title"><b>{$lang_articleaddContent}[$met_c_lang]</b></td>
+				<td colspan="3" align="center" class="list1_title"><b>{$lang_content}[$met_c_lang]</b></td>
 		  </tr>
 		  <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_articleaddName}：</b></td>
+            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_mod2}{$lang_title}</b></td>
             <td colspan="2" class="list1_input"> <input name="c_title" type="text" class="input" size="50" maxlength="200"></td>
           </tr>
 		  <tr> 
-            <td class="list1_text"><b>{$lang_articleaddKeys}：</b></td>
-            <td colspan="2" class="list1_input"><input name="c_keywords" type="text" class="input" size="40" maxlength="200">{$lang_articleaddTip6}</td>
+            <td class="list1_text"><b>{$lang_content}{$lang_keywords}</b></td>
+            <td colspan="2" class="list1_input"><input name="c_keywords" type="text" class="input" size="40" maxlength="200">{$lang_descriptioninfo},{$lang_keywordsinfo}</td>
           </tr>
 		  <tr> 
-            <td class="list1_text"><b>{$lang_articleaddIntroduce}：</b><br>{$lang_articleaddSEO}
+            <td class="list1_text"><b>{$lang_content}{$lang_description}</b><br>{$lang_descriptioninfo}
 			</td>
-            <td class="list1_input"><textarea name="c_description" cols="60" rows="5"></textarea></td>
+            <td class="list1_input" colspan="2" ><textarea name="c_description" cols="60" rows="5"></textarea></td>
 			</tr> 
 			 <tr> 
-            <td class="list1_text"><b>{$lang_articleaddDetail}：</b></td>
-            <td class="list1_input">
+            <td class="list1_text"><b>{$lang_contentdetail}</b></td>
+            <td class="list1_input" colspan="2" >
 <!--
 EOT;
 echo "-->";
@@ -146,7 +146,7 @@ $oFCKeditor->BasePath = '../../fckeditor/';
 $oFCKeditor->Config['AutoDetectLanguage']	= false ;
 $oFCKeditor->Config['DefaultLanguage']		= $langusenow ;
 $oFCKeditor->Value = '';
-$oFCKeditor->Width = '100%';   
+$oFCKeditor->Width = '502';   
 $oFCKeditor->Height = '300';
 $oFCKeditor->Create();
 echo <<<EOT
@@ -159,24 +159,24 @@ if($met_e_lang_ok==1){
 echo <<<EOT
 -->
           <tr> 
-				<td colspan="3" align="center" class="list1_title"><b>{$lang_articleaddContent}[$met_e_lang]</b></td>
+				<td colspan="3" align="center" class="list1_title"><b>{$lang_content}[$met_e_lang]</b></td>
 		  </tr>
            <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_articleaddName}：</b></td>
+            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_mod2}{$lang_title}</b></td>
             <td colspan="2" class="list1_input"> <input name="e_title" type="text" class="input" size="50" maxlength="200"></td>
           </tr> 
 		  <tr> 
-            <td class="list1_text"><b>{$lang_articleaddKeys}：</b></td>
-            <td colspan="2" class="list1_input"><input name="e_keywords" type="text" class="input" size="40" maxlength="200">{$lang_articleaddTip6}</td>
+            <td class="list1_text"><b>{$lang_content}{$lang_keywords}</b></td>
+            <td colspan="2" class="list1_input"><input name="e_keywords" type="text" class="input" size="40" maxlength="200">{$lang_descriptioninfo},{$lang_keywordsinfo}</td>
           </tr>
 		  <tr> 
-            <td class="list1_text"><b>{$lang_articleaddIntroduce}：</b><br>{$lang_articleaddSEO}
+            <td class="list1_text"><b>{$lang_content}{$lang_description}</b><br>{$lang_descriptioninfo}
 			</td>
-            <td class="list1_input"><textarea name="e_description" cols="60" rows="5"></textarea></td>
+            <td class="list1_input" colspan="2" ><textarea name="e_description" cols="60" rows="5"></textarea></td>
 			</tr> 
 			 <tr> 
-            <td class="list1_text"><b>{$lang_articleaddDetail}：</b></td>
-            <td  class="list1_input" >
+            <td class="list1_text"><b>{$lang_contentdetail}</b></td>
+            <td  class="list1_input" colspan="2" >
 <!--
 EOT;
 echo "-->";
@@ -185,7 +185,7 @@ $oFCKeditor->BasePath = '../../fckeditor/';
 $oFCKeditor->Config['AutoDetectLanguage']	= false ;
 $oFCKeditor->Config['DefaultLanguage']		= $langusenow ;
 $oFCKeditor->Value = '';
-$oFCKeditor->Width = '100%';   
+$oFCKeditor->Width = '502';   
 $oFCKeditor->Height = '300';
 $oFCKeditor->Create();
 echo "</td></tr><!--";
@@ -195,24 +195,24 @@ if($met_o_lang_ok==1){
 echo <<<EOT
 -->
           <tr> 
-				<td colspan="3" align="center" class="list1_title"><b>{$lang_articleaddContent}[$met_o_lang]</b></td>
+				<td colspan="3" align="center" class="list1_title"><b>{$lang_content}[$met_o_lang]</b></td>
 		  </tr>
            <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_articleaddName}：</b></td>
+            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_mod2}{$lang_title}</b></td>
             <td colspan="2" class="list1_input"> <input name="o_title" type="text" class="input" size="50" maxlength="200"></td>
           </tr> 
 		  <tr> 
-            <td class="list1_text"><b>{$lang_articleaddKeys}：</b></td>
-            <td colspan="2" class="list1_input"><input name="o_keywords" type="text" class="input" size="40" maxlength="200">{$lang_articleaddTip6}</td>
+            <td class="list1_text"><b>{$lang_content}{$lang_keywords}</b></td>
+            <td colspan="2" class="list1_input"><input name="o_keywords" type="text" class="input" size="40" maxlength="200">{$lang_descriptioninfo},{$lang_keywordsinfo}</td>
           </tr>
 		  <tr> 
-            <td class="list1_text"><b>{$lang_articleaddIntroduce}：</b><br>{$lang_articleaddSEO}
+            <td class="list1_text"><b>{$lang_content}{$lang_description}</b><br>{$lang_descriptioninfo}
 			</td>
-            <td class="list1_input"><textarea name="o_description" cols="60" rows="5"></textarea></td>
+            <td class="list1_input" colspan="2" ><textarea name="o_description" cols="60" rows="5"></textarea></td>
 			</tr> 
 			 <tr> 
-            <td class="list1_text"><b>{$lang_articleaddDetail}：</b></td>
-            <td  class="list1_input" >
+            <td class="list1_text"><b>{$lang_contentdetail}</b></td>
+            <td  class="list1_input" colspan="2" >
 <!--
 EOT;
 echo "-->";
@@ -221,7 +221,7 @@ $oFCKeditor->BasePath = '../../fckeditor/';
 $oFCKeditor->Config['AutoDetectLanguage']	= false ;
 $oFCKeditor->Config['DefaultLanguage']		= $langusenow ;
 $oFCKeditor->Value = '';
-$oFCKeditor->Width = '100%';   
+$oFCKeditor->Width = '502';   
 $oFCKeditor->Height = '300';
 $oFCKeditor->Create();
 echo "</td></tr><!--";

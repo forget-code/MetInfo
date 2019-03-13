@@ -15,36 +15,36 @@ echo <<<EOT
             <td colspan="3" align="center" class="list1_title">{$lang_membereditorTitle}</td>
           </tr>
           <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font>{$lang_membereditorUserName}：</td>
+            <td class="list1_text"><font color="#FF0000">*</font>{$lang_memberUserName}</td>
             <td colspan="2" class="list1_input"> <input name="useid" type="text" class="input" size="20" maxlength="20" value="$admin_list[admin_id]" disabled="disabled"></td>
           </tr> 
 		  <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font>{$lang_membereditorPs}：</td>
-            <td colspan="2" class="list1_input"> <input name="pass1" type="password" class="input" size="20" maxlength="20">{$lang_membereditorTip}</td>
+            <td class="list1_text"><font color="#FF0000">*</font>{$lang_memberPs}</td>
+            <td colspan="2" class="list1_input"> <input name="pass1" type="password" class="input" size="20" maxlength="20">{$lang_memberTip}</td>
           </tr> 
 		   <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font>{$lang_membereditorPs1}：</td>
-            <td colspan="2" class="list1_input"> <input name="pass2" type="password" class="input" size="20" maxlength="20">{$lang_membereditorTip}</td>
+            <td class="list1_text"><font color="#FF0000">*</font>{$lang_memberPs1}</td>
+            <td colspan="2" class="list1_input"> <input name="pass2" type="password" class="input" size="20" maxlength="20">{$lang_memberTip}</td>
           </tr> 
 		  <tr> 
-            <td class="list1_text">{$lang_membereditorReadlName}：</td>
+            <td class="list1_text">{$lang_memberName}</td>
             <td colspan="2" class="list1_input"> <input name="name" type="text" class="input" size="20" maxlength="20" value="$admin_list[admin_name]"></td>
           </tr> 
 		  <tr> 
-            <td class="list1_text">{$lang_membereditorSex}：</td>
+            <td class="list1_text">{$lang_memberSex}</td>
             <td colspan="2" class="list1_input">
 <!--
 EOT;
 if($admin_list[admin_sex]==0){
 echo <<<EOT
 -->	
-		<input name="sex" type="radio" value="0" checked="checked">{$lang_membereditorMan} &nbsp;<input name="sex" type="radio" value="1">{$lang_membereditorWoman}
+		<input name="sex" type="radio" value="0" checked="checked">{$lang_memberMan} &nbsp;<input name="sex" type="radio" value="1">{$lang_memberWoman}
 <!--
 EOT;
 }else{
 echo <<<EOT
 -->	
-		<input name="sex" type="radio" value="0" >{$lang_membereditorMan} &nbsp;<input name="sex" type="radio" value="1" checked="checked">{$lang_membereditorWoman}
+		<input name="sex" type="radio" value="0" >{$lang_memberMan} &nbsp;<input name="sex" type="radio" value="1" checked="checked">{$lang_memberWoman}
 <!--
 EOT;
 }echo <<<EOT
@@ -52,65 +52,65 @@ EOT;
 			</td>
           </tr> 
 		  <tr> 
-            <td class="list1_text">{$lang_membereditorTel}：</td>
+            <td class="list1_text">{$lang_memberTel}</td>
             <td colspan="2" class="list1_input"> <input name="tel" type="text" class="input" size="20" maxlength="20" value="$admin_list[admin_tel]"></td>
           </tr> 
 		  <tr> 
-            <td class="list1_text">{$lang_membereditorCell}：</td>
+            <td class="list1_text">{$lang_memberCell}</td>
             <td colspan="2" class="list1_input"> <input name="mobile" type="text" class="input" size="20" maxlength="20" value="$admin_list[admin_mobile]"></td>
           </tr> 
 		  <tr> 
-            <td class="list1_text"><font color="#FF0000">*</font>email：</td>
-            <td colspan="2" class="list1_input"> <input name="email" type="text" class="input" size="20" maxlength="50" value="$admin_list[admin_email]">{$lang_membereditorTip1}</td>
+            <td class="list1_text"><font color="#FF0000">*</font>email</td>
+            <td colspan="2" class="list1_input"> <input name="email" type="text" class="input" size="20" maxlength="50" value="$admin_list[admin_email]">{$lang_memberTip1}</td>
           </tr> 
 		  <tr> 
-            <td class="list1_text">QQ：</td>
+            <td class="list1_text">QQ</td>
             <td colspan="2" class="list1_input"> <input name="qq" type="text" class="input" size="20" maxlength="20" value="$admin_list[admin_qq]"></td>
           </tr> 
 		  <tr> 
-            <td class="list1_text">MSN：</td>
+            <td class="list1_text">MSN</td>
             <td colspan="2" class="list1_input"> <input name="msn" type="text" class="input" size="20" maxlength="50" value="$admin_list[admin_msn]"></td>
           </tr> 
 		  <tr> 
-            <td class="list1_text">{$lang_membereditorTaoBao}：</td>
+            <td class="list1_text">{$lang_memberTaoBao}</td>
             <td colspan="2" class="list1_input"> <input name="taobao" type="text" class="input" size="20" maxlength="30" value="$admin_list[admin_taobao]"></td>
           </tr> 
           <tr> 
-          <td class="list1_text" valign="middle">{$lang_membereditorIntro}:</td>
+          <td class="list1_text" valign="middle">{$lang_memberIntro}</td>
           <td colspan="2" class="list1_input" valign="top"> <textarea name="admin_introduction" cols="60" rows="5" >$admin_list[admin_introduction]</textarea></td>
           </tr>
 		  <tr> 
-          <td class="list1_text" valign="middle">{$lang_membereditorCompanyName}:</td>
-          <td colspan="2" class="list1_input" valign="top"> <input name="companyname" type="text" class="input" size="20" maxlength="30" value="$admin_list[companyname]"></td>
+          <td class="list1_text" valign="middle">{$lang_memberCompanyName}</td>
+          <td colspan="2" class="list1_input" valign="top"> <input name="companyname" type="text" class="input" size="30" value="$admin_list[companyname]"></td>
           </tr>
 		  <tr> 
-          <td class="list1_text" valign="middle">{$lang_membereditorCompanyFax}:</td>
-          <td colspan="2" class="list1_input" valign="top"> <input name="companyfax" type="text" class="input" size="20" maxlength="30" value="$admin_list[companyfax]"></td>
+          <td class="list1_text" valign="middle">{$lang_memberCompanyFax}</td>
+          <td colspan="2" class="list1_input" valign="top"> <input name="companyfax" type="text" class="input" size="30"value="$admin_list[companyfax]"></td>
           </tr>
 		  <tr> 
-          <td class="list1_text" valign="middle">{$lang_membereditorCompanyCode}:</td>
-          <td colspan="2" class="list1_input" valign="top"> <input name="companycode" type="text" class="input" size="20" maxlength="30" value="$admin_list[companycode]"></td>
+          <td class="list1_text" valign="middle">{$lang_memberCompanyCode}</td>
+          <td colspan="2" class="list1_input" valign="top"> <input name="companycode" type="text" class="input" size="30" value="$admin_list[companycode]"></td>
           </tr>
 		  <tr> 
-          <td class="list1_text" valign="middle">{$lang_membereditorCompanyAddress}:</td>
-          <td colspan="2" class="list1_input" valign="top"> <input name="companyaddress" type="text" class="input" size="20" maxlength="30" value="$admin_list[companyaddress]"></td>
+          <td class="list1_text" valign="middle">{$lang_memberCompanyAddress}</td>
+          <td colspan="2" class="list1_input" valign="top"> <input name="companyaddress" type="text" class="input" size="30" value="$admin_list[companyaddress]"></td>
           </tr>
 		  <tr> 
-          <td class="list1_text" valign="middle">{$lang_membereditorCompanyWebsite}:</td>
-          <td colspan="2" class="list1_input" valign="top"> <input name="companywebsite" type="text" class="input" size="20" maxlength="30" value="$admin_list[companywebsite]"></td>
+          <td class="list1_text" valign="middle">{$lang_memberCompanyWebsite}</td>
+          <td colspan="2" class="list1_input" valign="top"> <input name="companywebsite" type="text" class="input" size="30" value="$admin_list[companywebsite]"></td>
           </tr>
 		  <tr> 
          <tr> 
-          <td class="list1_text" valign="middle">{$lang_membereditorType}:</td>
+          <td class="list1_text" valign="middle">{$lang_memberType}</td>
           <td colspan="2" class="list1_input" valign="top">
 		  <select name="usertype" id="usertype" >
-			 <option value="1" $access1>{$lang_membereditorType1}</option>
-              <option value="2" $access2>{$lang_membereditorType2}</option>
+			 <option value="1" $access1>{$lang_access1}</option>
+              <option value="2" $access2>{$lang_access2}</option>
             </select>
 		  </td>
           </tr>
 		  <tr>
-		  <td class="list1_text" valign="middle">{$lang_membereditorCheck}:</td>
+		  <td class="list1_text" valign="middle">{$lang_memberCheck}</td>
           <td colspan="2" class="list1_input" valign="top"><input name="checkid" type="checkbox" value="1" $checkid></td>
           </tr>
 		  <tr> 

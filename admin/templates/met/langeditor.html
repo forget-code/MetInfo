@@ -1,8 +1,10 @@
 <!--<?php
-# 文件名称:langeditor.html 2009-08-01 21:01:57
+# 文件名称:langeditoradmin.html 2009-08-01 21:01:57
 # MetInfo企业网站管理系统 
 # Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
 require_once template('head'); 
+$colspan=($langnowok=='metinfo')?3:2;
+$colspan1=$colspan-1;
 echo <<<EOT
 -->
 <title>{$lang_skinlangeditor}</title>
@@ -11,38 +13,68 @@ echo <<<EOT
         <form method="POST" name="myform" action="" target="_self">
 		<input name="action" type="hidden" value="modify">
 		<input name="langnum" type="hidden" value="$j">
-		<input name="linetop" type="hidden" value="$linetop">
 		<input name="langeditor" type="hidden" value="$langeditor">
-<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
+<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1" >
+<tr>
+<td colspan="$colspan" align="center" class="list1_title">{$lang_skinlangeditor}【<b>{$met_lang}</b>】</td>
+</tr>
+   <tr><td class="list1_text" ><b>{$lang_skinlangeditorinfo}</b></td>
+    <td colspan="$colspan1" class="list1_input">{$lang_skinlangeditordetail1}<br>{$lang_skinlangeditordetail2}<br>{$lang_skinlangeditordetail3}</td></tr>
+<tr><td class="list1_text" colspan="$colspan"><a href="lang.php">{$lang_indexlang}</a> | <a href="langeditor.php?langeditor=$langeditor">{$lang_skinlangclass}</a></td></tr>
+<!--
+EOT;
+if($langnowok=='metinfo'){
+echo <<<EOT
+-->
+<tr>
+<td class="list1_text" width:20%><b>{$lang_skinlangclass2}</b></td>
+<td class="list1_input" width:50%><b>{$lang_skinlangvalue}</b></td>
+<td class="list1_input" width:30%><b>{$lang_skinlanginfo}</b></td>
+</tr>
+<input name="metinfolangid" type="hidden" value="$langid">
+<!--
+EOT;
+foreach($langtext[$langid] as $key=>$val){
+echo <<<EOT
+-->
 
-            <td colspan="3" align="center" class="list1_title">{$lang_skinlangeditor}【<b>{$met_lang}</b>】</td>
-   </tr>
-   <tr> 
-            <td class="list1_text">{$lang_skinlangeditorinfo}：</td>
-            <td class="list1_input">{$lang_skinlangeditordetail}</td>
-   </tr>
+ <tr> 
+ <td class="list1_text">$val[name]</td>
+ <td class="list1_input"><input name="$val[name]_metinfo" type="text" value="$val[value]" size="60"></td>
+ <td class="list1_input"><input name="$val[name]_info_metinfo" type="text" value="$val[valueinfo]" size="30"></td>
+ </tr>
+<!--
+EOT;
+}}else{
+echo <<<EOT
+-->
+<tr>
+<td class="list1_text"><b>{$lang_skinlangclass}</b></td>
+<td class="list1_input"><b><font color="red">{$lang_skinlangclass1}</font></b></td>
+</tr> 
+<input name="metinfo_langtitle" type="hidden" value="metinfolangtitle">
 <!--
 EOT;
 for($i=0;$i<$j;$i++){
 echo <<<EOT
---> 
-    <tr> 
-            <td class="list1_text"><textarea name="langarray[$i]" cols="15" style="overflow:hidden; font-weight:bold; color:#000099;" rows="1">$langarray[$i]</textarea></td>
-            <td class="list1_input"><textarea name="langtext[$i]" cols="60" rows="10">$langtext[$i]</textarea></td>
-   </tr> 
+-->
+<tr>
+<td class="list1_text"><input name="langarray1[$i]" type="text" style="font-weight:bold; color:#0033CC;" value="$langarray[$i]" size="15" ></td>
+<td class="list1_input" ><a href="langeditor.php?langeditor=$langeditor&langnowok=metinfo&langid=$i">{$lang_skinlangclass2}【$langarray[$i]】</a></td>
+</tr> 
+
 <!--
 EOT;
-}
+}}
 echo <<<EOT
 -->
 
 	      <tr> 
-            <td class="list1_text"></td>
-	      <td class="list1_submit"><input type="submit" name="Submit" value="{$lang_Submit}" class="tj" style="*padding-top:2px; *height:22px;"><input type="reset" name="Submit" value="{$lang_Reset}" class="tj" style="*padding-top:2px; *height:22px;"></td>
+	      <td class="list1_submit" colspan="$colspan" style="text-align:center;"><input type="submit" name="Submit" value="{$lang_Submit}" class="tj" style="*padding-top:2px; *height:22px;"><input type="reset" name="Submit" value="{$lang_Reset}" class="tj" style="*padding-top:2px; *height:22px;"></td>
           </tr>
         </form>
 		<tr>
-		  <td class="list1_footer" colspan="2" align="center">$foot</td>
+		  <td class="list1_footer" colspan="$colspan" align="center">$foot</td>
 	  </tr>
 </table>
 </body>
