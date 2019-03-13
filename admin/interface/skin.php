@@ -18,7 +18,6 @@ if($action=="modify"){
 $cs=isset($cs)?$cs:2;
 switch($cs){
 	case 2:
-		$index = $db->get_one("SELECT * FROM $met_index where lang='$lang' ");
 		$cssfile="../../templates/".$met_skin_user."/images/css/css.inc.php";
 		if(file_exists($cssfile)){
 			$indexpage='';

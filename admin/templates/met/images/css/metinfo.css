@@ -2242,7 +2242,6 @@ div.showimg {
 .applist li {
 	padding:8px 10px 10px 10px;
 	width:790px;
-	height:120px;
 	overflow:hidden;
 	border-bottom:1px solid #ccc;
 	background:#fafafa;
@@ -2254,9 +2253,10 @@ div.showimg {
 }
 .applist li div.img img {
 	float:left;
-	width:80px;
-	height:80px;
+	width:57px;
+	height:57px;
 	margin:2px;
+	margin-left:15px;
 }
 .applist li div.text {
 	float:left;
@@ -2265,14 +2265,14 @@ div.showimg {
 	width:699px;
 }
 .applist li div.name {
-	padding:3px 5px;
+	padding:0px 5px;
 	text-align:left;
 }
 .applist li div.name span.title,.applist li div.name span.title a{font-size:16px; font-weight:bold; text-decoration:none; color:darkGreen}
 .applist li div.info dl {
-	padding:3px 5px;
+	padding:0px 5px;
 	text-align:left;
-	height:83px;
+	line-height:1.5;
 	overflow:hidden;
 }
 .applist li div.info dd {
@@ -2503,3 +2503,6 @@ div.showimg {
 #htmlloading div.listbox span.ok{ color:#390;}
 #htmlloading div.listbox span.err{ color:red;}
 #htmlloading div.listbox a.cs{ color:red; margin-left:5px;}
+
+.metinfotop .contentshowtype a{ color:#888; text-decoration:none;}
+.nowawecs{ font-weight:bold; color:#f00!important; font-size:14px;}

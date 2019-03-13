@@ -83,7 +83,7 @@ function metlabel_flash(){
 					$metinfo.="<script src='{$navurl}public/jq-flexslider/jquery.flexslider-min.js'></script>";
 					$thisflash_x=$met_flasharray[$classnow][x]-8;
 					$thisflash_y=$met_flasharray[$classnow][y]-8;
-					$metinfo.="<div class='flash'><div class='flexslider flexslider_flash flashfld'><ul class='slides'>";
+					$metinfo.="<div class='flash'><div class='flexslider flexslider_flash flashfld'><ul class='slides list-none'>";
 					foreach($met_flashimg as $key=>$val){
 						$val[img_link]=str_replace('%26','&',$val[img_link]);
 						$metinfo.="<li><a href='".$val[img_link]."' target='_blank' title='{$val[img_title]}'>\n";
@@ -479,7 +479,7 @@ function metlabel_news($time=1,$desc=0,$dlen,$dt=1,$n=0){
 			if($dt){$a='[';$b=']';}
 			if($time)$metinfo.="<span>{$a}{$val[updatetime]}{$b}</span>";
 			$metinfo.="<a href='{$val[url]}' title='{$val[title]}' {$metblank}>{$val[title]}</a>{$val[hot]}{$val[news]}{$val[top]}";
-			if($desc)$metinfo.="<p>{$val[description]}</p>";
+			if($desc&&$val['description']!='')$metinfo.="<p>{$val[description]}</p>";
 			$metinfo.="</li>";	
 		}
 	}
@@ -488,7 +488,7 @@ function metlabel_news($time=1,$desc=0,$dlen,$dt=1,$n=0){
 }
 //产品模块列表函数
 function metlabel_product($z,$w,$l,$n=0){
-	global $product_list,$metblank,$met_img_style,$met_img_x,$met_img_y,$met_product_page,$class1,$class2,$class3,$search,$nav_list2,$nav_list3,$weburly,$id;
+	global $product_list,$metblank,$met_img_style,$met_img_x,$met_img_y,$met_product_page,$class1,$class2,$class3,$search,$nav_list2,$nav_list3,$weburly,$id,$met_agents_img;
 	$met_img_x=$met_img_style?met_imgxy(1,'product'):$met_img_x;
 	$met_img_y=$met_img_style?met_imgxy(2,'product'):$met_img_y;
 	$metinfo.="<ul class='list-none metlist'>";
@@ -531,7 +531,7 @@ function metlabel_product($z,$w,$l,$n=0){
 		if(!$n || $id!=$val[id]){
 			if($metok){
 				$val['title']=$val['name'];
-				$val['imgurls']=$val['columnimg']==''?$weburly.'public/images/metinfo.gif':$val['columnimg'];
+				$val['imgurls']=$val['columnimg']==''?$weburly.$met_agents_img:$val['columnimg'];
 			}
 			$style=$dwidth[$i]?"style='width:{$w}px; margin-left:{$dwidth[$i]}px; margin-right:{$dwidth[$i]}px;'":'';
 			$metinfo.="<li class='list' {$style}>";
@@ -590,7 +590,7 @@ function metlabel_img($z,$w,$l,$n=0){
 		if(!$n || $id!=$val[id]){
 			if($metok){
 				$val['title']=$val['name'];
-				$val['imgurls']=$val['columnimg']==''?$weburly.'public/images/metinfo.gif':$val['columnimg'];
+				$val['imgurls']=$val['columnimg']==''?$weburly.$met_agents_img:$val['columnimg'];
 			}
 			$style=$dwidth[$i]?"style='width:{$w}px; margin-left:{$dwidth[$i]}px; margin-right:{$dwidth[$i]}px;'":'';
 			$metinfo.="<li class='list' {$style}>";
@@ -835,7 +835,7 @@ function metlabel_feedback($fid){
 	$lujin='';
 	if($fid)$lujin=$navurl.'feedback/';
      $metinfo =$fdjs;
-     $metinfo.="<form enctype='multipart/form-data' method='POST' name='myform' onSubmit='return Checkfeedback();' action='{$lujin}index.php?action=add&lang=".$_GET[lang]."' target='_self'>\n";
+     $metinfo.="<form enctype='multipart/form-data' method='POST' name='myform' onSubmit='return Checkfeedback();' action='{$lujin}index.php?action=add&lang=".$lang."' target='_self'>\n";
      $metinfo.="<table class='feedback_table' >\n";
     foreach($fd_para as $key=>$val){
      $metinfo.="<tr>\n";
@@ -857,7 +857,7 @@ if($met_memberlogin_code==1){
      $metinfo.="<input type='hidden' name='ip' value='".$m_user_ip."' />\n";
 	 $metinfo.="<input type='hidden' name='totnum' value='".count($fd_para)."' />\n";
 	 $metinfo.="<input type='hidden' name='id' value='".$id."' />\n";
-	 if($fid)$metinfo.="<input type='hidden' name='fid_url' value='".request_uri()."' />\n";//5.0.4
+	 if($fid)$metinfo.="<input type='hidden' name='fid_url' value='1' />\n";//5.0.4
      $metinfo.="<input type='submit' name='Submit' value='".$lang_Submit."' class='submit button orange'></td></tr>\n";
      $metinfo.="</table>\n";
      $metinfo.="</form>\n";

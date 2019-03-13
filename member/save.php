@@ -12,7 +12,7 @@ if($action=="add"){
 	 }
  } 
 $admin_if=$db->get_one("SELECT * FROM $met_admin_table WHERE admin_id='$yhid'");
-if($admin_if){
+if($admin_if&&$yhid){
 okinfo('javascript:history.back();',$lang_js15);
 }
 require_once '../include/jmail.php';
@@ -56,6 +56,8 @@ sendsms($met_nurse_member_tel,$message,4);
 }
 }
 /**/
+$query="select * from $met_admin_array where lang='$lang' order by user_webpower asc";
+$usertypes=$db->get_all($query);
 $pass1=md5($mm);
  $query = "INSERT INTO $met_admin_table SET
                       admin_id           = '$yhid',
@@ -64,7 +66,7 @@ $pass1=md5($mm);
 					  admin_email        = '$email',
 					  admin_modify_ip    = '$m_user_ip',
 					  admin_register_date= '$m_now_date',
-					  usertype			 = '1',
+					  usertype			 = '{$usertypes[0][id]}',
 					  companyname		 = '$companyname',
 					  companyaddress     = '$companyaddress',
 					  companyfax	     = '$companyfax',
@@ -85,8 +87,8 @@ exit();
 
 if($action=="editor"){
 require_once 'login_check.php';
-if($_SESSION['metinfo_admin_id']!=$useid){
-	Header("Location:$returnurl");
+if($metinfo_member_name!=$useid){
+	okinfo('javascript:history.back();',$lang_js1);
 }
 $query = "update $met_admin_table SET
                       admin_id           = '$useid',

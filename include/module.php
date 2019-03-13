@@ -19,9 +19,9 @@ if(isset($metid) && $met_pseudo){
 	}else{
 		$dname = is_numeric($metid)?"id=$metid":"filename='$metid'";
 	}*/
-	$dname = is_numeric($metid)?"id=$metid":"filename='$metid'";
+	$dname = is_numeric($metid)?"id='$metid'":"filename='$metid'";
 	if($list){/*½ûÖ¹´¿Êý×Ö*/
-		$anyone = $db->get_one("SELECT * FROM $met_column WHERE $dname and lang ='$lang'");	
+		$anyone = $db->get_one("SELECT * FROM $met_column WHERE $dname and lang ='$lang'");
 		if(!is_array($anyone)){
 			$metids=explode('-',$metid);
 			$metidcount=count($metids)-1;
@@ -49,7 +49,12 @@ if(isset($metid) && $met_pseudo){
 			if($anyone['classtype']==1)$class1= $anyone['id'];
 			if($anyone['classtype']==2)$class2= $anyone['id'];
 			if($anyone['classtype']==3)$class3= $anyone['id'];
-		
+			$anyone2 = $db->get_one("SELECT * FROM $met_column WHERE id='$anyone[bigclass]' and lang ='$lang'");
+			if($anyone2['releclass']){
+				$class1=$anyone2['id'];
+				$class2=$metid;
+				$class3='';
+			}
 		}
 		$mdle = $anyone['module'];
 		$mdtp = '0';
@@ -75,6 +80,7 @@ if(isset($metid) && $met_pseudo){
 	$mdle = $anyone['module'];
 	$mdtp = '0';
 }
+$module='';
 if($fmodule!=7){
 	if($mdle==100)$mdle=3;
 	if($mdle==101)$mdle=5;

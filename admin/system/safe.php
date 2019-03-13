@@ -34,6 +34,9 @@ if($action=="delete"){
 if($action=="modify"){
 	require_once $depth.'../include/config.php';
 	if($met_adminfile!=""&&$met_adminfile!=$adminfile){
+		$robots=file_get_contents('../../robots.txt');
+		$robots=str_replace(": /$adminfile/",": /admin/",$robots);
+		file_put_contents('../../robots.txt',$robots);
 		Header("Location: ../index.php?lang=".$lang."&action=renameadmin&met_adminfile=".$met_adminfile);
 	}else{
 		metsave('../system/safe.php?anyid='.$anyid.'&lang='.$lang);

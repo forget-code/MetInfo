@@ -5,6 +5,9 @@ $depth='../';
 require_once $depth.'../login/login_check.php';
 $query="select * from $met_app where download=1";
 $app=$db->get_all($query);
+if(!$app&&!$cs){
+	header('location:dlapp.php?lang='.$lang.'&anyid='.$anyid);
+}
 $listclass[1]='class="now"';
 $css_url=$depth."../templates/".$met_skin."/css";
 $img_url=$depth."../templates/".$met_skin."/images";

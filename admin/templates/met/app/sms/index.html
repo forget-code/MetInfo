@@ -57,7 +57,17 @@ echo <<<EOT
 			<ol>
 				<li>{$lang_smstips13}{$met_weburl}</li>
 				<li class="red">{$lang_smstips14}</li>
+<!--
+EOT;
+if($met_agents_type<=1){
+echo <<<EOT
+-->	
 				<li><a href="http://www.metinfo.cn/faq/sms_costs.htm" target="_blank">{$lang_smstips15}</a></li>
+<!--
+EOT;
+}
+echo <<<EOT
+-->					
 			</ol>
 			</td>
 		</tr>
@@ -97,7 +107,17 @@ echo <<<EOT
 			<td class="text"></td>
 			<td class="submit">
 				<input type="submit" name="submit" class="submit" value="{$lang_smstips84}" onclick="return Smit($(this),'myform1')" $disable/>$fstr
+<!--
+EOT;
+if($met_agents_type<=1){
+echo <<<EOT
+-->					
 				<span class="tips"><a href="http://www.metinfo.cn/faq/sms_costs.htm" target="_blank">{$lang_smstips83}</a></span>
+<!--
+EOT;
+}
+echo <<<EOT
+-->	
 				</td>
 		</tr>
 </table>

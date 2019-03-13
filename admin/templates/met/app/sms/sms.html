@@ -13,12 +13,12 @@ require_once template('app/sms/top');
 echo <<<EOT
 -->
 <form method="POST" name="myform" action="sms.php?lang={$lang}&anyid={$anyid}&action=modify" target="_self">
-<input type="hidden" name="usertype" value="0.08" />
+<input type="hidden" name="usertype" value="$met_smsprice" />
 <table cellpadding="2" cellspacing="1" class="table">
 	<tr>
         <td class="text">{$lang_smstips6}{$lang_marks}</td>
         <td class="input">
-			<span class="red">{$balance}</span> {$lang_smstips9}
+			<span class="red" id="balance">{$lang_smstips50}</span> {$lang_smstips9}
 		</td>
     </tr>
 	<tr>
@@ -62,7 +62,18 @@ echo <<<EOT
 	<tr>
         <td class="text"></td>
         <td class="input">
-			<span class="tips">{$lang_smstips45} <span id='changeqian' class="red"></span> {$lang_smstips9} ( <span id="sms_cost"></span> {$lang_smstips46} <span id='changezt' class="color390"></span> {$lang_smstips47}) </span><a href="http://www.metinfo.cn/faq/sms_costs.htm" target="_blank">{$lang_smstips15}</a>
+			<span class="tips">{$lang_smstips45} <span id='changeqian' class="red"></span> {$lang_smstips9} ( <span id="sms_cost">$met_smsprice</span> {$lang_smstips46} <span id='changezt' class="color390"></span> {$lang_smstips47}) </span>
+<!--
+EOT;
+if($met_agents_type<=1){
+echo <<<EOT
+-->				
+			<a href="http://www.metinfo.cn/faq/sms_costs.htm" target="_blank">{$lang_smstips15}</a>
+<!--
+EOT;
+}
+echo <<<EOT
+-->				
 		</td>
     </tr>
 		<tr> 
@@ -127,8 +138,9 @@ function smsmembertel(my){
 function smssubmit(my){
 	$("input[type='submit']").attr("disabled", true);
 	var nxt = my.next();
-		nxt.empty();
-		nxt.html('<img src="'+metimgurl+'loadings.gif" style="position:relative; top:5px;" /> {$lang_smstips52}');
+	nxt.empty();
+	nxt.html('<img src="'+metimgurl+'loadings.gif" style="position:relative; top:5px;" /> {$lang_smstips52}');
+
 	var message = encodeURIComponent($("textarea[name='message']").val());
 	var phone   = encodeURIComponent($("textarea[name='phone']").val());
 	var code    = encodeURIComponent($("input[name='code']").val());
@@ -175,25 +187,21 @@ function telshowNum(type){
 		$("#changeqian").html(qian);
 		$("#changezt").html(zt);
 } 
-function sms_cost(){
-	var cost_input = $("input[name='usertype']");
-	var cost_span  = $("#sms_cost");
+$(document).ready(function(){
+	//balance
 	$.ajax({
-		url : 'sms.php?lang={$lang}&anyid={$anyid}&action=usertype&action_ajax=1',type: "GET",
+		url : 'sms.php?lang={$lang}&anyid={$anyid}&action=balance&action_ajax=1',type: "GET",
 		success: function(data){
-			cost_input.val(data);
-			cost_span.html(data);
+			$("#balance").text(data);
 		}
 	});
-}
-$(document).ready(function(){
 	showNum();
 	$("#smsbox").bind('keyup change',function(){showNum() });
 	$("#smsbox").keydown(function(){showNum()});
 	telshowNum();
 	$("#smstelbox").bind('keyup change focus',function(){telshowNum() });
 	$("#smstelbox").keydown(function(){telshowNum()});
-	sms_cost();
+
 });
 </script>
 <div class="footer">$foot</div>

@@ -2,24 +2,37 @@
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 /*子级栏目*/
-function listjs(){
-	global $met_class22,$met_class3,$class1,$met_class;
-	$i=0;
-	if($met_class[$class1][releclass]){
-		$met_class22=$met_class3;
-		$met_class3='';
+function listjs($module){
+	global $db,$met_column,$lang,$lang_modClass2,$lang_modClass3,$metinfo_admin_pop;
+	$query = "SELECT * FROM $met_column where module='$module' and lang='$lang'";
+	$result = $db->query($query);
+	while($list = $db->fetch_array($result)) {
+		$clist[]=$list;
 	}
+	$i=0;
 	$listjs = "<script language = 'JavaScript'>\n";
 	$listjs.= "var onecount;\n";
-	$listjs.= "subcat = new Array();\n";
-	foreach($met_class22[$class1] as $key=>$vallist){
-	$listjs.= "subcat[".$i."] = new Array('".$vallist[name]."','".$vallist[bigclass]."','".$vallist[id]."','".$vallist[access]."');\n";
-		 $i=$i+1;
-	  foreach($met_class3[$vallist[id]] as $key=>$vallist3){
-			$listjs.= "subcat[".$i."] = new Array('".$vallist3[name]."','".$vallist3[bigclass]."','".$vallist3[id]."','".$vallist3[access]."');\n";
+	$listjs.= "lev = new Array();\n";
+	foreach($clist as $key=>$vallist){
+		$admin_column_power="admin_pop".$vallist[id];
+		global $$admin_column_power;
+		if(!($metinfo_admin_pop=='metinfo'||$$admin_column_power=='metinfo')&&($vallist[classtype]==1||$vallist['releclass']))continue;
+		$vallist[name]=str_replace("'","\\'",$vallist[name]);
+		if($vallist['releclass']){
+			$listjs.= "lev[".$i."] = new Array('".$vallist[name]."','0','".$vallist[id]."','".$vallist[access]."');\n";
 			$i=$i+1;
 		}
+		else{
+				$listjs.= "lev[".$i."] = new Array('".$vallist[name]."','".$vallist[bigclass]."','".$vallist[id]."','".$vallist[access]."');\n";
+				$i=$i+1;
+		}
 	}
+	$j=$i;
+	$listjs.= "lev[".$j."] = new Array('".$lang_modClass2."','0','','0');\n";
+	$j++;
+	$listjs.= "lev[".$j."] = new Array('".$lang_modClass3."','0','','0');\n";
+	$j++;
+	$listjs.= "lev[".$j."] = new Array('----------','0','0','-1');\n";
 	$listjs.= "onecount=".$i.";\n";
 	$listjs.= "</script>";
 	return $listjs;
@@ -39,6 +52,7 @@ function para_list_with($mod_list){
 		}
 		$para_list[]=$list;
 	}
+
 	foreach($para_list as $key=>$val){
 		$mrok='';
 		$para='para'.$val[id];

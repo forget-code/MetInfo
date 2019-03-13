@@ -17,10 +17,10 @@ if($action=='delete'){
 		 //$sqlfiles_sql = glob('../../databack/*.sql');
 		 $filenum=1;
 		 while(file_exists('../../databack/'.$filenames.$filenum.'.sql')){
-			$sqlfiles[]='../../databack/sql/'.'metinfo_'.$filenames.$filenum.'.zip';
-			if(!file_exists('../../databack/sql/'.'metinfo_'.$filenames.$filenum.'.zip')){
+			$sqlfiles[]='../../databack/sql/'.$met_agents_backup.'_'.$filenames.$filenum.'.zip';
+			if(!file_exists('../../databack/sql/'.$met_agents_backup.'_'.$filenames.$filenum.'.zip')){
 					if(!file_exists('../../databack/sql'))@mkdir ('../../databack/sql', 0777);  
-					$sqlzip='../../databack/sql/'.'metinfo_'.$filenames.$filenum.'.zip';
+					$sqlzip='../../databack/sql/'.$met_agents_backup.'_'.$filenames.$filenum.'.zip';
 					$archive = new PclZip($sqlzip);
 					$zip_list = $archive->create('../../databack/'.$filenames.$filenum.'.sql',PCLZIP_OPT_REMOVE_PATH,'../../databack/');
 					if($zip_list == 0){

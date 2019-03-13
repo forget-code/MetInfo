@@ -39,7 +39,7 @@ if($action=='modify'){
 		$db->query($query);
 	}
 	$db->query("update $met_otherinfo set info1='',info2='' where id=1");
-	metsave('../system/basic.php?anyid='.$anyid.'&lang='.$lang.'&cs='.$cs);
+	metsave('../system/basic.php?anyid='.$anyid.'&lang='.$lang.'&cs='.$cs.'&linkapi=1');
 }else{
 	$localurl="http://";
 	$localurl.=$_SERVER['HTTP_HOST'].$_SERVER["PHP_SELF"];
@@ -54,6 +54,17 @@ if($action=='modify'){
 	$listclass[$cs]='class="now"';
 	$css_url="../templates/".$met_skin."/css";
 	$img_url="../templates/".$met_skin."/images";
+	if($linkapi==1){
+	$email=$admin_list['admin_group']==10000?$admin_list['admin_email']:'';
+	$tel=$admin_list['admin_group']==10000?$admin_list['admin_mobile']:'';
+	$linkapijs="<script type=\"text/javascript\">
+	$.ajax({
+		url: 'http://api.metinfo.cn/record_install.php?url={$met_weburl}&email={$email}&webname={$met_webname}&webkeywords={$met_keywords}&tel={$tel}&version={$metcms_v}&softtype=1',
+		type: \"POST\"
+	});
+	</script>
+	";
+	}
 	include template('system/set_basic');
 	footer();
 }

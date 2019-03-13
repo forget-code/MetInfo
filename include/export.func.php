@@ -6,7 +6,7 @@ function curl_post($post,$timeout){
 global $met_weburl,$met_host,$met_file;
 $host=$met_host;
 $file=$met_file;
-	if(get_extension_funcs('curl')){
+	if(get_extension_funcs('curl')&&function_exists('curl_init')&&function_exists('curl_setopt')&&function_exists('curl_exec')&&function_exists('curl_close')){
 		$curlHandle=curl_init(); 
 		curl_setopt($curlHandle,CURLOPT_URL,'http://'.$host.$file); 
 		curl_setopt($curlHandle,CURLOPT_REFERER,$met_weburl);
@@ -79,16 +79,8 @@ $file=$met_file;
 		return 'nohost';
 	}
 }
-/*远程下载*/
-/*/URLFROM 远程文件地址 URLTO 本地文件地址，为空表示直接输出*/
-function dlfile($urlfrom,$urlto,$timeout=30){
-	global $checksum;
-	$post_data = array('urlfrom'=>$urlfrom,'checksum'=>$checksum);
-	$result=curl_post($post_data,$timeout);
-	if($result=='nohost'){
-		return -1;
-	}
-	switch($result){
+function link_error($str){
+	switch($str){
 		case 'Timeout' :
 			return -6;
 		break;
@@ -101,10 +93,30 @@ function dlfile($urlfrom,$urlto,$timeout=30){
 		case 'No Permissions' :
 			return -3;
 		break;
+		case 'No filepower' :
+			return -2;
+		break;	
+		case 'nohost' :
+			return -1;
+		break;	
+		Default;
+			return 1;
+		break;
+	}
+}
+/*远程下载*/
+/*/URLFROM 远程文件地址 URLTO 本地文件地址，为空表示直接输出*/
+function dlfile($urlfrom,$urlto,$timeout=30){
+	global $checksum;
+	$post_data = array('urlfrom'=>$urlfrom,'checksum'=>$checksum);
+	$result=curl_post($post_data,$timeout);
+	$link=link_error($result);
+	if($link!=1){
+		return $link;
 	}
 	if($urlto){
 		$return=file_put_contents($urlto,$result);
-		if(!$return){return -2;}
+		if(!$return){return link_error('No filepower');}
 		else{return 1;}
 	}
 	else{
@@ -113,27 +125,28 @@ function dlfile($urlfrom,$urlto,$timeout=30){
 }
 /*文件下载错误返回*/
 function dlerror($error){
+	global $lang_dltips1,$lang_dltips2,$lang_dltips3,$lang_dltips4,$lang_dltips5,$lang_dltips6,$lang_dltips7;
 	switch($error){
 		case -1:
-			return '无法连接上远程服务器，请检查网络';
+			return $lang_dltips1;
 		break;
 		case -2:
-		    return '文件下载失败，请检查本地目录权限和空间大小';
+		    return $lang_dltips2;
 		break;
 		case -3:
-			return '您没有权限下载此文件';
+			return $lang_dltips3;
 		break;
 		case -4:
-			return '请升级程序';
+			return $lang_dltips4;
 		break;
 		case -5:
-			return '您所请求的文件不存在';
+			return $lang_dltips5;
 		break;
 		case -6:
-			return '远程服务器请求错误';
+			return $lang_dltips6;
 		break;	
 		case -7:
-			return '下载超时';
+			return $lang_dltips7;
 		break;		
 	}
 	return 1;
@@ -150,16 +163,20 @@ function varcodeb($type){
 		$post=array('code'=>$authcode,'pass'=>$authpass,'type'=>$type);
 		$md5=curl_post($post,30);
 		if(preg_match("/^[a-zA-Z0-9]{32}$/",$md5)){
-			if(!is_dir(ROOTPATH.'cache/'))mkdir(ROOTPATH.'cache/','0777');
-			file_put_contents(ROOTPATH."cache/$md5.txt",$md5);
-			$met_file='/test/check.php';
-			$post=array('md5'=>$md5);
-			$result=curl_post($post,30);
-			if($result=='SUC'){
-				return array('re'=>'SUC','md5'=>$md5);
+			if(!is_dir(ROOTPATH.'cache/'))mkdir(ROOTPATH.'cache/','0755');
+			if(file_put_contents(ROOTPATH."cache/$md5.txt",$md5)){
+				$met_file='/test/check.php';
+				$post=array('md5'=>$md5);
+				$result=curl_post($post,30);
+				if($result=='SUC'){
+					return array('re'=>'SUC','md5'=>$md5);
+				}else{
+					delcodeb($md5);
+					return array('re'=>$result,'md5'=>'');
+				}
 			}else{
 				delcodeb($md5);
-				return array('re'=>$result,'md5'=>'');
+				return array('re'=>'DISREAD','md5'=>'');
 			}
 		}
 		else{
@@ -257,18 +274,46 @@ function sendsms($phone,$message,$type){
 	return $metinfo;
 }
 /*验证商业会员*/
-function uservarcode(){
+function smspreice(){
 global $met_file;
 	$varcode=varcodeb('sms');
+	$code=$varcode['re'];
 	$varcode=$varcode['re']=='SUC'?$varcode['md5']:'';
-	$user='';
-	if($varcode){
-		$met_file='/usertype.php';
-		$post=array('varcode'=>$varcode);
-		$user = curl_post($post,30);
-		delcodeb($varcode);
+	$met_file='/sms/smsprice.php';
+	$post=array('code'=>$code,'varcode'=>$varcode);
+	$re = curl_post($post,30);
+	$res= explode('|',$re);
+	$re='';
+	$re['re']=$res[0];
+	$re['price']=$res[1];
+	delcodeb($varcode);
+	return $re;
+}
+function smsremain(){
+global $met_file,$db,$met_otherinfo;
+	$total_passok = $db->get_one("SELECT * FROM $met_otherinfo WHERE lang='met_sms'");
+	$met_file='/sms/remain.php';
+	$post=array('total_pass'=>$total_passok['authpass']);
+	//$balance = $total_passok['authpass']?curl_post($post,30):'0.00';
+	if($total_passok['authpass']){
+		$balance=curl_post($post,30);
+		$balance=trim($balance);
+		if(!preg_match("/^[0-9\.]*$/",$balance)){
+			$re['re']='nohost';
+		}
+	}else{
+		$balance='0.00';
 	}
-	return $user;
+	$re['balance']=$balance;
+	return $re;
+}
+function powererr($err){
+	global $lang_updaterr18,$lang_updaterr19;
+	switch($err){
+		case 'DISREAD' :$metinfo=$lang_updaterr18;break;
+		Default        :$metinfo=$lang_updaterr19;break;
+	}
+	return $metinfo;
 }
 function maxnurse(){
 	global $db,$met_sms;

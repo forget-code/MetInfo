@@ -14,6 +14,8 @@ if($action=='editor'){
 	$com_ok1=$link_list[com_ok]?"checked":"";
 }else{
 	$link_list[weburl]="http://";
+	$show_ok1="checked";
+	$com_ok1="checked";
 }
 $css_url=$depth."../templates/".$met_skin."/css";
 $img_url=$depth."../templates/".$met_skin."/images";

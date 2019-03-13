@@ -28,7 +28,7 @@ class Captcha
 function CreateCheckCode()
  {
   session_start();
-  $this->mCheckCode = strtoupper(substr(md5(rand()),0,$this->mCheckCodeNum));
+  $this->mCheckCode = str_replace(array('0','O'),'A',strtoupper(substr(md5(rand()),0,$this->mCheckCodeNum)));
    unset($_SESSION['met_capcha']);
   $_SESSION['met_capcha'] = $this->mCheckCode;
   return $this->mCheckCode;

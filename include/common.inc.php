@@ -17,11 +17,7 @@ if(PHP_VERSION < '4.1.0') {
 	$_ENV         = &$HTTP_ENV_VARS;
 	$_FILES       = &$HTTP_POST_FILES;
 }
-$db_settings = parse_ini_file(ROOTPATH.'config/config_db.php');
-@extract($db_settings);
 require_once ROOTPATH.'include/mysql_class.php';
-$db = new dbmysql();
-$db->dbconn($con_db_host,$con_db_id,$con_db_pass,$con_db_name);
 define('MAGIC_QUOTES_GPC', get_magic_quotes_gpc());
 isset($_REQUEST['GLOBALS']) && exit('Access Error');
 require_once ROOTPATH.'include/global.func.php';
@@ -30,6 +26,10 @@ foreach(array('_COOKIE', '_POST', '_GET') as $_request) {
 		$_key{0} != '_' && $$_key = daddslashes($_value);
 	}
 }
+$db_settings = parse_ini_file(ROOTPATH.'config/config_db.php');
+@extract($db_settings);
+$db = new dbmysql();
+$db->dbconn($con_db_host,$con_db_id,$con_db_pass,$con_db_name);
 $query="select * from {$tablepre}config where name='met_tablename' and lang='metinfo'";
 $mettable=$db->get_one($query);
 $mettables=explode('|',$mettable[value]);
@@ -47,7 +47,6 @@ if($metmemberforce==$met_member_force){
 	$_SESSION['metinfo_member_type']="256";
 }
 if($met_member_use!=0){
-	$metinfo_member_type=0;
 	$metinfo_member_id     =($_SESSION['metinfo_admin_id']=="")?$_SESSION['metinfo_member_id']:$_SESSION['metinfo_admin_id'];
 	$metinfo_member_name     =($_SESSION['metinfo_admin_name']=="")?$_SESSION['metinfo_member_name']:$_SESSION['metinfo_admin_name'];
 	$metinfo_member_pass     =($_SESSION['metinfo_admin_pass']=="")?$_SESSION['metinfo_member_pass']:$_SESSION['metinfo_admin_pass'];
@@ -57,6 +56,7 @@ if($met_member_use!=0){
 }else{
 	$metinfo_member_type="256";
 }
+//echo $metinfo_member_type;
 (!MAGIC_QUOTES_GPC) && $_FILES = daddslashes($_FILES);
 $REQUEST_URI  = $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'];
 $t_array = explode(' ',microtime());

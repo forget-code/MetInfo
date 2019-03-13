@@ -219,3 +219,5 @@ $img_url=$depth."../templates/".$met_skin."/images";
 include template('app/physical/index');
 footer();
 ?>
+
+

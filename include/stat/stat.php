@@ -12,6 +12,8 @@ if($type=='para' && $met_stat){
     }else{
         $ip=$_SERVER['REMOTE_ADDR'];
     }
+	$ips=explode(',',$ip);
+	$ips=$ip[0];
 	$metinfo = "
 jQuery.statcookie = function (name, value, options) { if (typeof value != 'undefined') { options = options || {}; if (value === null) { value = ''; options.expires = -1; } var expires = ''; if (options.expires && (typeof options.expires == 'number' || options.expires.toUTCString)) { var date; if (typeof options.expires == 'number') { date = new Date(); date.setTime(date.getTime() + (options.expires * 1000)); } else { date = options.expires; } expires = '; expires=' + date.toUTCString(); } var path = options.path ? '; path=' + options.path : ''; var domain = options.domain ? '; domain=' + options.domain : ''; var secure = options.secure ? '; secure' : ''; document.cookie = [name, '=', encodeURIComponent(value), expires, path, domain, secure].join(''); } else { var cookieValue = null; if (document.cookie && document.cookie != '') { var cookies = document.cookie.split(';'); for (var i = 0; i < cookies.length; i++) { var cookie = jQuery.trim(cookies[i]); if (cookie.substring(0, name.length + 1) == (name + '=')) { cookieValue = decodeURIComponent(cookie.substring(name.length + 1)); break; } } } return cookieValue; } };
 jQuery.myPlugin={Client:function(){var a={ie:0,webkit:0,gecko:0,opera:0,khtml:0};var b={se360:0,se:0,maxthon:0,qq:0,tt:0,theworld:0,cometbrowser:0,greenbrowser:0,ie:0,chrome:0,netscape:0,firefox:0,opera:0,safari:0,konq:0};var c=navigator.userAgent.toLowerCase();for(var d in a){if(typeof d==='string'){var e='gecko'===d?/rv:([\w.]+)/:RegExp(d+'[ \\/]([\\w.]+)');if(e.test(c)){a.version=window.opera?window.opera.version():RegExp.$1;a[d]=parseFloat(a.version);a.type=d;break}}};for(var d in b){if(typeof d==='string'){var e=null;switch(d){case'se360':e=/360se(?:[ \/]([\w.]+))?/;break;case'se':e=/se ([\w.]+)/;break;case'qq':e=/qqbrowser\/([\w.]+)/;break;case'tt':e=/tencenttraveler ([\w.]+)/;break;case'safari':e=/version\/([\w.]+)/;break;case'konq':e=/konqueror\/([\w.]+)/;break;case'netscape':e=/navigator\/([\w.]+)/;break;default:e=RegExp(d+'(?:[ \\/]([\\w.]+))?')};if(e.test(c)){b.metversion=window.opera?window.opera.version():RegExp.$1?RegExp.$1:'';b[d]=parseFloat(b.metversion);b.type=d;break}}};return{engine:a,metshell:b}}};
@@ -138,6 +140,8 @@ if($type=='submit' && $met_stat){
 				}
 				if($met_stat_maxok){
 					$lurlkey=keytype($lurl);
+					$lurlkey[0]=daddslashes($lurlkey[0]);
+					$lurlkey[1]=daddslashes($lurlkey[1]);
 					if($lurlkey && delete($lurlkey[0])!=''){
 						$keyok=$db->get_one("SELECT * FROM {$met_visit_detail} WHERE name='{$lurlkey[0]}' and stattime = '{$dtime}' and type='1'");
 						if($keyok){

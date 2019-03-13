@@ -65,6 +65,7 @@ fputs($fp, $cont);
 fclose($fp);
 $zip_list = $archive->add(iconv($codeold,$codenew,"./{$lang_langshuom}.txt"));
 @file_unlink("./$title.csv");
+@file_unlink(iconv($codenew,$codeold,"./$title.csv"));
 @file_unlink(iconv($codeold,$codenew,"./{$lang_langshuom}.txt"));
 header("Content-type:application/zip;");
 $title=$title.'.zip';

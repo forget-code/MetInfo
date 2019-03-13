@@ -29,6 +29,8 @@ if($action=="editor"){
 		}
 		$uptp = $tpif?"update":"insert into";
 		$upbp = $tpif?"where id='$allidlist[$i]'":",lang='$lang'";
+		$oldwords=htmlentities($oldwords,ENT_QUOTES,'UTF-8');
+		$newwords=htmlentities($newwords,ENT_QUOTES,'UTF-8');
 		$query="$uptp $met_label set
 			oldwords='$oldwords',
 			newwords='$newwords',

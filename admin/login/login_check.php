@@ -5,16 +5,15 @@ error_reporting(E_ERROR | E_WARNING | E_PARSE);
 if(!isset($depth))$depth='';
 $commonpath=$depth.'include/common.inc.php';
 $commonpath=$admin_index?$commonpath:'../'.$commonpath;
+define('SQL_DETECT',1);
 require_once $commonpath;
 $turefile=$url_array[count($url_array)-2];
 if($met_adminfile!=$turefile){
 	$query="update $met_config set value='$turefile' where name='met_adminfile' and lang='metinfo'";
 	$db->query($query);
 }
-//dump($_SERVER);
-//echo $_SERVER[HTTP_REFERER];
-//$HTTP_REFERERs=explode('?',$_SERVER[HTTP_REFERER]);
-//echo strrev(substr(strrev($HTTP_REFERERs[0]),0,7));
+$login_name=daddslashes($login_name,0,1);
+$metinfo_admin_name=daddslashes($metinfo_admin_name,0,1);
 if($action=="login"){
 	$metinfo_admin_name     = $login_name;
 	$metinfo_admin_pass     = $login_pass;
@@ -59,12 +58,24 @@ if($action=="login"){
 		Header("Location: ../index.php");
 	}
 	else{
-		if($re_url){
+		$flag=0;
+		$re_urls=explode('?',$re_url);
+		$re_urlss=explode('/',$re_urls[0]);
+		foreach($re_urlss as $key=>$val){
+			if($val==$met_adminfile){
+				$flag=1;
+			}
+			if($flag==1&&$val){
+				$filedir.='/'.$val;
+			}
+		}
+		if($re_url&&file_exists('../..'.$filedir)&&$filedir){
 			Header("Location: $re_url");
 			setcookie("re_url",$re_url,time()-3600,'/');
 			exit;
 		}
 		else{
+			if($re_url)setcookie("re_url",$re_url,time()-3600,'/');
 			echo "<script type='text/javascript'> var nowurl=parent.location.href; var metlogin=(nowurl.split('login')).length-1; if(metlogin==0)location.href='../system/sysadmin.php?anyid=8&lang=$lang'; if(metlogin!=0)location.href='../index.php?lang=$lang';</script>";
 		}	
 	}
@@ -90,8 +101,8 @@ if($action=="login"){
 		}
 		exit;
 	}else{
-		$admincp_ok = $db->get_one("SELECT * FROM $met_admin_table WHERE admin_id='$metinfo_admin_name' and admin_pass='$metinfo_admin_pass' and usertype='3'");
-		if(!$admincp_ok){
+		$admincp_ok = $db->get_one("SELECT * FROM $met_admin_table WHERE admin_id='$metinfo_admin_name' and usertype='3'");
+		if($admincp_ok[admin_pass]!=$metinfo_admin_pass){
 			if($admin_index){
 				session_unset();
 				setcookie("re_url",$re_url,time()-3600,'/');
@@ -113,7 +124,7 @@ if($action=="login"){
 			exit;
 		}
 		/*power start*/
-		if($admin_power!="metinfo"){
+		if(ADMIN_POWER!="metinfo"){
 			if(!strstr($admincp_ok[admin_op], "metinfo")){
 				if(strstr($_SERVER['REQUEST_URI'], "delete.php")){
 					if(!strstr($admincp_ok[admin_op], "del"))okinfo('javascript:window.history.back();',$lang_logindelete);

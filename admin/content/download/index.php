@@ -10,9 +10,22 @@ $menber_array[$val['id']]=$val['array_name'];
 }
 $menber_array[0]=$lang_access0;
 $menber_array[3]=$lang_access3;
-$class1_info=$met_class[$class1];	
-if(!$class1_info)metsave('-1',$lang_dataerror,$depth);
-$serch_sql=" where lang='$lang' and (recycle='0' or recycle='-1') and class1=$class1 ";
+$module=4;
+if($class1){
+	$class1_info=$met_class[$class1];	
+	if(!$class1_info)metsave('-1',$lang_dataerror,$depth);
+	$sqlclass1=" and class1=$class1  ";
+}else{
+	foreach($met_classindex[$module] as $key=>$val){
+		$admin_column_power="admin_pop".$val[id];
+		if(!($metinfo_admin_pop=='metinfo'||$$admin_column_power=='metinfo'))continue;
+		$sqlclass1.=$sqlclass1?" or class1=$val[id] ":" class1=$val[id] ";
+	}
+	$sqlclass1="and ($sqlclass1) ";
+	$class2=0;
+	$class3=0;
+}
+$serch_sql=" where lang='$lang' and (recycle='0' or recycle='-1') $sqlclass1 ";
 if($admincp_ok[admin_issueok]==1)$serch_sql .= " and(issue='$metinfo_admin_name' or issue='') ";
 if($class2)$serch_sql .= " and class2=$class2";
 if($class3){$serch_sql .= " and class3=$class3"; }

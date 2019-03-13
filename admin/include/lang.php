@@ -1,6 +1,6 @@
 <?php
 # MetInfo Enterprise Content Management System 
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserv. 
 function daddslashes1($string, $force = 0) {
 	!defined('MAGIC_QUOTES_GPC') && define('MAGIC_QUOTES_GPC', get_magic_quotes_gpc());
 	if(!MAGIC_QUOTES_GPC || $force) {
@@ -18,39 +18,39 @@ if($_GET[langset]!="" and $met_admin_type_ok==1){
 $languser = $_GET[langset];
 }
 $langset=($languser!="")?$languser:$met_admin_type;
-$file_name=ROOTPATH_ADMIN."language/language_".$langset.".ini";	
-$fp = @fopen($file_name, "r") or die("Cannot open $file_name");
-$js="var user_msg = new Array();\n";
-while ($conf_line = @fgets($fp, 1024)){ 
-if(substr($conf_line,0,1)=="#"){   
-$line = ereg_replace("#.*$", "", $conf_line);
+$langset=daddslashes($langset,0,1);
+if(!file_exists(ROOTPATH.'cache/langadmin_'.$langset.'.php')){
+	$js="var user_msg = new Array();\n";
+	$query="select * from $met_language where lang='$langset' and site='1' and array!='0'";
+	$result= $db->query($query);
+	while($listlang= $db->fetch_array($result)){
+		if(substr($listlang['name'],0,2)=='js'){
+			$tmp=trim($listlang['value']);
+			$js=$js."user_msg['{$listlang['name']}']='$tmp';\n";
+		}
+		$name = 'lang_'.$listlang['name'];
+		$$name= trim($listlang['value']);
+		$str.='$'."{$name}='".str_replace(array('\\',"'"),array("\\\\","\\'"),trim($listlang['value']))."';";
+	}
+	$js1='$'."js='".str_replace("'","\\'",$js).'\';';
+	$str="<?php\n".$str.$js1."\n?>";
+	file_put_contents(ROOTPATH.'cache/langadmin_'.$langset.'.php',$str);
 }else{
-$line = $conf_line;
+	require_once ROOTPATH.'cache/langadmin_'.$langset.'.php';
 }
-if (trim($line) == "") continue;
-$linearray=explode ('=', $line);
-$linenum=count($linearray);
-if($linenum==2){
-list($name, $value) = explode ('=', $line);
-}else{
 
-  for($i=0;$i<$linenum;$i++){
-
-     $linetra=$i?$linetra."=".$linearray[$i]:$linearray[$i].'metinfo_';
-   }
-list($name, $value) = explode ('metinfo_=', $linetra);
+$query = "SELECT * FROM $met_config WHERE lang='{$langset}-metinfo'";
+$result = $db->query($query);
+while($list_config= $db->fetch_array($result)){
+	$setagents[$list_config['name']]=$list_config['value'];
 }
-$value=str_replace("&quot;","\"",$value);
-if($name[0]=='j' && $name[1]=='s') 
-{
-	$tmp=trim($value);
-	$js=$js."user_msg['$name']='$tmp';\n";
+@extract($setagents);
+if($met_agents_type>1){
+	$lang_indexthanks=$met_agents_thanks;
+	$lang_metinfo=$met_agents_name;
+	$lang_copyright=$met_agents_copyright;
+	$lang_loginmetinfo=$met_agents_depict_login;
 }
-list($value, $valueinfo)=explode ('/*', $value);
-$name = 'lang_'.daddslashes1(trim($name),1);
-$$name=preg_replace('/\r|\n/', '', $value);
-}
-fclose($fp) or die("Can't close file $file_name");
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

@@ -16,6 +16,9 @@ EOT;
 if(($class1 || $class2) && !$met_class[$class2][releclass])$title="<a href='?anyid={$anyid}&lang={$lang}&module=1&class1={$class1}'>{$met_class[$class1][name]}</a>";
 if(!$met_class[$class2][releclass] && $class2)$title.=" > ";
 if($class2)$title.="<a href='?anyid={$anyid}&lang={$lang}&module=1&class2={$class2}'>{$met_class[$class2][name]}</a>";
+$other_op ='<span class="contentshowtype">'.$lang_columnarrangement1;
+$awegcs[$met_content_type]="class='nowawecs'";
+$other_op.="<a href=\"content.php?anyid={$anyid}&lang={$lang}&met_content_type=2\" title=\"{$lang_columnarrangement2}{$lang_columnarrangement3}\" {$awegcs[2]}>{$lang_columnarrangement3}</a>".' - '."<a href=\"content.php?anyid={$anyid}&lang={$lang}&met_content_type=1\" title=\"{$lang_columnarrangement2}{$lang_columnarrangement4}\" {$awegcs[1]}>{$lang_columnarrangement4}</a></span>";
 require_once template('metlangs');
 echo <<<EOT
 -->

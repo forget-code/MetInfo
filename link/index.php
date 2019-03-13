@@ -4,7 +4,7 @@
 require_once '../include/common.inc.php';
 if(!$metid)$metid='index';
 if($metid!='index'){
-require_once $metid.'.php';
+require_once 'addlink.php';
 }else{
     $link_list=$db->get_one("select * from $met_column where module='9' and lang='$lang'");
     $metaccess=$link_list[access];

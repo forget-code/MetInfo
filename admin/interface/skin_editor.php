@@ -124,7 +124,7 @@ foreach($langtext as $key=>$val){
 					<input name='met_upsql_{$val[name]}' type='file' id='mod_upload_{$val[name]}' />
 					<script type='text/javascript'>
 					$(document).ready(function(){
-						metuploadify('#mod_upload_{$val[name]}','upimage-met','{$val[name]}_metinfo');
+						metuploadify('#mod_upload_{$val[name]}','upimage','{$val[name]}_metinfo');
 					});
 					</script>
 				";

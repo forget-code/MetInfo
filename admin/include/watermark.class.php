@@ -162,6 +162,8 @@ function getPos($sourcefile_width,$sourcefile_height,$pos,$met_image=""){
               $fontSize = imagettfbbox($this->met_text_size,$this->met_text_angle,$this->met_text_font,$this->met_text);
               $insertfile_width = $fontSize[2] - $fontSize[0];
               $insertfile_height = count($lineCount)*($fontSize[1] - $fontSize[5]);
+			  $fontSizeone =imagettfbbox($this->met_text_size,$this->met_text_angle,$this->met_text_font,'e');
+			  $fontSizeone = ($fontSizeone[2] - $fontSizeone[0])/2;
          }
 		switch ($pos){
 			case 0:
@@ -174,18 +176,18 @@ function getPos($sourcefile_width,$sourcefile_height,$pos,$met_image=""){
 			   $dest_y = $insertfile_height;
 			   break;
 			case 2:
-			  $dest_x = $sourcefile_width - $insertfile_width;
+			  $dest_x = $sourcefile_width - $insertfile_width-$fontSizeone;
 			  $dest_y = $insertfile_height;
 			  break;
 
 			case 3:
-			  $dest_x = $sourcefile_width - $insertfile_width;
-			  $dest_y = $sourcefile_height;
+			  $dest_x = $sourcefile_width - $insertfile_width-$fontSizeone;
+			  $dest_y = $sourcefile_height - ($insertfile_height/4);
 			  break;
 
 			case 4:
 			  $dest_x = 0;
-			  $dest_y = $sourcefile_height;
+			  $dest_y = $sourcefile_height - ($insertfile_height/4);
 			  break;
 
 			case 5:
@@ -194,13 +196,13 @@ function getPos($sourcefile_width,$sourcefile_height,$pos,$met_image=""){
 			 break;
 
 			case 6:
-			 $dest_x = $sourcefile_width - $insertfile_width;
+			 $dest_x = $sourcefile_width - $insertfile_width -$fontSizeone;
 			 $dest_y = ( $sourcefile_height / 2 ) + ( $insertfile_height / 2 );
 			 break;
 
 			case 7:
 			 $dest_x = ( ( $sourcefile_width - $insertfile_width ) / 2 );
-			 $dest_y = $sourcefile_height;
+			 $dest_y = $sourcefile_height - ($insertfile_height/4);
 			 break;
 
 			case 8:

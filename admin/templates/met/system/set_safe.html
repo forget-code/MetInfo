@@ -58,6 +58,11 @@ echo <<<EOT
 				<span class="tips">{$lang_upfiletips26}</span>
 			</td>
           </tr>
+<!--
+EOT;
+if($met_agents_sms==1){
+echo <<<EOT
+-->		  
 		  <tr> 
             <td class="text">{$lang_upfiletips27}</td>
             <td class="input">
@@ -66,6 +71,11 @@ echo <<<EOT
 				<span class="tips">{$lang_upfiletips28}</span>
 			</td>
           </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->		  
        <tr> 
         <td class="text"><span class="bi_tian">*</span>{$lang_setbasicUploadMax}：</td>
         <td class="input"><input name="met_file_maxsize" type="text" class="text mid" value="{$met_file_maxsize}" /><span class="tips">Mb</span></td>

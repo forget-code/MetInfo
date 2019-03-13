@@ -8,21 +8,30 @@ if($action=='openthis'){
 	$newfile      =$depth."../../templates/$met_skin_user/lang/language_$lang.ini"; 
 	//if(!is_writable($depth."../../templates/".$met_skin_user."/lang/"))@chmod($depth."../../templates/".$met_skin_user."/lang/", 0777); 
 	if(!file_exists($newfile)){  
+		if($met_index_type==$lang){
+			$query="select * from $met_lang where lang!='metinfo' order by id asc";
+			$langs=$db->get_all($query);
+			$oldfile=$depth."../../templates/$met_skin_user/lang/language_$langs[0][mark].ini";  
+		}
 		if (!copy($oldfile,   $newfile))metsave('-1',$lang_langcopyfile);
 	}
 	require_once $depth.'../include/config.php';
-	$replace_file=array('member','web','login','register');
+	$replace_file=array('member','web','login','register','head');
 	foreach($replace_file as $key=>$val){
 		$dir=$depth."../../templates/$met_skin_user/$val";
 		$dir.=file_exists($depth."../../templates/$met_skin_user/$val.php")?".php":".html";
 		if(file_exists($dir)){
 			$str=file_get_contents($dir); 
-			preg_match('/\<ul[\s\S]*\$lang_memberIndex3[\s\S]*\<\/ul\>/',$str,$out1);
-			preg_match('/class=\"(.*)\"/',$out1[0],$out2);
-			$re2="<!--\nEOT;\n\$met_mermber_metinfo_news_left_class='$out2[1]';\n\$mermber_metinfo_news_left=membernavlist();\necho <<<EOT\n-->\n\$mermber_metinfo_news_left";
-			$re1="<!--\nEOT;\ninclude templatemember(\$mfname);\necho <<<EOT\n-->";
-			$str=preg_replace('/(\<iframe)([\s\S]*)(\<\/iframe\>)/',$re1,$str);
-			$str=preg_replace('/\<ul[\s\S]*\$lang_memberIndex3[\s\S]*\<\/ul\>/',$re2,$str);
+			if($val!=head){
+				preg_match('/\<ul[\s\S]*?\$lang_memberIndex3[\s\S]*?\<\/ul\>/',$str,$out1);
+				preg_match('/class=\"(.*)\"/',$out1[0],$out2);
+				$re2="<!--\nEOT;\n\$met_mermber_metinfo_news_left_class='$out2[1]';\n\$mermber_metinfo_news_left=membernavlist();\necho <<<EOT\n-->\n\$mermber_metinfo_news_left";
+				$re1="<!--\nEOT;\ninclude templatemember(\$mfname);\necho <<<EOT\n-->";
+				$str=preg_replace('/(\<iframe)([\s\S]*)(\<\/iframe\>)/',$re1,$str);
+				$str=preg_replace('/\<ul[\s\S]*?\$lang_memberIndex3[\s\S]*?\<\/ul\>/',$re2,$str);
+			}else{
+				$str=preg_replace('/(\<script).+?((metinfo-min.js)|(jquery-1.4.2.metinfo.js)|(jQuery1.7.2.js)|(jquery-1.4.2.min.js)).+?(\<\/script\>)/','',$str);
+			}
 			file_put_contents($dir,$str); 
 		}
 	}
@@ -41,19 +50,23 @@ if($action=='openthis'){
 		$met_skin_user=$skin_file;
 		require_once $depth.'../include/config.php';
 	}
-	$replace_file=array('member','web','login','register');
+	$replace_file=array('member','web','login','register','head');
 	foreach($replace_file as $key=>$val){
 		$dir=$depth."../../templates/$skin_file/$val";
 		$dir.=file_exists($depth."../../templates/$skin_file/$val.php")?".php":".html";
 		if(file_exists($dir)){
 			$str=file_get_contents($dir); 
-			preg_match('/\<ul[\s\S]*\$lang_memberIndex3[\s\S]*\<\/ul\>/',$str,$out1);
-			preg_match('/class=\"(.*)\"/',$out1[0],$out2);
-			$re2="<!--\nEOT;\n\$met_mermber_metinfo_news_left_class='$out2[1]';\n\$mermber_metinfo_news_left=membernavlist();\necho <<<EOT\n-->\n\$mermber_metinfo_news_left";
-			$re1="<!--\nEOT;\ninclude templatemember(\$mfname);\necho <<<EOT\n-->";
-			$str=preg_replace('/(\<iframe)([\s\S]*)(\<\/iframe\>)/',$re1,$str);
-			$str=preg_replace('/\<ul[\s\S]*\$lang_memberIndex3[\s\S]*\<\/ul\>/',$re2,$str);
-			file_put_contents($dir,$str); 
+			if($val!='head'){
+				preg_match('/\<ul[\s\S]*?\$lang_memberIndex3[\s\S]*?\<\/ul\>/',$str,$out1);
+				preg_match('/class=\"(.*?)\"/',$out1[0],$out2);
+				$re2="<!--\nEOT;\n\$met_mermber_metinfo_news_left_class='$out2[1]';\n\$mermber_metinfo_news_left=membernavlist();\necho <<<EOT\n-->\n\$mermber_metinfo_news_left";
+				$re1="<!--\nEOT;\ninclude templatemember(\$mfname);\necho <<<EOT\n-->";
+				$str=preg_replace('/(\<iframe)([\s\S]*)(\<\/iframe\>)/',$re1,$str);
+				$str=preg_replace('/\<ul[\s\S]*?\$lang_memberIndex3[\s\S]*?\<\/ul\>/',$re2,$str);
+			}else{
+				$str=preg_replace('/(\<script).+?((metinfo-min.js)|(jquery-1.4.2.metinfo.js)|(jQuery1.7.2.js)).+?(\<\/script\>)/','',$str);
+			}
+			file_put_contents($dir,$str);			
 		}
 	}
 	metsave($rurls);

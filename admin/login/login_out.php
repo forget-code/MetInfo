@@ -1,7 +1,8 @@
 <?php
 # MetInfo Enterprise Content Management System 
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 session_start();
+		  $_SESSION['metinfo_admin_id'] ='';
 		  $_SESSION['metinfo_admin_name'] ='';
           $_SESSION['metinfo_admin_pass'] ='';
 		  $_SESSION['metinfo_admin_time'] ='';

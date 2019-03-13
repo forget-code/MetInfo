@@ -1,4 +1,10 @@
-function SetHome(obj,vrl){
+function ifie(){
+	return document.all;
+}
+function SetHome(obj,vrl,info){
+	if(!ifie()){
+		alert(info);
+	}
         try{
             obj.style.behavior='url(#default#homepage)';obj.setHomePage(vrl);
             }
@@ -16,7 +22,10 @@ function SetHome(obj,vrl){
         }
 }
 
-function addFavorite(){
+function addFavorite(info){
+	if(!ifie()){
+		alert(info);
+	}
     var vDomainName=window.location.href;
     var description=document.title;
     try{//IE

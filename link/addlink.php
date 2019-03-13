@@ -177,6 +177,7 @@ $methtml_addlink.="<input type='hidden' name='lang' value='".$lang."'>\n";
 $methtml_addlink.="<input type='reset' name='Submit' value='".$lang_Reset."' class='tj'></td></tr>\n";
 $methtml_addlink.="</table>\n";
 $methtml_addlink.="</form>\n";
+$csnow='10010';
 include template('addlink');
 footer();
 }

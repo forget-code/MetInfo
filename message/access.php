@@ -9,7 +9,7 @@ $member_register_url="register.php?lang=".$lang;
 $member_login_url="login".$met_htmtype;
 $member_register_url="register".$met_htmtype;
 }
-$message_list=$db->get_one("SELECT * FROM $met_message where id=$id and lang='$lang'");
+$message_list=$db->get_one("SELECT * FROM $met_message where id='$id' and lang='$lang'");
 switch($listinfo){
 case 'info':
    if(intval($metinfo_member_type)<intval($metaccess)){
@@ -31,4 +31,4 @@ break;
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>
 $met_js="<?php echo $met_js_ac; ?>";
-document.write($met_js) 
+document.write($met_js)

@@ -25,7 +25,8 @@ $filesize=round($_FILES['Filedata']['size']/1024,2);
 if($type=="contentup"){
 	$met_file_format='csv';
 	$f = new upfile($met_file_format,'',$met_file_maxsize,'','1','|');
-	$flienamecsv=$f->upload("Filedata");
+	$filename=time().'.csv';
+	$flienamecsv=$f->upload("Filedata",$filename);
 	$flienamecsv='../../'.$flienamecsv;
 	if($f->get_error()){
 		echo $f->get_errorcode();

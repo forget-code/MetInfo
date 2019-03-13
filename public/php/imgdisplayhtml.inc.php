@@ -37,12 +37,12 @@ if($met_img_detail>2)$met_img_detail=1;
 switch($met_img_detail){
 case 1:
    $metinfo.="<style>\n";
-   $metinfo.=".spic{margin:5px;}\n";
+   $metinfo.=".spic{margin-right:5px;}\n";
    $metinfo.=".spic a img{-moz-opacity:0.5; filter:alpha(opacity=50);border:0px;}\n";
    $metinfo.=".spic a:hover{font-size:9px;}\n";
    $metinfo.=".spic a:hover img{-moz-opacity:0.5; filter:alpha(opacity=100);cursor:hand;}\n";
    $metinfo.="#view_bigimg{ display:block; margin:0px auto; font-size:0px;}\n";
-   $metinfo.=".smallimg{ margin-top:10px;}\n";
+   $metinfo.=".smallimg{ margin-top:5px;}\n";
    $metinfo.="</style>\n";
    $metinfo.="<script  LANGUAGE='JavaScript'>\n";
    $metinfo.="function metseeBig(nowimg,mgrc) {\n";
@@ -57,7 +57,7 @@ case 1:
    $metinfo.="<script src='".$met_url."js/metzoom.js' language='JavaScript' type='text/javascript'></script>\n";
    $metinfo.="<script src='".$met_url."js/metzoomHTML.js' language='JavaScript' type='text/javascript'></script>\n";
    $metinfo.="<script type='text/javascript'>	window.onload==setupZoom();	</script>\n";
-   $metinfo.="<div class='smallimg' style='text-align:center;'>\n";
+   $metinfo.="<div class='smallimg' style='width:{$met_imgdetail_x}px;'>\n";
 	if($displaylist)array_unshift($displaylist,array('title'=>"$img[title]",'imgurl'=>"$img[imgurl]",'imgurl_dis'=>"$img[imgurl_dis]"));
 	$i=0;
 	foreach($displaylist as $key=>$val){

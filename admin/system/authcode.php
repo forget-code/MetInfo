@@ -14,18 +14,29 @@ if($action=="modify"){
 	$authurl=explode("|",$authurl);
 	foreach($authurl as $val){
 		if(strstr($met_weburl,$val)){
-			$query ="update $met_otherinfo set 
-				  authpass    ='$authpass',
-				  authcode    ='$authcode',
-				  authtext    ='{$lang_authTip3}'
-				  where id='1'";
-			$db->query($query);
-			echo "<script type=\"text/javascript\">location.href='{$rurls}';parent.window.location.reload();</script>";
-			die();
-			//metsave($rurls,$lang_jsok);
+			$db->query("update $met_otherinfo set authpass='$authpass',authcode='$authcode' where id=1");
+			$re=varcodeb('sys');
+			if($re['md5'])delcodeb($re['md5']);
+			if($re['re']=='SUC'){
+				$query ="update $met_otherinfo set 
+					  authpass    ='$authpass',
+					  authcode    ='$authcode',
+					  authtext    ='{$lang_authTip3}'
+					  where id='1'";
+				$db->query($query);
+				$db->query("update $met_config set value='0.06' where name='met_smsprice'");
+				$db->query("update $met_otherinfo set info1='',info2='' where id=1");
+				echo "<script type=\"text/javascript\">location.href='{$rurls}';parent.window.location.reload();</script>";
+				die();
+			}else{
+				$db->query("update $met_otherinfo set info1='',info2='',authpass='',authcode='',authtext='' where id=1");
+				if($re['re']=='DISREAD'){metsave($rurls,$lang_updaterr18);}
+				elseif($re['re']=='nohost'){metsave($rurls,$lang_updaterr20);}
+				else{metsave($rurls,$lang_authTip2);}
+			}
 		}
 	}
-	$db->query("update $met_otherinfo set info1='',info2='' where id=1");
+	$db->query("update $met_otherinfo set info1='',info2='',authpass='',authcode='',authtext='' where id=1");
 	metsave($rurls,$lang_authTip2);
 }else{
 	$authinfo = $db->get_one("SELECT * FROM $met_otherinfo where id=1");
@@ -35,6 +46,10 @@ if($action=="modify"){
 	if($authinfo[authcode]=='')$authinfo[authcode]="{$lang_authTip4}";
 }
 if($cs==1){
+	if($met_agents_type>1){
+		echo '&nbsp';
+		die();
+	}
 	$time=time();
 	$met_file='/authorize.php';
 	$authinfo=$db->get_one("SELECT * FROM $met_otherinfo where id=1");
@@ -76,11 +91,9 @@ if($cs==1){
 	else{
 		$usertemp[0]='NOUSER';
 	}
-	/*
 	$info1=$usertemp[0]=='NOUSER'?$usertemp[0]:$user['type'];
 	$info2=$time<=$usertemp[5]?$usertemp[5]:2147483647;
 	$db->query("update $met_otherinfo set info1='$info1',info2='$info2' where id=1");
-	*/
 	if($autcod){
 		echo $user['type'];
 		die;

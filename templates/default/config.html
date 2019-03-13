@@ -8,7 +8,7 @@ $methtml_flash=metlabel_flash();//FLASH展示标签
 $met_foot_nav=methtml_footnav('<span>|</span>');//底部导航标签（次导航）
 $met_foot_txt=metlabel_foot();//底部信息标签
 $metonline=methtml_online();//在线交流漂浮框标签
-if($lang_bgdcolor!=''){
+if($lang_bgdcolor!=''){//顶部背景
 	if(strstr($lang_bgdcolor,"/")){
 		$lang_bgdcolor ='background-image:url('.$lang_bgdcolor.');';
 		$lang_bgdcolor.='background-repeat:no-repeat;';
@@ -19,22 +19,29 @@ if($lang_bgdcolor!=''){
 }
 /*---------------------------------------------------*/
 if($classnow==10001){//首页标签
-	$mark1=$lang_mark1;
-	$mark2=$lang_mark2;
-	$mark3=$lang_mark3;
-	$mark4=$lang_mark4;
-	$mark5=$lang_mark5;
-	$mark6=$lang_mark6;
-	$mark7=$lang_mark7;
-	$index_list_1=metlabel_list('text',$mark3,'','','',1,'',0);//信息列表标签
-	$index_list_2=metlabel_list('text',$mark4,'','','',1,'',0);//信息列表标签
-	$index_list_3=metlabel_list('text',$mark5,'','','job',1,'',0);//信息列表标签
-	$index_product=metlabel_list('img',$mark6,'com','','product');//信息列表标签
+	$Column1=tmpcentarr($lang_Column1);
+	$Column2=tmpcentarr($lang_Column2);
+	$Column3=tmpcentarr($lang_Column3);
+	$Column4=tmpcentarr($lang_Column4);
+	$Column5=tmpcentarr($lang_Column5);
+	$Column6=tmpcentarr($lang_Column6);
+	$Column7=tmpcentarr($lang_Column7);
+	$index_list_1=metlabel_list('text',$lang_Column3,'','','',1,'',0);//信息列表标签
+	$index_list_2=metlabel_list('text',$lang_Column4,'','','',1,'',0);//信息列表标签
+	$index_list_3=metlabel_list('text',$lang_Column5,'','','job',1,'',0);//信息列表标签
+	$index_product=metlabel_list('img',$lang_Column6,'com','','product');//信息列表标签
 	$metlinkimg=methtm_link('img','com');//图片友情链接标签
 	$metlinktxt=methtm_link('text','com');//文字友情链接标签
 }else{//内页标签
 	$sidebar=metlabel_sidebar(0,$lang_sidebarjstype);//内页侧栏标签
 	$sidebar_title=metlabel_sidebar(1);//内页侧栏标题
-	$csnow=$cvidnow?$cvidnow:$classnow;//提交简历页面为获取到正确的页面ID，由Javascript调用
+	/*产品列表页*/
+	$met_pro_boxw=735;//产品列表页宽度
+	$met_pro_liw=$met_productimg_x+2;//单个产品li宽度，2为边框累计宽度
+	$met_pro_num=$lang_metpronum;//产品列表页每行显示数量
+	/*图片列表页*/
+	$met_img_boxw=735;//产品列表页宽度
+	$met_img_liw=$met_imgs_x+2;//单个产品li宽度，2为边框累计宽度
+	$met_img_num=$lang_metimgnum;//产品列表页每行显示数量
 }
 ?>

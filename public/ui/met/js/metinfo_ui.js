@@ -8,7 +8,14 @@ function pressCaptcha(obj){
 }
 function ResumeError(){return true};
 window.onerror=ResumeError;
-function SetHome(obj,vrl){
+
+function ifie(){
+	return document.all;
+}
+function SetHome(obj,vrl,info){
+	if(!ifie()){
+		alert(info);
+	}
 	try{
 		obj.style.behavior='url(#default#homepage)';obj.setHomePage(vrl);
 	}catch(e){
@@ -23,7 +30,10 @@ function SetHome(obj,vrl){
 		}
 	}
 }
-function addFavorite(){
+function addFavorite(info){
+	if(!ifie()){
+		alert(info);
+	}
 	var vDomainName=window.location.href;
 	var description=document.title;
 	try{
@@ -100,7 +110,7 @@ $(document).ready(function(){
 				var parlt=jQuery('.pshow dd li');
 				parlt.each(function(){
 					var parst=jQuery(this).find('span');
-					if(parst.height()<jQuery(this).height())parst.height(jQuery(this).height());
+					jQuery(this).css('padding-left',parst.outerWidth()+5);
 				});
 			}
 		break;

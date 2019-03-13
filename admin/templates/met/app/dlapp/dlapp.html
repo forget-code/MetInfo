@@ -20,25 +20,25 @@ echo <<<EOT
 </div>
 <div style="clear:both;"></div>
 <div class='metv5'>
+<span class="color390" style="padding-left:15px;">{$lang_appdl1}</span>
 <ul class="applist">	
 <!--
 EOT;
 foreach ($str_apps as $keyapps=>$valapps){
 $rrr=metver($metcms_v,$valapps[7]);
-$valapps[3]=$valapps[3]==''?'../../../../public/images/metinfo.gif':$valapps[3];
+$valapps[3]=$valapps[3]==''?'../../../../'.$met_agents_img:$valapps[3];
 echo <<<EOT
 --> 
 		<li>
 		<div class='img'><img src="img/{$valapps[3]}"></div>
 		<div class='text'>
 		<div class='name'>
-		<span id="oltest_$valapps[1]" style="float:right;">{$valapps[xtype]}</span>
+		<span id="oltest_$valapps[1]" style="float:right; text-align:right;">{$valapps[xtype]}</span>
 		<span class="title">{$valapps[0]}</span></div>
 		<div class='info'> 
 			<dl>
-			<dd>{$lang_dlapptips3}{$valapps[4]}</dd>
-			<dd>{$lang_dlapptips10}{$valapps[xtype1]}</dd>
-			<dd>{$lang_dlapptips4}{$valapps[2]}</dd>
+			<dd>{$valapps[4]}</dd>
+			<dd style="color:#999;">{$lang_dlapptips4}{$valapps[2]}</dd>
 			</dl>
 		</div>
 		<input id="ver_now_$valapps[1]" type="hidden" value="{$valapps[ver_now]}"/>
@@ -47,13 +47,6 @@ echo <<<EOT
 		<input id="checksum_$valapps[1]" type="hidden" value=""/>
 		</div>
 		</li>
-<!--
-EOT;
-}
-if($error!=1){
-echo <<<EOT
---> 
-<li>{$error}</li>
 <!--
 EOT;
 }

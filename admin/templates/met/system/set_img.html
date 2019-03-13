@@ -40,8 +40,18 @@ echo <<<EOT
 	<tr> 
 	<td class="text">{$lang_setimgrename}：</td>
 	<td class="input"><label><input name="met_img_rename" type="checkbox" class="checkbox" value=1 {$met_img_rename1}>{$lang_setimgrename1}</label>
+<!--
+EOT;
+if($met_agents_type<=1){
+echo <<<EOT
+-->		
 	<br />
 	<span class="tips">{$lang_setimgrename2}</span>
+<!--
+EOT;
+}
+echo <<<EOT
+-->		
 	</td>
 	</tr>
 	<tr> 

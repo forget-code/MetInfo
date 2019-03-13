@@ -1,7 +1,7 @@
 <?php 
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
-	$query = "SELECT * FROM $met_parameter where module<6  and lang='$lang' order by no_order";
+	$query = "SELECT * FROM $met_parameter where module<6  and lang='$lang' and access='0' order by no_order";
 	$result = $db->query($query);
 	while($list= $db->fetch_array($result)){
 		$list['para']="para".$list['id'];
@@ -15,7 +15,7 @@
 		$nowpara1="para".$list1['paraid'];
 		$show[$nowpara1]=$list1['info'];
 	}
-	$show['imgurl']=($show['imgurl']<>"")?$show['imgurl']:'../public/images/metinfo.gif';
+	$show['imgurl']=($show['imgurl']<>"")?$show['imgurl']:'../'.$met_agents_img;
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
-?> 
+?>

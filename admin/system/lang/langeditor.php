@@ -5,76 +5,43 @@ $depth='../';
 require_once $depth.'../login/login_check.php';
 $cs=isset($cs)?$cs:0;
 $listclass[$cs]='class="now"';
-if(!$langid)$langid=0;
-$file_nameupdate=$depth."../../lang/language_".$langeditor.".ini";
-$file_nameupdate1=$file_nameupdate;
-if(!file_exists($file_nameupdate)){
-	foreach($met_langok as $key=>$val){
-		$file_nameupdate1=$depth."../../lang/language_".$val[mark].".ini";
-		break;
-	}
+if(!$metinfolangid)$metinfolangid=0;
+if(!$langid)$langid=$metinfolangid;
+$query="select * from $met_language where array='0' and site='0' and app='0' and lang='$langeditor' ORDER BY no_order";
+$result=$db->query($query);
+while($list= $db->fetch_array($result)){
+	$langarray[]=$list['value'];
+	$idarray[]=$list['id'];
 }
-$fp = @fopen($file_nameupdate1, "r") or die("Cannot open $file_nameupdate");
-$i=0;
-$j=0;
-while($conf_line = @fgets($fp, 1024)){  
-	if($i<4 && substr($conf_line,0,1)=="#"){
-		$i++;  
-		$linetop=$linetop.$conf_line;
-		$lineno = ereg_replace("#.*$", "", $conf_line);
-		$line="";
-	}else{
-		$line=$conf_line;
-	}
-	if (trim($line) == "") continue;
-	if(substr($line,0,1)=="#"){
-		$langarray[$j]=substr($line,1);
-		$j++;
-	}else{
-		$k=$j-1;
-		$linearray=explode ('=', $line);
-		$linenum=count($linearray);
-		if($linenum==2){
-			list($name, $value) = explode ('=', $line);
-		}else{
-			for($n=0;$n<$linenum;$n++){
-				$linetra=$n?$linetra."=".$linearray[$n]:$linearray[$n].'metinfo_';
-			}
-			list($name, $value) = explode ('metinfo_=', $linetra);
-		}
-		$value=str_replace("\"","&quot;",$value);
-		list($value, $valueinfo)=explode ('/*', $value);
-		list($valueinfo)=explode ('*/', $valueinfo);
-		$name = daddslashes(trim($name),1,'metinfo');
-		$langtext[$k][]=array(name=>$name,value=>$value,valueinfo=>$valueinfo);
-	}
+$j=count($langarray);
+$array=$langid+1;
+$query="select * from $met_language where array='$array' and site='0' and app='0' and lang='$langeditor' ORDER BY no_order";
+$result=$db->query($query);
+while($list= $db->fetch_array($result)){
+	$list['value']=str_replace('"', '&#34;', str_replace("'", '&#39;',$list['value']));
+	$langtext[$langid][]=$list;
 }
 if($action=="modify"){
-	$config_save="";
-	for($m=0;$m<$j;$m++){
-		$config_save=$config_save."#".$langarray[$m];
-		$config_list='';
-		foreach($langtext[$m] as $key=>$val){
-			$namelist=$val[name]."_metinfo";
-			$namemetinfo=$$namelist;
-			if($namemetinfo!="")$namemetinfo=stripslashes($namemetinfo);
-			$val[value]=($namemetinfo=="")?$val[value]:$namemetinfo;
-			$nameinfolist=$val[name]."_info_metinfo";
-			$nameinfometinfo=$$nameinfolist;
-			if($nameinfometinfo!="")$nameinfometinfo=stripslashes($nameinfometinfo);
-			$val[valueinfo]=($nameinfometinfo=="")?$val[valueinfo]:$nameinfometinfo;
-			$val[valueinfo]=($val[valueinfo]=="")?"":"/*".$val[valueinfo]."*/"."\n";
-			if($val[valueinfo]=="" and $nameinfometinfo=="" and $namemetinfo!="")$val[valueinfo]="\n";
-			$config_list.=$val[name]."=".$val[value].$val[valueinfo];
+	!defined('MAGIC_QUOTES_GPC') && define('MAGIC_QUOTES_GPC', get_magic_quotes_gpc());
+	foreach($langtext[$metinfolangid] as $key=>$val){
+		$name=$val['name'].'_metinfo';
+		$metino_name=$$name;
+		if($val['value']!=$metino_name){
+			$metino_name = stripslashes($metino_name);
+			$metino_name = str_replace("'","''",$metino_name);
+			$metino_name = str_replace("\\","\\\\",$metino_name);
+			$query="update $met_language set value='$metino_name' where id='$val[id]'";
+			$db->query($query);
 		}
-		$config_save=$config_save.$config_list."\n";
 	}
-	$config_save=$linetop."\n".$config_save;
-	//if(!is_writable($file_nameupdate))@chmod($file_nameupdate,0777);
-	$fp = fopen($file_nameupdate,w);
-    fputs($fp, $config_save);
-    fclose($fp);
-	metsave('../system/lang/langeditor.php?anyid='.$anyid.'&langeditor='.$langeditor."&langid=".$metinfolangid.'&lang='.$lang.'&cs='.$cs,'',$depth);
+	$file=file_exists('../../../cache/lang_'.$langeditor.'.php');
+	if(unlink('../../../cache/lang_'.$langeditor.'.php')||!$file){
+		$relang=$lang_jsok;
+		$relang.=$met_webhtm==0?'':$lang_otherinfocache1;
+		metsave('../system/lang/langeditor.php?anyid='.$anyid.'&langeditor='.$langeditor."&langid=".$metinfolangid.'&lang='.$lang.'&cs='.$cs,$relang,$depth);
+	}else{
+		metsave('../system/lang/langeditor.php?anyid='.$anyid.'&langeditor='.$langeditor."&langid=".$metinfolangid.'&lang='.$lang.'&cs='.$cs,$lang_otherinfocache2,$depth);
+	}
 }else{
 $css_url=$depth."../templates/".$met_skin."/css";
 $img_url=$depth."../templates/".$met_skin."/images";

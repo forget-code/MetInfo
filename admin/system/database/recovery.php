@@ -16,7 +16,7 @@ if($action=='delete'){
 			if(fileext($sqlfile)=='sql'){
 				$filenamearray=explode(".sql",$sqlfile);
 				@unlink('../../databack/'.$sqlfile);
-				@unlink('../../databack/sql/metinfo_'.$filenamearray[0].".zip");
+				@unlink('../../databack/sql/'.$met_agents_backup.'_'.$filenamearray[0].".zip");
 			}
 		}
 	}
@@ -119,7 +119,17 @@ if($action=='delete'){
 			$infos[$key]['error']='1';
 		}else{
 			$infos[$key]['error']='0';
+		}	
+	}
+	foreach($infos as $key=>$val){
+		if($val[ver]!=$metcms_v){
+			$val['error']=2;
+			unset($infos[$key]);
+			$infos[$key]=$val;
 		}
+	}
+	if($met_agents_type>1){
+		$lang_dataexplain2=str_replace('met',$met_agents_backup,$lang_dataexplain2);
 	}
 	$css_url=$depth."../templates/".$met_skin."/css";
 	$img_url=$depth."../templates/".$met_skin."/images";

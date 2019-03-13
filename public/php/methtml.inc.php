@@ -16,6 +16,7 @@ if($met_js_access)$methtml_head.=$met_js_access."\n";
 //memberjs
 if($met_skin_css=='')$met_skin_css='metinfo.css';
 $methtml_head.="<link rel=\"stylesheet\" type=\"text/css\" href=\"".$img_url."css/".$met_skin_css."\" />\n";
+$methtml_head.="<script src=\"".$met_url."js/metinfo-min.js\" type=\"text/javascript\"></script>\n";
 if($met_ch_lang and $lang==$met_ch_mark)$methtml_head.="<script src=\"".$met_url."js/ch.js\" type=\"text/javascript\"></script>\n";
 //style
 if($lang_fontfamily<>''||$lang_fontsize<>''||$lang_backgroundcolor<>''||$lang_fontcolor<>''||$lang_urlcolor<>''||$lang_hovercolor<>''){
@@ -75,9 +76,9 @@ $methtml_now.="</script>\n";
 
 if($index_hadd_ok){
 //set home page
-$methtml_sethome="<a href='#' onclick='SetHome(this,window.location);' style='cursor:pointer;' title='".$lang_sethomepage."'  >".$lang_sethomepage."</a>";
+$methtml_sethome="<a href='#' onclick='SetHome(this,window.location,\"$lang_MessageInfo5\");' style='cursor:pointer;' title='".$lang_sethomepage."'  >".$lang_sethomepage."</a>";
 //bookmark
-$methtml_addfavorite="<a href='#' onclick='addFavorite();' style='cursor:pointer;' title='".$lang_bookmark."'  >".$lang_bookmark."</a>";
+$methtml_addfavorite="<a href='#' onclick='addFavorite(\"$lang_MessageInfo5\");' style='cursor:pointer;' title='".$lang_bookmark."'  >".$lang_bookmark."</a>";
 $methtml_hadd=$methtml_sethome.'<span>|</span>'.$methtml_addfavorite;
 }
 
@@ -679,7 +680,7 @@ switch($met_flasharray[$classnow][type]){
 <script src='{$navurl}public/jq-flexslider/jquery.flexslider-min.js'></script>";
 				$methtml_flash.="<div class='flash'>
 					<div class='flexslider flexslider_flash'>
-					  <ul class='slides'>";
+					  <ul class='slides list-none'>";
 			foreach($met_flashimg as $key=>$val){
 				$methtml_flash.="<li><a href='".$val[img_link]."' target='_blank' title='{$val[img_title]}'>\n";
 				$methtml_flash.="<img src='".$val[img_path]."' alt='".$val[img_title]."' width='{$met_flasharray[$classnow][x]}' height='{$met_flasharray[$classnow][y]}'></a></li>\n"; 
@@ -727,10 +728,10 @@ switch($met_flasharray[$classnow][type]){
 
 //loop array 
 function methtml_getarray($mark,$type,$order,$module,$listmx=-1,$para=0,$categoryname=0,$marktype=0,$txtmax=0,$descmax=0){
-	global $met_member_use,$class_index,$met_listtime,$metinfo_member_type,$db,$met_news,$met_product,$met_download,$met_img,$met_job,$met_parameter,$met_plist,$class_list,$metpara;
+	global $met_member_use,$class_index,$met_listtime,$metinfo_member_type,$db,$met_news,$met_product,$met_download,$met_img,$met_job,$met_parameter,$met_plist,$class_list,$metpara,$module_list2;
 	global $index_news_no,$index_product_no,$index_download_no,$index_img_no,$index_job_no;
 	global $index,$navurl,$weburly,$lang,$pagename,$langmark,$met_htmpagename,$met_chtmtype,$met_htmtype,$met_pseudo,$met_webhtm;
-	global $dataoptimize,$pagemark,$img_url,$met_hot,$m_now_date,$met_newsdays,$metmemberforce,$met_alt,$metblank;
+	global $dataoptimize,$pagemark,$img_url,$met_hot,$m_now_date,$met_newsdays,$metmemberforce,$met_alt,$metblank,$met_agents_img;
 	if($mark&&strstr($mark,"-")){
 		$hngy5=explode('-',$mark);
 		if($hngy5[1]=='cm'){
@@ -769,6 +770,7 @@ function methtml_getarray($mark,$type,$order,$module,$listmx=-1,$para=0,$categor
 		if($marktype){
 			$listnowid=$mark;
 			$listnowclass="class{$class_list[$mark]['classtype']}";
+			if($class_list[$mark]['releclass'])$listnowclass="class1";
 			$modulex=metmodname($class_list[$mark]['module']);
 			$sqlorder=$order?$sqlorder:list_order($class_list[$mark]['list_order']);
 		}
@@ -778,7 +780,26 @@ function methtml_getarray($mark,$type,$order,$module,$listmx=-1,$para=0,$categor
 			$modulex=metmodname($class_index[$mark]['module']);
 			$sqlorder=$order?$sqlorder:list_order($class_index[$mark]['list_order']);
 		}
-		$sqlclounm="and $listnowclass='$listnowid'";
+		$folderone=$db->get_one("SELECT * FROM $met_column WHERE bigclass='$listnowid' and module ='{$class_list[$listnowid][module]}' and releclass!='0' and lang='$lang'");
+		if($folderone){
+			$sqlclounm="and ($listnowclass='$listnowid' or class1='$folderone[id]')";
+		}else{
+			
+		}
+		if($listnowclass=='class1'){
+			$class1sql=" $listnowclass='$listnowid' ";
+			foreach($module_list2[$class_list[$listnowid]['module']] as $key=>$val){
+				if($val['releclass']==$listnowid){
+					$class1re.=" or $listnowclass=$val[id] ";
+				}
+			}
+			if($class1re){
+				$class1sql='('.$class1sql.$class1re.')';
+			}
+			$sqlclounm=' and '.$class1sql;
+		}else{
+			$sqlclounm="and $listnowclass='$listnowid'";
+		}
 		if(!$modulex){
 			$module=$module?$module:'news';
 			$sqlclounm='';
@@ -866,8 +887,8 @@ function methtml_getarray($mark,$type,$order,$module,$listmx=-1,$para=0,$categor
 			$listarray[imgurl]=explode("../",$list['imgurl']);
 			$list[imgurl]=$weburly.$listarray['imgurl'][1];
 		}
-		$list['imgurls']=($list['imgurls']<>"")?$list['imgurls']:$weburly.'public/images/metinfo.gif';
-		$list['imgurl']=($list['imgurl']<>"")?$list['imgurl']:$weburly.'public/images/metinfo.gif';
+		$list['imgurls']=($list['imgurls']<>"")?$list['imgurls']:$weburly.$met_agents_img;
+		$list['imgurl']=($list['imgurl']<>"")?$list['imgurl']:$weburly.$met_agents_img;
 		if(($dataoptimize[$pagemark]['para'][$modulenunm] and $dataoptimize[$pagemark]['parameter'])||$para){
 			$query1 = "select * from $met_plist where lang='$lang' and listid='$list[id]' and module='$modulenunm' order by id";
 			$result1 = $db->query($query1);
@@ -1105,13 +1126,13 @@ if($type){
   }else{
   $metinfo.="<div class='login_x' id='login_x1'>";
   }
-  $metinfo.="<form method='post' action='".$navurl."member/login_checkout.php?lang=".$lang."' name='main_login' onSubmit='javascript: return check_main_login()'>";
+  $metinfo.="<form method='post' action='".$navurl."member/login_check.php?lang=".$lang."' name='main_login' onSubmit='javascript: return check_main_login()'>";
   $metinfo.="<input type='hidden' name='action' value='login'/>";
   $metinfo.="<span class='log1'><span class='log1_name'>".$lang_memberName."</span><input type='text' name='login_name' id='user_name' /></span>";
   $metinfo.="<span class='log4'><span class='log4_name'>".$lang_memberPs."</span><input type='password' name='login_pass' id='user_pass'/></span>";
 if($met_memberlogin_code==1){
   $metinfo.="<span class='log2'><span class='log2_name'>".$lang_memberImgCode."</span><input name='code' onKeyUp='pressCaptcha(this)' type='text' class='inp' id='code' maxlength='8' />";
-  $metinfo.="<img align='absbottom' src='".$navurl."member/outlogin/ajax.php?action=code'  onclick=this.src='".$navurl."member/outlogin/ajax.php?action=code&'+Math.random()  style='cursor: pointer;' title=".$lang_memberTip1."/>";
+  $metinfo.="<img align='absbottom' src='".$navurl."member/ajax.php?action=code'  onclick=this.src='".$navurl."member/ajax.php?action=code&'+Math.random()  style='cursor: pointer;' title=".$lang_memberTip1."/>";
   $metinfo.="</span>";}
   $metinfo.="<span class='log3'><input type='submit' class='index_login1' value='".$lang_memberGo."' />";
 if($met_member_login){

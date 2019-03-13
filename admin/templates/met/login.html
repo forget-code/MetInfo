@@ -8,12 +8,12 @@ echo <<<EOT
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>{$lang_logintitle} - MetInfo{$lang_metinfo}</title>
+<title>{$lang_logintitle} - {$lang_metinfo}</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <meta http-equiv="Content-Language" content="zh-cn"/>
 <meta name="author" content="www.metinfo.cn"/>
 <meta name="copyright" content="www.metinfo.cn"/>
-<meta content="MetInfo{$lang_metinfo}{$lang_logintitle}"/>
+<meta content="{$lang_metinfo}{$lang_logintitle}"/>
 <link rel="stylesheet" type="text/css" href="$img_url/css/metinfo.css">
 <script type="text/javascript" src="../../public/js/metinfo-min.js"></script>
 </head>
@@ -51,8 +51,8 @@ function metfocus(intext){
 <div class="login-min">
 			<div class="login-left">
 				<div style=" border-right:1px solid #fff; padding:0px 0px 20px;">
-				<a href="http://www.metinfo.cn" style="font-size:0px;" target="_blank" title="MetInfo{$lang_metinfo}" class="img">
-					<img src="$img_url/login-logo.png" alt="MetInfo{$lang_metinfo}" title="MetInfo{$lang_metinfo}" />
+				<a href="http://www.metinfo.cn" style="font-size:0px;" target="_blank" title="{$lang_metinfo}" class="img">
+					<img src="../{$met_agents_logo_login}" alt="{$lang_metinfo}" title="{$lang_metinfo}" />
 				</a>
 				<p>{$lang_loginmetinfo}</p>
 				</div>

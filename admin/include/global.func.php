@@ -133,7 +133,7 @@ function utf8Substr($str, $from, $len){
 	}
 }
 /*POST变量转换*/
-function daddslashes($string, $force = 0){
+function daddslashes($string, $force = 0 ,$sql_injection =0){
 	!defined('MAGIC_QUOTES_GPC') && define('MAGIC_QUOTES_GPC', get_magic_quotes_gpc());
 	if(!MAGIC_QUOTES_GPC || $force) {
 		if(is_array($string)) {
@@ -143,6 +143,22 @@ function daddslashes($string, $force = 0){
 		} else {
 			$string = addslashes($string);
 		}
+	}
+	if((SQL_DETECT!=1 || $sql_injection==1)&&!is_array($string)){
+		$string = str_ireplace("\"","/",$string);
+		$string = str_ireplace("'","/",$string);
+		$string = str_ireplace("*","/",$string);
+		$string = str_ireplace("~","/",$string);
+		$string = str_ireplace("select", "\sel\ect", $string);
+		$string = str_ireplace("insert", "\ins\ert", $string);
+		$string = str_ireplace("update", "\up\date", $string);
+		$string = str_ireplace("delete", "\de\lete", $string);
+		$string = str_ireplace("union", "\un\ion", $string);
+		$string = str_ireplace("into", "\in\to", $string);
+		$string = str_ireplace("load_file", "\load\_\file", $string);
+		$string = str_ireplace("outfile", "\out\file", $string);
+		$string = strip_tags($string);
+		$string = str_replace("%", "\%", $string);     //   
 	}
 	return $string;
 }
@@ -327,37 +343,42 @@ function createhtm($fromurl,$filename,$htmpack,$indexy=0){
 
 /*列表页面排序*/
 function list_order($listid){
-switch($listid){
-case '0':
-$list_order=" order by top_ok desc,no_order desc,updatetime desc";
-return $list_order;
-break;
+	switch($listid){
+		case '0':
+		$list_order=" order by top_ok desc,no_order desc,updatetime desc";
+		return $list_order;
+		break;
 
-case '1':
-$list_order=" order by top_ok desc,no_order desc,updatetime desc";
-return $list_order;
-break;
+		case '1':
+		$list_order=" order by top_ok desc,no_order desc,updatetime desc";
+		return $list_order;
+		break;
 
-case '2':
-$list_order=" order by top_ok desc,no_order desc,addtime desc";
-return $list_order;
-break;
+		case '2':
+		$list_order=" order by top_ok desc,no_order desc,addtime desc";
+		return $list_order;
+		break;
 
-case '3':
-$list_order=" order by top_ok desc,no_order desc,hits desc";
-return $list_order;
-break;
+		case '3':
+		$list_order=" order by top_ok desc,no_order desc,hits desc";
+		return $list_order;
+		break;
 
-case '4':
-$list_order=" order by top_ok desc,no_order desc,id desc";
-return $list_order;
-break;
+		case '4':
+		$list_order=" order by top_ok desc,no_order desc,id desc";
+		return $list_order;
+		break;
 
-case '5':
-$list_order=" order by top_ok desc,no_order desc,id";
-return $list_order;
-break;
-}
+		case '5':
+		$list_order=" order by top_ok desc,no_order desc,id";
+		return $list_order;
+		break;
+		
+		default :
+		$list_order=" order by top_ok desc,no_order desc,updatetime desc";
+		return $list_order;
+		break;
+	}
 }
 
 /*删除HTML代码*/
@@ -545,8 +566,9 @@ function classhtm($class1,$class2,$class3,$htmway=0,$classtype=0,$htmpack=0){
 		$page_count=ceil($total_count/$pagesize);
 		$page_count=$page_count?$page_count:1;
 		$indexname=0;
-		if($class1_info['classtype']==1){
-			$folderone=$db->get_one("SELECT * FROM $met_column WHERE foldername='$class1_info[foldername]' and id !='$class1_info[id]' and classtype='1' and lang='$lang'");
+		if($class1_info['classtype']==1||$class1_info['releclass']){
+			$dbtxt=$class1_info['releclass']?2:1;
+			$folderone=$db->get_one("SELECT * FROM $met_column WHERE foldername='$class1_info[foldername]' and id !='$class1_info[id]' and classtype='$dbtxt' and lang='$lang'");
 			if(!$folderone){
 				$indexname='index';
 				if($class1_info['lang']!=$met_index_type)$indexname=0;
@@ -701,8 +723,9 @@ function showhtm($id,$htmway=0,$htmpack=0){
 		$folder=$db->get_one("select * from $met_column where id='$id'");
 		$fromurl=$folder['foldername']."/show.php?id=".$id."&lang=".$lang;
 		$indexname=0;
-		if($folder['classtype']==1){
-			$folderone=$db->get_one("SELECT * FROM $met_column WHERE foldername='$folder[foldername]' and id !='$folder[id]' and classtype='1' and lang='$lang'");
+		if($folder['classtype']==1||$folder['releclass']){
+			$dbtxt=$folder['releclass']?2:1;
+			$folderone=$db->get_one("SELECT * FROM $met_column WHERE foldername='$folder[foldername]' and id !='$folder[id]' and classtype='$dbtxt' and lang='$lang'");
 			if(!$folderone){
 				$indexname='index';
 				if($folder['lang']!=$met_index_type)$indexname=0;

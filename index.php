@@ -17,8 +17,10 @@ if(file_exists('./update')&&!file_exists('./update/install.lock')){
 $index="index";
 require_once 'include/common.inc.php';
 require_once 'include/head.php';
-$index = $db->get_one("SELECT * FROM $met_index where lang='$lang' order by id desc");
+$index=array();
 $index[index]='index';
+$index[content]=$met_index_content;
+$index[lang]=$lang;
 $index[news_no]=$index_news_no;
 $index[product_no]=$index_product_no;
 $index[download_no]=$index_download_no;

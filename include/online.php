@@ -62,6 +62,7 @@ if($met_online_type<>3){
 	$metinfo.='<div class="onlinebox-bottom-bg"></div>';
 	if($met_online_skin<3)$metinfo.='</div>';
 	$metinfo.='</div>';
+	$_REQUEST['jsoncallback'] = strip_tags($_REQUEST['jsoncallback']);
 	if($_REQUEST['jsoncallback']){
 		$metinfo=str_replace("'","\'",$metinfo);
 		$metinfo=str_replace('"','\"',$metinfo);

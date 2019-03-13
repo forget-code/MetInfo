@@ -12,6 +12,14 @@ $css_url=$depth."../templates/".$met_skin."/css";
 $img_url=$depth."../templates/".$met_skin."/images";
 $rurls='../system/database/filedown.php?anyid='.$anyid.'&lang='.$lang.'&cs=6';
 if($action=='allfile'){
+	$localurl="http://";
+	$localurl.=$_SERVER['HTTP_HOST'].$_SERVER["PHP_SELF"];
+	$localurl_a=explode("/",$localurl);
+	$localurl_count=count($localurl_a);
+	$localurl_admin=$localurl_a[$localurl_count-4];
+	$localurl_admin=$localurl_admin."/system/database/index";
+	$localurl_real=explode($localurl_admin,$localurl);
+	$localurl=$localurl_real[0];
 	$fileid = isset($fileid)?$fileid:1;
 	$tables=tableprearray($tablepre);
 	$sizelimit=2048;
@@ -30,7 +38,7 @@ if($action=='allfile'){
 	include "../../include/pclzip.lib.php";
 	if(trim($sqldump)){
 		$version='version:'.$metcms_v;
-		$sqldump = "#MetInfo.cn Created {$version} \n# --------------------------------------------------------\n\n\n".$sqldump;
+		$sqldump = "#MetInfo.cn Created {$version} \n#$localurl\n#$tablepre\n# --------------------------------------------------------\n\n\n".$sqldump;
 		$tableid = $i;
 		$filename = $con_db_name.'_'.date('Ymd').'_'.$random.'_'.$fileid.'.sql';
 		$zipname  = $con_db_name.'_'.date('Ymd').'_'.$random.'_'.$fileid;
@@ -39,7 +47,7 @@ if($action=='allfile'){
 		if(!is_writable('../../databack/'))metsave('-1',$lang_setdbTip2.'databack/'.$lang_setdbTip3,$depth);  
 		file_put_contents($bakfile, $sqldump);
 		if(!file_exists('../../databack/sql'))@mkdir ('../../databack/sql', 0777);  
-		$sqlzip='../../databack/sql/metinfo_'.$zipname.'.zip';
+		$sqlzip='../../databack/sql/'.$met_agents_backup.'_'.$zipname.'.zip';
 		$archive = new PclZip($sqlzip);
 		$zip_list = $archive->create('../../databack/'.$filename,PCLZIP_OPT_REMOVE_PATH,'../../databack/');
 		if($zip_list == 0){
@@ -50,7 +58,7 @@ if($action=='allfile'){
 		cache_delete('bakup_tables.php');
 		$adminfile=$url_array[count($url_array)-2];
 		if(!file_exists('../../databack/web'))@mkdir ('../../databack/web', 0777);  
-		$sqlzip='../../databack/web/metinfo_web_'.date('YmdHis',time()).'.zip';
+		$sqlzip='../../databack/web/'.$met_agents_backup.'_web_'.date('YmdHis',time()).'.zip';
 		$zipfile="../../../";
 		$archive = new PclZip($sqlzip);
 		$zip_list = $archive->create($zipfile,PCLZIP_OPT_REMOVE_PATH,'../../../',PCLZIP_CB_PRE_ADD,'myPreAddCallBack');
@@ -62,7 +70,7 @@ if($action=='allfile'){
 }elseif($action=='uploadimg'){
 	include "../../include/pclzip.lib.php";
 	if(!file_exists('../../databack/upload'))@mkdir ('../../databack/upload', 0777);  
-	$sqlzip='../../databack/upload/metinfo_upload_'.date('YmdHis',time()).'.zip';
+	$sqlzip='../../databack/upload/'.$met_agents_backup.'_upload_'.date('YmdHis',time()).'.zip';
 	$zipfile="../../../upload";
 	$archive = new PclZip($sqlzip);
 	$zip_list = $archive->create($zipfile,PCLZIP_OPT_REMOVE_PATH,'../../../');
@@ -81,7 +89,7 @@ if($action=='allfile'){
 	}
 	include "../../include/pclzip.lib.php";
 	if(!file_exists('../../databack/config'))@mkdir ('../../databack/config', 0777);  
-	$sqlzip='../../databack/config/metinfo_config_'.date('YmdHis',time()).'.zip';
+	$sqlzip='../../databack/config/'.$met_agents_backup.'_config_'.date('YmdHis',time()).'.zip';
 	$zipfile.="../../../lang,../../../config/lang.inc.php,../../../config/config_db.php";
 	$archive = new PclZip($sqlzip);
 	$zip_list = $archive->create($zipfile,PCLZIP_OPT_REMOVE_PATH,'../../../');
@@ -90,6 +98,14 @@ if($action=='allfile'){
 	}
 	metsave($rurls,$lang_setdbArchiveOK,$depth);
 }elseif($action=='allbase'){
+	$localurl="http://";
+	$localurl.=$_SERVER['HTTP_HOST'].$_SERVER["PHP_SELF"];
+	$localurl_a=explode("/",$localurl);
+	$localurl_count=count($localurl_a);
+	$localurl_admin=$localurl_a[$localurl_count-4];
+	$localurl_admin=$localurl_admin."/system/database/index";
+	$localurl_real=explode($localurl_admin,$localurl);
+	$localurl=$localurl_real[0];
 	$fileid = isset($fileid)?$fileid:1;
 	if($tbl){
 		$tables=tableprearray($tablepre);
@@ -118,7 +134,7 @@ if($action=='allfile'){
 	}
 	if(trim($sqldump)){
 		$version='version:'.$metcms_v;
-		$sqldump = "#MetInfo.cn Created {$version} \n# --------------------------------------------------------\n\n\n".$sqldump;
+		$sqldump = "#MetInfo.cn Created {$version} \n#$localurl\n#$tablepre\n# --------------------------------------------------------\n\n\n".$sqldump;
 		$tableid = $i;
 		$filename = $con_db_name.'_'.date('Ymd').'_'.$random.'_'.$fileid.'.sql';
 		$zipname  = $con_db_name.'_'.date('Ymd').'_'.$random.'_'.$fileid;
@@ -128,7 +144,7 @@ if($action=='allfile'){
 		file_put_contents($bakfile, $sqldump);
 		include "../../include/pclzip.lib.php";
 		if(!file_exists('../../databack/sql'))@mkdir ('../../databack/sql', 0777);  
-		$sqlzip='../../databack/sql/metinfo_'.$zipname.'.zip';
+		$sqlzip='../../databack/sql/'.$met_agents_backup.'_'.$zipname.'.zip';
 		$archive = new PclZip($sqlzip);
 		$zip_list = $archive->create('../../databack/'.$filename,PCLZIP_OPT_REMOVE_PATH,'../../databack/');
 		if($zip_list == 0){

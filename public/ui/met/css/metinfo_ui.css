@@ -53,10 +53,10 @@ td.submint{ padding:10px;}
 #showproduct{ padding:15px;}
 #showproduct h1.title{ font-size:18px; padding:5px 0px; margin-bottom:5px;}
 #showproduct .pshow dt{ float:left;}
-#showproduct .pshow dd{ float:left;}
+#showproduct .pshow dd{ float:right;}
 #showproduct .pshow dd ul{ margin-left:15px; }
-#showproduct .pshow dd li{ padding:5px ; margin:5px 0px; clear:both; border-bottom:1px solid #eee;}
-#showproduct .pshow dd li span{ float:left; width:70px; color:#999; }
+#showproduct .pshow dd li{ padding:5px 5px 5px 45px; min-height:28px; _height:28px; margin:5px 0px; clear:both; border-bottom:1px solid #eee; position:relative; line-height:2; }
+#showproduct .pshow dd li span{ position:absolute; left:0px; top:0px; color:#999; padding:5px; height:28px;}
 #showproduct .ctitle{ margin:15px 0px 10px; padding:5px 20px; background:url(../images/dt-7.gif) no-repeat left center; *background-position:left 17px; font-size:14px; border-bottom:1px dotted #ccc; }
 #showproduct .editor{ line-height:2; padding:0px 10px; font-size:14px;}
 /*下载模块*/
@@ -165,3 +165,48 @@ ul.searchnavlist li{ padding:5px 0px;}
 #sitemaplist .sitemapclass2 div{ padding-left:2px;}
 #sitemaplist .sitemapclass2 h4{ display:inline; padding:2px 6px;}
 #sitemaplist .sitemapclass2 h4 a{ text-decoration:underline; color:#2c7199;}
+/*翻页样式*/
+.metpager_1{ text-align:center;}
+.metpager_2{ text-align:center;}
+.metpager_3{ text-align:center;}
+
+.digg4{ padding:3px; margin:3px; text-align:center; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; }
+.digg4 a,.digg4 span.miy{ margin:2px; text-decoration:none;}
+.digg4 .disabledfy{ font-family: Tahoma, Verdana;}
+
+.metpager_4 a,.metpager_4 span.miy{ border:1px solid #aaaadd; padding:2px 5px 2px 5px; color:#009;}
+.metpager_4 a:hover { border:1px solid #009; color:#000;}
+.metpager_4 a:active {border:1px solid #009; color:#000;}
+.metpager_4 span.current { border:1px solid #009; background-color:#009; padding:2px 5px 2px 5px; margin:2px; color:#FFFFFF; text-decoration:none;}
+.metpager_4 span.disabled { border:1px solid #eee; padding:2px 5px 2px 5px; margin:2px; color:#ddd;}
+
+.metpager_5 a,.metpager_5 span.miy{ border:1px solid #ccdbe4; padding:2px 8px 2px 8px; color:#0061de; }
+.metpager_5 a:hover { border:1px solid #2b55af; color:#fff; background-color:#3666d4;}
+.metpager_5 a:active {border:1px solid #009; color:#000;}
+.metpager_5 span.current { padding:2px 8px 2px 8px; margin:2px; color:#000; text-decoration:none;}
+.metpager_5 span.disabled { border:1px solid #ccdbe4; padding:2px 8px 2px 8px; margin:2px; color:#ddd;}
+
+.metpager_6{ color:#ff6500; }
+.metpager_6 a,.metpager_6 span.miy{ border:1px solid  #ff9600; padding:2px 7px 2px 7px; background-position:50% bottom; color:#ff6500; background-image:url(../images/page/page6.jpg);}
+.metpager_6 a:hover { border:1px solid #ff9600; color:#ff6500; background-color:#ffc794;}
+.metpager_6 a:active {border:1px solid #ff9600; color:#ff6500; background-color:#ffc794;}
+.metpager_6 span.current {border:1px solid #ff6500; padding:2px 7px 2px 7px; margin:2px; color:#ff6500; background-color:#ffbe94; text-decoration:none;}
+.metpager_6 span.disabled { border:1px solid #ffe3c6; padding:2px 7px 2px 7px; margin:2px; color:#ffe3c6;}
+
+.metpager_7 a,.metpager_7 span.miy{ border:1px solid  #2c2c2c; padding:2px 5px 2px 5px; background:url(../images/page/page7.gif) #2c2c2c; color:#fff;}
+.metpager_7 a:hover { border:1px solid #aad83e; color:#fff;background:url(../images/page/page7_2.gif) #aad83e;}
+.metpager_7 a:active { border:1px solid #aad83e; color:#fff;background:urlurl(../images/page/page7_2.gif) #aad83e;}
+.metpager_7 span.current {border:1px solid #aad83e; padding:2px 5px 2px 5px; margin:2px; color:#fff;background:url(../images/page/page7_2.gif) #aad83e; text-decoration:none;}
+.metpager_7 span.disabled { border:1px solid #f3f3f3; padding:2px 5px 2px 5px; margin:2px; color:#ccc;}
+
+.metpager_8 a,.metpager_8 span.miy{ border:1px solid #ddd; padding:2px 5px 2px 5px; color:#aaa;}
+.metpager_8 a:hover { border:1px solid #a0a0a0; }
+.metpager_8 a:hover { border:1px solid #a0a0a0; }
+.metpager_8 span.current {border:1px solid #e0e0e0; padding:2px 5px 2px 5px; margin:2px; color:#aaa; background-color:#f0f0f0; text-decoration:none;}
+.metpager_8 span.disabled { border:1px solid #f3f3f3; padding:2px 5px 2px 5px; margin:2px; color:#ccc;}
+
+.metpager_9 a,.metpager_9 span.miy{ border:1px solid #ddd; padding:2px 5px 2px 5px; color:#88af3f; } 
+.metpager_9 a:hover { border:1px solid #85bd1e; color:#638425; background-color:#f1ffd6; } 
+.metpager_9 a:hover { border:1px solid #85bd1e; color:#638425; background-color:#f1ffd6; } 
+.metpager_9 span.current {border:1px solid #b2e05d; padding:2px 5px 2px 5px; margin:2px; color:#fff; background-color:#b2e05d; text-decoration:none;} 
+.metpager_9 span.disabled { border:1px solid #f3f3f3; padding:2px 5px 2px 5px; margin:2px; color:#ccc;}

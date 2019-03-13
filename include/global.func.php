@@ -51,33 +51,40 @@ global $met_sqlinsert;
 			$string = addslashes($string);
 		}
 	}
-	$string_old = $string;
-	$string = str_replace("select", "\sel\ect", $string);
-	$string = str_replace("insert", "\ins\ert", $string);
-	$string = str_replace("update", "\up\date", $string);
-	$string = str_replace("delete", "\de\lete", $string);
-	$string = str_replace("union", "\un\ion", $string);
-	$string = str_replace("into", "\in\to", $string);
-	$string = str_replace("load_file", "\load\_\file", $string);
-	$string = str_replace("outfile", "\out\file", $string);
-	$string = str_replace("'","",$string);
-	$string = str_replace("*","",$string);
-	$string = str_replace("~","",$string);
-	$string_html=$string;
-	$string = strip_tags($string);
-	/*
-	if(strlen($string_html)!=strlen($string)){
-		$reurl="http://".$_SERVER["HTTP_HOST"];
-		echo("<script type='text/javascript'> alert('Submitted information is not legal!'); location.href='$reurl'; </script>");
-		die("Parameter Error！");
+	if(!is_array($string)){
+		$string_old = $string;
+		$string = str_ireplace("\"","/",$string);
+		$string = str_ireplace("'","/",$string);
+		$string = str_ireplace("*","/",$string);
+		$string = str_ireplace("~","/",$string);
+		$string = str_ireplace("select", "\sel\ect", $string);
+		$string = str_ireplace("insert", "\ins\ert", $string);
+		$string = str_ireplace("update", "\up\date", $string);
+		$string = str_ireplace("delete", "\de\lete", $string);
+		$string = str_ireplace("union", "\un\ion", $string);
+		$string = str_ireplace("into", "\in\to", $string);
+		$string = str_ireplace("load_file", "\load\_\file", $string);
+		$string = str_ireplace("outfile", "\out\file", $string);
+		$string_html=$string;
+		$string = strip_tags($string);
+		if($string_html!=$string){
+			$string='';
+		}
+		$string = str_replace("%", "\%", $string);     //   	
+		/*
+		if(strlen($string_html)!=strlen($string)){
+			$reurl="http://".$_SERVER["HTTP_HOST"];
+			echo("<script type='text/javascript'> alert('Submitted information is not legal!'); location.href='$reurl'; </script>");
+			die("Parameter Error！");
+		}
+		*/
+		if(strlen($string_old)!=strlen($string)&&$met_sqlinsert){
+			$reurl="http://".$_SERVER["HTTP_HOST"];
+			echo("<script type='text/javascript'> alert('Submitted information is not legal!'); location.href='$reurl'; </script>");
+			die("Parameter Error！");
+		}
+		$string = trim($string);
 	}
-	*/
-	if(strlen($string_old)!=strlen($string)&&$met_sqlinsert){
-		$reurl="http://".$_SERVER["HTTP_HOST"];
-		echo("<script type='text/javascript'> alert('Submitted information is not legal!'); location.href='$reurl'; </script>");
-		die("Parameter Error！");
-	}
-	$string = trim($string);
 	if($id!=""){
 	if(!is_numeric($id)){
 	$reurl="http://".$_SERVER["HTTP_HOST"];
@@ -102,7 +109,6 @@ global $met_sqlinsert;
 	echo("<script type='text/javascript'> alert('Parameter Error！'); location.href='$reurl'; </script>");
 	die("Parameter Error！");
 	}}   
-    $string = str_replace("%", "\%", $string);     //      
 	return $string;
 }
 /*载入模板*/
@@ -115,7 +121,7 @@ function template($template,$EXT="html"){
 	unset($GLOBALS[con_db_id],$GLOBALS[con_db_pass],$GLOBALS[con_db_name]);
 	$path = ROOTPATH."templates/$skin/$template.$EXT";
 	
-	!file_exists($path) && $path=ROOTPATH."public/ui/met/$template.$EXT";
+	!file_exists($path) && $path=ROOTPATH."public/ui/met/$template.html";
 	return  $path;
 }
 /*全站静态页面打包时，文件保存地址。*/
@@ -317,9 +323,12 @@ function pageBreak($content,$type){
 /*内容页面容热门标签替换和内容分页*/
 function contentshow($content) {
 global $lang_PagePre,$lang_PageNext,$navurl,$index,$lang;
+global $met_atitle,$met_alt;
 $str=met_cache('str_'.$lang.'.inc.php');
 if(!$str){$str=cache_str();}
 foreach ($str as $key=>$val){
+	$val[3]=html_entity_decode($val[0],ENT_QUOTES,'UTF-8');
+	$val[3]=str_replace(array('\\','/','.','$','^','*','(',')','-','['.']'.'{','}','|','?','+'),array('\\\\','\/','\.','\$','\^','\*','\(','\)','\-','\['.'\]'.'\{','\}','\|','\?','\+'),$val[3]);
 	if($val[2]!=0){
 		$tmp1 = explode("<",$content);
 		$num=$val[2];
@@ -335,7 +344,7 @@ foreach ($str as $key=>$val){
 						$valnum=$num;
 						$num=0;
 					}
-					$tmp2[1] = preg_replace("/".$val[0]."/",$val[1],$tmp2[1],$valnum);
+					$tmp2[1] = preg_replace("/".$val[3]."/",$val[1],$tmp2[1],$valnum);
 					$tmp1[$key] = implode(">",$tmp2);
 				}
 			}
@@ -343,6 +352,25 @@ foreach ($str as $key=>$val){
 		$content = implode("<",$tmp1);
 	}
 }
+$tmp1 = explode("<",$content);
+foreach ($tmp1 as $key=>$item){
+	$tmp2 = explode(">",$item);
+	if (substr($tmp2[0],0,1)=="a" || substr($tmp2[0],0,1)=="A"){
+		$tmp2[0]=str_replace(array("title=''","title=\"\""),'',$tmp2[0]);
+		if(!strpos($tmp2[0],'title')){
+			$tmp2[0].=" title=\"$met_atitle\"";
+			$tmp1[$key] = implode(">",$tmp2);
+		}
+	}
+	if (substr($tmp2[0],0,3)=="img" || substr($tmp2[0],0,3)=="IMG"){
+		$tmp2[0]=str_replace(array("alt=''","alt=\"\""),'',$tmp2[0]);
+		if(!strpos($tmp2[0],'alt')){
+			$tmp2[0].=" alt=\"$met_alt\"";
+			$tmp1[$key] = implode(">",$tmp2);
+		}
+	}
+}
+$content = implode("<",$tmp1);
 if(pageBreak($content,1)>1){
 	$content = pageBreak($content);
 	$content.="<link rel='stylesheet' type='text/css' href='{$navurl}public/css/contentpage.css' />\n"; 
@@ -486,7 +514,11 @@ function get_keyword_str($str,$keyword,$getstrlen,$searchtype,$type){
 	}
 	if(mb_strlen($str,'utf-8')> $getstrlen){
 		$strlen = mb_strlen($keyword,'utf-8');
-		$strpos = mb_stripos($str,$keyword,0,'utf-8');
+		if(function_exists('mb_stripos')){
+			$strpos = mb_stripos($str,$keyword,0,'utf-8');
+		}else{
+			$strpos = mb_strpos($str,$keyword,0,'utf-8');
+		}	
 		$halfStr = intval(($getstrlen-$strlen)/2);
 		if($strpos!=""){
 			if($strpos>=$halfStr){
@@ -542,7 +574,7 @@ function templatemember($template,$EXT="html"){
 	return  $path;
 }
 /*手机内容替换*/
-function wap_replace($text,$tag,$tag1){
+function wap_replace($text,$tag,$tag1,$tag2){
 	$text = preg_replace("/<(\/?$tag.*?)>/si","",$text);
 	if($tag1){
 		$cndes=explode('|',$tag1);
@@ -550,6 +582,15 @@ function wap_replace($text,$tag,$tag1){
 			if($cndes[$i]!=''){
 				$text=preg_replace("/<(".$cndes[$i].".*?)>(.*?)<(\/".$cndes[$i].".*?)>/si","",$text);
 				$text=preg_replace("/<(\/?".$cndes[$i].".*?)> /si","",$text);
+			}
+		}
+	}
+	if($tag2){
+		$cndes=explode('|',$tag2);
+		for($i=0;$i<count($cndes);$i++){
+			if($cndes[$i]!=''){
+				$text=preg_replace("/<(".$cndes[$i].".*?)>/si","<$cndes[$i]>",$text);
+				$text=preg_replace("/<(\/".$cndes[$i].".*?)>/si","</$cndes[$i]>",$text);
 			}
 		}
 	}

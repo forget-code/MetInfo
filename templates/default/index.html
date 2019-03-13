@@ -5,25 +5,25 @@ echo <<<EOT
 <div class="index inner">
 	<div class="aboutus style-1">
 		<h3 class="title">
-			<span class='myCorner' data-corner='top 5px'>{$class_index[$mark1][name]}</span>
-			<a href="{$class_index[$mark1][url]}" class="more" title="{$met_atitle}">{$lang_more}</a>
+			<span class='myCorner' data-corner='top 5px'>{$Column1[name]}</span>
+			<a href="{$Column1[url]}" class="more" title="{$met_atitle}">{$lang_more}</a>
 		</h3>
 		<div class="active editor clear contour-1">{$index[content]}<div class="clear"></div></div>
 	</div>
 	<div class="case style-2">
 		<h3 class='title myCorner' data-corner='top 5px'>
-		{$class_index[$mark2][name]}
-		<a href="{$class_index[$mark2][url]}" title="{$met_atitle}" class="more">{$lang_more}</a>
+		{$Column2[name]}
+		<a href="{$Column2[url]}" title="{$met_atitle}" class="more">{$lang_more}</a>
 		</h3>
 		<div class="active dl-jqrun contour-1">
 <!--
 EOT;
-foreach(methtml_getarray($mark2,'com','time','img') as $key=>$val){
+foreach(methtml_getarray($lang_Column2,'com','time','img') as $key=>$val){
 $val['desc']=utf8substr($val['description'],0,30);
 echo <<<EOT
 -->
 		<dl class="ind">
-            <dt><a href="{$val[url]}" {$metblank}><img src="{$val[imgurls]}" alt="{$met_alt}" style="width:{$val[img_x]}px; height:{$val[img_y]}px;" /></a></dt>
+            <dt><a href="{$val[url]}" {$metblank}><img src="{$val[imgurls]}" alt="{$met_alt}" title="{$met_alt}" style="width:{$val[img_x]}px; height:{$val[img_y]}px;" /></a></dt>
 			<dd>
 			    <h4><a href="{$val[url]}" {$metblank} title="{$val[title]}">{$val[title]}</a></h4>
 				<p class="desc" title="{$val[description]}">{$val[desc]}</p>
@@ -40,35 +40,35 @@ echo <<<EOT
 	<div class="clear"></div>
 	<div class="index-news style-1">
 		<h3 class="title">
-			<span class='myCorner' data-corner='top 5px'>{$class_index[$mark3][name]}</span>
-			<a href="{$class_index[$mark3][url]}" class="more" title="{$met_atitle}">{$lang_more}</a>
+			<span class='myCorner' data-corner='top 5px'>{$Column3[name]}</span>
+			<a href="{$Column3[url]}" class="more" title="{$met_atitle}">{$lang_more}</a>
 		</h3>
 		<div class="active clear listel contour-2">{$index_list_1}</div>
 	</div>
 	<div class="index-news style-1">
 		<h3 class="title">
-			<span class='myCorner' data-corner='top 5px'>{$class_index[$mark4][name]}</span>
-			<a href="{$class_index[$mark4][url]}" class="more" title="{$met_atitle}">{$lang_more}</a>
+			<span class='myCorner' data-corner='top 5px'>{$Column4[name]}</span>
+			<a href="{$Column4[url]}" class="more" title="{$met_atitle}">{$lang_more}</a>
 		</h3>
 		<div class="active clear listel contour-2">{$index_list_2}</div>
 	</div>
 	<div class="index-conts style-2">
 		<h3 class='title myCorner' data-corner='top 5px'>
-			{$class_index[$mark5][name]}
-			<a href="{$class_index[$mark5][url]}" title="{$met_atitle}" class="more">{$lang_more}</a>
+			{$Column5[name]}
+			<a href="{$Column5[url]}" title="{$met_atitle}" class="more">{$lang_more}</a>
 		</h3>
 		<div class="active clear listel contour-2">{$index_list_3}</div>
 	</div>
 	<div class="clear p-line"></div>
 	<div class="index-product style-2">
 		<h3 class='title myCorner' data-corner='top 5px'>
-			<span>{$class_index[$mark6][name]}</span>
+			<span>{$Column6[name]}</span>
 		    <div class="flip">
 				<p id="trigger"></p>
 		        <a class="prev" id="car_prev" href="javascript:void(0);"></a>
 			    <a class="next" id="car_next" href="javascript:void(0);"></a>
 			</div>
-			<a href="{$class_index[$mark6][url]}" title="{$met_atitle}" class="more">{$lang_more}</a>
+			<a href="{$Column6[url]}" title="{$met_atitle}" class="more">{$lang_more}</a>
 		</h3>
 		<div class="active clear">
 			<div class="profld" id="indexcar" data-listnum="{$lang_listnum}">
@@ -84,8 +84,8 @@ echo <<<EOT
 	<div class="clear"></div>
 	<div class="index-links">
 		<h3 class="title">
-			{$class_index[$mark7][name]}
-			<a href="{$class_index[$mark7][url]}" title="{$met_atitle}" class="more">{$lang_more}</a>
+			{$Column7[name]}
+			<a href="{$Column7[url]}" title="{$met_atitle}" class="more">{$lang_more}</a>
 		</h3>
 		<div class="active clear">
 			<div class="img">{$metlinkimg}</div>

@@ -70,6 +70,7 @@ foreach($dataqrray as $key=>$val){
 $numcsvcopy++;
 $title=iconv($codeold,$codenew,$val[0]);
 $items=1;
+$querycsvpara=array();
 if($classcsv['module']!=2){
 	$querypara = "select * from $met_parameter where lang='$lang' and module='$classcsv[module]' and (class1='$classcsv[id]' or class1=0) order by no_order";
 	$csvpara=$db->get_all($querypara);

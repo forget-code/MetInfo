@@ -13,6 +13,7 @@ admin/system/basic.php="1";
 include/export.func.php="1";
 update/func.php="1";
 include/alipay/lib/alipay_core.function.php="1";
+install/index.php="1";
 [cmd]
 include/mail/class.phpmailer.php="1";
 [exec]
@@ -29,6 +30,7 @@ admin/set/sethtm.php="1";
 include/export.func.php="1";
 include/mail/class.smtp.php="1";
 update/func.php="1";
+install/index.php="1";
 [shell_exec]
 fckeditor/editor/dialog/fck_spellerpages/spellerpages/server-scripts/spellchecker.php="1";
 [size]

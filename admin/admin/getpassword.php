@@ -5,6 +5,7 @@ require_once '../include/common.inc.php';
 if(!is_numeric($abt_type)&&$abt_type!='')die();
 if($p){
    $array = explode('.',base64_decode($p));
+   $array[0]=daddslashes($array[0]);
    $sql="SELECT * FROM $met_admin_table WHERE admin_id='".$array[0]."'";
    $sqlarray = $db->get_one($sql);
    $passwords=$sqlarray[admin_pass];
@@ -175,6 +176,8 @@ switch($action){
 			if($password=='')okinfo('javascript:history.back();',$lang_dataerror);
 			if($passwordsr!=$password)okinfo('javascript:history.back();',$lang_js6);
 			$password = md5($password);
+			$array = explode('.',base64_decode($p));
+			$array[0]=daddslashes($array[0]);
 			$query="update $met_admin_table set
 			   admin_pass='$password'
 			   where admin_id='$array[0]'";

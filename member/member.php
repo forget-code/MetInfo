@@ -24,4 +24,4 @@ switch($memberaction){
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>
 $met_js="<?php echo $met_js; ?>";
-document.write($met_js)
+document.write($met_js) 

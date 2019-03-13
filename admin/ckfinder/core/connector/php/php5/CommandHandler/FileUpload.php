@@ -211,10 +211,11 @@ class CKFinder_Connector_CommandHandler_FileUpload extends CKFinder_Connector_Co
         //resize image if required
         require_once CKFINDER_CONNECTOR_LIB_DIR . "/CommandHandler/Thumbnail.php";
         $_imagesConfig = $_config->getImagesConfig();
-
+		/*图片如果超过设定最大值，则把图片缩小
         if ($_imagesConfig->getMaxWidth()>0 && $_imagesConfig->getMaxHeight()>0 && $_imagesConfig->getQuality()>0) {
             CKFinder_Connector_CommandHandler_Thumbnail::createThumb($sFilePath, $sFilePath, $_imagesConfig->getMaxWidth(), $_imagesConfig->getMaxHeight(), $_imagesConfig->getQuality(), true) ;
         }
+		*/		
 		if($met_big_wate==1)$oRegistry->set("FileUpload_url", $this->_currentFolder->getUrl().'watermark/');
         if ($_config->checkSizeAfterScaling()) {
             //check file size after scaling, attempt to delete if too big

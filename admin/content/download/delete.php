@@ -15,6 +15,10 @@ if($action=="del"){
 			deletepage($folder[foldername],$val,'showdownload',$updatetime,$download_list[filename]);
 			$declass[$download_list['class2']][$download_list['class3']]=1;
 		}
+		if(!$met_recycle){
+			$query = "delete from $met_plist where listid='$val' and module='4'";
+			$db->query($query);
+		}
 		$query = $met_recycle?"update $met_download set recycle='4',updatetime='".date('Y-m-d H:i:s')."' where id='$val'":"delete from $met_download where id='$val'";
 		$db->query($query);
 		if(!$met_recycle){if($download_list){delimg($download_list,1,2);}else{delimg($val,3,2);}}
@@ -54,6 +58,10 @@ if($action=="del"){
 	if($met_webhtm!=0 or $metadmin[pagename]){
 		if($met_htmpagename==1)$updatetime=date('Ymd',strtotime($download_list[updatetime]));
 		deletepage($folder[foldername],$id,'showdownload',$updatetime,$download_list[filename]);
+	}
+	if(!$met_recycle){
+		$query = "delete from $met_plist where listid='$id' and module='4'";
+		$db->query($query);
 	}
 	$query = $met_recycle?"update $met_download set recycle='4',updatetime='".date('Y-m-d H:i:s')."' where id='$id'":"delete from $met_download where id='$id'";
 	$db->query($query);

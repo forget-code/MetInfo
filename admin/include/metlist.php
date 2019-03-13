@@ -9,6 +9,9 @@ if($url_now!=$met_weburls[2]){
 }
 $sidebarcolumn=$db->get_all("select * from $met_admin_column order by type desc,list_order");
 foreach($sidebarcolumn as $key=>$val){
+	if((($val[name]=='lang_indexcode')||($val[name]=='lang_indexebook')||($val[name]=='lang_indexbbs')||($val[name]=='lang_indexskinset'))&&$met_agents_type>1)continue;
+	if((($val[name]=='lang_webnanny')||($val[name]=='lang_smsfuc'))&&$met_agents_sms==0)continue;
+	if((($val[name]=='lang_myapp'))&&$met_agents_app==0)continue;
 	if(strstr($val['name'],"lang_")){
 		if(strstr($val['name'],"|lang_")){
 			$linshi = '';

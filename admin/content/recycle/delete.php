@@ -41,7 +41,7 @@ if($action=="del"){
 	}
 	metsave('../content/recycle/index.php?lang='.$lang.'&anyid='.$anyid,'',$depth);
 	}
-	else if($action=="delall"){
+else if($action=="delall"){
 	$query = "select id,imgurl,imgurls,recycle from $met_news where recycle=2";	
 	$result = $db->query($query);
 	while($list = $db->fetch_array($result)) {$del_list[]=$list;}
@@ -59,8 +59,8 @@ if($action=="del"){
 		$para_list=$db->get_all($query);
 	}
 	foreach($del_list as $key=>$val){
-		if($del_list['recycle']!=2){
-			$query = "delete from $met_plist where listid='$del_list[id]' and module='$del_list[recycle]'";
+		if($val['recycle']!=2){
+			$query = "delete from $met_plist where listid='$val[id]' and module='$val[recycle]'";
 			$db->query($query);
 		}
 		delimg($val,1,0,$para_list);

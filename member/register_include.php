@@ -3,7 +3,7 @@
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 require_once '../include/common.inc.php';
 if($met_member_login==0){
-	okinfo('login_member.php?lang='.$lang,"$lang_js3");
+	okinfo('index.php?lang='.$lang,"$lang_js3");
 	exit();
 }
 require_once ROOTPATH.'member/index_member.php';

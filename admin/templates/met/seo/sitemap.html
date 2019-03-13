@@ -76,11 +76,21 @@ echo <<<EOT
 			<span class="tips">{$lang_seotips23}</span>
 		</td>
     </tr>
+<!--
+EOT;
+if($met_agents_type<=1){
+echo <<<EOT
+-->	
 	<tr> 
         <td class="input color390" colspan="2" style="padding-left:30px;">
 		<a href="http://www.metinfo.cn/news/shownews852.htm" target="_blank" title="{$lang_seotips14_1}">{$lang_seotips14_1}</a>
 		</td>
     </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->	
 </table>
 </form>
 <div class="footer">$foot</div>

@@ -15,15 +15,41 @@ echo <<<EOT
 <body>
 <!--
 EOT;
-$title="<a href='index.php?anyid={$anyid}&lang={$lang}&class1={$class1}'>{$class1_info[name]}</a>";
+$title=$class1?"<a href='index.php?anyid={$anyid}&lang={$lang}&class1={$class1}'>{$class1_info[name]}</a>":"<a href='index.php?anyid={$anyid}&lang={$lang}'>{$lang_modulemanagement3}</a>";
+$rurl="../content.php?anyid={$anyid}&lang={$lang}";
 require_once template('metlangs');
+if($met_content_type==2){
+if(!$class1)$style="style='color:#f00'";
 echo <<<EOT
 -->
+<div class="contc3 classlist1">
+<span class="color999 left classlist2">{$lang_modClass1}：</span> 
+<a href="index.php?anyid={$anyid}&lang={$lang}" title="{$lang_allcategory}" {$style}>{$lang_allcategory}</a>-
 <!--
 EOT;
+$i=0;
+foreach($met_classindex[$module] as $key=>$val){
+$admin_column_power="admin_pop".$val[id];
+if(!($metinfo_admin_pop=='metinfo'||$$admin_column_power=='metinfo'))continue;
+$i++;$style='';$qn=$i==1?'':'-';
+if($val[id]==$class1)$style="style='color:#f00'";
+echo <<<EOT
+-->
+{$qn}
+<a href="index.php?anyid={$anyid}&lang={$lang}&class1={$val[id]}" title="{$val[name]}" {$style}>{$val[name]}</a>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</div>
+<div class="clear"></div>
+<!--
+EOT;
+}
 if($met_class[$class1][releclass]){
 	$met_class22=$met_class3;
-	$met_class3='';
+	$met_class3=array();
 }
 if(count($met_class22[$class1])){
 echo <<<EOT
@@ -192,7 +218,7 @@ echo <<<EOT
               <tr class="mouse click">
               <td class="list-text"><input name='id' type='checkbox' id="id" value='$val[id]' /></td>
                 <td class="list-text"><input type="text" name="no_order_$val[id]" class="text no_order" value="$val[no_order]" /></td>
-			    <td class="list-text alignleft">&nbsp;&nbsp;<a href="../../../$class1_info[foldername]/showproduct.php?lang=$lang&id=$val[id]" title="{$lang_preview}：{$val[title]}" target="_blank">$val[titles]</a></td>
+			    <td class="list-text alignleft">&nbsp;&nbsp;<a href="../../../{$met_class[$val[class1]][foldername]}/showproduct.php?lang=$lang&id=$val[id]" title="{$lang_preview}：{$val[title]}" target="_blank">$val[titles]</a></td>
 <!--
 EOT;
 if($metadmin[productnew]){

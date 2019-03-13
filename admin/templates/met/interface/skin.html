@@ -80,7 +80,17 @@ echo <<<EOT
 <table cellpadding="2" cellspacing="1" class="table skin_manager">
 		<tr>
 			<td colspan="8" class="centle" style="font-weight:normal;">
+<!--
+EOT;
+if($met_agents_type<=1){
+echo <<<EOT
+-->	
 			<span style="float:right;"><a href="http://www.metinfo.cn/product/" title="{$lang_skinerr2}" target="_blank" class="color390">{$lang_skinerr2}</a></span>
+<!--
+EOT;
+}
+echo <<<EOT
+-->			
 			<a href="?anyid={$anyid}&lang={$lang}&cs=2">+{$lang_skinAddNew}</a><br/>
 			</td>
 		</tr>

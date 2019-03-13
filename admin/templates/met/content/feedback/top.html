@@ -2,10 +2,34 @@
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.d.
 require_once template('metlangs');
+if($met_content_type==2){
 echo <<<EOT
 -->
+<div class="contc3 classlist1">
+<span class="color999 left classlist2">{$lang_htmColumn}：</span> 
 <!--
 EOT;
+$i=0;
+foreach($met_classindex[8] as $key=>$val){
+$admin_column_power="admin_pop".$val[id];
+if(!($metinfo_admin_pop=='metinfo'||$$admin_column_power=='metinfo'))continue;
+$i++;$style='';$qn=$i==1?'':'-';
+if($val[id]==$class1)$style="style='color:#f00'";
+$url=$cs==3?'index.php':($cs==2?'parameter.php':'inc.php');
+echo <<<EOT
+-->
+{$qn}
+<a href="$url?anyid={$anyid}&lang={$lang}&class1={$val[id]}&module=8&cs={$cs}" title="{$val[name]}" {$style}>{$val[name]}</a>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</div>
+<div class="clear"></div>
+<!--
+EOT;
+}
 if(!$customerid){
 echo <<<EOT
 -->

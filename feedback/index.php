@@ -20,6 +20,7 @@ require_once ROOTPATH.'include/head.php';
 	$class1_info=$class_list[$class1][releclass]?$class_list[$class_list[$class1][releclass]]:$class_list[$class1];
 	$class2_info=$class_list[$class1][releclass]?$class_list[$class1]:$class_list[$class2];
 $fromurl=$_SERVER['HTTP_REFERER'];
+$fromurl=daddslashes($fromurl);
 $ip=$m_user_ip;
 if($title==""){
 $navtitle=$met_fdtable;
@@ -131,7 +132,7 @@ $fname= $db->get_one("SELECT * FROM $met_column WHERE module='8' and lang='$lang
 $fedfilename=$fname['filename']!=''?$fname['filename']:'index';
 $met_ahtmtype = $fname['filename']<>''?$met_chtmtype:$met_htmtype;
 $returnurl=$met_pseudo?'index-'.$lang.'.html':($met_webhtm?$fedfilename.$met_ahtmtype:'index.php?lang='.$lang.'&id='.$sid);
-if($fid_url)$returnurl=$fid_url;//5.0.4
+if($fid_url)$returnurl=$_SERVER[HTTP_REFERER];
 
 /*短信提醒*/
 if($met_nurse_feed){
@@ -287,7 +288,7 @@ $nav_list2[$class1][$k]=$class1_info;
 require_once '../public/php/methtml.inc.php';
 
      $methtml_feedback.=$fdjs;
-     $methtml_feedback.="<form enctype='multipart/form-data' method='POST' name='myform' onSubmit='return Checkfeedback();' action='index.php?action=add&lang=".$_GET[lang]."' target='_self'>\n";
+     $methtml_feedback.="<form enctype='multipart/form-data' method='POST' name='myform' onSubmit='return Checkfeedback();' action='index.php?action=add&lang=".$lang."' target='_self'>\n";
      $methtml_feedback.="<table cellpadding='2' cellspacing='1'  bgcolor='#F2F2F2' align='center' class='feedback_table' >\n";
     foreach($fd_para as $key=>$val){
      $methtml_feedback.="<tr class=feedback_tr bgcolor='#FFFFFF'    height='25'  >\n";

@@ -29,7 +29,7 @@ EOT;
 if($function=='OK'){//
 echo <<<EOT
 -->	
-				<li class='OK'><strong>函数支持正常</strong>&nbsp;</li>
+				<li class='OK'><span>函数支持正常</span>&nbsp;</li>
 <!--
 EOT;
 }
@@ -41,8 +41,9 @@ $fstr
 EOT;
 }
 echo <<<EOT
--->				</ul>
-			<a href="javascript:popupWindowLrg('phpinfo.php')" style="padding-left:20px;">查看服务器的PHPINFO</a>
+-->			
+				<li id='api' class='WARN'>检测链接API服务器中....</li>
+		</ul>
 		</div>
 	</fieldset>
 
@@ -79,6 +80,23 @@ echo <<<EOT
 </div>
 </form>
 </div>
+<script language="javascript">
+	$.ajax({
+		url: 'index.php?action=apitest',
+		type: 'POST',
+		success: function(data) {
+			if(data=='ok'){
+				$('#api').removeClass("WARN"); 
+				$('#api').addClass("OK"); 
+				$('#api').html("<span>API服务器链接正常</span>&nbsp;此服务器用于下载应用和在线更新程序"); 
+			}else{
+				$('#api').removeClass("WARN");
+				$('#api').addClass("WARN"); 
+				$('#api').html("<span>API服务器链接失败</span>&nbsp;此服务器用于下载应用和在线更新程序（<a target='_blank' href='http://www.metinfo.cn/course/faq/23-cn.html'>点击获取解决方案</a>）"); 
+			}
+		}
+	});
+</script>
 </body></html>
 <!--
 EOT;

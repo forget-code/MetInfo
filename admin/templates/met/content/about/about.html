@@ -8,10 +8,19 @@ echo <<<EOT
 <body>
 <!--
 EOT;
-if(!$met_class[$class2][releclass])$title="<a href='../content.php?anyid={$anyid}&lang={$lang}&module=1&class1={$class1}'>{$met_class[$class1][name]}</a>";
-if(!$met_class[$class2][releclass] && $ctp)$title.=" > ";
-if($ctp)$title.=$ctype1?"<a href='../content.php?anyid={$anyid}&lang={$lang}&module=1&class2={$class2}'>{$met_class[$class2][name]}</a>":"{$met_class[$class2][name]}";
-if($nott)$title.=$ctype?" > <a href='../content.php?anyid={$anyid}&lang={$lang}&module=1&class2={$id}'>{$about[name]}</a>":" > {$about[name]}";
+if($met_content_type==2){
+	if(!$met_class[$class2][releclass])$title="<a href='../about/index.php?anyid={$anyid}&lang={$lang}&module=1&class1={$class1}'>{$met_class[$class1][name]}</a>";
+	if(!$met_class[$class2][releclass] && $ctp)$title.=" > ";
+	if($ctp)$title.=$ctype1?"<a href='../about/index.php?anyid={$anyid}&lang={$lang}&module=1&class1={$class1}&class2={$class2}'>{$met_class[$class2][name]}</a>":"{$met_class[$class2][name]}";
+	if($nott)$title.=$ctype?" > <a href='../about/index.php?anyid={$anyid}&lang={$lang}&module=1&class1={$class1}&class2={$id}'>{$about[name]}</a>":" > {$about[name]}";
+	if(!$met_class[$class2][releclass])$rurl="../about/index.php?anyid={$anyid}&lang={$lang}&module=1&class1={$class1}";
+}else{
+	if(!$met_class[$class2][releclass])$title="<a href='../content.php?anyid={$anyid}&lang={$lang}&module=1&class1={$class1}'>{$met_class[$class1][name]}</a>";
+	if(!$met_class[$class2][releclass] && $ctp)$title.=" > ";
+	if($ctp)$title.=$ctype1?"<a href='../content.php?anyid={$anyid}&lang={$lang}&module=1&class2={$class2}'>{$met_class[$class2][name]}</a>":"{$met_class[$class2][name]}";
+	if($nott)$title.=$ctype?" > <a href='../content.php?anyid={$anyid}&lang={$lang}&module=1&class2={$id}'>{$about[name]}</a>":" > {$about[name]}";
+	if(!$met_class[$class2][releclass])$rurl="../content.php?anyid={$anyid}&lang={$lang}&module=1&class1={$class1}";
+}
 require_once template('metlangs');
 echo <<<EOT
 -->

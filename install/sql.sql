@@ -77,6 +77,8 @@ CREATE TABLE `met_app` (
   `site` varchar(255) NOT NULL,
   `url` tinytext NOT NULL,
   `info` text NOT NULL,
+  `addtime` int(11) NOT NULL,
+  `updatetime` int(11) NOT NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
@@ -246,14 +248,6 @@ CREATE TABLE `met_img` (
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `met_index`;
-CREATE TABLE `met_index` (
-  `id` int(11) NOT NULL auto_increment,
-  `content` text,
-  `lang` varchar(50) default NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
-
 DROP TABLE IF EXISTS `met_job`;
 CREATE TABLE `met_job` (
   `id` int(11) NOT NULL auto_increment,
@@ -293,12 +287,26 @@ CREATE TABLE `met_lang` (
   `useok` int(1) NOT NULL,
   `no_order` int(11) NOT NULL,
   `mark` varchar(50) NOT NULL,
+  `synchronous` varchar(50) NOT NULL,
   `flag` varchar(100) NOT NULL,
   `link` varchar(255) NOT NULL,
   `newwindows` int(1) NOT NULL,
-  `met_webhtm` int(1) NOT NULL,
-  `met_htmtype` varchar(50) NOT NULL,
-  `met_weburl` varchar(255) NOT NULL,
+  `metconfig_webhtm` int(1) NOT NULL,
+  `metconfig_htmtype` varchar(50) NOT NULL,
+  `metconfig_weburl` varchar(255) NOT NULL,
+  `lang` varchar(50) NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `met_language`;
+CREATE TABLE IF NOT EXISTS `met_language` (
+  `id` int(11) NOT NULL auto_increment,
+  `name` varchar(255) NOT NULL,
+  `value` text NOT NULL,
+  `site` tinyint(1) NOT NULL,
+  `no_order` int(11) NOT NULL default '0',
+  `array` int(11) NOT NULL,
+  `app` int(11) NOT NULL,
   `lang` varchar(50) NOT NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
@@ -547,7 +555,7 @@ CREATE TABLE `met_visit_summary` (
 
 INSERT INTO met_config VALUES('1','metconfig_nurse_link_tel','','0','0','metinfo');
 INSERT INTO met_config VALUES('2','metconfig_nurse_link','0','0','0','metinfo');
-INSERT INTO met_config VALUES('3','metcms_v','5.1.4','0','0','metinfo');
+INSERT INTO met_config VALUES('3','metcms_v','5.1.7','0','0','metinfo');
 INSERT INTO met_config VALUES('4','metconfig_nurse_job_tel','','0','0','metinfo');
 INSERT INTO met_config VALUES('5','metconfig_nurse_job','0','0','0','metinfo');
 INSERT INTO met_config VALUES('6','metconfig_nurse_massge_tel','','0','0','metinfo');
@@ -607,7 +615,34 @@ INSERT INTO met_config VALUES('59','metconfig_member_force','','0','0','metinfo'
 INSERT INTO met_config VALUES('60','metconfig_smspass','1','0','0','metinfo');
 INSERT INTO met_config VALUES('61','metconfig_nurse_sendtime','10','0','0','metinfo');
 INSERT INTO met_config VALUES('62','metconfig_recycle','1','0','0','metinfo');
-INSERT INTO met_config VALUES('534','metconfig_tablename','admin_array|admin_table|admin_column|app|column|config|cv|download|feedback|flash|flist|img|index|job|label|lang|link|list|message|news|online|otherinfo|parameter|plist|product|skin_table|sms|visit_day|visit_detail|visit_summary','0','0','metinfo');
+INSERT INTO met_config VALUES('534','metconfig_tablename','admin_array|admin_table|admin_column|app|column|config|cv|download|feedback|flash|flist|img|job|label|lang|language|link|list|message|news|online|otherinfo|parameter|plist|product|skin_table|sms|visit_day|visit_detail|visit_summary','0','0','metinfo');
+INSERT INTO met_config VALUES('539','metconfig_smsprice','0.1','0','0','metinfo');
+
+INSERT INTO met_config VALUES('540','metconfig_agents_logo_login','templates/met/images/login-logo.png','0','0','metinfo');
+INSERT INTO met_config VALUES('541','metconfig_agents_logo_index','templates/met/images/logoen.gif','0','0','metinfo');
+INSERT INTO met_config VALUES('542','metconfig_agents_copyright_foot','Powered by <b><a href=http://www.metinfo.cn target=_blank>MetInfo $metcms_v</a></b> &copy;2008-$m_now_year &nbsp;<a href=http://www.metinfo.cn target=_blank>MetInfo Inc.</a>','0','0','metinfo');
+INSERT INTO met_config VALUES('543','metconfig_agents_type','0','0','0','metinfo');
+
+INSERT INTO met_config VALUES('544','metconfig_agents_thanks','感谢使用 Metinfo','0','0','cn-metinfo');
+INSERT INTO met_config VALUES('545','metconfig_agents_depict_login','打造具有营销价值的企业网站','0','0','cn-metinfo');
+INSERT INTO met_config VALUES('546','metconfig_agents_name','Metinfo企业网站管理系统','0','0','cn-metinfo');
+INSERT INTO met_config VALUES('547','metconfig_agents_copyright','长沙米拓信息技术有限公司（MetInfo Inc.）','0','0','cn-metinfo');
+INSERT INTO met_config VALUES('548','metconfig_agents_about','关于我们','0','0','cn-metinfo');
+INSERT INTO met_config VALUES('549','metconfig_agents_thanks','thanks use Metinfo','0','0','en-metinfo');
+INSERT INTO met_config VALUES('550','metconfig_agents_depict_login','Metinfo Build marketing value corporate website','0','0','en-metinfo');
+INSERT INTO met_config VALUES('551','metconfig_agents_name','Metinfo CMS','0','0','en-metinfo');
+INSERT INTO met_config VALUES('552','metconfig_agents_copyright','China Changsha MetInfo Information Co., Ltd.','0','0','en-metinfo');
+INSERT INTO met_config VALUES('553','metconfig_agents_about','About Us','0','0','en-metinfo');
+INSERT INTO met_config VALUES('554','metconfig_agents_code','','0','0','metinfo');
+INSERT INTO met_config VALUES('555','metconfig_agents_backup','metinfo','0','0','metinfo');
+INSERT INTO met_config VALUES('556','metconfig_agents_sms','1','0','0','metinfo');
+INSERT INTO met_config VALUES('557','metconfig_agents_app','1','0','0','metinfo');
+INSERT INTO met_config VALUES('558','metconfig_agents_img','public/images/metinfo.gif','0','0','metinfo');
+INSERT INTO met_config VALUES('561','metconfig_newcmsv','','0','0','metinfo');
+INSERT INTO met_config VALUES('562','metconfig_patch','23','0','0','metinfo');
+INSERT INTO met_config VALUES('563','metconfig_content_type','2','0','0','metinfo');
+INSERT INTO met_config VALUES('564','metconfig_app_sysver','','0','0','metinfo');
+INSERT INTO met_config VALUES('565','metconfig_app_info','0','0','0','metinfo');
 
 INSERT INTO met_admin_column VALUES('1','lang_indexbasic','','0','0','1','1');
 INSERT INTO met_admin_column VALUES('2','lang_indexskin','','0','0','1','2');
@@ -648,11 +683,11 @@ INSERT INTO met_admin_column VALUES('36','lang_htmsitemap','seo/sitemap.php','5'
 INSERT INTO met_admin_column VALUES('37','lang_indexseoset','seo/seo.php','5','1404','2','4');
 INSERT INTO met_admin_column VALUES('38','lang_indexhot','seo/strcontent.php','5','1405','2','5');
 INSERT INTO met_admin_column VALUES('39','lang_indexlink','seo/link/index.php','5','1406','2','6');
-INSERT INTO met_admin_column VALUES('40','lang_smsfuc','app/sms/sms.php','6','1503','2','1');
+INSERT INTO met_admin_column VALUES('40','lang_smsfuc','app/sms/sms.php','6','1503','2','3');
 INSERT INTO met_admin_column VALUES('41','lang_indexwap','app/wap/wap.php','6','1502','2','2');
-INSERT INTO met_admin_column VALUES('42','lang_webnanny','app/nurse/index.php','6','1504','2','3');
-INSERT INTO met_admin_column VALUES('43','lang_indexPhysical','app/physical/index.php','6','1501','2','4');
-INSERT INTO met_admin_column VALUES('44','lang_myapp','app/dlapp/index.php','6','1505','2','5');
+INSERT INTO met_admin_column VALUES('42','lang_webnanny','app/nurse/index.php','6','1504','2','4');
+INSERT INTO met_admin_column VALUES('43','lang_indexPhysical','app/physical/index.php','6','1501','2','5');
+INSERT INTO met_admin_column VALUES('44','lang_myapp','app/dlapp/index.php','6','1505','2','1');
 INSERT INTO met_admin_column VALUES('45','lang_memberManage','member/index.php','7','1601','2','1');
 INSERT INTO met_admin_column VALUES('46','lang_memberset','member/member.php','7','1602','2','3');
 INSERT INTO met_admin_column VALUES('47','lang_indexadminname','admin/index.php','7','1603','2','4');
@@ -668,7 +703,7 @@ INSERT INTO `met_skin_table` VALUES (4,'met007','met007','Met007免费模板');
 INSERT INTO `met_skin_table` VALUES (5,'metv3','metv3','MetInfo企业网站管理系统V3.0默认模板');
 INSERT INTO `met_skin_table` VALUES (6,'metv2','metv2','MetInfo企业网站管理系统V2.0默认模板');
 
-INSERT INTO met_lang VALUES('2','English','1','2','en','','','0','0','','','metinfo');
-INSERT INTO met_lang VALUES('1','简体中文','1','1','cn','','','0','0','','','metinfo');
+INSERT INTO met_lang VALUES('2','English','1','2','en','en','','','0','0','','','metinfo');
+INSERT INTO met_lang VALUES('1','简体中文','1','1','cn','cn','','','0','0','','','metinfo');
 
 INSERT INTO `met_admin_array` VALUES (3, '管理员', 'metinfo', 1, 'metinfo', 0, 10000, 256, 2, 'metinfo', 'metinfo');

@@ -15,6 +15,9 @@ break;
 case 'img':
 $met_hits=$met_img;
 break;
+default :
+$met_hits='';
+break;
 }
 $query="select * from $met_hits where id='$id'";
 $hits_list=$db->get_one($query);
@@ -28,4 +31,4 @@ $hits=$hits_list[hits];
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>
 $hits="<?php echo $hits; ?>";
-document.write($hits) 
+document.write($hits)

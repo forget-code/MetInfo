@@ -38,6 +38,7 @@ $list[para]="para".$list[id];
 $cv_para[]=$list;
 }
 require_once '../job/uploadfile_save.php';
+if(!is_numeric($jobid))okinfo('cv.php?lang='.$lang,$lang_js1);
 $customerid=$metinfo_member_name!=''?$metinfo_member_name:0;
 $query = "update $met_cv SET ";
 $query = $query." addtime = '$m_now_date',jobid=$jobid ";			  

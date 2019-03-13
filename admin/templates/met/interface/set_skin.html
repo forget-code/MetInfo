@@ -30,7 +30,17 @@ echo <<<EOT
             <td class="input">
 			<label><input name="index_hadd_ok" type="radio" class="radio" value="1" {$hadd_ok1[1]}>{$lang_skinindexok}</label>&nbsp;&nbsp;
 			<label><input name="index_hadd_ok" type="radio" class="radio" value="0" {$hadd_ok1[0]}>{$lang_skinindexno}</label>
+<!--
+EOT;
+if($met_agents_type<=1){
+echo <<<EOT
+-->	
 			<br/><span class="tips">{$lang_skinindexexplain1}</span>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
 			</td>
 			</tr>
 			<tr> 

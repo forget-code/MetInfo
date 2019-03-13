@@ -97,6 +97,8 @@ $feedback = $db->counter($met_feedback, " where readok=0 and lang='$lang' ", "*"
 $message = $db->counter($met_message, " where readok=0 and lang='$lang' ", "*"); 
 $link = $db->counter($met_link, " where show_ok=0 and lang='$lang' ", "*");
 $member = $db->counter($met_admin_table, " where admin_approval_date is null and lang='$lang' and usertype<3 ", "*");
+$new_metcms_v=!$met_newcmsv?$lang_metcmsnew1:$lang_metcmsnew2;
+$new_metcms_v='<span style="color:#FF0000;">'.$new_metcms_v.'</span>';
 include template('system/sysadmin');
 footer();
 # This program is an open source system, commercial use, please consciously to purchase commercial license.

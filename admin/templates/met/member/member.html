@@ -68,8 +68,9 @@ echo <<<EOT
    	   <tr> 
             <td width="40" class="all"><input name="chkAll" type="checkbox" id="chkAll" onclick="CheckAllx($(this),'del')" value="checkbox" /></td>
 			  <td class="all-submit" colspan="6" style="padding:5px 10px;">
-			  <input name="submit" type='submit' value='{$lang_deleteselected}' class="submit li-submit" onclick="return met_modify($(this),'del','del');" /> 
-              </td>
+			  <input name="submit" type='submit' value='{$lang_deleteselected}' class="submit li-submit" onclick="return met_modify($(this),'del','del');" />&nbsp;&nbsp;
+			  <a href='delete.php?&lang=$lang&anyid={$anyid}&action=delactive'>{$lang_memberdelactive}</a>
+			 </td>
           </tr>
 		 <tr>
 		  <td class="page_list" colspan="7">$page_list</td>

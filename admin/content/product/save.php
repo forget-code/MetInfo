@@ -135,7 +135,8 @@ if($action=="add"){
 	$htmjs =contenthtm($class1,$id,'showproduct',$filename,0,'',$addtime).'$|$';
 	$htmjs.=indexhtm().'$|$';
 	$htmjs.=classhtm($class1,$class2,$class3);
-	metsave('../content/product/index.php?anyid='.$anyid.'&lang='.$lang.'&class1='.$class1,'',$depth,$htmjs);
+	$turl  ="../content/product/index.php?anyid=$anyid&lang=$lang&class1=$class1&class2=$class2&class3=$class3";
+	metsave($turl,'',$depth,$htmjs);
 }
 if($action=="editor"){
 	$query = "update $met_product SET 
@@ -224,8 +225,7 @@ if($action=="editor"){
 	if($filenameold<>$filename and $metadmin[pagename])deletepage($met_class[$class1][foldername],$id,'showproduct',$updatetimeold,$filenameold);
 	$classnow=$class3?$class3:($class2?$class2:$class1);
 	if(($addtime != $updatetime && $met_class[$classnow]['list_order']<2) || $top_ok==1)$page=0;
-	$turl  ='../content/product/index.php?anyid='.$anyid.'&lang='.$lang.'&class1='.$class1.'&modify='.$id.'&page='.$page;
-	$turl .=$cengci==1?'':($cengci==2?'&class2='.$class2:'&class2='.$class2.'&class3='.$class3);
+	$turl  ="../content/product/index.php?anyid=$anyid&lang=$lang&class1=$class1&class2=$class2&class3=$class3&modify=$id&pcage=$page";
 	metsave($turl,'',$depth,$htmjs);
 }
 # This program is an open source system, commercial use, please consciously to purchase commercial license.

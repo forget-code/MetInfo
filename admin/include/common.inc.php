@@ -39,6 +39,7 @@ require_once dirname(__file__).'/global.func.php';
 require_once dirname(__file__).'/global/snap.func.php';
 define('MAGIC_QUOTES_GPC', get_magic_quotes_gpc());
 $lang=$_GET['lang']<>""?$_GET['lang']:$_POST['lang'];
+$lang=daddslashes($lang,0,1);
 $metinfoadminok=1;
 require_once ROOTPATH.'config/config.inc.php';
 session_start();
@@ -57,6 +58,15 @@ foreach(array('_COOKIE', '_POST', '_GET') as $_request) {
 	foreach($$_request as $_key => $_value) {
 		$_key{0} != '_' && $$_key = daddslashes($_value);
 	}
+}
+$db_settings = parse_ini_file(ROOTPATH.'config/config_db.php');
+@extract($db_settings);
+$query="select * from {$tablepre}config where name='met_tablename' and lang='metinfo'";
+$mettable=$db->get_one($query);
+$mettables=explode('|',$mettable[value]);
+foreach($mettables as $key=>$val){
+	$tablename='met_'.$val;	
+	$$tablename=$tablepre.$val;
 }
 require_once ROOTPATH_ADMIN.'include/pubilc.php';
 (!MAGIC_QUOTES_GPC) && $_FILES = daddslashes($_FILES);
@@ -81,7 +91,9 @@ if($_SERVER['HTTP_X_FORWARDED_FOR']){
 }
 $m_user_ip  = preg_match('/^([0-9]{1,3}\.){3}[0-9]{1,3}$/',$m_user_ip) ? $m_user_ip : 'Unknown';
 $PHP_SELF = $_SERVER['PHP_SELF'] ? $_SERVER['PHP_SELF'] : $_SERVER['SCRIPT_NAME'];
-$foot="Powered by <b><a href='http://www.metinfo.cn' target='_blank'>MetInfo $metcms_v</a></b> &copy;2008-$m_now_year &nbsp;<a href='http://www.metinfo.cn' target='_blank'>MetInfo Inc.</a>";
+$foot=$met_agents_copyright_foot;
+$foot=str_replace('$metcms_v',$metcms_v,$foot);
+$foot=str_replace('$m_now_year',$m_now_year,$foot);
 $met_skin="met";
 if($metsking)$met_skin=$metsking;
 if($lang==""){

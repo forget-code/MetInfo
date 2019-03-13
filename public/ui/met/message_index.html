@@ -7,10 +7,10 @@ echo <<<EOT
 -->
        <div class="active" id="messagelist">
             {$messagelist}
+        <div id="flip">{$page_list}</div>
 			<h3 class="ctitle">{$lang_SubmitInfo}</h3>
 			{$message_form}
         </div>
-        <div id="flip">{$page_list}</div>
 <!--
 EOT;
 require_once template('gap');

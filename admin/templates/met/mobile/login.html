@@ -6,7 +6,7 @@ echo <<<EOT
 <!DOCTYPE html> 
 <html> 
 　<head> 
-　 <title>{$lang_logintitle} - MetInfo{$lang_metinfo}</title> 
+　 <title>{$lang_logintitle} - {$lang_metinfo}</title> 
 　 <meta name="viewport" content="width=device-width, initial-scale=1">
 　 <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css" />
 	<link rel="stylesheet" type="text/css" href="$img_url/css/mobile.css">
@@ -36,8 +36,8 @@ function pressCaptcha(obj){
 <div data-role="page" id="page1">
     <div data-role="content" style="padding: 15px">
         <div style=" text-align:center">
-			<a href="http://www.metinfo.cn" style="font-size:0px;" target="_blank" title="MetInfo{$lang_metinfo}">
-				<img style="width: 180px; height: 60px" src="{$img_url}/login-logo.png">
+			<a href="http://www.metinfo.cn" style="font-size:0px;" target="_blank" title="{$lang_metinfo}">
+				<img style="width: 180px; height: 60px" src="../{$met_agents_logo_login}">
 			</a>
         </div>
         <form action="login_check.php?langset={$langset}" method="post" name="main_login" data-ajax="false" onSubmit="return check_main_login()">

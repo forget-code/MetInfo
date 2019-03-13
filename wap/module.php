@@ -54,7 +54,7 @@ if(!$id){
     $rowset = new Pager($total_count,$list_num,$page);
     $from_record = $rowset->_offset();
 	$page = $page?$page:1;
-	$query = "SELECT * FROM $dbname $serch_sql and top_ok='1' $order_sql LIMIT $from_record, $list_num";
+	$query = "SELECT * FROM $dbname $serch_sql and top_ok='1' and access='0' and (recycle='0' or recycle='-1') $order_sql LIMIT $from_record, $list_num";
 	$result = $db->query($query);
 	while($list= $db->fetch_array($result)){
 		$modlistnow[]=$list;
@@ -67,7 +67,7 @@ if(!$id){
 			$from_record=$from_record?($from_record-$totaltop_count):$from_record;
 		}
 		$list_num=intval($list_num)-count($modlistnow);
-		$query = "SELECT * FROM $dbname $serch_sql and top_ok='0' $order_sql LIMIT $from_record, $list_num";
+		$query = "SELECT * FROM $dbname $serch_sql and top_ok='0' and access='0' and (recycle='0' or recycle='-1') $order_sql LIMIT $from_record, $list_num";
 		$result = $db->query($query);
 		while($list= $db->fetch_array($result)){
 			$modlistnow[]=$list;
@@ -91,7 +91,7 @@ if(!$id){
 	$waptitle=$modulename['name'].'-'.$wap_title;
 }else{
 	$show = $db->get_one("select * from $dbname where lang='$lang' and id = '$id'");
-	$show['content'] = wap_replace($show['content'],'img','object|script|span|strong|table|tr');
+	$show['content'] = wap_replace($show['content'],'img','object|script','span|strong|table|tr|b|p');
 	//$show['content'] =  preg_replace("/<(.*?)>/","",$show['content']);
 	$classnow   = $show['class3']?$show['class3']:($show['class2']?$show['class2']:$show['class1']);
 	if($module==1)$classnow = $id;
@@ -103,4 +103,4 @@ if(!$id){
 }
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
-?> 
+?>

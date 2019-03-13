@@ -259,6 +259,8 @@ jsFile.setAttribute('type','text/javascript');
 jsFile.setAttribute('src','../include/access.php?metuser={$metuser}&lang={$lang}&metaccess={$metaccess}&random='+Math.random());
 document.getElementsByTagName('head').item(0).appendChild(jsFile);
 </script>";
+			$query="select * from $met_admin_array where id='$metaccess'";
+			$metaccess=$db->get_one($query);
 			if(intval($metinfo_member_type)<intval($metaccess)){
 				session_unset();
 				$_SESSION['metinfo_member_name']=$metinfo_member_name;
@@ -300,6 +302,7 @@ document.getElementsByTagName('head').item(0).appendChild(jsFile);
 		if($class_list[$classnow]['releclass'])$navdown=$class_list[$classnow]['releclass'];
 		$higher=$class_list[$classnow]['bigclass'];
 		if($class_list[$higher]['releclass'])$navdown=$class_list[$higher]['releclass'];
+		if($class_list[$higher]['nav']==1||$class_list[$higher]['nav']==3)$navdown=$higher;
 	}
 	if(!$navdown)$navdown=10001;
 	$metblank=$met_urlblank?"target='_blank'":"target='_self'";

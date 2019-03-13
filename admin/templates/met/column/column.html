@@ -243,6 +243,8 @@ echo <<<EOT
               <input name="action" type="hidden" id="action" value="del">
 			  <input name="allid" type="hidden" id="allid" value="">
 </form>	   
+              <input name="anyid" type="hidden" id="anyid" value="$anyid">
+			  <input name="lang" type="hidden" id="lang" value="$lang">
    	   </td> 
    	   </tr>
 		<tr> 
@@ -321,15 +323,36 @@ function columnshow(my,t1,t2){
 	return false;
 }
 function columnFormNum(form){
-	var text = form.find("input");
-	var selc = form.find("select");
+	var list=$("input[name='allid']").val();
+	var lists=list.split(',');
 	var nlist = '';
-	text.each(function(){
-		nlist+='&'+$(this).attr('name')+'='+encodeURIComponent($(this).val());
-	});
-	selc.each(function(){
-		nlist+='&'+$(this).attr('name')+'='+encodeURIComponent($(this).val());
-	});
+	var i;
+	reg=/^[0-9]+$/; 
+	for(i=0;i<lists.length-1;i++){
+		var no_order='no_order_'+lists[i];
+		nlist+='&'+no_order+'='+encodeURIComponent($("input[name='"+no_order+"']").val());
+		var name='name_'+lists[i];
+		nlist+='&'+name+'='+encodeURIComponent($("input[name='"+name+"']").val());
+		var nav='nav_'+lists[i];
+		nlist+='&'+nav+'='+encodeURIComponent($("select[name='"+nav+"']").val());
+		var index_num='index_num_'+lists[i];
+		nlist+='&'+index_num+'='+encodeURIComponent($("input[name='"+index_num+"']").val());
+		if(!reg.test(lists[i])){
+			var bigclass='bigclass_'+lists[i];
+			nlist+='&'+bigclass+'='+encodeURIComponent($("input[name='"+bigclass+"']").val());
+			var foldername='foldername_'+lists[i];
+			nlist+='&'+foldername+'='+encodeURIComponent($("input[name='"+foldername+"']").val());
+			var module='module_'+lists[i];
+			nlist+='&'+module+'='+encodeURIComponent($("select[name='"+module+"']").val());	
+			if($("select[name='"+module+"']").val()=='999'){
+				var out_url='out_url_'+lists[i];
+				nlist+='&'+out_url+'='+encodeURIComponent($("input[name='"+out_url+"']").val());	
+			}			
+			var classtype='classtype_'+lists[i];
+			nlist+='&'+classtype+'='+encodeURIComponent($("input[name='"+classtype+"']").val());
+		}
+	}
+	nlist+='&action='+$("input[name='action']").val()+'&lang='+$("input[name='lang']").val()+'&anyid='+$("input[name='anyid']").val()+'&allid='+$("input[name='allid']").val()
 	return nlist;
 }
 function columneditoradd(my){
@@ -355,17 +378,25 @@ function columneditoradd(my){
 					data: "ajaxmetinfo=1"+dataNum,
 					success: function(data){
 						if(data==0){
-							form.submit();
+							var reurl='delete.php?anyid='+$("input[name='anyid']").val()+'&lang='+$("input[name='lang']").val()+'&action=editorok';
+							location.href=reurl;
 						}else{
-							var datt = data.split('$');
-							var atext='';
-								for(i=0;i<datt.length-1;i++){
-									datx='';datx = datt[i].split('|');
-									$("input[name='"+datx[1]+"']").addClass('focusred');
-									atext+=datx[0]+'['+datx[datx.length-1]+']\\n';
-								}
-								alert(atext);
-								setTimeout(function (){ $("input").removeClass('focusred'); },3000);
+							var reg=/\$/;
+							if(reg.test(data)){
+								var datt = data.split('$');
+								var atext='';
+									for(i=0;i<datt.length-1;i++){
+										datx='';datx = datt[i].split('|');
+										$("input[name='"+datx[1]+"']").addClass('focusred');
+										atext+=datx[0]+'['+datx[datx.length-1]+']\\n';
+									}
+									alert(atext);
+									setTimeout(function (){ $("input").removeClass('focusred'); },3000);
+							}else{
+								alert('$lang_jsx32');
+								var reurl='index.php?anyid='+$("input[name='anyid']").val()+'&lang='+$("input[name='lang']").val();
+								location.href=reurl;
+							}
 						}
 					}
 				});

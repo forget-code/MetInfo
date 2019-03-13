@@ -38,34 +38,19 @@ $index_o_url=$met_index_url[other];
 $searchurl           =$met_weburl."search/search.php?lang=".$lang;
 $file_basicname      =ROOTPATH."lang/language_".$lang.".ini";
 $file_name           =ROOTPATH."templates/".$met_skin_user."/lang/language_".$lang.".ini";
-
-if(file_exists($file_basicname)){
-$fp = @fopen($file_basicname, "r") or die("Cannot open $file_basicname");
-while ($conf_line = @fgets($fp, 1024)){    
-if(substr($conf_line,0,1)=="#"){   
-$line = ereg_replace("#.*$", "", $conf_line);
+$str="";
+if(!file_exists(ROOTPATH.'cache/lang_'.$lang.'.php')){
+	$query="select * from $met_language where lang='$lang' and site='0' and array!='0'";
+	$result= $db->query($query);
+	while($listlang= $db->fetch_array($result)){
+		$name = 'lang_'.$listlang['name'];
+		$$name= trim($listlang['value']);
+		$str.='$'."{$name}='".str_replace(array('\\',"'"),array("\\\\","\\'"),trim($listlang['value']))."';";
+	}
+	$str="<?php\n".$str."\n?>";
+	file_put_contents(ROOTPATH.'cache/lang_'.$lang.'.php',$str);
 }else{
-$line = $conf_line;
-}
-if (trim($line) == "") continue;
-$linearray=explode ('=', $line);
-$linenum=count($linearray);
-if($linenum==2){
-list($name, $value) = explode ('=', $line);
-}else{
-
-  for($i=0;$i<$linenum;$i++){
-
-     $linetra=$i?$linetra."=".$linearray[$i]:$linearray[$i].'metinfo_';
-   }
-list($name, $value) = explode ('metinfo_=', $linetra);
-}
-$value=str_replace("\"","&quot;",$value);
-list($value, $valueinfo)=explode ('/*', $value);
-$name = 'lang_'.daddslashes(trim($name),1,'metinfo');
-$$name= trim($value);
-}
-fclose($fp) or die("Can't close file $file_basicname");
+	require_once ROOTPATH.'cache/lang_'.$lang.'.php';
 }
 if(!file_exists($file_name)){
   if(file_exists(ROOTPATH."templates/".$met_skin_user.'/lang/language_cn.ini')){

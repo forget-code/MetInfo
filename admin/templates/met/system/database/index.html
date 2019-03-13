@@ -60,7 +60,17 @@ echo <<<EOT
 				<ol>
 					<li>{$lang_dataexplain8}</li>
 					<li>{$lang_dataexplain9}</li>
+<!--
+EOT;
+if($met_agents_type<=1){
+echo <<<EOT
+-->	
 					<li>{$lang_dataexplain10}<a href="http://www.metinfo.cn/course/webmove/" target="_blank">{$lang_dataexplain11}</a>{$lang_dataexplain12}</li>
+<!--
+EOT;
+}
+echo <<<EOT
+-->					
 				</ol>
 				</td>
 		  </tr>

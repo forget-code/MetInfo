@@ -4,14 +4,14 @@ echo <<<EOT
 -->
 <div class="indx-pro">
      <div class="inner">
-          <h3 class="title"><span>{$class_index[1][name]}</span></h3>
+          <h3 class="title"><span>{$Column1[name]}</span></h3>
           <div class="clear">
 			  <div class="profld" data-listnum="{$lang_listnum}">
                    
 <!--
 EOT;
 $i=0;
-foreach($nav_list2[$class_index[1][id]] as $key=>$val){
+foreach($nav_list2[$Column1[id]] as $key=>$val){
 $i++;
 $val[desc]=utf8substr($val['description'], 0,$lang_inxtxtsize);
 echo <<<EOT
@@ -39,12 +39,12 @@ echo <<<EOT
 <div class="doly-abo">
      <div class="inner">
           <div class="fl Newxx">
-               <h3 class="title"><a href="{$class_index[3][url]}" title="{$met_atitle}" class="More">{$lang_more}</a><span>{$class_index[3][name]}</span></h3>
+               <h3 class="title"><a href="{$Column2[url]}" title="{$met_atitle}" class="More">{$lang_more}</a><span>{$class_index[3][name]}</span></h3>
                <div class="news">
 				<ul class="list-none">
 <!--
 EOT;
-foreach(methtml_getarray(3,'all','time','') as $key=>$val){
+foreach(methtml_getarray($lang_Column2,'all','time','') as $key=>$val){
 $val[desc]=utf8substr($val['description'], 0, 70);
 echo <<<EOT
 -->
@@ -61,7 +61,7 @@ echo <<<EOT
                </div>
           </div>
           <div class="fr Aboutz">
-               <h3 class="title"><span>{$class_index[2][name]}</span></h3>
+               <h3 class="title"><span>{$lang_indextext1}</span></h3>
                <div class="editor">{$index[content]}<div class="clear"></div></div>
           </div>
           <div class="clear"></div>

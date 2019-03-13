@@ -6,8 +6,10 @@
 function traversal($jkdir,$suffix='[A-Za-z]*',$jump=null)
 {
 	global $filenamearray;
-	$hand=@dir($jkdir);
-	while ($file=$hand->read())
+	//$hand=@dir($jkdir);
+	$hand=opendir($jkdir);
+	//while ($file=$hand->read())
+	while ($file=readdir($hand))
 	{	
 		$filename=$jkdir.'/'.$file;
 		if(@is_dir($filename) && $file != '.' && $file!= '..'&& $file!='./..'){ 

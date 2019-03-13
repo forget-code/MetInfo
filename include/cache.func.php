@@ -8,10 +8,10 @@ function cache_online(){
 	}
 	return cache_page('online_'.$lang.'.inc.php',$data);
 }
-function cache_otherinfo(){
+function cache_otherinfo($retype=1){
 	global $db,$met_otherinfo,$lang;
     $data = $db->get_one("SELECT * FROM $met_otherinfo where lang='$lang' order by id");
-	return cache_page('otherinfo_'.$lang.'.inc.php',$data);
+	return cache_page('otherinfo_'.$lang.'.inc.php',$data,$retype);
 	
 }
 function cache_str(){
@@ -35,14 +35,18 @@ function cache_column(){
 	}
 	return cache_page("column_".$lang.".inc.php",$cache_column);
 }
-function cache_page($file,$string){  
+function cache_page($file,$string,$retype=1){  
 	$return = $string;
 	if(is_array($string)) $string = "<?php\n return ".var_export($string, true)."; ?>";
 	$string=str_replace('\n','',$string);
 	if(!is_dir(ROOTPATH.'cache/'))mkdir(ROOTPATH.'cache/','0777');
 	$file = ROOTPATH.'cache/'.$file;
 	$strlen = file_put_contents($file, $string);
-	return $return;
+	if($retype==1){
+		return $return;
+	}else{
+		return $strlen;
+	}
 }
 function met_cache($file){
     $file = ROOTPATH.'cache/'.$file;

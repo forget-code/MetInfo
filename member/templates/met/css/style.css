@@ -27,58 +27,52 @@ input,textarea{ font-size:12px;}
 .memberfoot{ width:900px; margin:auto; height:30px; line-height:30px; font-family:Arial, Helvetica, sans-serif; text-align:center; border-top:1px solid #CCCCCC; }
 
 /*---------注册---------------------------------------------------------*/
-.main_zhuce{ margin:15px auto 0px auto; ; text-align:left; width:600px; border:1px solid #CCCCCC;}
+.main_zhuce{ margin:15px auto 0px auto; ; text-align:left; width:600px;}
 .main_top{ width:100%; margin:0px auto 0px auto; padding:1px; padding-bottom:0px; font-weight:bold;}
-.main_top span{height:25px; line-height:25px; display:block; font-size:14px;  background:#e8e8e8; color:#333333; text-align:center; }
+.main_top span{ display:block; font-size:18px; text-align:center; padding:5px 0px; border-bottom:1px dotted #ccc; margin-bottom:15px; }
 .main_zhuce form{ margin:0px auto 0px auto; line-height:22px;}
 .input_text{ width:150px;}
 .main_zhuce table{ width:100%; margin:0px auto;}
-.main_zhuce table td.zhuce_text{ text-align:right; font-size:12px; width:150px; background:#e8e8e8; color:#333333; height:25px; line-height:25px; padding-right:3px;}
-.main_zhuce table td.zhuce_input{ padding-left:3px; width:155px; background:#f6f6f6;}
-.main_zhuce table td.zhuce_input input{ border:1px solid #E2E0E0;}
+.main_zhuce table td.zhuce_text{ text-align:right; padding:0px 8px; width:180px;}
+.main_zhuce table td.zhuce_input{ padding:8px 0px;}
+.main_zhuce table td.zhuce_input input{border:1px solid #e5e5e5; height:20px; padding:3px; font-size:14px; width:180px; -webkit-border-radius:3px;  -moz-border-radius: 3px; border-radius: 3px; margin-right:8px;}
+.main_zhuce table td.zhuce_input img{ position:relative; bottom:4px;}
+.main_zhuce table td.zhuce_text .reqd{ color:red;}
 .main_zhuce table td.zhuce_sm{ color:#FF0000; background:#F9F9F9; padding-left:3px;}
-.main_zhuce table td.zhuce_subimt input{ *padding-top:3px; *height:24px; color:#333333;}
+.main_zhuce table td.zhuce_subimt input{ background:#fb8407 url(../images/min-login2.gif) repeat-x left; border:1px solid #cf4500; height:32px; line-height:32px; padding:0px 25px; -webkit-border-radius:5px;  -moz-border-radius: 5px; border-radius: 5px; color:#fff; cursor:pointer; font-size:14px; font-weight:bold;  margin:10px 0px; margin-right:30px;}
 
 /*-----------------会员登录-------------------------------------------------*/
 .main_deng{
-   width:300px;
-   height:215px;
-   *height:215px; 
+   width:400px;
+   height:340px;
    margin:60px auto;
    text-align:left;
-   background:url(../images/bg.jpg) no-repeat -5px -5px; 
+   border:1px solid #e5e5e5;
+    -webkit-border-radius:5px; 
+	-moz-border-radius: 5px; 
+    border-radius: 5px;
+	-webkit-box-shadow:0px 0px 8px 0px #dedede;
 }
-.login_top{ width:90%; 
-          height:25px; 
-		  line-height:25px; 
-		  margin:0px auto; 
-		  padding-top:7px; 
-		  text-align:center; 
-		  font-size:14px;
-		  border-bottom:1px solid #D7D6D4;
-		  font-weight:bold;
-		  color:#333333;
-		   }
+.login_top{ text-align:center;  font-size:22px; font-weight:bold; color:#555; padding:10px 0px; }
 
 .main_deng form{
-   width:90%; margin:3px auto 0px auto; 
+   width:70%; margin:3px auto 0px auto;
+	
 }
-.main_deng form label{ font-size:12px; color:#888888; height:25px; line-height:25px; }
+.main_deng form label{ font-size:12px; color:#777; height:55px; line-height:55px; display:block; position:relative; padding-left:50px;}
+.main_deng form label span{ position:absolute; left:0px; top:0px; width:40px; text-align:right;}
+.main_deng form label input{ border:1px solid #e5e5e5; height:28px; line-height:28px; padding:3px; font-size:14px; width:200px; -webkit-border-radius:5px;  -moz-border-radius: 5px; border-radius: 5px;}
+.main_deng form label img{ position:absolute; top:0px; right:45px; margin-top:15px; height:25px;}
 .main_deng p{ margin:5px 5px 5px 5px;}
-.main_deng form label input.input_text{
-    width:150px; font-size:12px; color:#666666; border:1px solid #D7D6D4; height:18px;
-}
 .forgetmenot{ margin:5px 0px; }
 .forgetmenot input{ position:relative; top:2px; }
-.submit{ _margin-top:5px;}
-.submit input{ padding-top:2px\9; *padding-top:2px; *height:22px;  margin-right:8px;}
 
-.submit span a{ font-size:12px; color:#2BBFF0;}
-.submit span a:hover{ color:#FF0000;}
+.member_login_submit{ padding-left:50px; margin-top:15px;}
+.member_login_submit input{ background:#fb8407 url(../images/min-login2.gif) repeat-x left; border:1px solid #cf4500; height:32px; line-height:32px; padding:0px 25px; -webkit-border-radius:5px;  -moz-border-radius: 5px; border-radius: 5px; color:#fff; cursor:pointer; font-size:14px; font-weight:bold; margin-right:30px;}
+.member_login_submit a{ color:#005982;}
 
-.zcm{ margin-bottom:2px;}
-.zcm input{border:1px solid #D7D6D4;}
-.zcm img{ position:relative; bottom:4px; *bottom:1px; }
+.member_login_register{ margin-top:30px; border-top:1px dotted #ddd; height:32px; line-height:32px; text-align:center; }
+.member_login_register a{ color:#a40000; text-decoration:underline;}
 
 .table_member td input.input,.table_member td textarea{ background:#fff; color:#333; border:1px solid #eee; border-top-color:#999; border-left-color:#999; padding:1px; vertical-align:middle; height:22px; line-height:22px; margin-right:5px;}
 .table_member td textarea{ height:50px; line-height:1.5;}
@@ -98,10 +92,21 @@ input.submit{ height:28px; line-height:20px; font-size:12px; padding:0px 20px;}
 .table_member td.member_text1{text-align:left; font-size:12px; background:#f5f5f5; padding:3px 10px;}
 .table_member td.text_list{ padding:3px 10px;}
 .table_member td.text_list a{ color:#1C57C4;}
-.hrtl_txt{ padding-bottom:3px; padding-left:15px; margin-bottom:5px;}
-h3.hrtl{ font-size:14px;}
-h3.line{ border-top:1px dashed #CDCDCD; padding-top:5px; clear:both;}
-.hrtl_txt em{ float:left; min-width:100px; width:100px; white-space:nowrap;}
+.hrtl_txt{ padding-bottom:3px; padding-left:25px; margin-bottom:10px;}
+h3.hrtl{ font-size:14px; border-bottom:1px solid #eee; height:45px;}
+h3.hrtl span{ float:left; position:relative; background:#fff; left:8px; top:1px; border-top:3px solid #eb6100; border-left:1px solid #eee; border-right:1px solid #eee; padding:0px 15px; height:42px; line-height:42px;}
+h3.line{ padding-top:5px; clear:both;}
+.hrtl_txt li{ height:35px; line-height:25px; list-style:none;}
+.hrtl_txt em{ float:left; min-width:100px; width:100px; white-space:nowrap; font-style:normal;}
+.hrtl_txt span{ float:left; background:#ffdcb2; height:22px; line-height:22px; padding:0px 10px; -webkit-border-radius:10px; -moz-border-radius: 10px; border-radius: 10px; border:1px solid #fb8b38;}
+.hrtl_txt_1{ list-style:none; padding:0px; width:95%; margin:0px auto; padding-top:15px;}
+.hrtl_txt_1 li{ border:1px solid #eee; margin-bottom:10px; clear:both; height:35px; line-height:35px; background:url(../images/min-bg.gif) repeat-x; -webkit-border-radius:3px; -moz-border-radius: 3px; border-radius: 3px;}
+.hrtl_txt_1 li div.hrtl_t{ float:left; width:33%;}
+.hrtl_txt_1 li div.hrtl_t div{  padding-left:18px; margin-left:60px; }
+.hrtl_txt_1 li div.hrtl1 div{ background:url(../images/min-1.gif) no-repeat left center;}
+.hrtl_txt_1 li div.hrtl2 div{ background:url(../images/min-2.gif) no-repeat left center;}
+.hrtl_txt_1 li div.hrtl3 div{ background:url(../images/min-3.gif) no-repeat left center;}
+.hrtl_texts{ padding:12px 0px 20px 12px; margin-left:20px; background:url(../images/min-mp1.gif) no-repeat left 17px;}
 
 /*-找回密码---*/
 .zhaohui{ padding-bottom:20px;}

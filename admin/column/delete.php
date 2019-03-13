@@ -52,7 +52,8 @@ if($action=="del"){
 		if(!$if_in)$if_in   = $module==999?1:0;
 		$index_num   = 'index_num_'.$allidlist[$i];   $index_num   = $$index_num;
 		$classtype   = 'classtype_'.$allidlist[$i];   $classtype   = $$classtype;
-		$access      = 'access_'.$allidlist[$i];      $access      = $$access;
+		//$access      = 'access_'.$allidlist[$i];      $access      = $$access;
+		$access=0;
 		
 		$foldername=metdetrim($foldername);
 		$ertxt = $name.'|';/*错误提示前缀*/
@@ -60,7 +61,17 @@ if($action=="del"){
 		$releok=0;
 		$tpif = is_numeric($allidlist[$i])?1:0;
 		$sql = $tpif?"id='$allidlist[$i]'":'';
-		if($sql!='')$skin_m=$db->get_one("SELECT * FROM $met_column WHERE $sql");
+		if($sql!=''){
+			$skin_m=$db->get_one("SELECT * FROM $met_column WHERE $sql");
+			$bigclass    = $skin_m['bigclass'];		
+			$foldername  = $skin_m['foldername'];		
+			$module      = $skin_m['module'];		
+			$out_url     = $skin_m['out_url'];		
+			$if_in       = $skin_m['if_in'];		
+			$classtype   = $skin_m['classtype'];		
+			$access      = $skin_m['access'];	
+			$foldername=metdetrim($foldername);
+		}	
 		$releclassok=$db->get_one("SELECT * FROM $met_column WHERE id='$bigclass'");
 		if($classtype==2){
 			if($skin_m['releclass']||$module!=$releclassok['module']){
@@ -156,12 +167,12 @@ if($action=="del"){
 			$column[$i]['folder_m']  = $folder_m;
 			$column[$i]['tpif']      = $tpif;
 		}
-	}	
-	if($ajaxmetinfo){
-		echo $metinfo==''?0:$metinfo;
+	}
+	//if($metinfo!='')metsave('../column/index.php?anyid='.$anyid.'&lang='.$lang,$lang_loginFail);
+	if($metinfo!=''){
+		echo $metinfo;
 		die();
 	}
-	if($metinfo!='')metsave('../column/index.php?anyid='.$anyid.'&lang='.$lang,$lang_loginFail);
 	$metinfo_admin_pop1='';
 	foreach($column as $key=>$val){
 		if($if_in==0){
@@ -207,7 +218,10 @@ if($action=="del"){
 		}
 	}
 	file_unlink("../../cache/column_$lang.inc.php");
-	metsave('../column/index.php?anyid='.$anyid.'&lang='.$lang);
+	echo 0;
+}
+elseif($action=="editorok"){
+metsave('../column/index.php?anyid='.$anyid.'&lang='.$lang);
 }else{
 	$admin_list = $db->get_one("SELECT * FROM {$met_column} WHERE id='$id'");
 	if(!$admin_list)metsave('../column/index.php?anyid='.$anyid.'&lang='.$lang,$lang_dataerror);

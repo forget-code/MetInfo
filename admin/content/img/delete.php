@@ -15,6 +15,10 @@ if($action=="del"){
 			deletepage($folder[foldername],$val,'showimg',$updatetime,$img_list[filename]);
 			$declass[$img_list['class2']][$img_list['class3']]=1;
 		}
+		if(!$met_recycle){
+			$query = "delete from $met_plist where listid='$val' and module='5'";
+			$db->query($query);
+		}
 		$query = $met_recycle?"update $met_img set recycle='5',updatetime='".date('Y-m-d H:i:s')."' where id='$val'":"delete from $met_img where id='$val'";
 		$db->query($query);
 		if(!$met_recycle){if($img_list){delimg($img_list,1,2);}else{delimg($val,3,2);}}
@@ -54,6 +58,10 @@ if($action=="del"){
 	if($met_webhtm!=0 or $metadmin[pagename]){
 		if($met_htmpagename==1)$updatetime=date('Ymd',strtotime($img_list[updatetime]));
 		deletepage($folder[foldername],$id,'showimg',$updatetime,$img_list[filename]);
+	}
+	if(!$met_recycle){
+		$query = "delete from $met_plist where listid='$id' and module='5'";
+		$db->query($query);
 	}
 	$query = $met_recycle?"update $met_img set recycle='5',updatetime='".date('Y-m-d H:i:s')."' where id='$id'":"delete from $met_img where id='$id'";
 	$db->query($query);

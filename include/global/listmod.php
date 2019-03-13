@@ -1,6 +1,7 @@
 <?php
 require_once substr(dirname(__FILE__), 0, -6).'common.inc.php';
 require_once '../include/global/pseudo.php';
+if($dbname!=$met_download&&$dbname!=$met_img&&$dbname!=$met_news&&$dbname!=$met_product){okinfo('../404.html');exit();}
 if($class_list[$class1]['module']>=100||($class1==0&&$class2==0&&$class3==0)){
 	if($imgproduct){
 		$ipmd = $imgproduct=='product'?100:101;
@@ -45,16 +46,27 @@ $class1_info=$class_list[$class1]['releclass']?$class_list[$class_list[$class1][
 $class2_info=$class_list[$class1]['releclass']?$class_list[$class1]:$class_list[$class2];
 $class3_info=$class_list[$class1]['releclass']?$class_list[$class2]:$class_list[$class3];
 if(!is_array($class1_info))okinfo('../404.html');
+$class1sql=" class1='$class1' ";
+if($class1&&!$class2&&!$class3){
+	foreach($module_list2[$class_list[$class1]['module']] as $key=>$val){
+		if($val['releclass']==$class1){
+			$class1re.=" or class1=$val[id] ";
+		}
+	}
+	if($class1re){
+		$class1sql='('.$class1sql.$class1re.')';
+	}
+}
 if($imgproduct){
 	$ipcom = $imgproduct=='product'?$productcom:$imgcom;
 	$serch_sql .=" where lang='$lang' and (recycle='0' or recycle='-1')";
 	if($ipcom=='com')$serch_sql .= " and com_ok=1";
-    if($class1 && $class_list[$class1]['module']<>$ipmd)$serch_sql .= " and class1=$class1 ";
+    if($class1 && $class_list[$class1]['module']<>$ipmd&&$class1!=10001)$serch_sql .= ' and '.$class1sql;
 }else{
-	$serch_sql=" where lang='$lang' and (recycle='0' or recycle='-1') and class1=$class1 ";
+	$serch_sql=" where lang='$lang' and (recycle='0' or recycle='-1')  and $class1sql ";
 }
-if($class2)$serch_sql .= " and class2=$class2";
-if($class3)$serch_sql .= " and class3=$class3"; 
+if($class2)$serch_sql .= " and class2='$class2'";
+if($class3)$serch_sql .= " and class3='$class3'"; 
 if($search=="search" && $mdmendy){ 
 	$dbparaname = $mdname=='product'?$product_paralist:($mdname=='download'?$download_paralist:$img_paralist);
 	if($searchtype){
@@ -106,7 +118,7 @@ if($search=="search" && $mdmendy){
 			}
 		}
 		//5.0.4
-		$serch_sql .= " or exists(select * from $met_plist where module=3 and $met_plist.listid=$dbname.id and $met_plist.info like'%".trim($content)."%')) ";
+		if($content<>'')$serch_sql .= " or exists(select * from $met_plist where module=3 and $met_plist.listid=$dbname.id and $met_plist.info like'%".trim($content)."%')) ";
 	} 
 } 
 if($mdmendy)$serchpage .= "&searchtype=".$searchtype;
@@ -166,8 +178,8 @@ require_once '../include/pager.class.php';
 		$list['news']=$list['top_ok']?"":((((strtotime($m_now_date)-strtotime($list['updatetime']))/86400)<$met_newsdays)?"<img class='listnews' src='".$img_url."news.gif"."' alt='".$met_alt."' />":"");
 		$pagename1=$list['addtime'];
 		$list['updatetime'] = date($met_listtime,strtotime($list['updatetime']));
-		$list['imgurls']=($list['imgurls']<>"")?$list['imgurls']:$weburly.'public/images/metinfo.gif';
-		$list['imgurl']=($list['imgurl']<>"")?$list['imgurl']:$weburly.'public/images/metinfo.gif';
+		$list['imgurls']=($list['imgurls']<>"")?$list['imgurls']:$weburly.$met_agents_img;
+		$list['imgurl']=($list['imgurl']<>"")?$list['imgurl']:$weburly.$met_agents_img;
 		if($met_webhtm){
 			switch($met_htmpagename){
 				case 0:
@@ -187,7 +199,7 @@ require_once '../include/pager.class.php';
 		$panyid = $list['filename']!=''?$list['filename']:$list['id'];
 		$met_ahtmtype = $list['filename']<>''?$met_chtmtype:$met_htmtype;
 		$list['url']=$met_pseudo?$panyid.'-'.$lang.'.html':($met_webhtm?$htmname.$met_ahtmtype:$phpname);
-		if($class_list[$class1]['module']>=100||$search=='search')$list['url']='../'.$class_list[$list['class1']]['foldername'].'/'.$list['url'];
+		if($class_list[$class1]['module']>=100||$search=='search'||$list['class1']!=$class1)$list['url']='../'.$class_list[$list['class1']]['foldername'].'/'.$list['url'];
 		if($mdname=='download'){
 			if(intval($list['downloadaccess'])>0&&$met_member_use){
 				$list['downloadurl']="down.php?id=$list[id]&lang=$lang";
@@ -272,5 +284,6 @@ $show['description']=$class_info['description']?$class_info['description']:$met_
 $show['keywords']=$class_info['keywords']?$class_info['keywords']:$met_keywords;
 $met_title=$met_title?$class_info['name'].'-'.$met_title:$class_info['name'];
 if($class_info['ctitle']!='')$met_title=$class_info['ctitle'];
+if($page>1)$met_title.='-'.$lang_Pagenum1.$page.$lang_Pagenum2;
 require_once '../public/php/methtml.inc.php';
 ?>

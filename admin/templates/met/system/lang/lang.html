@@ -30,7 +30,7 @@ echo <<<EOT
 		<li {$listclass[1]}><a href="lang.php?anyid={$anyid}&lang={$lang}&cs=1" title="{$lang_langwebmanage}">{$lang_langwebmanage}</a></li>
 <!--
 EOT;
-if($langadminok=="metinfo"){
+if($langadminok=="metinfo"&&$met_agents_type<=1){
 echo <<<EOT
 -->
 		<li {$listclass[2]}><a href="lang.php?anyid={$anyid}&lang={$lang}&cs=2" title="{$lang_langadminmanage}">{$lang_langadminmanage}</a></li>
@@ -142,31 +142,32 @@ echo <<<EOT
 <!--
 EOT;
 }elseif($langaction=='add' or $langaction=='edit'){
-$langorder=count($met_langok)+1;
-$langopen1="checked=''";
-$langautor2="checked=''";
-$langnewwindows1="checked=''";
-if($langaction=='edit'){
-$langopen1="";
-$lang_langadd=$lang_langedit;
-$langorder=$met_langok[$langeditor][order];
-if($met_langok[$langeditor][useok]){
-$langopen1="checked";
-}else{
-$langopen2="checked";
-}
-$met_langok[$langeditor][newwindows]?$langnewwindows1="checked='checked'":$langnewwindows0="checked='checked'";
-$langmark1="class='none'";
-$langautor1='';
-$langautor2='';
-if($langaction=='add'){
+	$langorder=count($met_langok)+1;
+	$langopen1="checked=''";
 	$langautor2="checked=''";
-	$copyhide='';
-}else{
-	$langautor1="checked=''";
-	$copyhide=' style="display:none"';
-}
-}
+	$langnewwindows1="checked=''";
+	if($langaction=='edit'){
+		$langopen1="";
+		$lang_langadd=$lang_langedit;
+		$langorder=$met_langok[$langeditor][order];
+		if($met_langok[$langeditor][useok]){
+			$langopen1="checked";
+		}else{
+			$langopen2="checked";
+		}
+		$met_langok[$langeditor][newwindows]?$langnewwindows1="checked='checked'":$langnewwindows0="checked='checked'";
+		$langmark1="class='none'";
+		$langautor1='';
+		$langautor2='';
+		$langautor1="checked=''";
+		$copyhide=' style="display:none"';
+		$addhide='';
+		$syn[$met_langok[$langeditor][synchronous]]="selected";
+	}else{
+		$langautor2="checked=''";
+		$copyhide='';
+		$addhide=' style="display:none"';
+	}
 echo <<<EOT
 -->	
 <script type="text/javascript">
@@ -213,15 +214,14 @@ echo <<<EOT
 <option value="af">$lang_lang11</option><option value="da">$lang_lang12</option>
 <option value="de">$lang_lang13</option><option value="ru">$lang_lang14</option>
 <option value="fr">$lang_lang15</option><option value="tl">$lang_lang16</option>
-<option value="fi">$lang_lang17</option><option value="ka">$lang_lang18</option>
-<option value="gu">$lang_lang19</option><option value="ht">$lang_lang20</option>
+<option value="fi">$lang_lang17</option><option value="ht">$lang_lang20</option>
 <option value="ko">$lang_lang21</option><option value="nl">$lang_lang22</option>
 <option value="gl">$lang_lang23</option><option value="ca">$lang_lang24</option>
 <option value="cs">$lang_lang25</option><option value="hr">$lang_lang26</option>
 <option value="la">$lang_lang27</option><option value="lv">$lang_lang28</option>
 <option value="lt">$lang_lang29</option><option value="ro">$lang_lang30</option>
 <option value="mt">$lang_lang31</option><option value="ms">$lang_lang32</option>
-<option value="mk">$lang_lang33</option><option value="bn">$lang_lang34</option>
+<option value="mk">$lang_lang33</option>
 <option value="no">$lang_lang35</option><option value="pt">$lang_lang36</option>
 <option value="ja">$lang_lang37</option><option value="sv">$lang_lang38</option>
 <option value="sr">$lang_lang39</option><option value="sk">$lang_lang40</option>
@@ -230,13 +230,11 @@ echo <<<EOT
 <option value="cy">$lang_lang45</option><option value="uk">$lang_lang46</option>
 <option value="iw">$lang_lang47</option><option value="el">$lang_lang48</option>
 <option value="eu">$lang_lang49</option><option value="es">$lang_lang50</option>
-<option value="hu">$lang_lang51</option><option value="hy">$lang_lang52</option>
+<option value="hu">$lang_lang51</option>
 <option value="it">$lang_lang53</option><option value="yi">$lang_lang54</option>
-<option value="hi">$lang_lang55</option><option value="kn">$lang_lang56</option>
-<option value="te">$lang_lang57</option><option value="ta">$lang_lang58</option>
 <option value="ur">$lang_lang59</option><option value="id">$lang_lang60</option>
 <option value="en">$lang_lang61</option><option value="vi">$lang_lang62</option>
-<option value="zh-TW">$lang_lang63</option><option value="zh-CN">$lang_lang64</option></select>
+<option value="tc">$lang_lang63</option><option value="cn">$lang_lang64</option></select>
 			</td>
         </tr>
 <!--
@@ -260,15 +258,42 @@ echo <<<EOT
 			$('#langmark').show();
 			$("input[name='langflag']").val('');
 			$('#langautor-box').hide();
+			if($('input:radio[name="langdlok"]:checked').val()==1){
+				$('#notlangautor2').show();
+				$('.notlangautor2').hide();
+			}
 		}else{
-			var imgu=$(this).val()+'.gif';
+			var img=$(this).val();
+			if($(this).val()=='cn')img='zh-CN';
+			if($(this).val()=='tc')img='zh-TW';
+			var imgu=img+'.gif';
 			$('#langmark').hide();
 			var gn=$(this).find("option:selected").text();
 			$("input[name='langname']").val(gn);
 			$("input[name='langflag']").val(imgu);
 			$('#langautor-box').show();
+			$('#notlangautor2').hide();
 		}
 	});
+	function changelang(i){
+		y= $('#met-lang').val()!=''?0:1;
+		if(y){
+			if(i){
+				$('.notlangautor2').hide();
+				$('#notlangautor2').show();
+			}else{
+				$('#notlangautor2').hide();
+				$('.notlangautor2').show();
+			}
+		}else{
+			if(i){
+				$('.notlangautor2').hide();
+			}else{
+				$('.notlangautor2').show();
+			}
+			$('#notlangautor2').hide();
+		}
+	}
 </script>
 			</td>
         </tr> 
@@ -281,8 +306,65 @@ echo <<<EOT
             <td class="input"><input type="text" class="text small nonull" name="langmark" value="{$met_langok[$langeditor][mark]}"><span class="tips">{$lang_langmarkinfo}</span>
 			</td>
         </tr> 
-		<tr id="notlangautor1" {$copyhide}> 
+		<tr {$copyhide}> 
             <td class="text">{$lang_langexplain3}{$lang_marks}</td>
+            <td class="input">
+			<label><input name="langdlok" class="radio" type="radio" value="1" onclick="changelang(1)" checked="checked">{$lang_langexplain5}</label>&nbsp;&nbsp;
+			<label><input name="langdlok" class="radio" type="radio" value="0" onclick="changelang(0)" >{$lang_langexplain6}</label>&nbsp;&nbsp;
+			<span class="tips">{$lang_langexplain8}</span>
+			</td>
+        </tr>
+		<tr id="notlangautor2" {$addhide}> 
+			<td class="text"></td>
+			<td class="input">
+				<input name="synchronous1" type="hidden" value="{$met_langok[$langeditor][synchronous]}">
+				<select name="synchronous">
+<!--
+EOT;
+if(!$addhide){
+echo <<<EOT
+-->					
+<option value="">{$lang_langexplain9}</option>
+<!--
+EOT;
+}
+echo <<<EOT
+-->	
+<option value="sq" $syn[sq]>$lang_lang1</option><option value="ar" $syn[ar]>$lang_lang2</option>
+<option value="az" $syn[az]>$lang_lang3</option><option value="ga" $syn[ga]>$lang_lang4</option>
+<option value="et" $syn[et]>$lang_lang5</option><option value="be" $syn[be]>$lang_lang6</option>
+<option value="bg" $syn[bg]>$lang_lang7</option><option value="is" $syn[is]>$lang_lang8</option>
+<option value="pl" $syn[pl]>$lang_lang9</option><option value="fa" $syn[fa]>$lang_lang10</option>
+<option value="af" $syn[af]>$lang_lang11</option><option value="da" $syn[da]>$lang_lang12</option>
+<option value="de" $syn[de]>$lang_lang13</option><option value="ru" $syn[ru]>$lang_lang14</option>
+<option value="fr" $syn[fr]>$lang_lang15</option><option value="tl" $syn[tl]>$lang_lang16</option>
+<option value="fi" $syn[fi]>$lang_lang17</option><option value="ht" $syn[ht]>$lang_lang20</option>
+<option value="ko" $syn[ko]>$lang_lang21</option><option value="nl" $syn[nl]>$lang_lang22</option>
+<option value="gl" $syn[gl]>$lang_lang23</option><option value="ca" $syn[ca]>$lang_lang24</option>
+<option value="cs" $syn[cs]>$lang_lang25</option><option value="hr" $syn[hr]>$lang_lang26</option>
+<option value="la" $syn[la]>$lang_lang27</option><option value="lv" $syn[lv]>$lang_lang28</option>
+<option value="lt" $syn[lt]>$lang_lang29</option><option value="ro" $syn[ro]>$lang_lang30</option>
+<option value="mt" $syn[mt]>$lang_lang31</option><option value="ms" $syn[ms]>$lang_lang32</option>
+<option value="mk" $syn[mk]>$lang_lang33</option>
+<option value="no" $syn[no]>$lang_lang35</option><option value="pt" $syn[pt]>$lang_lang36</option>
+<option value="ja" $syn[ja]>$lang_lang37</option><option value="sv" $syn[sv]>$lang_lang38</option>
+<option value="sr" $syn[sr]>$lang_lang39</option><option value="sk" $syn[sk]>$lang_lang40</option>
+<option value="sl" $syn[sl]>$lang_lang41</option><option value="sw" $syn[sw]>$lang_lang42</option>
+<option value="th" $syn[th]>$lang_lang43</option><option value="tr" $syn[tr]>$lang_lang44</option>
+<option value="cy" $syn[cy]>$lang_lang45</option><option value="uk" $syn[uk]>$lang_lang46</option>
+<option value="iw" $syn[iw]>$lang_lang47</option><option value="el" $syn[el]>$lang_lang48</option>
+<option value="eu" $syn[eu]>$lang_lang49</option><option value="es" $syn[es]>$lang_lang50</option>
+<option value="hu" $syn[hu]>$lang_lang51</option>
+<option value="it" $syn[it]>$lang_lang53</option><option value="yi" $syn[yi]>$lang_lang54</option>
+<option value="ur" $syn[ur]>$lang_lang59</option><option value="id" $syn[id]>$lang_lang60</option>
+<option value="en" $syn[en]>$lang_lang61</option><option value="vi" $syn[vi]>$lang_lang62</option>
+<option value="tc" $syn[tc]>$lang_lang63</option><option value="cn" $syn[cn]>$lang_lang64</option>
+				</select>
+				<span class="tips">{$lang_langexplain7}</span>
+			</td>
+		</tr>
+		<tr id="notlangautor1" {$copyhide} class='notlangautor2 none'> 
+            <td class="text"></td>
             <td class="input">
 			<select name="langfile">
 <!--
@@ -297,7 +379,7 @@ EOT;
 }}
 echo <<<EOT
 -->			
-			</select>&nbsp;{$lang_langexplain4}</td>
+			</select>&nbsp;<span class="tips">{$lang_langexplain4}</span></td>
         </tr>
 <!--
 EOT;
@@ -399,6 +481,7 @@ echo <<<EOT
 			</td>
 			<td class="list-text">
 				<a href="langeditor.php?anyid={$anyid}&langeditor=$val[mark]&lang={$lang}&cs=0" title="{$lang_langwebeditor}" class="text">{$lang_langwebeditor}</a>
+				<a href="lang.php?anyid={$anyid}&lang={$lang}&cs=1&action=syn&syn={$val[synchronous]}&nowmark={$val[mark]}" title="" class="text" onclick="return syn('$val[synchronous]');">同步语言参数</a>
 			</td>																	
         </tr>
 <!--
@@ -539,6 +622,18 @@ echo <<<EOT
 	    metsand.each(function(){
 		    if($(this).attr("disabled")==true)$(this).addClass("disabled");
         });
+	function syn(syn){
+		if(syn==''){
+			alert('{$lang_langexplain10}');
+			return false;
+		}
+		var con = confirm("{$lang_langexplain11}");
+		if(con){
+			return ture;
+		}else{
+			return false;
+		}
+	}
 </script>
 </body>
 </html>

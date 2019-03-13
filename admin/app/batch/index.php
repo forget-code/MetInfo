@@ -15,6 +15,7 @@ $listjs = "<script language = 'JavaScript'>\n";
 $listjs.= "var onecount;\n";
 $listjs.= "lev = new Array();\n";
 foreach($clist as $key=>$vallist){
+	$vallist[name]=str_replace("'","\\'",$vallist[name]);
 	if($vallist['releclass']){
 		$listjs.= "lev[".$i."] = new Array('".$vallist[name]."','0','".$vallist[id]."','".$vallist[access]."');\n";
 		$i=$i+1;

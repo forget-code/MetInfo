@@ -10,7 +10,7 @@ echo <<<EOT
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>MetInfo{$lang_metinfo}</title>
+<title>{$lang_metinfo}</title>
 <link href="$img_url/css/metinfo.css" rel="stylesheet" />
 </head>
 <script type="text/javascript" src="../public/js/jQuery1.7.2.js"></script>
@@ -108,7 +108,7 @@ echo <<<EOT
 		</div>
     </div>
     <div class="floatl">
-	    <a href="index.php?lang={$lang}" hidefocus="true" id="met_logo"><img src="{$img_url}/logoen.gif" alt="MetInfo" title="MetInfo" /></a>
+	    <a href="index.php?lang={$lang}" hidefocus="true" id="met_logo"><img src="{$met_agents_logo_index}" alt="{$lang_metinfo}" title="{$lang_metinfo}" /></a>
 	</div>
 </div>
 <div id="content">
@@ -150,13 +150,27 @@ echo <<<EOT
 <!--
 EOT;
 }}
-$email=$admin_list['admin_group']==10000?$admin_list['admin_email']:'';
-$tel=$admin_list['admin_group']==10000?$admin_list['admin_mobile']:'';
 echo <<<EOT
 -->
 	    </div>
 		<div class="claer"></div>
+<!--
+EOT;
+if($met_agents_type<=1){
+echo <<<EOT
+-->	
 		<div class="left_footer">{$lang_indexthanks} <a href="http://www.metinfo.cn/" target="_blank">MetInfo</a><span class="none">{$foot}</span></div>
+<!--
+EOT;
+}else{
+echo <<<EOT
+-->	
+	<div class="left_footer">{$lang_indexthanks}</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->		
 	</div>
     <div class="floatr" id="metright">
         <div class="iframe">
@@ -166,13 +180,44 @@ echo <<<EOT
 	<div class="clear"></div>
 	</div>
 </div>
-<script type="text/javascript">
-	$.ajax({
-		url: 'http://api.metinfo.cn/record_install.php?url={$met_weburl}&email={$email}&webname={$met_webname}&webkeywords={$met_keywords}&tel={$tel}&version={$metcms_v}&softtype=1',
-		type: "POST"
-	});
-</script>
 <script src="{$img_url}/js/metinfo.js" type="text/javascript"></script>
+<script type="text/javascript">
+if(!$.cookie('upgraderemind')){
+	var src=$("#main").attr("src");
+	if(src.substring(0,15)=='system/sysadmin'){
+		$.ajax({
+			url: 'http://$met_host/sysnew.php?ver=$metcms_v&patch=$met_patch',
+			type: 'GET',
+			dataType: 'jsonp',
+			jsonp: 'jsoncallback',
+			success: function(data) {
+				if(data.metok==1){
+					alert(data.message);
+					$("#main").attr("src",src+'&click=1');
+				}
+				if(data.metpatch==1){
+					$.ajax({
+						url: './system/olupdate.php?action=patch',
+						type: 'GET',
+						success: function(data) {
+						}
+					});	
+				}
+			}
+		});	
+	}
+	$.cookie('upgraderemind', '1');
+}
+if(!$.cookie('appsynchronous')|| {$appaddok} == 0){
+	$.ajax({
+		url: 'app/dlapp/upapp.php',
+		type: 'GET',
+		success: function(data) {
+		}
+	});	
+	$.cookie('appsynchronous', '1');
+}
+</script>
 </body>
 </html>
 <!--

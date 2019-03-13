@@ -1,5 +1,6 @@
 <?php
-//后台控制参数
+$dataoptimize_html='html';//模板文件类型，可以为htm,html,php
+$metinfouiok=1;//是否开启UI，开启后将加载UI样式和JS文件
 $metadmin[categorynamemark]=1; //栏目修饰名称
 $metadmin[categorymarkimage]=1; //栏目标识图片
 $metadmin[categoryimage]=1; //栏目图片

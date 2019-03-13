@@ -5,6 +5,7 @@ require_once '../include/common.inc.php';
 require_once ROOTPATH.'member/index_member.php';
 if($p){
    $array = explode('.',base64_decode($p));
+   $array[0]=daddslashes($array[0]);
    $sql="SELECT * FROM $met_admin_table WHERE admin_id='".$array[0]."'";
    $sqlarray = $db->get_one($sql);
    $passwords=$sqlarray[admin_pass];
@@ -16,6 +17,7 @@ if($p){
    if($action == "MembersAction"){
         if($password=='' || $passworda!=$password)okinfo('javascript:history.back();',$lang_NewPassJS2);
         $password = md5($password);
+		$array[0]=daddslashes($array[0]);
         $query="update $met_admin_table set
 		   admin_pass='$password'
 		   where admin_id='$array[0]'";

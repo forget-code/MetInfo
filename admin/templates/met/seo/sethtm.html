@@ -86,7 +86,20 @@ echo <<<EOT
 -->
 	<tr> 
         <td class="text"></td>
-        <td class="input color390">{$lang_rewriteok}<a href="http://www.metinfo.cn/faq/rewrite.htm" target="_blank" title="{$lang_rewritefaq}">{$lang_rewritefaq}</a></td>
+        <td class="input color390">{$lang_rewriteok}
+<!--
+EOT;
+if($met_agents_type<=1){
+echo <<<EOT
+-->			
+		<a href="http://www.metinfo.cn/faq/rewrite.htm" target="_blank" title="{$lang_rewritefaq}">{$lang_rewritefaq}</a>
+<!--
+EOT;
+}
+echo <<<EOT
+-->			
+		&nbsp;<a href="pseudo.php?pseudo_download=1" target="_blank" title="{$lang_rewriteruledownload1}">{$lang_rewriteruledownload1}</a>
+		</td>
     </tr>
 	<tr> 
         <td class="text">{$lang_rewrite}{$lang_marks}</td>

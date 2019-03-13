@@ -5,7 +5,7 @@ header("Content-type: text/html;charset=utf-8");
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
 @set_time_limit(0);
 set_magic_quotes_runtime(0);
-define('VERSION','5.1.4');
+define('VERSION','5.1.7');
 if(PHP_VERSION < '4.1.0') {
 	$_GET         = &$HTTP_GET_VARS;
 	$_POST        = &$HTTP_POST_VARS;
@@ -36,12 +36,20 @@ $nowyear    = date('Y',$m_now_time);
 $localurl="http://";
 $localurl.=$_SERVER['HTTP_HOST'].$_SERVER["PHP_SELF"];
 $install_url=$localurl;
+
 if(file_exists('../config/install.lock')){
 	exit('对不起，该程序已经安装过了。<br/>
 	      如您要重新安装，请手动删除config/install.lock文件。');
 }
+
 switch ($action)
 {
+	case 'apitest':
+	{
+		$post=array('t'=>'t');
+		echo curl_post($post,15);
+		die();
+	}
 	case 'inspect':
 	{
 		$mysql_support = (function_exists( 'mysql_connect')) ? ON : OFF;
@@ -72,35 +80,50 @@ switch ($action)
 			$function='WARN';
 			$fstr.="<li class='WARN'>空间不支持copy函数，无法上传文件。</li>";
 		}
-		if(!function_exists('fsockopen')&&!function_exists('pfsockopen')&&!get_extension_funcs('curl')){
-			$function='WARN';
-			$fstr.="<li class='WARN'>空间不支持fsockopen，pfsockopen函数，curl模块，系统在线更新，短信发送功能无法使用。请至少开启其中一个。</li>";
+		if(!function_exists('fsockopen')&&!function_exists('pfsockopen')&&(!get_extension_funcs('curl')||!function_exists('curl_init')||!function_exists('curl_setopt')||!function_exists('curl_exec')||!function_exists('curl_close'))){
+				$function='WARN';
+				$fstr.="<li class='WARN'>空间不支持fsockopen，pfsockopen函数，curl模块(需同时开启curl_init,curl_setopt,curl_exec,curl_close)，系统在线更新，短信发送功能无法使用。请至少开启其中一个。</li>";
 		}
 		if(!get_extension_funcs('gd')){
 			$function='WARN';
 			$fstr.="<li class='WARN'>空间不支持gd模块，图片打水印和缩略生成功能无法使用。</li>";
 		}
+		if(!function_exists('gzinflate')){
+			$function='WARN';
+			$fstr.="<li class='WARN'>空间不支持gzinflate函数，无法在线解压ZIP文件。（无法通过后台上传模板和数据备份文件）</li>";
+		}
+		if(!function_exists('ini_set')){
+			$function='WARN';
+			$fstr.="<li class='WARN'>空间不支持ini_set函数，系统无法正常包含文件，导致后台会出现空白现象。</li>";
+		}
+		session_start();
+		if($_SESSION['install']!='metinfo'){
+			$function='WARN';
+			$fstr.="<li class='WARN'>空间不支持session，无法登陆后台。</li>";
+		}
 		$w_check=array(
 		'../',
-		'../about',
-		'../download',
-		'../product',
-		'../news',
-		'../img',
-		'../job',
-		'../search',
-		'../sitemap',
-		'../link',
-		'../member',
-		'../wap',
-		'../upload',
-		'../config',
+		'../about/',
+		'../download/',
+		'../product/',
+		'../news/',
+		'../img/',
+		'../job/',
+		'../search/',
+		'../sitemap/',
+		'../link/',
+		'../member/',
+		'../wap/',
+		'../upload/',
+		'../config/',
 		'../config/config_db.php',
-		'../upload/file',
-		'../upload/image',
-		'../message',
-		'../feedback',
-		'../admin/databack',
+		'../cache/',
+		'../upload/file/',
+		'../upload/image/',
+		'../message/',
+		'../feedback/',
+		'../admin/databack/',
+		'../admin/update/'
 		);
 		$class_chcek=array();
 		$check_msg = array();
@@ -109,7 +132,7 @@ switch ($action)
 			if(!file_exists($w_check[$i])){
 				$check_msg[$i].= '文件或文件夹不存在请上传';$check=0;
 				$class_chcek[$i] = 'WARN';
-			} elseif(is_writable($w_check[$i])){
+			} elseif(is_writable_met($w_check[$i])){
 				$check_msg[$i].= '通 过';
 				$class_chcek[$i] = 'OK';
 				$check=1;
@@ -125,11 +148,11 @@ switch ($action)
 	case 'db_setup':
 	{
 		if($setup==1){
-			$db_prefix      = trim(strip_tags($db_prefix));
-			$db_host        = trim(strip_tags($db_host));
-			$db_username    = trim(strip_tags($db_username));
-			$db_pass        = trim(strip_tags($db_pass));
-			$db_name        = trim(strip_tags($db_name));
+			$db_prefix      = trim($db_prefix);
+			$db_host        = trim($db_host);
+			$db_username    = trim($db_username);
+			$db_pass        = trim($db_pass);
+			$db_name        = trim($db_name);
 			$config="<?php
                    /*
                    con_db_host = \"$db_host\"
@@ -182,7 +205,10 @@ switch ($action)
 					$content=preg_replace("/{#(.+?)}/eis",'$lang[\\1]',$content);	
 					$installinfo.=creat_table($content);	
 				}
-			}		
+			}
+			$content=readover("lang.sql"); 
+			$content=preg_replace("/{#(.+?)}/eis",'$lang[\\1]',$content);	
+			$installinfo.=creat_table($content);
 			header("location:index.php?action=adminsetup&cndata={$cndata}&endata={$endata}");exit;
 		}else {
 			include template('databasesetup');
@@ -195,9 +221,9 @@ switch ($action)
 			if($regname=='' || $regpwd=='' || $email==''){
 				echo("<script type='text/javascript'> alert('请填写管理员信息！'); history.go(-1); </script>");
 			}
-			$regname = trim(strip_tags($regname));
-			$regpwd  = md5(trim(strip_tags($regpwd)));
-			$email   = trim(strip_tags($email));
+			$regname = trim($regname);
+			$regpwd  = md5(trim($regpwd));
+			$email   = trim($email);
 		    $m_now_time = time();
 			$config = parse_ini_file('../config/config_db.php','ture');
 			@extract($config);
@@ -211,7 +237,6 @@ switch ($action)
 			}
 			$met_admin_table = "{$tablepre}admin_table";
 			$met_config      = "{$tablepre}config";
-			$met_index       = "{$tablepre}index";
 			$met_column      = "{$tablepre}column";
 			 $query = " INSERT INTO $met_admin_table set
                       admin_id           = '$regname',
@@ -260,10 +285,10 @@ switch ($action)
 			$db->dbconn($con_db_host,$con_db_id,$con_db_pass,$con_db_name);
 			$conlist = $db->get_one("SELECT * FROM $met_config WHERE name='met_weburl'");
 			$met_weburl=$conlist[value];
-			$indexcont = $db->get_one("SELECT * FROM $met_index WHERE lang='cn'");
+			$indexcont = $db->get_one("SELECT * FROM $met_config WHERE name='met_index_content' and lang='cn'");
 			if($indexcont){
-				$index_content=str_replace("#metinfo#",$met_weburl,$indexcont[content]);
-				$query = "update $met_index SET content = '$index_content' where lang='cn'";
+				$index_content=str_replace("#metinfo#",$met_weburl,$indexcont[value]);
+				$query = "update $met_config SET value = '$index_content' where name='met_index_content' and lang='cn'";
 				$db->query($query);
 			}
 			$showlist = $db->get_all("SELECT * FROM $met_column WHERE module='1'");
@@ -274,6 +299,11 @@ switch ($action)
 					$db->query($query);
 				}
 			}
+			$agents='';
+			if(file_exists('./agents.php')){
+				include './agents.php';
+				unlink('./agents.php');
+			}
 			$webname=$webname_cn?$webname_cn:($webname_en?$webname_en:'');
 			$webkeywords=$webkeywords_cn?$webkeywords_cn:($webkeywords_en?$webkeywords_en:'');
 			$spt = '<script type="text/javascript" src="http://api.metinfo.cn/record_install.php?';
@@ -281,11 +311,12 @@ switch ($action)
 			$spt .= "&email=".$email."&installtime=".$m_now_date."&softtype=1";
 			$spt .= "&webname=".$webname."&webkeywords=".$webkeywords."&tel=".$tel;
 			$spt .= "&version=".VERSION."&php_ver=" .PHP_VERSION. "&mysql_ver=" .mysql_get_server_info()."&browser=".$_SERVER['HTTP_USER_AGENT'].'|'.$se360;
+			$spt .= "&agents=".$agents;
 			$spt .= '"></script>';
 			echo $spt;
-			$fp  = fopen('../config/install.lock', 'w');
-			fwrite($fp," ");
-			fclose($fp);
+			$fp  = @fopen('../config/install.lock', 'w');
+			@fwrite($fp," ");
+			@fclose($fp);
 			$metHOST=$_SERVER['HTTP_HOST'];
 			$m_now_year=date('Y');
 			$metcms_v=VERSION;
@@ -347,9 +378,9 @@ a:visited {color: #0240a3;}
 ";
 
 
-$fp = fopen("../404.html",w);
-      fputs($fp, $met404);
-      fclose($fp);
+			$fp = @fopen("../404.html",w);
+			@fputs($fp, $met404);
+			@fclose($fp);
 			@chmod('../config/install.lock',0554);				
 			include template('finished');
 		}else {
@@ -363,7 +394,9 @@ $fp = fopen("../404.html",w);
 		include template('license');
 	break;
 	default:
-	{
+	{	
+		session_start();
+		$_SESSION['install']='metinfo';
 		include template('index');
 	}
 }
@@ -385,7 +418,6 @@ function creat_table($content) {
 			}
 			$query = str_replace('met_',$db_prefix,$query);
 			$query = str_replace('metconfig_','met_',$query);
-			//echo $query;
 			if(!mysql_query($query)){
 				$db_setup=0;
 				if($j!='0'){
@@ -432,6 +464,118 @@ function template($template,$EXT="htm"){
 	unset($GLOBALS[con_db_id],$GLOBALS[con_db_pass],$GLOBALS[con_db_name]);
 	$path = "templates/$template.$EXT";
 	return  $path;
+}
+function is_writable_met($dir){
+	$str='';
+	$is_dir=0;
+	if(is_dir($dir)){
+		$dir=$dir.'metinfo.txt';
+		$is_dir=1;
+		$info='metinfo';
+	}
+	else{
+		$fp = @fopen($dir,'r+');
+		$i=0;
+		while($i<10){
+			$info.=@fgets($fp);
+			$i++;
+		}
+		@fclose($fp);
+		if($info=='')return false;
+	}
+	$fp = @fopen($dir,'w+');
+	@fputs($fp, $info);
+	@fclose($fp);
+	if(!file_exists($dir))return false;
+	$fp = @fopen($dir,'r+');
+	$i=0;
+	while($i<10){
+		$str.=@fgets($fp);
+		$i++;
+	}
+	@fclose($fp);
+	if($str!=$info)return false;
+	if($is_dir==1){
+		@unlink($dir);
+	}
+	return true;
+}
+function curl_post($post,$timeout){
+global $met_weburl,$met_host,$met_file;
+	$host='api.metinfo.cn';
+	$file='/test/apilinktest.php';
+	if(get_extension_funcs('curl')&&function_exists('curl_init')&&function_exists('curl_setopt')&&function_exists('curl_exec')&&function_exists('curl_close')){
+		$curlHandle=curl_init(); 
+		curl_setopt($curlHandle,CURLOPT_URL,'http://'.$host.$file); 
+		curl_setopt($curlHandle,CURLOPT_REFERER,$met_weburl);
+		curl_setopt($curlHandle,CURLOPT_RETURNTRANSFER,1); 
+		curl_setopt($curlHandle,CURLOPT_CONNECTTIMEOUT,$timeout);
+		curl_setopt($curlHandle,CURLOPT_TIMEOUT,$timeout);
+		curl_setopt($curlHandle,CURLOPT_POST, 1);	
+		curl_setopt($curlHandle,CURLOPT_POSTFIELDS, $post);
+		$result=curl_exec($curlHandle); 
+		curl_close($curlHandle); 
+	}
+	else{
+		if(function_exists('fsockopen')||function_exists('pfsockopen')){
+			$post_data=$post;
+			$post='';
+			@ini_set("default_socket_timeout",$timeout);
+			while (list($k,$v) = each($post_data)) {
+				$post .= rawurlencode($k)."=".rawurlencode($v)."&";
+			}
+			$post = substr( $post , 0 , -1 );
+			$len = strlen($post);
+			if(function_exists(fsockopen)){
+				$fp = @fsockopen($host,80,$errno,$errstr,$timeout);
+			}
+			else{
+				$fp = @pfsockopen($host,80,$errno,$errstr,$timeout);
+			}
+			if (!$fp) {
+				$result='';
+			}
+			else {
+				$result = '';
+				$out = "POST $file HTTP/1.0\r\n";
+				$out .= "Host: $host\r\n";
+				$out .= "Referer: $met_weburl\r\n";
+				$out .= "Content-type: application/x-www-form-urlencoded\r\n";
+				$out .= "Connection: Close\r\n";
+				$out .= "Content-Length: $len\r\n";
+				$out .="\r\n";
+				$out .= $post."\r\n";
+				fwrite($fp, $out);
+				$inheader = 1; 	
+				while(!feof($fp)){
+					$line = fgets($fp,1024); 
+						if ($inheader == 0) {    
+							$result.=$line;
+						}  
+						if ($inheader && ($line == "\n" || $line == "\r\n")) {  
+							$inheader = 0;  
+					}    
+
+				}
+			
+				while(!feof($fp)){
+					$result.=fgets($fp,1024);
+				}
+				fclose($fp);
+				str_replace($out,'',$result);
+			}
+		}
+		else{
+			$result='';
+		}
+	}
+	$result=trim($result);
+	if(substr($result,0,7)=='metinfo'){
+		return substr($result,7);
+	}
+	else{
+		return 'nohost';
+	}
 }
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.

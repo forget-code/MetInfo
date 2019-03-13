@@ -17,12 +17,10 @@ if(!$admin_list){
 	header("Location: $returnurl");
 	exit();
 }
-switch($admin_list['usertype']){
-	case '1':$access=$lang_memberbasicType1;break;
-	case '2':$access=$lang_memberbasicType2;break;
-	case '3':$access=$lang_memberbasicType3;break;
-	default:$access=$lang_memberbasicType1;break;
-}
+$query="select * from $met_admin_array where id='$admin_list[usertype]'";
+$uesr_array=$db->get_one($query);
+$access=$uesr_array[array_name];
+
 $feedback_totalcount = $db->counter($met_feedback, " where customerid='$metinfo_member_name' and lang='$lang' ", "*");
 $feedback_totalcount_readyes = $db->counter($met_feedback, " where customerid='$metinfo_member_name' and readok='1' and lang='$lang' ", "*");
 $feedback_totalcount_readno = $db->counter($met_feedback, " where customerid='$metinfo_member_name' and readok='0' and lang='$lang' ", "*");

@@ -31,6 +31,8 @@ if($action=="modify"){
 		case 'add':
 			if($langname=='')metsave('-1',$lang_langnamenull,$depth);
 			if($langautor!='')$langmark=$langautor;
+			if($langautor!='')$synchronous=$langautor;
+			if(!$langdlok)$synchronous='';
 			$lancount=count($met_langok);
 			$isaddlang=1;
 			$met_langok[0]=array(
@@ -55,6 +57,7 @@ if($action=="modify"){
 				useok         = '$languseok',
 				no_order      = '$langorder',
 				mark          = '$langmark',
+				synchronous   = '$synchronous',
 				flag          = '$langflag',
 				link          = '$langlink',
 				newwindows    = '$langnewwindows',
@@ -68,7 +71,11 @@ if($action=="modify"){
 			$db->query($query);
 			$query="INSERT INTO $met_admin_array set array_name='$lang_access2',admin_type='',admin_ok='0',admin_op='',admin_issueok='0',admin_group='0',user_webpower='2',array_type='1',lang='$langmark',langok=''";
 			$db->query($query);
-			copyconfig();
+			$re=copyconfig();
+			if($re!=1){
+				metsave('../system/lang/lang.php?anyid='.$anyid.'&lang='.$lang.'&cs='.$cs,$lang_langadderr4.dlerror($re),$depth,'','',$prent);
+				die();
+			}
 		break;
 		case 'edit':
 			if($langname=='')metsave('-1',$lang_langnamenull,$depth);
@@ -94,16 +101,30 @@ if($action=="modify"){
 				useok         = '$languseok',
 				no_order      = '$langorder',
 				mark          = '$langmark',
+				synchronous   = '$synchronous',
 				flag          = '$langflag',
 				link          = '$langlink',
 				newwindows    = '$langnewwindows'
 			    where lang='$langmark'";
 			$db->query($query);
+			if($synchronous!=$synchronous1&&$synchronous){
+				$post=array('newlangmark'=>$synchronous,'metcms_v'=>$metcms_v);
+				$file_basicname=$depth.'../update/lang/lang_'.$synchronous.'.ini';
+				$re=syn_lang($post,$file_basicname,$langmark,0,0);
+				unlink('../../../cache/lang_'.$langmark.'.php');
+				if($re==1){
+					metsave('../system/lang/lang.php?anyid='.$anyid.'&lang='.$lang.'&cs='.$cs,$lang_success,$depth);
+				}else{
+					metsave('../system/lang/lang.php?anyid='.$anyid.'&lang='.$lang.'&cs='.$cs,$lang_langadderr4.dlerror($re),$depth);
+				}
+				die();
+			}
 		break;
 		case 'delete':
 			if(count($met_langok)==1)metsave('-1',$lang_langone,$depth);
 			if($langeditor==$lang)metsave('-1',$lang_langadderr2,$depth);
-			if(file_exists($depth."../../lang/language_".$langeditor.".ini"))@unlink($depth."../../lang/language_".$langeditor.".ini");
+			$query = "delete from $met_language where site='0' and lang='$langeditor'";
+			$db->query($query);
 			$query = "delete from $met_config where lang='$langeditor'";
 			$db->query($query);
 			if(file_exists($depth."../../templates/".$met_skin_user."/lang/language_".$langeditor.".ini"))@unlink($depth."../../templates/".$met_skin_user."/lang/language_".$langeditor.".ini");
@@ -140,10 +161,13 @@ if($action=="modify"){
 				lang          = 'metinfo'
 			";
 			$db->query($query);
-			$oldfile      =$depth."../language/language_$langfile.ini";   
-			$newfile      =$depth."../language/language_$langmark.ini";  
-			if(!file_exists($newfile)){  
-				if (!copy($oldfile,   $newfile))metsave('-1',$lang_langcopyfile,$depth);
+			$query="select * from $met_language where site='1' and lang='$langfile'";
+			$languages=$db->get_all($query);
+			foreach($languages as $key=>$val){
+				$val[value] = str_replace("'","''",$val[value]);
+				$val[value] = str_replace("\\","\\\\",$val[value]);
+				$query = "insert into $met_language set name='$val[name]',value='$val[value]',site='1',no_order='$val[no_order]',array='$val[array]',lang='$langmark'";
+				$db->query($query);
 			}
 		break;
 		case 'editadmin':
@@ -164,11 +188,14 @@ if($action=="modify"){
 		break;
 		case 'deleteadmin':
 			if(count($met_langadmin)==1)metsave('-1',$lang_langone,$depth);
-			if(file_exists($depth."../language/language_".$langeditor.".ini"))@unlink($depth."../language/language_".$langeditor.".ini");
+			$query = "delete from $met_language where site='1' and lang='$langeditor'";
+			$result = $db->query($query);
 			$query = "delete from $met_lang where lang='metinfo' and mark='$langeditor'";
 			$result = $db->query($query);
 		break;
 	}
+	unlink('../../../cache/lang_'.$langeditor.'.php');
+	unlink('../../../cache/lang_'.$langmark.'.php');
 	$prent=$langsetaction=='add'&&$lancount==1?2:'';
 	$txt=$isaddlang?$lang_langadderr3:'';
 	metsave('../system/lang/lang.php?anyid='.$anyid.'&lang='.$lang.'&cs='.$cs,$txt,$depth,'','',$prent);
@@ -186,6 +213,16 @@ if($action=="modify"){
 	    $data.='<img src="'.$dir.'/'.$flags[$i].'" />';
 	}
     echo $data;
+}elseif($action=='syn'){
+	$post=array('newlangmark'=>$syn,'metcms_v'=>$metcms_v);
+	$file_basicname=$depth.'../update/lang/lang_'.$syn.'.ini';
+	$re=syn_lang($post,$file_basicname,$nowmark,0,0);
+	unlink('../../../cache/lang_'.$syn.'.php');
+	if($re==1){
+		metsave('../system/lang/lang.php?anyid='.$anyid.'&lang='.$lang.'&cs='.$cs,$lang_success,$depth);
+	}else{
+		metsave('../system/lang/lang.php?anyid='.$anyid.'&lang='.$lang.'&cs='.$cs,$lang_langadderr4.dlerror($re),$depth);
+	}
 }else{
 	if($met_ch_lang==1)$met_ch_lang1="checked";
 	if($met_ch_lang==0)$met_ch_lang2="checked";

@@ -42,6 +42,9 @@ if($action=="all"){
 		$dira=$met_htmpack_url.'public/css/';
 		$dirb="../../public/css/";
 		xCopy($dirb,$dira,1);
+		$dira=$met_htmpack_url.'public/ui/';
+		$dirb="../../public/ui/";
+		xCopy($dirb,$dira,1);
 		$dira=$met_htmpack_url.'favicon.ico';
 		$dirb="../../favicon.ico";
 		copy($dirb,$dira);
@@ -184,7 +187,6 @@ if($action=="all"){
 	}
 	//module 10 
 	if($met_member_use and count($met_module[10])){
-	$methtm[]=onepagehtm('member','index',1,$htmpack);
 	$methtm[]=onepagehtm('member','login',1,$htmpack);
 	$methtm[]=onepagehtm('member','register',1,$htmpack);
 	}

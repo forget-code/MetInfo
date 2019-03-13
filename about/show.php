@@ -3,7 +3,8 @@
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 require_once '../include/common.inc.php';
 if(!$id && $class1)$id = $class1;
-$show = $db->get_one("SELECT * FROM $met_column WHERE id=$id and module=1");
+if(!is_numeric($id))okinfo('../404.html');
+$show = $db->get_one("SELECT * FROM $met_column WHERE id='$id' and module=1");
 if(!$show||!$show['isshow']){
 okinfo('../404.html');
 }

@@ -62,8 +62,8 @@ if(($class1=="" || $class1==10000 || $class1==10001 || $class1==0) and (intval($
    }
 $serch_sql.= "and lang='$lang' "; 
 if($met_member_use==2)$serch_sql.= " and access<=$metinfo_member_type";
-$searchitem="id,title,top_ok,com_ok,content,updatetime,filename,hits,imgurls,class1";
-$searchitem1="id,title,top_ok,com_ok,content,updatetime,filename,hits,class1";
+$searchitem="id,title,top_ok,com_ok,content,updatetime,addtime,filename,hits,imgurls,class1";
+$searchitem1="id,title,top_ok,com_ok,content,updatetime,addtime,filename,hits,class1";
 switch($met_htmpagename){
 case 0:   
 	$pagename="news";
@@ -109,7 +109,7 @@ case 1:
     $result = $db->query($query);
 	while($list= $db->fetch_array($result)){
 	$filename=$navurl.$class_list[$list[class1]][foldername];
-	$filenamenow=date('Ymd',strtotime($list[updatetime]));
+	$filenamenow=date('Ymd',strtotime($list[addtime]));
     require 'searchlist.php';
 	}
 	
@@ -118,7 +118,7 @@ case 1:
     $result = $db->query($query);
 	while($list= $db->fetch_array($result)){
 	$filename=$navurl.$class_list[$list[class1]][foldername];
-	$filenamenow=date('Ymd',strtotime($list[updatetime]));
+	$filenamenow=date('Ymd',strtotime($list[addtime]));
     require 'searchlist.php';
 	}
 	
@@ -127,7 +127,7 @@ case 1:
     $result = $db->query($query);
 	while($list= $db->fetch_array($result)){
 	$filename=$navurl.$class_list[$list[class1]][foldername];
-	$filenamenow=date('Ymd',strtotime($list[updatetime]));
+	$filenamenow=date('Ymd',strtotime($list[addtime]));
     require 'searchlist.php';
 	}
     
@@ -136,7 +136,7 @@ case 1:
     $result = $db->query($query);
 	while($list= $db->fetch_array($result)){
 	$filename=$navurl.$class_list[$list[class1]][foldername];
-	$filenamenow=date('Ymd',strtotime($list[updatetime]));
+	$filenamenow=date('Ymd',strtotime($list[addtime]));
     require 'searchlist.php';
 	}
 break;
@@ -182,10 +182,12 @@ break;
 	$query1 = "SELECT * FROM $met_column $serch_sql1 order by id";
     $result = $db->query($query1);
 	while($list= $db->fetch_array($result)){
-		if($list[filename]=='')$list[filename]=$list[foldername].$list[id];
+		//if($list[filename]=='')$list[filename]=$list[foldername].$list[id];
 		$url1="../".$list[foldername]."/show.php?lang=".$lang."&id=".$list[id];
-		$url2="../".$list[foldername]."/".$list[filename].$met_htmtype;	
-		$list[url]=$met_webhtm?$url2:$url1;
+		$url2=$list[filename]?"../".$list[foldername]."/".$list[filename].$met_htmtype:"../".$list[foldername]."/".$list[foldername].$list[id].$met_htmtype;	
+		$url3=$list[filename]?"../".$list[foldername]."/".$list[filename].'-'.$lang.$met_htmtype:"../".$list[foldername]."/".$list[id].'-'.$lang.$met_htmtype;	
+		$list[url]=$met_pseudo?$url3:($met_webhtm?$url2:$url1);
+		if($langnums==1&&($list['classtype']==1||$list['releclass']))$list[url]="../".$list[foldername]."/";
 		$list[updatetime]=$m_now_date;
 		$list[top_ok]=2;
 		$list[com_ok]=2;
@@ -227,15 +229,34 @@ break;
     $page_list = $rowset->link("search.php?lang=$lang&class1=$class1&class2=$class2&class3=$class3&searchword=".trim($searchword)."&searchtype=$searchtype&page=");
 	$class_info=$class1_info=$class_list[$search_column[id]];
 }else{
+	$module=intval($module);
     if($class1)$module=0;
     if(intval($module)){
       $serch_sql.=" where lang='$lang' ";
 	}else{
 	$class1_info=$class_list[$class1];
 	if(!$class1_info)okinfo('../',$pagelang[noid]);
-	$serch_sql=" where lang='$lang' and class1='$class1' ";
-	if($class2)$serch_sql .= " and class2='$class2'";
-	if($class3)$serch_sql .= " and class3='$class3'"; 
+	$class1sql=" class1='$class1' ";
+	$class2sql=" class2='$class2' ";
+	$class3sql=" class3='$class3' ";
+	if($class1&&!$class2&&!$class3){
+		foreach($module_list2[$class_list[$class1]['module']] as $key=>$val){
+			if($val['releclass']==$class1){
+				$class1re.=" or class1='$val[id]' ";
+			}
+		}
+		if($class1re){
+			$class1sql='('.$class1sql.$class1re.')';
+		}
+	}
+	if($class_list[$class2]['releclass']){
+		$class1sql=" class1='$class2' ";
+		$class2sql=" class2='$class3' ";
+		$class3sql="";
+	}
+	$serch_sql=" where lang='$lang' and $class1sql ";
+	if($class2&&$class2sql)$serch_sql .= " and $class2sql ";
+	if($class3&&$class3sql)$serch_sql .= " and $class3sql "; 
 	$order_sql=" order by top_ok desc,com_ok desc,no_order desc,updatetime desc,id desc";
 	}
  switch($searchtype){
@@ -250,6 +271,8 @@ break;
    break;
   } 
     $module_name=intval($module)?$module:$class1_info[module];
+	$module_name=intval($module_name);
+	if($module_name<2||$module_name>9)okinfo('javascript:history.back();',$lang_js1);	
   	$table_name="met_".$modulename[$module_name][0];
 	$table_name=$$table_name;
     $total_count = $db->counter($table_name, "$serch_sql", "*");
@@ -264,7 +287,7 @@ break;
 	$pagename=$modulename[$module_name][0];
 	while($list= $db->fetch_array($result)){
     $filename=$navurl.$class_list[$list[class1]][foldername];
-	$filenamenow=($met_htmpagename==2)?$filename:($met_htmpagename?date('Ymd',strtotime($list[updatetime])):$modulename[$module_name][1]);
+	$filenamenow=($met_htmpagename==2)?$filename:($met_htmpagename?date('Ymd',strtotime($list[addtime])):$modulename[$module_name][1]);
     require 'searchlist.php';
 	}
     $page_list = $rowset->link("search.php?lang=$lang&class1=$class1&class2=$class2&class3=$class3&searchword=$searchword&searchtype=$searchtype&page=");
@@ -311,8 +334,7 @@ if($class_info[name]=="")$class_info=array('name'=>$lang_search,'url'=>'search.p
      $show[keywords]=$class_info[keywords]?$class_info[keywords]:$met_keywords;
 	 $met_title=$met_title?$class_info['name'].'-'.$met_title:$class_info['name'];
 	 if($class_info['ctitle']!='')$met_title=$class_info['ctitle'];
-
-
+	 if($page>1)$met_title.='-'.$lang_Pagenum1.$page.$lang_Pagenum2;
 require_once '../public/php/methtml.inc.php';
 function methtml_searchlist($content=1,$time=1,$detail=1,$img=0){
 global $search_list,$met_img_x,$met_img_y,$lang_Detail;

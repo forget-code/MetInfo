@@ -15,6 +15,10 @@ if($action=="del"){
 			deletepage($folder[foldername],$val,'showproduct',$updatetime,$product_list[filename]);
 			$declass[$product_list['class2']][$product_list['class3']]=1;
 		}
+		if(!$met_recycle){
+			$query = "delete from $met_plist where listid='$val' and module='3'";
+			$db->query($query);
+		}
 		$query = $met_recycle?"update $met_product set recycle='3',updatetime='".date('Y-m-d H:i:s')."' where id='$val'":"delete from $met_product where id='$val'";
 		$db->query($query);
 		if(!$met_recycle){if($product_list){delimg($product_list,1,2);}else{delimg($val,3,2);}}
@@ -54,6 +58,10 @@ if($action=="del"){
 	if($met_webhtm!=0 or $metadmin[pagename]){
 		if($met_htmpagename==1)$updatetime=date('Ymd',strtotime($product_list[updatetime]));
 		deletepage($folder[foldername],$id,'showproduct',$updatetime,$product_list[filename]);
+	}
+	if(!$met_recycle){
+		$query = "delete from $met_plist where listid='$id' and module='3'";
+		$db->query($query);
 	}
 	$query = $met_recycle?"update $met_product set recycle='3',updatetime='".date('Y-m-d H:i:s')."' where id='$id'":"delete from $met_product where id='$id'";
 	$db->query($query);

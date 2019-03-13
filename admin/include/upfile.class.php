@@ -121,17 +121,14 @@ class upfile {
     if (!$this->overwrite && file_exists($this->savename)) {
       return $this->halt($this->savename." $lang_upfileTip2");
     }
-    $this->format=str_replace("php","",strtolower($this->format));
-	$this->format=str_replace("aspx","",strtolower($this->format));
-    $this->format=str_replace("asp","",strtolower($this->format));
-    $this->format=str_replace("jsp","",strtolower($this->format));
-    $this->format=str_replace("js","",strtolower($this->format));
-	$this->format=str_replace("asa","",strtolower($this->format));
 	if(!$this->format)$this->format.='|';
     if ($this->format != "" && !in_array(strtolower($this->ext), explode($this->separator,
         strtolower($this->format)))) {  	
        return $this->halt($this->ext." $lang_upfileTip3");
     }
+	if(strtolower($this->ext)=='php'||strtolower($this->ext)=='aspx'||strtolower($this->ext)=='asp'||strtolower($this->ext)=='jsp'||strtolower($this->ext)=='js'||strtolower($this->ext)=='asa'){
+		return $this->halt($this->ext." $lang_upfileTip3");
+	}
 	$upfileok=0;
 	$file_tmp=$filear["tmp_name"];
 	$file_name=$this->savepath.$this->savename;

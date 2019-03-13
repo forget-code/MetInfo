@@ -1,7 +1,7 @@
 <?php
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
-$admin_power="metinfo";
+define('ADMIN_POWER','metinfo');
 require_once '../login/login_check.php';
 $admin_ok = 1;
 $admin_issueok=0;

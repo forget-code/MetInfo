@@ -14,8 +14,7 @@ if(file_exists($infofile)){
 	if($imgurlname2[0]<>'该字段没有启用' or $imgurlname2[2])$imgurlname[2]=array($imgurlname2[0],$imgurlname2[1],'1');
 }
 if($action=="modify"){
-	$query = "update $met_index SET content= '$content' where id='$indexid'";
-	if($indexid=="")$query = "INSERT INTO $met_index SET content= '$content', lang='$lang'";
+	$query = "update $met_config SET value= '$met_index_content' where name='met_index_content' and lang='$lang'";
 	$db->query($query);
 	$methtm=indexhtm();
 	$query = "update $met_otherinfo SET ";
@@ -49,11 +48,15 @@ if($action=="modify"){
 						  lang='$lang'";				  
 	$db->query($query);
 	require_once '../../include/cache.func.php';
-	cache_otherinfo($lang);
-	metsave('../content/other_info.php?lang='.$lang.'&anyid='.$anyid);
+	if(cache_otherinfo(0)){
+		$relang=$lang_jsok;
+		$relang.=$met_webhtm==0?'':$lang_otherinfocache1;
+		metsave('../content/other_info.php?lang='.$lang.'&anyid='.$anyid,$relang);
+	}else{
+		metsave('../content/other_info.php?lang='.$lang.'&anyid='.$anyid,$lang_otherinfocache2);
+	}
 }else{
 	$otherinfo = $db->get_one("SELECT * FROM $met_otherinfo where lang='$lang'");
-	$index = $db->get_one("SELECT * FROM $met_index where lang='$lang' ");
 }
 if(count($infoname)==0 and count($imgurlname)==0){
 	$lang_setotherItemSet=$lang_setotherTip2;

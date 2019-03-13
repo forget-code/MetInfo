@@ -1,12 +1,13 @@
 <?php
 require_once substr(dirname(__FILE__), 0, -6).'common.inc.php';
 if(!is_numeric($id)){okinfo('../404.html');exit();}
+if($dbname!=$met_download&&$dbname!=$met_img&&$dbname!=$met_news&&$dbname!=$met_product){okinfo('../404.html');exit();}
 $news=$db->get_one("select * from $dbname where id=$id and lang='$lang' and (recycle='0' or recycle='-1')");
 if(!$news){okinfo('../404.html');exit();}
 $news['updatetime_order']=$news['updatetime'];
 $news['updatetime'] = date($met_contenttime,strtotime($news['updatetime']));
-$news['imgurls']=($news['imgurls']<>"")?$news['imgurls']:'../public/images/metinfo.gif';
-$news['imgurl']=($news['imgurl']<>"")?$news['imgurl']:'../public/images/metinfo.gif';
+$news['imgurls']=($news['imgurls']<>"")?$news['imgurls']:'../'.$met_agents_img;
+$news['imgurl']=($news['imgurl']<>"")?$news['imgurl']:'../'.$met_agents_img;
 $class1=$news['class1'];
 $class2=$news['class2'];
 $class3=$news['class3'];	
@@ -17,6 +18,8 @@ if($imgproduct=='download'){
 	}
 }
 require_once '../include/head.php';
+$is_correct_file=explode('/',$PHP_SELF);
+if($class_list[$class1]['foldername']!=$is_correct_file[count($is_correct_file)-2]){okinfo('../404.html');exit();}
 $class1_info=$class_list[$class1]['releclass']?$class_list[$class_list[$class1]['releclass']]:$class_list[$class1];
 $class2_info=$class_list[$class1]['releclass']?$class_list[$class1]:$class_list[$class2];
 $class3_info=$class_list[$class3];
@@ -103,8 +106,8 @@ if($dataoptimize[$pagemark]['otherlist']){
 		$list['news']=$list['top_ok']?"":((((strtotime($m_now_date)-strtotime($list['updatetime']))/86400)<$met_newsdays)?"<img class='listnews' src='".$img_url."news.gif"."' />":"");
 		$pagename1=$list['updatetime'];
 		$list['updatetime'] = date($met_listtime,strtotime($list['updatetime']));
-		$list['imgurls']=($list['imgurls']<>"")?$list['imgurls']:'../public/images/metinfo.gif';
-		$list['imgurl']=($list['imgurl']<>"")?$list['imgurl']:'../public/images/metinfo.gif';
+		$list['imgurls']=($list['imgurls']<>"")?$list['imgurls']:'../'.$met_agents_img;
+		$list['imgurl']=($list['imgurl']<>"")?$list['imgurl']:'../'.$met_agents_img;
 		if($dataoptimize[$pagemark]['para'][$pagemark]){
 			$query1 = "select * from $met_plist where module='$pagemark' and listid='$list[id]'";
 			$result1 = $db->query($query1);
@@ -203,5 +206,11 @@ $news['content1']=contentshow('<div>'.$news['content1'].'</div>');
 $news['content2']=contentshow('<div>'.$news['content2'].'</div>');
 $news['content3']=contentshow('<div>'.$news['content3'].'</div>');
 $news['content4']=contentshow('<div>'.$news['content4'].'</div>');
+$news['url']=request_uri();
+if($metinfonow==$met_member_force and $met_webhtm){
+	$html_filenamex=str_replace("\\",'',$html_filename);
+	$html_filenamex=unescape($html_filenamex);
+	$news['url']=$met_weburl.$class_list[$class1]['foldername'].'/'.$html_filenamex.$met_htmtype;
+}
 require_once '../public/php/methtml.inc.php';
 ?>

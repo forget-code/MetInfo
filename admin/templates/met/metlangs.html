@@ -6,7 +6,6 @@ echo <<<EOT
 -->
 <script type="text/javascript">
 function metreturn(url){
-	url=false;
 	if(url){
 		location.href=url;
 	}else if($.browser.msie){
@@ -24,6 +23,12 @@ if($title){
 echo <<<EOT
 -->
 	<div class="return"><a href="javascript:metreturn('{$rurl}');">&lt;&lt;{$lang_js55}</a></div>
+<!--
+EOT;
+}else if($other_op){
+echo <<<EOT
+-->
+	<div class="return">$other_op</div>
 <!--
 EOT;
 }

@@ -87,11 +87,23 @@ function sql_dumptable($table, $startfrom = 0, $currsize = 0)
 	$tabledump .= "\n";
 	return $tabledump;
 }
-
 function sql_execute($sql,$replace=0)
 {
-	global $db,$tablepre;
-    $sqls = sql_split($sql);
+	global $db,$tablepre,$met_visit_day,$met_visit_detail;
+    $split = sql_split($sql);
+	$sqls  = $split['sql'];
+	$info  = $split['info'];
+	$infos=explode('#',$info);
+	$localurl="http://";
+	$localurl.=$_SERVER['HTTP_HOST'].$_SERVER["PHP_SELF"];
+	$localurl_a=explode("/",$localurl);
+	$localurl_count=count($localurl_a);
+	$localurl_admin=$localurl_a[$localurl_count-4];
+	$localurl_admin=$localurl_admin."/system/";
+	$localurl_real=explode($localurl_admin,$localurl);
+	$localurl=$localurl_real[0];
+	if($infos[3]&&$tablepre!=$infos[3])$sqlre1=1;
+	if($infos[2]&&$localurl!=$infos[2])$sqlre2=1;
 	if(is_array($sqls))
     {
 		foreach($sqls as $sql)
@@ -100,6 +112,12 @@ function sql_execute($sql,$replace=0)
 				$sql=str_replace('met_',$tablepre,$sql);
 				$sql=str_replace('metconfig_','met_',$sql);
 			}
+			if($sqlre1==1)$sql=preg_replace(array('/^INSERT INTO '.$infos[3].'/','/^DROP TABLE IF EXISTS '.$infos[3].'/','/^CREATE TABLE `'.$infos[3].'/'),array('INSERT INTO '.$tablepre,'DROP TABLE IF EXISTS '.$tablepre,'CREATE TABLE `'.$tablepre),$sql,1);
+			if($sqlre2==1){
+				if(!preg_match('/^INSERT INTO (('.$met_visit_day.')|('.$met_visit_detail.'.))/',$sql)){
+					$sql=str_replace($infos[2],$localurl,$sql);
+				}
+			}
 			if(trim($sql) != '') 
 			{
 				if(!$db->query($sql)){
@@ -107,6 +125,7 @@ function sql_execute($sql,$replace=0)
 				}
 			}
 		}
+		
 	}
 	else
 	{
@@ -128,12 +147,16 @@ function sql_split($sql){
 	$queriesarray = explode(";\n", trim($sql));
 	unset($sql);
 	foreach($queriesarray as $query){
-		$ret[$num] = '';
+		$ret['sql'][$num] = '';
 		$queries = explode("\n", trim($query));
 		$queries = array_filter($queries);
 		foreach($queries as $query){
 			$str1 = substr($query, 0, 1);
-			if($str1 != '#' && $str1 != '-') $ret[$num] .= $query;
+			if($str1 != '#' && $str1 != '-') {
+				$ret['sql'][$num] .= $query;
+			}else{
+				$ret['info'].= $query;
+			}
 		}
 		$num++;
 	}

@@ -2,11 +2,13 @@
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 require_once '../login/login_check.php';
-if($met_pseudo){
-	if($lang==$met_index_type && file_exists("../../index.htm"))@unlink("../../index.htm");
-	if($lang==$met_index_type && file_exists("../../index.html"))@unlink("../../index.html");
-	if(file_exists("../../index_".$lang.".htm"))@unlink("../../index_".$lang.".htm");
-	if(file_exists("../../index_".$lang.".html"))@unlink("../../index_".$lang.".html");
+if($met_pseudo||$pseudo_download){
+	if(!$pseudo_download){
+		if($lang==$met_index_type && file_exists("../../index.htm"))@unlink("../../index.htm");
+		if($lang==$met_index_type && file_exists("../../index.html"))@unlink("../../index.html");
+		if(file_exists("../../index_".$lang.".htm"))@unlink("../../index_".$lang.".htm");
+		if(file_exists("../../index_".$lang.".html"))@unlink("../../index_".$lang.".html");
+	}
 	$nowpath=explode('/',$_SERVER["PHP_SELF"]);
 	$cunt=count($nowpath)-3;
 	for($i=0;$i<$cunt;$i++){
@@ -26,7 +28,7 @@ if($met_pseudo){
 		$htaccess.= 'RewriteRule ^([a-zA-Z0-9_^\x00-\xff]+)/product-list-([a-zA-Z0-9_^\x00-\xff]+).html$ $1/product.php?lang=$2'."\n";
 		$htaccess.= 'RewriteRule ^([a-zA-Z0-9_^\x00-\xff]+)/img-list-([a-zA-Z0-9_^\x00-\xff]+).html$ $1/img.php?lang=$2'."\n";
 		$htaccess.= 'RewriteRule ^([a-zA-Z0-9_^\x00-\xff]+)/([a-zA-Z0-9_^\x00-\xff^\x00-\xff]+)-([a-zA-Z0-9_^\x00-\xff]+).html$ $1/index.php?lang=$3&metid=$2'."\n";
-
+		$httpdurl='../../.htaccess';
 		//if(!is_writable('../../.htaccess'))@chmod('../../.htaccess',0777);
 		$fp = fopen('../../.htaccess',w);
 		fputs($fp, $htaccess);
@@ -40,6 +42,7 @@ if($met_pseudo){
 		$htaccess.= 'rewrite ^/([a-zA-Z0-9_^x00-xff]+)/product-list-([a-zA-Z0-9_^x00-xff]+).html$ /$1/product.php?lang=$2;'."\n";
 		$htaccess.= 'rewrite ^/([a-zA-Z0-9_^x00-xff]+)/img-list-([a-zA-Z0-9_^x00-xff]+).html$ /$1/img.php?lang=$2;'."\n";
 		$htaccess.= 'rewrite ^/([a-zA-Z0-9_^x00-xff]+)/([a-zA-Z0-9_^x00-xff]+)-([a-zA-Z0-9_^x00-xff]+).html$ /$1/index.php?lang=$3&metid=$2;'."\n";
+		$httpdurl='../../.htaccess';
 		$fp = fopen('../../.htaccess',w);
 		fputs($fp, $htaccess);
 		fclose($fp);
@@ -66,6 +69,22 @@ if($met_pseudo){
 		$fp = fopen($httpdurl,w);
 		fputs($fp, $httpd);
 		fclose($fp);
+	}
+	if($pseudo_download){
+		include $depth."../include/pclzip.lib.php";
+		$archive = new PclZip('metinfo_pseudo_rule.zip');
+		$archive->create($httpdurl,PCLZIP_OPT_REMOVE_PATH,$little.'../../');
+		@file_unlink($httpdurl);
+		header("Content-type:application/zip;");
+		$ua = $_SERVER["HTTP_USER_AGENT"];
+		$title="{$lang_rewriteruledownload2}({$_SERVER['SERVER_SOFTWARE']}).zip";
+		if(preg_match("/MSIE/", $ua)){
+			header('Content-Disposition: attachment; filename="' . urlencode($title) . '"');
+		}else{
+			header('Content-Disposition: attachment; filename="' . $title . '"');
+		}
+		readfile("metinfo_pseudo_rule.zip");
+		@file_unlink("metinfo_pseudo_rule.zip");
 	}
 }elseif($depsdo=='deleteall'){
 	if(file_exists('../../httpd.ini'))@unlink('../../httpd.ini');

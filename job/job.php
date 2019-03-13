@@ -93,6 +93,7 @@ $class_info[name]=$class2_info[name]."-".$class1_info[name];
      $show[keywords]=$class_info[keywords]?$class_info[keywords]:$met_keywords;
 	 $met_title=$met_title?$class_info['name'].'-'.$met_title:$class_info['name'];
 	 if($class_info['ctitle']!='')$met_title=$class_info['ctitle'];
+	 if($page>1)$met_title.='-'.$lang_Pagenum1.$page.$lang_Pagenum2;
 if(!$guanlian){
 	if(count($nav_list2[$class1])){
 	$k=count($nav_list2[$class1]);

@@ -73,7 +73,7 @@ $id=$later_news[id];
 $htmjs = contenthtm($class1,$id,'shownews',$filename,0,'',$addtime).'$|$';
 $htmjs.= indexhtm().'$|$';
 $htmjs.= classhtm($class1,$class2,$class3);
-$turl  ='../content/article/index.php?anyid='.$anyid.'&lang='.$lang.'&class1='.$class1;
+$turl  ="../content/article/index.php?anyid=$anyid&lang=$lang&class1=$class1&class2=$class2&class3=$class3";
 metsave($turl,'',$depth,$htmjs);
 }
 
@@ -115,8 +115,7 @@ $htmjs.= classhtm($class1,$class2,$class3);
 if($filenameold<>$filename and $metadmin[pagename])deletepage($met_class[$class1][foldername],$id,'shownews',$updatetimeold,$filenameold);
 $classnow=$class3?$class3:($class2?$class2:$class1);
 if(($addtime != $updatetime && $met_class[$classnow]['list_order']<2) || $top_ok==1)$page=0;
-$turl  ='../content/article/index.php?anyid='.$anyid.'&lang='.$lang.'&class1='.$class1.'&modify='.$id.'&page='.$page;
-$turl .=$cengci==1?'':($cengci==2?'&class2='.$class2:'&class2='.$class2.'&class3='.$class3);
+$turl  ="../content/article/index.php?anyid=$anyid&lang=$lang&class1=$class1&class2=$class2&class3=$class3&modify=$id&pcage=$page";
 metsave($turl,'',$depth,$htmjs);
 }
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
