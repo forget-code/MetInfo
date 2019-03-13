@@ -125,7 +125,7 @@ class base_label {
 		if($pageall!=0){
 			for($i=1;$i<=$pageall;$i++){
 				if($i==$pagenow){
-					if($_M['form']['search'] || $_M['form']['searchword']){
+					if($_M['form']['search'] && $_M['form']['searchword']){
 						$url = $_M['url']['site'].'search/index.php';
 					}else{
 						$url = 'index.php';

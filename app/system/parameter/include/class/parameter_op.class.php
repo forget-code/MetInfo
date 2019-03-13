@@ -123,9 +123,8 @@ class parameter_op {
 		}
 
 		foreach ($list as $key => $val) {
+			$this->parameter_database->delete_list($listid, $key,$module);
 			if(strstr($val, '|')){
-
-				$this->parameter_database->delete_list($listid, $key,$module);
 				foreach (explode('|', $val) as $v) {
 					$this->parameter_database->insert_list($listid, $key, $v, $imgname, $_M['lang'], $module);
 				}

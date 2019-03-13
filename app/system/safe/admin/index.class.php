@@ -57,88 +57,68 @@ class index extends admin {
     } 
    /*更新数据*/
    public function doupdate(){
-         global $_M;
-          $met_adminfile=$_M[config][met_adminfile];
-          $query = "SELECT * FROM {$_M[table][config]} WHERE lang='{$_M[form][lang]}' or lang='metinfo'";
-                    $result = DB::query($query);
-                    while($list_config= DB::fetch_array($result)){
-                        $settings_arr[]=$list_config;
-                        $_M[config][$list_config['name']]=$list_config['value'];
-                        if($metinfoadminok)$list_config['value']=str_replace('"', '&#34;', str_replace("'", '&#39;',$list_config['value']));
+        global $_M;
+        $current_admin = str_replace($_M['url']['site'], '', trim($_M['url']['site_admin'],'/'));
+        $old_admin = $_M['config']['met_adminfile'];
+        $new_admin = $_M['form']['met_adminfile'];
+
+        if($old_admin != $current_admin){
+            $old_admin = $current_admin;
+        }
+
+        $query = "SELECT * FROM {$_M[table][config]} WHERE lang='{$_M[form][lang]}' or lang='metinfo'";
+            $result = DB::query($query);
+            while($list_config= DB::fetch_array($result)){
+                $settings_arr[]=$list_config;
+                $_M[config][$list_config['name']]=$list_config['value'];
+                if($metinfoadminok)$list_config['value']=str_replace('"', '&#34;', str_replace("'", '&#39;',$list_config['value']));
              }
        //目录名解密
-         $_M[config][met_adminfile] = authcode($_M['config']['met_adminfile'], 'DECODE', $_M['config']['met_webkeys']);
-
-       if($_M[form][met_adminfile]!=""&&$_M[form][met_adminfile]!=$_M[config][met_adminfile]){
+         // $_M[config][met_adminfile] = authcode($_M['config']['met_adminfile'], 'DECODE', $_M['config']['met_webkeys']);
+        $met_adminfile_code=authcode($new_admin,'ENCODE',$_M[config][met_webkeys]);
+        if($new_admin != $current_admin){
            //中文和特殊字符判断
-           if (preg_match("/[\x{4e00}-\x{9fa5}]+/u",$_M[form][met_adminfile])) {
+           if (preg_match("/[\x{4e00}-\x{9fa5}]+/u",$new_admin)) {
                turnover("{$_M[url][own_form]}a=doindex",$_M[word][js77]);
                die();
-           }elseif(!preg_match("/^\w+$/u",$_M[form][met_adminfile])){
+           }elseif(!preg_match("/^\w+$/u",$new_admin)){
                turnover("{$_M[url][own_form]}a=doindex",$_M[word][js77]);
                die();
            }
 
-           if (is_dir(PATH_WEB."{$_M[form][met_adminfile]}")) {
-               turnover("{$_M[url][own_form]}a=doindex",$_M[form][met_adminfile].$_M[word][columnerr4]);
-           }
-           if(!is_dir(PATH_WEB.$_M[config][met_adminfile])){
-               turnover("{$_M[url][own_form]}a=doindex",$_M[config][met_adminfile].$_M[word][setdbNotExist]);
-           }
-             $met_adminfile_temp=$_M[form][met_adminfile];
-             $newname=PATH_WEB.$_M[form][met_adminfile];
-             $met_adminfile_code=authcode($_M[form][met_adminfile],'ENCODE',$_M[config][met_webkeys]);
-             $columnid=$columnid?$columnid:0;
-             !defined('MAGIC_QUOTES_GPC') && define('MAGIC_QUOTES_GPC', get_magic_quotes_gpc());
-             $met_adminfile=$met_adminfile_code;
-            foreach($settings_arr as $key=>$val){
-                if($val['columnid']==$columnid){
-                    $name = $val['name'];
-                    $newvalue1 = stripslashes($_M[form][$name]);
-                    $newvalue1 = str_replace("'","''",$newvalue1);
-                    $newvalue = str_replace("\\","\\\\",$newvalue1);
-                    if($val['value']!=$newvalue1 && isset($_M[form][$name])){
-                        $query1 = $columnid?"and columnid='$columnid'":'';
-                           $query = "update {$_M[table][config]} SET value = '$newvalue' where id ='$val[id]' $query1";
-                        if($val['name']=='met_adminfile'){
-                            $newvalue=authcode($newvalue,'ENCODE',$_M[config][met_webkeys]);
-                        }
-                        $query = "update {$_M[table][config]} SET value = '$newvalue' where id ='$val[id]' $query1";
-
-                        DB::query($query);
-                    }
-                }
+            if(!is_dir(PATH_WEB.$old_admin)){
+               turnover("{$_M[url][own_form]}a=doindex",$old_admin.$_M[word][setdbNotExist]);
             }
 
-         if(rename(PATH_WEB.$_M[config][met_adminfile],PATH_WEB.$_M[form][met_adminfile])){
-             $url = str_replace($_M['config']['met_adminfile'],$_M[form][met_adminfile],$_M[url][site_admin]);
+            if(is_dir(PATH_WEB.$new_admin)){
+                turnover("{$_M[url][own_form]}a=doindex",$new_admin.$_M[word][columnerr4]);
+            }
+
+            $newname=PATH_WEB.$new_admin;
+
+            if(rename(PATH_WEB.$old_admin,PATH_WEB.$new_admin)){
+             $url = str_replace($current_admin,$new_admin,$_M[url][site_admin]);
              echo "<script type='text/javascript'> alert('{$_M[word][authTip11]}');  top.location.href='{$url}#metnav_12'; </script>";
         }else{
              turnover("{$_M[url][own_form]}a=doindex",$_M[word][adminwenjian]);
              die();
          }
-        }else{
-            $columnid=$columnid?$columnid:0;
-            !defined('MAGIC_QUOTES_GPC') && define('MAGIC_QUOTES_GPC', get_magic_quotes_gpc());
-            $met_adminfile = authcode($_M[form][met_adminfile],'ENCODE',$_M[config][met_webkeys]);
-            foreach($settings_arr as $key=>$val){
-                if($val['columnid']==$columnid){
-                    if($val['name']=="met_adminfile"){
-                        continue;
-                    }
-                }
-                    $name = $val['name'];
-                    $newvalue1 = stripslashes($_M[form][$name]);
-                    $newvalue1 = str_replace("'","''",$newvalue1);
-                    $newvalue = str_replace("\\","\\\\",$newvalue1);
-                    if($val['value']!=$newvalue1 && isset($_M[form][$name])){
-                        $query1 = $columnid?"and columnid='$columnid'":'';
-                        $query = "update {$_M[table][config]} SET value = '$newvalue' where id ='$val[id]' $query1";
-                        
-                         DB::query($query);
-                    }
-                }
-            }
+        }
+
+        $old_code = authcode($old_admin, 'DECODE', $_M['config']['met_webkeys']);
+        $config_list = array();
+        $config_list[] = 'met_img_rename';
+        $config_list[] = 'met_login_code';
+        $config_list[] = 'met_memberlogin_code';
+        $config_list[] = 'met_file_maxsize';
+        $config_list[] = 'met_file_format';
+        $config_list[] = 'met_fd_word';
+        // if($rename){
+            $_M['form']['met_adminfile'] = $met_adminfile_code;
+            $config_list[] = 'met_adminfile';
+        // }
+        configsave($config_list);
+
         turnover("{$_M[url][own_form]}a=doindex",$_M[word][success]);
       }
 

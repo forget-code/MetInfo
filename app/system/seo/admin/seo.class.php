@@ -116,8 +116,8 @@ class seo extends admin {
 				$htaccess.= 'rewrite ^/([a-zA-Z0-9_^x00-xff]+)/jobcv-([a-zA-Z0-9_^x00-xff]+)-([a-zA-Z0-9_^x00-xff]+).html$ /$1/cv.php?lang=$3&selectedjob=$2&pseudo_jump=1;'."\n";
 				$htaccess.= 'rewrite ^/([a-zA-Z0-9_^x00-xff]+)/product-list-([a-zA-Z0-9_^x00-xff]+).html$ /$1/product.php?lang=$2&pseudo_jump=1;'."\n";
 				$htaccess.= 'rewrite ^/([a-zA-Z0-9_^x00-xff]+)/img-list-([a-zA-Z0-9_^x00-xff]+).html$ /$1/img.php?lang=$2&pseudo_jump=1;'."\n";
-				$htaccess.= 'rewrite ^/([a-zA-Z0-9_^x00-xff]+)/([a-zA-Z0-9_^x00-xff]+).html$ /$1/index.php?metid=$2&pseudo_jump=1;'."\n";
-				$htaccess.= 'rewrite ^/([a-zA-Z0-9_^x00-xff]+)/([a-zA-Z0-9_^x00-xff]+)-([a-zA-Z0-9_^x00-xff]+).html$ /$1/index.php?lang=$3&metid=$2&pseudo_jump=1;'."\n";
+				$htaccess.= 'rewrite ^/([a-zA-Z0-9_^x00-xff]+)/([a-zA-Z0-9_^\x00-\xff]+)-([a-zA-Z0-9_^x00-xff]+).html$ /$1/index.php?lang=$3&metid=$2&pseudo_jump=1;'."\n";
+				$htaccess.= 'rewrite ^/([a-zA-Z0-9_^x00-xff]+)/([a-zA-Z0-9_^\x00-\xff]+).html$ /$1/index.php?metid=$2&pseudo_jump=1;'."\n";
                 $htaccess.= 'rewrite ^/([a-zA-Z0-9_^x00-xff]+)/([a-zA-Z0-9_^x00-xff]+).html$ /$1/index.php?lang=$3&metid=$2&pseudo_jump=1;'."\n";
 				$htaccess.= 'rewrite ^/tag/([\s\S]+)-([a-zA-Z0-9_^\x00-\xff]+)$ /search/search.php?class1=&class2=&class3=&searchtype=0&searchword=$1&lang=$2;'."\n";
 				$htaccess.= 'rewrite ^/tag/([\s\S]+)$ /search/search.php?class1=&class2=&class3=&searchtype=0&searchword=$1;'."\n";

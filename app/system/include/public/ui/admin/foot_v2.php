@@ -38,6 +38,7 @@ MET['langset']="{$_M['langset']}";
 MET['anyid']="{$_M['form']['anyid']}";
 MET['met_editor']="{$_M['config']['met_editor']}";
 MET['met_keywords']="{$_M['config']['met_keywords']}";
+MET['met_alt']="{$_M['config']['met_alt']}";
 MET['url']['basepath']="{$_M['url']['site_admin']}";
 MET['url']['ui']="{$_M['url']['ui']}";
 MET['url']['own_form']="{$_M['url']['own_form']}";

@@ -231,7 +231,8 @@ class thumb {
         } else {
             $img_thumb  = imagecreate($this->thumb_width, $this->thumb_height);
         }
-
+        imagealphablending($img_thumb,false);
+        imagesavealpha($img_thumb, true);//透明图片不改变背景
         //缩略图背景颜色
         if (empty($this->thumb_bgcolor)) $this->thumb_bgcolor = "#FFFFFF";
         $this->thumb_bgcolor = trim($this->thumb_bgcolor, "#");

@@ -487,6 +487,9 @@ class web extends common {
 			if(stristr(PHP_OS,"WIN")) {
 				$filename = @iconv("utf-8", "GBK", $filename);
 			}
+			if(stristr($filename, '.php')){
+				jsoncallback(array('suc'=>0));
+			}
 			if(file_put_contents(PATH_WEB.$filename, $output)){
 				jsoncallback(array('suc'=>1));
 			}else{

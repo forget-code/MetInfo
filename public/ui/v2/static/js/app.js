@@ -224,15 +224,17 @@ $.fn.extend({
         if(!$(this).length) return;
         if(typeof citySelect =='undefined') window.citySelect=[];
         $(this).each(function(index){
-            var country=$(this).find(".country").attr("data-checked"),
-                p=$(this).find(".prov").attr("data-checked"),
-                c=$(this).find(".city").attr("data-checked"),
-                s=$(this).find(".dist").attr("data-checked"),
-                url=$(this).attr('data-select-url')?$(this).attr('data-select-url'):M['url']['static2_vendor']+'select-linkage/citydata.min.json',
-                option={url:url,prov:p, city:c, dist:s, value_key:'id',nodata:'none'};
+            var option = {
+                    url: $(this).attr('data-select-url')?$(this).attr('data-select-url'):M['url']['static2_vendor']+'select-linkage/citydata.min.json',
+                    prov: $(this).find(".prov").attr("data-checked"),
+                    city: $(this).find(".city").attr("data-checked"),
+                    dist: $(this).find(".dist").attr("data-checked"),
+                    value_key: 'id',
+                    nodata: 'none'
+                };
             if($(this).hasClass('shop-address-select')){
                 option=$.extend({
-                    country:country,
+                    country:$(this).find(".country").attr("data-checked"),
                     required:false,
                     country_name_key:'name',
                     p_name_key:'name',
@@ -502,24 +504,22 @@ $.fn.extend({
     },
     // 点击ajax请求弹出确认框后以及返回结果通用处理
     metClickConfirmAjax:function(options){
-        $(document).on('click', this.selector, function(event) {
-            options = $.extend({
-                el:$(this),
-                url:$(this).data('url'),
+        var default_options = $.extend({
                 ajax_data:'',
                 true_text:METLANG.confirm,
                 false_text:METLANG.cancel,
                 confirm_text:METLANG.delete_information,
                 true_fun:function(){
-                    var url=typeof options.url=='function'?options.url():options.url,
-                        ajax_data=typeof options.ajax_data=='function'?options.ajax_data():options.ajax_data;
+                    var url=typeof this.url=='function'?this.url():this.url,
+                        ajax_data=typeof this.ajax_data=='function'?this.ajax_data():this.ajax_data,
+                        options_this=this;
                     $.ajax({
                         url: url,
                         type: ajax_data?'POST':'GET',
                         dataType: 'json',
-                        ajax:ajax_data,
+                        data:ajax_data,
                         success:function(result){
-                            options.ajax_fun(result);
+                            options_this.ajax_fun(result);
                         }
                     });
                 },
@@ -527,9 +527,15 @@ $.fn.extend({
                 ajax_fun:function(result){
                     metAjaxFun({result:result});
                 }
-            },options);
+            },default_options);
+        $(document).on('click', this.selector, function(event) {
+            var options = $.extend({
+                    el:$(this),
+                    url:$(this).data('url')
+                },default_options);
             metAlertifyLoadFun(function(){
-                alertify.okBtn(options.true_text).cancelBtn(options.false_text).confirm(options.confirm_text, function (ev) {
+                var confirm_text=typeof options.confirm_text=='function'?options.confirm_text():options.confirm_text;
+                alertify.okBtn(options.true_text).cancelBtn(options.false_text).confirm(confirm_text, function (ev) {
                     options.true_fun();
                 },function(){
                     if(typeof options.false_fun=='function') options.false_fun();
@@ -745,18 +751,18 @@ function metAlertifyLoadFun(fun){
 // ajax请求返回后通用处理
 function metAjaxFun(options){
     options = $.extend({
-            result:'',
-            false_fun:'',
-            true_fun:'',
-            status_key:'status',
-            msg_key:'msg',
-            true_val:function(){
-                return parseInt(options.result[options.status_key]);
-            }
-        },options);
+        result:'',
+        false_fun:'',
+        true_fun:'',
+        status_key:'status',
+        msg_key:'msg',
+        true_val:function(){
+            return parseInt(options.result[options.status_key]);
+        }
+    },options);
     metAlertifyLoadFun(function(){
         if(options.true_val()){
-            alertify.success(options.result[options.msg_key]);
+            if(typeof options.result[options.msg_key]!='undefined' && options.result[options.msg_key]!='') alertify.success(options.result[options.msg_key]);
             if(typeof options.true_fun=='function'){
                 options.true_fun();
             }else{
@@ -765,7 +771,7 @@ function metAjaxFun(options){
                 },1000);
             }
         }else{
-            alertify.error(options.result[options.msg_key]);
+            if(typeof options.result[options.msg_key]!='undefined' && options.result[options.msg_key]!='') alertify.error(options.result[options.msg_key]);
             if(typeof options.false_fun=='function') options.false_fun();
         }
     });

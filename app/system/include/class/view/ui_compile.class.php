@@ -22,11 +22,11 @@ class ui_compile
     /**
      * 需要可视化的字段
      */
-    public $fields = array('name','value','title','keywords','description','content','valueinfo','defaultvalue','imgurl','uip_default','uip_value','img_path','columnimg','icon','imgurls','info','content1','content2','content3','content4','position','img_title','img_des');
+    public $fields = array('name','value','title','keywords','description','content','valueinfo','defaultvalue','imgurl','uip_default','uip_value','img_path','columnimg','icon','imgurls','info','content1','content2','content3','content4','position','img_title','img_des','namemark','weblogo');
     /**
      * 需要可视化的表
      */
-    public $tables = array('news','column','product','img','job','templates','ui_config','config','flash','column','language','download','parameter','plist');
+    public $tables = array('news','column','product','img','job','templates','ui_config','config','flash','column','language','download','parameter','plist','link');
 
     // 返回信息
     public $response = array('status'=>0);
@@ -725,7 +725,7 @@ class ui_compile
 
     // 图片字段处理方式不一样
    public function checkImg($filed){
-        $img_fields = array('img_path','imgurl','columnimg','imgurls');
+        $img_fields = array('img_path','imgurl','columnimg','imgurls','weblogo');
         return in_array($filed, $img_fields);
     }
 

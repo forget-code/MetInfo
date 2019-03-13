@@ -59,7 +59,7 @@ class html extends admin {
 			delfile('index.html');
 			delfile('index.htm');
 		}
-
+		$_M['form']['met_htmtype'] = $_M['form']['met_htmtype'] == 'htm' ? $_M['form']['met_htmtype'] : 'html';
 		configsave($configlist);/*保存系统配置*/
 
 		if($_M['form']['met_webhtm'] != 0 && $_M['form']['op'] == 1){

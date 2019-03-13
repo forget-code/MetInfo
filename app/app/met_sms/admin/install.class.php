@@ -1,14 +1,14 @@
-<?php 
+<?php
 defined('IN_MET') or exit ('No permission');
 load::sys_class('admin');
 class install extends admin{
 
     public $appno = 10070;
-    public $ver = '1.1';
+    public $ver = '1.3';
     public $appname = 'met_sms';
     public $apptitle= '短信功能';
     public $description = '可以用于批量发送、查看发送记录、流水账，以及充值短信费用';
-    
+
     public function __construct() {
         global $_M;
         parent::__construct();
@@ -24,43 +24,43 @@ class install extends admin{
         $hasapp = DB::get_one("SELECT * FROM {$_M['table']['applist']} WHERE no = '{$this->appno}'");
 
         if($hasapp) {
-           
+
            $this->update();
 
         } else {
-            
+
             $time = time();
             $query = "INSERT INTO `{$_M['table']['applist']}` SET
                     `id`        =  '',
                     `no`        =  '{$this->appno}',
-                    `ver`       =  '{$this->ver}',                   
+                    `ver`       =  '{$this->ver}',
                     `m_name`    =  '{$this->appname}',
                     `m_class`   =  'index',
                     `m_action`  =  'doindex',
-                    `appname`   =  '{$this->apptitle}', 
+                    `appname`   =  '{$this->apptitle}',
                     `info`      =  '{$this->description}',
                     `addtime`   =  {$time},
                     `updatetime`=  {$time}";
             DB::query($query);
 
-        }   
-        
-        $this->addConfig('met_sms_url','https://appv2.metinfo.cn/sms'); 
-        $this->addConfig('met_sms_token',''); 
+        }
+
+        $this->addConfig('met_sms_url','https://appv2.metinfo.cn/sms');
+        $this->addConfig('met_sms_token','');
 
     }
 
     /**
      * 如果存在app 只对版本号做更新
      * @param  [type] $ver 版本号
-     * @return [type] 
+     * @return [type]
      */
     public function update() {
-        
+
         global $_M;
 
         DB::query("UPDATE {$_M['table']['applist']} SET ver = '{$this->ver}' WHERE no = '{$this->appno}'");
-        
+
     }
 
     public function addConfig($name,$value)
@@ -81,8 +81,8 @@ class install extends admin{
     public function dodel(){
         global $_M;
 
-        $del_applist = "DELETE FROM {$_M['table']['applist']} WHERE no = {$this->appno}"; 
-       
+        $del_applist = "DELETE FROM {$_M['table']['applist']} WHERE no = {$this->appno}";
+
         DB::query($del_applist);
         deldir(PATH_WEB.$_M['config']['met_adminfile'].'/update/app/'.$this->appno);
         deldir('../app/app/'.$this->appname);

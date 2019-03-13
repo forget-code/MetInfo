@@ -374,7 +374,8 @@ echo <<<EOT
     </li>
 </menu>
 <script>
-var basepath='{$_M['url']['site_admin']}';
+var basepath='{$_M['url']['site_admin']}',
+	met_alt="{$_M['config']['met_alt']}";
 </script>
 <!--
 EOT;

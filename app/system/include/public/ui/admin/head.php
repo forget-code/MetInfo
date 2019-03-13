@@ -79,7 +79,8 @@ var langtxt = {
 	apppath="{$_M['url']['api']}",
 	jsrand="{$jsrand}",
 	editorname="{$_M['config']['met_editor']}",
-	met_keywords = "{$_M['config']['met_keywords']}";
+	met_keywords = "{$_M['config']['met_keywords']}",
+	met_alt="{$_M['config']['met_alt']}";
 </script>
 <!--['if IE']><script src="{$_M['url']['site']}public/js/html5.js" type="text/javascript"></script><!['endif']-->
 </head>

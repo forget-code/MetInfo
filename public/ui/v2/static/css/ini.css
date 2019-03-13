@@ -163,6 +163,7 @@ pre{overflow:visible}
 .text-help{color:#aaa;display:inline-block}
 .spinnerUi>*{vertical-align:top !important}
 .input-group-file .file-input{display:none}
+.ribbon-badge.ribbon-reverse.ribbon-xs .ribbon-inner{left: -45px;}
 .tag-sm{font-size:12px}
 .w-a{width:auto !important}
 .rotate90{transform: rotate(90deg);}

@@ -106,7 +106,7 @@ class online extends web
             if ($metinfover == 'v1' || $metinfover == 'v2') {// 增加$metinfover判断值（新模板框架v2）
                 //处理回传数据(sea.js处理方式)
                 $onlinex = $_M['config']['met_online_x'] ? $_M['config']['met_online_x'] : "10";
-                $onliney = $_M['config']['met_online_type'] > 2 ? $_M['config']['met_online_y'] : "100";
+                $onliney = $_M['config']['met_online_y'] ? $_M['config']['met_online_y'] : "100";
                 $data['html'] = $metinfo;
                 $data['t'] = $_M['config']['met_online_type'];
                 $data['x'] = $onlinex;

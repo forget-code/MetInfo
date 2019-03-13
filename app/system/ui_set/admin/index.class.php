@@ -75,12 +75,12 @@ class index extends admin {
             $adfile = end($arr1);
             unset($arr1[1]);
             foreach ($arr1 as $val) {
-                if($val == $_M['config']['met_keywords'] || $val == 'admin' ){
+                if(($val == $_M['config']['met_keywords'] && $_M['config']['met_keywords']) || $val == 'admin' ){
                     $adflag = 1;
                 }
             }
             foreach (explode('.', $arr1[2]) as $val) {
-                if ($val == $adfile  || $val == $_M['config']['met_keywords']) {
+                if ($val == $adfile  || ($val == $_M['config']['met_keywords'] && $_M['config']['met_keywords'])) {
                     $adflag = 1;
                 }
             }

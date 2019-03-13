@@ -230,7 +230,7 @@ class  parameter_database extends database{
 
 	public function get_parameter_value($module, $listid, $paraid){
 		global $_M;
-		$query = "SELECT * FROM {$_M['table']['plist']} WHERE listid = '{$listid}' AND module = '{$module}' AND paraid = '{$paraid}'";
+		$query = "SELECT * FROM {$_M['table']['plist']} WHERE listid = '{$listid}' AND module = '{$module}' AND paraid = '{$paraid}' AND lang = '{$_M['lang']}'";
 		$list = DB::get_all($query);
 		return $list;
 	}

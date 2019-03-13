@@ -368,8 +368,6 @@ $(function(){
                     success:function(result){
                         if(parseInt(result.status)){
                             if($editable_click.hasClass('met-editor')){
-                                window.met_keywords=$page_iframe_contents.find('meta[name="keywords"]').attr('content');
-                                if(met_keywords.substr(0,2)=='<m') met_keywords='';
                                 // 显示百度编辑器
                                 if($('script[src*="ueditor.config.js"]').length){
                                     editableUe($editable_click,result.text);

@@ -194,7 +194,8 @@ $.fn.metValidate=function(){
     $('form',this).addClass('met-form-validation');
     if(typeof validate =='undefined') window.validate=[];
     $('form',this).each(function(index, el) {
-        validate[index]=$(this).validation();
+        var order=$(this).index('form');
+        validate[order]=$(this).validation();
     });
 }
 $(document).metValidate();
