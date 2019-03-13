@@ -28,11 +28,11 @@ $(function(){
 function metpagerajax(){
 	var $metpagerbtn=$("#met-pager-btn"),
 		$metpagerajax=$(".met-pager-ajax"),
-		pagemax=$(".met_pager a").length-1,
-		page=$('#metPageT').val(),
+		pagemax=parseInt($('#metPageT').data('pageurl').split('|')[2]),
+		page=parseInt($('#metPageT').val()),
 		metpagerbtnText=function(){
 			if(pagemax){
-				if(pagemax <= page && page>1) $metpagerbtn.hide()/*addClass('disabled').text('已经是最后一页了')*/;
+				if(pagemax==page) $metpagerbtn.attr({hidden:''})/*addClass('disabled').text('已经是最后一页了')*/;
 			}else{
 				$metpagerbtn.attr({hidden:''});
 			}
@@ -72,7 +72,7 @@ function metpagerajaxFun(page){
 			$metpagerajax.imageSize(metpager_original);
 		// },0)
 		// 图片延迟加载
-	    if($metpagerajax.find(metpager_original).length) $metpagerajax.find(metpager_original).lazyload({placeholder:M['lazyloadbg']});
+	    if($metpagerajax.find(metpager_original).length) $metpagerajax.find(metpager_original).lazyload();
 		setTimeout(function(){
 			$('html,body').stop().animate({scrollTop:$(window).scrollTop()+2},0);
 	    },300)
@@ -81,5 +81,20 @@ function metpagerajaxFun(page){
 		setTimeout(function(){
 			if(typeof metAnimOnScroll != 'undefined') metAnimOnScroll('met-grid');// 产品模块瀑布流
 		},100)
+	}
+	// 获取翻页列表数据的浏览次数
+	if($metpagerajax.find('.page'+page+' .met_hits').length){
+		$metpagerajax.find('.page'+page+' .met_hits').each(function(index, el) {
+			var $self=$(this);
+			if($(this).data('src')){
+				$.ajax({
+					url:$(this).data('src'),
+					type:'POST',
+					success:function(result){
+						if(result!='') $self.after(parseInt(result));
+					}
+				});
+			}
+		});
 	}
 }

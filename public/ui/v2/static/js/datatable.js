@@ -1,8 +1,8 @@
 /*
 表格插件调用功能（需调用datatables插件）
  */
-$(function(){
-    var $datatable=$('.dataTable');
+$.fn.metDataTable=function(){
+    var $datatable=$('.dataTable',this);
     if($datatable.length){
         if(!performance.navigation.type && location.search.indexOf('&turnovertext=')<0){// 如果是重新进入页面，则清除DataTable表格的Local Storage，清除本插件stateSave参数保存的表格信息
             for(var i=0;i<localStorage.length;i++){
@@ -154,78 +154,79 @@ $(function(){
             }
             return option;
         };
-        if($('.dataTable[data-table-ajaxurl]').length){
-            window.datatable=[];
+        if($('.dataTable[data-table-ajaxurl]',this).length){
+            if(typeof datatable =='undefined') window.datatable=[];
             $datatable.each(function(index, el) {
                 if($(this).data('table-ajaxurl')) datatable[index]=$(this).DataTable(datatableOption($(this),index));
             });
         }
-        /*动态事件绑定，无需重载*/
-        // 自定义搜索框
-        $(document).on('change',"[data-table-search]",function(){
-            if(typeof datatable != 'undefined'){
-                var $this_datatable=$(this).parents('.dataTable'),
-                    datatable_index=$this_datatable.index('.dataTable');
-                    if(datatable_index<0) datatable_index=0;
-                datatable[datatable_index].ajax.reload();
-            }
-        })
-        // 自动选中
-        // function table_check(){
-        //     var check = $(".dataTable td input[type='checkbox'],.dataTable td input[type='radio']");
-        //     if(check.length>0){
-        //         var v = check.eq(0).parents(".dataTable").find("input[data-table-chckall]").eq(0).attr("data-table-chckall");
-        //         $(document).on('change',".dataTable td input[type='checkbox'],.dataTable td input[type='radio']",function(){
-        //             var t = $(this).attr("checked")?true:false,tr = $(this).parents("td").eq(0).parent("tr");
-        //             if(v&&t){
-        //                 tr.addClass("ui-table-td-hover");
-        //                 tr.find("input[name='"+v+"']").attr("checked",t);
-        //             }else if(!t&&$(this).attr("name")==v){
-        //                 tr.removeClass("ui-table-td-hover");
-        //             }
-        //         });
-        //     }
-        // }
-        // 表格内容修改后自动勾选对应选项
-        // function modifytick(){
-        //     var fints = $(".dataTable td input,.dataTable td select");
-        //     if(fints.length>0){
-        //         var nofocu = true;
-        //         fints.each(function() {
-        //             $(this).data($(this).attr('name'), $(this).val());
-        //         });
-        //         fints.focusout(function() {
-        //             var tr = $(this).parents("tr");
-        //             if ($(this).val() != $(this).data($(this).attr('name'))) tr.find("input[name='id']").attr('checked', nofocu);
-        //         });
-        //         $(".dataTable td input:checkbox[name!='id']").change(function(){
-        //             var tr = $(this).parents("tr");
-        //             tr.find("input[name='id']").attr('checked', nofocu);
-        //         });
-        //     }
-        // }
-        // 表格控件事件
-        // $(document).on( 'init.dt', function ( e, settings ) {
-        //     var api = new $.fn.dataTable.Api( settings );
-        //     var show = function ( str ) {
-        //         // Old IE :-|
-        //         try {
-        //             str = JSON.stringify( str, null, 2 );
-        //         } catch ( e ) {}
-        //         // table_check();
-        //         var cklist = $(".dataTable td select[data-checked]");
-        //         if(cklist.length>0){
-        //             cklist.each(function(){
-        //                 var v = $(this).attr('data-checked');
-        //                 if(v!=''){
-        //                     if($(this)[0].tagName=='SELECT'){
-        //                         $(this).val(v);
-        //                     }
-        //                 }
-        //             });
-        //         }
-        //         modifytick();
-        //     };
-        // });
     }
-});
+    /*动态事件绑定，无需重载*/
+    // 自定义搜索框
+    $(document).on('change',"[data-table-search]",function(){
+        if(typeof datatable != 'undefined'){
+            var $this_datatable=$(this).parents('.dataTable'),
+                datatable_index=$this_datatable.index('.dataTable');
+                if(datatable_index<0) datatable_index=0;
+            datatable[datatable_index].ajax.reload();
+        }
+    })
+    // 自动选中
+    // function table_check(){
+    //     var check = $(".dataTable td input[type='checkbox'],.dataTable td input[type='radio']");
+    //     if(check.length>0){
+    //         var v = check.eq(0).parents(".dataTable").find("input[data-table-chckall]").eq(0).attr("data-table-chckall");
+    //         $(document).on('change',".dataTable td input[type='checkbox'],.dataTable td input[type='radio']",function(){
+    //             var t = $(this).attr("checked")?true:false,tr = $(this).parents("td").eq(0).parent("tr");
+    //             if(v&&t){
+    //                 tr.addClass("ui-table-td-hover");
+    //                 tr.find("input[name='"+v+"']").attr("checked",t);
+    //             }else if(!t&&$(this).attr("name")==v){
+    //                 tr.removeClass("ui-table-td-hover");
+    //             }
+    //         });
+    //     }
+    // }
+    // 表格内容修改后自动勾选对应选项
+    // function modifytick(){
+    //     var fints = $(".dataTable td input,.dataTable td select");
+    //     if(fints.length>0){
+    //         var nofocu = true;
+    //         fints.each(function() {
+    //             $(this).data($(this).attr('name'), $(this).val());
+    //         });
+    //         fints.focusout(function() {
+    //             var tr = $(this).parents("tr");
+    //             if ($(this).val() != $(this).data($(this).attr('name'))) tr.find("input[name='id']").attr('checked', nofocu);
+    //         });
+    //         $(".dataTable td input:checkbox[name!='id']").change(function(){
+    //             var tr = $(this).parents("tr");
+    //             tr.find("input[name='id']").attr('checked', nofocu);
+    //         });
+    //     }
+    // }
+    // 表格控件事件
+    // $(document).on( 'init.dt', function ( e, settings ) {
+    //     var api = new $.fn.dataTable.Api( settings );
+    //     var show = function ( str ) {
+    //         // Old IE :-|
+    //         try {
+    //             str = JSON.stringify( str, null, 2 );
+    //         } catch ( e ) {}
+    //         // table_check();
+    //         var cklist = $(".dataTable td select[data-checked]");
+    //         if(cklist.length>0){
+    //             cklist.each(function(){
+    //                 var v = $(this).attr('data-checked');
+    //                 if(v!=''){
+    //                     if($(this)[0].tagName=='SELECT'){
+    //                         $(this).val(v);
+    //                     }
+    //                 }
+    //             });
+    //         }
+    //         modifytick();
+    //     };
+    // });
+};
+$(document).metDataTable();

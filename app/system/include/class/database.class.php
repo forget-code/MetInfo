@@ -106,6 +106,7 @@ class database  {
 		}
 		$sql = trim($sql, ',');
 		$query = "INSERT INTO {$this->table} SET $sql";
+
 		DB::query($query);
 		return DB::insert_id();
 	}

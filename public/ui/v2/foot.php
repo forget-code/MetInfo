@@ -59,6 +59,10 @@ MET['url']['own_tem']="{$_M['url']['own_tem']}";
 MET['url']['api']="{$_M['url']['api']}";
 </script>
 <met_foot />
+<if value="!$c['shopv2_open']">
+<?php $app_js_time = filemtime(PATH_WEB.'public/ui/v2/static/js/app.js'); ?>
+<script src="{$_M['url']['site']}public/ui/v2/static/js/app.js?{$app_js_time}"></script>
+</if>
 <?php if(file_exists(PATH_OWN_FILE."templates/met/js/own.js") && !((M_NAME=='product' || M_NAME=='shop') && $_M['config']['shopv2_open'])){
     $own_js_time = filemtime(PATH_OWN_FILE.'templates/met/js/own.js');
 ?>

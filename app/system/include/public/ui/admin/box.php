@@ -8,7 +8,7 @@ if($_M['config']['met_agents_metmsg']){
 }else{
 	$met_agents_metmsg = 'style="display:none;"';
 }
-$msecount = DB::counter($_M['table']['infoprompt'], " WHERE lang='{$_M[lang]}' and see_ok='0'", "*");
+$msecount = DB::counter($_M['table']['infoprompt'], "WHERE (lang='{$_M['lang']}' or lang='metinfo') and see_ok='0'", "*");
 $navigation=$privilege['navigation'];
 $arrlanguage=explode('|', $navigation);
 if(in_array('metinfo',$arrlanguage)||in_array('1002',$arrlanguage)){

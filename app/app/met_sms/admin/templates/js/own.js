@@ -30,11 +30,11 @@ define(function (require, exports, module) {
 			type:'confirm',
 			LeftTxt:'确认',
 			RighTtxt:'取消',
-			callback:function(buer){ 
+			callback:function(buer){
 				if(buer){
 					buy(package)
 				}else{
-					
+
 				}
 			}
 		});
@@ -63,14 +63,16 @@ define(function (require, exports, module) {
 			}
 		})
 	});
-	
+
 	$("textarea[name=sms_content]").keyup(function(event) {
 		var content = $(this).val();
 		var leng = content.length;
-		count_str($(this),content)
+		var total = $(this).data('num');
+		count_str($(this),content,total)
+
 		if(leng > 500){
 			alert('短信内容不能超过500')
-			count_str($(this),content)
+			count_str($(this),content,total)
 		}
 	});
 
@@ -89,12 +91,12 @@ define(function (require, exports, module) {
 
 });
 
-function count_str(e,con){
+function count_str(e,con,total){
 	var content = con.substr(0,500);
 	e.val(content)
 	var leng = content.length;
-	$('.str_now').text(leng+'/66');
-	var count = Math.ceil(leng/66);
+	$('.str_now').text(leng+'/'+total);
+	var count = Math.ceil(leng/total);
 	$('.str_count').text(count)
 }
 

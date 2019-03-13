@@ -1,4 +1,3 @@
-function metPageJs(){
 /*!
  * M['weburl']      网站网址
  * M['lang']        网站语言
@@ -14,8 +13,12 @@ $(function(){
     /*导航处理*/
    var aLink=$(".met-nav").find('.dropdown a.nav-link');
     aLink.click(function(){
-        if(!Breakpoints.is('xs')){
-            if($(this).data("hover"))window.location.href = $(this).attr('href');
+        if(!Breakpoints.is('xs') && $(this).data("hover")){
+            if($(this).attr('target')=='_blank'){
+                window.open($(this).attr('href'));
+            }else{
+                location=$(this).attr('href');
+            }
         }
     });
     var nav_li=$(".navlist .dropdown");
@@ -164,14 +167,3 @@ $(function(){
         });
     }
 });
-}
-if(typeof jQuery != 'undefined'){
-    metPageJs();
-}else{
-    var metPageInterval=setInterval(function(){
-            if(typeof jQuery != 'undefined'){
-                metPageJs();
-                clearInterval(metPageInterval);
-            }
-        },50)
-}

@@ -14,6 +14,7 @@ class session{
     public function start(){
         $ip=$this->getip();
         session_id(md5($_SERVER['HTTP_USER_AGENT'].$ip));
+
         session_start();
     }
 
@@ -32,18 +33,28 @@ class session{
         unset($_SESSION[$name]);
     }
 
-    public function getip() {
-        $unknown = 'unknown';
-        if(isset($_SERVER['HTTP_X_FORWARDED_FOR']) && $_SERVER['HTTP_X_FORWARDED_FOR'] && strcasecmp($_SERVER['HTTP_X_FORWARDED_FOR'], $unknown)){
-            $pro = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
-            $ip = $pro[0];
-        }elseif(isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] && strcasecmp($_SERVER['REMOTE_ADDR'], $unknown)) {
-            $ip = $_SERVER['REMOTE_ADDR'];
+    public function getip($type = 0,$adv=false) {
+        $type       =  $type ? 1 : 0;
+        static $ip  =   NULL;
+        if ($ip !== NULL) return $ip[$type];
+        if($adv){
+            if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+                $arr    =   explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
+                $pos    =   array_search('unknown',$arr);
+                if(false !== $pos) unset($arr[$pos]);
+                $ip     =   trim($arr[0]);
+            }elseif (isset($_SERVER['HTTP_CLIENT_IP'])) {
+                $ip     =   $_SERVER['HTTP_CLIENT_IP'];
+            }elseif (isset($_SERVER['REMOTE_ADDR'])) {
+                $ip     =   $_SERVER['REMOTE_ADDR'];
+            }
+        }elseif (isset($_SERVER['REMOTE_ADDR'])) {
+            $ip     =   $_SERVER['REMOTE_ADDR'];
         }
-        return $ip;
+        $long = sprintf("%u",ip2long($ip));
+        $ip   = $long ? array($ip, $long) : array('0.0.0.0', 0);
+        return $ip[$type];
     }
-
-
 }
 
 # This program is an open source system, commercial use, please consciously to purchase commercial license.

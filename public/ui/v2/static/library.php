@@ -19,8 +19,8 @@ $metui['paths']=array(
     // 模板框架基础UI
     'basic'=>array(
         // UI框架基础CSS
-        "{$metui['url']['static2']}css/bootstrap.min.css",
-        "{$metui['url']['static2']}css/bootstrap-extend.min.css",
+        "{$metui['url']['static2_vendor']}bootstrap/bootstrap.min.css",
+        "{$metui['url']['static2_vendor']}bootstrap/bootstrap-extend.min.css",
         "{$metui['url']['static2']}assets/css/site.min.css",
         // UI框架基础JS
         "{$metui['url']['static2_vendor']}babel-external-helpers/babel-external-helpers.min.js",
@@ -310,16 +310,17 @@ require_once PATH_WEB.'public/ui/v2/static/metuipack.class.php';// UI打包类
 if($metuipack->isLteIe9) $resui_lteie9=$metuipack->getUi($metui['url']['uiv2_js'].'lteie9.js');// IE9兼容JS打包生成文件，返回文件路径
 // 打包更新系统UI文件
 if($_M['form']['sysui_pack']){
-    $is_lteie9=array(true,false);
-    $sysui_pack=array('admin','web','tem');
+    $is_lteie9=array(false,true);
     $metuipack->cache=false;
-    foreach ($is_lteie9 as $val) {
+    $sysui_pack=array($metui['paths']['basic_admin'],$metui['paths']['basic_web'],$metui['paths']['basic_tem']);
+    foreach ($is_lteie9 as $key=> $val) {
         $metuipack->isLteIe9=$val;
-        foreach ($sysui_pack as $value) {
-            $sysui_pack_result['basic_'.$value]=$metuipack->getUi($metui['paths']['basic_'.$value]);
+        $sysui_pack_result=$metuipack->getUiGroup($sysui_pack);
+        if($key){
+            echo 'IE9兼容文件：';
         }
+        dump($sysui_pack_result);
     }
-    dump($sysui_pack_result);
     die('系统UI打包更新成功！');
 }
 ?>

@@ -7,11 +7,11 @@ class MetUiPack{
 	public $versionUpdate=false;
 	public function __construct() {
 		global $_M,$metui;
-		$this->isLteIe9=strpos($_SERVER['"HTTP_USER_AGENT"'],'MSIE 9')!==false || strpos($_SERVER['"HTTP_USER_AGENT"'],'MSIE 8')!==false;
+		$this->isLteIe9=strpos($_SERVER['HTTP_USER_AGENT'],'MSIE 9')!==false || strpos($_SERVER['HTTP_USER_AGENT'],'MSIE 8')!==false;
 		// 获取模板版本信息
 		$this->version_path=str_replace($_M['url']['site'], PATH_WEB, $metui['url']['tem']).'version.json';
 		$this->tem_version=file_exists($this->version_path)?json_decode(file_get_contents($this->version_path),true):'';
-		$this->file_version=$this->tem_version['file_version'];
+		$this->file_version=$this->tem_version?$this->tem_version['file_version']:'';
 	}
 	/**
 	 * getUi 获取UI模块打包生成文件url数组
@@ -21,7 +21,7 @@ class MetUiPack{
 	 * @param  Boolean $isModule JS生成文件是否封装
 	 * @return array   $getui    UI模块打包生成文件url数组
 	 */
-	public function getUi($paths,$filename,$fileurl='',$isModule=''){
+	public function getUi($paths,$filename='',$fileurl='',$isModule=''){
 		global $_M,$met_skin_url;
 		if($paths && !is_array($paths)) $paths = explode(',',$paths);// url分割
 		$paths=array_filter($paths);// 删除空元素
@@ -128,7 +128,7 @@ class MetUiPack{
 	 * @param  Boolean $isModule JS生成文件是否封装
 	 * @return array   $getui    多个UI模块打包生成文件url数组
 	 */
-	public function getUiGroup($uiGroup,$isModule){
+	public function getUiGroup($uiGroup,$isModule=''){
 		if($uiGroup && is_array($uiGroup)){
 			array_filter($uiGroup);// 删除空元素
 		    foreach ($uiGroup as $key => $value) {
@@ -138,7 +138,7 @@ class MetUiPack{
 	           	$value=$this->getUi($value,$value['name'],$value['url'],$isModule);
 	           	// UI数组合并
 	            foreach ($value as $key => $val) {
-                	if($getui[$key]){
+                	if(isset($getui[$key])){
                 		$getui[$key]=array_merge($getui[$key],$val);
                 	}else{
                 		$getui[$key]=$val;
@@ -155,8 +155,8 @@ class MetUiPack{
 	public function uiPack(){
 		global $_M;
 		// 生成文件路径
-		$file_pack=count($this->file_pack['paths']).length>1?"{$this->file_pack['url']}{$this->file_pack['name']}.{$this->file_pack['suffix']}":$this->file_pack['paths']['0'];
-		if(count($this->file_pack['paths']).length>1){
+		$file_pack=count($this->file_pack['paths'])>1?"{$this->file_pack['url']}{$this->file_pack['name']}.{$this->file_pack['suffix']}":$this->file_pack['paths']['0'];
+		if(count($this->file_pack['paths'])>1){
 			$fwrite_ok=true;
 			// 生成文件的版本信息的键名数组
 			$file_version['dir']=str_replace(array($_M['url']['site'],PATH_WEB), '', $this->file_pack['url']);
@@ -167,7 +167,9 @@ class MetUiPack{
 					$fwrite_ok=false;
 				}else{
 					$file_pack_version=$this->filePackVersion($this->file_pack['paths']);// 计算需要生成文件的版本信息
-					if($file_pack_version==$this->file_version[$file_version['dir']][$file_version['name']]) $fwrite_ok=false;// 新旧生成文件版本信息比较
+					if(isset($this->file_version[$file_version['dir']][$file_version['name']])){
+						if($file_pack_version==$this->file_version[$file_version['dir']][$file_version['name']]) $fwrite_ok=false;// 新旧生成文件版本信息比较
+					}
 				}
 			}
 			// 生成文件
@@ -190,6 +192,7 @@ class MetUiPack{
 	 * @return String $file_code 生成文件内容
 	 */
 	public function getContent(){
+		$file_code='';
 		// 生成的JS文件首尾添加模块化封装代码
 		if($this->file_pack['module_name']){
 			$this->file_pack['module_name']=strtoupper(str_replace(array('-','.',' '),'_',$this->file_pack['module_name']));
@@ -294,6 +297,7 @@ class MetUiPack{
 	// 更新模板版本文件
 	public function setUiVersion(){
 		global $_M,$met_skin,$resui;
+		$file_pack_version='';
 		// 删除不存在文件的版本信息
 		if(!$this->cache || $this->versionUpdate){
 			foreach ($resui as $key => $value) {

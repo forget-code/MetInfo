@@ -825,7 +825,7 @@ INSERT INTO met_applist VALUES(null,'10070','1.2', 'metconfig_sms', 'index', 'do
 INSERT INTO met_applist VALUES(null,'50002','1.0', 'metconfig_template', 'temtool', 'dotemlist', '官方模板管理工具', '官方商业模板请在此进行管理操作', '0', '0', '0','2','',1);
 INSERT INTO met_config VALUES(null,'metconfig_nurse_link_tel','','','0','0','metinfo');
 INSERT INTO met_config VALUES(null,'metconfig_nurse_link','0','','0','0','metinfo');
-INSERT INTO met_config VALUES(null,'metcms_v','6.1.0','','0','0','metinfo');
+INSERT INTO met_config VALUES(null,'metcms_v','6.1.1','','0','0','metinfo');
 INSERT INTO met_config VALUES(null,'metconfig_nurse_job_tel','','','0','0','metinfo');
 INSERT INTO met_config VALUES(null,'metconfig_nurse_job','0','','0','0','metinfo');
 INSERT INTO met_config VALUES(null,'metconfig_nurse_massge_tel','','','0','0','metinfo');

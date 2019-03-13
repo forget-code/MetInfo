@@ -40,8 +40,8 @@
     box-flex:1.0;
     -ms-flex:1;
 }
-.metadmin-fmbx dl .form-control{width:350px;float:left}
-.metadmin-fmbx dl .input-group{max-width: 100%;width: 500px;}
+.metadmin-fmbx dl .form-control,
+.metadmin-fmbx dl .input-group{width:350px;float:left}
 .metadmin-fmbx dl .input-group .form-control{width:100%}
 .metadmin-fmbx dl .form-control-label{margin-bottom:0;padding:.429rem 0}
 .metadmin-fmbx dl .form-group{margin-bottom:10px}
@@ -50,7 +50,8 @@
 .metadmin-fmbx dl .checkbox-custom{margin-top:0;margin-bottom:0;padding-top:.429rem;padding-bottom:.429rem}
 .metadmin-fmbx dl .radio-inline{padding-top: 5px;}
 @media (max-width:767px){
-    .metadmin-fmbx dl dt{width:100px}
+    .metadmin-fmbx dl dt{width:30%;min-width: 100px;}
     .metadmin-fmbx dl .form-control,
-    .metadmin-fmbx dl .input-group{width:100%;margin-right:0 !important}
+    .metadmin-fmbx dl .input-group,
+    .metadmin-fmbx dl .minicolors{width:100%;margin-right:0 !important}
 }

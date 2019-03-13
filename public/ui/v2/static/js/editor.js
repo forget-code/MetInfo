@@ -17,14 +17,23 @@ $(function(){
 					if(imgsizeset){
 						$self.find('img').each(function(){
     						var src=$(this).attr('src'),
-    							size='500x500';
+    							size='';
     						if($(this).data('width')){
     							size=$(this).data('width')+'x'+$(this).data('height');
     						}else if($(this).attr('width') && $(this).attr('height')){
     							size=$(this).attr('width')+'x'+$(this).attr('height');
     						}
 							if(!($(this).parents('a').length && $(this).parents('a').find('img').length==1)) $(this).wrapAll('<a class="photoswipe-a"></a>');
-							$(this).parents('.photoswipe-a').attr({href:src,'data-size':size,'data-med':src,'data-med-size':size});
+							var $this_photoswipe_a=$(this).parents('.photoswipe-a');
+							$this_photoswipe_a.attr({href:src,'data-med':src});
+							if(size){
+								$this_photoswipe_a.attr({'data-size':size,'data-med-size':size});
+							}else{
+								$(this).imageloadFunAlone(function(imgs){
+									size=imgs.width+'x'+imgs.height;
+									$this_photoswipe_a.attr({'data-size':size,'data-med-size':size});
+								})
+							}
 		    			});
 		    			imgsizeset=false;
 					}

@@ -724,7 +724,7 @@ $.fn.pageinfo=function(){
     // 图片内容转换可视化信息
     $('img,[data-original]',this).each(function(index, el) {
         var img_url=$(this).data('original')||$(this).data('lazy')||$(this).data('src')||$(this).attr('src');
-        if(img_url.indexOf('met-id=')>=0) $(this).attr({'met-id':img_url.match(/met-id=(\w+)/)[1],'met-table':img_url.match(/met-table=(\w+)/)[1],'met-field':img_url.match(/met-field=(\w+)/)[1]});
+        if(img_url && img_url.indexOf('met-id=')>=0) $(this).attr({'met-id':img_url.match(/met-id=(\w+)/)[1],'met-table':img_url.match(/met-table=(\w+)/)[1],'met-field':img_url.match(/met-field=(\w+)/)[1]});
     });
     // 图标内容转换可视化信息
     $('[class*="met-icon|"]',this).each(function(index, el) {

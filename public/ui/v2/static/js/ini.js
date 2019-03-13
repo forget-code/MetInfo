@@ -167,11 +167,36 @@ $.cachedScript = function(url, options) {
         }
     }
     // 这里是jquery官方提供类似getScript实现的方法，也就是说getScript其实也就是对ajax方法的一个拓展
-    options = $.extend(options || {}, {
+    options = $.extend({
         dataType: "script",
         url: url,
         cache: true // 其实现在这缓存加与不加没多大区别
-    });
+    },options);
     scriptsArray.push(url); // 将url地址放入script标记数组中
     return $.ajax(options);
 };
+// 判断是否加载了文件后回调
+function metFileLoadFun(file,condition,fun,noload_fun){
+    if(condition()){
+        if(typeof fun=='function') fun();
+    }else{
+        // if($('script[src*="js/basic.js"]').length){
+        //     var load_time=0;
+        //         intervals=setInterval(function(){
+        //             load_time+=50;
+        //             if(condition()){
+        //                 if(typeof fun=='function') fun();
+        //                 clearInterval(intervals);
+        //             }else if(load_time>=7000){
+        //                 console.log(condition+'没有加载');
+        //                 if(typeof noload_fun=='function') noload_fun();
+        //                 clearInterval(intervals);
+        //             }
+        //         },50)
+        // }else{
+            $.include(file,function(){
+                if(typeof fun=='function') fun();
+            })
+        // }
+    }
+}

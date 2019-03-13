@@ -447,7 +447,7 @@ function appconfigsave($config, $appno, $have = '', $lang = ''){
                 $query = "INSERT INTO {$_M['table']['app_config']} SET appno='{$appno}', name = '{$key}', value = '{$val}', lang='{$_M['lang']}';";
                 DB::query($query);
             }else{
-                if(isset($_M['config'][$key])&&$value!=$_M['app_config'][$key]&&(isset($have[$key])or(isset($have[$key]) && !$have[$key]))){
+                if(isset($_M['config'][$key])&&$value!=$_M['config'][$key]&&(isset($have[$key])or(isset($have[$key]) && !$have[$key]))){
                     $query = "update {$_M['table']['app_config']} SET value = '{$value}' WHERE appno='{$appno}' AND name = '{$key}' AND lang='{$_M['lang']}'";
                     DB::query($query);
                 }

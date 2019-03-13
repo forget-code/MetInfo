@@ -48,7 +48,28 @@ define(function(require, exports, module) {
 
 		//点击下载
 		$(document).on('click','.download_metcms',function(){
-			down_zip($(this).data('ver'),0);
+			$.ajax({
+				url: own_form+'a=dodown_warning',
+				type: 'POST',
+				dataType:'json'
+			})
+			.done(function(result) {
+				if(parseInt(result.status)){
+					$('.update-modal .modal-body').html(result.msg);
+				}else{
+					$('.update-modal .modal-body').html(result.msg);
+					$('.btn_metcms_update').remove();
+					$('.btn-default').remove();
+				}
+			});
+			$('.update-modal').modal();
+
+		});
+
+		// 下载升级包
+		$(document).on('click', '.btn_metcms_update', function(event) {
+			$('.update-modal').modal('hide');
+			down_zip($('.download_metcms').data('ver'),0);
 		});
 
 		//点击安装弹出弹框

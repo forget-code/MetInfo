@@ -71,7 +71,10 @@ $.fn.validation=function(){
     }
     function formDataAjax(e,fun){
         window.form_data_ajax=false;
-        var $form    = $(e.target);
+        var $form    = $(e.target),
+            type=($form.attr('method')||'POST').toUpperCase(),
+            url=$form.attr('action');
+        if(type!='POST') url+=(url.indexOf('?')>0?'&':'?')+$form.serialize(e.target);
         if(M['is_lteie9']){
             var formData = $form.serializeArray(e.target),
                 contentType='application/x-www-form-urlencoded',
@@ -86,12 +89,12 @@ $.fn.validation=function(){
             // });
         }
         $.ajax({
-            url: $form.attr('action'),
+            url: url,
             data: formData,
             cache: false,
             contentType: contentType,
             processData: processData,
-            type: $form.attr('method')||'POST',
+            type: type,
             dataType:'json',
             success: function(result) {
                 $form.data('formValidation').resetForm();
@@ -102,12 +105,18 @@ $.fn.validation=function(){
     // 表单提交前端处理
     success(function(e,form){
         // 多选值组合
-        var checkbox_val={};
+        var checkbox_val={},
+            checkbox_delimiter=[];
         form.find('input[type="checkbox"][name]').each(function(index, el) {
             var name=$(this).attr('name'),
                 val=$(this).val();
+            if($(this).data('delimiter')){
+                checkbox_delimiter[name]=$(this).data('delimiter');
+            }else{
+                checkbox_delimiter[name]=checkbox_delimiter[name]?checkbox_delimiter[name]:'#@met@#';
+            }
             if(typeof checkbox_val[name] =='undefined') checkbox_val[name]='';
-            if($(this).prop('checked')) checkbox_val[name]+=checkbox_val[name]!=''?('#@met@#'+val):val;
+            if($(this).prop('checked')) checkbox_val[name]+=checkbox_val[name]!=''?(checkbox_delimiter[name]+val):val;
         });
         $.each(checkbox_val, function(index, val) {
             if(!form.find('[name="'+index+'"][type="hidden"]').length) form.append('<input type="hidden" name="'+index+'"/>');
@@ -181,10 +190,11 @@ if("undefined" != typeof M){
     M['validation_locale']='zh_CN';
 }
 // 表单验证初始化
-$('form').addClass('met-form-validation');
-if(typeof validate =='undefined'){
-    window.validate=[];
-    $(".met-form-validation").each(function(index, el) {
+$.fn.metValidate=function(){
+    $('form',this).addClass('met-form-validation');
+    if(typeof validate =='undefined') window.validate=[];
+    $('form',this).each(function(index, el) {
         validate[index]=$(this).validation();
     });
 }
+$(document).metValidate();

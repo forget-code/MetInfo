@@ -328,7 +328,6 @@ EOT;
 	public function search_info(){
 		global $_M;
 		$list = array();
-		//dump();
 		if($_M['form']['search']) {
 			$type['type'] = 'array';
 			if($_M['form']['title'] || $_M['form']['content']){
@@ -352,7 +351,7 @@ EOT;
                         'info' => $_M['form']['content'],
                     ),
 					'specv'=> array (
-						'status' => 1,//开启搜索
+						'status' => 0,//关闭商品规格搜索
 						'precision' => 0,
 						'info' => $_M['form']['content'],
 					)

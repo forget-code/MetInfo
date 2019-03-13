@@ -857,30 +857,39 @@ public function doupdatelang(){
 
 
     /**
-     * 生成安装语言包
+     * 生成安装语言包  app  site  elang  type
      */
     public function dotool(){
         global $_M;
-        $site = $_M['form']['site'];
-        $sitename = $_M['form']['site']?'admin':'web';
-        $app = $_M['form']['app']?$_M['form']['app']:0;
-        $appno = $app?$app:'';
+        die();
+        $site = $_M['form']['site'] ? $_M['form']['site'] : 0;
+        $sitename = $_M['form']['site'] ? 'admin' : 'web';
+
+        $appno = $_M['form']['app'] ? $_M['form']['app'] : 0;
+
         $lang = $_M['form']['elang'];
 
-        /*$query = "SELECT * FROM {$_M['table']['language']} WHERE lang='{$lang}' AND app='{$app}' AND site='{$site}' ORDER BY id ";
-        $langlsit = DB::query($query);
-        $langstr = '';
-        foreach ($langlsit as $value) {
-            $value['value'] = addslashes($value['value']);
-            $langstr .= "INSERT INTO met_language VALUES (null, '{$value['name']}', \"{$value['value']}\", {$value['site']}, {$value['no_order']}, {$value['array']}, {$value['app']}, '{$value['lang']}');\n";
-        }*/
+        $type = $_M['form']['type']=="sql" ? "sql" : "json";
 
-        /*$query = "SELECT `name`,`value`,`site`,`array`,`app`,`lang` FROM {$_M['table']['language']} WHERE lang='{$lang}' AND app='{$app}' AND site='{$site}' ORDER BY id ";
+        $query = "SELECT `name`,`value`,`site`,`array`,`app`,`lang` FROM {$_M['table']['language']} WHERE lang='{$lang}' AND app='{$appno}' AND site='{$site}' ORDER BY id ";
         $langlsit = DB::get_all($query);
-        $langlsit = json_encode($langlsit, JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT);
-        file_put_contents(__DIR__."/lang_{$sitename}_{$appno}_{$lang}.json",$langlsit);*/
-        dump('complete');
 
+
+        if ($type == 'json') {
+            $langlsit = json_encode($langlsit, JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT);
+            file_put_contents(__DIR__."/lang_{$sitename}_{$appno}_{$lang}.json",$langlsit);
+        }
+
+        if ($type == 'sql') {
+            $langstr = "";
+            foreach ($langlsit as $value) {
+                $value['value'] = addslashes($value['value']);
+                $langstr .= "INSERT INTO {$_M['table']['language']} VALUES (null, '{$value['name']}', \"{$value['value']}\", {$value['site']}, '{$value['no_order']}', {$value['array']}, {$value['app']}, '{$value['lang']}'); \n";
+            }
+            file_put_contents(__DIR__ . "/_lang_{$sitename}_{$lang}.sql",$langstr);
+        }
+
+        dump("complete $type");
     }
 
 }

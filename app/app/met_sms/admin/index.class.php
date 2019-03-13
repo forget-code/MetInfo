@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('IN_MET') or exit('No permission');
 load::sys_class('admin');
 class index extends admin {
@@ -6,8 +6,8 @@ class index extends admin {
     public $sms;
     public function __construct() {
         global $_M;
-        
-        parent::__construct();    
+
+        parent::__construct();
         nav::set_nav(1, "短信配置", $_M['url']['own_form']."a=doindex");
         nav::set_nav(2, "短信群发", $_M['url']['own_form']."a=domass");
         nav::set_nav(3, "财务记录", $_M['url']['own_form']."a=dofinance");
@@ -43,13 +43,16 @@ class index extends admin {
             }
         }
 
-        require_once $this->template('own/index');    
+        require_once $this->template('own/index');
     }
 
     public function domass()
     {
         global $_M;
         nav::select_nav(2);
+        $res    = $this->sms->sms_sign($_M['form']['sms_sign']);
+        $word = 66 - mb_strlen("退订回N【{$res['sign']}】");
+
         require_once $this->template('own/mass');
     }
 
@@ -90,7 +93,7 @@ class index extends admin {
         $table = load::sys_class('tabledata', 'new');
         $where = " 1 = 1 ";
         $order = "add_time DESC";
-        
+
         $array = $this->sms->get_logs($_M['form']['start'],$_M['form']['length']);
 
         foreach($array['data']['data'] as $key => $val){
@@ -108,13 +111,13 @@ class index extends admin {
     }
 
 
-    
+
     public function dobuy(){
         global $_M;
         $balance = $this->sms->get_balance();
         require_once $this->template('own/recharge');
     }
-    
+
     public function domigrate() {
         global $_M;
         $res = $this->sms->migrate();
@@ -123,7 +126,7 @@ class index extends admin {
         }else{
             turnover("{$_M['url']['own_form']}a=doindex",$res['data']);
         }
-    }   
+    }
 
     public function doadd_buy() {
         global $_M;
@@ -135,7 +138,7 @@ class index extends admin {
     // 短信套餐
     public function dopackage() {
         global $_M;
-        $table      = load::sys_class('tabledata', 'new'); 
+        $table      = load::sys_class('tabledata', 'new');
         $package    = $this->sms->get_package();
         $rarray     = array();
         $balance    = $this->sms->get_balance();
@@ -153,7 +156,7 @@ class index extends admin {
             $list[] = $buy;
             $rarray[]   = $list;
         }
-        
+
         $table->rarray['recordsTotal'] = $table->rarray['recordsFiltered'] = count($package['data']);
 
         $table->rdata($rarray);
@@ -168,4 +171,4 @@ class index extends admin {
         $res = $this->sms->custom_send($sms_phone,$sms_content);
         echo json_encode($res);die;
     }
-}        
+}

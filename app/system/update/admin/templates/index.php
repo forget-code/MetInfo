@@ -97,6 +97,26 @@ var ownlangtxt = {
     	</div>
 	</div>
 </div>
+
+<div class="modal fade update-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">{$_M['word']['metinfoappinstallinfo4']}</h4>
+            </div>
+            <div class="modal-body">
+            	{$_M['word']['metinfoappinstallinfo4']}
+        	</div>
+        	<div class="modal-footer" style='text-align: center;'>
+                <button type="button" class="btn btn-default" data-dismiss="modal" style='margin-right: 10px;'>{$_M['word']['indexonlieno']}</button>
+                <button type="button" class="btn btn-success btn_metcms_update">{$_M['word']['confirm']}</button>
+            </div>
+    	</div>
+	</div>
+</div>
 <!--
 EOT;
 require $this->template('ui/foot');

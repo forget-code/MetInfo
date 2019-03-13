@@ -42,7 +42,6 @@ class about extends admin {
 			'current'=>$current
 		);
 		$res = $this->curl->curl_post($data, 30);
-
 		$res = json_decode($res,true);
 		if($res['status']){
 			$tmp = PATH_WEB.'cache/update';
@@ -77,6 +76,7 @@ class about extends admin {
 		if(!$result['status']){
 			echo $res;die;
 		}
+
 
 		$new_ver = $result['cms_version'];
 		if(version_compare(PHP_VERSION, '5.3') < 0){
@@ -135,6 +135,19 @@ class about extends admin {
 		global $_M;
 		$this->curl->set('host',$_M['config']['met_host_new']);
 		$this->curl->set('file',"index.php?n=platform&c=system&a=doupdate_warning");
+		$data = array(
+			'cms_version'=>$_M['config']['metcms_v'],
+			'url'=>$_M['url']['site']
+		);
+		$res = $this->curl->curl_post($data, 30);
+		echo $res;die;
+	}
+
+	public function dodown_warning()
+	{
+		global $_M;
+		$this->curl->set('host',$_M['config']['met_host_new']);
+		$this->curl->set('file',"index.php?n=platform&c=system&a=dodown_warning");
 		$data = array(
 			'cms_version'=>$_M['config']['metcms_v'],
 			'url'=>$_M['url']['site']

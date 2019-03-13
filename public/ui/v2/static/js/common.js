@@ -26,21 +26,11 @@ $(function(){
     // 图片延迟加载
     var $original=$('[data-original]');
     if($original.length){
-        if(typeof $.fn.lazyload == 'function'){
+        metFileLoadFun(M.weburl+'public/ui/v2/static/plugin/jquery.lazyload.min.js',function(){
+            return typeof $.fn.lazyload=='function';
+        },function(){
             $original.lazyload();
-        }else if($('script[src*="js/basic.js"]').length){
-            var interval_lazyload_time=0,
-                interval_lazyload=setInterval(function(){
-                    interval_lazyload_time+=50;
-                    if(typeof $.fn.lazyload == 'function'){
-                        $original.lazyload();
-                        clearInterval(interval_lazyload);
-                    }else if(interval_lazyload_time>7000){
-                        console.log('lazyload插件没有加载！');
-                        clearInterval(interval_lazyload);
-                    }
-                },50);
-        }
+        });
     }
     // 内页子栏目导航水平滚动
     var $metcolumn_nav=$('.met-column-nav-ul');
@@ -54,7 +44,7 @@ $(function(){
     if($('[boxmh-mh]').length) $('[boxmh-mh]').boxMh('[boxmh-h]');//左右区块最小高度设置
     // 侧栏图片列表
     var $sidebar_piclist=$('.sidebar-piclist-ul');
-    if($sidebar_piclist.find('.masonry-child').length>1){
+    if($sidebar_piclist.find('.masonry-child').length>1 && typeof $.fn.masonry=='function'){
         // 图片列表瀑布流
         Breakpoints.on('xs sm',{
             enter:function(){
@@ -144,11 +134,11 @@ $.fn.extend({
         var img=new Image();
         img.src=$(this).data('original') || $(this).data('lazy') || $(this).attr('src');
         if (img.complete){
-            if (typeof fun==="function") fun();
+            if (typeof fun==="function") fun(img);
             return;
         }
         img.onload=function(){
-            if (typeof fun==="function") fun();
+            if (typeof fun==="function") fun(this);
         };
     },
     // 图片加载完成回调
@@ -352,8 +342,8 @@ $.fn.extend({
     // 表格响应式格式化（需调用tablesaw插件）
     tablexys:function(){
         var $self=$(this);
-        $self.each(function(){
-            if(!$(this).hasClass('tablesaw')) $(this).addClass('tablesaw table-striped table-bordered table-hover tablesaw-sortable tablesaw-swipe').attr({"data-tablesaw-mode":"swipe",'data-tablesaw-sortable':''});
+        $(this).addClass('table table-striped table-bordered table-hover').each(function(){
+            // if(!$(this).hasClass('tablesaw')) $(this).addClass('tablesaw table-striped table-bordered table-hover tablesaw-sortable tablesaw-swipe').attr({"data-tablesaw-mode":"swipe",'data-tablesaw-sortable':''});
             var $editor=$(this).parents('.met-editor');
             if($(this).width()>$editor.width()){
                 $(this).css({'max-width':$editor.width()-parseInt($editor.css('paddingLeft'))-parseInt($editor.css('paddingRight'))});
@@ -362,20 +352,33 @@ $.fn.extend({
         Breakpoints.get('xs').on({
             enter:function(){
                 $self.each(function(){
-                    if(!$('thead',this).length){
-                        var td=$("tbody tr:eq(0) td",this),th='';
-                        if(td.length==0) td=$("tbody tr:eq(0) th",this);
-                        td.each(function(){
-                            th+=$(this).prop('outerHTML');
-                        });
-                        if(th.indexOf('</td>')>=0) th=th.replace(/<\/td>/g,'</th>');
-                        if(th.indexOf('<td')>=0) th=th.replace(/<td/g,'<th');
-                        $(this).prepend("<thead><tr>"+th+"</tr></thead>");
-                        $("tbody tr:eq(0)",this).remove();
-                        $("td,th",this).attr('width','auto');
-                    }
+                    $(this).wrapAll('<div class="w-full" style="overflow-x: auto;"></div>');
+                    // if(!$('thead',this).length){
+                    //     var td=$("tbody tr:eq(0) td",this),th='';
+                    //     if(td.length==0) td=$("tbody tr:eq(0) th",this);
+                    //     td.each(function(){
+                    //         th+=$(this).prop('outerHTML');
+                    //     });
+                    //     if(th.indexOf('</td>')>=0) th=th.replace(/<\/td>/g,'</th>');
+                    //     if(th.indexOf('<td')>=0) th=th.replace(/<td/g,'<th');
+                    //     $(this).prepend("<thead><tr>"+th+"</tr></thead>");
+                    //     $('thead th',this).each(function(index, el) {
+                    //         var colspan=parseInt($(this).attr('colspan'));
+                    //         if(colspan>1){
+                    //             $(this).removeAttr('colspan');
+                    //             var outerHTML=$(this).prop('outerHTML'),
+                    //                 html='';
+                    //             for (var i = 1; i < colspan; i++) {
+                    //                 html+=outerHTML;
+                    //             }
+                    //             $(this).after(html);
+                    //         }
+                    //     });
+                    //     $("tbody tr:eq(0)",this).remove();
+                    //     $("td,th",this).attr('width','auto');
+                    // }
                 });
-                $(document).trigger("enhance.tablesaw");
+                // $(document).trigger("enhance.tablesaw");
             }
         });
     }

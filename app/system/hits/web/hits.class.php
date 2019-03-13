@@ -33,19 +33,20 @@ class hits extends web {
                 $met_hits='';
                 break;
         }
-        $query="select * from {$_M['table'][$met_hits]} where id='{$_M['form']['id']}'";
+        $query="select id,hits from {$_M['table'][$met_hits]} where id='{$_M['form']['vid']}'";
         $hits_list=DB::get_one($query);
-        $hits_list[hits]=$hits_list[hits]+1;
-        $query = "update {$_M['table'][$met_hits]} SET hits='$hits_list[hits]' where id='{$_M['form']['id']}'";
-        DB::query($query);
-        $query="select * from {$_M['table'][$met_hits]} where id='{$_M['form']['id']}'";
-        $hits_list=DB::get_one($query);
-        $hits=$hits_list[hits];
-        if($metinfover=='v1' || $metinfover=='v2'){// 增加判断值（新模板框架v2）
-            echo $hits;
-        }else{
-            echo $hits;
+        if(!$_M['form']['list']){
+            $hits_list['hits']++;
+
+            $query = "update {$_M['table'][$met_hits]} SET hits='$hits_list[hits]' where id='{$_M['form']['vid']}'";
+            DB::query($query);
         }
+        if($_M['form']['ajax']){
+            echo $hits_list['hits'];die;
+        }else{
+            echo "document.write('".$hits_list[hits]."')";die;
+        }
+
     }
 
 }

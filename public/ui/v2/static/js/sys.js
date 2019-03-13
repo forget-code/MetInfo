@@ -2,33 +2,6 @@
 系统功能
  */
 $(function() {
-    // 访问统计
-    if (M["module"] && M['id']) {
-        switch (M["module"]) {
-            case 2:
-                M['module_name'] = "news";
-                break;
-            case 3:
-                M['module_name'] = "product";
-                break;
-            case 4:
-                M['module_name'] = "download";
-                break;
-            case 5:
-                M['module_name'] = "img";
-                break
-        }
-        if (typeof M['module_name'] != 'undefined') {
-            $.ajax({
-                type: "GET",
-                dataType: 'text',
-                url: M['weburl'] + 'hits?lang='+M['lang']+'&type=' + M['module_name'] + '&id=' + M['id'] + '&metinfover=v2',
-                success: function(data) {
-                    $('#met-hits').html(data).removeAttr('hidden');
-                }
-            })
-        }
-    }
     // 在线客服
     $.ajax({
         type: "POST",
@@ -58,9 +31,9 @@ $(function() {
                     // 窗口随屏幕滚动
                     if(result.t<3){
                         var onlineboxTop=function(){
-                                var oy = ($(window).scrollTop()+result.y - $onlinebox.offset().top) * 0.08;
+                                var oy = ($(window).scrollTop()+result.y - parseInt($onlinebox.offset().top)) * 0.08;
                                 oy = (oy > 0 ? 1 : -1) * Math.ceil(Math.abs(oy));
-                                var top=$onlinebox.offset().top+oy;
+                                var top=parseInt($onlinebox.offset().top+oy);
                                 $onlinebox.css({top:top});
                             };
                         $onlinebox.css({top:$(window).scrollTop()+result.y});

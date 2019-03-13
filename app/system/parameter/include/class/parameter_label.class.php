@@ -225,6 +225,7 @@ class parameter_label {
 	 */
 	public function get_search_list_sql($module, $precision, $info){
 		global $_M;
+
 		if(!is_array($info)){
 			if($precision){
 				$sql = "SELECT listid FROM {$_M['table']['plist']} WHERE info = '{$info}'";
@@ -232,14 +233,49 @@ class parameter_label {
 				$sql = "SELECT listid FROM {$_M['table']['plist']} WHERE info like '%{$info}%'";
 			}
 		}else{
-			$sql = "SELECT listid FROM {$_M['table']['plist']} WHERE 1=1 ";
-			foreach($info as $key => $val){
+			// $sql = "SELECT listid FROM {$_M['table']['plist']} WHERE 1=1 ";
+			// foreach($info as $key => $val){
+			// 	if($val['info']){
+			// 		$sql .= " AND listid in (SELECT listid FROM {$_M['table']['plist']} WHERE paraid='{$val['id']}' AND info = '{$val['info']}')";
+			// 	}
+			// }
+			// $sql = str_replace('WHERE 1=1 AND', 'WHERE', $sql);
+			//
+			$listid = $list =  array();
+			$para_num = 0;
+			foreach ($info as $key => $val) {
 				if($val['info']){
-					$sql .= " AND listid in (SELECT listid FROM {$_M['table']['plist']} WHERE paraid='{$val['id']}' AND info = '{$val['info']}')";
+					$query = "SELECT listid FROM {$_M['table']['plist']} WHERE paraid='{$val['id']}' AND info = '{$val['info']}'";
+
+					$para_num++;
+				}
+
+				$res = DB::get_all($query);
+				foreach ($res as $v) {
+				 	array_push($listid, $v['listid']);
 				}
 			}
-			$sql = str_replace('WHERE 1=1 AND', 'WHERE', $sql);
+
+			if($para_num == 0){
+				$query = "SELECT listid FROM {$_M['table']['plist']} WHERE paraid='{$val['id']}'";
+				$res = DB::get_all($query);
+				foreach ($res as $val) {
+					$list[] = $val['listid'];
+				}
+			}else{
+				$listid = array_count_values($listid);
+				foreach ($listid as $key => $val) {
+					if($val >= $para_num){
+						$list[] = $key;
+					}
+				}
+			}
+
+
+			$list = implode(',', $list);
+			return $list;
 		}
+
 		return $sql;
 	}
 

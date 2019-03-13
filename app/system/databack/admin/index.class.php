@@ -165,9 +165,12 @@ class index extends admin {
             $this->docheckapplsit();
 
             if($version != $old_version){
-            	$update_database->update_language();
-            	$update_database->insert_para();
-            	$update_database->update_plist();
+            	if(version_compare($old_version, '6.1.0') < 0){
+            		$update_database->update_language();
+	            	$update_database->insert_para();
+	            	$update_database->update_plist();
+            	}
+
             	if(version_compare($version, '6.1.0') === 0  && version_compare($old_version, '6.0.0') < 0){
 
         			$query = "SELECT * FROM {$_M['table']['list']}";

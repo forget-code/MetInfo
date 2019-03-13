@@ -5,11 +5,11 @@
 defined('IN_MET') or exit('No permission');
 
 require $this->template('ui/head');
-$disabled='';
+$readonly='';
 $weburltext = "{$_M[word][upfiletips10]}{$_M[url][site]}";
 if($_M[langlist][web][$_M[lang]][link]){
 	$met_weburl = $_M[langlist][web][$_M[lang]][link];
-	$disabled = 'disabled';
+	$readonly = 'readonly';
 	$weburltext = "{$_M[word][unitytxt_8]}";
 }
 if($_M[config][met_weburl]=='')$_M[config][met_weburl]=$_M[url][site];
@@ -65,7 +65,7 @@ echo <<<EOT
 		<dt>{$_M[word][setbasicWebSite]}</dt>
 		<dd class="ftype_input">
 			<div class="fbox">
-				<input name="met_weburl" type="text" value="{$met_weburl}" {$disabled} />
+				<input name="met_weburl" type="text" value="{$met_weburl}" {$readonly} />
 			</div>
 			<span class="tips">{$weburltext}</span>
 		</dd>

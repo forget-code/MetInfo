@@ -117,7 +117,7 @@ define(function(require, exports, module) {
 	function imglistlaod(folder_name){
 		$("#upimglist").html('<div class="loader text-center">'+METLANG.fliptext2+'</div>');
 		$.ajax({
-		   type: "POST",
+		   type: "GET",
 		   dataType: "json",
 		   url: adminurl+'n=system&c=filept&a=dogetfile',
 		   success: function(obj){

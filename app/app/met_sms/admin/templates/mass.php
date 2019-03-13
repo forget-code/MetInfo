@@ -1,6 +1,6 @@
 <!--<?php
-# MetInfo Enterprise Content Management System 
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+# MetInfo Enterprise Content Management System
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 
 defined('IN_MET') or exit('No permission');
 require $this->template('ui/head');
@@ -39,12 +39,12 @@ var send_url = "{$_M['url']['own_form']}a=dosend"
     <dt>短信内容</dt>
     <dd class="ftype_textarea">
         <div class="fbox">
-            <textarea style="resize: both" name="sms_content" >节日快乐</textarea>
+            <textarea style="resize: both" name="sms_content" data-num="{$word}" >节日快乐</textarea>
 
         </div>
-       
-        <span>中文/英文第一条66个字，第二条起64个字,超过字数算将切分为多条短信</span>
-        <span> 当前字数：<b class="red str_now">0/66</b> 个字 (共 <b class="red str_count">0</b> 条短信)</span>
+
+        <span>中文/英文第一条{$word}个字，第二条起64个字,超过字数算将切分为多条短信</span>
+        <span> 当前字数：<b class="red str_now">0/{$word}</b> 个字 (共 <b class="red str_count">0</b> 条短信)</span>
     </dd>
 </dl>
 
@@ -61,13 +61,13 @@ var send_url = "{$_M['url']['own_form']}a=dosend"
 </dl>
 
 <dl class="noborder">
-         
+
             <dd>
                 <input type="submit" name="submit" class="submit sms_submit" value="发送" style="float:left;margin-right: 10px">
                 <p class="sms_msg"  style="padding:10px;color:red"></p>
             </dd>
         </dl>
-        
+
     </div>
 </form>
 

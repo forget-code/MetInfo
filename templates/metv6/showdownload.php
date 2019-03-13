@@ -12,7 +12,7 @@
                             <span>{$data.issue}</span>
                             <span>
                                 <i class="icon wb-eye m-r-5" aria-hidden="true"></i>
-                                <span class='met-hits' hidden>{$data.hits}</span>
+                                {$data.hits}
                             </span>
                         </div>
                     </section>

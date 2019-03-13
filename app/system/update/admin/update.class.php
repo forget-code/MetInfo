@@ -469,7 +469,7 @@ class update extends admin{
         $this->app_config_insert('shopv2_price_str_prefix','￥');
         $this->app_config_insert('shopv2_price_str_suffix', '元');
         // 新加变量
-        $this->app_config_insert('shopv2_express_key', '');
+        #$this->app_config_insert('shopv2_express_key', '');
         $this->app_config_insert('shopv2_guest_open', '0');
         $this->app_config_insert('shopv2_logistics_open', '0');
         $this->app_config_insert('shopv2_recommend', '2');

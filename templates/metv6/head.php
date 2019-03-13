@@ -241,6 +241,8 @@
     </if>
 </div>
 </tag>
+</if>
+<if value="$data['classnow'] neq 10001"/>
 <include file="position.php" />
 <include file="subcolumn_nav.php" />
 </if>

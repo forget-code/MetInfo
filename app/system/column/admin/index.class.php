@@ -1125,6 +1125,11 @@ class index extends admin {
     if(!$foldername){
       return false;
     }
+
+    $other = array('shop','pay');
+    if(in_array($foldername, $other)){
+      return false;
+    }
     $langs = load::mod_class('language/language_op', 'new')->get_lang();
     foreach ($langs as $langkey => $langval) {
       $smodule = load::mod_class('column/column_op', 'new')->get_sorting_by_module(false, $langval['mark']);
@@ -1142,6 +1147,8 @@ class index extends admin {
         }
       }
     }
+
+
     return true;
   }
 
@@ -1187,8 +1194,10 @@ class index extends admin {
     $this->database->del_by_id($column['id']);
 
 
-    $config->del_value_by_columnid($id);
-    $config->del_value_by_flashid($id);
+     if(intval($id) > 0){
+       $config->del_value_by_columnid($id);
+       $config->del_value_by_flashid($id);
+    }
     load::mod_class('banner/banner_database', 'new')->update_flash_by_cid($id,$_M['lang']);
   }
 

@@ -51,7 +51,19 @@ class news_handle extends base_handle{
 			}else{
 				$content['target'] = '';
 			}
+			if($_M['form']['id']){
+				$list = 0;
+			}else{
+				$list = 1;
+			}
 
+			if($_M['form']['ajax']){
+				$src = 'data-src';
+				$ajax = '&ajax=1';
+			}else{
+				$src = 'src';
+			}
+			$content['hits'] = "<script type='text/javascript' class='met_hits' {$src}=\"{$_M['url']['site']}hits/?lang={$_M['lang']}&type={$this->contents_page_name}&vid={$content['id']}&list={$list}{$ajax}\"></script>";
 			$content['content'] = contentshow($content['content']);
 		}
 		return $content;

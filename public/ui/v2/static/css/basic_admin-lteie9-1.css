@@ -13,7 +13,7 @@
 /*初始化*/
 html,
 body{width:100%;max-width:100%;min-width:320px;height:auto}
-body{min-height:100%;overflow-x:hidden;word-wrap:break-word;color:#2a333c}
+body{min-height:100%;overflow-x:hidden;color:#2a333c}
 a:focus{outline:none}
 .decorationnone,
 .dropdown-item:active,
@@ -25,6 +25,7 @@ a:focus,
 .dropdown-item:hover,
 a:hover,
 .decorationnone:hover{text-decoration:none}
+.decoration:hover{text-decoration: underline;}
 a:hover{color:#4e97d9}
 b,
 strong{font-weight:bold}
@@ -61,8 +62,8 @@ table td.text-xs-center input[type="text"],
 table th.text-xs-center input[type="text"]{text-align:center}
 @media (min-width:480px){
     table th{white-space:nowrap}
-    .table .form-group,
-    .table .form-control{width:100%}
+    .form-inline .form-group,
+    .form-inline .form-control{display: block;width: 100%;}
 }
 /*datatables表格插件*/
 div.dataTables_paginate .paginate_button.active>a, div.dataTables_paginate .paginate_button.active>a:focus, div.dataTables_paginate .paginate_button.active>a:hover{background:#ddd !important;border-color:#ddd !important;color:#777 !important}
@@ -84,7 +85,10 @@ body .table-striped.dataTable tbody tr.active:hover td>a{color:#62a8ea !importan
 	.nav-tabs .nav-link{padding:5px 10px}
 }
 /*表单*/
-.form-group small.form-control-label{margin-left:10px;line-height:36px}
+.form-group{position: relative;}
+.metadmin-fmbx .form-group small.form-control-label{margin-left:10px;line-height:36px}
+.form-group .small-fixed{position: absolute;left: 0;top: 100%;}
+.form-group .small-fixed small.form-control-label{margin: 0;margin-right: 10px;padding: 0;line-height: 1.5;}
 .input-group-file .btn-file input[type="file"]{width:100%;height:100%}
 .input-group .form-control:active,
 .input-group .form-control:focus,
@@ -94,6 +98,7 @@ body .table-striped.dataTable tbody tr.active:hover td>a{color:#62a8ea !importan
 .form-group:before,
 .form-group:after{display:table;content:" "}
 .form-group:after{clear:both}
+.form-inline .form-group{margin-right:0}
 /* 返回顶部 */
 .met-scroll-top{position:fixed;right:10px;bottom:10px;z-index:10}
 /*其它*/
@@ -120,13 +125,17 @@ pre{overflow:visible}
 .flex,
 .slick-track{display:flex}
 .slick-track{-webkit-box-align:center;-webkit-align-items:center;-ms-flex-align:center;align-items:center}
-.radius0{-webkit-border-radius:0px;-moz-border-radius:0px;-o-border-radius:0px;border-radius:0px}
+.radius0{-webkit-border-radius:0px !important;-moz-border-radius:0px !important;-o-border-radius:0px !important;border-radius:0px !important}
+.radius3{-webkit-border-radius:3px !important;-moz-border-radius:3px !important;-o-border-radius:3px !important;border-radius:3px !important}
+.radius5{-webkit-border-radius:5px !important;-moz-border-radius:5px !important;-o-border-radius:5px !important;border-radius:5px !important}
+.radius10{-webkit-border-radius:10px !important;-moz-border-radius:10px !important;-o-border-radius:10px !important;border-radius:10px !important}
 .box-shadow-none{box-shadow:none}
 .box-shadow1{box-shadow:0 1px 1px rgba(0,0,0,.05)}
 .ulstyle{margin:0;padding:0px;list-style:none}
 .border-none{border:none!important}
 .border-top1{border-top:1px solid #f0f2f5}
 .border-bottom1{border-bottom:1px solid #f0f2f5}
+.border-type1{border:1px solid #ccc}
 .flex-start{-webkit-justify-content:flex-start!important;justify-content:flex-start!important}
 .flex-center{-webkit-justify-content:center;justify-content:center}
 .flex-end{-webkit-justify-content:flex-end;justify-content:flex-end}
@@ -165,7 +174,10 @@ pre{overflow:visible}
 .spinnerUi>*{vertical-align:top !important}
 .input-group-file .file-input{display:none}
 .tag-sm{font-size:12px}
-.w-a{width:auto}
+.w-a{width:auto !important}
+.rotate90{transform: rotate(90deg);}
+.rotate180{transform: rotate(180deg);}
+.rotate360{transform: rotate(360deg);}
 /*public/ui/v2/static/css/admin.css*/
 @charset "utf-8";
 /*后台公用样式*/
@@ -209,8 +221,8 @@ pre{overflow:visible}
     box-flex:1.0;
     -ms-flex:1;
 }
-.metadmin-fmbx dl .form-control{width:350px;float:left}
-.metadmin-fmbx dl .input-group{max-width: 100%;width: 500px;}
+.metadmin-fmbx dl .form-control,
+.metadmin-fmbx dl .input-group{width:350px;float:left}
 .metadmin-fmbx dl .input-group .form-control{width:100%}
 .metadmin-fmbx dl .form-control-label{margin-bottom:0;padding:.429rem 0}
 .metadmin-fmbx dl .form-group{margin-bottom:10px}
@@ -219,7 +231,8 @@ pre{overflow:visible}
 .metadmin-fmbx dl .checkbox-custom{margin-top:0;margin-bottom:0;padding-top:.429rem;padding-bottom:.429rem}
 .metadmin-fmbx dl .radio-inline{padding-top: 5px;}
 @media (max-width:767px){
-    .metadmin-fmbx dl dt{width:100px}
+    .metadmin-fmbx dl dt{width:30%;min-width: 100px;}
     .metadmin-fmbx dl .form-control,
-    .metadmin-fmbx dl .input-group{width:100%;margin-right:0 !important}
+    .metadmin-fmbx dl .input-group,
+    .metadmin-fmbx dl .minicolors{width:100%;margin-right:0 !important}
 }

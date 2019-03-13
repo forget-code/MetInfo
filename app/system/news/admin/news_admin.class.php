@@ -417,7 +417,7 @@ class news_admin extends base_admin {
 						$this->list_no_order($id,$list['no_order']);
 					break;
 					case 'del':
-						$this->del_list($id,2);
+						$this->del_list($id,$_M['form']['recycle']);
 					break;
 					case 'comok':
 						$this->list_com($id,1);

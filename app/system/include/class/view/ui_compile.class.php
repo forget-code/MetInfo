@@ -553,7 +553,11 @@ class ui_compile
             if(!$realval){
                 $val = $para;
             }else{
-                $val = $_M['config']['met_weburl'].str_replace('../', '', $realval).$para;
+                // 如果是外部图片，不增加网站url
+                $val = str_replace('../', '', $realval).$para;
+                if(!strstr($val, 'http')){
+                    $val = $_M['config']['met_weburl'].$val;
+                }
             }
 
         }

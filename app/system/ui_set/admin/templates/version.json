@@ -1,12 +1,12 @@
 {
     "name": "templates",
     "version": "1.0",
-    "updatetime": "2018.08.21",
+    "updatetime": "2018.09.19",
     "file_version": {
         "app\/system\/ui_set\/admin\/templates\/cache\/": {
-            "pageset.css": "d6e3478996e1498493b199726b043752",
-            "pageset.js": "ba2d213ee876079b989d8d81f4d9fdfd",
-            "page_iframe.css": "42264fa0538fe063af7742011f062895"
+            "pageset.css": "e1bf60f31a0dd8fcfa967024db71d6af",
+            "pageset.js": "0a5146af507fa5e72bb751f3524b779e",
+            "page_iframe.css": "5baf5f6f8fac9c2360071c3422bf8fd5"
         }
     }
 }

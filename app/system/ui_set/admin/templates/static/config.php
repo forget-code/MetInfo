@@ -9,7 +9,6 @@ require_once PATH_WEB.'public/ui/v2/static/library.php';// UI资源配置
 $resui[]="{$_M['url']['site']}cache/lang_json_admin_{$_M['langset']}.js";
 $resui['pageset']=array(
     $metui['paths']['basic'],
-    $metui['paths']['glyphicons'],
     $metui['paths']['x_editable'],
     // 模板自定义UI
     "{$metui['url']['static2_fonts']}metinfo-icon/metinfo-icon.css",
