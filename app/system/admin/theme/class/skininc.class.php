@@ -231,20 +231,20 @@ class skininc {
 				break;
 				case 4:
 					foreach($met_class1 as $key=>$val2){
-						if(!$val2[if_in]){
+						//if(!$val2[if_in]){
 							$select=$val['value']==$val2[id].'-cm'?'selected':'';
 							$val['inputhtm'].="<option value='".$val2[id]."-cm' {$select} class='c1'>==".$val2[name]."==</option>";
 							foreach($met_class2[$val2['id']] as $key=>$val3){
-								if(!$val3[if_in]){
+								//if(!$val3[if_in]){
 									$select2=$val['value']==$val3[id].'-cm'?'selected':'';
 									$val['inputhtm'].="<option value='".$val3[id]."-cm' {$select2} class='c2'>".$val3[name]."</option>";
 									foreach($met_class3[$val3['id']] as $key=>$val4){
 										$select3=$val['value']==$val4[id].'-cm'?'selected':'';
 										$val['inputhtm'].="<option value='".$val4[id]."-cm' {$select3} class='c3'>+".$val4[name]."</option>";
 									}
-								}
+								//}
 							}
-						}
+						//}
 					}
 				break;
 			}

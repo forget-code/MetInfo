@@ -18,7 +18,7 @@ echo <<<EOT
 <meta content="telephone=no" name="format-detection" />
 <link href="{$_M[url][site]}favicon.ico" rel="shortcut icon" type="image/x-icon" />
 <link rel="stylesheet" href="{$_M[url][pub]}ui/admin/css/box.css?{$jsrand}" />
-<link rel="stylesheet" href="{$_M[url][pub]}ui/admin/font-awesome/css/font-awesome.min.css" />
+<link rel="stylesheet" href="{$_M[url][pub]}font-awesome/css/font-awesome.min.css?{$jsrand}" />
 <script>
 var langtxt = {
 	"checkupdatetips":"{$_M[word][checkupdatetips]}",
@@ -30,15 +30,17 @@ own_form="{$_M[url][own_form]}",
 own_name="{$_M[url][own_name]}",
 tem="{$_M[url][own_tem]}",
 adminurl="{$_M[url][adminurl]}",
-apppath="{$_M[url][api]}"
+renewable="{$_M[form][renewable]}",
+apppath="{$_M[url][api]}",
+jsrand="{$jsrand}"
 ;
 </script>
 <!--[if IE]><script src="{$_M[url][site]}public/js/html5.js" type="text/javascript"></script><![endif]-->
 </head>
 <body>
 <input id="met_automatic_upgrade" type="hidden" value="{$_M['config']['met_automatic_upgrade']}" />
-<div class="metcms_cont" id="metcmsbox">
-	<div class="metcms_cont_left">
+<div class="metcms_cont v52fmbx" id="metcmsbox" data-metcms_v="{$_M[config][metcms_v]}" data-patch="{$_M[config][met_patch]}">
+	<div class="metcms_cont_left hidden-xs">
 		<div class="metlogo">
 			<a href="{$_M[url][site_admin]}index.php?lang={$_M[lang]}" hidefocus="true">
 				<img 

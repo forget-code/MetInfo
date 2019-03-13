@@ -23,7 +23,9 @@ var ownlangtxt = {
 	"permission_download":"{$_M[word][permission_download]}",
 	"installations":"{$_M[word][installations]}",
 	"attention":"{$_M[word][attention]}",
-	"cvall":"{$_M[word][cvall]}"
+	"cvall":"{$_M[word][cvall]}",
+	"please_again":"{$_M[word][please_again]}",
+	"password_mistake":"{$_M[word][password_mistake]}"
 };
 </script>
 <!--

@@ -1,20 +1,13 @@
 define(function(require, exports, module) {
-
-	var $ = require('jquery');
+	var $ = jQuery = require('jquery');
 	var common = require('common');
 	
-	$(document).on('submit',".ui-from",function(){
-		jQuery.ajax({
-			url:$(".ui-from").attr("action"),
-			data:$(".ui-from").serialize(),
-			type:"POST",
-			success:function(addurl){
-				if(addurl && addurl!=''){
-					window.location.href=addurl;
-				}
-			}
-		});
-		return false;
-	});
+	if($(".content_add").length)require.async('tem/js/content_add');
+	if($(".product_index").length)require.async('tem/js/product_index');
+	if($(".product_add").length)require.async('tem/js/product_add');
+	if($(".product_para").length)require.async('tem/js/product_para');
+	//if($(".product_shop").length)require.async('tem/js/product_shop');
+	if($(".product_shop").length)require.async($(".product_shop").attr('data-url'));
+	if($(".article_add").length)require.async('tem/js/article_add');
 
 });

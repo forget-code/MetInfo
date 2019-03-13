@@ -186,7 +186,7 @@ $tell='para'.$met_fd_sms_dell;
 $tel=$$tell;
 if($tel&&$met_fd_sms_back){
 		require_once ROOTPATH.'include/export.func.php';
-		sendsms($tel,$met_fd_sms_content,1);
+		sendsms($tel,$met_fd_sms_content,4);
 }
 /*邮件提醒*/
 if($met_fd_type==0 or $met_fd_type==2){

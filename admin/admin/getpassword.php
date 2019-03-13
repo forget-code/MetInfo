@@ -2,6 +2,22 @@
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 require_once '../include/common.inc.php';
+$query = "SELECT * FROM {$met_config} WHERE name='met_fd_usename' AND lang='{$lang}'";
+$fd = $db->get_one($query);
+$met_fd_usename = $fd['value'];
+
+$query = "SELECT * FROM {$met_config} WHERE name='met_fd_fromname' AND lang='{$lang}'";
+$fd = $db->get_one($query);
+$met_fd_fromname = $fd['value'];
+
+$query = "SELECT * FROM {$met_config} WHERE name='met_fd_password' AND lang='{$lang}'";
+$fd = $db->get_one($query);
+$met_fd_password = $fd['value'];
+
+$query = "SELECT * FROM {$met_config} WHERE name='met_fd_smtp' AND lang='{$lang}'";
+$fd = $db->get_one($query);
+$met_fd_smtp = $fd['value'];
+
 if(!is_numeric($abt_type)&&$abt_type!='')die();
 if($p){
    $array = explode('.',authcode($p,'DECODE', $met_webkeys));

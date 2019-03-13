@@ -217,7 +217,6 @@ echo <<<EOT
 			</div>
 			</div>
 		</div>
-	
 
 		<div class="appdetail_develp">
 			<h3 class="v52fmbx_hr">{$_M['word']['name_developers']}</h3>

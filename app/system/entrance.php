@@ -3,8 +3,8 @@
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 
 //版本号
-define ('SYS_VER', 'beta 1.100');
-define ('SYS_VER_TIME', '20150128');
+define ('SYS_VER', 'beta 1.101');
+define ('SYS_VER_TIME', '20150511');
 
 header("Content-type: text/html;charset=utf-8");
 
@@ -38,8 +38,7 @@ define ('PATH_SYS_PUBLIC', PATH_WEB."app/system/include/public/");
 //系统模块根目录
 define ('PATH_SYS_MODULE', PATH_WEB."app/system/include/module/");
 
-//MODULE_TYPE
-if (M_TYPE) {
+if (!defined('M_TYPE')) {
 	if(file_exists(PATH_APP.'app/'.M_NAME.'/')&&M_NAME){
 		define('M_TYPE', 'app');
 	}else{
@@ -47,7 +46,7 @@ if (M_TYPE) {
 	}
 }
 
-if (M_MODULE) {
+if (!defined('M_MODULE')) {
 	define ('M_MODULE', 'include');
 	define ('M_CLASS', $_GET['c']);
 	define ('M_ACTION', $_GET['a']);
@@ -63,6 +62,7 @@ if(M_TYPE == 'system'){
 	define ('PATH_OWN_FILE', PATH_APP.M_TYPE.'/'.M_NAME.'/'.M_MODULE.'/');
 	define ('PATH_APP_FILE', PATH_APP.M_TYPE.'/'.M_NAME.'/');
 }
+
 define ('PATH_MODULE_FILE', PATH_APP.'system'.'/'.M_MODULE.'/');
 //程序运行开始时间
 define ('TIME_SYS_START', time());

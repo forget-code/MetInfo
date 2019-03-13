@@ -48,6 +48,7 @@ $settings_arr=array();
 require_once ROOTPATH.'config/config.inc.php';
 if($_GET[langset]!=''){
 	$_GET[langset]=daddslashes($_GET[langset],0,1);
+	if(!preg_match("/^[a-zA-Z0-9]+$/", $_GET[langset]))die();
 	change_met_cookie('languser',$_GET[langset]);
 	save_met_cookie();
 }
@@ -70,15 +71,15 @@ unset($_POST['met_webkeys']);
 unset($_GET['met_webkeys']);
 unset($_POST['metinfo_admin_name']);
 unset($_GET['metinfo_admin_name']);
-$met_cookie_filter=$met_cookie;
+unset($_GET['met_cookie']);
+unset($_COOKIE['met_cookie']);
+unset($_POST['met_cookie']);
 foreach(array('_COOKIE', '_POST', '_GET') as $_request) {
 	foreach($$_request as $_key => $_value) {
 		$_key{0} != '_' && $$_key = daddslashes($_value,0,0,1);
 		$_M['form'][$_key]=daddslashes($_value,0,0,1);
 	}
 }
-$met_cookie=array();
-$met_cookie=$met_cookie_filter;
 $settings=array();
 $db_settings=array();
 $db_settings = parse_ini_file(ROOTPATH.'config/config_db.php');

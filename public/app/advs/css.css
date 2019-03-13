@@ -1,0 +1,12 @@
+.app-advertising{ z-index:9999999999; font-size:0px;}
+.app-advertising-close{ position:absolute; right:0px; bottom:0px; width:20px; height:21px; background:url(close.gif) no-repeat left top; font-size:0px; z-index:99999999999999;}
+.app-advertising-right .app-advertising-close{ left:0px;}
+
+.app-advertising-banner{ font-size:0px; z-index:9999999999; text-align:center; display:none;}
+.app-advertising-banner .app-advertising-close{ top:0px;}
+
+.app-advertising-rbadvs{ z-index:9999999999;}
+.app-advertising-rbadvs .app-advertising-close{ top:0px; background:url(close.gif) no-repeat left top;}
+
+.app-advertising-rbadvs-html{ margin:10px 8px;}
+.app-advertising-rbadvs-img{ font-size:0px; display:block;}

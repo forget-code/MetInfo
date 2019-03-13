@@ -4,7 +4,6 @@
 require_once template('head');
 echo <<<EOT
 -->
-<script type="text/javascript" src="../../ckeditor/ckeditor.js"></script>
 </head>
 $listjs
 <body>
@@ -461,9 +460,6 @@ echo <<<EOT
 		<div class="v52fmbx_dlbox_content">
 			<div class="ckeditormetbox">
 			<textarea class="ckeditor" name="content">$product_list[content]</textarea>
-<script type="text/javascript">
-met_ckeditor('$depth','content');
-</script>
 			</div>
 <!--
 EOT;
@@ -474,9 +470,6 @@ echo <<<EOT
 -->	   
 			<div class="ckeditormetbox none">
 					<textarea class="ckeditor" name="$othermark">{$product_list[$othermark]}</textarea>
-					<script type="text/javascript">
-					met_ckeditor('$depth','$othermark');
-					</script>
 			</div>
 <!--
 EOT;

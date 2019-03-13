@@ -28,7 +28,7 @@ if($admin_pop=="yes"){
 	}
 	foreach($met_langok as $key=>$val4){
 		foreach($column_pop[$val4[lang]] as $key=>$val){
-			if($val['module']<9 && !$val['if_in']){
+			if($val['module']<=12){
 				$admin_pop="admin_popc".$val[id];
 				if($$admin_pop!="")$admin_type.=$$admin_pop."-";
 			}

@@ -210,28 +210,32 @@ function jsonencode($arr){
  * @return array	$arr	返回转换成的数组
  */
 function jsondecode($json){
-    $convert = false;
-    $str = '$arr=';
-    for ($i=0; $i<strlen($json); $i++){
-        if (!$convert){
-            if (($json[$i] == '{') || ($json[$i] == '[')){
-				$str .= ' array(';
-			}else if (($json[$i] == '}') || ($json[$i] == ']')){
-				$str .= ')';
-			}else if ($json[$i] == ':'){
-				$str .= '=>';
+	if($json){
+		$convert = false;
+		$str = '$arr=';
+		for ($i=0; $i<strlen($json); $i++){
+			if (!$convert){
+				if (($json[$i] == '{') || ($json[$i] == '[')){
+					$str .= ' array(';
+				}else if (($json[$i] == '}') || ($json[$i] == ']')){
+					$str .= ')';
+				}else if ($json[$i] == ':'){
+					$str .= '=>';
+				}else{
+					$str .= $json[$i];
+				}                                    
 			}else{
 				$str .= $json[$i];
-			}                                    
-        }else{
-			$str .= $json[$i];
-		}         
-        if ($json[$i] == '"' && $json[($i-1)]!="\\"){
-			$convert = !$convert;
+			}         
+			if ($json[$i] == '"' && $json[($i-1)]!="\\"){
+				$convert = !$convert;
+			}
 		}
-    }
-	$str = str_replace(array('\\\\' ,'\\/'), array('\\' ,'/'), $str);
-    eval($str . ';');
+		$str = str_replace(array('\\\\' ,'\\/'), array('\\' ,'/'), $str);
+		@eval($str . ';');
+	}else{
+		$arr = array();
+	}
     return $arr;
 }
 

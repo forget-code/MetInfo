@@ -25,7 +25,7 @@ class auth {
 		$key_info = DB::get_one($query);
 		if ($key_info['authpass'] && $key_info['authcode']) {
 			list($domain, $tempdomain) = explode('|', $key_info['info3']);
-			if(is_strinclude($_M['url']['site'], $domain) || is_strinclude($_M['url']['site'], $tempdomain)){
+			if(is_strinclude($_M['url']['site'], $domain) || is_strinclude($_M['url']['site'], $tempdomain) || is_strinclude($_M['url']['site'], 'localhost') || is_strinclude($_M['url']['site'], '127.0.0.1')){
 				return $key_info;
 			}else{
 				return false;

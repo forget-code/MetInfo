@@ -211,8 +211,8 @@
 .minicolors-theme-default .minicolors-swatch {
     top: 5px;
     left: 5px;
-    width: 22px;
-    height: 22px;
+    width: 25px;
+    height: 25px;
 	cursor:pointer;
 }
 .minicolors-theme-default.minicolors-position-right .minicolors-swatch {

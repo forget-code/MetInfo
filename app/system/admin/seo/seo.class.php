@@ -52,8 +52,13 @@ class seo extends admin {
 		$configlist = array();
 		$configlist[] = 'met_pseudo';
 		configsave($configlist);/*保存系统配置*/
-		$query = "update {$_M['table']['lang']} SET met_webhtm = '3' where lang='{$_M['lang']}'";
-		DB::query($query);
+		if($_M['form']['met_pseudo']){
+			$query = "update {$_M['table']['lang']} SET met_webhtm = '3' where lang='{$_M['lang']}'";
+			DB::query($query);
+		}else{
+			$query = "update {$_M['table']['lang']} SET met_webhtm = '0' where lang='{$_M['lang']}'";
+			DB::query($query);
+		}
 		/*生成规则文件*/
 		if($_M['form']['met_pseudo']||$_M['form']['pseudo_download']){
 			if(!$_M['form']['pseudo_download']){
@@ -85,6 +90,8 @@ class seo extends admin {
 				$htaccess.= 'RewriteRule ^([a-zA-Z0-9_^\x00-\xff]+)/img-list-([a-zA-Z0-9_^\x00-\xff]+).html$ $1/img.php?lang=$2&pseudo_jump=1'."\n";
 				$htaccess.= 'RewriteRule ^([a-zA-Z0-9_^\x00-\xff]+)/([a-zA-Z0-9_^\x00-\xff^\x00-\xff]+)-([a-zA-Z0-9_^\x00-\xff]+).html$ $1/index.php?lang=$3&metid=$2&pseudo_jump=1'."\n";
 				$htaccess.= 'RewriteRule ^tag/([\s\S]+)-([a-zA-Z0-9_^\x00-\xff]+)$ search/search.php?class1=&class2=&class3=&searchtype=0&searchword=$1&lang=$2'."\n";
+				$str = load::plugin('doseourl', 1, array('str'=>$str, 'type'=>'apache'));//加载插件
+				$htaccess = $htaccess.$str;
 				$httpdurl ='.htaccess';
 				$httpd    = $htaccess;	
 			}
@@ -97,6 +104,8 @@ class seo extends admin {
 				$htaccess.= 'rewrite ^/([a-zA-Z0-9_^x00-xff]+)/img-list-([a-zA-Z0-9_^x00-xff]+).html$ /$1/img.php?lang=$2&pseudo_jump=1;'."\n";
 				$htaccess.= 'rewrite ^/([a-zA-Z0-9_^x00-xff]+)/([a-zA-Z0-9_^x00-xff]+)-([a-zA-Z0-9_^x00-xff]+).html$ /$1/index.php?lang=$3&metid=$2&pseudo_jump=1;'."\n";
 				$htaccess.= 'rewrite ^/tag/([\s\S]+)-([a-zA-Z0-9_^\x00-\xff]+)$ /search/search.php?class1=&class2=&class3=&searchtype=0&searchword=$1&lang=$2;'."\n";
+				$str = load::plugin('doseourl', 1, array('str'=>$str, 'type'=>'nginx'));//加载插件
+				$htaccess = $htaccess.$str;
 				$httpdurl ='.htaccess';
 				$httpd    = $htaccess;	
 			}
@@ -138,6 +147,8 @@ class seo extends admin {
 				$web.= '<match url="^tag/([\s\S]+)-([a-zA-Z0-9_\u4e00-\u9fa5]+)" />'."\n";
 				$web.= '<action type="Rewrite" url="search/search.php?class1=&amp;class2=&amp;class3=&amp;searchtype=0&amp;searchword={R:1}&amp;lang={R:2}" />'."\n";
 				$web.= '</rule>'."\n";
+				$str = load::plugin('doseourl', 1, array('str'=>$str, 'type'=>'iis7'));//加载插件
+				$web = $web.$str;
 				$web.= '</rules>'."\n";
 				$web.= '</rewrite>'."\n";
 				$web.= '</system.webServer>'."\n";
@@ -158,7 +169,8 @@ class seo extends admin {
 				$httpd.= 'RewriteRule '.$metbase.'([a-zA-Z0-9_^\x00-\xff]+)/img-list-([a-zA-Z0-9_^\x00-\xff]+).html '.$metbase.'$1/img.php\?lang=$2&pseudo_jump=1'."\n";
 				$httpd.= 'RewriteRule '.$metbase.'([a-zA-Z0-9_^\x00-\xff]+)/([a-zA-Z0-9_^\x00-\xff^\x00-\xff]+)-([a-zA-Z0-9_^\x00-\xff]+).html '.$metbase.'$1/index.php\?lang=$3&metid=$2&pseudo_jump=1'."\n";
 				$httpd.= 'RewriteRule '.$metbase.'tag/([\s\S]+)-([a-zA-Z0-9_^\x00-\xff]+) '.$metbase.'search/search.php\?class1=&class2=&class3=&searchtype=0&searchword=$1&lang=$2'."\n";
-				
+				$str = load::plugin('doseourl', 1, array('str'=>$str, 'type'=>'iis6'));//加载插件
+				$httpd = $httpd.$str;
 				$httpdurl = 'httpd.ini';
 				
 			}
@@ -284,7 +296,10 @@ class seo extends admin {
 		$configlist[] = 'met_sitemap_lang';
 		$configlist[] = 'met_sitemap_xml';
 		$configlist[] = 'met_sitemap_txt';
-		
+		$_M['form']['met_sitemap_not1'] = $_M['form']['met_sitemap_not1'] ? $_M['form']['met_sitemap_not1'] : 0;
+		$_M['form']['met_sitemap_not2'] = $_M['form']['met_sitemap_not2'] ? $_M['form']['met_sitemap_not2'] : 0;
+		$_M['form']['met_sitemap_xml'] = $_M['form']['met_sitemap_xml'] ? $_M['form']['met_sitemap_xml'] : 0;
+		$_M['form']['met_sitemap_txt'] = $_M['form']['met_sitemap_txt'] ? $_M['form']['met_sitemap_txt'] : 0;
 		configsave($configlist);/*保存系统配置*/
 		
 		load::sys_func('file');

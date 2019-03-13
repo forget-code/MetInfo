@@ -68,5 +68,9 @@ include/mobile_detect.php="1";
 include/Mobile_Detect.php="1";
 webscan360/360safe/index.php="1";
 webscan360/360safe/360scan.php="1";
+[gzuncompress]
+app/system/include/class/phpqrcode/phpqrcode.php="1";
+app/system/include/class/phpqrcode/qrmask.php="1";
+app/system/include/class/phpqrcode/qrspec.php="1";
 */
 ?>

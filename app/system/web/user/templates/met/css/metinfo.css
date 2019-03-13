@@ -1,0 +1,114 @@
+/*全局*/
+body{ font-family:"Hiragino Sans GB","Microsoft YaHei","WenQuanYi Micro Hei",sans-serif; }
+.list-none{ padding:0px; margin:0px; list-style:none; }
+.met-head{ height:100px; overflow:hidden;}
+.met-head .logo li{ float:left; height:100px; line-height:100px; font-size:22px; }
+.met-head .logo li img{ max-width:100%; }
+.met-head .logo ul>li+li:before{padding:0 10px;color:#ddd; font-size:22px; content:"|\00a0"}
+.met-footer{ text-align:center; padding:30px; color:#777; }
+.met-footer p{ margin-bottom:5px; }
+
+.met-member{ background-color:#efefef; background-size:cover; background-repeat:no-repeat; background-position:center center; padding:50px 0px; }
+.met-member form{ max-width:400px; margin:0px 10px; background-color:rgba(255,255,255,.7); padding:30px;  }
+.met-member input.form-control,.met-member textarea.form-control{ border-radius:0px; height:43px;  }
+.met-member .input-group .input-group-addon{ border-radius:0px; background:#efefef; }
+.met-member .input-group  i.fa{ font-size:18px; color:#aaa; width:20px; text-align:center; }
+.met-member select.form-control{ border-radius:0px; }
+.met-member textarea.form-control{ height:auto;  }
+.met-member .login_link{ text-align:right; margin-bottom:15px; }
+.met-member .login_code_img img{ height:43px; cursor:pointer; }
+.met-member .form-control-feedback{ height:43px; line-height:43px; padding-right: 20px;}
+.met-member .btn{ border-radius:0px; }
+
+.met-form-choice{ background:#fff; padding:10px;}
+
+.met-form-file-title{ padding-top:8px; padding-bottom:8px; }
+.met-form .met-upfile .file-drop-zone{ border:0px; margin:0px; }
+.met-form .met-upfile .file-preview{ border-radius:0px; max-width:220px; } /*display:none;*/
+.met-form .met-upfile .kv-upload-progress{ max-width:220px; } /*display:none;*/
+.met-form .met-upfile .kv-upload-progress .progress{ border-radius:0px; } /*display:none;*/
+.met-form .met-upfile .file-preview .file-actions{ display:none; }
+.met-form .met-upfile .file-preview-frame{ box-shadow:none; display:block; margin:0px; border:0; padding:0px; float:none; height:auto; }
+.met-form .met-upfile .file-preview-frame img{ width:100%!important; height:auto!important;}
+.met-form .met-upfile .file-preview-frame:hover{ box-shadow:none; }
+.met-form .met-upfile .file-drop-zone-title{ font-size:30px; }
+.met-form .met-upfile .fileinput-cancel-button{ width:76px;}
+.met-form .met-upfile .progress{ margin-bottom:10px; }
+.met-form .select-linkage .form-control{ padding-right:0px; }
+.has-success .form-control{ border-color:#ccc; }
+.has-success .input-group-addon{ border-color:#ccc; }
+
+/*登录界面*/
+.login_index{ background-image:url(../img/2015020201454781.jpg); }
+.login_index a.btn{ margin-top:20px; }
+.login_index .login_type{ text-align:center; margin-top:20px; }
+.login_index .login_type p{ color:#444; }
+.login_index .login_type .row{ padding-top:5px; }
+.login_index .login_type i{ font-size:35px; }
+.login_index .login_type i.fa-qq{ color:#70A8D6; }
+.login_index .login_type i.fa-weibo{ color:#E07366; }
+.login_index .login_type i.fa-weixin{ color:#54C135; }
+.login_index .form-control{ border:0; }
+
+/*注册页面*/
+.register_index form{ margin:0px auto; max-width:500px; background-color:#fff; }
+.register_index .login_link{ margin-top:10px; margin-bottom:0px; }
+.register_index .met-more{ position: relative; }
+.register_index .met-more span{ position: absolute; text-align:center; height:30px; line-height:30px; left: 50%; margin-left:-50px; top: -15px; width: 100px; overflow:hidden; background-color: #fff; }
+.register_index .login_code .form-control-feedback{ display:none!important; }
+
+/*邮箱验证*/
+.valid-email-content{ margin:0px auto; max-width:800px; background-color:#fff; padding:100px 20px; color:#555; }
+.valid-email .breadcrumb{ margin:0px auto; max-width:800px; border-radius:0px; text-align:center; }
+.valid-email .send_email{ margin-right:20px; }
+.valid-email .loading{ background:url(../img/loading.gif) no-repeat right center; }
+
+/*短信验证*/
+.phone_code{ margin:5px 0px; min-width:100%;  }
+.phone_code .badge{ font-weight:normal; background:#777; color:#fff; }
+.register_index .fa-mobile{ font-size:26px!important; }
+
+/*会员中心*/
+.met-head .user-info{ padding-top:35px; }
+.met-head .user-info .breadcrumb{ background:none; }
+.member-profile{ padding:10px 0px;} /*background-color:#EFEFEC; */
+.member-profile-content{ margin:0px; padding:20px;  }
+.member-profile-content .sidebar .list-group-item{ border:none; border-radius:0px; }
+.met-member-index .form-group{ margin-bottom:0px; }
+.met-member-index .row{ padding:15px 8px; border-bottom:1px solid #ddd; }
+.met-member-index .basic .row:last-child{ border-bottom:none; }
+.met-member-index .basic .panel-body{ margin:0px 15px; }
+.met-member-index .met-form{ max-width:none; background:none; padding:0px; margin:0px; }
+.met-member-index .panel{ border:none; border-radius:0px; box-shadow:none; }
+.met-member-index .panel-default>.panel-heading{ border-radius:0px; font-size:16px; }
+
+.member-profile-content .sidebar .list-group{ margin-bottom:0px; }
+.member-profile-content .met-member-profile{ background:#fff; padding:15px; min-height:500px; }
+.member-profile-content .sidebar-box{ background:#fff; padding:20px 15px; }
+
+/*帐号安全*/
+.met-member-safety{}
+.met-member-safety .media{ padding:30px 0px; border-bottom:1px solid #ddd; position:relative;}
+.met-member-safety .media button{ }
+.met-member-safety .media i{ font-size:25px; width:50px; text-align:center; color:#337ab7;}
+.met-member-safety .media i.fa-unlock-alt{ font-size:33px;  }
+.met-member-safety .media i.fa-mobile{ font-size:48px;  }
+.met-member-safety .media .media-body{ color:#999;  }
+.met-member-safety .media .media-heading{ font-size:18px; color:#444;  }
+.met-member-safety .modal .modal-body{ padding:15px 15px 0px;  }
+.met-member-safety .modal form{ padding:0px 0px 0px; margin:0px; max-width:none;  }
+.met-member-safety .media .loading{ background:#fff url(../img/loading.gif) no-repeat center center; color:#fff; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

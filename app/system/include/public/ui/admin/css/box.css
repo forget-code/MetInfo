@@ -68,7 +68,10 @@ i.fa-mobile{ font-size:26px!important; top:4px!important;}
 .goup-text{ display:none!important; }
 
 
-
+@media (max-width: 768px) { 
+	.metcms_cont_right{ margin-left:0px; }
+	.metcms_cont_right_box{ margin-left:0px; }
+}
 
 
 

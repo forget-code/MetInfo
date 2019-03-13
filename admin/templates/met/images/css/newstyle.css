@@ -1,23 +1,48 @@
-.v52fmbx{ margin:0px; color:#000;}
+.v52fmbx{ margin:0px; color:#000;border-top:0px solid #ddd;border-left:1px solid #ddd;border-right:1px solid #ddd;border-bottom:0px solid #ddd;}
 /**/
 .v52fmbx_dlbox{ background:#fff;}
 .v52fmbx_dlbox dl:after{display:block;clear:both;content:"";visibility:hidden;height:0}
 .v52fmbx_dlbox dl{zoom:1}
-.v52fmbx_dlbox dl{ border-bottom:1px solid #ddd; margin:0px 0px;}
+.v52fmbx_dlbox dl{ margin:0px 0px;}
 .v52fmbx_mo dl{ border-bottom:0;}
-.v52fmbx dl dt{ float:left; padding:13px 5px 10px 10px; text-align:right; overflow:hidden; line-height:1.2;}
-.v52fmbx dl dd{ float:left; padding:10px 0px 10px 5px;}
-.v52fmbx dl dd label{ margin-right:10px; display:block; margin-bottom:3px;}
+.v52fmbx dl:after{display:block;clear:both;content:"";visibility:hidden;height:0;}
+.v52fmbx dl{ width:100%; zoom:1;  background:#fff;}
+.v52fmbx dl{ border-top:1px solid #ddd; margin:0px 0px; display:-webkit-box; display:-moz-box; display:box; display:-ms-flexbox; position:relative; padding:5px 0px; }
+
+.v52fmbx dl dt{ margin:15px 15px 10px 15px; width:105px; color:#333; text-align:left; font-weight:normal; overflow:hidden; line-height:1.2;}
+.v52fmbx dl dd{ color:#aaa; -moz-box-flex:1.0; -webkit-box-flex:1.0; box-flex:1.0; -ms-flex:1; padding:2px 0px 0px 15px; margin:10px 0px; }
 .v52fmbx dl dd label input{ position:relative; top:1px; margin-right:3px;}
-.v52fmbx dl dd input.checkbox{ margin-right:5px;}
+
+.v52fmbx dl dd .fbox{ color:#aaa; color:#656565;}
 .v52fmbx dl dd .tips{ color:#aaa;}
+.v52fmbx dl dd .tips:hover{ color:#f00;}
 .v52fmbx dl dd.labelinline label{ display:inline; }
 .v52fmbx dl dt.addimgdt{ padding:10px 5px 10px;}
 .v52fmbx dl dt.addimgdt p{ height:30px; line-height:30px; margin-bottom:8px;}
+.v52fmbx dl.noborder{ border-bottom:0;}
+.v52fmbx label{
+	font-weight: normal;
+	height: 28px;
+	line-height: 28px;
+	margin: 0px;
+	display: block;
+	color: #333;
+	margin-right:15px;
+}
+.v52fmbx a {
+	color:#23b7e5;
+	text-decoration:none;
+}
+.formerror{ margin-top:6px; height:20px; line-height:20px;}
+.formerror .fa-times{ color:#fff; border-radius:3px; padding:1px 2px; font-size:16px; margin-right:5px; background:red; }
+.formerror .fa-check{ color:#fff; border-radius:3px; padding:2px; font-size:14px; margin-right:5px; background:#10aa00; }
+.formerrorbox{ border:2px solid #f00!important; }
+
+.v52fmbx dl dd.ftype_description{ color:#fff; padding:8px; margin:0px 5px; background:#6c6fbf; }
 /**/
-.v52fmbx_hr{ margin:0px 0px 2px 5px; padding:2px 0px; color:#666; font-weight:normal;}
+.v52fmbx_hr{ margin:0px 0px 2px 0px; padding:2px 0px; color:#666; font-weight:normal;}
 .v52fmbx_hr .hr_right{ float:right;}
-.v52fmbx_submit{ margin:10px;}
+.v52fmbx_submit{ border-bottom:1px solid #ddd;border-top:1px solid #ddd;padding:5px 5px 5px 10px;}
 /**/
 .v52fmbx_hidebox{ background:#fff; padding:10px;}
 .v52fmbx_hidebox a{ margin-left:10px;}
@@ -27,7 +52,7 @@
 .v52fmbx_tbmax{ margin:0px 5px; background:#fff; }
 .v52fmbx_tbmaxother{margin:0 0px; }
 .v52fmbx_tbmaxmt{ margin-top:0px;}
-.v52fmbx_tbbox{ margin:5px; padding:5px 0px;}
+.v52fmbx_tbbox{ margin:5px 5px; padding:5px 0px;}
 .v52fmbx_inline dl dd label{ display:inline;}
 
 .v52show{ display:block!important;}
@@ -55,7 +80,17 @@
 .v52_dlapplist dl dd a{ color:#666; text-decoration:none; display:block;}
 .v52_dlapplist dl dd a:hover{ color:#08c;}
 
-.metsliding{ border-bottom:1px solid #ddd; margin:0px; padding:5px 5px 5px 10px; color:#08c; background:#f5f5f5;}
+.metsliding{ 
+	border-top:1px solid #ddd;
+	margin: 0px 0px 0px;
+	padding: 0px 5px 0px 15px;
+	font-weight: bold;
+	color: #333;
+	font-size: 14px;
+	background: #f7f7f7;
+	height: 38px;
+	line-height: 38px;
+}
 .xtips{ color:#999;}
 .on_dlbox span.tips{ color:red!important;}
 .blockname{ color:#f00;}
@@ -119,8 +154,22 @@ div.page_list{ text-align:center;}
 	bottom:3px;
 }
 .formright span{ margin-right:5px;}
-.formright .submitmi{ padding:0px 10px; height:22px; line-height:22px;}
-.formright input.text{ border:1px solid #ccc; height:16px; line-height:16px; width:60px!important;}
+.formright .submitmi{ 	
+	background: #23b7e5;
+	border: 0 none;
+	height: 30px;
+	line-height: 26px;
+	margin-top:4px;
+	margin-left:-5px;
+	vertical-align: middle;
+	padding: 0px 35px;
+	color: #fff;
+	cursor: pointer;
+	border-radius: 2px;
+	padding-left:10px;
+	padding-right:10px;
+}
+.formright input.text{ border:1px solid #ccc; height:30px; line-height:16px;margin-top:4px;vertical-align: middle;}
 .formright label{ margin-left:5px;}
 .formright form {
 	display:inline;
@@ -128,7 +177,50 @@ div.page_list{ text-align:center;}
 	font-weight:normal;
 }
 .formleft{ float:left;}
-
+.submitmi{ 	
+	background: #23b7e5;
+	border: 0 none;
+	height: 30px;
+	line-height: 26px;
+	margin-top:1px;
+	vertical-align: middle;
+	padding: 0px 35px;
+	color: #fff;
+	cursor: pointer;
+	border-radius: 2px;
+	padding-left:10px;
+	padding-right:10px;
+}
+.formleft a{
+	display: inline-block;
+	padding: 6px 12px;
+	margin-bottom: 0;
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 1.42857143;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: middle;
+	-ms-touch-action: manipulation;
+	touch-action: manipulation;
+	cursor: pointer;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	background-image: none;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	color: #fff;
+	background-color: #d9534f;
+	border-color: #d43f3a;
+}
+.formleft a:hover {
+	text-decoration:none;
+}
+form[name='delform']{
+	padding-left:0px !important;
+}
 .met_map_buttn{
 	height:28px;
 	line-height:28px;

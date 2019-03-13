@@ -32,7 +32,10 @@ class webset extends admin {
 	
 	function doseteditor(){
 		global $_M;
-		
+
+		if($_M['form']['met_ico'] != '../favicon.ico'){
+			copy($_M['form']['met_ico'], '../favicon.ico');
+		}
 		$met_weburl = $_M['form']['met_weburl'];
 		if(substr($met_weburl,-1,1)!="/")$met_weburl.="/";
 		if(!strstr($met_weburl,"http://"))$met_weburl="http://".$met_weburl;

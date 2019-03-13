@@ -314,7 +314,7 @@ class download extends admin {
 	protected function del_dl_file() {
 		global $_M;
 		if($_M['config']['met_adminfile'] && $this->info['type'] && $this->info['no']){
-				deldir(PATH_WEB.$_M['config']['met_adminfile'].'/update/'.$this->info['type'].'/'.$this->info['no'].'/');
+				//deldir(PATH_WEB.$_M['config']['met_adminfile'].'/update/'.$this->info['type'].'/'.$this->info['no'].'/');
 		}
 	}
 	

@@ -1,9 +1,8 @@
 <?php
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+$cmodule='product_list';
 require_once '../include/common.inc.php';
-
-
 $mdname = 'product';
 $showname = 'showproduct';
 $dbname = $met_product;

@@ -44,12 +44,12 @@ echo <<<EOT
 <span class="xtips">{$lang_indexflashexplain1}</span>
 <table cellpadding="2" cellspacing="1" class="table">
               <tr> 
-                <td width="100" class="list">{$lang_setflashcolumn}</td>
-                <td width="150" class="list">{$lang_flashMode}</td>
-                <td width="70" class="list">{$lang_setflashWidth}({$lang_setflashPixel})</td>
+                <td width="200" class="list">{$lang_setflashcolumn}</td>
+                <td width="150" class="list" >{$lang_flashMode}</td>
+                <td width="70" class="list" {$v1dispaly}>{$lang_setflashWidth}({$lang_setflashPixel})</td>
 				<td width="70" class="list">{$lang_setflashHeight}({$lang_setflashPixel})</td>
 				<td class="list" width="50">{$lang_preview}</td>
-				<td class="list list_left">{$lang_unitytxt_2}</td>
+				<td width="50" class="list list_left">{$lang_unitytxt_2}</td>
               </tr>
 <!--
 EOT;
@@ -78,10 +78,25 @@ echo <<<EOT
 				<select name="met_flash_{$val[id]}_type" onChange="flashselect($(this))">
 				<option value="0" {$met_flash_type[0]}>{$lang_close}</option>
 				<option value="1" {$met_flash_type[1]} style="color:#FF0000">{$lang_flashMode1}</option>
+<!--
+EOT;
+if(!$v1dispaly){
+echo <<<EOT
+-->				
 				<option value="2" {$met_flash_type[2]} style="color:#003399">{$lang_flashMode2}</option>
+<!--
+EOT;
+}
+echo <<<EOT
+-->					
 				<option value="3" {$met_flash_type[3]} style="color:#339933">{$lang_setflashMode3}</option>
 				</select>
-				<select {$imgtypedisply} name="met_flash_{$val[id]}_imgtype">
+<!--
+EOT;
+if(!$v1dispaly){
+echo <<<EOT
+-->	
+				<select {$imgtypedisply} name="met_flash_{$val[id]}_imgtype" {$v1dispaly}>
 <!--
 EOT;
 for($i=1;$i<9;$i++){
@@ -96,8 +111,13 @@ $met_flash_type[0]="";$met_flash_type[1]="";$met_flash_type[2]="";$met_flash_typ
 echo <<<EOT
 -->		
 				</select>
+<!--
+EOT;
+}
+echo <<<EOT
+-->	
 				</td>
-                <td class="list-text">
+                <td class="list-text" {$v1dispaly}>
 				<input name="met_flash_$val[id]_x" type="text" class="text mid" value="{$met_flasharray[$val[id]][x]}"></td>
 				<td class="list-text" align="left" style="padding-left:10px;">
 				<input name="met_flash_$val[id]_y" type="text" class="text mid" value="{$met_flasharray[$val[id]][y]}">
@@ -128,10 +148,25 @@ echo <<<EOT
 				<select name="met_flash_$val2[id]_type" onChange="flashselect($(this))">
 				<option value="0" $met_flash_type[0]>{$lang_close}</option>
 				<option value="1" $met_flash_type[1] style="color:#FF0000">{$lang_flashMode1}</option>
+<!--
+EOT;
+if(!$v1dispaly){
+echo <<<EOT
+-->					
 				<option value="2" $met_flash_type[2] style="color:#003399">{$lang_flashMode2}</option>
+<!--
+EOT;
+}
+echo <<<EOT
+-->					
 				<option value="3" $met_flash_type[3] style="color:#339933">{$lang_setflashMode3}</option>
 				</select>
-				<select {$imgtypedisply} name="met_flash_{$val2[id]}_imgtype">
+<!--
+EOT;
+if(!$v1dispaly){
+echo <<<EOT
+-->	
+				<select {$imgtypedisply} name="met_flash_{$val2[id]}_imgtype" {$v1dispaly}>
 <!--
 EOT;
 for($i=1;$i<9;$i++){
@@ -146,8 +181,13 @@ $met_flash_type[0]="";$met_flash_type[1]="";$$met_flash_type[3]="";
 echo <<<EOT
 -->		
 				</select>
+<!--
+EOT;
+}
+echo <<<EOT
+-->	
 				</td>
-                <td  class="list-text">
+                <td  class="list-text" {$v1dispaly}>
 				<input name="met_flash_$val2[id]_x" type="text" class="text mid" value="{$met_flasharray[$val2[id]][x]}" onMouseDown="flashselect('$val2[id]')"></td>
 				<td  class="list-text">
 				<input name="met_flash_$val2[id]_y" type="text" class="text mid" value="{$met_flasharray[$val2[id]][y]}" onMouseDown="flashselect('$val2[id]')">
@@ -175,10 +215,25 @@ echo <<<EOT
                 <td class="list-text"><select name="met_flash_$val3[id]_type" onChange="flashselect($(this))">
 				<option value="0" $met_flash_type[0]>{$lang_close}</option>
 				<option value="1" $met_flash_type[1] style="color:#FF0000">{$lang_flashMode1}</option>
+<!--
+EOT;
+if(!$v1dispaly){
+echo <<<EOT
+-->				
 				<option value="2" $met_flash_type[2] style="color:#003399">{$lang_flashMode2}</option>
+<!--
+EOT;
+}
+echo <<<EOT
+-->				
 				<option value="3" $met_flash_type[3] style="color:#339933">{$lang_setflashMode3}</option>
 				</select>
-				<select {$imgtypedisply} name="met_flash_{$val3[id]}_imgtype">
+<!--
+EOT;
+if(!$v1dispaly){
+echo <<<EOT
+-->	
+				<select {$imgtypedisply} name="met_flash_{$val3[id]}_imgtype" {$v1dispaly}>
 <!--
 EOT;
 for($i=1;$i<9;$i++){
@@ -193,8 +248,13 @@ $met_flash_type[0]="";$met_flash_type[1]="";$met_flash_type[2]="";$met_flash_typ
 echo <<<EOT
 -->		
 				</select>
+<!--
+EOT;
+}
+echo <<<EOT
+-->	
 				</td>
-                <td  class="list-text">
+                <td  class="list-text" {$v1dispaly}>
 				<input name="met_flash_$val3[id]_x" type="text" class="text mid" value="{$met_flasharray[$val3[id]][x]}" onMouseDown="flashselect('$val3[id]')"></td>
 				<td  class="list-text">
 				<input name="met_flash_$val3[id]_y" type="text" class="text mid" value="{$met_flasharray[$val3[id]][y]}" onMouseDown="flashselect('$val3[id]')">

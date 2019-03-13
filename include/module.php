@@ -1,5 +1,5 @@
 <?php
-require_once 'common.inc.php';
+if(!defined('IN_MET'))require_once 'common.inc.php';
 $modulefname[1] = array(0=>'show.php',1=>'show.php',2=>$met_column);
 $modulefname[2] = array(0=>'news.php',1=>'shownews.php',2=>$met_news);
 $modulefname[3] = array(0=>'product.php',1=>'showproduct.php',2=>$met_product);

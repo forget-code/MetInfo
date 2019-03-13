@@ -37,11 +37,28 @@ foreach($paravalue as $key=>$val){
 }else{
 	$message_contents=$db->get_one("select * from $met_config where lang='$lang' and name='met_message_fd_content'");
 	$message_content=$db->get_one("select * from $met_parameter where lang='$lang' and id='$message_contents[value]' and module='7'");
+
+	$message_content_list=$db->get_all("select * from $met_parameter where lang='$lang' and id!='$message_contents[value]' and module='7' order by no_order asc");
+
 	$message_content1=$db->get_one("select * from $met_mlist where lang='$lang' and module='7' and listid='$id' and imgname='$message_content[name]'");
+	$message_content1['imgname'] = $message_content[name];
 	$query1 = "SELECT * FROM $met_mlist WHERE lang='$lang' and module='7' and listid='$id' and paraid!='$message_content1[paraid]' order by id";
 	$result1 = $db->query($query1);
 	while($list1 = $db->fetch_array($result1)){
-			$para_list[]=$list1;
+		$para_list_tmp[$list1['paraid']]=$list1;
+	}
+	foreach($message_content_list as $key=>$val){
+		
+		
+		if($val['type'] == 5){
+			if($para_list_tmp[$val['id']][info] !='../upload/file/'){
+				$para_list_tmp[$val['id']][info] = "<a href=\"../../{$para_list_tmp[$val['id']][info]}\" target=\"_blank\">{$para_list_tmp[$val['id']][imgname]}</a>";
+			}else{
+				$para_list_tmp[$val['id']][info] = "暂无图片";
+			}
+		}
+		
+		$para_list[] = $para_list_tmp[$val['id']];
 	}
 	$message_list=$db->get_one("select * from $met_message where id='$id'");
 	$message_list['customerid']=metidtype($message_list['customerid']);

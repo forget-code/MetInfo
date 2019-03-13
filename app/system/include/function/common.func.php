@@ -107,8 +107,14 @@ function sqlinsert($string){
  * @param  string $langinfo 跳转时alert弹窗内容
  */
 function okinfo($url,$langinfo){
-	echo("<script type='text/javascript'> alert('{$langinfo}'); location.href='{$url}'; </script>");
-	exit;
+	if($langinfo)$langstr = "alert('{$langinfo}');";
+	if($url == '-1'){
+		$js = "window.history.back();";
+	}else{
+		$js = "location.href='{$url}';";
+	}
+	echo("<script type='text/javascript'>{$langstr} {$js} </script>");
+	die();
 }
 
 /**
@@ -261,14 +267,15 @@ function getbrowser(){
  * @return string 返回标准化的url
  */
 function url_standard($url){
-	if(stripos($url,'http://') === false){
+	if(stripos($url,'http://') === false && stripos($url,'https://') === false){
 		$url= 'http://'.$url;
 	}else{
-		if(stripos($url,'http://') != 0){
+		if(stripos($url,'http://') != 0 && stripos($url,'http://') != 0){
 			$url=str_replace('http://','',$url);
 			$url= 'http://'.$url;
 		}
 	}
+	/*
 	$start = strripos($url,'.');
 	$start1 = strripos($url,'?');
 	if($start !== false && $start1 !== false && $start > $start1){
@@ -292,7 +299,7 @@ function url_standard($url){
 	}else{
 		$url = substr($url, -1) == '/' ? $url : $url . '/';
 	}
-	
+	*/
 	return $url;
 }
 

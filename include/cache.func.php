@@ -35,7 +35,7 @@ function cache_str(){
 }
 function cache_column(){
 	global $db,$met_column,$lang;//mobile
-	$query="select * from $met_column where lang='$lang' order by classtype desc,no_order";
+	$query="select * from $met_column where display='0' and lang='$lang' order by classtype desc,no_order";
 	$result= $db->query($query);
 	while($list = $db->fetch_array($result)){
 		$list['new_windows'] = $list['new_windows']?$list['new_windows']:'';

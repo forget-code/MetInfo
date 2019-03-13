@@ -81,6 +81,7 @@ if($action=="modify"){
 	$met_flasharray=$met_array;
 	foreach($met_flasharray as $key=>$val){
 		$name='flash_'.$key;
+		$val['imgtype'] = $val['imgtype'] ? $val['imgtype'] : 1;
 		$value=$val['type'].'|'.$val['x'].'|'.$val['y'].'|'.$val['imgtype'];
 		$configok = $db->get_one("SELECT * FROM $met_config WHERE flashid ='$key' and lang='$lang'");
 		if(!$configok){
@@ -101,6 +102,12 @@ if($action=="modify"){
 }else{
 $css_url=$depth."../templates/".$met_skin."/css";
 $img_url=$depth."../templates/".$met_skin."/images";
+if(file_exists("../../../templates/{$met_skin_user}/metinfo.inc.php")){
+	require_once "../../../templates/{$met_skin_user}/metinfo.inc.php";
+}
+if($metinfover == 'v1'){
+	$v1dispaly = "style='display:none'";
+}
 include template('interface/flash/setflash');footer();
 }
 # This program is an open source system, commercial use, please consciously to purchase commercial license.

@@ -78,6 +78,11 @@ $displayimg = $displayimglist;
 		$links="http://".$links;
 	}
 	$access=$access<>""?$access:0;
+	$content = concentwatermark_compatible($content);
+	if($content1)$content1 = concentwatermark_compatible($content1);
+	if($content2)$content2 = concentwatermark_compatible($content2);
+	if($content3)$content3 = concentwatermark_compatible($content3);
+	if($content4)$content4 = concentwatermark_compatible($content4);
 	$query = "INSERT INTO $met_img SET
 						  title              = '$title',
 						  ctitle             = '$ctitle',
@@ -169,6 +174,11 @@ if($description){
 	}
 }
 if($action=="editor"){
+	$content = concentwatermark_compatible($content);
+	if($content1)$content1 = concentwatermark_compatible($content1);
+	if($content2)$content2 = concentwatermark_compatible($content2);
+	if($content3)$content3 = concentwatermark_compatible($content3);
+	if($content4)$content4 = concentwatermark_compatible($content4);
 	if($links){
 		$links=str_replace("http://",'',$links); 
 		$links="http://".$links;

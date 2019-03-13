@@ -14,53 +14,50 @@ echo <<<EOT
 <div class="appbox_left_box">
 	<section class="myapplist">
 		<h3>{$_M['word']['myapp']}</h3>
-		<ul>
+		
+		<div class="container-fluid">
+			<div class="row">
 <!--
 EOT;
-
 foreach($appl as $key=>$val){
-echo <<<EOT
--->
-	<li>
-		<dl>
-			<dt>
-				<a href="{$val['url']}" title="{$val[appname]}">
-				<img src="{$val['ico']}">	
-			</a>
-			</dt>
-			<dd>
-				<h4>{$val[appname]}</h4>
-				<h6>
-<!--
-EOT;
 if($val['update'] && $_M['config']['met_agents_app'] && ($privilege['navigation'] == 'metinfo' || strstr($privilege['navigation'], '1507'))){
-echo <<<EOT
--->				
-				<span style="display:none" id="{$val['no']}" data-ver="{$val['ver']}"><a href="{$val['update']}">{$_M['word']['appupgrade']}</a></span>
-<!--
-EOT;
+	$val['updatehtml'] = "<li class=\"update hidden\" id=\"{$val['no']}\" data-ver=\"{$val['ver']}\"><a href=\"{$val['update']}\"><span class=\"glyphicon glyphicon-arrow-up\"></span>{$_M['word']['appupgrade']}</a></li>";
 }
 if($val['uninstall'] && $_M['config']['met_agents_app'] && ($privilege['navigation'] == 'metinfo' || strstr($privilege['navigation'], '1507'))){
-echo <<<EOT
--->				
-				
-				<a href="{$val['uninstall']}" data-confirm="{$_M['word']['app_datele']}">{$_M['word']['dlapptips6']}</a>
-				</h6>
-<!--
-EOT;
+	$val['uninstallhtml'] = "<li class=\"uninstall\"><a href=\"{$val['uninstall']}\" data-confirm=\"{$_M['word']['app_datele']}\"><span class=\"glyphicon glyphicon-trash\"></span>{$_M['word']['dlapptips6']}</a></li>";
 }
+$val['info'] = get_word($val['info']);
+/*
+if(strstr($val[info],"lang_")){
+	$info = explode('lang_',$val[info]);
+	$val['info'] = get_word($_M['word'][$info[1]]);
+}
+*/
 echo <<<EOT
--->						
-			</dd>
-		</dl>
-	</li>
+-->
+				<div class="col-md-4 col-sm-6 col-xs-12 index_stat_chart">
+					<div class="media">
+						<div class="media-left">
+							<a href="{$val['url']}">
+								<img class="media-object" src="{$val['ico']}" width="80">
+							</a>
+						</div>
+						<div class="media-body">
+							<ul class="media-tool">{$val['updatehtml']}{$val['uninstallhtml']}</ul>
+							<a href="{$val['url']}">
+								<h4 class="media-heading">{$val[appname]}</h4>
+								<p>{$val[info]}</p>
+							</a>
+						</div>
+					</div>
+				</div>
 <!--
 EOT;
 }
 echo <<<EOT
 -->
-		</ul>
-		<div class="clear"></div>
+			</div>
+		</div>
 	</section>
 </div>
 </div>

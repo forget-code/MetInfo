@@ -4,6 +4,8 @@
 require_once '../login/login_check.php';
 $css_url="../templates/".$met_skin."/css";
 $img_url="../templates/".$met_skin."/images";
+$new_news_module_url = "../index.php?n=content&c=article_admin&a=doindex";
+$new_product_module_url = "../index.php?n=content&c=product_admin&a=doindex";
 if($topara){
 	$toparas=explode('|',$topara);
 	Header("Location: ../column/parameter/parameter.php?module={$topara[0]}&anyid=29&lang={$lang}&class1={$toparas[1]}");
@@ -34,14 +36,14 @@ if($met_content_type!=2){
 					break;
 					case '2':
 							$val['url']='article/content.php?class1='.$val[id].'&action=add&lang='.$lang.'&anyid='.$anyid;	
-							$val['conturl']='article/index.php?class1='.$val[id].'&lang='.$lang.'&anyid='.$anyid;
+							$val['conturl']=$new_news_module_url.'&class1='.$val[id].'&lang='.$lang.'&anyid='.$anyid;
 							$val['set']="<div>
 									<p class='lt'><a href='{$val[url]}'>{$lang_addinfo}</a></p><span>-</span><p class='rt'><a href='{$val[conturl]}'>{$lang_manager}</a></p>
 									</div>";
 					break;
 					case '3':
 						$val['url']='product/content.php?class1='.$val[id].'&action=add&lang='.$lang.'&anyid='.$anyid;
-						$val['conturl']='product/index.php?class1='.$val[id].'&lang='.$lang.'&anyid='.$anyid;
+						$val['conturl']=$new_product_module_url.'&class1='.$val[id].'&lang='.$lang.'&anyid='.$anyid;
 						$val['set']="<div>
 									<p class='lt'><a href='{$val[url]}'>{$lang_addinfo}</a></p><span>-</span><p class='rt'><a href='{$val[conturl]}'>{$lang_manager}</a></p>
 									</div>";
@@ -108,13 +110,13 @@ if($met_content_type!=2){
 					case '2':	
 						if(!$val[releclass]){
 							$val['url']='article/content.php?class1='.$val[bigclass].'&class2='.$val[id].'&lang='.$lang.'&anyid='.$anyid;	
-							$val['conturl']='article/index.php?class1='.$val[bigclass].'&class2='.$val[id].'&lang='.$lang.'&anyid='.$anyid;
+							$val['conturl']=$new_news_module_url.'&class1='.$val[bigclass].'&class2='.$val[id].'&lang='.$lang.'&anyid='.$anyid;
 							$val['set']="<div>
 									<p class='lt'><a href='{$val[url]}'>{$lang_addinfo}</a></p><span>-</span><p class='rt'><a href='{$val[conturl]}'>{$lang_manager}</a></p>
 									</div>";
 						}else{
 							$val['url']='article/content.php?class1='.$val[id].'&lang='.$lang.'&anyid='.$anyid;	
-							$val['conturl']='article/index.php?class1='.$val[id].'&lang='.$lang.'&anyid='.$anyid;
+							$val['conturl']=$new_news_module_url.'&class1='.$val[id].'&lang='.$lang.'&anyid='.$anyid;
 							$val['set']="<div>
 									<p class='lt'><a href='{$val[url]}'>{$lang_addinfo}</a></p><span>-</span><p class='rt'><a href='{$val[conturl]}'>{$lang_manager}</a></p>
 									</div>";
@@ -124,13 +126,13 @@ if($met_content_type!=2){
 					case '3':
 						if(!$val[releclass]){
 							$val['url']='product/content.php?class1='.$val[bigclass].'&class2='.$val[id].'&lang='.$lang.'&anyid='.$anyid;
-							$val['conturl']='product/index.php?class1='.$val[bigclass].'&class2='.$val[id].'&lang='.$lang.'&anyid='.$anyid;
+							$val['conturl']=$new_product_module_url.'&class1='.$val[bigclass].'&class2='.$val[id].'&lang='.$lang.'&anyid='.$anyid;
 							$val['set']="<div>
 										<p class='lt'><a href='{$val[url]}'>{$lang_addinfo}</a></p><span>-</span><p class='rt'><a href='{$val[conturl]}'>{$lang_manager}</a></p>
 										</div>";
 						}else{
 							$val['url']='product/content.php?class1='.$val[id].'&lang='.$lang.'&anyid='.$anyid;
-							$val['conturl']='product/index.php?class1='.$val[id].'&lang='.$lang.'&anyid='.$anyid;
+							$val['conturl']=$new_product_module_url.'&class1='.$val[id].'&lang='.$lang.'&anyid='.$anyid;
 							$val['set']="<div>
 										<p class='lt'><a href='{$val[url]}'>{$lang_addinfo}</a></p><span>-</span><p class='rt'><a href='{$val[conturl]}'>{$lang_manager}</a></p>
 										</div>";
@@ -234,13 +236,13 @@ if($met_content_type!=2){
 						}
 						if($column_types2['module']!=$val['module']){
 							$val['url']='article/content.php?class1='.$val[bigclass].'&class2='.$val[id].'&lang='.$lang.'&anyid='.$anyid;	
-							$val['conturl']='article/index.php?class1='.$val[bigclass].'&class2='.$val[id].'&lang='.$lang.'&anyid='.$anyid;
+							$val['conturl']=$new_news_module_url.'&class1='.$val[bigclass].'&class2='.$val[id].'&lang='.$lang.'&anyid='.$anyid;
 							$val['set']="<div>
 									<p class='lt'><a href='{$val[url]}'>{$lang_addinfo}</a></p><span>-</span><p class='rt'><a href='{$val[conturl]}'>{$lang_manager}</a></p>
 									</div>";
 						}else{
 							$val['url']='article/content.php?class1='.$column_types2[id].'&class2='.$val[bigclass].'&class3='.$val[id].'&lang='.$lang.'&anyid='.$anyid;	
-							$val['conturl']='article/index.php?class1='.$column_types2[id].'&class2='.$val[bigclass].'&class3='.$val[id].'&lang='.$lang.'&anyid='.$anyid;
+							$val['conturl']=$new_news_module_url.'&class1='.$column_types2[id].'&class2='.$val[bigclass].'&class3='.$val[id].'&lang='.$lang.'&anyid='.$anyid;
 							$val['set']="<div>
 									<p class='lt'><a href='{$val[url]}'>{$lang_addinfo}</a></p><span>-</span><p class='rt'><a href='{$val[conturl]}'>{$lang_manager}</a></p>
 									</div>";
@@ -258,13 +260,13 @@ if($met_content_type!=2){
 						}
 						if($column_types2['module']!=$val['module']){
 							$val['url']='product/content.php?class1='.$val[bigclass].'&class2='.$val[id].'&lang='.$lang.'&anyid='.$anyid;
-							$val['conturl']='product/index.php?class1='.$val[bigclass].'&class2='.$val[id].'&lang='.$lang.'&anyid='.$anyid;
+							$val['conturl']=$new_product_module_url.'&class1='.$val[bigclass].'&class2='.$val[id].'&lang='.$lang.'&anyid='.$anyid;
 							$val['set']="<div>
 										<p class='lt'><a href='{$val[url]}'>{$lang_addinfo}</a></p><span>-</span><p class='rt'><a href='{$val[conturl]}'>{$lang_manager}</a></p>
 										</div>";
 						}else{
 							$val['url']='product/content.php?class1='.$column_types2[id].'&class2='.$val[bigclass].'&class3='.$val[id].'&lang='.$lang.'&anyid='.$anyid;
-							$val['conturl']='product/index.php?class1='.$column_types2[id].'&class2='.$val[bigclass].'&class3='.$val[id].'&lang='.$lang.'&anyid='.$anyid;
+							$val['conturl']=$new_product_module_url.'&class1='.$column_types2[id].'&class2='.$val[bigclass].'&class3='.$val[id].'&lang='.$lang.'&anyid='.$anyid;
 							$val['set']="<div>
 										<p class='lt'><a href='{$val[url]}'>{$lang_addinfo}</a></p><span>-</span><p class='rt'><a href='{$val[conturl]}'>{$lang_manager}</a></p>
 										</div>";
@@ -400,7 +402,7 @@ if($met_content_type!=2){
 				$column_types5=$db->get_one("select * from $met_column where id='$val[bigclass]'");
 				if(($val['module']==2&&$val['bigclass']=='0')||($val['module']==2&&$column_types5[module]!=2&&$val['bigclass']!='0')){
 				$val['url']='article/content.php?class1='.$val[id].'&action=add&lang='.$lang.'&anyid='.$anyid;	
-				$val['conturl']='article/index.php?class1='.$val[id].'&lang='.$lang.'&anyid='.$anyid;
+				$val['conturl']=$new_news_module_url.'&class1='.$val[id].'&lang='.$lang.'&anyid='.$anyid;
 				$val['set']="<div>
 						<p class='lt'><a href='{$val[url]}'>{$lang_addinfo}</a></p><span>-</span><p class='rt'><a href='{$val[conturl]}'>{$lang_manager}</a></p>
 						</div>";
@@ -410,7 +412,7 @@ if($met_content_type!=2){
 				$column_types5=$db->get_one("select * from $met_column where id='$val[bigclass]'");
 				if(($val['module']==3&&$val['bigclass']=='0')||($val['module']==3&&$column_types5[module]!=3&&$val['bigclass']!='0')){
 				$val['url']='product/content.php?class1='.$val[id].'&action=add&lang='.$lang.'&anyid='.$anyid;
-				$val['conturl']='product/index.php?class1='.$val[id].'&lang='.$lang.'&anyid='.$anyid;
+				$val['conturl']=$new_product_module_url.'&class1='.$val[id].'&lang='.$lang.'&anyid='.$anyid;
 				$val['set']="<div>
 							<p class='lt'><a href='{$val[url]}'>{$lang_addinfo}</a></p><span>-</span><p class='rt'><a href='{$val[conturl]}'>{$lang_manager}</a></p>
 							</div>";
@@ -584,7 +586,7 @@ if($met_content_type!=2){
 							$val['set'].='</div>';
 						}else{
 							$val['url']='article/content.php?class1='.$val[id].'&action=add&lang='.$lang.'&anyid='.$anyid;	
-							$val['conturl']='article/index.php?class1='.$val[id].'&lang='.$lang.'&anyid='.$anyid;
+							$val['conturl']=$new_news_module_url.'&class1='.$val[id].'&lang='.$lang.'&anyid='.$anyid;
 							$val['set']="<div>
 									<p class='lt'><a href='{$val[url]}'>{$lang_addinfo}</a></p><span>-</span><p class='rt'><a href='{$val[conturl]}'>{$lang_manager}</a></p>
 									</div>";
@@ -641,7 +643,7 @@ if($met_content_type!=2){
 							$val['set'].='</div>';
 						}else{
 						$val['url']='product/content.php?class1='.$val[id].'&action=add&lang='.$lang.'&anyid='.$anyid;
-						$val['conturl']='product/index.php?class1='.$val[id].'&lang='.$lang.'&anyid='.$anyid;
+						$val['conturl']=$new_product_module_url.'&class1='.$val[id].'&lang='.$lang.'&anyid='.$anyid;
 						$val['set']="<div>
 									<p class='lt'><a href='{$val[url]}'>{$lang_addinfo}</a></p><span>-</span><p class='rt'><a href='{$val[conturl]}'>{$lang_manager}</a></p>
 									</div>";
@@ -965,7 +967,7 @@ if($met_content_type!=2){
 		if(count($met_classindex[2])!=0){
 			$contentlist[2]['name']=$lang_modulemanagement2;
 			$contentlist[2]['module']='2';
-			$contentlist[2]['conturl']="article/index.php?module=2&lang=$lang&anyid=$anyid";
+			$contentlist[2]['conturl']=$new_news_module_url."&module=2&lang=$lang&anyid=$anyid";
 			$contentlist[2]['url']="article/content.php?action=add&lang=$lang&anyid=$anyid";	
 			$contentlist[2]['set']="<div>
 				<p class='lt'><a href='{$contentlist[2][url]}'>{$lang_addinfo}</a></p><span>-</span><p class='rt'><a href='{$contentlist[2][conturl]}'>{$lang_manager}</a></p>
@@ -974,7 +976,7 @@ if($met_content_type!=2){
 		if(count($met_classindex[3])!=0){
 			$contentlist[3]['name']=$lang_modulemanagement3;
 			$contentlist[3]['module']='3';
-			$contentlist[3]['conturl']="product/index.php?module=3&lang=$lang&anyid=$anyid";
+			$contentlist[3]['conturl']=$new_product_module_url."&module=3&lang=$lang&anyid=$anyid";
 			$contentlist[3]['url']="product/content.php?action=add&lang=$lang&anyid=$anyid";	
 			$contentlist[3]['set']="<div>
 				<p class='lt'><a href='{$contentlist[3][url]}'>{$lang_addinfo}</a></p><span>-</span><p class='rt'><a href='{$contentlist[3][conturl]}'>{$lang_manager}</a></p>

@@ -1,56 +1,37 @@
-define("", [basepath+'ckeditor/ckeditor.js'],
-function(require, exports, module) {
+define(function(require, exports, module) {
 
-	var $ = require('jquery');
-	var common = require('common');
+	var $ = jQuery = require('jquery');
+
+	require('epl/editor/ueditor/ueditor.config');
+	require('epl/editor/ueditor/ueditor.all.min');
 	
-	function ckeditor(name,type,x,y) {
-		var d = $("textarea[name='" + name + "']"),p=d.parents(".ftype_ckeditor");
+	function editor(d,name,type,x,y) {
+		var p=d.parents(".ftype_ckeditor");
 		/*加载状态*/
-		d.before('<div id="linzai_' + name + '">Loading...</div>');
-		if(p.prev("dt").length<1)p.css({'padding':'0px','margin':'0px'});
-		p.find('.fbox').css('margin','0px');
-		/*配置编辑器*/
-		var config = {};
-		config.filebrowserBrowseUrl = basepath + 'ckfinder/ckfinder.html';
-		config.filebrowserImageBrowseUrl = basepath + 'ckfinder/ckfinder.html?Type=Images';
-		config.filebrowserFlashBrowseUrl = basepath + 'ckfinder/ckfinder.html?Type=Flash';
-		config.filebrowserUploadUrl = basepath + 'ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files';
-		config.filebrowserImageUploadUrl = basepath + 'ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images';
-		config.filebrowserFlashUploadUrl = basepath + 'ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash';
-		if (type == 1) {
-			config.toolbar_Full = [
-			['Bold', 'TextColor', 'Link', 'Unlink', 'Image','Table','FontSize'],
-			['NumberedList','BulletedList','JustifyLeft', 'JustifyCenter', 'JustifyRight'],
-			['PasteText', 'Source']
-			];
-			config.height = 160;
-			config.enterMode=2;
-		} else if(type==2){
-			config.toolbar_Full = [
-			['FontSize','Bold', 'TextColor', 'Link', 'Unlink', 'Image','video','Source']
-			];
-			config.height = 160;
-			config.enterMode=2;
+		if(p.prev("dt").length<1){
+			p.css({'padding':'0px','margin':'0px'});
+			d.parent(".fbox").css("padding","0px 5px");
 		}else{
-			config.height = 400;
+			x = x?x:'98%';
 		}
-		if(x)config.width = x;
-		if(y)config.height = y;
-		//cklistx[name] = CKEDITOR.replace(name, config);
-		CKEDITOR.replace(name, config);
-		/*加载完成后*/
-		CKEDITOR.on('instanceReady',
-		function() {
-			$('#linzai_' + name).remove();
-			common.ifreme_methei(630);//重置高度
+		p.find('.fbox').css('margin','0px');
+		if(type==1)p.find('.fbox').css('padding-right','5px');
+		/*配置编辑器*/
+		d.attr("id",'container_'+name);
+		var ue = UE.getEditor('container_'+name,{
+			iframeCssUrl: siteurl + 'app/system/include/public/bootstrap/css/bootstrap.min.css',
+			scaleEnabled :true,
+			initialFrameWidth : x?x:'100%',
+			initialFrameHeight : y?y:(type==1?160:400)
 		});
 	}
+	
 	exports.jiazai = function(){
 		var d = $('.ftype_ckeditor_theme .fbox textarea');
 		d.each(function(){
 			var n = $(this).attr('name'),t=$(this).attr('data-ckeditor-type'),x=$(this).attr('data-ckeditor-x'),y=$(this).attr('data-ckeditor-y');
-			ckeditor(n,t,x,y);
+			editor($(this),n,t,x,y);
 		});
 	}
+	
 });

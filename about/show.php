@@ -22,7 +22,7 @@ $class3=0;
 
 require_once '../include/head.php';
 $class1_info=$class_list[$class1];
-$class1_list=$class1_info;
+//$class1_list=$class1_info;
 $class2_info=$class_list[$class2];
 $class3_info=$class_list[$class3];
 $show[content]=contentshow('<div>'.$show[content].'</div>');

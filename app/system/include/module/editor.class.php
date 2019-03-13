@@ -1,0 +1,85 @@
+<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+
+defined('IN_MET') or exit('No permission');
+
+load::sys_class('admin');
+
+class editor extends admin {
+
+	function __construct(){
+		parent::__construct();
+	}
+	
+	/*编辑器上传处理*/
+	public function doeditor(){
+		global $_M;
+		$CONFIG = json_decode(preg_replace("/\/\*[\s\S]+?\*\//", "", file_get_contents(PATH_WEB."app/system/include/module/editor/config.json")), true);
+		$CONFIG['imagePathFormat'] = PATH_WEB.'upload/'.$CONFIG['imagePathFormat'];
+		$CONFIG['scrawlPathFormat'] = PATH_WEB.'upload/'.$CONFIG['scrawlPathFormat'];
+		$CONFIG['catcherPathFormat'] = PATH_WEB.'upload/'.$CONFIG['catcherPathFormat'];
+		$CONFIG['videoPathFormat'] = PATH_WEB.'upload/'.$CONFIG['videoPathFormat'];
+		$CONFIG['filePathFormat'] = PATH_WEB.'upload/'.$CONFIG['filePathFormat'];
+		$CONFIG['imageManagerListPath'] = PATH_WEB.'upload/';
+		$CONFIG['fileManagerListPath'] = PATH_WEB.'upload/';
+		//$CONFIG['imagePathFormat'] = '/metv5/upload/'.$CONFIG['imagePathFormat'];
+		//dump($CONFIG);
+		//die;
+		
+		switch ($_M['form']['action']) {
+			case 'config':
+				$result =  json_encode($CONFIG);
+				break;
+
+			/* 上传图片 */
+			case 'uploadimage':
+			/* 上传涂鸦 */
+			case 'uploadscrawl':
+			/* 上传视频 */
+			case 'uploadvideo':
+			/* 上传文件 */
+			case 'uploadfile':
+				$result = include("editor/action_upload.php");
+				break;
+
+			/* 列出图片 */
+			case 'listimage':
+				$result = include("editor/action_list.php");
+				break;
+			/* 列出文件 */
+			case 'listfile':
+				$result = include("editor/action_list.php");
+				break;
+
+			/* 抓取远程文件 */
+			case 'catchimage':
+				$result = include("editor/action_crawler.php");
+				break;
+
+			default:
+				$result = json_encode(array(
+					'state'=> '请求地址出错'
+				));
+				break;
+		}
+		/* 输出结果 */
+		if (isset($_GET["callback"])) {
+			if (preg_match("/^[\w_]+$/", $_GET["callback"])) {
+				echo htmlspecialchars($_GET["callback"]) . '(' . $result . ')';
+			} else {
+				echo json_encode(array(
+					'state'=> 'callback参数不合法'
+				));
+			}
+		} else {
+			echo $result;
+		}
+		
+	}
+	
+}
+
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>

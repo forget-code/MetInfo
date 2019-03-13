@@ -88,7 +88,7 @@ if($action=="add"){
 	/**/
 	if($tel&&$met_fd_sms_back){
 		require_once ROOTPATH.'include/export.func.php';
-		sendsms($tel,$met_fd_sms_content,1);
+		sendsms($tel,$met_fd_sms_content,4);
 	}
 	/**/
 	$customerid=$metinfo_member_name!=''?$metinfo_member_name:0;

@@ -12,21 +12,41 @@ defined('IN_MET') or exit('No permission');
  */
 function member_information(){
 	global $_M;
-	met_cooike_start();
-	$met_admin_table = $_M['table']['admin_table'];
-	$met_column = $_M['table']['column'];
-	$metinfo_member_name = get_met_cookie('metinfo_admin_name');
-	if(!$metinfo_member_name){
-		$metinfo_member_name = get_met_cookie('metinfo_member_name');
-	}
-	$query = "SELECT * FROM {$_M['table']['admin_table']} WHERE admin_id = '{$metinfo_member_name}'";
-	$user = DB::get_one($query);
-	$query = "SELECT id,name FROM {$_M['table']['column']} WHERE access <= '{$user['usertype']}' AND lang = '{$_M['lang']}'";
+	$metinfo_member_name = get_met_cookie('metinfo_member_name');
+	$user = load::sys_class('user', 'new')->get_user_by_username($metinfo_member_name);
+	$user['usertype'] = $user['groupid'];
+	$user['admin_id'] = $user['username'];
+	$user['admin_pass'] = $user['password'];
+	$query = "SELECT id,name FROM {$_M['table']['column']} WHERE access <= '{$user['groupid']}' AND lang = '{$_M['lang']}'";
 	$column = DB::get_all($query);
 	$user['column'] = $column;
 	return $user;
 }
 
+/**
+ * 是否是微信客户端
+ */
+function is_weixin_client(){
+	if(strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger')){
+		return true;
+	}else{
+		return false;
+	}
+}
+
+/**
+ * 是否是微信客户端
+ */
+function is_mobile_client(){
+	$ua = strtolower($_SERVER['HTTP_USER_AGENT']);
+	$uachar = "/(nokia|sony|ericsson|mot|samsung|sgh|lg|philips|panasonic|alcatel|lenovo|cldc|midp|mobile|wap|Android|ucweb)/i";
+	if(($ua != '' && preg_match($uachar, $ua))){
+		return true;
+	}else{
+		return false;
+	}
+
+}
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

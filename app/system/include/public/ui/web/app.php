@@ -32,6 +32,7 @@ echo <<<EOT
 </div>
 <!--
 EOT;
+		require_once $this->template('ui/gap');
 		require_once $this->template('tem/foot');
 	}else if(is_letf_exists('web')){
 		require_once $this->template('tem/head'); 

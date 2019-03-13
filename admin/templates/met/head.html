@@ -1,6 +1,11 @@
 <!--<?php
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+$s = str_replace('\\', '/', $_SERVER[PHP_SELF]);
+$a = '/app/';
+if(strstr($s, $a)&&!strstr($s, 'batch')&&!strstr($s, 'nurse')&&!strstr($s, 'physical')&&!strstr($s, 'sms')&&!strstr($s, 'stat')&&!strstr($s, 'wap')){
+	require_once template('head_app');
+}else{
 $lang_fontfamily=str_replace("'","\"",$lang_fontfamily);
 $lang_fontfamily=str_replace("&quot;","\"",$lang_fontfamily);
 $jsrand=str_replace('.','',$metcms_v).$met_patch;
@@ -13,16 +18,10 @@ echo <<<EOT
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link rel="stylesheet" type="text/css" href="$img_url/css/metinfo.css?$jsrand" />
-<link rel="stylesheet" type="text/css" href="$img_url/css/newstyle.css?$jsrand" />
-<link rel="stylesheet" href="{$depth}../../app/system/include/public/ui/admin/css/metinfos.css?" />
-<link rel="stylesheet" href="{$depth}../../app/system/include/public/ui/admin/font-awesome/css/font-awesome.min.css" />
-<style>
-body{ display:none;}
-</style>
-<style>
-body{ display:block;}
-</style>
+<link rel="stylesheet" href="{$_M[url][pub]}bootstrap/css/bootstrap.min.css?{$jsrand}" />
+<link rel="stylesheet" type="text/css" href="$img_url/css/metinfo.css?{$jsrand}" />
+<link rel="stylesheet" type="text/css" href="$img_url/css/newstyle.css?{$jsrand}" />
+<link rel="stylesheet" href="{$_M[url][pub]}font-awesome/css/font-awesome.min.css?{$jsrand}" />
 <script type="text/javascript">var basepath='{$img_url}?$jsrand',lang = '$lang',adminurl='{$_M[url][site_admin]}';</script>
 <!--
 EOT;
@@ -61,13 +60,28 @@ return true;
 window.onerror = killErrors;  
 </SCRIPT> 
 <![endif]-->
+<script src="{$_M['url']['site']}app/system/include/public/js/seajs.js"></script>
+<script>
+	var pub = '{$_M['url']['pub']}',siteurl='{$_M[url][site]}',basepath='{$_M[url][site_admin]}',apppath='http://app.metinfo.cn/index.php?lang={$lang}&';
+	seajs.config({
+	  paths: {
+		'epl': 'examples',
+		'pub': pub.substring(0,pub.length-1)
+	  },
+	  alias: {
+		"jquery": "jquery/1.11.1/jquery_seajs.js"
+	  }
+	});
+	seajs.use("pub/js/examples/compatible"); //载入入口模块
+</script>
 <!--
 EOT;
-require "{$depth}../old_head.php";
+if(!strstr($s, '/admin/getpassword.php'))require "{$depth}../old_head.php";
 echo <<<EOT
 -->
 <!--
 EOT;
+}
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

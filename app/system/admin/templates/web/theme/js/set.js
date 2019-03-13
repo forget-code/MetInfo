@@ -129,8 +129,8 @@ define(function(require, exports, module) {
 			function chang1(){		
 				var content,d = $('.ftype_ckeditor_theme .fbox textarea');
 					d.each(function(){
-						if(CKEDITOR.instances[$(this).attr('name')]){
-							content = CKEDITOR.instances[$(this).attr('name')].getData();
+						if(UE.getEditor[$(this).attr('name')]){
+							content = UE.getEditor[$(this).attr('name')].getContent();
 							if($(this).val()!=content){
 								clearTimeout(theme_e);
 								$(this).val(content);	
@@ -174,8 +174,8 @@ define(function(require, exports, module) {
 		if(d.length>0){
 			d.each(function(){
 				var n = $(this).attr('name');
-				if(CKEDITOR.instances[n]){
-					CKEDITOR.remove(CKEDITOR.instances[n]);
+				if(UE.getEditor[n]){
+					UE.destroy(UE.getEditor[n]);
 				}
 			});
 		}

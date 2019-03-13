@@ -8,7 +8,7 @@ require $this->template('ui/head');
 echo <<<EOT
 -->
 <form method="POST" class="ui-from" name="myform" action="{$_M[url][own_form]}a=doaddsubmit" target="_self">
-<div class="v52fmbx">
+<div class="v52fmbx content_add">
 	<dl>
 		<dt>{$_M['word']['release_to']}</dt>
 		<dd class="ftype_select-linkage">

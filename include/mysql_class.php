@@ -93,8 +93,7 @@ class dbmysql {
 		if(!($query = $func($sql, $this->link))) {
 			if(in_array($this->errno(), array(2006, 2013)) && substr($type, 0, 5) != 'RETRY') {
 				$this->close();
-				global $config_db;
-				$db_settings = parse_ini_file("$config_db");
+				$db_settings = parse_ini_file(ROOTPATH.'config/config_db.php');
 	            @extract($db_settings);
 				$this->dbconn($con_db_host,$con_db_id,$con_db_pass, $con_db_name = '',$pconnect);
 				$this->query($sql, 'RETRY'.$type);
@@ -113,7 +112,24 @@ class dbmysql {
 	    $fetch_row = mysql_fetch_row($result);
 	    return $fetch_row[0];
 	}
-
+	
+	function get_data($table, $where = '', $order = '', $limit_start = '', $limit_num = '20', $field_name = '*')
+	{
+		$where = str_ireplace("WHERE", "", $where);
+		$order = str_ireplace("ORDER BY", "", $where);
+		if($where){
+			$conds .= " WHERE {$where} ";
+		}
+		if($order){
+			$conds .= " ORDER BY {$order} ";
+		}   
+		if($limit_start){
+			$conds .= " LIMIT {$limit_start},{$limit_num}";
+		}
+		$query = "SELECT {$field_name} FROM {$table} {$conds}";
+		return DB::get_all($query);
+	}
+	
 	function affected_rows() {
 		return mysql_affected_rows($this->link);
 	}

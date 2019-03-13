@@ -11,6 +11,7 @@ $labtypeclass[$labtype]='class="now"';
 $css_url=$depth."../templates/".$met_skin."/css";
 $img_url=$depth."../templates/".$met_skin."/images";
 $rurls='../system/database/filedown.php?anyid='.$anyid.'&lang='.$lang.'&cs=6';
+$tables = '';
 if($action=='allfile'){
 	echo "<span id=\"tips\">$lang_setdbArchiveNo</span>";
 	$localurl="http://";

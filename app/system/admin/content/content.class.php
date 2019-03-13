@@ -20,33 +20,35 @@ class content extends admin {
 		
 	}
 	
+	function cexplode($str,$i){
+		$class = explode("-",$str) ;
+		return $class[$i]; 
+	}
+		
 	function doaddsubmit(){
 		global $_M;
 		
-		function cexplode($str,$i){
-			$class = explode("-",$str) ;
-			return $class[$i]; 
-		}
-		$class1 = cexplode($_M['form']['add_class1'],0);
-		$class2 = cexplode($_M['form']['add_class2'],0);
-		$class3 = cexplode($_M['form']['add_class3'],0);
+		
+		$class1 = $this->cexplode($_M['form']['add_class1'],0);
+		$class2 = $this->cexplode($_M['form']['add_class2'],0);
+		$class3 = $this->cexplode($_M['form']['add_class3'],0);
 		$urlx = "&class1={$class1}&class2={$class2}&class3={$class3}";
 		
 		$classnow = 'add_class1';
 		$classnow = $class2?'add_class2':$classnow;
 		$classnow = $class3?'add_class3':$classnow;
-		$module = cexplode($_M['form'][$classnow],1);
-		$releclass = cexplode($_M['form']['add_class2'],2);
-		//$releclass = $classnow==3?cexplode($_M['form']['add_class2'],2):$releclass;
+		$module = $this->cexplode($_M['form'][$classnow],1);
+		$releclass = $this->cexplode($_M['form']['add_class2'],2);
+		//$releclass = $classnow==3?$this->cexplode($_M['form']['add_class2'],2):$releclass;
 		
 		$urlx = $releclass?"&class1={$class2}&class2={$class3}&class3=":$urlx;
 		
 		switch($module){
 			case 2:
-				$url = "{$_M[url][site_admin]}content/article/content.php?lang={$_M[lang]}&anyid=29&action=add{$urlx}";
+				$url = "{$_M[url][site_admin]}index.php?lang={$_M[lang]}&anyid=29&n=content&c=article_admin&a=doadd{$urlx}";
 			break;
 			case 3:
-				$url = "{$_M[url][site_admin]}content/product/content.php?lang={$_M[lang]}&anyid=29&action=add{$urlx}";
+				$url = "{$_M[url][site_admin]}index.php?lang={$_M[lang]}&anyid=29&n=content&c=product_admin&a=doadd{$urlx}";
 			break;
 			case 4:
 				$url = "{$_M[url][site_admin]}content/download/content.php?lang={$_M[lang]}&anyid=29&action=add{$urlx}";

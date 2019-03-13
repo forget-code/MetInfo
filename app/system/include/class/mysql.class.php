@@ -107,8 +107,7 @@ class DB {
 		if(!($query = $func($sql, self::$link))) {
 			if(in_array(self::errno(), array(2006, 2013)) && substr($type, 0, 5) != 'RETRY') {
 				self::close();
-				global $config_db;
-				$db_settings = parse_ini_file("$config_db");
+				$db_settings = parse_ini_file(PATH_WEB.'config/config_db.php');
 	            @extract($db_settings);
 				self::dbconn($con_db_host,$con_db_id,$con_db_pass, $con_db_name = '',$pconnect);
 				self::query($sql, 'RETRY'.$type);
@@ -116,6 +115,46 @@ class DB {
 		}
 		self::$querynum++;
 		return $query;
+	}
+	
+	/**
+	 * 获取指定条数数据
+	 * @param   string  $table       表名称
+	 * @param   string  $where       where条件
+	 * @param   string  $order       order条件
+	 * @param   string  $limit_start 开始条数
+	 * @param   string  $limit_num   取条数数量
+	 * @param   string  $field_name  获取的字段
+	 * @return  array                查询得到的数据
+	 */	
+	function get_data($table, $where , $order, $limit_start = 0, $limit_num = 20, $field_name = '*')
+	{
+		if($limit_start < 0){
+			return false;
+		}
+		$limit_start = $limit_start ? $limit_start : 0;
+		$where = str_ireplace("WHERE", "", $where);
+		$order = str_ireplace("ORDER BY", "", $order);
+		if($where){
+			$conds .= " WHERE {$where} ";
+		}
+		if($order){
+			$conds .= " ORDER BY {$order} ";
+		}   
+
+		$conds .= " LIMIT {$limit_start},{$limit_num}";
+		$query = "SELECT {$field_name} FROM {$table} {$conds}";
+		$data = DB::get_all($query);
+		if($data){
+			return $data;
+		}else{
+			if($limit_start == 0){
+				return $data;
+			}else{
+				return false;
+			}
+		}
+		
 	}
 	
 	/**

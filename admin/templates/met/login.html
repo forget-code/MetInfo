@@ -3,6 +3,7 @@
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. .
 $lang_fontfamily=str_replace("'","\"",$lang_fontfamily);
 $lang_fontfamily=str_replace("&quot;","\"",$lang_fontfamily);
+$met_agents_linkurl = $met_agents_linkurl ? $met_agents_linkurl : 'http://www.metinfo.cn';
 echo <<<EOT
 -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -62,7 +63,7 @@ EOT;
                 }else{
 echo <<<EOT
 -->
-                <a href="http://www.metinfo.cn" style="font-size:0px;" target="_blank" title="{$lang_metinfo}" class="img">
+                <a href="$met_agents_linkurl" style="font-size:0px;" target="_blank" title="{$lang_metinfo}" class="img">
 <!--
 EOT;
                 }
@@ -92,6 +93,7 @@ ob_pcontent();
 $langset=$langset==""?$met_admin_type:$langset;
 $met_langtype_select[$langset]="selected='selected'" ;
 foreach($met_langadmin as $key=>$val){
+if($val[mark] == 'en')continue;
 echo <<<EOT
 -->
 <option value="login.php?langset=$val[mark]" {$met_langtype_select[$val[mark]]}>$val[name]</option>

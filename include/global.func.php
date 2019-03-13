@@ -301,9 +301,13 @@ function codetra($content,$codetype) {
 }
 /*内容分页*/
 function pageBreak($content,$type){ 
+
 	$content = substr($content,0,strlen($content)-6); 
-    $pattern = "/<div style=\"page-break-after: always;?\">\s*<span style=\"display: none;?\">&nbsp;<\/span>\s*<\/div>/";      
-	$strSplit = preg_split($pattern, $content); 
+
+    //$pattern = "/<div style=\"page-break-after: always;?\">\s*<span style=\"display: none;?\">&nbsp;<\/span>\s*<\/div>/";      
+	//$strSplit = preg_split($pattern, $content); 
+	
+	$strSplit = explode('_ueditor_page_break_tag_', $content);
 	$count = count($strSplit); 
 	if($type)return $count;
 	$outStr = ""; 
@@ -793,21 +797,45 @@ function readmin($dir,$adminfile,$type){
 }
 /*COOKIE*/
 function met_cooike_start(){
-	global $met_cookie,$db,$met_webkeys,$met_admin_table;
+	global $met_cookie,$db,$met_webkeys,$met_admin_table,$lang,$met_user;
 	$met_cookie=array();
-	list($username,$password)=explode("\t",authcode($_COOKIE[met_auth],'DECODE', $met_webkeys.$_COOKIE[met_key]));
-	$username=daddslashes($username,0,1);
-	$query="select * from $met_admin_table where admin_id='$username'";
-	$user=$db->get_one($query);
-	$usercooike=json_decode($user['cookie']);
-	if(md5($user['admin_pass'])==$password&&time()-$usercooike->time<3600){
-		foreach($usercooike as $key=>$val){
-			$met_cookie[$key]=$val;
-		}
-		$met_cookie['time']=time();
-		$json=json_encode($met_cookie);
-		$query="update $met_admin_table set cookie='$json' where admin_id='$username'";
+	if($_COOKIE[acc_auth] && $_COOKIE[acc_key]){
+		define('IN_MET', true);
+		list($username,$password)=explode("\t",authcode($_COOKIE[acc_auth],'DECODE', $met_webkeys.$_COOKIE[acc_key]));
+		$username=daddslashes($username,0,1);
+		$query="select * from $met_user where username='$username'";
 		$user=$db->get_one($query);
+		$user['cookie']['metinfo_member_id'] = $user['id'];
+		$user['cookie']['metinfo_member_name'] = $user['username'];
+		$user['cookie']['metinfo_member_pass'] = $user['password'];
+		$dir = ROOTPATH.'cache/user/grouplist_'.$lang.'.php';
+		if(file_exists($dir)){
+			include $dir;
+		}
+		if(md5($user['password'])==$password){
+			$user['cookie']['metinfo_member_type'] = $cache[$user['groupid']]['access'];
+			foreach($user['cookie'] as $key=>$val){
+				$met_cookie[$key]=$val;
+			}
+			$met_cookie['time']=time();
+		}
+	}
+	if($_COOKIE[met_auth] && $_COOKIE[met_key]){
+		list($username,$password)=explode("\t",authcode($_COOKIE[met_auth],'DECODE', $met_webkeys.$_COOKIE[met_key]));
+		$username=daddslashes($username,0,1);
+		$query="select * from $met_admin_table where admin_id='$username'";
+		$user=$db->get_one($query);
+		$usercooike=json_decode($user['cookie']);
+		if(md5($user['admin_pass'])==$password&&time()-$usercooike->time<3600){
+			foreach($usercooike as $key=>$val){
+				$met_cookie[$key]=$val;
+			}
+			$met_cookie['time']=time();
+			$met_cookie['metinfo_member_type'] = 256;
+			$json=json_encode($met_cookie);
+			$query="update $met_admin_table set cookie='$json' where admin_id='$username'";
+			$user=$db->get_one($query);
+		}
 	}
 }
 function login_met_cookie($userid){

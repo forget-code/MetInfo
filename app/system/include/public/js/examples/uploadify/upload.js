@@ -20,7 +20,7 @@ define(function(require, exports, module) {
 	}
 	function upload(d) { //上传
 		var t_html,n=d.attr("name"),t,url,is_thumblist,is_thumbcontent;
-		d.addClass("text");
+		d.addClass("text").attr("style","display:block;");
 		t_html ='<div class="metuplaodify">';
 		t_html+='<form id="upfileFormmet_'+n+'" enctype="multipart/form-data">';
 		t_html+='<div class="file_uploadfrom">';
@@ -84,7 +84,7 @@ define(function(require, exports, module) {
 	exports.func = function(d){
 		d = d.find('.ftype_upload .fbox input');
 		d.each(function(){
-			upload($(this));
+			if($(this).data("upload-type")=='doupfile')upload($(this));
 		});
 	}
 });

@@ -7,7 +7,7 @@ function(require, exports, module) {
 	function ckeditor(name,type,x,y) {
 		var d = $("textarea[name='" + name + "']"),p=d.parents(".ftype_ckeditor");
 		/*加载状态*/
-		d.before('<div id="linzai_' + name + '">Loading...</div>');
+		//d.before('<div id="linzai_' + name + '">Loading...</div>');
 		if(p.prev("dt").length<1){
 			p.css({'padding':'0px','margin':'0px'});
 			d.parent(".fbox").css("padding","0px 5px");
@@ -47,7 +47,7 @@ function(require, exports, module) {
 		/*加载完成后*/
 		CKEDITOR.on('instanceReady',
 		function() {
-			$('#linzai_' + name).remove();
+			//$('#linzai_' + name).remove();
 		});
 	}
 	

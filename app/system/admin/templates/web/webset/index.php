@@ -13,6 +13,8 @@ if($_M[langlist][web][$_M[lang]][link]){
 	$weburltext = "{$_M[word][unitytxt_8]}";
 }
 if($_M[config][met_weburl]=='')$_M[config][met_weburl]=$_M[url][site];
+$data_key = md5(md5(substr($_M['config']['met_webkeys'],0,8))); 
+$time = time();
 echo <<<EOT
 -->
 <form method="POST" class="ui-from" name="myform" action="{$_M[url][own_form]}a=doseteditor" target="_self">
@@ -33,6 +35,18 @@ echo <<<EOT
 				<input name="met_logo" type="text" data-upload-type="doupimg" class="text" value="{$_M['config']['met_logo']}">
 			</div>
 			<span class="tips">{$_M['word']['suggested_size']} 180 * 60 ({$_M['word']['setimgPixel']})</span>
+		</dd>
+	</dl>
+	<dl>
+		<dt>地址栏图标</dt>
+		<dd class="ftype_upload">
+			<div class="fbox">
+				<input name="met_ico" type="text" data-upload-key="{$data_key}" data-upload-type="doupico" class="text" value="../favicon.ico?{$time}">
+			</div>
+			<span class="tips">{$_M['word']['suggested_size']} 32 * 32 ({$_M['word']['setimgPixel']})的.ico文件。<a href="https://www.baidu.com/s?wd=ico%E5%9B%BE%E6%A0%87%E5%88%B6%E4%BD%9C" target="_blank">点击制作ICO</a>
+			<br />
+			如果无法正常显示新上传图标，请空浏览器缓存后访问。
+			</span>
 		</dd>
 	</dl>
 	<dl>

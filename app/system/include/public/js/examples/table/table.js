@@ -105,7 +105,7 @@ define(function(require, exports, module) {
 		})
 	
 		//按钮提交表单
-		$(document).on('click',".ui-table input[type='submit']",function(){
+		$(document).on('click',".ui-table *[type='submit']",function(){
 			var nm = $(this).attr('name'),ip=$("input[name='submit_type']");
 			if(ip.length>0){
 				ip.val(nm);
@@ -236,7 +236,7 @@ define(function(require, exports, module) {
 				show( json );
 			} );
 			
-			api.on( 'draw.dt', function ( e, settings, json ) { //点击分页，数据重载完成后，等高
+			api.on( 'draw.dt', function ( e, settings, json ) { 
 				show( json );
 				var info = table.page.info();
 				$.cookie('tablepage',info.page+'|'+metn+','+metc+','+meta);

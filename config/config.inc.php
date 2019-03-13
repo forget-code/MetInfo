@@ -109,7 +109,11 @@ $_M[url][site]=$met_weburl;
 $_M[url][entrance]=$met_weburl.'app/system/entrance.php';
 $_M[url][pub]=$met_weburl.'app/system/include/public/';
 $_M[url][app]=$met_weburl.'app/app/';
+$_M['url']['sta'] = $met_weburl.'app/system/include/static/';
 $current_url='http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+//
+
+$met_agents_backup =substr(md5(substr($met_webkeys,0,8)), 0, 8); 
 
 if(defined('ROOTPATH_ADMIN')){
 	$_M[url][ui]=$met_weburl.'app/system/include/public/ui/admin/';

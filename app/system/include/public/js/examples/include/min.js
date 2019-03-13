@@ -55,6 +55,9 @@ define(function(require, exports, module) {
 	require('epl/include/cookie');
 	//adminlang = $.cookie('langset');当前后台语言
 	
+	//bootstrap
+	require('pub/bootstrap/js/bootstrap.min');
+	
 	//初始化
 	
 	var common = require('common');   		//公用类
@@ -192,28 +195,63 @@ define(function(require, exports, module) {
 	/*返回顶部*/
 	require('epl/include/jquery.goup');
 	$(document).ready(function () {
-
 		$.goup({
-			location:'left',
-			bottomOffset: 40,
+			location:'right',
+			bottomOffset: 10,
 			locationOffset: 10,
 			title: '',
-			containerColor:'#1c2b36',
+			containerColor:'#000',
 			titleAsText: true
 		});
 	});
 	
-	/*语言下拉*/
-	var langtime;
-	$(".metcms_top_right_box li.lang").hover(function(){
-		clearTimeout(langtime);
-		var dl = $(this).find("dl");
-		langtime = setTimeout(function () { dl.show();  }, "200");
-	},function(){
-		clearTimeout(langtime);
-		var dl = $(this).find("dl");
-		dl.hide();
+	/*技术支持*/
+function support(){
+	var url = apppath+'n=platform&c=support&a=doinfo';
+	$.ajax({
+		url: url,
+		type: "GET",
+		cache: false,
+		data: $("input[name='supporturldata']").val(),
+		dataType: "jsonp",
+		success: function(data) {
+			$(".support_loading").hide();
+			if(data.support=='notlogin'){
+				$(".support_no").show();
+			}
+			if(data.support=='expire'){
+				$(".support_desc").show();
+				$("#support_expiretime").html('<span class="text-danger">'+data.expiretime+'</span>');
+			}else if(data.support=='notopen'){
+				$(".support_no").show();
+			}else if(data.support=='youok'){
+				$(".support_youok,.support_desc").show();
+				$("#support_expiretime").html(data.expiretime);
+				require.async(data.url,function(){
+					var obj = jQuery.parseJSON(data.metdata);
+					var inter = setInterval(function(){
+						if(window.mechatMetadata){
+							clearInterval(inter);
+							window.mechatMetadata(obj);
+						}
+					},500);
+					$(".supportmechatlink").click(function(){
+						mechatClick();
+						return false;
+					});
+				});
+			}
+			$(".supportbox").data('supportdropdown','1');
+			$.cookie('supportdropdown','1');
+		}
 	});
+}
+	$(".supportbox").on('show.bs.dropdown', function () {
+		if(!$(this).data('supportdropdown'))support();
+	})
+	if($.cookie('MECHAT-CHATSTATUS')=='true'){
+		support();
+	}
 	
 	/*应用安装、升级*/	
 	if($('.metcms_upload_download').length>0)require.async('epl/include/download');

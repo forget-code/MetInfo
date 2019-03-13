@@ -81,7 +81,7 @@ background-color: #eff0f2;
 .theme .theme-left .tabs_item .v52fmbx dl dd .tips{ float:none; display:none; padding-top:5px; margin-top:0px;}
 
 
-.theme .theme-left .tabs_item .v52fmbx dl dd.ftype_upload .fbox{ height:34px; }
+.theme .theme-left .tabs_item .v52fmbx dl dd.ftype_upload .fbox{}
 .theme .theme-left .tabs_item .v52fmbx dl dd.ftype_upload .fbox input.text{ width:130px; }
 .theme .theme-left .tabs_item .v52fmbx dl dd.ftype_upload .metuplaodify{ }
 .theme .theme-left .tabs_item .v52fmbx dl dd.ftype_upload .metuplaodify .uptips{ display:block; clear:both; }
@@ -144,7 +144,7 @@ opacity: 0.7;
 .listzhezhao span,.iframezhezhao span{ display:block; padding:140px 0px; }
 
 .theme-right-iframe{ background:#1d2125; }
-.mobileiframe{ width:540px; height:595px; margin:0px auto; padding:84px 25px; background:url(../images/iPhone-6-plus.png) no-repeat left top; overflow:hidden; position:relative;}
+.mobileiframe{ width:600px; height:595px; margin:0px auto; padding:84px 25px; background:url(../images/iPhone-6-plus.png) no-repeat left top; overflow:hidden; position:relative;}
 .mobileiframe iframe{ width:347px; height:592px!important;}
 .mobileiframe .theme-right-bx{ width:330px; height:592px; overflow:hidden;}
 .mobileiframe .theme-right-erweima{ position:absolute; right:0px; top:150px; width:200px; font-size:12px; color:#fff;  }

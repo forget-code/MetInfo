@@ -27,10 +27,10 @@ echo <<<EOT
 <div class="v52fmbx_tbmax v52fmbx_tbmaxmt">
 <div class="v52fmbx_tbbox">
 <h3 class="v52fmbx_hr">
-	<span class="formleft">
+	<div class="formleft">
 		<a href="content.php?action=add&lang={$lang}&anyid={$anyid}" title="{$lang_add}{$lang_indexlink}">+{$lang_add}{$lang_indexlink}</a>
-	</span>
-	<span class="formright">
+	</div>
+	<div class="formright">
 		{$lang_linkType}
 		<select name="new" id="new" onChange="changes($(this));" style="position:relative; top:2px;">
 			<option value="index.php?lang=$lang&anyid={$anyid}&show_ok=0" $style1>{$lang_linkType1}</option>
@@ -47,13 +47,14 @@ echo <<<EOT
 			<input name="link_type" type="hidden" id="link_type" value="$link_type">
 			<input name="link_type" type="hidden" id="link_type" value="$link_type">
 		</form>
-	</span>
+	</div>
+	<div class="clear"></div>
 </h3>
-<table cellpadding="2" cellspacing="1" class="table">
+<table cellpadding="0" cellspacing="1" class="table">
 			 <tr>
-			 <td colspan="3">
+			 <td colspan="3" style="padding:0px!important;border:0px">
 			  <form name="del" method="Post" action="delete.php?lang=$lang&anyid={$anyid}">
-			  <table cellpadding="0" cellspacing="1" class="table neitable" style="margin:0px; border:none;">
+			  <table cellpadding="0" cellspacing="1" class="table neitable">
               <tr>
                 <td width="40" class="list" style="padding:0px; text-align:center;">{$lang_selected}</td>
 				<td width="50" class="list" style="padding:0px; text-align:center;">ID</td>
@@ -94,8 +95,8 @@ echo <<<EOT
    	   </td> 
    	   </tr> 
    	   <tr> 
-            <td class="all" width="40"><input name="chkAll" type="checkbox" id="chkAll" onclick="CheckAllx($(this),'del')" value="checkbox" /></td>
-			<td class="all-submit" align="left" style="padding:5px 10px;">
+            <td class="all" width="53" style="border-top:0px"><input name="chkAll" type="checkbox" id="chkAll" onclick="CheckAllx($(this),'del')" value="checkbox"/></td>
+			<td class="all-submit" align="left" style="padding:5px 10px;border-top:0px;" >
 			<input name="submit" type='submit' value='{$lang_deleteselected}' class="submit li-submit" onclick="return met_modify($(this),'del','del');" />
 			<div class="page_list">
 			<form name="delform" method="Post" action="delete.php?anyid={$anyid}&lang=$lang">

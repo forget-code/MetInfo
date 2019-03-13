@@ -28,12 +28,12 @@ echo <<<EOT
               <tr id="list-top">
                 <td class="list" width="30">{$lang_selected}</td>
 				<td class="list" width="30">{$lang_sort}</td>
-                <td class="list" width="80">{$lang_onlineName}</td>
+                <td class="list" width="150">{$lang_onlineName}</td>
                 <td class="list">{$lang_onlieqq}</td>
-				<td class="list" width="80">{$lang_onliemsn}</td>
-                <td class="list" width="80">{$lang_onlinetaobao}</td>
-                <td class="list" width="80">{$lang_onlinealibaba}</td>
-				<td class="list" width="80">{$lang_onlineskype}</td>
+				<td class="list" width="150">{$lang_onliemsn}</td>
+                <td class="list" width="150">{$lang_onlinetaobao}</td>
+                <td class="list" width="150">{$lang_onlinealibaba}</td>
+				<td class="list" width="150">{$lang_onlineskype}</td>
 				<td class="list">{$lang_operate}</td>
               </tr>
 <!--
@@ -63,7 +63,7 @@ echo <<<EOT
 		</tr>
    	   <tr> 
             <td class="list" width="40"><input name="chkAll" type="checkbox" id="chkAll" title="{$lang_selectall}" onclick="CheckAllx($(this),'del')" value="checkbox" /></td>
-			  <td class="list list_left" colspan="8">
+			  <td class="all-submit" colspan="8"  style="padding:5px 10px;">
 				<input name="saveorder" type='submit' value='{$lang_Submit}' class="submit li-submit" onclick="return met_modify($(this),'del','editor');" /> 
 				&nbsp;
 				<input name="submit" type='submit' value='{$lang_deleteselected}' class="submit li-submit" onclick="return met_modify($(this),'del','del');" /> 

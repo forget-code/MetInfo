@@ -286,6 +286,7 @@ define(function(require, exports, module) {
 					switch(tg){
 						case 'A': window.location.href = my.attr("href"); break;
 						case 'INPUT': my.parents("form").submit(); break;
+						case 'BUTTON': my.parents("form").submit(); break;
 					}
 				}
 			}

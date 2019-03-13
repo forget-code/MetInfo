@@ -3,7 +3,6 @@
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 
 defined('IN_MET') or exit('No permission');
-defined('IN_ADMIN') or exit('No permission');
 
 /**
  * 表格数据获取类
@@ -12,6 +11,7 @@ defined('IN_ADMIN') or exit('No permission');
 class tabledata {
 	
 	protected $rearray;
+	public $error;
 	
 	/**
 	 * 获取表查询数据
@@ -25,14 +25,14 @@ class tabledata {
 		global $_M;
 	
 		/*获取表格ajax传递的参数*/
-		$length = $_M[form]['length'];         //每页显示数量
-		$start  = $_M[form]['start'];          //读取数据的起点
-		$draw   = $_M[form]['draw'];           //累计执行次数，无作用但必须回传
+		$length = $_M['form']['length'];         //每页显示数量
+		$start  = $_M['form']['start'];          //读取数据的起点
+		$draw   = $_M['form']['draw'];           //累计执行次数，无作用但必须回传
 		if($_M['form']['tablepage']&&$start==0&$draw==1){
 			$cook = explode("|",$_M['form']['tablepage']) ;
 			$u = "{$_M['form']['n']},{$_M['form']['c']},{$_M['form']['a']}";
 			if($cook[1]==$u){
-				$start = $cook[0]*$_M[form]['length'];
+				$start = $cook[0]*$_M['form']['length'];
 			}
 		}
 		/*查询表*/
@@ -46,6 +46,12 @@ class tabledata {
 		$query = "SELECT {$field} FROM {$table} {$conds} LIMIT {$start},{$length}";  //mysql语句
 
 		$array = DB::get_all($query);                                           //执行查询，获得数组
+		$error = DB::error();
+		if($error){
+			$this->error = $query."<br />".$error;
+		}else{
+			$this->error = '';
+		}
 		$total = DB::counter($table, $conds, '*');                        //获取总数量，计算总页数
 		
 		/*回传数组处理*/

@@ -73,7 +73,7 @@ echo <<<EOT
 		<dt>{$_M[word][setseoFoot]}</dt>
 		<dd class="ftype_ckeditor">
 			<div class="fbox">
-				<textarea name="met_foottext" data-ckeditor-type="2">{$_M['config']['met_foottext']}</textarea>
+				<textarea name="met_foottext" data-ckeditor-type="1">{$_M['config']['met_foottext']}</textarea>
 			</div>
 		</dd>
 	</dl>
@@ -81,7 +81,7 @@ echo <<<EOT
 		<dt>{$_M[word][setseoTip4]}</dt>
 		<dd class="ftype_ckeditor">
 			<div class="fbox">
-				<textarea name="met_seo" data-ckeditor-type="2">{$_M['config']['met_seo']}</textarea>
+				<textarea name="met_seo" data-ckeditor-type="1">{$_M['config']['met_seo']}</textarea>
 			</div>
 		</dd>
 	</dl>

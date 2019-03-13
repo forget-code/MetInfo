@@ -58,8 +58,27 @@ class admin extends common {
 			$_M['langset'] = 'cn';
 		}
 		$this->load_word($_M['langset'], 1);
+		$this->load_agent_word($_M['langset']);
 	}
-		
+	
+	/**
+	  * 代理商配置语言修改
+	  */
+	protected function load_agent_word($lang) {
+		global $_M;
+		if ($_M['config']['met_agents_type'] >= 2) {
+			$query = "SELECT * FROM {$_M['table']['config']} WHERE lang='{$lang}-metinfo'";
+			$result = DB::query($query);
+			while($list_config= DB::fetch_array($result)){
+				$lang_agents[$list_config['name']]=$list_config['value'];
+			}
+			$_M['word']['indexthanks'] = $lang_agents['met_agents_thanks'];
+			$_M['word']['metinfo'] = $lang_agents['met_agents_name'];
+			$_M['word']['copyright'] = $lang_agents['met_agents_copyright'];
+			$_M['word']['oginmetinfo'] = $lang_agents['met_agents_depict_login'];
+		}
+	}
+			
 	/**
 	 * 检测是否登陆
 	 * 有权限则程序向后运行，无权限则提示物权限
@@ -167,7 +186,6 @@ class admin extends common {
 					}
 				}
 				if (stristr($_M['form']['submit_type'], 'del')) {
-				echo 'adasd';
 					if (!strstr($membercp_ok['admin_op'], "del")) okinfo($return_url, $_M['word']['logindelete']);
 				}
 			}

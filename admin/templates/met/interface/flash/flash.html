@@ -26,7 +26,7 @@ echo <<<EOT
 <div class="v52fmbx_tbmax">
 <div class="v52fmbx_tbbox">
 <h3 class="v52fmbx_hr">
-	<a href="flashadd.php?anyid={$anyid}&lang={$lang}&kuaijieskin={$kuaijieskin}" title="{$lang_indexflashaddimg}" class="addmenu">+{$lang_indexflashaddflash}</a>
+	<a href="flashadd.php?anyid={$anyid}&lang={$lang}&kuaijieskin={$kuaijieskin}" title="{$lang_indexflashaddimg}" class="addmenu btn btn-danger">+{$lang_indexflashaddflash}</a>
 			<div class="formright">
 				<form method="POST" style="position:relative; top:2px;" name="filterform" action="flash.php?anyid={$anyid}&lang=$lang&search=detail_search&kuaijieskin={$kuaijieskin}" target="_self">
 				<input name="class1" type="hidden" value="250">
@@ -70,7 +70,7 @@ echo <<<EOT
 				</form>
 			</div>
 </h3>
-<table cellpadding="2" cellspacing="1" class="table">
+<table cellpadding="0" cellspacing="1" class="table">
 	<tr>
 		<td width="30" class="list">{$lang_selected}</td>
 		<td width="30" class="list">{$lang_sort}</td>
@@ -129,13 +129,13 @@ echo <<<EOT
 			  <input name="allid" type="hidden" id="allid" value="">			
 			</form> 
    	   <tr> 
-            <td class="list"><input name="chkAll" type="checkbox" id="chkAll" onclick="CheckAllx($(this),'del')" value="checkbox" /></td>
-			<td class="list list_left" colspan="6">
+            <td class="all"><input name="chkAll" type="checkbox" id="chkAll" onclick="CheckAllx($(this),'del')" value="checkbox" /></td>
+			<td class="all-submit" colspan="6">
 				<input name="submit" type='submit' value='{$lang_deleteselected}' class="submit li-submit" onclick="return met_modify($(this),'del','del');" />
 			 </td>
           </tr>
    	    <tr> 
-			<td class="list list_normal" colspan="7">{$page_list}</td>
+			<td class="page_list" colspan="7">{$page_list}</td>
         </tr>
 </table>
 </div>

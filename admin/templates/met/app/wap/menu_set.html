@@ -20,14 +20,14 @@ echo <<<EOT
 <form method="post" name="myform" action="menu_set.php?lang={$lang}&anyid={$anyid}&cs={$cs}&action=modify" target="_self">
 <div class="v52fmbx_tbmax">
 <div class="v52fmbx_tbbox">
-<div class="v52fmbx">
-<div class="v52fmbx">
 <div class="lablelist">
 	<ul>
 		<li class="round $motop[2]"><a href="custommenu.php?id=$mptid&lang=$lang&anyid={$anyid}&cs={$cs}" title="{$lang_menu_management}">{$lang_menu_management}</a></li>
 		<li class="round $motop[1]"><a href="menu_set.php?id=$mptid&lang=$lang&anyid={$anyid}&cs={$cs}" title="{$lang_function_settings}">{$lang_function_settings}</a></li>
 	</ul>
 </div>
+<div class="v52fmbx">
+
 <!--
 EOT;
 $displaycontents='style="display:none"';
@@ -185,7 +185,6 @@ echo <<<EOT
 
 <div class="v52fmbx_submit"><input type="submit" id="add" onclick="return dimensional()" name="Submit" value="{$lang_Submit}" class="submit" onclick="return check($(this),'myform')" /></div>
 </form>
-</div>
 </div>
 </div>
 </div>

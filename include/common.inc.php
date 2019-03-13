@@ -1,6 +1,14 @@
 <?php
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+if(@file_exists('../app/app/shop/include/product.class.php') && @$cmodule){
+	@define('M_NAME', 'shop');
+	@define('M_MODULE', 'web');
+	@define('M_CLASS', @$cmodule);
+	@define('M_ACTION', 'doindex');
+	require_once '../app/system/entrance.php';
+	die();
+}
 header("Content-type: text/html;charset=utf-8");
 error_reporting(E_ERROR | E_PARSE);
 @set_time_limit(0);
@@ -52,7 +60,6 @@ if($metmemberforce==$met_member_force){
 	change_met_cookie('metinfo_member_type',"256");
 	save_met_cookie();
 }
-$_M['user']['cookie'] = $met_cookie;
 if($met_member_use!=0){
 	$metinfo_member_id     =(get_met_cookie('metinfo_admin_id')=="")?get_met_cookie('metinfo_member_id'):get_met_cookie('metinfo_admin_id');
 	$metinfo_member_name     =(get_met_cookie('metinfo_admin_name')=="")?get_met_cookie('metinfo_member_name'):get_met_cookie('metinfo_admin_name');
@@ -124,7 +131,7 @@ $met_title=$met_hometitle!=''?$met_hometitle:$met_title;
 }
 
 $member_index_url="index.php?lang=".$lang;
-$member_register_url="register.php?lang=".$lang;
+$member_register_url="register_include.php?lang=".$lang;
 //接口
 if($_M['plugin']['doweb']){
 	define('IN_MET', true);

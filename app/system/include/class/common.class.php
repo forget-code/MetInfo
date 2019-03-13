@@ -8,6 +8,7 @@ load::sys_func('common');
 load::sys_func('power');
 load::sys_func('array');
 load::sys_class('mysql');
+load::sys_class('cache');
 
 /**
  * 系统一级基类
@@ -48,13 +49,13 @@ class common {
 		global $_M;
 		$_M['form'] =array();
 		isset($_REQUEST['GLOBALS']) && exit('Access Error');
-		foreach($_GET as $_key => $_value) {
+		foreach($_COOKIE as $_key => $_value) {
 			$_key{0} != '_' && $_M['form'][$_key] = daddslashes($_value);
 		}
 		foreach($_POST as $_key => $_value) {
 			$_key{0} != '_' && $_M['form'][$_key] = daddslashes($_value);
 		}
-		foreach($_COOKIE as $_key => $_value) {
+		foreach($_GET as $_key => $_value) {
 			$_key{0} != '_' && $_M['form'][$_key] = daddslashes($_value);
 		}
 	}
@@ -155,6 +156,7 @@ class common {
 		}
 		$_M['url']['app'] = $_M['url']['site'].'app/app/';
 		$_M['url']['pub'] = $_M['url']['site'].'app/system/include/public/';
+		$_M['url']['static'] = $_M['url']['site'].'app/system/include/static/';
 		$_M['url']['api'] = 'http://'.$_M['config']['met_host'].'/'."index.php?lang=".$_M['lang'].'&';
 	}
 	
@@ -245,7 +247,7 @@ class common {
 			}
 		}
 	}
-	
+	  
 	/**
 	  * 销毁
 	  */

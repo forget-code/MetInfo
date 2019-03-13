@@ -108,9 +108,10 @@ class jmail{
 	 * @param  string  $touser  收件人帐号
 	 * @param  string  $title   邮件标题
 	 * @param  string  $body    邮件内容
+	 * @param  string  $patch   附件地址/绝对路径
 	 * @return boolean			发送成功返回true，否则返回false
 	 */
-	public function send_email($touser,$title,$body) {
+	public function send_email($touser,$title,$body,$patch = '') {
 		global $_M;
 		$this->touser = $touser;
 		$this->title = $title;
@@ -153,6 +154,7 @@ class jmail{
 				$mail->AddAddress($val, '');
 			}
 		}
+		$mail->AddAttachment($patch);
 		if (!$mail->Send()) {
 			$mail->SmtpClose();
 			$this->errorcode = $mail->ErrorInfo;

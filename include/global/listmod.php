@@ -1,5 +1,5 @@
 <?php
-require_once substr(dirname(__FILE__), 0, -6).'common.inc.php';
+if(!defined('IN_MET'))require_once substr(dirname(__FILE__), 0, -6).'common.inc.php';//应用修改带代码
 require_once '../include/global/pseudo.php';
 if($dbname!=$met_download&&$dbname!=$met_img&&$dbname!=$met_news&&$dbname!=$met_product){okinfo('../404.html');exit();}
 if($class_list[$class1]['module']>=100||($class1==0&&$class2==0&&$class3==0)||$class1==10001){
@@ -44,7 +44,6 @@ if($class2){
 		}
 	}
 }
-
 if($class3){
 	if(!is_array($class_list[$class3])){
 		okinfo('../404.html');
@@ -70,6 +69,7 @@ if($class1&&!$class2&&!$class3){
 		$class1sql='('.$class1sql.$class1re.')';
 	}
 }
+$serch_sql = '';
 if($imgproduct){
 	$ipcom = $imgproduct=='product'?$productcom:$imgcom;
 	$serch_sql .=" where lang='$lang' {$mobilesql} and (recycle='0' or recycle='-1')";
@@ -172,6 +172,7 @@ if($search=="search" && $mdmendy){
 						$prices_sql=explode('-',$prices);
 						preg_match('/([0-9\.]+)/',$prices_sql[1],$result);
 						$results=$result[0];
+						if(!is_numeric($prices_sql[0]))die();
 						$serch_sql .= " and exists(select * from $met_plist where module=3 and $met_plist.paraid='$val2[id]' and $met_plist.listid=$dbname.id and $met_plist.info > $prices_sql[0] and $met_plist.info < $results) "; 
 						$serchpage .= "&".$prices1."=".trim($$prices1);
 					}
@@ -189,6 +190,38 @@ if($mdname=='news'||$mdname=='product'||$mdname=='download'||$mdname=='img'||$md
 		$serch_sql .=" and displaytype='1'";
 }
 $serch_sql .= " and addtime<='{$m_now_date}'";
+
+$tppl = $_M['plugin']['temporary_plugin_product_list'][0];
+if($tppl && $dbname==$met_product){
+	$applistfile=ROOTPATH.'app/app/'.$tppl.'/plugin/'.'plugin_'.$tppl.'.class.php';
+	$_M['url']['own'] = $_M['url']['site'].'app/app/'.$tppl.'/';
+	if(file_exists($applistfile)&&!is_dir($applistfile)&&((file_get_contents($applistfile))!='metinfo')){
+		require_once $applistfile;
+		$app_plugin_name=str_replace('.class.php', '', 'plugin_'.$tppl);
+		if (class_exists($app_plugin_name)) {
+			$newclass=new $app_plugin_name;
+			if(method_exists($newclass, 'temporary_plugin_product_list')){
+				$datainfo['dbname'] = $dbname;
+				$datainfo['serch_sql'] = $serch_sql;
+				$datainfo['order_sql'] = $order_sql;
+				$datainfo['from_record'] = $from_record;
+				$datainfo['list_num'] = $list_num;
+				
+				$data = $newclass->temporary_plugin_product_list($datainfo);
+				
+				if($data['dbname'])$dbname = $data['dbname'];
+				if($data['serch_sql'])$serch_sql = $data['serch_sql'];
+				if($data['order_sql'])$order_sql = $data['order_sql'];
+				if($data['from_record'])$from_record = $data['from_record'];
+				if($data['list_num'])$list_num = $data['list_num'];
+				$temporary_plugin_product_list = 1;
+			}
+		}
+
+		
+	}
+}
+
 $total_count = $db->counter($dbname, "$serch_sql", "*");
 require_once '../include/pager.class.php';
     $page = (int)$page;
@@ -201,6 +234,9 @@ require_once '../include/pager.class.php';
 	$result = $db->query($query);
 	while($list= $db->fetch_array($result)){
 		$modlistnow[]=$list;
+	}
+	if($temporary_plugin_product_list == 1){
+		$modlistnow =$newclass->temporary_plugin_product_analysis($modlistnow);
 	}
 	if(count($modlistnow)==0&&!($search=="search" && $mdmendy)&&$page!=1){okinfo('../404.html');exit();}
 	foreach($modlistnow as $key=>$list){
@@ -358,7 +394,13 @@ if($search=='search' && $mdmendy){
 		}
 		$page_list = $rowset->link($met_pagelist,$met_ahtmtype);
 	}else{
-		$pagemor = $mdname.'.php?'.$langmark."&class1=$class1&class2=$class2&class3=$class3&page=";
+		if($temporary_plugin_product_list == 1){
+			$temp_page = $newclass->temporary_plugin_product_page();
+		}else{
+			$temp_page = "";
+		}
+		
+		$pagemor = $mdname.'.php?'.$temp_page.$langmark.$temp_page ."&class1=$class1&class2=$class2&class3=$class3&page=";
 		$hz = '';
 		$page_list = $rowset->link($pagemor,$hz);
 	}

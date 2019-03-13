@@ -860,7 +860,7 @@ function methtml_getarray($mark,$type,$order,$module,$listmx=-1,$para=0,$categor
 	global $met_member_use,$class_index,$met_listtime,$metinfo_member_type,$db,$met_news,$met_product,$met_download,$met_img,$met_job,$met_parameter,$met_plist,$class_list,$metpara,$module_list2;
 	global $index_news_no,$index_product_no,$index_download_no,$index_img_no,$index_job_no,$mobilesql;
 	global $index,$navurl,$weburly,$lang,$pagename,$langmark,$met_htmpagename,$met_chtmtype,$met_htmtype,$met_pseudo,$met_webhtm;
-	global $dataoptimize,$pagemark,$img_url,$met_hot,$m_now_date,$met_newsdays,$metmemberforce,$met_alt,$metblank,$met_agents_img;
+	global $dataoptimize,$pagemark,$img_url,$met_hot,$m_now_date,$met_newsdays,$metmemberforce,$met_alt,$metblank,$met_agents_img,$met_member_force;
 	global $product_paralist,$download_paralist,$img_paralist,$m_now_time;
 	if($mark&&strstr($mark,"-")){
 		$hngy5=explode('-',$mark);
@@ -1078,7 +1078,7 @@ function methtml_getarray($mark,$type,$order,$module,$listmx=-1,$para=0,$categor
 				$list[$nowpara1]=$list1['info'];
 				$metparaaccess=$metpara[$list1['paraid']]['access'];
 				if(intval($metparaaccess)>0&&$met_member_use){
-					$paracode=authcode($list1[$nowpara1], 'ENCODE', $met_member_force);
+					$paracode=authcode($list[$nowpara1], 'ENCODE', $met_member_force);
 					$paracode=codetra($paracode,1); 
 					$list[$nowpara1]="<script language='javascript' src='".$navurl."include/access.php?metuser=para&metaccess=".$metparaaccess."&lang=".$lang."&listinfo=".$paracode."&paratype=".$metpara[$list1['paraid']]['type']."&index=".$index[index]."'></script>";
 				}
@@ -1338,22 +1338,31 @@ function methtml_prenextinfo($type=0,$id){
 
 function methtml_login($type=1){
 global $met_member_use,$navurl,$lang,$lang_memberName,$met_member_login,$lang_memberPs,$met_memberlogin_code,$lang_memberImgCode,$lang_memberTip1,$lang_register,$lang_memberGo,$lang_memberIndex2,$metinfo_member_name,$lang_memberIndex1,$member_index_url,$lang_memberIndex10,$member_registerurl;
-global $lang_memberPassword,$lang_memberRegisterName;
+global $lang_memberPassword,$lang_memberRegisterName,$metinfo_member_id;
+$metinfo_member_id = get_met_cookie('metinfo_member_id');
+if(!$_COOKIE['acc_key'] || !$_COOKIE['acc_auth']){
+	$metinfo_member_id = '';
+}
+if($metinfo_member_id){
+	$type = 0;
+}else{
+	$type = 1;	
+}
 if($met_member_use){ 
   $metinfo.="<script type='text/javascript'>\n";
   $metinfo.="function check_main_login()\n";
   $metinfo.="{\n";
   $metinfo.="var m=document.main_login;\n";
-  $metinfo.="if(m.login_name.value.length=='')\n";
+  $metinfo.="if(m.username.value.length=='')\n";
   $metinfo.="{\n";
   $metinfo.="	alert('".$lang_memberRegisterName."');\n";
-  $metinfo.="	m.login_name.focus();\n";
+  $metinfo.="	m.username.focus();\n";
   $metinfo.="	return false;\n";
   $metinfo.="}\n";
-  $metinfo.="if(m.login_pass.value.length=='')\n";
+  $metinfo.="if(m.password.value.length=='')\n";
   $metinfo.="{\n";
   $metinfo.="	alert('".$lang_memberPassword."');\n";
-  $metinfo.="	m.login_pass.focus();\n";
+  $metinfo.="	m.password.focus();\n";
   $metinfo.="	return false;\n";
   $metinfo.="}\n";
   $metinfo.="}\n";
@@ -1366,15 +1375,15 @@ if($met_member_use){
   $metinfo.="}}\n";
   $metinfo.="function pressCaptcha(obj){obj.value = obj.value.toUpperCase();}\n";
   $metinfo.="</script>\n";
-if($type){
+if($type == 0){
   $metinfo.="<div class='login_x' id='login_x1' style='display:none'>";
   }else{
   $metinfo.="<div class='login_x' id='login_x1'>";
   }
-  $metinfo.="<form method='post' action='".$navurl."member/login_check.php?lang=".$lang."' name='main_login' onSubmit='javascript: return check_main_login()'>";
+  $metinfo.="<form method='post' action='".$navurl."member/login.php?a=dologin&gourl=".urlencode('http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'])."lang=".$lang."' name='main_login' onSubmit='javascript: return check_main_login()'>";
   $metinfo.="<input type='hidden' name='action' value='login'/>";
-  $metinfo.="<span class='log1'><span class='log1_name'>".$lang_memberName."</span><input type='text' name='login_name' id='user_name' /></span>";
-  $metinfo.="<span class='log4'><span class='log4_name'>".$lang_memberPs."</span><input type='password' name='login_pass' id='user_pass'/></span>";
+  $metinfo.="<span class='log1'><span class='log1_name'>".$lang_memberName."</span><input type='text' name='username' id='user_name' /></span>";
+  $metinfo.="<span class='log4'><span class='log4_name'>".$lang_memberPs."</span><input type='password' name='password' id='user_pass'/></span>";
 if($met_memberlogin_code==1){
   $metinfo.="<span class='log2'><span class='log2_name'>".$lang_memberImgCode."</span><input name='code' onKeyUp='pressCaptcha(this)' type='text' class='inp' id='code' maxlength='8' />";
   $metinfo.="<img align='absbottom' src='".$navurl."member/ajax.php?action=code'  onclick=this.src='".$navurl."member/ajax.php?action=code&'+Math.random()  style='cursor: pointer;' title=".$lang_memberTip1."/>";
@@ -1386,12 +1395,12 @@ if($met_member_login){
   $metinfo.="</span>";
   $metinfo.="</form>";
   $metinfo.="</div>";
-if($type){
-  $metinfo.="<div class='login_x' id='login_x2' style='display:none' >";
+if($type == 0){
+  $metinfo.="<div class='login_x' id='login_x2' style='' >";
   $metinfo.="<span class='login_okname' ><span class='login_okname1'>".$lang_memberIndex2."</span><span class='login_okname2'><font style='color:red'>";
   $metinfo.="<script language='javascript' src='".$navurl."member/member.php?memberaction=membername'></script>";
   $metinfo.="</font></span></span>&nbsp;&nbsp;";
-  $metinfo.="<span class='login_okmember' ><span class='login_okmember1'><a href='".$navurl."member/".$member_index_url."' >".$lang_memberIndex1."</a></span><span class='login_okmember2'>|</span><span class='login_okmember3'><a href='".$navurl."member/login_out.php?lang=".$lang."' >".$lang_memberIndex10."</a></span></span>";
+  $metinfo.="<span class='login_okmember' ><span class='login_okmember1'><a href='".$navurl."member/".$member_index_url."' >".$lang_memberIndex1."</a></span><span class='login_okmember2'>|</span><span class='login_okmember3'><a href='".$navurl."member/login.php?a=dologout&lang=".$lang."' >".$lang_memberIndex10."</a></span></span>";
   $metinfo.="</div>";
   $metinfo.="<script language='javascript' src='".$navurl."member/member.php?memberaction=login'></script>";
  }

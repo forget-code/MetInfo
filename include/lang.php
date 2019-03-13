@@ -66,6 +66,13 @@ foreach($languages as $key=>$val){
 }
 $query = "SELECT * FROM {$met_templates} WHERE no='{$met_skin_user}' AND lang='{$lang}' order by no_order ";
 $inc = $db->get_all($query);
+$tmpincfile=ROOTPATH."templates/{$_M[config][met_skin_user]}/metinfo.inc.php";
+if(file_exists($tmpincfile)){	
+	$metinfover_content = file_get_contents($tmpincfile);
+	if(strstr($metinfover_content, "metinfover")) {
+		require $tmpincfile;
+	}
+}
 foreach($inc as $key=>$val){
 	$name = 'lang_'.$val['name'];
 	if($val[type]==7&&strstr($val['value'],"../upload/")&&$index=='index'&&$metinfover=='v1'){

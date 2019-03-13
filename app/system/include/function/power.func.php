@@ -15,12 +15,32 @@ defined('IN_MET') or exit('No permission');
  */
 function get_met_cookie($key){
 	global $_M;
-	if($key == 'metinfo_admin_name' || $key == 'metinfo_member_name'){
-		$val = urldecode($_M['user']['cookie'][$key]);
-		$val = sqlinsert($val);
-		return $val;
+	if(defined('IN_ADMIN')){
+		if($key == 'metinfo_admin_name' || $key == 'metinfo_member_name'){
+			$val = urldecode($_M['user']['cookie'][$key]);
+			$val = sqlinsert($val);
+			return $val;
+		}
+		return $_M['user']['cookie'][$key];
+	}else{
+		$userclass = load::sys_class('user', 'new');
+		if(!$userclass->get_login_user_info()){
+			$userclass->login_by_auth($_M['form']['acc_auth'], $_M['form']['acc_key']);
+		}
+		$m = $userclass->get_login_user_info();
+		$m['metinfo_admin_name'] = $m['username'];
+		$m['metinfo_member_name'] = $m['username'];
+		$m['metinfo_member_id'] = $m['id'];
+		$m['metinfo_admin_id'] = $m['id'];                              
+		$m['metinfo_admin_pass'] = $m['password'];
+		$m['metinfo_member_pass'] = $m['password']; 
+		if($key == 'metinfo_admin_name' || $key == 'metinfo_member_name'){
+			$val = urldecode($m[$key]);
+			$val = sqlinsert($val);
+			return $val;
+		}
+		return $m[$key];
 	}
-	return $_M['user']['cookie'][$key];
 }
 
 /**

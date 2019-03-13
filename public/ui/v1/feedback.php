@@ -41,8 +41,8 @@ echo <<<EOT
 				</dl>
 				</div>
 			</form>
-        </div>
-    </div>
+        <!--</div>-->
+    <!--</div>-->
     <div class="clear"></div>
 </div>
 <!--

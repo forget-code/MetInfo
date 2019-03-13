@@ -31,7 +31,7 @@ echo <<<EOT
 			</td>
 		</tr>
 			 <tr>
-			 <td colspan="3">
+			 <td colspan="3" style="padding:0px!important;border:0px">
 			  <form name="del" method="Post" action="delete.php?anyid={$anyid}&lang=$lang">
 			  <table cellpadding="0" cellspacing="1" class="table neitable columntables">
 		<tr id="list-top"> 
@@ -42,7 +42,7 @@ echo <<<EOT
 			<td class="list" width="60">{$lang_columnmodule}</td>
 			<td class="list" width="60">{$lang_columndocument}</td>
 			<td class="list" width="30">{$lang_columnmark1}</td>			
-			<td class="list">{$lang_operate}</td>
+			<td class="list" width="130">{$lang_operate}</td>
 		</tr>
 <!--
 EOT;
@@ -262,17 +262,15 @@ echo <<<EOT
    	   </td> 
    	   </tr>
 		<tr> 
-			<td class="all" width="40"><input name="chkAll" type="checkbox" id="chkAll" title="{$lang_selectall}" onclick="CheckAllx($(this),'del')" value="checkbox" /></td>
-			<td class="all-submit" colspan="1" style="text-align:left; padding: 5px 10px;">
-				<input name="saveorder" type='submit' value='{$lang_Submit}' class="submit" onclick="return columneditoradd($(this));" />&nbsp;&nbsp;
-				<input name="submit" type='submit' value='{$lang_deleteselected}' class="submit" style="margin-right:20px;" onclick="return met_modify($(this),'del','del');" /> 
-			</td>
-			<td class="all-submit" colspan="1" style="text-align:right; padding: 5px 10px;">
-				<div>
+			<td class="all" width="53" style="border-top:0px"><input name="chkAll" type="checkbox" id="chkAll" title="{$lang_selectall}" onclick="CheckAllx($(this),'del')" value="checkbox"/></td>
+			<td class="all-submit" colspan="7" style="padding: 5px 10px;border-top:0px">
+				<input name="saveorder" type='submit' value='{$lang_Submit}' class="submit li-submit" onclick="return columneditoradd($(this));"/>
+				<input name="submit" type='submit' value='{$lang_deleteselected}' class="submit li-submit" style="margin-right:20px;" onclick="return met_modify($(this),'del','del');"/> 
+				<div style="margin-top:2px;float:right;">
 				<form method="POST" name="myform" action="./copycolumn.php?lang=$lang&action=copy&table=1" target="_self">
-					{$lang_copyotherlang1}<input name="allid" type="hidden" id="allid" value="" />
+					<input name="allid" type="hidden" id="allid" value="" />
 					<select name="copylang">
-						<option value="">{$lang_Copytitle}</option>
+						<option value="">{$lang_copyotherlang1}</option>
 <!--
 EOT;
 foreach($met_langok as $key=>$val){
@@ -291,9 +289,9 @@ foreach($fixed_add as $key=>$val){
 echo <<<EOT
 -->
 					</select>
-					&nbsp;<input name="copycontent" type='checkbox' value='1' id="copycontent" class="checkbox">&nbsp;<label for="copycontent">{$lang_copyotherlang2}</label>
+					<label style="vertical-align:middle;font-weight:normal;height:28px;line-height:28px;"><input name="copycontent" type='checkbox' value='1' id="copycontent" class="checkbox">{$lang_copyotherlang2}</label>
 				</form>
-				<input name="submit" type='submit' value='{$lang_Copy}'  onclick="return met_modify($(this),'myform','editor','columncook');" /> 
+				<input name="submit" type='submit' value='{$lang_Copy}'  onclick="return met_modify($(this),'myform','editor','columncook');" class="submitmi"/> 
 				</div>
 			</td>
         </tr>
@@ -346,6 +344,7 @@ function addmodulefold(module){
 	}
 	return fname;
 }
+/*
 function columnshow(my,t1,t2){
 	var type = my instanceof jQuery?1:0;
 	var text = my instanceof jQuery?my.text():my;
@@ -374,6 +373,33 @@ function columnshow(my,t1,t2){
 	ifreme_methei();
 	return false;
 }
+*/
+function columnshow(my,t1,t2){
+	var text = my.text();
+	$('img.columnimg').each(function(){
+		var xp=$(this).attr('id');
+			xp=xp.split('img_');
+			xp=xp[1];
+		if(text==t1){
+			$('.columnz_'+xp).show();
+			$(this).attr('src','{$img_url}/colum1nx2.gif');
+		}else{
+			$('.columnz_'+xp).hide();
+			$(this).attr('src','{$img_url}/colum1nx.gif');
+		}
+	});
+
+	text==t1?my.text(t2):my.text(t1);
+	var num=text==t1?1:0;
+	$.ajax({
+		url : my.attr('href')+num,
+		type: "POST"
+	});
+
+	ifreme_methei();
+	return false;
+}
+
 function columnFormNum(form){
 	var list=$("input[name='allid']").val();
 	var lists=list.split(',');
@@ -535,7 +561,16 @@ $(document).ready(function(){
 	}).live('mouseleave',function(){
 		$(this).find('div.moveb2').hide();
 	});
-	columnshow('{$met_columnshow}');
+	if({$met_columnshow}){
+		$('img.columnimg').each(function(){
+			var xp=$(this).attr('id');
+				xp=xp.split('img_');
+				xp=xp[1];
+			$('.columnz_'+xp).show();
+			$(this).attr('src','{$img_url}/colum1nx2.gif');
+		});
+	}
+	
 });
 </script>
 </body>

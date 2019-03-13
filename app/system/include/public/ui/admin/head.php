@@ -4,6 +4,7 @@
 
 defined('IN_MET') or exit('No permission');
 $jsrand=str_replace('.','',$_M[config][metcms_v]).$_M[config][met_patch];
+if($_M[config][met_agents_type] > 2) $met_agents_display = "style=\"display:none\"";
 echo <<<EOT
 --><!DOCTYPE HTML>
 <html>
@@ -17,8 +18,9 @@ echo <<<EOT
 <meta content="black" name="apple-mobile-web-app-status-bar-style" />
 <meta content="telephone=no" name="format-detection" />
 <link href="{$_M[url][site]}favicon.ico" rel="shortcut icon" type="image/x-icon" />
+<link rel="stylesheet" href="{$_M[url][pub]}bootstrap/css/bootstrap.min.css?{$jsrand}" />
 <link rel="stylesheet" href="{$_M[url][pub]}ui/admin/css/metinfo.css?{$jsrand}" />
-<link rel="stylesheet" href="{$_M[url][pub]}ui/admin/font-awesome/css/font-awesome.min.css" />
+<link rel="stylesheet" href="{$_M[url][pub]}font-awesome/css/font-awesome.min.css?{$jsrand}" />
 <script>
 var langtxt = {
 	"jsx15":"{$_M[word][jsx15]}",
@@ -43,7 +45,8 @@ own_form="{$_M[url][own_form]}",
 own_name="{$_M[url][own_name]}",
 tem="{$_M[url][own_tem]}",
 adminurl="{$_M[url][adminurl]}",
-apppath="{$_M[url][api]}"
+apppath="{$_M[url][api]}",
+jsrand="{$jsrand}"
 ;
 </script>
 <!--[if IE]><script src="{$_M[url][site]}public/js/html5.js" type="text/javascript"></script><![endif]-->

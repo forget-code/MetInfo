@@ -2,6 +2,8 @@
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 require_once '../include/common.inc.php';
+$serch_sql = '';
+$order_sql = '';
 $search_column=$db->get_one("select * from $met_column where module='11' and lang='$lang'");
 $metaccess=$search_column[access];
 $classnow=$search_column[id];
@@ -241,9 +243,7 @@ break;
 	$class1sql=" class1='$class1' ";
 	$class2sql=" class2='$class2' ";
 	$class3sql=" class3='$class3' ";
-	if($_GET['class1re']){
-		$class1re = '';
-	}
+	$class1re = '';
 	if($class1&&!$class2&&!$class3){
 		foreach($module_list2[$class_list[$class1]['module']] as $key=>$val){
 			if($val['releclass']==$class1){

@@ -4,6 +4,7 @@ if(!is_numeric($id)){okinfo('../404.html');exit();}
 if($dbname!=$met_download&&$dbname!=$met_img&&$dbname!=$met_news&&$dbname!=$met_product){okinfo('../404.html');exit();}
 $news=$db->get_one("select * from $dbname where id=$id and lang='$lang' and (recycle='0' or recycle='-1')");
 if(!$news){okinfo('../404.html');exit();}
+$acc_sql = '';
 $news['updatetime_order']=$news['updatetime'];
 $news['updatetime'] = date($met_contenttime,strtotime($news['updatetime']));
 if(strstr($news['imgurls'], "http://")){
@@ -291,12 +292,19 @@ if($pagemark==3||$pagemark==5){
 		$pg=count($displayimg);
 		for($i=0;$i<$pg;$i++){
 			$newdisplay=explode('*',$displayimg[$i]);
-			$displaylist[$i]['title']=$newdisplay[0];
-			$displaylist[$i]['imgurl']=$newdisplay[1];
-			$imgurl_diss=explode('/',$displaylist[$i]['imgurl']);
-			$displaylist[$i][imgurl_dis]=$imgurl_diss[0].'/'.$imgurl_diss[1].'/'.$imgurl_diss[2].'/thumb_dis/'.$imgurl_diss[count($imgurl_diss)-1];
-			$filename=stristr(PHP_OS,"WIN")?@iconv("utf-8","gbk",$displaylist[$i][imgurl_dis]):$displaylist[$i][imgurl_dis];
-			$displaylist[$i][imgurl_dis]=file_exists($filename)?$displaylist[$i][imgurl_dis]:$displaylist[$i]['imgurl'];
+			if(stristr($newdisplay[1], 'upload')){//兼容少数4.0升级至5.0用户，由于在展示图片中使用|造成的BUG。
+				$displaylist[$i]['title']=$newdisplay[0];
+				$displaylist[$i]['imgurl']=$newdisplay[1];
+				$imgurl_diss=explode('/',$displaylist[$i]['imgurl']);
+				$displaylist[$i][imgurl_dis]=$imgurl_diss[0].'/'.$imgurl_diss[1].'/'.$imgurl_diss[2].'/thumb_dis/'.$imgurl_diss[count($imgurl_diss)-1];
+				$filename=stristr(PHP_OS,"WIN")?@iconv("utf-8","gbk",$displaylist[$i][imgurl_dis]):$displaylist[$i][imgurl_dis];
+				$displaylist[$i][imgurl_dis]=file_exists($filename)?$displaylist[$i][imgurl_dis]:$displaylist[$i]['imgurl'];
+			}
+		}
+		$displaylist_tmp = $displaylist;
+		$displaylist = array();
+		foreach($displaylist_tmp as $key=>$val){
+			$displaylist[] = $val;
 		}
 	}
 }

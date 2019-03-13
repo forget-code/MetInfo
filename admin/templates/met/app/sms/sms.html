@@ -25,10 +25,13 @@ echo <<<EOT
 			</dd>
 		</dl>
 		</div>
-		<h3 class="v52fmbx_hr metsliding">
-			<ol>
+		<div class="v52fmbx_dlbox">
+			<dl>
+			<dt></dt>
+			<dd>
+			<lo>
 				<li class="red">{$lang_smstips31}</li>
-				<li id='audit_msg' class="red" style="display:none">{$lang_smstips90}
+				<li id='audit_msg' class="red">{$lang_smstips90}
 <!--
 EOT;
 if($met_agents_type>1){
@@ -48,7 +51,9 @@ echo <<<EOT
 -->
 				</li>
 				<li>{$lang_smstips32}</li>
-			</ol>
+			<lo>
+			</dd>
+			</dl>
 		</h3>
 		<div class="v52fmbx_dlbox">
 		<dl>
@@ -99,7 +104,7 @@ echo <<<EOT
 		</h3>
 		<div class="v52fmbx_submit">
 			<input type="submit" name="submit" class="submit" disabled="disabled" value="{$lang_smstips48}" onclick="return smssubmit($(this))" />
-			<span class="tips red"></span>&nbsp;&nbsp;<span class="tips color999">{$lang_smstips49}</span>
+			<span class="tips red "></span>&nbsp;&nbsp;<span class="tips color999 submit-tips">{$lang_smstips49}</span>
 		</div>
 </div>
 </div>
@@ -230,6 +235,7 @@ $(document).ready(function(){
 				$('#balance').append(data.msg);
 				if(data.audit==0||data.audit==null){
 					$('#audit_msg').show();
+					$('.submit-tips').html("您的账号未通过群发审核");
 				}else{
 					$("[name='submit']").removeAttr('disabled');
 				}

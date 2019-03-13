@@ -6,7 +6,11 @@ require_once ROOTPATH.'include/export.func.php';
 
 // dump($_M['config']);
 
-$data['config']=$_M['config'];
+//$data['config']=$_M['config'];
+
+$data['config']['met_online_type'] = $_M['config']['met_online_type'];
+$data['config']['met_stat'] = $_M['config']['met_stat'];
+
 echo json_encode($data);
 
 

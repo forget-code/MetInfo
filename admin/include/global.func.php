@@ -1004,6 +1004,7 @@ $classtype="class1";
 }else{
 $classtype="class".$column['classtype'];
 }
+$langcolumn = $column['lang'];
 switch ($column['module']){
 	default:
 	 $query = "delete from $met_column where id='$column[id]'";
@@ -1058,28 +1059,28 @@ switch ($column['module']){
      $db->query($query);
 	break;
 	case 6:
-	$query = "select * from $met_cv where lang='$lang'";
+	$query = "select * from $met_cv where lang='$langcolumn'";
 	$del = $db->get_all($query);
 	delimg($del,2,6);	
-	 $query = "delete from $met_plist where lang='$lang' and module='$column[module]'";
+	 $query = "delete from $met_plist where lang='$langcolumn' and module='$column[module]'";
 	 $db->query($query);
-	 $query = "delete from $met_cv where lang='$lang'";
+	 $query = "delete from $met_cv where lang='$langcolumn'";
 	 $db->query($query);
-	 $query = "delete from $met_job where lang='$lang'";
+	 $query = "delete from $met_job where lang='$langcolumn'";
 	 $db->query($query);
 	 $query = "delete from $met_column where id='$column[id]'";
      $db->query($query);
 	break;
 	case 7:
-	 $query = "delete from $met_message where lang='$lang'";
+	 $query = "delete from $met_message where lang='$langcolumn'";
 	 $db->query($query);
 	 $query = "delete from $met_column where id='$column[id]'";
      $db->query($query);
-	 $query="delete from $met_config where columnid='$column[id]' and lang='$lang'";
+	 $query="delete from $met_config where columnid='$column[id]' and lang='$langcolumn'";
 	 $db->query($query);
-	 $query="delete from $met_parameter where lang='$lang' and module=7";
+	 $query="delete from $met_parameter where lang='$langcolumn' and module=7";
 	 $db->query($query);
-	 $query="delete from $met_mlist where lang='$lang' and module=7";
+	 $query="delete from $met_mlist where lang='$langcolumn' and module=7";
 	 $db->query($query);
 	break;
 	case 8:
@@ -1090,23 +1091,23 @@ switch ($column['module']){
 		$query = "delete from $met_flist where listid='$list[id]'";
 	    $db->query($query);
 	 }
-	 $query = "delete from $met_parameter where module='$column[module]' and class1='$column[id]' and lang='$lang'";
+	 $query = "delete from $met_parameter where module='$column[module]' and class1='$column[id]' and lang='$langcolumn'";
 	 $db->query($query);
-	 $query = "delete from $met_feedback where class1='$column[id]' and lang='$lang'";
+	 $query = "delete from $met_feedback where class1='$column[id]' and lang='$langcolumn'";
 	 $db->query($query);
 	 $query = "delete from $met_column where id='$column[id]'";
      $db->query($query);
-	 $query="delete from $met_config where columnid='$column[id]' and lang='$lang'";
+	 $query="delete from $met_config where columnid='$column[id]' and lang='$langcolumn'";
 	 $db->query($query);
 	break;
 	case 9:
-	 $query = "delete from $met_link where lang='$lang'";
+	 $query = "delete from $met_link where lang='$langcolumn'";
 	 $db->query($query);
 	 $query = "delete from $met_column where id='$column[id]'";
      $db->query($query);
 	break;
 	case 10:
-	 $query = "delete from $met_admin_table where usertype!=3 and lang='$lang'";
+	 $query = "delete from $met_admin_table where usertype!=3 and lang='$langcolumn'";
 	 $db->query($query);
 	 $query = "delete from $met_column where id='$column[id]'";
      $db->query($query);
@@ -1593,7 +1594,67 @@ function get_word($word){
 	
 }
 //结束
+function waterbigimg_compatible($filePath){
+	global $met_wate_class,$met_watermark,$met_text_wate,$met_text_color,$met_text_angle,$met_text_fonts,$depth,$met_wate_bigimg,$met_text_bigsize;
+	require_once ROOTPATH_ADMIN.'include/watermark.class.php';
+	$img = new Watermark();
+	if($met_wate_class==2){
+		$img->met_image_pos  = $met_watermark;
+	}else {
+		$img->met_text       = $met_text_wate;
+		$img->met_text_color = $met_text_color;
+		$img->met_text_angle = $met_text_angle;
+		$img->met_text_pos   = $met_watermark;
+		$img->met_text_font  = $depth.$met_text_fonts;
+	}
+	
+	if($met_wate_class==2){
+		$img->met_image_name = $depth.$met_wate_bigimg;
+	}else {
+		$img->met_text_size  = $met_text_bigsize;
+	}
+	
+	if(stristr(PHP_OS,"WIN"))$filePath=@iconv("utf-8","gbk",$filePath);
+	
+	$imgurl_original = $depth.'../../'.$filePath;
+	
+	if(file_exists($imgurl_original)){
+		$filename=$urls[count($urls)-1];
+		$img->src_image_name = $imgurl_original;
+		$imgurl_originals = explode('/', $imgurl_original);
+		$imgurl_originals[count($imgurl_originals)-1] = 'watermark/'.$imgurl_originals[count($imgurl_originals)-1];
+		$img->save_file = implode('/', $imgurl_originals);
+		$mkdir = $imgurl_originals;
+		unset($mkdir[count($mkdir)-1]);
+		$mkdir[] = 'watermark';
+		mkdir(implode('/', $mkdir));
+		$img->save_file = implode('/', $imgurl_originals);
+		$img->create();
+		return $img->save_file;
+	}
 
+}
+	
+function concentwatermark_compatible($str){
+	global $met_big_wate;
+	if($met_big_wate == 1){
+		if(preg_match_all('/<img.*?src=\\\\"(.*?)\\\\".*?>/i', $str, $out)){
+			foreach($out[1] as $key=>$val){
+				$imgurl             = explode("upload/", $val);
+				if($imgurl[1]){
+					$list['imgurl_now'] = 'upload/'.$imgurl[1];
+					$list['imgurl_original'] = 'upload/'.str_replace('watermark/', '',$imgurl[1]);
+					if(file_exists(ROOTPATH.$list['imgurl_original']))$imgurls[] = $list;
+				}
+			}
+			foreach($imgurls as $key=>$val){
+				$watermarkurl = str_replace('../', '', waterbigimg_compatible($val['imgurl_original']));
+				$str = str_replace($val['imgurl_now'], $watermarkurl, $str);
+			}
+		}
+	}
+	return $str;
+}
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

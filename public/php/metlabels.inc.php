@@ -47,12 +47,16 @@ function metlabel_head($closure=1,$iehack=1,$mobileto=''){
 	return $metinfo;
 }
 function metlabel_topnav($dt='',$tp=1,$lok=1){
-	global $met_langok,$met_langok,$met_lang_mark,$met_index_url,$app_file,$met_adminfile,$met_index_type,$index_url,$navurl,$met_lang_mark;
+	global $met_langok,$met_langok,$met_lang_mark,$met_index_url,$app_file,$met_adminfile,$met_index_type,$index_url,$navurl,$met_lang_mark,$met_wap_url;
 	global $_M;
 	/*手机版链接*/
 	if($_M['config']['met_waplink'] && $_M['config']['met_wap']){
-		$indurl = $met_index_type==$_M[lang]?$index_url.'wap/':$navurl.'wap/index.php?lang='.$_M[lang];
-		if($_M['config']['met_wap_tpb']&&$_M['config']['met_wap_url'])$indurl = $_M['config']['met_wap_url'];
+		if($met_wap_url){
+			$indurl = $met_wap_url;
+		}else{
+			$indurl = $met_index_type==$_M[lang]?$index_url.'wap/':$navurl.'wap/index.php?lang='.$_M[lang];
+			if($_M['config']['met_wap_tpb']&&$_M['config']['met_wap_url'])$indurl = $_M['config']['met_wap_url'];
+		}
 		$mobile = "<li><a href='{$indurl}' title='{$_M['word']['wap']}'>{$_M['word']['wap']}</a></li>{$dt}";
 	}
 	/*JS繁体中文*/

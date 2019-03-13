@@ -47,7 +47,7 @@ if($action=='modify'){
 			$htaccess.= 'rewrite ^/([a-zA-Z0-9_^\x00-\xff]+)/index_list_([^/\\\\\\\\]+).'.$met_htmtype.'$ /$1/index.php?murlid=index_list_$2&furlid=$1;'."\n";
 			$htaccess.= 'rewrite ^/([a-zA-Z0-9_^\x00-\xff]+)/index_([a-zA-Z0-9_^\x00-\xff]+).'.$met_htmtype.'$ /$1/index.php?lang=$2;'."\n";
 			$htaccess.= 'rewrite ^/([a-zA-Z0-9_^\x00-\xff]+)/index.'.$met_htmtype.'$ /$1/index.php;'."\n";
-			$htaccess.= 'rewrite ^/([a-zA-Z0-9_^\x00-\xff]+)/([^/\\\\\\\\]+).'.$met_htmtype.'$ /$1/index.php?murlid=$2&furlid=$1;'."\n";
+			$htaccess.= 'rewrite ^/([a-zA-Z0-9_^\x00-\x28^\x30-\xff]+)/([^/\\\\\\\\]+).'.$met_htmtype.'$ /$1/index.php?murlid=$2&furlid=$1;'."\n";
 			$httpdurl ='.htaccess';
 			$httpd    = $htaccess;	
 		}
@@ -98,7 +98,7 @@ if($action=='modify'){
 			$httpd.= 'RewriteRule '.$metbase.'([a-zA-Z0-9_^\x00-\xff]+)/index_list_([^/\\\\]+).'.$met_htmtype.'$ '.$metbase.'$1/index.php?murlid=index_list_$2&furlid=$1'."\n";
 			$httpd.= 'RewriteRule '.$metbase.'([a-zA-Z0-9_^\x00-\xff]+)/index_([a-zA-Z0-9_^\x00-\xff]+).'.$met_htmtype.'$ '.$metbase.'$1/index.php?lang=$2'."\n";
 			$httpd.= 'RewriteRule '.$metbase.'([a-zA-Z0-9_^\x00-\xff]+)/index.'.$met_htmtype.'$ '.$metbase.'$1/index.php'."\n";
-			$httpd.= 'RewriteRule '.$metbase.'([a-zA-Z0-9_^\x00-\xff]+)/([^/\\\\]+).'.$met_htmtype.'$ '.$metbase.'$1/index.php?murlid=$2&furlid=$1'."\n";
+			$httpd.= 'RewriteRule '.$metbase.'([a-zA-Z0-9_^\x00-\x28^\x30-\xff]+)/([^/\\\\]+).'.$met_htmtype.'$ '.$metbase.'$1/index.php?murlid=$2&furlid=$1'."\n";
 			
 			$httpdurl = 'httpd.ini';
 			
@@ -142,6 +142,8 @@ if($action=='modify'){
 				}
 			}
 		}
+		unlink(ROOTPATH.'index.html');
+		unlink(ROOTPATH.'index.htm');
 	}
 	if($met_webhtm==0 || $dehtm=='bianhtm'){
 		if($lang==$met_index_type && file_exists("../../index.htm"))@unlink("../../index.htm");

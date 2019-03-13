@@ -8,7 +8,7 @@ defined('IN_MET') or exit('No permission');
  * 加载类
  */
 class load {
-
+	private static $mclass = array();
 	/**
 	 * 加载系统类
 	 * @param string $classname 需要引用系统类的类名，一般不需要加.class.php
@@ -132,7 +132,7 @@ class load {
 	 * 加载插件
 	 * @param  string $plugin 需要加载的插件系统名
 	 */
-	public static function plugin($plugin){
+	public static function plugin($plugin, $action = 0, $parameter){
 		global $_M;
 		if (!$_M['plugin']) {
 			$query = "SELECT * FROM {$_M['table']['app_plugin']}  WHERE effect='1' ORDER BY no_order DESC";
@@ -141,7 +141,6 @@ class load {
 				$_M['plugin'][$val['m_action']][] = $val['m_name'];
 			}
 		}
-		
 		foreach ($_M['plugin'][$plugin] as $key => $val) {
 			$own = $_M['url']['own'];
 			$_M['url']['own'] = $_M['url']['app'].$val.'/';
@@ -152,13 +151,32 @@ class load {
 				if (class_exists($name)) {
 					$newclass = new $name;
 					if(method_exists($newclass, $plugin)){
-						call_user_func(array($newclass, $plugin));
+						if($action == 99){
+							return call_user_func(array($newclass, $plugin), $parameter);
+						}else if($action == 1){
+							$return = call_user_func(array($newclass, $plugin), $parameter);
+							foreach($parameter as $key=>$val){
+								$parameter[$key] = $return;
+								break;
+							}
+						}else{
+							call_user_func(array($newclass, $plugin), $parameter);
+						}
 					}
 				}
 			}
 			$_M['url']['own'] = $own;
 		}
 		
+		if ($action == 1) {
+			if (isset($return)) {
+				return $return;
+			} else {
+				foreach ($parameter as $key=>$val) {
+					return $val;
+				}
+			}	
+		}		
 	}
 	
 	/**
@@ -171,18 +189,26 @@ class load {
 	 */
 	private static function _load_class($path, $classname, $action = '') {
 		$classname=str_replace('.class.php', '', $classname);
-		if (file_exists($path.$classname.'.class.php')) {
-			require_once $path.$classname.'.class.php';
-		} else {
-			echo str_replace(PATH_WEB, '', $path).$classname.'.class.php is not exists';
-			exit;
+		if(!self::$mclass[$classname]){
+			if (file_exists($path.'myclass/'.$classname.'.class.php')) {
+				require_once $path.'myclass/'.$classname.'.class.php';
+			} else if(file_exists($path.$classname.'.class.php')){
+				require_once $path.$classname.'.class.php';
+			} else {
+				echo str_replace(PATH_WEB, '', $path).$classname.'.class.php is not exists';
+				exit;
+			}
 		}
 		if ($action) {
-			$name=str_replace('.class.php', '', $classname);
-			if (!class_exists($name)) {
+			if (!class_exists($classname)) {
 				die($action.' class\'s file is not exists!!!');
 			}
-			$newclass = new $name;
+			if(self::$mclass[$classname]){
+				$newclass = self::$mclass[$classname];
+			}else{
+				$newclass = new $classname;
+				self::$mclass[$classname] = $newclass;
+			}
 			if ($action!='new') {
 				if(substr($action, 0, 2) != 'do'){
 					die($action.' function no permission load!!!');

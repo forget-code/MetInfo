@@ -68,7 +68,7 @@ if($met_online_type<>3){
 	if(file_exists($tmpincfile)){
 		require_once $tmpincfile;
 	}
-
+	$metinfover = $metinfover_url ? $metinfover_url : $metinfover;
 	if($metinfover == 'v1'){
 		//处理回传数据(sea.js处理方式)
 		$onlinex=$met_online_type<2?$met_onlineleft_left:$met_onlineright_right;

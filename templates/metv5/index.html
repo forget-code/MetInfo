@@ -18,7 +18,6 @@ echo <<<EOT
 		<div class="active dl-jqrun contour-1">
 <!--
 EOT;
-dump(methtml_getarray(99,'','','','','','',1));
 foreach(methtml_getarray($lang_Column2,'com','time','img') as $key=>$val){
 $val['desc']=utf8substr($val['description'],0,30);
 echo <<<EOT

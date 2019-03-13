@@ -2,8 +2,13 @@ define(function(require, exports, module) {
 	var common = require('common'); //加载公共函数文件（语言文字获取等）
 	
 	if($(".tempservice").length>0){
-		require('tem/js/tempservice');
+		require.async('tem/js/tempservice');
 	}
+	
+	if($(".support").length>0){
+		require.async('tem/js/support');
+	}
+	
 	var langtxt = ownlangtxt;
 	var datatype = $('.v52fmbx').attr('data-type');
 	var datainfo = $('.v52fmbx').attr('data-info');
@@ -204,7 +209,7 @@ define(function(require, exports, module) {
 		eva($(this));
 	});
 
-	$(document).ready(function(){ 
+	$(document).ready(function(){
 		//详细页面，请求APP应用信息
 		if(datatype && datainfo){
 			url = apppath+'n=platform&c=platform&a=doapp_check';
@@ -414,7 +419,7 @@ define(function(require, exports, module) {
 	
 	/*获取推荐应用列表*/
 	if($(".hotapplist").length>0){
-		url = apppath + 'n=platform&c=platform&a=dotable_applist_json&type=dlist&lang=' +lang;
+		url = apppath + 'n=platform&c=platform&a=dotable_applist_json&type=dlist&lang=' +lang+'&user_key=' + secret_key;;
 		$.ajax({
 			type: "GET",
 			cache: false,
@@ -423,23 +428,23 @@ define(function(require, exports, module) {
 			success: function(json){
 				var html='',adu=apppath.split('index.php'),imgsrc='',price='';
 				$.each(json, function(i, item){ 
-					price  = item.price_html;
-					imgsrc = item.icon;
-					html+= '<li>';
-					html+= '<dl><dt><a href="'+adminurl+'n=appstore&c=appstore&a=doappdetail&type=app&no='+item.no+'&lang='+lang+'&anyid=65" title="'+item.appname+'"><img src="'+imgsrc+'"></a></dt>';
-					html+= '<dd><h4><a href="'+adminurl+'n=appstore&c=appstore&a=doappdetail&type=app&no='+item.no+'&lang='+lang+'&anyid=65" title="'+item.appname+'">'+item.appname+'</a></h4><h5>'+price+'</h5><h6>'+langtxt.installations+'&nbsp;' +item.download+'</h6></dd></dl></a></li>'; 
+					if(i<8){
+						price  = item.price_html;
+						imgsrc = item.icon;
+						var media = $(".hotapplist .media").eq(i);
+						media.find(".media-left a").html('<img src="'+imgsrc+'" class="media-object" width="80">');
+						media.find(".media-heading").html(item.appname+'<span class="text-danger"></span>');
+						media.find("a").attr('href',adminurl+'n=appstore&c=appstore&a=doappdetail&type=app&no='+item.no+'&anyid=65');
+						media.find(".media-body p").html(item.info);
+						media.find(".media-body .label-success").html(price);
+					}
 				}); 
-				$(".hotapplist ul").html(html);
-				$(".hotapplist dl").css("margin-left",function(){	
-					var wl = ($(".hotapplist li").width()-200)/2;
-					return wl>0?wl:0;
-				});
 			}
 		});
 	}
 	/*获取推荐模板列表*/
 	if($(".hotmblist").length>0){
-		url = apppath + 'n=platform&c=platform&a=dotable_temlist_json&type=dlist';
+		url = apppath + 'n=platform&c=platform&a=dotable_temlist_json&type=dlist'+'&user_key=' + secret_key;
 		$.ajax({
 			type: "GET",
 			cache: false,
@@ -450,11 +455,12 @@ define(function(require, exports, module) {
 				$.each(json, function(i, item){ 
 					price  = item.price_html;
 					imgsrc = item.icon;
-					html+= '<li>';
-					html+= '<dl><dt><a href="'+adminurl+'n=appstore&c=appstore&a=doappdetail&type=tem&no='+item.no+'&appid='+item.id+'&lang='+lang+'&anyid=65" title="'+item.appname+'"><img src="'+imgsrc+'"></a></dt>';
-					html+= '<dd><h4><a href="'+adminurl+'n=appstore&c=appstore&a=doappdetail&type=tem&no='+item.no+'&appid='+item.id+'&lang='+lang+'&anyid=65" title="'+item.appname+'">'+item.appname+'</a></h4><h5>'+price+'<span>'+langtxt.attention+'&nbsp;'+item.hits+'</span></h5></dd></dl></a></li>'; 
+					var media = $(".hotmblist .hotmblist-md").eq(i);
+					media.find(".hotmblist-md-img").html('<img src="'+imgsrc+'" class="img-responsive" >');
+					media.find("a").attr('href',adminurl+'n=appstore&c=appstore&a=doappdetail&type=tem&no='+item.no+'&appid='+item.id+'&lang='+lang+'&anyid=65');
+					media.find(".price").html(price);
+					media.find(".eye").html('<i class="fa fa-eye"></i>'+item.hits);
 				}); 
-				$(".hotmblist ul").html(html);
 			}
 		});
 	}

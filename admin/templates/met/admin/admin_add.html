@@ -284,7 +284,6 @@ echo <<<EOT
 		<label><input name="admin_pop" type="checkbox" value="yes" checked="checked" class="checkbox">{$lang_adminSelectAll}</label>
 <!--
 EOT;
-print_r($metinfocolumn);
 foreach($metinfocolumn as $key=>$val){
 echo <<<EOT
 -->
@@ -298,7 +297,7 @@ if($val2['id'] == 33||$val2['id'] == 68)continue;
 if($val2[bigclass]==$val[id] && $val2[field]){
 echo <<<EOT
 -->
-<label><input name="admin_pops{$val2[field]}" type="checkbox" class="checkbox" value="s{$val2[field]}">{$val2[name]}</label>
+<label><input name="admin_pops{$val2[field]}" type="checkbox" class="checkbox" value="s{$val2[field]}">{$$val2[name]}</label>
 <!--
 EOT;
 }}
@@ -316,7 +315,7 @@ echo <<<EOT
 <!--
 EOT;
 foreach($column_pop[$val4[lang]] as $key=>$val3){
-if($val3['module']<9 && !$val3['if_in']){
+if($val3['module']<=12){
 echo <<<EOT
 -->
 	<label><input name="admin_popc{$val3[id]}" type="checkbox" class="checkbox" value="c{$val3[id]}">{$val3[name]}</label>

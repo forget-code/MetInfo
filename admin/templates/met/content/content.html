@@ -30,10 +30,11 @@ $other_op.="<a href=\"content.php?anyid={$anyid}&lang={$lang}&met_content_type=2
 require_once template('metlangs');
 echo <<<EOT
 -->	
+<!--
 	<div align="right" class="v52fmbx_dings">
-	<a href="recycle/index.php?anyid=33&amp;lang=cn" title="{$_M['word']['upfiletips25']}" style="color: #23b7e5;text-decoration: none;"><i class="fa fa-recycle"></i>{$_M['word']['upfiletips25']}</a>
-	&nbsp;&nbsp;&nbsp;&nbsp;<a href="../app/batch/contentup.php?anyid=32" style="color: #23b7e5;text-decoration: none;">{$_M['word']['bulkopr']}</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
 	</div>
+-->
 	<h3 class="v52fmbx_ding search" id="topsearch" >
 <!--
 EOT;
@@ -57,7 +58,12 @@ EOT;
 }
 echo <<<EOT
 -->		
+	<div class="topsearch-rigth">
 	{$other_op}
+	
+	<a href="recycle/index.php?anyid=33&amp;lang=cn" title="{$_M['word']['upfiletips25']}" style="color: #23b7e5;text-decoration: none;padding-left:0px !important;"><i class="fa fa-recycle"></i>{$_M['word']['upfiletips25']}</a>
+	<a href="../app/batch/contentup.php?anyid=32" style="color: #23b7e5;text-decoration: none;padding-left:0px !important;">{$_M['word']['bulkopr']}</a>
+	</div>
 	</h3>
 	
 <!--

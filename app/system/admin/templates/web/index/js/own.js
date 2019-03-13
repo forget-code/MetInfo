@@ -27,7 +27,7 @@ define(function(require, exports, module) {
 		
 		function metgetdata(d,url){
 			var url = d.attr("data-newslisturl");
-			d.html('Loading...');
+			d.html('<ul><li>Loading...</li></ul>');
 			$.ajax({
 				url: url,
 				type: 'GET',
@@ -50,14 +50,16 @@ define(function(require, exports, module) {
 				success: function(json) {
 					var html='',adu=apppath.split('index.php'),imgsrc='',price='';
 					$.each(json, function(i, item){ 
-						price  = item.price_html;
-						imgsrc = item.icon;
-						html+= '<li>';
-						html+= '<dl><dt><a href="'+adminurl+'n=appstore&c=appstore&a=doappdetail&type=app&no='+item.no+'&anyid=65" title="'+item.appname+'"><img src="'+imgsrc+'"></a></dt>';
-						html+= '<dd><h4><a href="'+adminurl+'n=appstore&c=appstore&a=doappdetail&type=app&no='+item.no+'&anyid=65" title="'+item.appname+'">'+item.appname+'</a></h4><h5>'+price+'</h5><h6>'+langtxt.installations+'&nbsp;' +item.download+'</h6></dd></dl></a></li>'; 
+						if(i<5){
+							price  = item.price_html;
+							imgsrc = item.icon;
+							var media = $(".index_hotapp .media").eq(i);
+							media.find(".media-left a").html('<img src="'+imgsrc+'" class="media-object" width="80">');
+							media.find(".media-heading").html(item.appname+'<span class="text-danger"></span>');
+							media.find("a").attr('href',adminurl+'n=appstore&c=appstore&a=doappdetail&type=app&no='+item.no+'&anyid=65');
+							media.find(".media-body p").html(item.info);
+						}
 					}); 
-					$(".index_hotapp ul").html(html);
-					if(($(".index_hotapp li").width()-200)/2>0)$(".index_hotapp dl").css("margin-left",($(".index_hotapp li").width()-200)/2);
 				}
 			});
 			metgetdata($('#newslist'));

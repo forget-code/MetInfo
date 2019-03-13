@@ -11,16 +11,15 @@ load::sys_func('web');
  * 前台基类
  */
 class web extends common {
-
 	/**
 	  * 初始化
 	  */
 	public function __construct() {
 		parent::__construct();
 		global $_M;
-		define('PATH_TEM', PATH_WEB."templates/".$_M['config']['met_skin_user'].'/');//模板根目录
+		$this->tem_dir();//确定模板根目录
 		$this->load_language();//语言加载
-		met_cooike_start();//读取已登陆会员信息
+		//met_cooike_start();//读取已登陆会员信息
 		$this->load_publuc_data();//加载公共数据
 		load::plugin('doweb');//加载插件
 	}
@@ -78,40 +77,19 @@ class web extends common {
 	  */
 	protected function load_template_lang() {
 		global $_M;
-		$file_name = PATH_TEM."lang/language_".$_M['lang'].".ini";
-		if (!file_exists($file_name)) {
-			if (file_exists(PATH_TEM.'lang/language_cn.ini')) {
-				$file_name = PATH_TEM.'lang/language_cn.ini';
-			} else {
-				$file_name = PATH_TEM.'lang/language_china.ini';
+		//模板文件
+		$query = "SELECT * FROM {$_M['table']['templates']} WHERE no='{$_M[config][met_skin_user]}' AND lang='{$_M['lang']}' order by no_order ";
+		$inc = DB::get_all($query);
+		$tmpincfile=PATH_WEB."templates/{$_M[config][met_skin_user]}/metinfo.inc.php";
+		require $tmpincfile;
+		$_M['config']['metinfover'] = $metinfover;
+		foreach($inc as $key=>$val){
+			$name = $val['name'];
+			if($val[type]==7&&strstr($val['value'],"../upload/")&&$index=='index'&&$metinfover=='v1'){
+				$val['value']=explode("../",$val['value']);
+				$val['value']=$val['value'][1];
 			}
-		}
-		if (file_exists($file_name)) {
-			$fp = @fopen($file_name, "r") or die("Cannot open $file_name");
-			while ($conf_line = @fgets($fp, 1024)) {    
-				if (substr($conf_line,0,1)=="#") {   
-					$line = ereg_replace("#.*$", "", $conf_line);
-				} else {
-					$line = $conf_line;
-				}
-				if (trim($line) == "") continue;
-				$linearray = explode ('=', $line);
-				$linenum = count($linearray);
-				if ($linenum == 2) {
-					list($name, $value) = explode ('=', $line);
-				} else {
-					for ($i=0;$i<$linenum;$i++) {
-						$linetra=$i?$linetra."=".$linearray[$i]:$linearray[$i].'metinfo_';
-					}
-					list($name, $value) = explode ('metinfo_=', $linetra);
-				}
-				$value = str_replace("\"","&quot;",$value);
-				list($value, $valueinfo) = explode ('/*', $value);
-				$name = trim($name);
-				$value = trim($value);
-				if ($value!='#MetInfo') $_M['word'][$name] = $value;
-			}
-			fclose($fp) or die("Can't close file $file_name");
+			$_M['word'][$name] = trim($val['value']);
 		}
 	}
 	
@@ -120,33 +98,43 @@ class web extends common {
 	  * @param int 会员组编号
 	  * 如果会员拥有权限则，程序代码向后正常执行，如果没有则提示没有权限。
 	  */
-	protected function check($power = 0) {
+	protected function check($groupid = 0) {	
 		global $_M;
-		
-		$metinfo_member_name = get_met_cookie('metinfo_admin_name');
-		if (!$metinfo_member_name) {
-			$metinfo_member_name = get_met_cookie('metinfo_member_name');
+		$user = $this->get_login_user_info();
+		$gourl = $_M['gourl'] ? urlencode($_M['gourl']) : urlencode('http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
+		$gourl = $gourl == -1 ? "":$gourl;
+		if($_M['lang'] != $_M['config']['met_index_type']){
+			$lang = "&lang={$_M['lang']}";
 		}
-		$metinfo_member_pass = get_met_cookie('metinfo_admin_pass');
-		if (!$metinfo_member_pass) {
-			$metinfo_member_pass = get_met_cookie('metinfo_member_pass');
+		if($groupid == 0 && !$user){
+			okinfo($_M['url']['site'].'member/login.php?gourl='.$gourl.$lang, '');
 		}
-		
-		$query = "SELECT * FROM {$_M['table']['admin_table']} WHERE admin_id='{$metinfo_member_name}' AND admin_pass='{$metinfo_member_pass}'";
-		$membercp_ok = DB::get_one($query);
-		if ($membercp_ok) {
-			$query = "SELECT * FROM {$_M['table']['admin_array']} WHERE id='{$membercp_ok['usertype']}'";
-			$member_ok = DB::get_one($query);
-			$query = "SELECT * FROM {$_M['table']['admin_array']} WHERE id='{$power}'";
-			$member_ok1 = DB::get_one($query);
-			if ($member_ok['user_webpower'] < $member_ok1['user_webpower']) {
-				okinfo('javascript:window.history.back();', $_M['word']['htmpermission']);
-			}
-		}else{
-			okinfo('javascript:window.history.back();', $_M['word']['htmpermission']);
-		}	
+		$group = load::sys_class('group', 'new')->get_group($groupid);
+		if($user['access'] < $group['access']){
+			okinfo($_M['url']['site'].'member/login.php?gourl='.$gourl.$lang, '');
+		}
 	}
 	
+	/**
+	  * 前台权限检测
+	  * @param string m_auth 会员登陆授权码
+	  * @param string m_key  会员登陆密钥
+	  * 如果会员拥有权限则，程序代码向后正常执行，如果没有则提示没有权限。
+	  * get_met_cookie函数兼容也调用login_by_auth,如果修改请一并修改。
+	  */
+	protected function get_login_user_info($met_auth = '', $met_key = '') {
+		global $_M;
+		$met_auth =  $met_auth ? $met_auth : $_M['form']['acc_auth'];
+		$met_key  =  $met_key  ?  $met_key : $_M['form']['acc_key'];
+		$userclass = load::sys_class('user', 'new');
+		if($met_auth && $met_key) {
+			if(!$userclass->get_login_user_info()){
+				$userclass->login_by_auth($met_auth, $met_key);
+			}
+		}
+		return $userclass->get_login_user_info();
+
+	}
 	/**
 	  * 应用兼容模式加载前台模板，会自动加载当前选定模板的顶部，尾部，左侧导航(可选)，只有内容主题可以自定义。
 	  * @param string $content 页面主体内容部分调用的文件名，为自定的应用模板文件
@@ -157,6 +145,14 @@ class web extends common {
 		$_M['custom_template']['content'] = $content;
 		$_M['custom_template']['left'] = $left;
 		return $this->template('ui/app');
+	}
+	
+	/**
+	  * 确定模板根目录
+	  */
+	protected function tem_dir(){
+		global $_M;
+		define('PATH_TEM', PATH_WEB."templates/".$_M['config']['met_skin_user'].'/');//模板根目录
 	}
 }
 

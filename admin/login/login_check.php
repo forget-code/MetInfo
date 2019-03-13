@@ -82,7 +82,10 @@ if($action=="login"){
 			}
 		}
 		if($re_url&&file_exists('../..'.$filedir)&&$filedir){
-			Header("Location: $re_url");
+			if(!strstr($re_url, ".php")){
+				$re_url .= "index.php?lang=".$lang;
+			}
+			Header("Location: {$re_url}");
 			met_setcookie("re_url",$re_url,time()-21600);
 			exit;
 		}else{

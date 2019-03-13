@@ -133,7 +133,15 @@ function operation_column() {
 		}
 		$sql_id.= ")";
 		$query = "SELECT * from {$_M['table']['column']} WHERE lang = '{$_M['lang']}'{$sql_id} AND module < 100";
-		$admin_column = DB::get_all($query);
+		$admin_column_1 = DB::get_all($query);
+		$query = "SELECT * from {$_M['table']['column']} WHERE lang = '{$_M['lang']}' AND classtype!=1 AND module < 100";
+		$admin_column_2 = DB::get_all($query);
+		foreach($admin_column_1 as $key=>$val){
+			$admin_column[] = $val;
+		}
+		foreach($admin_column_2 as $key=>$val){
+			$admin_column[] = $val;
+		}
 	}
 	foreach($admin_column as $key=>$val){
 		$column[$val['id']] = $admin_column[$key];
@@ -409,6 +417,7 @@ function sitemap_robots($sitemaptype=0){
 	$robots=str_replace("\n\n","\n",$robots);
 	file_put_contents(PATH_WEB.'robots.txt',$robots);
 }
+
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

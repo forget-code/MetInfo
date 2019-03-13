@@ -14,7 +14,6 @@ define(function(require, exports, module) {
 				return put.val()==''?$(this).val():$(this).val()+l+put.val();
 			});
 			put.val('');
-			common.ifreme_methei();//∏ﬂ∂»÷ÿ÷√
 		}
 	}
 	function TagsM(t){

@@ -11,7 +11,7 @@ echo <<<EOT
 <div class="v52fmbx">
 	<h3 class="v52fmbx_hr">{$_M['word']['unitytxt_1']}</h3>
 	<dl>
-		<dt>URL{$_M['word']['sys_static']}</dt>
+		<dt>{$_M['word']['sys_static']}</dt>
 		<dd class="ftype_radio">
 			<div class="fbox">
 				<label><input type="radio" name="met_pseudo" value="1" data-checked="{$_M[config][met_pseudo]}" />{$_M[word][open]}</label>

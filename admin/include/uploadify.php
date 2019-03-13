@@ -202,6 +202,7 @@ if($type=="contentup"){
 	}
 	$metinfo='1$'.$imgurls;
 }elseif($type=='skin'){
+die();
 /*模板文件*/
 	$filetype=explode('.',$_FILES['Filedata']['name']);
 	if($filetype[count($filetype)-1]=='zip'){
@@ -266,7 +267,7 @@ if($type=="contentup"){
 	}
 /*数据库文件*/
 }elseif($type=='sql'){
-	if(strstr($_FILES['Filedata']['name'],'.sql')){
+	if(strstr($_FILES['Filedata']['name'],'.sql') == '.sql'){
 		if(stristr($met_file_format,'sql') === false){
 			echo $lang_jsx37;
 			die();

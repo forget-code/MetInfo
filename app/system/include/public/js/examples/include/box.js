@@ -82,5 +82,4 @@ define(function(require, exports, module) {
 	/*自动补丁*/
 	if($('#met_automatic_upgrade').val() == 1)require.async('epl/include/patch');
 	
-	
 });

@@ -10,7 +10,7 @@ define(function(require, exports, module) {
 			$(this).datetimepicker({
 				lang:'ch',
 				timepicker:$(this).attr("data-day-type")==2?true:false,
-				format:$(this).attr("data-day-type")==2?'Y-m-d H:i':'Y-m-d'
+				format:$(this).attr("data-day-type")==2?'Y-m-d H:i:s':'Y-m-d'
 			});
 		});
 	}

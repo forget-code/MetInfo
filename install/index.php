@@ -22,6 +22,41 @@ function randStr($i){
   }
   return $finalStr;
 }
+function deldir_in($fileDir,$type = 0){
+	@clearstatcache();
+	$fileDir = substr($fileDir, -1) == '/' ? $fileDir : $fileDir . '/';
+	if(!is_dir($fileDir)){
+		return false;
+	}
+	$resource = opendir($fileDir);
+	@clearstatcache();
+	while(($file = readdir($resource))!== false){
+		if($file == '.' || $file == '..'){
+			continue;
+		}
+		if(!is_dir($fileDir.$file)){
+			delfile_in($fileDir.$file);
+		}else{
+			deldir_in($fileDir.$file);
+		}
+	}
+	closedir($resource);
+	@clearstatcache();
+	if($type==0)rmdir($fileDir);
+	return true;
+}
+
+function delfile_in($fileUrl){
+	@clearstatcache();
+	if(file_exists($fileUrl)){
+		unlink($fileUrl);
+		return true;
+	}else{
+		return false;
+	}
+	@clearstatcache();
+}
+
 define('MAGIC_QUOTES_GPC', get_magic_quotes_gpc());
 isset($_REQUEST['GLOBALS']) && exit('Access Error');
 foreach(array('_COOKIE', '_POST', '_GET') as $_request) {
@@ -40,7 +75,7 @@ if(file_exists('../config/install.lock')){
 	exit('对不起，该程序已经安装过了。<br/>
 	      如您要重新安装，请手动删除config/install.lock文件。');
 }
-
+deldir_in('../cache', 1);
 switch ($action)
 {
 	case 'apitest':
@@ -531,7 +566,7 @@ function creat_table($content) {
 			$query = str_replace('met_',$db_prefix,$query);
 			$query = str_replace('metconfig_','met_',$query);
 			$query = str_replace('web_metinfo_url',$install_url2,$query);
-			if(!mysql_query($query)){
+			if(!mysql_query($query) && !mysql_error()){
 				$db_setup=0;
 				if($j!='0'){
 				echo '<li class="WARN">出错：'.mysql_error().'<br/>sql:'.$query.'</li>';

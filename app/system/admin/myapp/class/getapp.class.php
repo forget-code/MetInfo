@@ -47,6 +47,7 @@ class getapp {
 		$result = DB::query($query);
 		while($list = DB::fetch_array($result)){
 			if(!$this->have_power($list['field']))continue;
+			if($list['field'] == 1006)continue;
 			$list = $this->standard($list);
 			$app[$list['field']]=$list;
 		}

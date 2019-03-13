@@ -10,14 +10,14 @@ define(function(require, exports, module) {
 	function AssemblyLoad(dom){
 		/*上传组件*/
 		if(dom.find('.ftype_upload .fbox input').length>0){
-			require.async('epl/uploadify/upload',function(a){
+			require.async('epl/upload/own',function(a){
 				a.func(dom);
 			});
 		}
 		
 		/*编辑器*/
 		if(dom.find('.ftype_ckeditor .fbox textarea').length>0){
-			require.async('epl/ckeditor/ckeditor',function(a){
+			require.async('epl/editor/own',function(a){
 				a.func(dom);
 			});
 		}

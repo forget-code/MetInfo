@@ -8,6 +8,9 @@ require $this->template('ui/head');
 $adm = admin_information();
 echo <<<EOT
 -->
+<script>
+var ownlangtxt = '';
+</script>
 <input id="secret_key" type="hidden" value="{$_M['config']['met_secret_key']}">
 <input id="position" type="hidden" value="lr">
 <form method="POST" class="ui-from" name="myform" action="{$_M['url']['app_api']}a=domember_registration&user_type={$_M['form']['user_type']}&user_id={$_M['form']['user_id']}&user_pass={$_M['form']['user_pass']}&user_mobile={$_M['form']['user_mobile']}&user_email={$_M['form']['user_email']}'&user_passpay={$_M['form']['user_passpay']}&return_type=jump&admin_url={$_M['url']['site_admin']}" target="_self">

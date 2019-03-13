@@ -21,14 +21,14 @@ echo <<<EOT
 <div class="clear"></div>
 <div class="v52fmbx_tbmax">
 <div class="v52fmbx_tbbox">
-<div class="v52fmbx">
-<span class="tips color999" style="padding-left:5px;">{$lang_xtips}</span>
+<span class="tips color999">{$lang_xtips}</span>
 <h3 class="v52fmbx_hr color390">{$lang_langexplain1}</h3>	
-<div class="v52fmbx_dlbox">
+<div class="v52fmbx">
+<div class="v52fmbx_dlbox" style="border-bottom:1px solid #ccc;">
 <dl>
 	<dd>
 		<input name="ymsearchkey" type="text" class="text" value="" /> 
-		<input type="submit" name="Submit" value="{$lang_search}" class="submit" onclick="return ymsearch('')" />
+		<input type="submit" name="Submit" value="{$lang_search}" class="submit" onclick="return ymsearch('')" style="display:inline;"/>
 		<span class="v52fmbx_hr color390">{$lang_savenow}</span>
 		<div class="ymsearchbox"></div>
 	</dd>
@@ -41,7 +41,7 @@ echo <<<EOT
 		<input name="langeditor" type="hidden" value="$langeditor">
 		<input name="metinfolangid" type="hidden" value="{$langid}">
 		<input id="ato_disable" type="hidden" value="1">
-		<h3 class="v52fmbx_hr v52fmbx_search metsliding" sliding="0" style="display:none;">{$lang_searchresult}</h3>
+		<h3 class="v52fmbx_hr v52fmbx_search metsliding" sliding="0" style="display:none;border-top:0px!important;">{$lang_searchresult}</h3>
 <!--
 EOT;
 $j=count($langtext[0]);

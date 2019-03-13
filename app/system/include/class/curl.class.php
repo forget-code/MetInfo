@@ -52,7 +52,8 @@ class curl{
 		if(get_extension_funcs('curl') && function_exists('curl_init') && function_exists('curl_setopt') && function_exists('curl_exec') && function_exists('curl_close')){
 			$curlHandle = curl_init();
 			curl_setopt($curlHandle, CURLOPT_URL, 'http://'.$this->host.'/'.$this->file); 
-			curl_setopt($curlHandle, CURLOPT_REFERER, HTTP_HOST);
+			curl_setopt($curlHandle, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
+			curl_setopt($curlHandle, CURLOPT_REFERER, $_M['config']['met_weburl']);
 			curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, 1); 
 			curl_setopt($curlHandle, CURLOPT_CONNECTTIMEOUT, $timeout);
 			curl_setopt($curlHandle, CURLOPT_TIMEOUT, $timeout);

@@ -47,27 +47,49 @@ if($action=="all"){
 		metnew_dir($lista);
 		$lista = $met_htmpack_url.'public/';
 		metnew_dir($lista);
+		
 		$dira=$met_htmpack_url.'templates/'.$met_skin_user.'/images/';
 		$dirb="../../templates/".$met_skin_user.'/images';
-		xCopy($dirb,$dira,1);
+		if(file_exists($dirb)){
+			xCopy($dirb,$dira,1);
+		}
+		
+		$dira=$met_htmpack_url.'templates/'.$met_skin_user.'/js/';
+		$dirb="../../templates/".$met_skin_user.'/js';
+		if(file_exists($dirb)){
+			xCopy($dirb,$dira,1);
+		}
+		
+		$dira=$met_htmpack_url.'templates/'.$met_skin_user.'/css/';
+		$dirb="../../templates/".$met_skin_user.'/css';
+		if(file_exists($dirb)){
+			@xCopy($dirb,$dira,1);
+		}
+		
 		$dira=$met_htmpack_url.'upload/';
 		$dirb="../../upload/";
 		xCopy($dirb,$dira,1);
+		
 		$dira=$met_htmpack_url.'public/banner/';
 		$dirb="../../public/banner/";
 		xCopy($dirb,$dira,1);
+		
 		$dira=$met_htmpack_url.'public/images/';
 		$dirb="../../public/images/";
 		xCopy($dirb,$dira,1);
+		
 		$dira=$met_htmpack_url.'public/js/';
 		$dirb="../../public/js/";
 		xCopy($dirb,$dira,1);
+		
 		$dira=$met_htmpack_url.'public/css/';
 		$dirb="../../public/css/";
 		xCopy($dirb,$dira,1);
+		
 		$dira=$met_htmpack_url.'public/ui/';
 		$dirb="../../public/ui/";
 		xCopy($dirb,$dira,1);
+		
 		$dira=$met_htmpack_url.'favicon.ico';
 		$dirb="../../favicon.ico";
 		copy($dirb,$dira);
@@ -234,7 +256,8 @@ if($action=="all"){
     $fp=fopen($path,"r");
 	$str=fread($fp,filesize($path));
 	//$str=str_replace("job/cv.php?lang=cn&selectedjob=","job/cv.html",$str);
-	$str=preg_replace(@"<job\/cv\.php\?lang\=[^\']*\'>","job/cv.html'",$str);
+	//$str=preg_replace(@"<job\/cv\.php\?lang\=[^\']*\'>","job/cv.html'",$str);
+	$str=preg_replace("/job\/cv\.php\?lang\=[a-zA-Z0-9]*&selectedjob=[0-9]*/", "job/cv.html",$str);
 	fclose($fp);
 	$handle=fopen($path,"w");
 	fwrite($handle,$str);
@@ -355,8 +378,8 @@ if($action=="all"){
 
 	if($class1=='login'&&$met_member_use!=0){
 		//$methtm[]=onepagehtm('member','index',1);
-		$methtm[]=onepagehtm('member','login',1);
-		$methtm[]=onepagehtm('member','register',1);
+		//$methtm[]=onepagehtm('member','login',1);
+		//$methtm[]=onepagehtm('member','register',1);
 	}
 
 	if($action=='sitemap'){

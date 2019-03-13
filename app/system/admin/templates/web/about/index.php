@@ -5,6 +5,16 @@
 defined('IN_MET') or exit('No permission');
 
 require $this->template('ui/head');
+
+if($_M[config][met_agents_type] < 2) {
+	$copyright_info = $_M[word][copyright];
+	$metinfo_info = $_M[word][metinfo];
+	$metinfo_ver = $_M[config][metcms_v];
+} else {
+	$copyright_info = $_M['word'][copyright];
+	$metinfo_info = $_M['word'][metinfo];
+	$metinfo_ver = $_M[config][metcms_v];
+}
 echo <<<EOT
 -->
 <script>
@@ -19,13 +29,13 @@ var ownlangtxt = {
 	<dl>
 		<dt>{$_M['word']['upfiletips43']}</dt>
 		<dd>
-			<span class="newpatch">{$_M['word']['get_in']}...<span class='metcms_upload_download'></span></span>
+			<span class="newpatch" data-auto="{$data_auto}">{$_M['word']['get_in']}...<span class='metcms_upload_download'></span></span>
 		</dd>
 	</dl>
 	<dl>
 		<dt>{$_M['word']['upfiletips39']}</dt>
 		<dd>
-			{$_M[word][metinfo]}&nbsp;&nbsp;&nbsp;&nbsp;
+			{$metinfo_info}&nbsp;&nbsp;&nbsp;&nbsp;
 			
 <span class="bdsharebuttonbox" 
 			data-bdUrl="http://www.metinfo.cn/web/metcms.htm" 
@@ -33,14 +43,14 @@ var ownlangtxt = {
 			data-bdPic="{$_M[url][site]}templates/{$_M[config][met_skin_user]}/view.jpg" 
 			data-bdCustomStyle="{$_M[url][own_tem]}css/metinfo.css" 
 			data-tag="share_1">
-			<a href="#" class="bds_more" data-cmd="more"><i class="fa fa-share-alt"></i>&nbsp;{$_M[word][share_friends]}</a>
+			<a href="#" class="bds_more" data-cmd="more" {$met_agents_display}><i class="fa fa-share-alt"></i>&nbsp;{$_M[word][share_friends]}</a>
 </span>
 		</dd>
 	</dl>
 	<dl>
 		<dt>{$_M['word']['current_version']}</dt>
 		<dd>
-			{$_M[config][metcms_v]}
+			{$metinfo_ver}
 		</dd>
 	</dl>
 	<dl {$met_agents_display}>
@@ -52,7 +62,7 @@ var ownlangtxt = {
 	<dl>
 		<dt>{$_M['word']['reserved']}</dt>
 		<dd>
-			{$_M[word][copyright]}
+			{$copyright_info}
 		</dd>
 	</dl>
 	<dl {$met_agents_display}>
@@ -88,6 +98,7 @@ var ownlangtxt = {
 		<dt>MySQL{$_M['word']['the_version']}</dt>
 		<dd>{$mysql}</dd>
 	</dl>
+	<!--
 	<h3 class="v52fmbx_hr" {$met_agents_display}>{$_M['word']['special_thanks']}</h3>
 	<dl {$met_agents_display}>
 		<dd>
@@ -96,6 +107,7 @@ var ownlangtxt = {
 			月明影
 		</dd>
 	</dl>
+	-->
 </div>
 <div class="remodal met_uplaod_remodal" data-remodal-id="modal"><div class="temset_box"></div></div>
 <!--

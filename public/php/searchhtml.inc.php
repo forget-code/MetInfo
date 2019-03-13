@@ -48,16 +48,22 @@ function metlabel_conjunctive($field,$price,$region,$img){
 	if(!$class1){
 		$class1=10001;
 	}
-	foreach($product_para as $key12=>$val){
+	foreach($product_para as $key=>$val){
+		if($val['class1'] == 0 || $val['class1'] == $class1){
+			$product_para_con[] = $val;
+		}
+	
+	}
+	foreach($product_para_con as $key12=>$val){
 		if($val[type]!=2&&$val[type]!=6&&$val[type]!=4&&$val[id]!=$price){
-			unset($product_para[$key12]);
+			unset($product_para_con[$key12]);
 		}
 		if($val[id]==$price){
 			$prices="paraprice_".$val[id];
 			global $$prices;
 		}
 	}
-	foreach($product_para as $key=>$val){
+	foreach($product_para_con as $key=>$val){
 		if($val[type]==4){
 			$inquiry="para".$val[id];
 			global $$inquiry;
@@ -74,9 +80,9 @@ function metlabel_conjunctive($field,$price,$region,$img){
 		$para_product_list = explode('|',$field);
 		foreach($para_product_list as $key=>$val){
 			$product_para_id=array();
-			foreach($product_para as $key=>$val6){
+			foreach($product_para_con as $key=>$val6){
 				if($val6[id]==$val){
-					$product_para_id[]=$product_para[$key];
+					$product_para_id[]=$product_para_con[$key];
 				}
 			}
 			foreach($product_para_id as $key=>$val1){
@@ -85,12 +91,13 @@ function metlabel_conjunctive($field,$price,$region,$img){
 						$product_merit=explode('|',$region);	
 				}else{
 					$product_merit=array();
-					foreach($para_select[$val1[id]] as $key=>$val7){
-						$product_merit[]=$val7[info];
+					$ps = explode('$|$', trim($val1['options'], '$|$'));
+					foreach($ps as $key=>$val7){
+						$product_merit[]=$val7;
 					}
 				}
 				$quiryx='&search=search&class1='.$class1;
-				foreach($product_para as $key=>$val5){
+				foreach($product_para_con as $key=>$val5){
 					if($val5[id]==$price){
 						$quiry="paraprice_".$val5[id];
 						$quirys=$$quiry;
@@ -117,7 +124,7 @@ function metlabel_conjunctive($field,$price,$region,$img){
 				$conjunctive[$val1[name]][$val4][id]=$val1[id];
 				$conjunctive[$val1[name]][$val4][type]=$val1[type];
 				$quiryx='&search=search&class1='.$class1;
-				foreach($product_para as $key=>$val5){
+				foreach($product_para_con as $key=>$val5){
 					if($val5[id]==$price){
 						$quiry="paraprice_".$val5[id];
 						$quirys=$$quiry;
@@ -141,17 +148,18 @@ function metlabel_conjunctive($field,$price,$region,$img){
 			}
 		}
 	}else{
-			foreach($product_para as $key=>$val1){
+			foreach($product_para_con as $key=>$val1){
 				if($val1[id]==$price){
 						$product_merit=explode('|',$region);
 				}else{
 					$product_merit=array();
-					foreach($para_select[$val1[id]] as $key=>$val7){
-						$product_merit[]=$val7[info];
+					$ps = explode('$|$', trim($val1['options'], '$|$'));
+					foreach($ps as $key=>$val7){
+						$product_merit[]=$val7;
 					}
 				}
 				$quiryx='&search=search&class1='.$class1;
-				foreach($product_para as $key=>$val5){
+				foreach($product_para_con as $key=>$val5){
 					if($val5[id]==$price){
 						$quiry="paraprice_".$val5[id];
 						$quirys=$$quiry;
@@ -178,7 +186,7 @@ function metlabel_conjunctive($field,$price,$region,$img){
 					$conjunctive[$val1[name]][$val4][info]=$val4;
 					$conjunctive[$val1[name]][$val4][type]=$val1[type];
 					$quiryx='&search=search&class1='.$class1;
-					foreach($product_para as $key=>$val5){
+					foreach($product_para_con as $key=>$val5){
 						if($val5[id]==$price){
 							$quiry="paraprice_".$val5[id];
 							$quirys=$$quiry;
@@ -211,6 +219,7 @@ function metlabel_conjunctive($field,$price,$region,$img){
 				.list-search a{white-space: pre-wrap;}
 				</style>";
 	$metinfo.="<ul class='list-search'>";
+
 	foreach($conjunctive as $key=>$val){
 		$metinfo.="<li>";
 		$metinfo.="<dl><dt>{$key}:</dt>";

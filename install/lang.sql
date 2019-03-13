@@ -3266,7 +3266,7 @@ INSERT INTO met_language VALUES('24452','setimgWatermark','添加方式','1','18
 INSERT INTO met_language VALUES('24453','setimgBigImg','详细大图片添加','1','185','1','0','cn');
 INSERT INTO met_language VALUES('24451','setimgrename2','重命名文件名称有利于减少异常','1','183','1','0','cn');
 INSERT INTO met_language VALUES('24449','setimgrename','自动重命名','1','181','1','0','cn');
-INSERT INTO met_language VALUES('24450','setimgrename1','对上传的文件名自动进行重名名','1','182','1','0','cn');
+INSERT INTO met_language VALUES('24450','setimgrename1','对上传的文件名自动进行重命名','1','182','1','0','cn');
 INSERT INTO met_language VALUES('24445','setimgdeleteimg','自动删除图片','1','177','1','0','cn');
 INSERT INTO met_language VALUES('24446','setimgdeleteimg1','开启后删除信息时将自动删除相应图片','1','178','1','0','cn');
 INSERT INTO met_language VALUES('24448','setimgWaterok','开启后添加大图时将自动生成缩略图','1','180','1','0','cn');
@@ -4151,7 +4151,7 @@ INSERT INTO met_language VALUES ('31940','pseudo_static','伪静态规则','1','
 INSERT INTO met_language VALUES ('31939','sys_end','结尾。','1','0','1','0','cn');
 INSERT INTO met_language VALUES ('31938','and_to','（网址），并且以','1','0','1','0','cn');
 INSERT INTO met_language VALUES ('31937','simplify_front_desk','开启后能够简化前台网页','1','0','1','0','cn');
-INSERT INTO met_language VALUES ('31936','sys_static','静态化','1','0','1','0','cn');
+INSERT INTO met_language VALUES ('31936','sys_static','伪静态化','1','0','1','0','cn');
 INSERT INTO met_language VALUES ('31935','being_generated','正在生成','1','0','1','0','cn');
 INSERT INTO met_language VALUES ('31934','anchor_text','添加锚文本','1','0','1','0','cn');
 INSERT INTO met_language VALUES ('31933','applies_paper','仅作用于前台页面中的内容文字，比如文章详情页内容文字。','1','0','1','0','cn');
@@ -4838,7 +4838,7 @@ INSERT INTO met_language VALUES ('35393','sys_use','I use','1','0','1','0','en')
 INSERT INTO met_language VALUES ('35392','everyone_see','online, everyone to see!','1','0','1','0','en');
 INSERT INTO met_language VALUES ('35390','applies_paper','only applies to the contents of the front page of text, such as the paper details page.','1','0','1','0','en');
 INSERT INTO met_language VALUES ('35391','anchor_text','add anchor text','1','0','1','0','en');
-INSERT INTO met_language VALUES ('35389','sys_static','static','1','0','1','0','en');
+INSERT INTO met_language VALUES ('35389','sys_static','Pseudo static','1','0','1','0','en');
 INSERT INTO met_language VALUES ('35382','manually_static_rules2','static, pseudo static is a recommended practice, and even dont have to','1','0','1','0','en');
 INSERT INTO met_language VALUES ('35383','development_engine','static, for the development of search engine,','1','0','1','0','en');
 INSERT INTO met_language VALUES ('35384','pseudo_static','pseudo static rules','1','0','1','0','en');
@@ -6721,7 +6721,7 @@ INSERT INTO met_language VALUES('30064','type','類型','1','185','8','0','tc');
 INSERT INTO met_language VALUES('30065','sort','排序','1','186','8','0','tc');
 INSERT INTO met_language VALUES('30066','yes','是','1','187','8','0','tc');
 INSERT INTO met_language VALUES('30067','no','否','1','188','8','0','tc');
-INSERT INTO met_language VALUES('30068','metinfo','MetInfo企業網站管理繫統','1','189','8','0','tc');
+INSERT INTO met_language VALUES('30068','metinfo','Metinfo企業網站管理繫統','1','189','8','0','tc');
 INSERT INTO met_language VALUES('30069','item','條','1','190','8','0','tc');
 INSERT INTO met_language VALUES('30070','selectall','全選','1','191','8','0','tc');
 INSERT INTO met_language VALUES('30071','selected','選擇','1','192','8','0','tc');
@@ -7360,7 +7360,7 @@ INSERT INTO met_language VALUES ('35221','everyone_see','上線了，大家來�
 INSERT INTO met_language VALUES ('35222','applies_paper','僅作用於前臺頁面中的內容文字，比如文章詳情頁內容文字。','1','0','1','0','tc');
 INSERT INTO met_language VALUES ('35223','anchor_text','添加錨文本','1','0','1','0','tc');
 INSERT INTO met_language VALUES ('35224','being_generated','正在生成','1','0','1','0','tc');
-INSERT INTO met_language VALUES ('35225','sys_static','靜態化','1','0','1','0','tc');
+INSERT INTO met_language VALUES ('35225','sys_static','偽靜態化','1','0','1','0','tc');
 INSERT INTO met_language VALUES ('35226','simplify_front_desk','開啟後能夠簡化前臺網頁','1','0','1','0','tc');
 INSERT INTO met_language VALUES ('35227','and_to','（網址），並且以','1','0','1','0','tc');
 INSERT INTO met_language VALUES ('35228','sys_end','結尾。','1','0','1','0','tc');
@@ -7752,6 +7752,6 @@ INSERT INTO met_language VALUES('36028','timelisttips2','发布）','1','0','1',
 INSERT INTO met_language VALUES('36029','timelisttips2','Release)','1','0','1','0','en');
 INSERT INTO met_language VALUES('36030','timelisttips2','發布）','1','0','1','0','tc');
 
-INSERT INTO met_language VALUES('36031','mod_rewrite_column','开启URL静态化需空间环境配置开启mod_rewrite模块，如没有开启则联系空间商解决。','1','0','1','0','cn');
+INSERT INTO met_language VALUES('36031','mod_rewrite_column','开启伪静态化需空间环境配置开启mod_rewrite模块，如没有开启则联系空间商解决。','1','0','1','0','cn');
 INSERT INTO met_language VALUES('36032','mod_rewrite_column','Open the URL static space environment configuration opens the mod_rewrite module, if not open the contact space business address.','1','0','1','0','en');
-INSERT INTO met_language VALUES('36033','mod_rewrite_column','開啟URL靜態化需空間環境配置開啟mod_rewrite模塊，如沒有開啟則聯系空間商解決。','1','0','1','0','tc');
+INSERT INTO met_language VALUES('36033','mod_rewrite_column','開啟偽靜態化需空間環境配置開啟mod_rewrite模塊，如沒有開啟則聯系空間商解決。','1','0','1','0','tc');

@@ -35,18 +35,21 @@ define(function(require, exports, module) {
 			})
 			function mPage(mett,metv){
 				var metPageI = mett.attr("value"),metPageNums = parseInt(metPageI);
+				//var metPageNums = parseInet(document.getElementById(metPageT).value);
 				if(metPageNums){
 					var pageData = mett.data("pageurl");	
 					PageStr=pageData.split("|");
-					PageStr0=PageStr[0].split("."); 
+					//PageStr0=PageStr[0].split("."); 
+					var url = window.location.href.split("/");
+					var folder = url[url.length-2];
 					if(metPageNums<0){
-						var pageUrl = met_weburl + PageStr0[0] + "/" +  PageStr[0] + "1" + PageStr[1];
+						var pageUrl = met_weburl + folder + "/" +  PageStr[0] + "1" + PageStr[1];
 						window.location.href = pageUrl;
 					}else if(metPageNums>PageStr[2]){
-						var pageUrl = met_weburl + PageStr0[0] + "/" +  PageStr[0] + PageStr[2] + PageStr[1];
+						var pageUrl = met_weburl + folder + "/" +  PageStr[0] + PageStr[2] + PageStr[1];
 						window.location.href = pageUrl;
 					}else{
-						var pageUrl = met_weburl + PageStr0[0] + "/" + PageStr[0] + metPageNums + PageStr[1];
+						var pageUrl = met_weburl + folder + "/" + PageStr[0] + metPageNums + PageStr[1];
 						window.location.href = pageUrl;
 					}
 				}else{metPageT.attr("value",metv);}

@@ -2,25 +2,20 @@
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 require_once 'common.inc.php';
-if($met_webhtm==0){
 $member_login_url="login.php?lang=".$lang;
-$member_register_url="register.php?lang=".$lang;
-}else{
-$member_login_url="login".$met_htmtype;
-$member_register_url="register".$met_htmtype;
-}
+$member_register_url="register_include.php?lang=".$lang;
 $navurl=($index=='index')?'':'../';
 $met_js_ac=" document.body.innerHTML=''; alert('".$lang_access."'); location.href='".$navurl."member/".$member_index_url."&referer='+encodeURIComponent(window.location.href);";
-$query="select * from $met_admin_array where id='$metaccess'";
+$query="select * from $met_user_group where id='$metaccess'";
 $memberacess=$db->get_one($query);
-$metaccess=$memberacess[user_webpower];
+$metaccess=$memberacess[access];
 if($met_member_use!=0){
 if($metuser=='para'){
 if(intval($metinfo_member_type)>=intval($metaccess)){
 $listinfo=codetra($listinfo,0);
 $met_js_ac='document.write("'.authcode($listinfo, 'DECODE', $met_member_force).'")';
 }else{
-	$met_js_ac='document.write("'."【<a href='".$navurl."member/$member_login_url'>$lang_login</a>】【<a href='".$navurl."member/$member_register_url'>$lang_register</a>】".'")';
+	$met_js_ac='document.write("'."【<a href='".$navurl."member/$member_login_url' target='_blank'>$lang_login</a>】【<a href='".$navurl."member/$member_register_url' target='_blank'>$lang_register</a>】".'")';
 }
 }else{
 if(intval($metinfo_member_type)>=intval($metaccess)){

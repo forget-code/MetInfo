@@ -186,6 +186,38 @@ function change_code($str, $newcode, $oldcode = '', $type = 0){
 	return $str;
 }
 
+/**
+ * 显示某一个时间相当于当前时间在多少秒前，多少分钟前，多少小时前，多少天前
+ * timeInt: 时间戳
+ * format: 时间显示格式
+ */
+function timeFormat($timeInt,$format='Y-m-d H:i:s'){
+	if(empty($timeInt)||!is_numeric($timeInt)||!$timeInt){
+		return '';
+	}
+	$d=time()-$timeInt;
+	if($d<0){
+		return '';
+	}else{
+		if($d<60){
+			return $d.' 秒前';
+		}else{
+			if($d<3600){
+				return floor($d/60).' 分钟前';
+			}else{
+				if($d<86400){
+					return floor($d/3600).' 小时前';
+				}else{
+					if($d<259200){//3天内
+						return floor($d/86400).' 天前';
+					}else{
+						return date($format,$timeInt);
+					}
+				}
+			}
+		}
+	}
+}
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

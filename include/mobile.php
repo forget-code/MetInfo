@@ -2,6 +2,7 @@
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 require_once 'mobile_detect.php';
+if($pcok=='deleted')$pcok='';
 if($pcok){
 	if($pcok!='wap'&&$pcok!='pc'){
 		header("location:404.html");die;

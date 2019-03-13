@@ -50,8 +50,8 @@ function metlabel_html5($closure=1,$iehack=1,$mobile=0){
 		if($metinfouiok==1)$metinfo.="<link rel=\"stylesheet\" type=\"text/css\" href=\"{$navurl}public/ui/met/css/metinfo_ui.css\" id=\"metuimodule\" data-module =\"{$class_list[$classnow][module]}\" />\n";
 		$metinfo.="<link rel=\"stylesheet\" type=\"text/css\" href=\"".$img_url."css/".$met_skin_css."\" />\n";
 		$metinfo.="<script src=\"{$navurl}public/js/jQuery1.7.2.js\" type=\"text/javascript\"></script>\n";
-		if($metinfouiok==1)$metinfo.="<script src=\"{$navurl}public/ui/met/js/metinfo_ui.js\" type=\"text/javascript\"></script>\n";
 		if($met_ch_lang and $lang==$met_ch_mark)$metinfo.="<script src=\"".$met_url."js/ch.js\" type=\"text/javascript\"></script>\n";
+		if($metinfouiok==1)$metinfo.="<script src=\"{$navurl}public/ui/met/js/metinfo_ui.js\" type=\"text/javascript\"></script>\n";
 		if($appscriptcss)$metinfo.="{$appscriptcss}\n";
 		//接口代码
 		if($_M['html_plugin']['head_script'])$metinfo.="{$_M['html_plugin']['head_script']}";
@@ -720,10 +720,15 @@ function membernavlist($type=0){
 	global $lang,$lang_memberIndex3,$lang_memberIndex4,$lang_memberIndex5,$lang_memberIndex6,$lang_memberIndex7,$lang_memberIndex10,$app_file,$met_adminfile,$met_mermber_metinfo_news_left_class,$db,$met_admin_table,$met_weburl,$met_adminfile,$metinfo_member_name,$met_ifmember_left,$class_list,$navigation;
 	$class=$met_mermber_metinfo_news_left_class?$met_mermber_metinfo_news_left_class:'membernavlist';/*兼容以前模板*/
 	$admin_list = $db->get_one("SELECT * FROM $met_admin_table WHERE admin_id='$metinfo_member_name' ");
-	
+
 	if($type==1){
 		$metinfo.="<dl class='$class'>";
 		$metinfo.="<dt><a href='../member/basic.php?lang={$lang}' title='{$lang_memberIndex3}'>{$lang_memberIndex3}</a></dt>";
+		if($admin_list[usertype]==3){
+				
+		}else{
+			$metinfo.="<dt><a href='../member/basic.php?lang={$lang}&a=dosafety' title='{$lang_memberIndex4}'>{$lang_memberIndex4}</a></dt>";	
+		}
 		foreach($navigation as $key=>$val){
 			if($val[columnid]){
 				$column = $class_list[$val[columnid]];
@@ -734,24 +739,20 @@ function membernavlist($type=0){
 				$metinfo.="<dt><a href='../{$val['foldername']}/{$val['filename']}' title='{$val['title']}'>{$val['title']}</a></dt>";
 			}
 		}
-		if($admin_list[usertype]==3){
-				
-		}else{
-			$metinfo.="<dt><a href='../member/editor.php?lang={$lang}' title='{$lang_memberIndex4}'>{$lang_memberIndex4}</a></dt>";	
-		}
 		//$metinfo.="<dt><a href='editor.php?lang={$lang}' title='{$lang_memberIndex4}'>{$lang_memberIndex4}</a></dt>";
-		$metinfo.="<dt><a href='../member/feedback.php?lang={$lang}' title='{$lang_memberIndex5}'>{$lang_memberIndex5}</a></dt>";
-		$metinfo.="<dt><a href='../member/message.php?lang={$lang}' title='{$lang_memberIndex6}'>{$lang_memberIndex6}</a></dt>";
-		$metinfo.="<dt><a href='../member/cv.php?lang={$lang}' title='{$lang_memberIndex7}'>{$lang_memberIndex7}</a></dt>";
+		//$metinfo.="<dt><a href='../member/feedback.php?lang={$lang}' title='{$lang_memberIndex5}'>{$lang_memberIndex5}</a></dt>";
+		//$metinfo.="<dt><a href='../member/message.php?lang={$lang}' title='{$lang_memberIndex6}'>{$lang_memberIndex6}</a></dt>";
+		//$metinfo.="<dt><a href='../member/cv.php?lang={$lang}' title='{$lang_memberIndex7}'>{$lang_memberIndex7}</a></dt>";
 		$file_site = explode('|',$app_file[3]);
 		foreach($file_site as $keyfile=>$valflie){
 			if(file_exists(ROOTPATH."$met_adminfile".$valflie)&&!is_dir(ROOTPATH."$met_adminfile".$valflie)&&((file_get_contents(ROOTPATH."$met_adminfile".$valflie))!='metinfo')){require ROOTPATH."$met_adminfile".$valflie;}
 		}
-		$metinfo.="<dt><a href='../member/login_out.php?lang={$lang}' title='{$lang_memberIndex10}'>{$lang_memberIndex10}</a></dt>";
+		$metinfo.="<dt><a href='../member/login.php?lang={$lang}&a=dologout' title='{$lang_memberIndex10}'>{$lang_memberIndex10}</a></dt>";
 		$metinfo.="</dl>";
 	}else{
 		$metinfo.="<ul class='$class'>";
 		$metinfo.="<li><a href='../member/basic.php?lang={$lang}' title='{$lang_memberIndex3}'>{$lang_memberIndex3}</a></li>";
+		$metinfo.="<li><a href='../member/basic.php?lang={$lang}&a=dosafety' title='{$lang_memberIndex4}'>{$lang_memberIndex4}</a></li>";
 		foreach($navigation as $key=>$val){
 			if($val[columnid]){
 				$column = $class_list[$val[columnid]];
@@ -762,15 +763,14 @@ function membernavlist($type=0){
 				$metinfo.="<li><a href='../{$val['foldername']}/{$val['filename']}' title='{$val['title']}'>{$val['title']}</a></li>";
 			}
 		}
-		$metinfo.="<li><a href='../member/editor.php?lang={$lang}' title='{$lang_memberIndex4}'>{$lang_memberIndex4}</a></li>";
-		$metinfo.="<li><a href='../member/feedback.php?lang={$lang}' title='{$lang_memberIndex5}'>{$lang_memberIndex5}</a></li>";
-		$metinfo.="<li><a href='../member/message.php?lang={$lang}' title='{$lang_memberIndex6}'>{$lang_memberIndex6}</a></li>";
-		$metinfo.="<li><a href='../member/cv.php?lang={$lang}' title='{$lang_memberIndex7}'>{$lang_memberIndex7}</a></li>";
+		//$metinfo.="<li><a href='../member/feedback.php?lang={$lang}' title='{$lang_memberIndex5}'>{$lang_memberIndex5}</a></li>";
+		//$metinfo.="<li><a href='../member/message.php?lang={$lang}' title='{$lang_memberIndex6}'>{$lang_memberIndex6}</a></li>";
+		//$metinfo.="<li><a href='../member/cv.php?lang={$lang}' title='{$lang_memberIndex7}'>{$lang_memberIndex7}</a></li>";
 		$file_site = explode('|',$app_file[3]);
 		foreach($file_site as $keyfile=>$valflie){
 			if(file_exists(ROOTPATH."$met_adminfile".$valflie)&&!is_dir(ROOTPATH."$met_adminfile".$valflie)&&((file_get_contents(ROOTPATH."$met_adminfile".$valflie))!='metinfo')){require ROOTPATH."$met_adminfile".$valflie;}
 		}
-		$metinfo.="<li><a href='../member/login_out.php?lang={$lang}' title='{$lang_memberIndex10}'>{$lang_memberIndex10}</a></li>";
+		$metinfo.="<li><a href='../member/login.php?lang={$lang}&a=dologout' title='{$lang_memberIndex10}'>{$lang_memberIndex10}</a></li>";
 		$metinfo.="</ul>";
 	}
 	return $metinfo;
@@ -1213,7 +1213,7 @@ function metlabel_job($type){
 function messagelabel_table($dy){
 	global $lang,$message_list,$lang_Submit,$lang_Reset,$lang_Publish,$lang_Reply,$fromurl,$m_user_ip,$id,$title;
 	global $met_memberlogin_code,$lang_memberImgCode,$lang_memberTip1,$met_adminfile,$navurl,$settings_arr;
-	global $db,$met_parameter,$met_admin_array,$met_member_use,$metinfo_member_type,$met_list,$met_class,$class_list,$met_product,$lang_Choice,$lang_Empty;
+	global $db,$met_parameter,$met_admin_array,$met_member_use,$metinfo_member_type,$met_list,$met_class,$class_list,$met_product,$lang_Choice,$lang_Empty,$paravalue;
 	if($fid)$id=$fid;
 	if(!$title){
 		foreach($settings_arr as $key=>$val){
@@ -1421,7 +1421,7 @@ function metlabel_messagelist(){
 function metlabel_feedback($fid,$mobile){
 	global $lang,$message_list,$lang_Submit,$lang_Reset,$lang_Publish,$lang_Reply,$fromurl,$m_user_ip,$id,$title;
 	global $met_memberlogin_code,$lang_memberImgCode,$lang_memberTip1,$met_adminfile,$navurl,$settings_arr;
-	global $db,$met_parameter,$met_admin_array,$met_member_use,$metinfo_member_type,$met_list,$met_class,$class_list,$met_product,$lang_Choice,$lang_Empty;
+	global $db,$met_parameter,$met_admin_array,$met_member_use,$metinfo_member_type,$met_list,$met_class,$class_list,$met_product,$lang_Choice,$lang_Empty,$paravalue;
 	global $metinfover;
 	if($fid)$id=$fid;
 	if(!$title){
@@ -1435,6 +1435,7 @@ function metlabel_feedback($fid,$mobile){
 	if($met_member_use)$query = "select * from $met_parameter where (access in(select id from $met_admin_array where user_webpower<='$metinfo_member_type') or access=0) and lang='$lang' and module=8 and class1='$id' order by no_order;";
 	$result = $db->query($query);
 	while($list= $db->fetch_array($result)){
+	 if(!$paravalue){
 	 if($list[type]==2 or $list[type]==4 or $list[type]==6){
 		$listinfo=$db->get_one("select * from $met_list where bigid='$list[id]' and no_order=99999");
 		$listinfoid=intval(trim($listinfo[info]));
@@ -1457,6 +1458,7 @@ function metlabel_feedback($fid,$mobile){
 	   $paravalue[$list[id]][]=$list1;
 	   }
 	   }}
+	 } 
 	if($list[wr_ok]=='1')$list[wr_must]="*";
 	switch($list[type]){
 	case 1:
@@ -1612,7 +1614,7 @@ if($met_memberlogin_code==1){
 function metlabel_member($fid,$mobile){ 
 	global $lang,$message_list,$lang_Submit,$lang_Reset,$lang_Publish,$lang_Reply,$fromurl,$m_user_ip,$id,$title;
 	global $met_memberlogin_code,$lang_memberImgCode,$lang_memberTip1,$met_adminfile,$navurl,$settings_arr;
-	global $db,$lang_memberRegisterName,$lang_js7,$lang_js26,$lang_memberPassword,$lang_js8,$lang_js9,$lang_js10,$lang_js12,$lang_js11,$lang_js13,$lang_memberName,$lang_membereditorPs,$lang_membereditorPs1,$lang_Email,$lang_memberbasicCompanyName,$met_parameter,$met_admin_array,$met_member_use,$metinfo_member_type,$met_list,$met_class,$class_list,$met_product,$lang_Choice,$lang_Empty,$lang_memberRegister;
+	global $db,$lang_memberRegisterName,$lang_js7,$lang_js26,$lang_memberPassword,$lang_js8,$lang_js9,$lang_js10,$lang_js12,$lang_js11,$lang_js13,$lang_memberName,$lang_membereditorPs,$lang_membereditorPs1,$lang_Email,$lang_memberbasicCompanyName,$met_parameter,$met_admin_array,$met_member_use,$metinfo_member_type,$met_list,$met_class,$class_list,$met_product,$lang_Choice,$lang_Empty,$lang_memberRegister,$paravalue;
 	if($fid)$id=$fid;
 	if(!$title){
 		foreach($settings_arr as $key=>$val){
@@ -1871,7 +1873,7 @@ if($met_memberlogin_code==1){
 function metlabel_message($fid,$mobile){
 	global $lang,$message_list,$lang_Submit,$lang_Reset,$lang_Publish,$lang_Reply,$fromurl,$m_user_ip,$id,$title;
 	global $met_memberlogin_code,$lang_memberImgCode,$lang_memberTip1,$met_adminfile,$navurl,$settings_arr;
-	global $db,$met_parameter,$met_admin_array,$met_member_use,$metinfo_member_type,$met_list,$met_class,$class_list,$met_product,$lang_Choice,$lang_Empty;
+	global $db,$met_parameter,$met_admin_array,$met_member_use,$metinfo_member_type,$met_list,$met_class,$class_list,$met_product,$lang_Choice,$lang_Empty,$paravalue;
 	global $metinfover;
 	if($fid)$id=$fid;
 	if(!$title){
@@ -2061,7 +2063,7 @@ if($met_memberlogin_code==1){
 }
 //留言提交表单函数（兼容metv5以前模板，不建议使用，建议使用metlabel_message()）
 function metlabel_messageold($fid,$mobile){
-	global $lang,$message_list,$lang_Submit,$lang_Reset,$lang_Publish,$lang_Reply,$fromurl,$m_user_ip,$id,$title,$lang_SubmitInfo;
+	global $lang,$message_list,$lang_Submit,$lang_Reset,$lang_Publish,$lang_Reply,$fromurl,$m_user_ip,$id,$title,$lang_SubmitInfo,$paravalue;
 	global $met_memberlogin_code,$lang_memberImgCode,$lang_memberTip1,$met_adminfile,$navurl,$settings_arr;
 	global $db,$met_parameter,$met_admin_array,$met_member_use,$metinfo_member_type,$met_list,$met_class,$class_list,$met_product,$lang_Choice,$lang_Empty;		
 	if($fid)$id=$fid;

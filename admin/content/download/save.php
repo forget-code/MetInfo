@@ -59,6 +59,7 @@ if($action=="add"){
 		$description=mb_substr($description,0,200,'utf-8');
 	}
 $access=$access<>""?$access:0;
+$content = concentwatermark_compatible($content);
 $query = "INSERT INTO $met_download SET
                       title              = '$title',
                       ctitle             = '$ctitle',
@@ -139,6 +140,7 @@ if($description){
 	}
 }
 if($action=="editor"){
+$content = concentwatermark_compatible($content);
 $query = "update $met_download SET 
                       title              = '$title',
                       ctitle             = '$ctitle',

@@ -142,7 +142,7 @@ EOT;
 echo <<<EOT
 -->
 		<tr>
-		<td colspan="2">
+		<td colspan="2" style="padding:0px!important;border:0px">
 		<form name="del" method="Post" action="list.php?anyid={$anyid}&lang={$lang}&class1={$class1}">
 		 <table cellpadding="0" cellspacing="1" class="table neitable">
 <!--
@@ -229,7 +229,7 @@ if($listmarknow<>'metinfo'){
 echo <<<EOT
 --> 
    	    <tr> 
-            <td class="all" width="40"><input name="chkAll" type="checkbox" id="chkAll" onclick="CheckAllx($(this),'del')" value="checkbox" /></td>
+            <td class="all" width="53"><input name="chkAll" type="checkbox" id="chkAll" onclick="CheckAllx($(this),'del')" value="checkbox" /></td>
 			<td class="all-submit" style="padding:5px 0px;">
 				<input name="submit" type='submit' value='$lang_Submit' class="submit li-submit" onclick="return met_modify($(this),'del','editor');" />
 				<input name="submit" type='submit' value='{$lang_deleteselected}' class="submit li-submit" onclick="return met_modify($(this),'del','delete');" />

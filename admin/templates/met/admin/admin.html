@@ -20,7 +20,7 @@ EOT;
 if($admin_list[admin_group]!=0){
 echo <<<EOT
 -->
-			<a href="add.php?lang=$lang&anyid={$anyid}">+{$lang_add}{$lang_metadmin}</a>
+			<a href="add.php?lang=$lang&anyid={$anyid}" class="btn btn-danger">+{$lang_add}{$lang_metadmin}</a>
 <!--
 EOT;
 }
@@ -146,7 +146,7 @@ EOT;
 echo <<<EOT
 -->
 		 <tr>
-		  <td class="list list_normal" colspan="9">$page_list</td>
+		  <td class="page_list" colspan="9">$page_list</td>
 	  </tr>
 </table>
 </div>

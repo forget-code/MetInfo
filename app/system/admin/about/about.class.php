@@ -24,6 +24,11 @@ class about extends admin {
 		if(substr($url,-1,1)=="/")$url   = substr($url,0,strlen($url)-1); 
 		//$ip    = gethostbyname($url);
 		$ip    = $ip==$url?'127.0.0.1':$ip;
+		if(file_exists(PATH_WEB."{$_M['config']['met_adminfile']}/update/cms/auto.lock")){
+			$data_auto = 0;
+		}else{
+			$data_auto = 1;
+		}
 		require $this->template('tem/index');
 	}
 

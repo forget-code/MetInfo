@@ -139,10 +139,17 @@ function metmodname($module){
 }
 
 function template($template){
-	global $_M;
+	global $_M,$metinfover;
+	if(!$metinfover){
+		$uifile = "met";
+		$uisuffix = 'html';
+	}else{
+		$uifile = "v1";
+		$uisuffix = 'php';
+	}
 	$path = PATH_WEB."templates/{$_M['config']['met_skin_user']}/{$template}.html";
 	!file_exists($path) && $path=PATH_WEB."templates/{$_M['config']['met_skin_user']}/{$template}.php";
-	!file_exists($path) && $path=PATH_WEB."public/ui/met/{$template}.html";
+	!file_exists($path) && $path=PATH_WEB."public/ui/{$uifile}/{$template}.{$uisuffix}";
 	return $path;
 }
 
@@ -476,6 +483,116 @@ function met_rand($length){
 	}
 	return $password;
 }
+
+/*内容页面容热门标签替换和内容分页*/
+function contentshow($content) {
+global $lang_PagePre,$lang_PageNext,$navurl,$index,$lang;
+global $met_atitle,$met_alt,$metinfover;
+$str=met_cache('str_'.$lang.'.inc.php');
+if(!$str){$str=cache_str();}
+foreach ($str as $key=>$val){
+	$val[3]=html_entity_decode($val[0],ENT_QUOTES,'UTF-8');
+	$val[3]=str_replace(array('\\','/','.','$','^','*','(',')','-','['.']'.'{','}','|','?','+'),array('\\\\','\/','\.','\$','\^','\*','\(','\)','\-','\['.'\]'.'\{','\}','\|','\?','\+'),$val[3]);
+	if($val[2]!=0){
+		$tmp1 = explode("<",$content);
+		$num=$val[2];
+		foreach ($tmp1 as $key=>$item){
+			$tmp2 = explode(">",$item);
+			if (sizeof($tmp2)>1&&strlen($tmp2[1])>0) {
+				if (substr($tmp2[0],0,1)!="a" && substr($tmp2[0],0,1)!="A" && substr($tmp2[0],0,6)!='script' && substr($tmp2[0],0,6)!='SCRIPT'){
+					$valnum=substr_count($tmp2[1],$val[0]);
+					if($num-$valnum>=0){
+						$num=$num-$valnum;
+					}
+					else{
+						$valnum=$num;
+						$num=0;
+					}
+					$tmp2[1] = preg_replace("/".$val[3]."/",$val[1],$tmp2[1],$valnum);
+					$tmp1[$key] = implode(">",$tmp2);
+				}
+			}
+		}
+		$content = implode("<",$tmp1);
+	}
+}
+$tmp1 = explode("<",$content);
+foreach ($tmp1 as $key=>$item){
+	$tmp2 = explode(">",$item);
+	if (substr($tmp2[0],0,1)=="a" || substr($tmp2[0],0,1)=="A"){
+		$tmp2[0]=str_replace(array("title=''","title=\"\""),'',$tmp2[0]);
+		if(!strpos($tmp2[0],'title')){
+			$tmp2[0].=" title=\"$met_atitle\"";
+			$tmp1[$key] = implode(">",$tmp2);
+		}
+	}
+	if (substr($tmp2[0],0,3)=="img" || substr($tmp2[0],0,3)=="IMG"){
+		$tmp2[0]=str_replace(array("alt=''","alt=\"\""),'',$tmp2[0]);
+		if(!strpos($tmp2[0],'alt')){
+			$tmp2[0].=" alt=\"$met_alt\"";
+			$tmp1[$key] = implode(">",$tmp2);
+		}
+	}
+}
+$content = implode("<",$tmp1);
+if(pageBreak($content,1)>1){
+	$content = pageBreak($content);
+if(!$metinfover){
+	$content.="<link rel='stylesheet' type='text/css' href='{$navurl}public/css/contentpage.css' />\n"; 
+	$content.="
+<script type='text/javascript'>
+$(document).ready(function(){
+	$('#page_break .num li:first').addClass('on');
+	$('#page_break .num li').click(function(){
+		$('#page_break').find(\"div[id^='page_']\").hide();
+		if ($(this).hasClass('on')) {
+			$('#page_break #page_' + $(this).text()).show();
+		} else {
+			$('#page_break').find('.num li').removeClass('on'); 
+			$(this).addClass('on'); 
+			$('#page_break').find('#page_' + $(this).text()).show(); 
+		} 
+	});
+});
+</script>
+	"; 
+}
+}
+if($content=='<div><div id="metinfo_additional"></div></div>')$content='';
+return $content;
+}
+
+/*内容分页*/
+function pageBreak($content,$type){ 
+	$content = substr($content,0,strlen($content)-6); 
+    $pattern = "/<div style=\"page-break-after: always;?\">\s*<span style=\"display: none;?\">&nbsp;<\/span>\s*<\/div>/";      
+	$strSplit = preg_split($pattern, $content); 
+	$count = count($strSplit); 
+	if($type)return $count;
+	$outStr = ""; 
+	$i = 1; 
+	if ($count > 1 ) { 
+	$outStr = "<div id='page_break'>"; 
+	foreach($strSplit as $value) { 
+	if ($i <= 1) { 
+	$value=substr($value,5);
+	$outStr .= "<div id='page_{$i}'>{$value}</div>"; 
+	} else { 
+	$outStr .= "<div id='page_$i' class='collapse'>$value</div>"; 
+	} 
+	$i++; 
+	} 
+
+	$outStr .= "<div class='num'>"; 
+	for ($i = 1; $i <= $count; $i++) { 
+	$outStr .= "<li>$i</li>"; 
+	} 
+	$outStr .= "</div></div>"; 
+	return $outStr; 
+	} else { 
+	return $content; 
+	} 
+} 
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

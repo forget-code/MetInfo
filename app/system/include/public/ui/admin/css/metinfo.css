@@ -1,18 +1,12 @@
 /*初始化*/
-body,h1,h2,h3,h4,h5,h6,dl,dt,dd,ul,ol,li,th,td,p,blockquote,pre,form,egend,input,button,textarea,hr { margin:0; padding:0; }
-h1,h2,h3,h4,h5,h6 { font-size:100%; }
+body,h1,h2,h3,h4,h5,h6,dl,dt,dd,ul,ol,li,th,td,p,pre,form,egend,input,button,textarea,hr { margin:0; padding:0; }
 ul { list-style:none; }
 ol { padding-left:20px; }
-img { border:0; }
-q:before,q:after { content:''; }
-abbr[title] { border-bottom:1px dotted; cursor:help; }
-button,input,select,textarea { font-size:100%; }
-hr { border:none; height:1px; }
 body,button,input,select,textarea { font:14px/1 'Microsoft YaHei',Tahoma,'Simsun'; }
 html,body { font:14px/1.8 'Microsoft YaHei',Tahoma,Verdana,'Simsun'!important; color:#000; background:#fff; -webkit-text-size-adjust:none; }
 img { border:none; }
 a { color:#23b7e5; text-decoration:none; }
-a:hover { color:#23b7e5; }
+a:hover { color:#23b7e5; text-decoration:none; }
 .clear{ clear:both; }
 input,button,select,textarea{outline:none}
 textarea{resize:none}
@@ -27,8 +21,8 @@ textarea{resize:none}
 .met-gray{ color:#9a9a9a!important;}
 .met-center{ text-align:center!important; }
 input.ui-input{
-	height:25px;
-	line-height:25px\9;
+	height:35px;
+	line-height:35px\9;
 	padding: 2px 5px;
 	border: 1px solid #ccc;
 	background-color: #fff;
@@ -42,36 +36,33 @@ input.ui-input::-webkit-input-placeholder{
 
 .metcms_top_right{ width:100%;}
 .metcms_top_right_box{ height:50px; }
-.metcms_top_right_box_div{ height:50px; border-bottom:1px solid #ddd; width:100%; background:#fff; position:relative; }
-.metcms_top_right_box_border{ 
-height: 3px;
-width: 100%;
-box-shadow: 0 1px 2px #ccc;
-position: absolute;
-background: #fff;
-top: 47px;
-left: 0px;
-z-index: 9;
-display:none;
-}
-.metcms_top_right ol{ list-style:none; padding-right:10px; }
-.metcms_top_right ol li{ float:right; height:50px; line-height:50px; padding:0px 20px; }
-.metcms_top_right ol li i{ padding-left:7px; }
-.metcms_top_right ol li a{ color:#000; }
+.metcms_top_right_box_div{ height:51px; border-bottom:1px solid #ddd; width:100%; background:#fff; position:relative; }
+.metcms_top_right .met-tool{ margin-top:9px; margin-right:10px; }
+.metcms_top_right .met-tool button.dropdown-toggle{ border:0px; }
+.metcms_top_right .met-tool i{ margin-right:8px; }
+.metcms_top_right .met-tool i.fa-globe{ font-size:18px; position:relative; top:2px; }
+.metcms_top_right .met-tool i.fa-bell-o{ font-size:17px; position:relative; top:1px; left:3px; }
+.metcms_top_right .met-msecount-tool span.label{ position:absolute; right:8px; top:5px; border-radius:59px; height:16px; line-height:16px; font-size:12px; padding:0px 5px; font-weight:normal; }
+.metcms_top_right .met-tool li.met-tool-list{ margin:5px 8px; color:#666; }
+.metcms_top_right .met-tool li.met-tool-list button{ min-width:120px; }
+.metcms_top_right .met-tool .support_youok,.metcms_top_right .met-tool .support_desc,.metcms_top_right .met-tool .support_no{ display:none; }
+.metcms_top_right .met-tool-link{ background:#5cb85c; padding:8px 0px; color:#fff; }
+.metcms_top_right .met-tool-link:hover{ background:#5cb85c; color:#fff; }
+.metcms_top_right .navbar-header{ margin-left:10px; height:50px; overflow:hidden;}
+.metcms_top_right .navbar-header i.fa-bars{ font-size:22px;}
 .metcms_top_right .position{
 	float:left;
 	height:50px;
 	line-height:50px;
 	color:#999;
 	padding-left:10px;
+	background:#fff;
+	padding:0px 15px;
+	margin:0px;
 }
 .metcms_top_right .position i.fa-angle-right{ font-size:18px; margin:0px 5px; position:relative;top:2px; color:#bbb;}
 .metcms_top_right .position i.fa-globe{ font-size:26px; margin:0px 5px; position:relative;top:5px; color:#bbb;}
 
-.metcms_top_right_box .mesage{ padding:0px 10px; position:relative; }
-.metcms_top_right_box .mesage i{ font-size:18px; color:#666; position:relative; top:2px; }
-.metcms_top_right_box .mesage span{ position:absolute; left:28px; top:12px; background:#e83649; height:16px; line-height:16px; padding:0px 5px; color:#fff; border-radius:59px; font-size:12px;}
-.metcms_top_right_box .mesage span.mes_0{ background:#999; }
 .metcms_top_right_box .lang{ position:relative; z-index:10; }
 .metcms_top_right_box .lang dl{ position:absolute; display:none; background:#fff; top:50px; right:0px; height:auto; line-height:1.5; padding:5px 10px; z-index:99; box-shadow: 0 1px 1px #ccc; min-width:80px;}
 .metcms_top_right_box .lang dl dt{ white-space:nowrap; padding:5px 0px;}
@@ -94,7 +85,7 @@ display:none;
 .footer a:hover{ text-decoration:underline;}
 .metinfotop{ display:none;}
 .metappcontentbox{ padding:10px 10px 0px;}
-.goup-container{ border-radius:0px!important;}
+.goup-container{ border-radius:0px!important;opacity: 0.7;z-index:9999999999999999999;}
 /*顶部*/
 .metinfotop {
 	height:36px;
@@ -203,8 +194,8 @@ display:none;
 .ftype_input .tips{ float:left; padding-top:5px; }
 .ftype_input .fbox input{ 
 	width:350px;
-	height:28px;
-	line-height:28px\9;
+	height:35px;
+	line-height:35px\9;
 	padding: 2px 5px;
 	border: 1px solid #dcdfe0;
 	background-color: #fff;
@@ -240,6 +231,9 @@ display:none;
 }
 
 /*编辑器*/
+.ftype_ckeditor .fbox{ min-height:196px; width:100%; }
+/*.ftype_ckeditor textarea{ display:none; }*/
+.ftype_ckeditor textarea{height: 0px;width: 0px;}
 .ftype_ckeditor .tips{ display:block; margin-top:5px; margin-left:5px; }
 
 /*下拉菜单*/
@@ -280,7 +274,7 @@ border: 1px solid #ccc; padding:4px; color:#333;
 .ftype_range .formerror{ margin-top:0px; }
 
 /*颜色选择器*/
-.ftype_color .fbox input{ background:#fff; color:#000; border:1px solid #ccc; padding:2px 8px 2px 35px; height:28px; line-height:28px; width:60px; }
+.ftype_color .fbox input{ background:#fff; color:#000; border:1px solid #ccc; padding:3px 3px 2px 35px; height:35px; line-height:35px; width:105px; }
 .ftype_color .tips{ margin-top:5px; display:block; }
 .ftype_color .formerror{ margin-top:0px; }
 
@@ -295,14 +289,15 @@ border: 1px solid #ccc; padding:4px; color:#333;
 .ftype_tags .tags_box ul li.tags_tj label{ position:absolute; left:0px; top:0px; height:28px; line-height:28px; color:#999; display:none;}
 .ftype_tags .tags_box ul li.tags_tj span{ float:left; cursor:pointer; width:28px; height:28px; background:#ccc url(../images/Ico_add.png) no-repeat center center; color:#36C; display:block; border-radius:3px;}
 .ftype_tags .tags_box ul li.tags_tj span:hover{ background-color:#999;}
-.ftype_tags .tags_box ul li.tags_tj input{ border:0!important; padding:2px 0px; height:14px; margin-left:5px; outline:0; position:relative; background:none;}
+.ftype_tags .tags_box ul li.tags_tj input{ border:0!important; padding:2px 0px; height:25px; margin-left:5px; outline:0; position:relative; background:none;}
 .ftype_tags .tags_box ul li.tags_list:hover{ border:1px solid #ccc; background:#ddd;}
 .ftype_tags .tags_box ul li.tags_list a:hover{ background-position:left -7px;}
 .ftype_tags .tags_box span.tips{ position:absolute; left:370px; top:0px; height:28px; line-height:28px; white-space:nowrap;}
 
 /*上传组件*/
 .ftype_upload .fbox{ position:relative; }
-.ftype_upload .fbox input.text{ background:#fff; color:#000; border:1px solid #ccc; padding:2px 8px; vertical-align:middle;height:28px; line-height:28px; width:220px; }
+.ftype_upload .fbox input.text{ display:none; }
+.ftype_upload .fbox input.text{ background:#fff; color:#000; border:1px solid #ccc; padding:2px 8px; vertical-align:middle;height:32px; line-height:32px; width:220px; }
 .ftype_upload .fbox input.text{
 	padding: 2px 5px;
 	border: 1px solid #dcdfe0;
@@ -313,6 +308,45 @@ border: 1px solid #ccc; padding:4px; color:#333;
 	transition: .05s border-color ease-in-out;
 }
 .ftype_upload .tips{ display:block; padding-top:5px; }
+.ftype_upload .app-image-list li{ float:left;margin-right:10px; }
+.ftype_upload .app-image-list li.sort{ border:1px solid #ddd; position:relative; margin-bottom:10px; }
+.ftype_upload .app-image-list li.sort img{ max-height:80px; }
+.ftype_upload .app-image-list li.sort span.close{ position:absolute; right:-8px; top:-8px; width:18px; height:18px; line-height:18px; text-align:center; background:#666; border-radius:9px; font-size:16px; color:#fff; font-weight:normal; opacity:0.8; }
+.ftype_upload .app-image-list li.sort:hover span.close{ display:block!important;}
+.ftype_upload .app-image-list li button{ border-radius:0;}
+.ftype_upload .app-image-list li.upnow div{ width:100%!important; height:34px!important; }
+.ftype_upload .app-image-list li.upnow div.webuploader-pick{ width:auto!important; height:auto!important; }
+#upimglist li{ float:left; position:relative; width:100px; height:100px; background-size: contain; background-repeat: no-repeat; background-position: 50% 50%; background-color:#d7d7d7; margin:5px; cursor:pointer; opacity: 0;}
+#UploadModal .modal-body{ height:500px; overflow:hidden; }
+#UploadModal .modal-body li .check{ border:2px solid #09F; position:absolute; left:0px; top:0px; width:100%; height:100%; }
+#UploadModal .modal-body li .check:after {
+position: absolute;
+display: block;
+content: ' ';
+right: 0px;
+bottom: 0px;
+border: 14px solid #09f;
+border-left-color: transparent;
+border-top-color: transparent;
+}
+#UploadModal .modal-body li .check i{ position:absolute; right:0px; bottom:0px; color:#fff; z-index:2;}
+#UploadModal .modal-body li .widget-image-meta{ position:absolute; bottom:0px; left:0px; height:20px; line-height:20px; background:#000; opacity: 0.5; color:#fff; width:100%; font-size:12px; text-align:center;}
+#UploadModal .modal-header h4{ float:left; margin-top:8px; padding-right:20px; border-right:2px solid #ddd; }
+#UploadModal .modal-header #filePicker div{ height:35px!important; width:100%!important; }
+#UploadModal .modal-header #filePicker{ margin-left:20px;float:left; height:35px; width:auto!important; overflow:hidden;}
+.webuploader-container {
+	position: relative;
+}
+.webuploader-element-invisible {
+	position: absolute !important;
+	clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+    clip: rect(1px,1px,1px,1px);
+}
+
+.webuploader-pick-disable {
+	opacity: 0.6;
+	pointer-events:none;
+}
 
 /*上传按钮*/
 .metuplaodify { overflow:hidden; position:absolute; left:0px; top:0px; height:34px; width:200px; }
@@ -347,7 +381,7 @@ input[type="file"] { cursor: pointer; }
 .ui-table td a{ white-space:nowrap; }
 .ui-table td input.ui-input{ width:95%; }
 
-.v52fmbx-table-top{ padding-bottom:5px;}
+.v52fmbx-table-top{ padding-bottom:8px;}
 .v52fmbx-table-top:after{display:block;clear:both;content:"";visibility:hidden;height:0;}
 .v52fmbx-table-top{ width:100%; zoom:1;}
 
@@ -360,13 +394,13 @@ input[type="file"] { cursor: pointer; }
 .ui-addlist:active{ color:#fff; background:#1c9439; }
 .ui-addlist i{ font-size:18px; margin-right:5px; position:relative; top:2px; margin-bottom:0px; }
 .v52fmbx-table-top .ui-float-left .ui-addlist{  }
-.ui-table-search{ float:right; margin-left:5px; position:relative; height:25px; padding-left:34px; }
-.ui-table-search i{ font-size:18px; height:25px; line-height:25px; padding:2px 6px; border:1px solid #ccc; position:absolute; left:4px; top:0px; border-right:0px; color:#bbb; margin-bottom:0px;  background:#fff; }
+.ui-table-search{ float:right; margin-left:5px; position:relative; height:30px; padding-left:34px; }
+.ui-table-search i{ font-size:18px; height:30px; line-height:26px; padding:2px 6px; border:1px solid #ccc; position:absolute; left:4px; top:0px; border-right:0px; color:#bbb; margin-bottom:0px;  background:#fff; }
 .ui-table-search i{ float:left\9; top:0px\9; padding:2px 8px\9;}
-.ui-table-search input{ display:inline-block;}
+.ui-table-search input{ display:inline-block; height:30px; line-height:30px\9;}
 .ui-table-search select{ position:relative; bottom:2px;}
 .ui-table-search .placeholder-ie{ float:left\9; }
-
+.ui-table-a a {display:inline-block;  max-width:300px; overflow:hidden; white-space: nowrap; text-overflow:ellipsis;}
 /*
  * Table styles
  */
@@ -379,6 +413,7 @@ input[type="file"] { cursor: pointer; }
 	border-right:0!important;
 	margin:0px!important;  
 }
+.dataTable tr.newlist td{ min-height:60px; }
 table.dataTable {
   width: 100%;
   margin: 0 auto;
@@ -845,7 +880,16 @@ table.dataTable td {
 @media only screen and (min-width:1170px){.cd-popup-container{margin:8em auto}
 }
 
-
+/*加载中*/
+.met-laoding{ background:url(../images/loading.gif) no-repeat center center; min-width:20px; min-height:20px;}
+em.required {
+font-size: 16px;
+color: #f00;
+padding-right:5px;
+}
+td .formerrorbox{ border:1px solid #f00!important;}
+td .formerror{ height:auto; line-height:1.5; font-size:12px; color:#f00;}
+td .formerror i{ display:none; }
 
 @media screen and (max-width: 767px) {
   .dataTables_wrapper .dataTables_info,

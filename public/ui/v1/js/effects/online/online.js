@@ -189,7 +189,7 @@ function olne_app(msg,type,mxq,myq){
 }
 
 $(document).ready(function() {
-	var url=met_weburl+'include/online.php?lang='+lang;
+	var url=met_weburl+'include/online.php?metinfover_url=v1&lang='+lang;
 	$.ajax({
 		type: "POST",
 		url: url,

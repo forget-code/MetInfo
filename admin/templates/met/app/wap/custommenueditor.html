@@ -35,8 +35,6 @@ echo <<<EOT
 <form method="post" name="myform" action="../wap/custommenueditor.php?lang={$lang}&anyid={$anyid}&cs={$cs}&action=editor&id=$id&menutype=1" target="_self">
 <div class="v52fmbx_tbmax">
 <div class="v52fmbx_tbbox">
-<div class="v52fmbx">
-<div class="v52fmbx">
 <div class="lablelist">
 	
 	<ul>
@@ -44,6 +42,8 @@ echo <<<EOT
 		<li class="round $motop[1]"><a href="menu_set.php?id=$mptid&lang=$lang&anyid={$anyid}&cs={$cs}" title="{$lang_function_settings}">{$lang_function_settings}</a></li>
 	</ul>
 </div>
+<div class="v52fmbx">
+
 	<h3 class="v52fmbx_hr metsliding" sliding="1">{$lang_menu_information}</h3>
 	<div class="metsliding_box metsliding_box_1">
 		<div class="v52fmbx_dlbox">
@@ -218,18 +218,18 @@ echo <<<EOT
 
 </div>
 <div class="v52fmbx_dlbox caidantype_3"  $dispalyimgtexts>
+	<input name="action" type="hidden" value="modify" />
+	<input name="met_maplng" type="hidden" value="$met_maplng" />
+	<input name="met_maplat" type="hidden" value="$met_maplat" />
+	<input name="met_mapzoom" type="hidden" value="$met_mapzoom" />
+	<div class="v52fmbx_dlbox">
 		<dl>
 			<dt></dt>
 			<dd style='position:relative;'>
 				<span class="color390">{$lang_map_location1}</span>
 			</dd>
 		</dl>
-        <dl>
-					<input name="action" type="hidden" value="modify" />
-		<input name="met_maplng" type="hidden" value="$met_maplng" />
-		<input name="met_maplat" type="hidden" value="$met_maplat" />
-		<input name="met_mapzoom" type="hidden" value="$met_mapzoom" />
-		
+	</div>
 
 	<div class="v52fmbx_dlbox">
 	<dl>
@@ -262,23 +262,27 @@ echo <<<EOT
 			
 		</dd>
 	</dl>
+	</div>
 	
 	<div class="v52fmbx_dlbox">
-	<dl>
-		<dt>{$lang_map_contents}{$lang_marks}</dt>
-		<dd>
-			<textarea class="ckeditor textarea gen" id="contents" name="met_mapcontents">$met_mapcontents</textarea>
-			<input type="hidden" id="contents_tmp" value="$met_mapcontents">
-			<div class="clear"></div>
-		</dd>
-	</dl>
-	<dl>
+		<dl>
+			<dt>{$lang_map_contents}{$lang_marks}</dt>
+			<dd>
+
+				<textarea class="textarea gen" id="contents" name="met_mapcontents">$met_mapcontents</textarea>
+				<input type="hidden" id="contents_tmp" value="$met_mapcontents">
+
+				<div class="clear"></div>
+			</dd>
+		</dl>
+		<dl>
 			<dt></dt>
 			<dd style='position:relative;'>
 				<span class="tips">{$lang_map_location3}</span>
 			</dd>
 		</dl>
 	</div>
+	
 	<div class="v52fmbx_dlbox">
 	<dl>
 		<dt></dt>
@@ -287,30 +291,50 @@ echo <<<EOT
 		</dd>
 	</dl>
 	</div>
-
+</div>
 
 
 <div class="footer">{$foot}</div>
 
-<script type="text/javascript" src="{$depth}../ckeditor/ckeditor.js"></script>
+<script type="text/javascript" src="../../../app/system/include/public/js/examples/editor/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" src="../../../app/system/include/public/js/examples/editor/ueditor/ueditor.all.min.js"></script>
+
 <script type="text/javascript">
-	var config = {},depth='{$depth}';
-	config.filebrowserBrowseUrl = depth + '../ckfinder/ckfinder.html';
-	config.filebrowserImageBrowseUrl = depth + '../ckfinder/ckfinder.html?Type=Images';
-	config.filebrowserFlashBrowseUrl = depth + '../ckfinder/ckfinder.html?Type=Flash';
-	config.filebrowserUploadUrl = depth + '../ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files';
-	config.filebrowserImageUploadUrl = depth + '../ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images';
-	config.filebrowserFlashUploadUrl = depth + '../ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash';
-	config.toolbar_Full = [['FontSize', 'Bold', 'TextColor', 'Link', 'Unlink', 'Image', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', 'Source']];
-	config.height = 100;
-	config.width = '80%';
-	config.enterMode=2;
-var editor = CKEDITOR.replace("met_mapcontents",config);
+
+	var ue = UE.getEditor('contents',{
+		iframeCssUrl: '../../../app/system/include/public/bootstrap/css/bootstrap.min.css',
+		toolbars: [
+			[
+				'paragraph', 'fontfamily', 'fontsize', '|',
+				'insertorderedlist', 'insertunorderedlist', 'indent','justifyleft', 'justifycenter', 'justifyright', 'justifyjustify','|',
+				'rowspacingtop', 'rowspacingbottom', 'lineheight', '|',
+				'directionalityltr', 'directionalityrtl', '|',
+				'undo', 'redo', '|',
+				'strikethrough', 'superscript', 'subscript', 'spechars'
+			],
+			[
+				'bold', 'italic', 'underline', 'forecolor', 'backcolor', 'removeformat','pasteplain', '|',
+				'link', 'unlink'
+			],
+		],
+		scaleEnabled :true,
+		initialFrameWidth : '50%',
+		initialFrameHeight : '100'
+	});
+
+function get_ue_contents(){
+	var html ='请添加公司地址信息';
+	ue.ready(function() {
+		html = ue.getContent();
+	});
+	return html;
+}
+/*
 	CKEDITOR.on('instanceReady',
 	function() {
 		ifreme_methei(630);
 	});
-
+*/
 function G(id) {
     return document.getElementById(id);
 }
@@ -401,7 +425,7 @@ function setPlace(){
 }
 var infoWindow;
 function add(){
-	var content = editor.getData(); 
+	var content = get_ue_contents(); 
 	//var content = '123';
 	//marker = new BMap.Marker(point);
 	var offset=new BMap.Size(10,-20);
@@ -472,7 +496,7 @@ function dimensional(){
 	var met_maplat = $("input[name='met_maplat']").val();
 	var met_mapzoom = $("input[name='met_mapzoom']").val();
 	var met_maptitle = $("input[name='met_maptitle']").val();
-	var met_mapcontents = editor.getData();
+	var met_mapcontents = get_ue_contents();
 	var durl = 'map.php?lang={$lang}&anyid={$anyid}&cs=5&action=modify';
 		durl+='&met_maplng='+encodeURIComponent(met_maplng);
 		durl+='&met_maplat='+encodeURIComponent(met_maplat);
@@ -595,7 +619,6 @@ echo <<<EOT
 
 <div class="v52fmbx_submit"><input type="submit" id="add" onclick="return dimensional()" name="Submit" value="{$lang_Submit}" class="submit" onclick="return check($(this),'myform')" /></div>
 </form>
-</div>
 </div>
 </div>
 </div>
@@ -757,13 +780,13 @@ $(function(){
 		var interval = setInterval(editorData, "3000");  
 	} 
 	function editorData(){
-		$('#contents_tmp').val(editor.getData());
+		$('#contents_tmp').val(get_ue_contents());
 		$('#title_tmp').val($('#title').val());
 	}
 	function chang(){
-		var content = editor.getData(); 
+		var content = get_ue_contents(); 
 		if(content!=$('#contents_tmp').val()||$('#title').val()!=$('#title_tmp').val()){
-			$('#contents_tmp').val(editor.getData());
+			$('#contents_tmp').val(get_ue_contents());
 			$('#title_tmp').val($('#title').val())
 			infoWindow.setTitle('<b>'+$('#title').val()+'</b>')
 			infoWindow.setContent('<div style="border-top:1px solid #999; margin:5px 0px 0px; padding-top:5px;">'+content+'</div>')

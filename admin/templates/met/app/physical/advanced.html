@@ -82,6 +82,7 @@ echo <<<EOT
 		</dd>
 	</dl>
 	</div>
+	<div class="v52fmbx_submit"></div>
 </div>
 </div>
 </div>
@@ -102,13 +103,12 @@ echo <<<EOT
 EOT;
 if(!$phy){
 $fileilst_temp=glob('*.txt');
-
 foreach($fileilst_temp as $key=>$val){
 	$list='';
 	if(substr($val,0,12)=='fingerprint_'){
 		$vals=explode('_',str_replace('.txt','',$val));
 		$list['time']=date('Y-m-d H:i:s',strtotime($vals[1]));
-		$list['ver']="$vals[2].$vals[3].$vals[4]";
+		$list['ver']="MetInfo"."$vals[2].$vals[3].$vals[4]";
 		$list['filename']=$val;
 		$list['order']=strtotime($vals[1]);
 	}
@@ -121,7 +121,9 @@ array_multisort($top_time,SORT_NUMERIC,SORT_DESC,$fileilst);
 $fileilst[0]['checked']="checked='checked'";
 echo <<<EOT
 -->
-	<span class="xtips">{$lang_physicaltips35}</span>
+	<div class="v52fmbx_dlbox" style="border-top:1px solid #ddd;">
+		<span class="xtips">{$lang_physicaltips35}</span>
+	</div>
 	<h3 class="v52fmbx_hr metsliding">
 			{$lang_physicaltips32} <a href="physical.php?lang={$lang}&anyid={$anyid}&action=fingerprint" onclick="return physicalsub($(this),'{$lang_physicaltips33}')">{$lang_physicaltips34}</a><span class="tips"></span>
 	</h3>
@@ -129,7 +131,7 @@ echo <<<EOT
 		<dl>
 			<dt></dt>
 			<dd>
-			<label><input name="f_filename" type="radio" class="radio" value="fingerprint_metinfo.php">{$metcms_v}{$lang_unitytxt_16}</label>
+			<label><input name="f_filename" type="radio" class="radio" value="fingerprint_metinfo.php">MetInfo{$metcms_v}{$lang_unitytxt_16}</label>
 <!--
 EOT;
 foreach($fileilst as $key=>$val){
@@ -151,11 +153,9 @@ echo <<<EOT
 		</dl>
 		</div>
 		<div class="v52fmbx_submit">
-			<input type="submit" name="submit" value="{$lang_physicaltips36}" class="submit" href="physical.php?lang={$lang}&anyid={$anyid}&action=fingerprintdo" onclick="return physicalsub($(this),'{$lang_physicaltips37}')" /><span class="tips"></span>
+			<input type="submit" name="submit" value="{$lang_physicaltips36}" class="submit" href="physical.php?lang={$lang}&anyid={$anyid}&action=fingerprintdo" onclick="return physicalsub($(this),'{$lang_physicaltips37}')" /><span class="tips"><a href="advanced.php?lang={$lang}&anyid={$anyid}&cs=3&phy=1">{$lang_physicaltips38}</a></span>
 		</div>
-		<div class="v52fmbx_submit">
-		<a href="advanced.php?lang={$lang}&anyid={$anyid}&cs=3&phy=1">{$lang_physicaltips38}</a>
-		</div>
+
 <!--
 EOT;
 }else{
@@ -183,6 +183,7 @@ echo <<<EOT
 			</dd>
 		</dl>
 		</div>
+		<div class="v52fmbx_submit"></div>
 <!--
 EOT;
 }

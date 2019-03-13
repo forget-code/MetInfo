@@ -19,6 +19,7 @@ if($action=="modify"){
 		$description=str_replace("\t", '', $description);
 		$description=mb_substr($description,0,200,'utf-8');
 	}
+	$content = concentwatermark_compatible($content);
 	$query = "update $met_column SET 
 						  content     = '$content',
 						  keywords    = '$keywords',
