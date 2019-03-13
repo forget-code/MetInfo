@@ -40,7 +40,7 @@ class message extends web {
            $message=DB::get_one("select * from {$_M[table][column]} where module= 7 and lang ='{$_M[form][lang]}'");
            $_M[form][id]=$message[id];
 		}
-		$met_fd_ok=DB::get_one("select * from {$_M[table][config]} where lang ='{$_M[form][lang]}' and  name= 'met_fd_ok' and columnid = {$_M[form][id]}");
+		$met_fd_ok=DB::get_one("select * from {$_M[table][config]} where lang ='{$_M[form][lang]}' and  name= 'met_fd_ok' and columnid = '{$_M[form][id]}'");
         $_M[config][met_fd_ok]= $met_fd_ok[value];
 		if(!$_M[config][met_fd_ok])okinfo('javascript:history.back();',"{$_M[word][Feedback5]}");
 		if($_M[config][met_memberlogin_code]){
@@ -130,7 +130,7 @@ class message extends web {
  /*表单提交时间检测*/
 	public function checktime(){
 		global $_M;
-		$ip=getip();
+		$ip=IP;
 		$addtime=time();
 		$ipok=DB::get_one("select * from {$_M[table][message]} where ip='$ip' order by addtime desc");
 		if($ipok){
@@ -172,7 +172,7 @@ class message extends web {
 /*通过邮箱通知*/
 	public function notice_by_emial($addtime){
         global $_M;
-		$ip=getip();
+		$ip=IP;
 		$use_id=DB::get_one("SELECT * FROM {$_M[table][message]} WHERE ip='$ip' and addtime='$addtime'");
 		$query = "select * from {$_M[table][mlist]} where lang='{$_M[form][lang]}' and module='7' and listid=$use_id[id] order by id";
 		//dump($query);

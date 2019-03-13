@@ -56,7 +56,7 @@ $.initPhotoSwipeFromDOM = function(gallerySelector,medDom) {
     };
     var onThumbnailsClick = function(e,parents) {
         e = e || window.event;
-        e.preventDefault ? e.preventDefault() : e.returnValue = false;
+        if($(e.target).closest('a').attr('data-med')) e.preventDefault ? e.preventDefault() : e.returnValue = false;
         var eTarget = e.target || e.srcElement;
         var clickedListItem = closest(eTarget, function(el) {
             return el.tagName === 'A';

@@ -50,13 +50,10 @@ $.fn.validation=function(){
         locale:M['validation_locale'],
         framework:'bootstrap4'
     });
-    // 表单所处弹窗隐藏时重置验证
-    $(this).parents('.modal').on('hide.bs.modal',function() {
-        $self.data('formValidation').resetForm();
-    });
     function success(fun,afterajax_ok){
         self_validation.on('success.form.fv', function(e) {
             e.preventDefault();
+            if($self.find('[name="submit_type"]').length && $self.find('[name="submit_type"]').val()=='delet' && $self.find('[name="all_id"]').val()=='') return false;
             var ajax_ok=typeof afterajax_ok != "undefined" ?afterajax_ok:true;
             if(ajax_ok){
                 formDataAjax(e,fun);

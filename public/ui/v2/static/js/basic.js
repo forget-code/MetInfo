@@ -142,6 +142,12 @@ if(typeof Breakpoints != 'undefined') Breakpoints();// 窗口宽度断点函数
         $(document).on('shown.bs.modal', '.modal', function(event) {
             if($('.modal-dialog',this).hasClass('modal-center') && $('.modal-content',this).height()>$(window).height()) $('.modal-dialog',this).removeClass('modal-center');
         });
+        // 弹窗关闭时，取消弹框中的表单验证
+        $(document).on('hide.bs.modal', '.modal', function(event) {
+            $('form',this).each(function(index, el) {
+                $(this).data('formValidation').resetForm();
+            });
+        });
     })
 })(document, window, jQuery);
 window.includeFile=[];

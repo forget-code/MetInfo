@@ -143,6 +143,9 @@ class html extends admin {
 				//内容页面
 				if($_M['form']['type'] == 'content' || $_M['form']['all'] == 1){
 					foreach($valm['class1'] as $keyc1=>$valc1) {
+						if($_M['form']['class1'] && $_M['form']['class1'] != $valc1['id']){
+							continue;
+						}
 						if($keym>=2 && $keym<=6){
 							$pageinfo = array_merge((array)$pageinfo, (array)$this->getlist($valc1['id'], $valc1['module']));
 						}else{

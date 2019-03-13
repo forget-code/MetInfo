@@ -38,7 +38,7 @@ $(function(){
 		    			imgsizeset=false;
 					}
 	    			if(editorimg_gallery_open){
-		    			$.initPhotoSwipeFromDOM('.met-editor');//（需调用PhotoSwipe插件）
+		    			$.initPhotoSwipeFromDOM('.met-editor','.photoswipe-a');//（需调用PhotoSwipe插件）
 						editorimg_gallery_open=false;
 	    			}
 	    		});

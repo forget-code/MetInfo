@@ -16,6 +16,7 @@ var $author;             /*author*/
 
 function PHP_XLS()
 {
+	
 	$this->n=0;
 	$this->buffer='';
 	$this->sheets=array();
@@ -257,7 +258,7 @@ function Output($name='')
 	header('Content-Type: application/x-download');
 	if(headers_sent())
 		$this->Error('Data has already been sent, can\'t send XLS file');
-	header('Content-Length: '.strlen($this->buffer));
+	// header('Content-Length: '.strlen($this->buffer));
 	/*中文字符集转换*/
 	$name=mb_convert_encoding($name,"GBK","auto");
 	header('Content-Disposition: attachment; filename="'.$name.'"');

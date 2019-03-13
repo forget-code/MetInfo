@@ -283,18 +283,18 @@ function metAlert(text,delay,bg_ok,type){
         if(parseInt(type)==0) text+='<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">×</span></button>';
         if(!$('.metalert-text').length){
         	var html='<div class="metalert-text">'+text+'</div>';
-        	if(parseInt(type)==0) html='<div class="metalert-wrapper alert '+bg_ok+'">'+html+'</div>';
+        	if(bg_ok) html='<div class="metalert-wrapper alert '+bg_ok+'">'+html+'</div>';
         	$('body').append(html);
         }
         var $met_alert=$('.metalert-text'),
-            $obj=parseInt(type)==0?$('.metalert-wrapper'):$met_alert;
+            $obj=bg_ok?$('.metalert-wrapper'):$met_alert;
         $met_alert.html(text);
         $obj.show();
         if($met_alert.height()%2) $met_alert.height($met_alert.height()+1);
     }
     if(delay){
         setTimeout(function(){
-            var $obj=parseInt(type)==0?$('.metalert-wrapper'):$('.metalert-text');
+            var $obj=bg_ok?$('.metalert-wrapper'):$('.metalert-text');
             $obj.fadeOut();
         },delay);
     }

@@ -122,6 +122,7 @@ pre{overflow:visible}
 .fixed-b-l{bottom:0}
 .overflow-visible{overflow:visible!important}
 .oya{overflow-y:auto!important}
+.oxa{overflow-x:auto!important}
 .h-10{height:10px}
 .h-20{height:20px}
 .h-100p{height:100%}
@@ -181,12 +182,15 @@ pre{overflow:visible}
 .text-help{color:#aaa;display:inline-block}
 .spinnerUi>*{vertical-align:top !important}
 .input-group-file .file-input{display:none}
-.ribbon-badge.ribbon-reverse.ribbon-xs .ribbon-inner{left: -45px;}
+.ribbon-badge.ribbon-reverse.ribbon-xs .ribbon-inner{left: -48px;}
 .tag-sm{font-size:12px}
 .w-a{width:auto !important}
 .rotate90{transform: rotate(90deg);}
 .rotate180{transform: rotate(180deg);}
 .rotate360{transform: rotate(360deg);}
+.modal[data-backdrop="false"]{z-index: 1700;background: rgba(0,0,0,.5);}
+.img-library-modal .modal-body{height:calc(100% - 114px);}
+#edui_fixedlayer{z-index: 1799 !important;}
 /*public/ui/v2/static/css/admin.css*/
 @charset "utf-8";
 /*后台公用样式*/

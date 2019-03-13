@@ -10,7 +10,7 @@ load::sys_func('array');
 load::sys_class('mysql');
 load::sys_class('cache');
 //定义ip
-define('IP', get_userip());
+define('IP', getip());
 
 /**
  * 系统一级基类
