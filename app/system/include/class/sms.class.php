@@ -1,17 +1,17 @@
 <?php
-# MetInfo Enterprise Content Management System 
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+# MetInfo Enterprise Content Management System
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 
 defined('IN_MET') or exit('No permission');
 
 /**
  * 短信发送类
- * @param string $errorcode  出错信息	
+ * @param string $errorcode  出错信息
  */
 load::sys_class('curl');
-class sms extends curl{	
-	public $errorcode; 	
-	
+class sms extends curl{
+	public $errorcode;
+
 	/**
 	 * 发送短信
 	 * @DateTime 2017-07-27
@@ -29,13 +29,12 @@ class sms extends curl{
 			$sms = load::app_class('met_sms/include/class/met_sms','new');
 			$this->errorcode = $sms->auto_send($phone,$message);
 		}else{
-			$this->errorcode =  '短信功能未开通';
+			$this->errorcode =$_M['word']['msmnoifno'];
 		}
-
 		return $this->errorcode;
-		
+
 	}
-	
+
 
 }
 

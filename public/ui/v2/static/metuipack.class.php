@@ -1,4 +1,5 @@
 <?php
+global $resui;
 // UI文件打包
 class MetUiPack{
 	public $cache = true;
@@ -69,13 +70,18 @@ class MetUiPack{
 		if($urls){
 			$paths=$urls;
 			// 生成文件路径提取
-			$fileurl=$fileurl?str_replace($_M['url']['site'],PATH_WEB,$fileurl):PATH_WEB."{$met_skin_url}cache/";
+			$fileurl=$fileurl?strReplace($_M['url']['site'],PATH_WEB,$fileurl):PATH_WEB."{$met_skin_url}cache/";
 		}else{
 			// 没有打包文件返回空值
 			echo "{$filename} UI生成失败，没有找到需要打包的文件\n";
 			return false;
 		}
-		if(!is_dir($fileurl)) mkdir($fileurl,0777,true);// 创建生成目录
+		// 创建生成目录
+		if(is_array($fileurl)){
+			foreach ($fileurl as $key => $value) {
+				if(!is_dir($value)) mkdir($value,0777,true);
+			}
+		}else if(!is_dir($fileurl)) mkdir($fileurl,0777,true);
 		// CSS文件IE9兼容，分割CSS文件路径数组
 		if($this->isLteIe9 && count($paths['css'])>1){
 			$lteie9_css_key=$lteie9_css_size=0;
@@ -98,6 +104,7 @@ class MetUiPack{
 			$this->file_pack['name']=$filename;// 生成文件文件名
 			$this->file_pack['suffix']=$key;// 生成文件后缀名
 			$this->file_pack['module_name']=$isModule?($key=='js'?$filename:''):'';// JS生成文件是否封装
+			if(is_array($fileurl)) $this->file_pack['url']=$fileurl[$key];
 			if($this->isLteIe9 && $key=='css' && $lteie9_css_num>1){
 				// CSS IE9兼容
 				$lteie9_order=0;
@@ -183,20 +190,19 @@ class MetUiPack{
 	 * @return String $file_code 生成文件内容
 	 */
 	public function getContent(){
-		global $metresclass;
 		// 生成的JS文件首尾添加模块化封装代码
 		if($this->file_pack['module_name']){
 			$this->file_pack['module_name']=strtoupper(str_replace(array('-','.',' '),'_',$this->file_pack['module_name']));
 			$file_code="window.METUI_{$this->file_pack['module_name']}=(function(metui){\n";
 		}
-		if($this->file_pack['suffix']=='css') $file_code.='@charset "utf-8";'."\n";// CSS声明
+		if($this->file_pack['suffix']=='css') $file_code.="@charset \"utf-8\";\n";// CSS声明
 		// 打包文件内容合并
 		foreach($this->file_pack['paths'] as $key => $val){
 			if($key>0) $file_code.="\n";
 			$file_code_val['path']=str_replace(PATH_WEB, '', $val);
 			$file_code_val['code']=file_get_contents($val);
 			if($this->file_pack['suffix']=='css'){// CSS样式中的url转换
-				$relaurl=dirname($metresclass->getRelativePath($this->file_pack['url'],$val)).'/';
+				$relaurl=dirname(getRelativePath($this->file_pack['url'],$val)).'/';
 				$file_code_val['code'] = preg_replace_callback('/url\(["\']*([\.\/]*)([^:]*?)["\']*\)/', function($match) use ($relaurl){
 					return 'url('.$relaurl.$match[1].$match[2].')';
 				}, $file_code_val['code']);
@@ -287,12 +293,20 @@ class MetUiPack{
 	}
 	// 更新模板版本文件
 	public function setUiVersion(){
-		global $met_skin;
+		global $_M,$met_skin,$resui;
 		// 删除不存在文件的版本信息
 		if(!$this->cache || $this->versionUpdate){
+			foreach ($resui as $key => $value) {
+				$new_resui[$key]=array();
+				foreach ($value as $keys => $val) {
+					$info = explode("?",$val);
+					$new_resui[$key][]=$info[0];
+				}
+			}
 			foreach ($this->file_version as $key => $value) {
 				foreach ($value as $keys => $val) {
-					if(!file_exists(PATH_WEB.$key.$keys)){
+					$suffix=pathinfo($keys,PATHINFO_EXTENSION);
+					if(!file_exists(PATH_WEB.$key.$keys) || !in_array($_M['url']['site'].$key.$keys, $new_resui[$suffix])){
 						unset($this->file_version[$key][$keys]);
 						$this->versionUpdate=true;
 					}

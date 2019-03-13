@@ -35,7 +35,7 @@ echo <<<EOT
         {$_M['word'][adminname]}
         </th>
         <th data-table-columnclass="met-center" width="100">
-        {$_M['word'][adminLastLogin]}
+        {$_M['word'][adminLoginNum]}
         </th>
         <th data-table-columnclass="met-center" width="100">
         {$_M['word'][adminLastLogin]}

@@ -61,20 +61,25 @@ class image{
 
 	public $thumb_path;
 
+	public $default;
 
-	public function met_thumb($image_path, $x = '', $y = ''){
+	public function met_thumb($image_path, $x = '', $y = '', $return=0){
 
 		global $_M;
+		$this->default = $_M['config']['met_agents_img'];
+		if($return){
+			$this->default = '';
+		}
 		if(!isset($image_path)){
-			$image_path = $_M['url']['site'].'public/images/metinfo.gif';
+			$image_path = $this->default;
 		}
 		$this->image_path = str_replace(array($_M['url']['site'],'../','./'), '', $image_path);
-		// 如果地址为空 返回默认图片
+		// 如果地址为空 缩略默认图片
 		if(!$this->image_path){
-			return $_M['url']['site'].'public/images/metinfo.gif';
+			$this->image_path = $this->default;
 		}
 		// 如果去掉网址还有http就是外部链接图片 不需要缩略处理
-		if(strstr($this->image_path, 'http')){
+		if(substr($this->image_path, 0,4) == 'http' ){
 			return $this->image_path;
 		}
 		$this->x = is_numeric($x) ? intval($x) : false;
@@ -100,8 +105,11 @@ class image{
 			$image_path = $this->image_path;
 		}
 
+		// 原图不存在
+		if(!file_exists(PATH_WEB.$image_path)){
+			$image_path = $this->default;
+		}
 		$s = file_get_contents(PATH_WEB.$image_path);
-
 		$image = imagecreatefromstring($s);
 
 		$width = imagesx($image);//获取原图片的宽
@@ -125,7 +133,6 @@ class image{
 		}
 
 		$this->thumb_url = $_M['url']['site'] . 'upload/thumb_src/' . $dirname . $this->image['basename'];
-
 		$dirname = $this->thumb_dir . $dirname ;
 
 		if(stristr(PHP_OS,"WIN")) {
@@ -136,12 +143,12 @@ class image{
 	}
 
 	public function get_thumb() {
+
 		if($path = explode('?', $this->thumb_path)){
 			$thumb_path = $path[0];
 		}else{
 			$thumb_path = $this->thumb_path;
 		}
-
 		return file_exists($thumb_path) ? $this->thumb_url : $this->create_thumb();
 	}
 
@@ -165,6 +172,10 @@ class image{
 		if($_M['config']['met_big_wate'] && strpos($image_path, 'watermark')!==false){
 			$image_path = str_replace('watermark/', '', $image_path);
 		}
+
+		if(!file_exists(PATH_WEB.$image_path)){
+			$image_path = $this->default;
+		}
 		$image = $thumb->createthumb($image_path);
 		if($_M['config']['met_thumb_wate'] && strpos($image_path, 'watermark')===false){
 			$mark = load::sys_class('watermark','new');
@@ -172,11 +183,9 @@ class image{
 			$mark->set_system_thumb();
 			$mark->create($image['path']);
 		}
-
-
 		if($image['error']){
             if (!$_M['config']['met_agents_switch']) {
-                return $_M['url']['site'].'public/images/metinfo.gif'.$suf;
+                return $this->default.$suf;
             }else{
                 $met_agents_img =str_replace('../', '', $_M['config']['met_agents_img']);
                 $image_path = $_M['url']['site'] . $met_agents_img;

@@ -64,7 +64,7 @@ echo <<<EOT
 						value="{$list[imgurl_all]}" 
 					/>
 				</div>
-				<span class="tips">{$_M[word][admin_dropsort_v6]}。</span>
+				<span class="tips">{$_M[word][admin_dropsort_v6]}</span>
 			</dd>
 		</dl>
             <h3 class="v52fmbx_hr">{$_M[word][goods]}{$_M[word][parameter]}</h3>

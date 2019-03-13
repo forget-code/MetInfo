@@ -18,7 +18,7 @@ echo <<<EOT
 				<th width="60" data-table-columnclass="met-center">{$_M[word][category]}</th>
 				<th width="60" data-table-columnclass="met-center">{$_M[word][webaccess]}</th>
 				<th width="40" data-table-columnclass="met-center"><abbr title="{$_M[word][noorderinfo]}">{$_M[word][sort]}</abbr></th>
-				<th>操作</th>
+				<th>{$_M[word][operate]}</th>
 			</tr>
 		</thead>
 		<tbody>

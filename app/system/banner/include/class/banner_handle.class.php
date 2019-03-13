@@ -31,6 +31,10 @@ class banner_handle extends handle {
 		global $_M;
 		foreach($banner_img as $key=>$val){
 			$banner_img[$key]['img_path'] = $this->url_transform($val['img_path']);
+            $banner_img[$key]['mobile_img_path'] = $this->url_transform($val['mobile_img_path']);
+            if (is_mobile() && $val['mobile_img_path']) {
+                $banner_img[$key]['img_path'] = $this->url_transform($val['mobile_img_path']);
+            }
 		}
 		return $banner_img;
 	}

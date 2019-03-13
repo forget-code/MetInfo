@@ -59,7 +59,32 @@ echo <<<EOT
 			</dd>
 		</dl>
 		</div>
-<dl>
+		
+        <dl>
+                        <dt>{$_M[word][fdincTip12]}</dt>
+                        <dd class="ftype_checkbox">
+                            <div class="fbox">
+<!--
+EOT;
+foreach($fbcol as $key=>$val){
+    $checked='';
+    foreach($met_cv_showcol as $v){
+        if($val['id']==$v)$checked="checked='checked'";
+    }
+    echo <<<EOT
+-->
+                    <label><input name="met_cv_showcol[]" type="checkbox" value="{$val[id]}" {$checked} >{$val[name]}</label>
+<!--
+EOT;
+}
+echo <<<EOT
+-->                            
+                </div>
+                <span class="tips"></span>
+            </dd>
+        </dl>
+    
+    <dl>
 	<dt>{$_M[word][cvincAcceptType]}{$_M[word][marks]}</dt>
 	<dd class="ftype_radio">
 		<div class="fbox">
@@ -106,8 +131,7 @@ echo <<<EOT
 			<select name="met_cv_email">
 <!--
 EOT;
-
-foreach($cv_para[1] as $key=>$val){
+foreach($cv_para[9] as $key=>$val){
 $select1='';
 if($val[id]==$_M[config][met_cv_email])$select1="selected='selected'";
 echo <<<EOT

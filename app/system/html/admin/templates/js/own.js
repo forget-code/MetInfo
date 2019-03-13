@@ -78,7 +78,7 @@ define(function(require, exports, module) {
 				}
 			});
 		}else{
-			$('#htmlloading .listbox').prepend("生成完毕"+"<br />");
+			$('#htmlloading .listbox').prepend(METLANG.html_createend_v6+"<br />");
 			if($('#reurl').val()){
 				//alert($('#reurl').val());
 				window.location = $('#reurl').val();

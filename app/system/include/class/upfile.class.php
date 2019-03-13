@@ -158,6 +158,7 @@ class upfile extends common{
 		if(stripos($this->savepath, PATH_WEB.'upload/') !== 0){
 			return $this->error($_M['word']['upfileFail2']);
 		}
+
 		if(strstr($this->savepath, './')){
 			return $this->error($_M['word']['upfileTip3']);
 		}
@@ -197,6 +198,134 @@ class upfile extends common{
 		$back = '../'.str_replace(PATH_WEB, '', $this->savepath).$this->savename;
 		return $this->sucess($back);
 	}
+
+	//批量上传文件
+    public function uploadarr($form = ''){
+        if($form){
+            foreach($_FILES as $key => $val){
+                if($form == $key){
+                    $filear = $_FILES[$key];
+                }
+            }
+        }
+        if(!$filear){
+            foreach($_FILES as $key => $val){
+                $filear = $_FILES[$key];
+                break;
+            }
+        }
+
+        $length = count($filear['name']);
+        for ($i = 0; $i < $length; $i++) {
+            $file['name'] = $filear['name'][$i];
+            $file['type'] = $filear['type'][$i];
+            $file['tmp_name'] = $filear['tmp_name'][$i];
+            $file['error'] = $filear['error'][$i];
+            $file['size'] = $filear['size'][$i];
+            $res[$i] = $this->uploadcustom($file);
+        }
+        return $res;
+    }
+
+    public function uploadcustom($filear = '') {
+        global $_M;
+
+        //是否能正常上传
+        if(!is_array($filear))$filear['error'] = 4;
+        if($filear['error'] != 0 ){
+            $errors = array(
+                0 => $_M['word']['upfileOver4'],
+                1 => $_M['word']['upfileOver'],
+                2 => $_M['word']['upfileOver1'],
+                3 => $_M['word']['upfileOver2'],
+                4 => $_M['word']['upfileOver3'],
+                6 => $_M['word']['upfileOver5'],
+                7 => $_M['word']['upfileOver5']
+            );
+            $error_info[]= $errors[$filear['error']] ? $errors[$filear['error']] : $errors[0];
+            return $this->error($errors[$filear['error']]);
+        }
+        //空间超容 有些虚拟主机不支持此函数
+        if(function_exists('disk_free_space')){
+            if(disk_free_space(__DIR__) != FALSE && disk_free_space(__DIR__) != 'NULL'){
+                if(disk_free_space(__DIR__)<$filear["size"]){
+                    return $this->error("out of disk space");
+                }
+            }
+
+        }
+        //目录不可写
+        if (!is_writable(PATH_WEB."upload")) {
+            return $this->error("directory ['".PATH_WEB."upload'] can not weite");
+        }
+        //文件大小是否正确{}
+        if ($filear["size"] > $this->maxsize || $filear["size"] > $_M['config']['met_file_maxsize']*1048576) {
+            return $this->error("{$_M['word']['upfileFile']}".$filear["name"]." {$_M['word']['upfileMax']} {$_M['word']['upfileTip1']}");
+        }
+        //文件后缀是否为合法后缀
+        $this->getext($filear["name"]); //获取允许的后缀
+        if (strtolower($this->ext)=='php'||strtolower($this->ext)=='aspx'||strtolower($this->ext)=='asp'||strtolower($this->ext)=='jsp'||strtolower($this->ext)=='js'||strtolower($this->ext)=='asa') {
+            return $this->error($this->ext." {$_M['word']['upfileTip3']}");
+        }
+        if ($_M['config']['met_file_format']) {
+            if($_M['config']['met_file_format'] != "" && !in_array(strtolower($this->ext), explode('|',strtolower($_M['config']['met_file_format']))) && $filear){
+                return $this->error($this->ext." {$_M['word']['upfileTip3']}");
+            }
+        } else {
+            return $this->error($this->ext." {$_M['word']['upfileTip3']}");
+        }
+        if ($this->format) {
+            if ($this->format != "" && !in_array(strtolower($this->ext), explode('|',strtolower($this->format))) && $filear) {
+                return $this->error($this->ext." {$_M['word']['upfileTip3']}");
+            }
+        }
+        //文件名重命名
+        $this->set_savename($filear["name"], $this->is_rename);
+        //新建保存文件
+        if(stripos($this->savepath, PATH_WEB.'upload/') !== 0){
+            return $this->error($_M['word']['upfileFail2']);
+        }
+
+        if(strstr($this->savepath, './')){
+            return $this->error($_M['word']['upfileTip3']);
+        }
+        if (!makedir($this->savepath)) {
+            return $this->error($_M['word']['upfileFail2']);
+        }
+        //复制文件
+        $upfileok=0;
+        $file_tmp=$filear["tmp_name"];
+        $file_name=$this->savepath.$this->savename;
+        if (stristr(PHP_OS,"WIN")) {
+            $file_name = @iconv("utf-8","GBK",$file_name);
+        }
+        if (function_exists("move_uploaded_file")) {
+            if (move_uploaded_file($file_tmp, $file_name)) {
+                $upfileok=1;
+            } else if (copy($file_tmp, $file_name)) {
+                $upfileok=1;
+            }
+        } elseif (copy($file_tmp, $file_name)) {
+            $upfileok=1;
+        }
+        if (!$upfileok) {
+            if (file_put_contents($this->savepath.'test.txt','metinfo')) {
+                $_M['word']['upfileOver4']=$_M['word']['upfileOver5'];
+            }
+            unlink($this->savepath.'test.txt');
+            $errors = array(0 => $_M['word']['upfileOver4'], 1 =>$_M['word']['upfileOver'], 2 => $_M['word']['upfileOver1'], 3 => $_M['word']['upfileOver2'], 4 => $_M['word']['upfileOver3'], 6=> $_M['word']['upfileOver5'], 7=> $_M['word']['upfileOver5']);
+            $filear['error']=$filear['error']?$filear['error']:0;
+            return $this->error($errors[$filear['error']]);
+        } else {
+            if(stripos($filear['tmp_name'], PATH_WEB) === false){
+                @unlink($filear['tmp_name']); //Delete temporary files
+            }
+        }
+        load::plugin('doqiniu_upload',0,array('savename'=>str_replace(PATH_WEB, '', $this->savepath).$this->savename,'localfile'=>$file_name));
+        $back = '../'.str_replace(PATH_WEB, '', $this->savepath).$this->savename;
+        return $this->sucess($back);
+
+    }
 
 
 	/**

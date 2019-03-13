@@ -91,7 +91,7 @@ class news extends admin {
 			}
 			if($val['type'] == 'metinfo') {
 				$title = $val['newstitle'];
-				$news_type = '米拓新闻';
+				$news_type = 'News';
 				$url = $val['url'];
 				$target = "target=\"_blank\"";
 			}

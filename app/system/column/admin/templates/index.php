@@ -127,6 +127,8 @@ echo <<<EOT
 	</div>
 </div>
 </div>
+<script>var closeText='{$_M[word][close_allchildcolumn_v6]}',
+			expandText='{$_M[word][open_allchildcolumn_v6]}';</script>
 <!--
 EOT;
 require $this->template('ui/foot');

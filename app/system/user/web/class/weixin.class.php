@@ -11,7 +11,7 @@ class weixin extends other {
 	public function __construct() {
 		global $_M;
 		if(!$_M['config']['met_weixin_open']){
-			okinfo($_M['url']['login'], '微信登录功能已关闭');
+			okinfo($_M['url']['login'], $_M['word']['userwenxinclose']);
 		}
 		if(is_weixin_client()){
 			$this->appid = $_M['config']['met_weixin_gz_appid'];

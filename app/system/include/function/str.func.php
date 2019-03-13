@@ -1,6 +1,6 @@
 <?php
-# MetInfo Enterprise Content Management System 
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+# MetInfo Enterprise Content Management System
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 
 defined('IN_MET') or exit('No permission');
 
@@ -98,7 +98,7 @@ function is_strempty($str){
  * @return int			    返回字符串的长度
  */
 function str_length($str, $cnlen = 2){
-	$code = mb_detect_encoding($str, "ASCII, UTF-8, GB2312, GBK", true);	
+	$code = mb_detect_encoding($str, "ASCII, UTF-8, GB2312, GBK", true);
 	if($cnlen == 1){
 		return mb_strlen($str, $code);
 	}else{
@@ -135,7 +135,7 @@ function is_strinclude($str, $needle, $type = 0){
 			if(strstr($str, $needle) === false){
 				$flag = false;
 			}
-		}		
+		}
 	}
 	return $flag;
 }
@@ -162,12 +162,12 @@ function strcut($str, $start = 0, $length = ''){
 			$start = $len + $start;
 		}else{
 			$length = $len - $start;
-		}		
+		}
 	}
 	if($length < 0){
 		return false;
-	}	
-	$newstr = mb_substr($str, $start, $length, $code);	
+	}
+	$newstr = mb_substr($str, $start, $length, $code);
 	return $newstr;
 }
 
@@ -192,6 +192,7 @@ function change_code($str, $newcode, $oldcode = '', $type = 0){
  * format: 时间显示格式
  */
 function timeFormat($timeInt,$format='Y-m-d H:i:s'){
+	global $_M;
 	if(empty($timeInt)||!is_numeric($timeInt)||!$timeInt){
 		return '';
 	}
@@ -200,16 +201,16 @@ function timeFormat($timeInt,$format='Y-m-d H:i:s'){
 		return '';
 	}else{
 		if($d<60){
-			return $d.' 秒前';
+			return $d.$_M['word']['times1'];
 		}else{
 			if($d<3600){
-				return floor($d/60).' 分钟前';
+				return floor($d/60).$_M['word']['times2'];
 			}else{
 				if($d<86400){
-					return floor($d/3600).' 小时前';
+					return floor($d/3600).$_M['word']['times3'];
 				}else{
 					if($d<259200){//3天内
-						return floor($d/86400).' 天前';
+						return floor($d/86400).$_M['word']['times4'];
 					}else{
 						return date($format,$timeInt);
 					}

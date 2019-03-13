@@ -110,16 +110,29 @@ class base_label {
 				$para = rawurlencode($_M['form']['para']);
 				$search_str.="&para={$para}";
 			}
+
+			if($_M['form']['specv']){
+				$para = rawurlencode($_M['form']['specv']);
+				$search_str.="&specv={$para}";
+			}
+
+
 		}else{
 			$classnow_info=load::sys_class('label', 'new')->get('column')->get_column_id($classnow);
 			$search_str="&class{$classnow_info['classtype']}={$classnow}";
 		}
+
 		if($pageall!=0){
 			for($i=1;$i<=$pageall;$i++){
 				if($i==$pagenow){
+					if($_M['form']['search'] || $_M['form']['searchword']){
+						$url = $_M['url']['site'].'search/index.php';
+					}else{
+						$url = 'index.php';
+					}
 					$text.="
 					<span class='PageText'>{$_M['word']['PageGo']}</span>
-					<input type='text' id='metPageT' data-pageurl='index.php?lang={$_M['lang']}{$search_str}&page="."|".$pageexc."|".$pageall."' value='".$i."' />
+					<input type='text' id='metPageT' data-pageurl='".$url."?lang={$_M['lang']}{$search_str}&page="."|".$pageexc."|".$pageall."' value='".$i."' />
 					<input type='button' id='metPageB' value='".$_M['word']['Page']."' />";
 				}
 			}

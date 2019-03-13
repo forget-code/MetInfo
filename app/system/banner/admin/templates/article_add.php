@@ -27,26 +27,26 @@ echo <<<EOT
 <!--
 EOT;
 if($flashmdtype==1){
-    echo <<<EOT
+echo <<<EOT
 -->
 							<div class='clearfix'>
 								<span style='width:150px;display:inline-block;line-height:2.5;float:left;'>{$_M[word][banner_pcheight_v6]}：</span>
 								<div class="fbox">
-									<input name="height" type="text" value='{$_M[word][adaptive]}' data-required='1' class="ui-input" style='width:100px;'/>
+									<input name="height" type="text" value='{$_M[word][adaptive]}' class="ui-input" style='width:100px;'/>
 								</div>
 								<span class="tips">{$_M[word][banner_setalert_v6]}</span>
 							</div>
 							<div class='clearfix' style='margin-top: 10px;'>
 								<span style='width:150px;display:inline-block;line-height:2.5;float:left;'>{$_M[word][banner_pidheight_v6]}：</span>
 								<div class="fbox">
-									<input name="height_t" type="text" value='{$_M[word][adaptive]}' data-required='1' class="ui-input" style='width:100px;'/>
+									<input name="height_t" type="text" value='{$_M[word][adaptive]}' class="ui-input" style='width:100px;'/>
 								</div>
 								<span class="tips">{$_M[word][banner_setalert_v6]}</span>
 							</div>
 							<div class='clearfix' style='margin-top: 10px;'>
 								<span style='width:150px;display:inline-block;line-height:2.5;float:left;'>{$_M[word][banner_phoneheight_v6]}：</span>
 								<div class="fbox">
-									<input name="height_m" type="text" value='{$_M[word][adaptive]}' data-required='1' class="ui-input" style='width:100px;'/>
+									<input name="height_m" type="text" value='{$_M[word][adaptive]}' class="ui-input" style='width:100px;'/>
 								</div>
 								<span class="tips">{$_M[word][banner_setalert_v6]}</span>
 							</div>
@@ -57,7 +57,7 @@ EOT;
 -->
 							<span>{$_M[word][banner_height_v6]}：</span>
 							<div class="fbox">
-								<input name="height" type="text" value='500' class="ui-input" data-required='1' style='width:50px;'/>
+								<input name="height" type="text" value='500' class="ui-input" style='width:50px;'/>
 							</div>
 <!--
 EOT;
@@ -92,6 +92,19 @@ if($flashmdtype==1){
 								/>
 							</div>
 							<span class="tips">{$_M[word][indexflashexplain4]}</span>
+						</dd>
+					</dl>
+					<dl>
+						<dt>{$_M[word][banner_setmobileImgUrl_v6]}{$_M[word][marks]}</dt>
+						<dd class="ftype_upload">
+							<div class="fbox">
+								<input
+									type="text"
+									name="mobile_img_path"
+									data-upload-type="doupimg"
+								/>
+							</div>
+							<span class="tips">{$_M[word][indexflashexplain4]}&nbsp;{$_M[word][mobile_banner_tips1]}</span>
 						</dd>
 					</dl>
 					<dl>
@@ -174,7 +187,8 @@ EOT;
 							<div class="fbox">
 								<input name="flash_back" type="text" data-upload-type="doupimg"/>
 							</div>
-							<span class="tips">{$_M[word][indexflashexplain5]}</span>
+							<!--<span class="tips">{$_M[word][indexflashexplain5]}</span>-->
+							<span class="tips">{$_M[word][indexflashexplain4]}&nbsp;{$_M[word][mobile_banner_tips1]}</span>
 						</dd>
 					</dl>
 

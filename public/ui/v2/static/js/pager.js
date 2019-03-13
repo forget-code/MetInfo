@@ -1,3 +1,6 @@
+/*
+列表页翻页功能
+ */
 $(function(){
 	// 翻页ajax加载
 	if($(".met-pager-ajax").length){
@@ -29,7 +32,7 @@ function metpagerajax(){
 		page=$('#metPageT').val(),
 		metpagerbtnText=function(){
 			if(pagemax){
-				if(pagemax <= page && page>1) $metpagerbtn.addClass('disabled').text('已经是最后一页了');
+				if(pagemax <= page && page>1) $metpagerbtn.hide()/*addClass('disabled').text('已经是最后一页了')*/;
 			}else{
 				$metpagerbtn.attr({hidden:''});
 			}
@@ -45,10 +48,12 @@ function metpagerajax(){
 				data:{ajax:1,page:page},
 				success:function(data){
 					var $data=$(data).find('.met-pager-ajax');
-					if($data.length){// 如果模板直接调用ui_ajax中的文件
-						$data.find('>').addClass('page'+page).removeClass('shown');
-						data=$data.html();
+					if(!$data.length){
+						data='<div class="met-pager-ajax">'+data+'</div>';
+						$data=$(data);
 					}
+					$data.find('>').addClass('page'+page).removeClass('shown');
+					data=$data.html();
 					$metpagerajax.append(data);
 					metpagerajaxFun(page);
 					metpagerbtnText();
@@ -67,7 +72,7 @@ function metpagerajaxFun(page){
 			$metpagerajax.imageSize(metpager_original);
 		// },0)
 		// 图片延迟加载
-	    if($metpagerajax.find(metpager_original).length) $metpagerajax.find(metpager_original).lazyload({placeholder:met_lazyloadbg});
+	    if($metpagerajax.find(metpager_original).length) $metpagerajax.find(metpager_original).lazyload({placeholder:M['lazyloadbg']});
 		setTimeout(function(){
 			$('html,body').stop().animate({scrollTop:$(window).scrollTop()+2},0);
 	    },300)
@@ -75,6 +80,6 @@ function metpagerajaxFun(page){
 	if($('#met-grid').length){
 		setTimeout(function(){
 			if(typeof metAnimOnScroll != 'undefined') metAnimOnScroll('met-grid');// 产品模块瀑布流
-		},0)
+		},100)
 	}
 }

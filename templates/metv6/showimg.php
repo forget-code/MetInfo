@@ -3,49 +3,49 @@
 <div class="met-showimg">
     <div class="container">
         <div class="row">
-        <div class="met-showimg-body col-md-9" m-id='noset'>
-            <div class="row">
-                <section class="details-title border-bottom1">
-                <h1 class='m-t-10 m-b-5'>{$data.title}</h1>
-                <div class="info">
-                    <span>{$data.updatetime}</span>
-                    <span>{$data.issue}</span>
-                    <span>
-                        <i class="icon wb-eye m-r-5" aria-hidden="true"></i>
-                        {$data.hits}
-                    </span>
-                </div>
-            </section>
-            <section class='met-showimg-con'>
-                <div class='met-showimg-list fngallery cover text-xs-center' id="met-imgs-slick" m-id="noset" m-type="displayimgs">
-                    <list data="$data['displayimgs']" name="$s">
-                    <div class='slick-slide'>
-                        <a href='{$s.img}' data-size='{$s.x}x{$s.y}' data-med='{$s.img}' data-med-size='{$s.x}x{$s.y}' class='lg-item-box' data-src='{$s.img}' data-exthumbimage="{$s.img|thumb:60,60}" data-sub-html='{$s.title}'>
-                            <img <if value="$s['sub'] gt 1">data-lazy<else/>src</if>
-                                    ="{$s.img|thumb:$c['met_imgdetail_x'],$c['met_imgdetail_y']}" class='img-fluid' alt='{$s.title}' />
-                        </a>
+            <div class="met-showimg-body col-md-9" m-id='noset'>
+                <div class="row">
+                    <section class="details-title border-bottom1">
+                    <h1 class='m-t-10 m-b-5'>{$data.title}</h1>
+                    <div class="info">
+                        <span>{$data.updatetime}</span>
+                        <span>{$data.issue}</span>
+                        <span>
+                            <i class="icon wb-eye m-r-5" aria-hidden="true"></i>
+                            <span class='met-hits' hidden>{$data.hits}</span>
+                        </span>
                     </div>
+                </section>
+                <section class='met-showimg-con'>
+                    <div class='met-showimg-list fngallery cover text-xs-center' id="met-imgs-slick" m-id="noset" m-type="displayimgs">
+                        <list data="$data['displayimgs']" name="$s">
+                        <div class='slick-slide'>
+                            <a href='{$s.img}' data-size='{$s.x}x{$s.y}' data-med='{$s.img}' data-med-size='{$s.x}x{$s.y}' class='lg-item-box' data-src='{$s.img}' data-exthumbimage="{$s.img|thumb:60,60}" data-sub-html='{$s.title}'>
+                                <img <if value="$s['sub'] gt 1">data-lazy<else/>src</if>
+                                        ="{$s.img|thumb:$c['met_imgdetail_x'],$c['met_imgdetail_y']}" class='img-fluid' alt='{$s.title}' />
+                            </a>
+                        </div>
+                        </list>
+                    </div>
+                </section>
+                <if value="$data['para']">
+                <ul class="img-paralist paralist row p-x-30">
+                    <list data="$data['para']" name="$s">
+                    <li class="col-md-6 p-y-10"><span>{$s.name}：</span>{$s.value}</li>
+                    </list>
+                </ul>
+                </if>
+                <if value="$data[taglist]">
+                <div class="detail_tag font-size-14">
+                    <span>{$data.tagname}</span>
+                    <list data="$data[taglist]" name="$tag">
+                        <a href="{$tag.url}" title="{$tag.name}">{$tag.name}</a>
                     </list>
                 </div>
-            </section>
-            <if value="$data['para']">
-            <ul class="img-paralist paralist row p-x-30">
-                <list data="$data['para']" name="$s">
-                <li class="col-md-6 p-y-10"><span>{$s.name}：</span>{$s.value}</li>
-                </list>
-            </ul>
-            </if>
-            <if value="$data[taglist]">
-            <div class="detail_tag font-size-14">
-                <span>{$data.tagname}</span>
-                <list data="$data[taglist]" name="$tag">
-                    <a href="{$tag.url}" title="{$tag.name}">{$tag.name}</a>
-                </list>
-            </div>
-            </if>
-            <section class="met-editor clearfix m-t-20">{$data.content}</section>
-            <div class='met-page met-shownews-footer border-top1' >
-                        <ul class="pagination block blocks-2">
+                </if>
+                <section class="met-editor clearfix m-t-20">{$data.content}</section>
+                    <div class='met-page met-shownews-footer border-top1' >
+                        <ul class="pagination block blocks-2 p-t-20">
                             <li class='page-item m-b-0 {$data.preinfo.disable}'>
                                 <a href='<if value="$data['preinfo']['url']">{$data.preinfo.url}<else/>javascript:;</if>' title="{$data.preinfo.title}" class='page-link text-truncate'>
                                     {$word.Previous_news}
@@ -60,66 +60,64 @@
                             </li>
                         </ul>
                     </div>
+                </div>
             </div>
-        </div>
-        <div class="col-md-3" m-id="img_bar" m-type="nocontent">
-            <div class="row">
-                <div class="met-bar">
-                    <form class='sidebar-search' method='get' action="{$c.met_weburl}search/search.php">
-                        <input type='hidden' name='lang' value='{$data.lang}' />
-                        <input type='hidden' name='class1' value='{$data.class1}' />
-                        <div class="form-group">
-                            <div class="input-search">
-                                <button type="submit" class="input-search-btn">
-                                    <i class="icon wb-search" aria-hidden="true"></i>
-                                </button>
-                                <input type="text" class="form-control" name="searchword" placeholder="{$lang.search_placeholder}">
+            <div class="col-md-3" m-id="img_bar" m-type="nocontent">
+                <div class="row">
+                    <div class="met-bar">
+                        <form class='sidebar-search' method='get' action="{$c.met_weburl}search/search.php">
+                            <input type='hidden' name='lang' value='{$data.lang}' />
+                            <input type='hidden' name='class1' value='{$data.class1}' />
+                            <div class="form-group">
+                                <div class="input-search">
+                                    <button type="submit" class="input-search-btn">
+                                        <i class="icon wb-search" aria-hidden="true"></i>
+                                    </button>
+                                    <input type="text" class="form-control" name="searchword" placeholder="{$lang.search_placeholder}">
+                                </div>
                             </div>
+                        </form>
+                        <if value="$lang['img_bar_list_open']">
+                        <div class="sidebar-news-list recommend">
+                            <h3 class='m-0'>{$lang.img_bar_list_title}</h3>
+                            <ul class="list-group list-group-bordered m-t-10 m-b-0">
+                                <tag action='list' cid="$data['class1']" num="$lang['img_bar_list_num']" type="$lang['img_bar_list_type']">
+                                <li class="list-group-item">
+                                    <a href="{$v.url}" title="{$v.title}" target='_self'>{$v.title}</a>
+                                </li>
+                                </tag>
+                            </ul>
                         </div>
-                    </form>
-                    <if value="$lang['img_bar_list_open']">
-                    <div class="sidebar-news-list recommend">
-                        <h3 class='m-0'>{$lang.img_bar_list_title}</h3>
-                        <ul class="list-group list-group-bordered m-t-10 m-b-0">
-                            <tag action='list' cid="$data['class1']" num="$lang['img_bar_list_num']" type="$lang['img_bar_list_type']">
-                            <li class="list-group-item">
-                                <a href="{$v.url}" title="{$v.title}" target='_self'>{$v.title}</a>
+                        </if>
+                        <if value="$lang['imgbar_column_open']">
+                        <ul class="column list-icons p-l-0">
+                            <tag action='category' cid="$data['class1']" class='active'>
+                            <li>
+                                <a href="{$m.url}" title="{$m.name}" class="{$m.class}" target='_self'><h3>{$m.name}</h3></a>
+                            </li>
+                            <tag action='category' cid="$m['id']" type='son' class='active'>
+                            <li>
+                                <if value="$m['sub'] && $lang['img_column3_ok']">
+                                <a href="javascript:;" title="{$m.name}" class='{$m.class}' data-toggle="collapse" data-target=".sidebar-column3-{$m._index}">{$m.name}<i class="wb-chevron-right-mini"></i></a>
+                                <div class="sidebar-column3-{$m._index} collapse" aria-expanded="false">
+                                    <ul class="m-t-5 p-l-20">
+                                        <li><a href="{$m.url}" title="{$lang.all}" class="{$m.class}">{$lang.all}</a></li>
+                                        <tag action='category' cid="$m['id']" type='son' class='active'>
+                                        <li><a href="{$m.url}" title="{$m.name}" class='{$m.class}'>{$m.name}</a></li>
+                                        </tag>
+                                    </ul>
+                                </div>
+                                <else/>
+                                <a href="{$m.url}" title="{$m.name}" class='{$m.class}'>{$m.name}</a>
+                                </if>
                             </li>
                             </tag>
+                            </tag>
                         </ul>
+                        </if>
                     </div>
-                    </if>
-
-                    <if value="$lang['imgbar_column_open']">
-                    <ul class="column list-icons p-l-0">
-                        <tag action='category' cid="$data['class1']" class='active'>
-                        <li>
-                            <a href="{$m.url}" title="{$m.name}" class="{$m.class}" target='_self'><h3>{$m.name}</h3></a>
-                        </li>
-                        <tag action='category' cid="$m['id']" type='son' class='active'>
-                        <li>
-                            <if value="$m['sub'] && $lang['img_column3_ok']">
-                            <a href="javascript:;" title="{$m.name}" class='{$m.class}' data-toggle="collapse" data-target=".sidebar-column3-{$m._index}">{$m.name}<i class="wb-chevron-right-mini"></i></a>
-                            <div class="sidebar-column3-{$m._index} collapse" aria-expanded="false">
-                                <ul class="m-t-5 p-l-20">
-                                    <li><a href="{$m.url}" title="{$lang.all}" class="{$m.class}">{$lang.all}</a></li>
-                                    <tag action='category' cid="$m['id']" type='son' class='active'>
-                                    <li><a href="{$m.url}" title="{$m.name}" class='{$m.class}'>{$m.name}</a></li>
-                                    </tag>
-                                </ul>
-                            </div>
-                            <else/>
-                            <a href="{$m.url}" title="{$m.name}" class='{$m.class}'>{$m.name}</a>
-                            </if>
-                        </li>
-                        </tag>
-                        </tag>
-                    </ul>
-                    </if>
                 </div>
-
             </div>
-        </div>
         </div>
     </div>
 </div>

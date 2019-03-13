@@ -3,14 +3,14 @@ define(function(require, exports, module) {
 	var $ = require('jquery');
 	var common = require('common');
 	var langtxt = ownlangtxt;
-	
+
 	if($(".index_box").length>0){
 		$(".index_stat_table table tr").hover(function(){
 			$(this).addClass("met_hover");
 		},function(){
 			$(this).removeClass('met_hover');
 		});
-		
+
 		function metgetdata(d,url){
 			var url = d.attr("data-newslisturl");
 			d.html('<ul><li>Loading...</li></ul>');
@@ -25,8 +25,8 @@ define(function(require, exports, module) {
 				}
 			});
 		}
-	
-		$(document).ready(function(){ 
+
+		$(document).ready(function(){
 			/*推荐应用*/
 			$.ajax({
 				type: "GET",
@@ -34,7 +34,7 @@ define(function(require, exports, module) {
 				url: apppath + 'n=platform&c=platform&a=dotable_applist_json&type=dlist',
 				success: function(json) {
 					var html='',adu=apppath.split('index.php'),imgsrc='',price='';
-					$.each(json, function(i, item){ 
+					$.each(json, function(i, item){
 						if(i<6){
 							price  = item.price_html;
 							imgsrc = item.icon;
@@ -44,11 +44,10 @@ define(function(require, exports, module) {
 							media.find("a").attr('href',adminurl+'n=appstore&c=appstore&a=doappdetail&type=app&no='+item.no+'&anyid=65');
 							media.find(".media-body p").html(item.info);
 						}
-					}); 
+					});
 				}
 			});
 			metgetdata($('#newslist'));
-			
 
 			var bdUrl = $(".bdsharebuttonbox").attr("data-bdUrl"),
 				bdText = $(".bdsharebuttonbox").attr("data-bdText"),
@@ -66,15 +65,17 @@ define(function(require, exports, module) {
 					"bdSize":"16"
 				},
 				"share":[{
-					bdCustomStyle: bdCustomStyle
+					// bdCustomStyle: 'asdas'
 				}]
 			};
 			with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
-			
+			setTimeout(function(){
+				$('.bds_more i').click(function(event) {
+					$(this).parent('a').click();
+				});
+			},500)
 		})
-	
 	}
-
 
     //提示更改后台目录名称
     var adflag = $('#adpath').attr('data');
@@ -105,8 +106,5 @@ define(function(require, exports, module) {
                 console.log(data)
             }
         });
-
     });
-
-
 });

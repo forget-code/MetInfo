@@ -1,4 +1,5 @@
 /*!
+ * 框架基础参数、基础功能
  * M['weburl']      网站网址
  * M['lang']        网站语言
  * M['tem']         模板目录路径
@@ -7,38 +8,42 @@
  * M['module']      当前页面所属模块
  * M['metinfo_version'] 系统当前版本
  * M['user_name']   当前页面登录用户名
- * met_prevarrow,met_nextarrow slick插件翻页按钮自定义html
- * device_type      客户端判断（d：PC端，t：平板端，m：手机端）
+ * M['device_type'] 客户端判断（d：PC端，t：平板端，m：手机端）
+ * met_prevarrow,
+   met_nextarrow    slick插件翻页按钮自定义html
  */
 // 网站参数
-window.MSTR=$('meta[name=generator]').data('variable').split('|'),
-    M=[];
+window.MSTR=$('meta[name="generator"]').data('variable').split('|');
+window.M=[];
 M['weburl']=MSTR[0];
 M['lang']=MSTR[1];
-M['classnow']=MSTR[2]==''?MSTR[2]:parseInt(MSTR[2]);
-M['id']=MSTR[3]==''?MSTR[3]:parseInt(MSTR[3]);
+M['synchronous']=(typeof MET !='undefined' && MET['langset'])?MET['langset']:MSTR[2];
+M['tem']=MSTR[0]+'templates/'+MSTR[3]+'/';
 M['module']=MSTR[4]==''?MSTR[4]:parseInt(MSTR[4]);
-M['tem']=MSTR[0]+'templates/'+MSTR[5]+'/';
-M['metinfo_version']=$('meta[name=generator]').length?$('meta[name=generator]').attr('content').replace('MetInfo ','').replace(/\./g,''):'metinfo';
-M['user_name']=$('meta[name=generator]').data('user_name')||'';
+M['classnow']=MSTR[5]==''?MSTR[5]:parseInt(MSTR[5]);
+M['id']=MSTR[6]==''?MSTR[6]:parseInt(MSTR[6]);
+M['metinfo_version']=$('meta[name="generator"]').length?$('meta[name="generator"]').attr('content').replace('MetInfo ','').replace(/\./g,''):'metinfo';
+M['user_name']=$('meta[name="generator"]').data('user_name')||'';
+M['time']=new Date().getTime();
 // 客户端判断
-window.useragent=navigator.userAgent,
-    useragent_tlc=useragent.toLowerCase(),
-    device_type = /iPad/.test(useragent) ? 't' : /Mobile|iP(hone|od)|Android|BlackBerry|IEMobile|Silk/.test(useragent) ? 'm' : 'd',
-    is_ucbro=/UC/.test(useragent),
-    is_lteie9=is_ie10=false;
+M['useragent']=navigator.userAgent;
+M['useragent_tlc']=M['useragent'].toLowerCase();
+M['device_type']=device_type=/iPad/.test(M['useragent']) ? 't' : /Mobile|iP(hone|od)|Android|BlackBerry|IEMobile|Silk/.test(M['useragent']) ? 'm' : 'd';
+M['is_ucbro']=/UC/.test(M['useragent']);
+M['is_lteie9']=false;
+M['is_ie10']=false;
 // lte IE9、IE10浏览器判断
-if(new RegExp('msie').test(useragent_tlc)){
-    var iebrowser_ver=(useragent_tlc.match(/.+(?:rv|it|ra|ie)[\/: ]([\d.]+)/) || [0, '0'])[1];
-    if(iebrowser_ver==10) is_ie10=true;
-    if(iebrowser_ver<10) is_lteie9=true;
+if(new RegExp('msie').test(M['useragent_tlc'])){
+    M['iebrowser_ver']=(M['useragent_tlc'].match(/.+(?:rv|it|ra|ie)[\/: ]([\d.]+)/) || [0, '0'])[1];
+    if(M['iebrowser_ver']==10) M['is_ie10']=true;
+    if(M['iebrowser_ver']<10) M['is_lteie9']=true;
 }
 // 延迟加载参数(模板前台用户设置)
-window.met_lazyloadbg=$('input[name=met_lazyloadbg]').val()||M['weburl'] +'public/ui/v2/static/img/loading.gif',
-met_lazyloadbg_base64 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC';
+window.met_lazyloadbg=$('input[name=met_lazyloadbg]').val()||M['weburl'] +'public/ui/v2/static/img/loading.gif';
 if(met_lazyloadbg.indexOf(M['weburl'])<0 && met_lazyloadbg.indexOf('http')<0 && met_lazyloadbg.indexOf('../')<0) met_lazyloadbg=M['weburl']+met_lazyloadbg;
 if(met_lazyloadbg==M['weburl'] || (met_lazyloadbg.indexOf('.png')<0 && met_lazyloadbg.indexOf('.gif')<0 && met_lazyloadbg.indexOf('.jpg')<0)) met_lazyloadbg=M['weburl'] +'public/ui/v2/static/img/loading.gif';
-if (!!window.ActiveXObject || 'ActiveXObject' in window || is_ucbro) met_lazyloadbg=met_lazyloadbg_base64;
+if (!!window.ActiveXObject || 'ActiveXObject' in window || M['is_ucbro']) met_lazyloadbg='base64';
+M['lazyloadbg']=met_lazyloadbg;
 if(typeof Breakpoints != 'undefined') Breakpoints();// 窗口宽度断点函数
 // js严格模式
 (function(document, window, $) {
@@ -48,7 +53,7 @@ if(typeof Breakpoints != 'undefined') Breakpoints();// 窗口宽度断点函数
         Site.run();
         // 中间弹窗隐藏效果优化（点击弹窗框外上下方隐藏弹窗）
         $(document).on('click', '.modal-dialog.modal-center', function(e) {
-            if(!$(e.target).closest(".modal-dialog.modal-center .modal-content").length) $(this).parents('.modal:eq(0)').modal('hide');
+            if(!$(e.target).closest(".modal-dialog.modal-center .modal-content").length && $('.modal-backdrop').length) $(this).parents('.modal:eq(0)').modal('hide');
         });
         // 手机端弹窗位置取消垂直居中
         Breakpoints.on('xs',{
@@ -91,7 +96,7 @@ $.extend({
         if(includeFileIndex>=num_start && includeFileIndex<num_end){
             if(ext[0]=='js'){
                 var filesi=document.createElement('script'),
-                    src=name+'?'+M['metinfo_version'];
+                    src=name/*+'?'+M['metinfo_version']*/;
                 filesi.src=src;
                 filesi.type="text/javascript",
                 file_index=$.inArray(name,includeFile);
@@ -103,7 +108,7 @@ $.extend({
                     }else{
                         setTimeout(function(){
                             $.includeFile(file,num_start,num_end,fun,special);
-                        },10)
+                        },5)
                         return false;
                     }
                     // 文件加载完成回调
@@ -117,7 +122,7 @@ $.extend({
                 }
             }else if(ext[0]=='css'){
                 var filesi=document.createElement('link'),
-                    href=name+'?'+M['metinfo_version'];
+                    href=name/*+'?'+M['metinfo_version']*/;
                 filesi.href=href;
                 filesi.type='text/css';
                 filesi.rel="stylesheet";
@@ -127,7 +132,7 @@ $.extend({
         }else if(includeFileIndex<num_start){
             setTimeout(function(){
                 if(includeFileIndex<num_end) $.includeFile(includeFile[includeFileIndex],num_start,num_end,fun,special);
-            },10)
+            },5)
         }
     },
     /**

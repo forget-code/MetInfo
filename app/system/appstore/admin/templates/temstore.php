@@ -27,9 +27,9 @@ echo <<<EOT
 		</dd>
 	</dl>
 	<dl class="industrydl filtrate" style="display:none;">
-		<span class="more">{$_M['word']['columnmore']}<i class="ico"></i></span>
+		<!--<span class="more">{$_M['word']['columnmore']}<i class="ico"></i></span>-->
 		<dt>{$_M['word']['industry_screening']}</dt>
-		<dd class="industry unfold">
+		<dd class="industry">
 		</dd>
 	</dl>
 	<dl class="mincedl filtrate" style="display:none;">

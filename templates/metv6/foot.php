@@ -1,5 +1,5 @@
 <footer class='met-foot-info p-y-20 border-top1' m-id='met_foot' m-type="foot">
-    <div class="$langcss text-xs-center p-b-20" m-id='noset' m-type='foot_nav'>
+    <div class="met-footnav text-xs-center p-b-20" m-id='noset' m-type='foot_nav'>
     <div class="container">
         <div class="row mob-masonry">
             <tag action='category' type='foot'>
@@ -100,13 +100,16 @@
     <div class="copy p-y-10 border-top1">
         <div class="container text-xs-center">
             <if value="$c['met_footright'] || $c['met_footstat']">
-            <p>{$c.met_footright}</p>
+            <div>{$c.met_footright}</div>
             </if>
             <if value="$c['met_footaddress']">
-            <p>{$c.met_footaddress}</p>
+            <div>{$c.met_footaddress}</div>
             </if>
             <if value="$c['met_foottel']">
-            <p>{$c.met_foottel}</p>
+            <div>{$c.met_foottel}</div>
+            </if>
+            <if value="$c['met_footother']">
+            <div>{$c.met_footother}</div>
             </if>
             <div class="powered_by_metinfo">
                 Powered&nbsp;by&nbsp;
@@ -129,7 +132,7 @@
                         <if value="$data['lang'] eq $v['mark']">
                         <button type="button" data-toggle="dropdown" class="btn btn-outline btn-default btn-squared dropdown-toggle btn-lang">
                             <if value="$lang['langlist1_icon_ok']">
-                            <span class="flag-icon flag-icon-{$v.iconname}"></span>
+                            <img src="{$v.flag}" alt="{$v.name}" width="20">
                             </if>
                             <span>{$v.name}</span>
                         </button>
@@ -139,7 +142,7 @@
                             <lang>
                             <a href="{$v.met_weburl}" title="{$v.name}" class='dropdown-item' <if value="$v[newwindows] eq 1">target="_blank"</if>>
                                 <if value="$lang['langlist1_icon_ok']">
-                                <span class="flag-icon flag-icon-{$v.iconname}"></span>
+                                <img src="{$v.flag}" alt="{$v.name}" width="20">
                                 </if>
                                 {$v.name}
                             </a>

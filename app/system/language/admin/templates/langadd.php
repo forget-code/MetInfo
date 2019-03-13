@@ -1,12 +1,12 @@
 <?php
-# MetInfo Enterprise Content Management System 
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+# MetInfo Enterprise Content Management System
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 
 defined('IN_MET') or exit('No permission');
 
 require $this->template('ui/head');
 echo <<<EOT
--->	
+-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +19,11 @@ echo <<<EOT
 <script src="{$_M[url][own_tem]}js/jQuery1.8.2.js"></script>
 <script src="{$_M[url][own_tem]}js/iframes.js"></script>
 <script src="{$_M[url][own_tem]}js/metvar.js"></script>
-<div class="stat_list">
-	<ul>
-		<li class="now"><a href="{$_M[url][own_form]}a=doindex" title="{$_M[word][langwebmanage]}">{$_M[word][langwebmanage]}</a></li>
-		<li  ><a href="{$_M[url][own_form]}a=dolangset" title="{$_M[word][indexlang]}">{$_M[word][indexlang]}</a></li>
-	</ul>
-</div>
+
 <div class="clear"></div>
 <script type="text/javascript">
     var langmarks = Array();
-    
+
 <!--
 EOT;
 $langaction="add";
@@ -57,7 +52,7 @@ $i++;
 //}
 
 
-	
+
 
 echo <<<EOT
 -->
@@ -69,8 +64,8 @@ echo <<<EOT
 		<input name="langorderold" type="hidden" value="{$met_langadmin[$langeditor][order]}">
 <div class="v52fmbx_tbmax">
 <div class="v52fmbx_tbbox">
-<div class="v52fmbx">	
-	
+<div class="v52fmbx">
+
 	<div class="v52fmbx_dlbox">
 	<dl>
 		<dt>{$_M[word][sort]}{$_M[word][marks]}</dt>
@@ -148,17 +143,8 @@ echo <<<EOT
 		</dd>
 	</dl>
 	</div>
-	<div class="v52fmbx_dlbox" {$copyhide}>
-	<dl>
-		<dt>{$_M[word][langexplain3]}{$_M[word][marks]}</dt>
-		<dd>
-			<label><input name="langdlok" class="radio" type="radio" value="1" onclick="changelang(1)" checked="checked">{$_M[word][langexplain5]}</label>
-			<label><input name="langdlok" class="radio" type="radio" value="0" onclick="changelang(0)" >{$_M[word][langexplain6]}</label>
-			<span class="tips">{$_M[word][langexplain8]}</span>
-		</dd>
-	</dl>
-	</div>
-	<div id="notlangautor1" class="v52fmbx_dlbox notlangautor2 none" {$copyhide}>
+
+	<div id="notlangautor1" class="v52fmbx_dlbox notlangautor2 " >
 	<dl>
 		<dt>{$_M[word][langexplain6]}{$_M[word][marks]}</dt>
 		<dd>
@@ -168,7 +154,7 @@ EOT;
 foreach($met_langok as $key=>$val){
 echo <<<EOT
 -->
-<option value="{$val[mark]}">{$val[name]}</option>	
+<option value="{$val[mark]}">{$val[name]}</option>
 <!--
 EOT;
 }
@@ -189,7 +175,7 @@ EOT;
 foreach($met_langok as $key=>$val){
 echo <<<EOT
 -->
-<option value="{$val[mark]}">{$val[name]}</option>	
+<option value="{$val[mark]}">{$val[name]}</option>
 <!--
 EOT;
 }
@@ -210,7 +196,7 @@ EOT;
 foreach($met_langok as $key=>$val){
 echo <<<EOT
 -->
-<option value="{$val[mark]}">{$val[name]}</option>	
+<option value="{$val[mark]}">{$val[name]}</option>
 <!--
 EOT;
 }
@@ -231,7 +217,7 @@ EOT;
 foreach($met_langok as $key=>$val){
 echo <<<EOT
 -->
-<option value="{$val[mark]}">{$val[name]}</option>	
+<option value="{$val[mark]}">{$val[name]}</option>
 <!--
 EOT;
 }
@@ -377,7 +363,7 @@ echo <<<EOT
 	var h = mt?mt:dm.height();
 	dm.height(0);
 	dm.animate({ height: h+"px"}, 300,function(){
-		
+
 	});
 	dm.show();
 }

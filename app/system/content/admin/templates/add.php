@@ -12,7 +12,7 @@ echo <<<EOT
 <form method="POST" class="ui-from" name="myform" action="{$_M[url][own_form]}a=doaddsubmit" target="_self">
 <div class="v52fmbx content_add">
 	<dl>
-		<dt>添加至</dt>
+		<dt>{$_M[word][add_to_v6]}</dt>
 		<dd class="ftype_select-linkage">
 			<div class="fbox" style="float:left;" data-selectdburl="{$_M[url][own_form]}a=docolumnjson">
 				<select name="class1_select" class="prov" data-required="1"></select>  

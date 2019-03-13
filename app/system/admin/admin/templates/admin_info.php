@@ -25,7 +25,7 @@ echo <<<EOT
       <dt>{$_M['word']['adminpassword']}</dt>
       <dd class="ftype_input">
         <div class="fbox">
-          <input type="password" name="admin_pass" value="{$list['admin_pass']}" data-required="1">
+          <input type="password" name="admin_pass" value="" data-required="">
         </div>
       </dd>
     </dl>
@@ -33,7 +33,7 @@ echo <<<EOT
       <dt>{$_M['word']['adminpassword1']}</dt>
       <dd class="ftype_input">
         <div class="fbox">
-          <input type="password" name="admin_pass_replay" value="{$list['admin_pass']}" data-required="1" data-password="admin_pass">
+          <input type="password" name="admin_pass_replay" value="" data-required="" data-password="admin_pass">
         </div>
       </dd>
     </dl>

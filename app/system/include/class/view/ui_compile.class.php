@@ -14,12 +14,15 @@ class ui_compile
     /**
      * UI管理工具的ui文件夹目录
      */
+
+    public $cache_path;
+
 	public $ui_path;
 
     /**
      * 需要可视化的字段
      */
-    public $fields = array('name','value','title','keywords','description','content','valueinfo','defaultvalue','imgurl','uip_default','uip_value','img_path','columnimg','icon','imgurls','info','content1','content2','content3','content4','position');
+    public $fields = array('name','value','title','keywords','description','content','valueinfo','defaultvalue','imgurl','uip_default','uip_value','img_path','columnimg','icon','imgurls','info','content1','content2','content3','content4','position','img_title','img_des');
     /**
      * 需要可视化的表
      */
@@ -34,6 +37,10 @@ class ui_compile
         $this->tem_path = PATH_WEB.'templates/'.$_M['config']['met_skin_user'].'/';
         $this->ui_path  = PATH_ALL_APP."met_ui/admin/ui/";
         $this->skin_name = $_M['config']['met_skin_user'];
+        $this->cache_path = PATH_WEB.'cache/templates';
+        if(!file_exists($this->cache_path)){
+            mkdir($this->cache_path,0777,true);
+        }
         $inc = $this->tem_path.'metinfo.inc.php';
         if(file_exists($inc)){
             require $inc;
@@ -175,11 +182,18 @@ class ui_compile
     public function list_public_config()
     {
         global $_M;
-        if($this->template_type == 'tag'){
-            return $this->list_templates_config();
-        }else{
-            return $this->list_global_config();
+        $cache = $this->cache_path."/public_config_{$_M['lang']}.php";
+        if(file_exists($cache) && !$_M['form']['pageset']){
+            return self::get_cache($cache);
         }
+        if($this->template_type == 'tag'){
+            $public_config = $this->list_templates_config();
+        }else{
+            $public_config = $this->list_global_config();
+        }
+        self::set_cache($cache,$public_config);
+
+        return $public_config;
     }
     /**
      * 标签模式下替换metinfocss中的变量
@@ -187,15 +201,15 @@ class ui_compile
     public function parse_tag_static($type='css')
     {
         global $_M;
+
         $res = $this->tem_path.'static/metinfo.'.$type;
         $new = $this->tem_path.'cache/common.'.$type;
-
-        if(!file_exists(dirname($new))){
+        if(!file_exists(dirname($new)) && !IN_ADMIN){
             mkdir(dirname($new),0777,true);
         }
 
         $has = file_exists($new);
-        if($_M['form']['pageset'] || !$has){
+        if(($_M['form']['pageset'] && !IN_ADMIN) || !$has){
             if(file_exists($res)){
                 $content = file_get_contents($res);
                 $tem_config = $this->list_templates_config();
@@ -304,7 +318,7 @@ class ui_compile
             '{$metui_url1}' => PATH_WEB.'app/system/include/static/',
             '{$metui_url2}' =>PATH_WEB.'app/system/include/static2/',
             '{$metui_url3}' =>PATH_WEB.'public/ui/v2/static/',
-            '{$metui_url4}' =>PATH_WEB.'app/app/shop/web/templates/met/static/'
+            '{$metui_url4}' =>PATH_WEB.'app/app/shop/web/templates/met/'
         );
 
         $path = str_replace(array_keys($replace), array_values($replace), $path);
@@ -355,9 +369,15 @@ class ui_compile
 
         $config = array();
         foreach ($global as $v) {
+
             // 如果是背景图片，直接去掉标签
             if($v['uip_key'] == 'bodybgimg' || $v['uip_key'] == 'met_font'){
-                $val = $_M['url']['site'].str_replace('../', '', $this->replace_m($v['uip_value']));
+
+                $val = str_replace('../', '', $this->replace_m($v['uip_value']));
+                    if($v['uip_key'] != 'met_font' && $val){
+                        $val = $_M['url']['site'].$val;
+                    }
+
             }else{
                 $val = $this->replace_tag($v['uip_value'],$v['uip_default'],$v['uip_type']);
             }
@@ -373,6 +393,12 @@ class ui_compile
         if($skin_name == ''){
             $skin_name = $this->skin_name;
         }
+
+        $cache = $this->cache_path.'/'."{$skin_name}_{$pid}_{$_M['lang']}.php";
+
+        if(file_exists($cache) && !$_M['form']['pageset']){
+            return self::get_cache($cache);
+        }
         $query = "SELECT * FROM {$_M['table']['ui_config']} WHERE pid = {$pid} AND skin_name = '{$skin_name}' AND lang = '{$_M['lang']}'";
         $config = DB::get_all($query);
 
@@ -382,6 +408,9 @@ class ui_compile
             $val = $this->replace_tag($value['uip_value'],$value['uip_default'],$value['uip_type'],$value['id']);
             $ui[$value['uip_name']] = $val;
         }
+
+        self::set_cache($cache,$ui);
+
         return $ui;
     }
 
@@ -456,14 +485,17 @@ class ui_compile
             $config['index_url'].= 'index.php?lang='.$_M['lang'];
         }
 
-
-
         return $config;
     }
 
 
     public function list_templates_config(){
         global $_M;
+
+        $cache = $this->cache_path."/tem_config_{$_M['lang']}.php";
+        if(file_exists($cache) && !$_M['form']['pageset']){
+            return self::get_cache($cache);
+        }
         $query = "SELECT * FROM {$_M['table']['templates']} WHERE lang = '{$_M['lang']}' AND no = '{$_M['config']['met_skin_user']}' AND type != 1";
         $templates = DB::get_all($query);
         $tem_config = array();
@@ -478,6 +510,8 @@ class ui_compile
                 $tem_config[$t['name']] = 1;
             }
        }
+
+        self::set_cache($cache,$tem_config);
 
        return $tem_config;
     }
@@ -516,10 +550,12 @@ class ui_compile
                 $para = '';
             }
             $realval = $this->replace_m($val);
-            // if(!$realval){
-            //     $realval = "public/images/metinfo.gif";
-            // }
-            $val = $_M['config']['met_weburl'].str_replace('../', '', $realval).$para;
+            if(!$realval){
+                $val = $para;
+            }else{
+                $val = $_M['config']['met_weburl'].str_replace('../', '', $realval).$para;
+            }
+
         }
 
         return $val;
@@ -536,7 +572,7 @@ class ui_compile
 
                         if(self::checkImg($key)){
                             if(!$v){
-                                $v = $_M['config']['site'].'public/images/metinfo.gif';
+                                $v = $_M['config']['site'].$_M['config']['met_agents_img'];
                             }
                             $rs[$key]=$v."?met-id={$rs['id']}&met-table={$tableName}&met-field={$key}";
                         }else{
@@ -560,10 +596,9 @@ class ui_compile
                     foreach ($v as $key => $val) {
 
                         if(self::checkField($key)){
-
                             if(self::checkImg($key)){
                                 if(!$val){
-                                    $val = $_M['config']['site'].'public/images/metinfo.gif';
+                                    $val = $_M['config']['site'].$_M['config']['met_agents_img'];
                                 }
                                 // 图片
                                 $rs[$k][$key] = $val."?met-id={$rs[$k]['id']}&met-table={$tableName}&met-field={$key}";
@@ -618,7 +653,7 @@ class ui_compile
         }
         // 产品参数
         if($table == 'plist' && $field == 'info'){
-            if(preg_match($number, $val)){
+            if(preg_match($number, $val) && !is_numeric($val)){
                 return $val."<m met-id={$id} met-table={$table} met-field={$field}></m>";
             }
         }
@@ -730,7 +765,7 @@ class ui_compile
         $query = "UPDATE {$_M['table'][$table]} SET $field = '{$text}' WHERE id = {$id}";
         $row = DB::query($query);
         if(!$row){
-            $this->response['msg'] = '修改失败';
+            $this->response['msg'] = $_M['word']['templateseditfalse'];
             return $this->response;
         }
         $this->response['status'] = 1;
@@ -744,6 +779,29 @@ class ui_compile
         return DB::query($query);
     }
 
+    public function set_cache($file,$data)
+    {
+        global $_M;
+        if($_M['form']['pageset']){
+            if(file_exists($file)){
+                @unlink($file);
+            }
+            return;
+        }
+        $string = "<?php defined('IN_MET') or exit('No permission'); ?>";
+        $string  .= json_encode($data);
+        $str = file_put_contents($file, $string);
+        if(!$str){
+            die($this->cache_path.$_M['word']['templatefilewritno']);
+        }
+    }
 
+    public function get_cache($file)
+    {
+        global $_M;
+        $string = file_get_contents($file);
+        $string = str_replace("<?php defined('IN_MET') or exit('No permission'); ?>", '', $string);
+        return json_decode($string,true);
+    }
 
 }

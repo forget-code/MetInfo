@@ -189,17 +189,13 @@ define(function(require, exports, module) {
 				if($("input[name='"+d.attr('name')+"']").length>1){
 					var v='',c = d.parents('div.fbox').find("input[name='"+d.attr('name')+"']:checked");
 					var z = $("input[data-checkbox='"+d.attr('name')+"']");
-					if(c.length==0){
-						z.remove();
+					c.each(function(i){
+						v+=(i+1)==c.length?$(this).val():$(this).val()+'|';
+					});
+					if(z.length>0){
+						z.val(v);
 					}else{
-						c.each(function(i){
-							v+=(i+1)==c.length?$(this).val():$(this).val()+'|';
-						});
-						if(z.length>0){
-							z.val(v);
-						}else{
-							d.parents('div.fbox').append("<input name='"+d.attr('name')+"' data-checkbox='"+d.attr('name')+"' type='hidden' value='"+v+"' />");
-						}
+						d.parents('div.fbox').append("<input name='"+d.attr('name')+"' data-checkbox='"+d.attr('name')+"' type='hidden' value='"+v+"' />");
 					}
 				}
 			}

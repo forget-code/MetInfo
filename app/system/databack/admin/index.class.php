@@ -9,8 +9,6 @@ class index extends admin {
 		parent::__construct();
 		nav::set_nav(1, $_M[word][databackup1], "{$_M[url][own_form]}a=doindex");
 		nav::set_nav(2, $_M[word][databackup2], "{$_M[url][own_form]}a=dorecovery");
-		nav::set_nav(3, $_M[word][databackup3], "{$_M[url][own_form]}a=dodownload");
-		##$adminurl= $_M['config']['met_weburl'].$_M['config']['met_adminfile'].'/';
         $adminurl = $_M['url']['site_admin'];
         $arr = explode('/', $_M['url']['site_admin']);
         array_pop($arr);
@@ -20,7 +18,7 @@ class index extends admin {
 	public function doindex() {
 		global $_M;
 		nav::select_nav(1);
-		$_M['url']['help_tutorials_helpid']='115#网站备份';
+		$_M['url']['help_tutorials_helpid']="115#{$_M['word']['webupate1']}";
 		require_once $this->template('own/index');
 	}
 	/*数据库备份*/
@@ -33,7 +31,7 @@ class index extends admin {
 			turnover("{$_M[url][own_form]}a=doindex",$_M[word][setdbArchiveNo]);
 		}
 		$this->docache_delete('bakup_tables.php');
-		turnover("{$_M[url][own_form]}a=dodownload",$_M[word][setdbBackupOK]);
+		turnover("{$_M[url][own_form]}a=dorecovery",$_M[word][setdbBackupOK]);
 	}
 
 	/*恢复数据*/
@@ -41,43 +39,54 @@ class index extends admin {
 		global $_M,$adminurl;
 		nav::select_nav(2);
 		$infos=$this->dogetfileattr();
+
+		$zips = $this->dogetfilefix();
 		if($_M[config][met_agents_type]>1){
 			$_M[config][dataexplain2]=str_replace('met',$_M[config][met_agents_backup],$_M[word][dataexplain2]);
 		}
-		$_M['url']['help_tutorials_helpid']='115#恢复数据';
+		$_M['url']['help_tutorials_helpid']="115#{$_M['word']['webupate1']}";
 		require_once $this->template('own/recovery');
 	}
 
 	/*导入数据*/
 	public function doimport(){
 		global $_M;
+
 		$metinfo_admin_name = get_met_cookie('metinfo_admin_name');
 		$query="select admin_op from {$_M[table][admin_table]} where admin_id='{$metinfo_admin_name}'";
 		$admin_op =DB::get_one($query);
 		if(strstr($admin_op['admin_op'],'metinfo') === false){
-			echo "<script type='text/javascript'> alert('{$_M[word][jsx38]}');location.href='recovery.php?anyid={$anyid}&lang={$_M['lang']}&cs=2'; </script>";
+			$result['status']=0;
+			$result['url']="recovery.php?anyid={$anyid}&lang={$_M['lang']}&cs=2";
+			$result['msg']=$_M['word']['jsx38'];
+			echo jsonencode($result);
 			die();
 		}
 		$fileid = $fileid ? $fileid : 1;
 		$filename = $_M[form][pre].$fileid.'.sql';
 		$filepath = PATH_WEB.ADMIN_FILE.'/databack/'.$filename;
+		// 不需要处理的数据
+		$update_database = load::mod_class('update/update_database','new');
+		$update_database->temp_data();
+
 		if(file_exists($filepath)){
 			$sql = file_get_contents($filepath);
-			if(substr($sql,28,5)!=$_M[config][metcms_v] && substr($sql,28,6)!=$_M[config][metcms_v]) turnover("{$_M[url][own_form]}a=dorecovery", $_M[word][dataerr1]);
-			if(stristr($sql,'INSERT INTO met_admin_table')){
-				echo "<script>
-				function import1(text){
-					if(confirm(text)){
-						 location.href='{$_M[url][own_form]}a=dosql_execute&anyid=$anyid&pre={$_M[form][pre]}&dosubmit=1&dosubmit1=0';
-					}else{
-						location.href='{$_M[url][own_form]}a=dosql_execute&anyid=$anyid&pre={$_M[form][pre]}&dosubmit=1&dosubmit1=1';
-					}
+			if(stristr($sql,'#MetInfo.cn')){
+				$split = $this->dosql_split($sql);
+				$info = $split['info'];
+				$infos = explode('#', $info);
+				$import_version = trim(str_replace('MetInfo.cn Created version:','',$infos[1]));
+
+				if(version_compare($import_version, $_M['config']['metcms_v']) < 0)
+				{
+					$result['msg'] = $_M['word']['recoveryisntallinfo'];
 				}
-				import1('{$_M[word][js72]}');
-				</script>";
+				$result['status']=1;
 			}else{
-				header("location:{$_M[url][own_form]}a=dosql_execute&anyid=$anyid&pre={$_M[form][pre]}&dosubmit=1&dosubmit1=1");
+				$result['status']=2;
+				$result['url']="{$_M['url']['own_form']}a=dosql_execute&pre={$_M['form']['pre']}&dosubmit=1&dosubmit1=1";
 			}
+			echo jsonencode($result);
 	    }
 	}
 
@@ -85,19 +94,25 @@ class index extends admin {
     {
         global $_M;
         $tablepre = $_M['config']['tablepre'];
+
         $fileid = $_M['form']['fileid'] ? $_M['form']['fileid'] : 1;
         $filename = $_M[form][pre] . $fileid . '.sql';
         $filepath = PATH_WEB . ADMIN_FILE . '/databack/' . $filename;
+        $version = $_M['form']['version'] ? $_M['form']['version'] : $_M['config']['metcms_v'];
+        $old_version = $_M['form']['old_version'];
         if (file_exists($filepath)) {
             $sql = file_get_contents($filepath);
-            if (substr($sql, 28, 5) != $_M[config][metcms_v] && substr($sql, 28, 6) != $_M[config][metcms_v]) turnover("{$_M[url][own_form]}a=doindex", $_M[word][dataerr1]);
             $split = $this->dosql_split($sql);
             $sqls = $split['sql'];
             $info = $split['info'];
             $infos = explode('#', $info);
+            if($infos[1] && !$_M['form']['old_version']){
+            	$_M['form']['old_version'] = trim(str_replace('MetInfo.cn Created version:','',$infos[1]));
+            }
             $localurl = $_M[config][met_weburl];
             if ($infos[3] && $tablepre != $infos[3]) $sqlre1 = 1;
             if ($infos[2] && $localurl != $infos[2]) $sqlre2 = 1;
+
             if (is_array($sqls)) {
                 foreach ($sqls as $sql) {
                     if ($_M[form][dosubmit1] == '1') {
@@ -109,39 +124,72 @@ class index extends admin {
                             $sql = str_replace($infos[2], $localurl, $sql);
                         }
                     }
+
+                    if(strstr($sql, $tablepre.'admin_column')){
+                    	continue;
+                    }
                     DB::query($sql);
-                    // if(trim($sql) != '') {
-                    // 	if(!DB::query($sql)){
-                    // 		echo $sql;
-                    // 		return false;
-                    // 	}
-                    // }
                 }
             } else {
                 // if(!DB::query($sqls)){
                 // 	return false;
                 // }
             }
+
             if ($_M[form][dosubmit1] == '1') {
                 if (!DB::query('DROP TABLE IF EXISTS test_admin_table1')) {
                     return false;
                 }
             }
-            //return true;
             $fileid++;
             $this->dosave_met_cookie();
-
-            header("location:{$_M[url][own_form]}a=dosql_execute&anyid={$_M['form']['anyid']}&pre={$_M['form']['pre']}&dosubmit={$_M['form']['dosubmit']}&dosubmit1={$_M['form']['dosubmit1']}&fileid={$fileid}");
+            header("location:{$_M[url][own_form]}a=dosql_execute&anyid={$_M['form']['anyid']}&pre={$_M['form']['pre']}&dosubmit={$_M['form']['dosubmit']}&dosubmit1={$_M['form']['dosubmit1']}&fileid={$fileid}&version={$version}&old_version={$_M['form']['old_version']}");
         } else {
             //恢复栏目文件
-            $this->dorecover_column();
-            //剔除不存在的applist记录
-            $this->docheckapplsit();
+
+
             //清除官方商城登录信息
             $this->metshot_logout();
             load::sys_func('file');
-            deldir('cache', 1);
+
             deldir('upload/thumb_src', 1);
+            $update_database = load::mod_class('update/update_database','new');
+            // 对比导入数据版本和当前版本字段并修复
+            $update_database->diff_fields($version);
+            $query = "UPDATE {$_M['table']['config']} SET value = '{$version}' WHERE name = 'metcms_v'";
+
+            DB::query($query);
+			$update_database->recovery_data();
+
+			//剔除不存在的applist记录
+            $this->docheckapplsit();
+
+            if($version != $old_version){
+            	$update_database->update_language();
+            	$update_database->insert_para();
+            	$update_database->update_plist();
+            	if(version_compare($version, '6.1.0') === 0  && version_compare($old_version, '6.0.0') < 0){
+
+        			$query = "SELECT * FROM {$_M['table']['list']}";
+        			$list = DB::get_all($query);
+        			foreach ($list as $l) {
+        				$query = "SELECT module FROM {$_M['table']['parameter']} WHERE id = {$l['bigid']} AND lang = '{$l['lang']}'";
+        				$parameter = DB::get_one($query);
+
+        				$query = "SELECT id FROM {$_M['table']['para']} WHERE pid = {$l['bigid']} AND value = '{$l['info']}' AND module = {$parameter['module']} AND lang = '{$l['lang']}'";
+        				if(!DB::get_one($query)){
+        					$query = "INSERT INTO {$_M['table']['para']} SET pid = {$l['bigid']},module={$parameter['module']},value='{$l['info']}',lang='{$l['lang']}'";
+							$row = DB::query($query);
+        				}
+        			}
+            	}
+
+            	$update_database->update_shop();
+            }
+
+            $update_database->check_shop();
+            $this->dorecover_column();
+            deldir('cache', 1);
             turnover("{$_M[url][own_form]}a=doindex", "{$_M[word][setdbImportOK]}");
         }
     }
@@ -158,38 +206,29 @@ class index extends admin {
 	    $met_cookie['time']=time();
 	    $json=json_encode($met_cookie);
 	    $username=$met_cookie[metinfo_admin_id]?$met_cookie[metinfo_admin_id]:$met_cookie[metinfo_member_id];
-	   // $username=daddslashes($username,0,1);
 	    $query="update {$_M[table][admin_table]} set cookie='$json' where id='$username'";
 	    $user=DB::get_one($query);
 	}
-	// if(!function_exists('json_encode')){
-	//     include ROOTPATH.'include/JSON.php';
-	//     function json_encode($val){
-	//         $json = new Services_JSON();
-	//         $json=$json->encode($val);
-	//         return $json;
-	//     }
-	//     function json_decode($val){
-	//         $json = new Services_JSON();
-	//         return $json->decode($val);
-	//     }
-	// }
-	// }
+
 	public function dosql_split($sql){
 		global $_M;
 		$db_charset='utf-8';
 		if(DB::version() > '4.1' && $db_charset){
 			$sql = preg_replace("/TYPE=(InnoDB|MyISAM)( DEFAULT CHARSET=[^; ]+)?/", "TYPE=\\1 DEFAULT CHARSET=".$db_charset,$sql);
 		}
+
 		$sql = str_replace("\r", "\n", $sql);
+
 		$ret = array();
 		$num = 0;
 		$queriesarray = explode(";\n", trim($sql));
+
 		unset($sql);
 		foreach($queriesarray as $query){
 			$ret['sql'][$num] = '';
 			$queries = explode("\n", trim($query));
 			$queries = array_filter($queries);
+
 			foreach($queries as $query){
 				$str1 = substr($query, 0, 1);
 				if($str1 != '#' && $str1 != '-') {
@@ -211,12 +250,13 @@ class index extends admin {
 			 $prepre = '';
 			 $info = $infos = array();
 			 foreach($sqlfiles as $id=>$sqlfile){
-				preg_match("/([a-z0-9_]+_[0-9]{8}_[0-9a-zA-Z]{6}_)([a-z0-9]+)\.sql/i",basename($sqlfile),$num);
+				preg_match("/(.*_)([0-9]+)\.sql/i",basename($sqlfile),$num);
 				$info['filename'] = basename($sqlfile);
 				$info['filesize'] = round(filesize($sqlfile)/(1024*1024), 2);
 				$info['maketime'] = date('Y-m-d H:i:s', filemtime($sqlfile));
 				$info['pre'] = $num[1];
 				$info['number'] = $num[2];
+				$info['typename']=$_M[word][database];
 				if(!$id) $prebgcolor = '#E4EDF9';
 				if($info['pre'] == $prepre){
 					$info['bgcolor'] = $prebgcolor;
@@ -246,7 +286,6 @@ class index extends admin {
 			$infos2[$val[pre]][filesize]+=$val[filesize];
 		}
 
-
 		$infos=$this->array_sort($infos2,'time','we');
 		foreach($infos as $key=>$val){
 			$fp = @fopen(PATH_WEB.ADMIN_FILE.'/databack/'.$val['filename'],"rb");
@@ -266,15 +305,6 @@ class index extends admin {
 				$infos[$key]['error']='0';
 			}
 		}
-
-		foreach($infos as $key=>$val){
-			if($val[ver]!=$_M[config][metcms_v]){
-				$val['error']=2;
-				unset($infos[$key]);
-				$infos[$key]=$val;
-			}
-		}
-
 		return $infos;
 	}
 
@@ -416,7 +446,7 @@ class index extends admin {
 				turnover("{$_M['url']['own_form']}a=doindex",$_M['word']['setdbArchiveNo']);
 			}
 		}
-		turnover("{$_M['url']['own_form']}a=dodownload",$_M['word']['setdbArchiveOK']);
+		turnover("{$_M['url']['own_form']}a=dorecovery",$_M['word']['setdbArchiveOK']);
 	}
 
 	/*获取sql文件*/
@@ -461,13 +491,17 @@ class index extends admin {
 			$filename = $con_db_name.'_'.date('Ymd').'_'.$random.'_'.$fileid.'.sql';
 			$zipname  = $con_db_name.'_'.date('Ymd').'_'.$random.'_'.$fileid;
 			$fileid++;
-			$bakfile = PATH_WEB.ADMIN_FILE.'/databack/'.$filename;
-			if(!is_writable(PATH_WEB.ADMIN_FILE.'/databack/'))turnover("{$_M[url][own_form]}a=doindex",$_M[word][setdbTip2].'databack/'.$_M[word][setdbTip3]);
+			$backup = PATH_WEB.ADMIN_FILE.'/databack/';
+			if(!file_exists($backup)){
+				mkdir($backup,0777,true);
+			}
+			$bakfile = $backup.$filename;
+			if(!is_writable($backup))turnover("{$_M[url][own_form]}a=doindex",$_M[word][setdbTip2].'databack/'.$_M[word][setdbTip3]);
 			file_put_contents($bakfile, $sqldump);
 			if(!file_exists(PATH_WEB.ADMIN_FILE.'databack/sql'))@mkdir (PATH_WEB.ADMIN_FILE.'/databack/sql', 0777);
 			$sqlzip=PATH_WEB.ADMIN_FILE.'/databack/sql/'.$_M[config][met_agents_backup].'_'.$zipname.'.zip';
 			$archive = new PclZip($sqlzip);
-			$zip_list = $archive->create(PATH_WEB.ADMIN_FILE.'/databack/'.$filename,PCLZIP_OPT_REMOVE_PATH,PATH_WEB.ADMIN_FILE.'/databack/');
+			$zip_list = $archive->create($backup.$filename,PCLZIP_OPT_REMOVE_PATH,$backup);
 		}
 		if(trim($sqldump)){
 			header('location:index.php?n=databack&c=index&a=dopackdata&lang='.$_M['lang'].'&tables='.$_M['form']['tables'].'&tableid='.$tableid.'&fileid='.$fileid.'&startfrom='.$this->startrow.'&random='.$random.'&anyid='.$anyid.'&cs='.$cs);
@@ -511,7 +545,7 @@ class index extends admin {
 			}
 		}
 		echo "<script type=\"text/javascript\">document.getElementById('tips').style.display = 'none';</script>";
-		turnover("{$_M['url']['own_form']}a=dodownload",$_M['word']['setdbArchiveOK']);
+		turnover("{$_M['url']['own_form']}a=dorecovery",$_M['word']['setdbArchiveOK']);
 	}
 
 	/*删除备份文件*/
@@ -520,7 +554,7 @@ class index extends admin {
 	    if(substr_count(trim($_M[form][filenames]),'../'))die('met2');
 		if(trim(substr(strrchr($_M[form][filenames], '.'), 1))=='zip'){
 			@unlink(PATH_WEB.ADMIN_FILE.'/databack/'.$_M[form][fileon].'/'.$_M[form][filenames]);
-			turnover("{$_M[url][own_form]}a=dodownload",$_M[word][physicaldelok]);
+			turnover("{$_M[url][own_form]}a=dorecovery",$_M[word][physicaldelok]);
 		}else{
 			$prefix=$_M[form][filenames];
 			$sqlfiles = glob(PATH_WEB.ADMIN_FILE.'/databack/*.sql');
@@ -542,65 +576,7 @@ class index extends admin {
 	/*获取文件后缀*/
 	public function dogetfilefix(){
 		 global $_M;
-		 $sqlfiles = glob(PATH_WEB.ADMIN_FILE.'/databack/sql/*.zip');
-		 if(is_array($sqlfiles)){
-			 $prepre = '';
-			 $info = $infos = array();
-			 foreach($sqlfiles as $id=>$sqlfile){
-				 preg_match("/([a-z0-9_]+_[0-9]{8}_[0-9a-z]{4}_)([0-9]+)\.zip/i",basename($sqlfile),$num);
-				 $info['filename'] = basename($sqlfile);
-				 $info['filesize'] = round(filesize($sqlfile)/(1024*1024), 2);
-				 $info['maketime'] = date('Y-m-d H:i:s', filemtime($sqlfile));
-				 $info['pre'] = $num[1];
-				 $info['number'] = $num[2];
-				 if(!$id) $prebgcolor = '#E4EDF9';
-				 if($info['pre'] == $prepre)
-				 {
-					 $info['bgcolor'] = $prebgcolor;
-				 }
-				 else
-				 {
-					 $info['bgcolor'] = $prebgcolor == '#E4EDF9' ? '#F1F3F5' : '#E4EDF9';
-				 }
-				 $prebgcolor = $info['bgcolor'];
-				 $prepre = $info['pre'];
-				 $info['typename']=$_M[word][database];
-				 $info['type']='sql';
-				 $infosql[] = $info;
-				 $metinfodata[]=$info;
-			 }
-		 }
-		 $sqlfiles = glob(PATH_WEB.ADMIN_FILE.'/databack/config/*.zip');
-		 if(is_array($sqlfiles))
-		 {
-			 $prepre = '';
-			 $info = $infos = array();
-			 foreach($sqlfiles as $id=>$sqlfile)
-			 {
-				 preg_match("/([a-z0-9_]+_[0-9]{8}_[0-9a-z]{4}_)([0-9]+)\.zip/i",basename($sqlfile),$num);
-				 $info['filename'] = basename($sqlfile);
-				 $info['filesize'] = round(filesize($sqlfile)/(1024*1024), 2);
-				 $info['maketime'] = date('Y-m-d H:i:s', filemtime($sqlfile));
-				 $info['pre'] = $num[1];
-				 $info['number'] = $num[2];
-				 if(!$id) $prebgcolor = '#E4EDF9';
-				 if($info['pre'] == $prepre)
-				 {
-					 $info['bgcolor'] = $prebgcolor;
-				 }
-				 else
-				 {
-					 $info['bgcolor'] = $prebgcolor == '#E4EDF9' ? '#F1F3F5' : '#E4EDF9';
-				 }
-				 $prebgcolor = $info['bgcolor'];
-				 $prepre = $info['pre'];
-				 $info['typename']=$_M[word][physicalfile4];
-				 $info['type']='config';
-				 $infoconfig[] = $info;
-				 $metinfodata[]=$info;
-			 }
-		 }
-/*upload*/
+
 		 $sqlfiles = glob(PATH_WEB.ADMIN_FILE.'/databack/upload/*.zip');
 		 if(is_array($sqlfiles))
 		 {
@@ -670,64 +646,54 @@ class index extends admin {
 		return $metinfodata;
 	}
 
-	/*备份文件下载*/
-	public function dodownload(){
-		 global $_M,$adminurl;
-		 nav::select_nav(3);
-		 $metinfodata=$this->dogetfilefix();
-		 $_M['url']['help_tutorials_helpid']='115#下载备份数据';
-		 require_once $this->template('own/filedown');
-	}
-
 	/*生成zip*/
-	public function docreatezip(){
-	     global $_M,$adminurl;
-	     $filenames=$_M[form][filenames];
-	     if($filenames){
-			 $filenum=1;
-			 while(file_exists($adminurl.'/databack/'.$filenames.$filenum.'.sql')){
-				$sqlfiles[]=$adminurl.'/databack/sql/'.$_M[config][met_agents_backup].'_'.$filenames.$filenum.'.zip';
-				if(!file_exists($adminurl.'/databack/sql/'.$_M[config][met_agents_backup].'_'.$filenames.$filenum.'.zip')){
-					if(!file_exists($adminurl.'/databack/sql'))@mkdir ($adminurl.'/databack/sql', 0777);
-					$sqlzip=$adminurl.'/databack/sql/'.$_M[config][met_agents_backup].'_'.$filenames.$filenum.'.zip';
-					$archive = new PclZip($sqlzip);
-					$zip_list = $archive->create($adminurl.'/databack/'.$filenames.$filenum.'.sql',PCLZIP_OPT_REMOVE_PATH,$adminurl.'/databack/');
-					if($zip_list == 0){
-						die("Error : ".$archive->errorInfo(true));
+	public function dodownload(){
+	    global $_M;
+	    $file = $_M['form']['file'];
+	    $type = $_M['form']['type'];
+	    $back_url = $_M['url']['site_admin'].'databack/';
+	    $zip_path = PATH_WEB.ADMIN_FILE.'/databack/sql/';
+	    $sql_path = PATH_WEB.ADMIN_FILE.'/databack/';
+	    $sql_zip = $zip_path.$file.'.zip';
+	    switch ($type) {
+	    	case 'sql':
+		    	$zip_url = $back_url.'sql/'.$file.'.zip';
+		    	if(!file_exists($sql_zip)){
+		    		if(!file_exists($zip_path)){
+		    			@mkdir($zip_path, 0777);
+		    		}
+					load::sys_func('file');
+					$zip = new ZipArchive();
+					$status = $zip->open($sql_zip,ZIPARCHIVE::CREATE | ZIPARCHIVE::OVERWRITE);
+					if(!$status){
+						turnover("{$_M['url']['own_form']}a=dorecovery",$_M['word']['setdbArchiveNo']);
 					}
-				}
-				$filenum++;
-			 }
-			 if(is_array($sqlfiles)){
-				 $prepre = '';
-				 $info = $infos = array();
-				 foreach($sqlfiles as $id=>$sqlfile){
-					 preg_match("/([a-z0-9_]+_[0-9]{8}_[0-9a-z]{4}_)([0-9]+)\.zip/i",basename($sqlfile),$num);
-					 $info['filename'] = basename($sqlfile);
-					 $info['filesize'] = round(filesize($sqlfile)/(1024*1024), 2);
-					 $info['maketime'] = date('Y-m-d H:i:s', filemtime($sqlfile));
-					 $info['pre'] = $num[1];
-					 $info['number'] = $num[2];
-					 if(!$id) $prebgcolor = '#E4EDF9';
-					 if($info['pre'] == $prepre)
-					 {
-						 $info['bgcolor'] = $prebgcolor;
-					 }
-					 else
-					 {
-						 $info['bgcolor'] = $prebgcolor == '#E4EDF9' ? '#F1F3F5' : '#E4EDF9';
-					 }
-					 $prebgcolor = $info['bgcolor'];
-					 $prepre = $info['pre'];
-					 $info['typename']=$lang_database;
-					 $info['type']='sql';
-					 $infosql[] = $info;
-					 $metinfodata[]=$info;
-				}
-			}
 
-	       	turnover("{$_M[url][own_form]}a=dodownload",'');
-		}
+					for ($i = 1; $i < 10 ; $i++) {
+		    			$sql = $sql_path.$file.$i.'.sql';
+
+		    			if(file_exists($sql)){
+							$zip->addFile($sql,$file.$i.'.sql');
+		    			}
+					}
+
+					$zip->close();
+		    	}
+
+	    		$back_url=$zip_url;
+	    		break;
+	    	case 'upload':
+	    		$back_url.="upload/{$file}";
+	    		break;
+	    	case 'web':
+	    		$back_url.="web/{$file}";
+	    		break;
+	    	default:
+	    		$back_url = $_M['url']['site_admin'];
+	    		break;
+	    }
+
+	    header("location:".$back_url);die;
 	}
 
 	/*自定义数据库*/
@@ -762,7 +728,7 @@ class index extends admin {
   	public function dopacktable(){
 	    global $_M;
 	    $this->dogetsql($_M[form][tables]);
-	    turnover("{$_M[url][own_form]}a=dodownload",$_M[word][setdbBackupOK]);
+	    turnover("{$_M[url][own_form]}a=dorecovery",$_M[word][setdbBackupOK]);
   	}
 
     /**
@@ -782,26 +748,19 @@ class index extends admin {
     public function docheckapplsit(){
         global $_M;
 
-        $query = "SELECT `m_name` FROM {$_M['table'][applist]}";
+        $query = "SELECT `m_name`,no FROM {$_M['table'][applist]}";
         $applist = DB::get_all($query);
-        #dump($applist);
-
-        $file = scandir(PATH_WEB.'app/app');
-        $appdir = array();
-        $no_include = array('.', '..');
-        foreach ($file as $val) {
-            if(!in_array($val,$no_include)){
-                if (is_dir(PATH_WEB . "app/app/" . $val)) {
-                    $appdir[] = $val;
-                }
-            }
-        }
 
         foreach ($applist as $app) {
-            if(!in_array($app['m_name'],$appdir)){
-                $query = "DELETE FROM {$_M['table']['applist']} WHERE `m_name`= '{$app['m_name']}'";
-                DB::query($query);
-            }
+        	if($app['no'] == 10080){
+        		if(is_dir(PATH_SYS . 'pay')){
+        			continue;
+        		}
+        	}
+        	if(!is_dir(PATH_WEB.'app/app/'.$app['m_name'])){
+        		$query = "DELETE FROM {$_M['table']['applist']} WHERE `m_name`= '{$app['m_name']}'";
+        		DB::query($query);
+        	}
         }
     }
 
@@ -830,6 +789,44 @@ class index extends admin {
         }
         @closedir($path);
         return 1;
+    }
+
+
+
+    public function dounzip_upload()
+    {
+    	global $_M;
+    	$file = $_M['form']['file'];
+    	$zipname = PATH_WEB.ADMIN_FILE.'/databack/upload/'.$file;
+
+    	if(file_exists($zipname))
+    	{
+    		rename(PATH_WEB.'upload', PATH_WEB.'upload'.date('Ymd'));
+	        $zip = new ZipArchive;
+	        if ($zip->open($zipname) === TRUE) {
+	          $zip->extractTo(PATH_WEB);
+	          $zip->close();
+	          	response($_M['word']['webupate3'],1);
+	        } else {
+	        	response($_M['word']['webupate4']);
+	        }
+    	}else{
+    		response($_M['word']['webupate5']);
+    	}
+    }
+
+    public function dodelete_zip()
+    {
+    	global $_M;
+    	$file = str_replace('/', '', $_M['form']['file']);
+    	$type = $_M['form']['type'] == 'upload' ? 'upload' : 'web';
+
+    	$zipname = PATH_WEB.ADMIN_FILE.'/databack/'.$type.'/'.$file;
+    	if(file_exists($zipname)){
+    		@unlink($zipname);
+    		response($_M['word']['physicaldelok'],1);
+    	}
+    	response($_M['word']['setdbNotExist']);
     }
 
 }

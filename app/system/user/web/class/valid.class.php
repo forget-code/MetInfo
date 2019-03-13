@@ -1,11 +1,11 @@
 <?php
-# MetInfo Enterprise Content Management System 
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+# MetInfo Enterprise Content Management System
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 
 defined('IN_MET') or exit('No permission');
 
-class valid {	
-	
+class valid {
+
 	public function get_email($email,$type = 'register'){
 		global $_M;
 		//生成加密字符串
@@ -14,11 +14,11 @@ class valid {
 		//发邮件
 		$jmail = load::sys_class('jmail', 'new');
 		$touser = $email;
-		
+
 		$title = $_M['config']['met_member_email_reg_title'];
 		$body = $_M['config']['met_member_email_reg_content'];
 		$url = $_M['url']['valid_email'];
-		
+
 		if($type=='getpassword'){
 			$title = $_M['config']['met_member_email_password_title'];
 			$body = $_M['config']['met_member_email_password_content'];
@@ -27,7 +27,7 @@ class valid {
 		if($type=='emailedit'){
 			$title = $_M['config']['met_member_email_safety_title'];
 			$body = $_M['config']['met_member_email_safety_content'];
-			$url = $_M['url']['mailedit'];
+			$url = $_M['url']['emailedit'];
 		}
 		if($type=='emailadd'){
 			$title = $_M['config']['met_member_email_safety_title'];
@@ -39,7 +39,7 @@ class valid {
 		$body = $this->repalce_email($body, $url);
 		return $jmail->send_email($touser, $title, $body);
 	}
-	
+
 	public function repalce_email($str, $url){
 		global $_M;
 		$str = str_replace('{webname}', $_M['config']['met_webname'], $str);
@@ -47,26 +47,29 @@ class valid {
 		$str = str_replace('{opurl}', $url, $str);
 		return $str;
 	}
-		
+
 	public function get_tel($tel){
 		global $_M;
-		
+        if(!load::sys_class('pin', 'new')->check_pin($_M['form']['code']) && $_M['config']['met_memberlogin_code'] ){
+            echo  $_M['word']['membercode'];
+            die;
+        }
 		$session = load::sys_class('session', 'new');
 		if($session->get("phonetime")&&time()<($session->get("phonetime")-220)){
 			return false;
 			die;
 		}
-		
+
 		$code = random(6, 1);
 		$time = time()+300;
 		$session->set("phonecode",$code);
 		$session->set("phonetime",$time);
 		$session->set("phonetel",$tel);
-		
+
 		$sms = load::sys_class('sms', 'new');
-		$ret = $sms->sendsms($tel, "验证码为 {$code} ，请及时输入验证。");
+		$ret = $sms->sendsms($tel, "{$_M['word']['usesendcode']}{$code}{$_M['word']['usesendcodeinfo']}");
 		return $ret;
-		
+
 	}
 }
 

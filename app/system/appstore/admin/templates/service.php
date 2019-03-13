@@ -15,7 +15,7 @@ echo <<<EOT
 			<thead>
 				<tr>
 					<th width="100" data-table-columnclass="met-center">{$_M['word']['onlineimg']}</th>
-					<th>服务名称</th>
+					<th>{$_M[word][servicename_v6]}</th>
 				</tr>
 			</thead>
 			<tbody>

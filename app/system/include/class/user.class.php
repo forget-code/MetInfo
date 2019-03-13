@@ -213,18 +213,91 @@ class user {
         return true;
     }
 
+    /**
+     * 更改用户组
+     * @param int $userid   用户id
+     * @param int $group    分组编号
+     * @return bool
+     */
+    public function editor_uesr_gorup($userid, $group) {
+        global $_M;
+        if (!$userid) return false;
+        if (!$this->get_user_by_id($userid)) return false;
+
+        $mgroup = load::sys_class('group', 'new');
+        $grouplist = $mgroup->get_group_list();
+        $arr = array();
+        foreach ($grouplist as $val) {
+            $arr[] = $val['id'];
+        }
+        if (!in_array($group, $arr)) {
+            return false;
+        }
+
+        $query = "UPDATE {$_M['table']['user']} SET groupid = '{$group}' WHERE id = '{$userid}'";
+        DB::query($query);
+        return $group;
+    }
+
+    /* 实名认证 */
+    public function editor_uesr_idvalid($userid,$info) {
+        global $_M;
+        if (!$userid) {
+            return false;
+        }
+
+        $realidinfo=authcode($info,'ENCODE',"met_info");
+        $query = "UPDATE {$_M['table']['user']} SET idvalid = '1',reidinfo = '$realidinfo' WHERE id = '{$userid}'";
+        DB::query($query);
+
+        //更新用户绑定手机
+        $tel = explode("|", $info);
+        $query = "SELECT * FROM {$_M['table']['user']}  WHERE id = '{$userid}' AND tel ='' ";
+        if(DB::query($query)){
+            $query = "UPDATE {$_M['table']['user']} SET tel = '{$tel[2]}'WHERE id = '{$userid}'";
+            DB::query($query);
+        }
+        return true;
+    }
+
+    /* 获取实名信息 */
+    /*public function getRealIdInfo($user) {
+        global $_M;
+        $info = explode('|',authcode($user['reidinfo'], 'DECODE', "met_info"));
+        $realidinfo = array();
+        mb_internal_encoding("UTF-8");
+        $realidinfo['realname']   = "*".mb_substr($info[0],-1);
+        $realidinfo['idcode']     = substr($info[1],0,2)."****".substr($info[1],-4);
+        $realidinfo['phone']      = substr($info[2],0,3)."****".substr($info[2],-4);
+        return $realidinfo;
+    }*/
+
+    public function getRealIdInfo($user) {
+        global $_M;
+        $info = explode('|',authcode($user['reidinfo'], 'DECODE', "met_info"));
+        $realidinfo = array();
+        mb_internal_encoding("UTF-8");
+        $realidinfo['realname']   = $info[0];
+        $realidinfo['idcode']     = $info[1];
+        $realidinfo['phone']      = $info[2];
+        return $realidinfo;
+    }
+
     /* 修改字段 */ //返回会员信息 $type 等于md5时，是进行加密后的验证
     public function login_by_password($username, $password, $type = 'pass') {
         global $_M;
         if ($this->check_str($username)) {
             //获取会员信息
-            # 插件登陆
+            # 插件登录
             load::plugin('douserlogin', 1, array($type,$username,$password));
-            # 插件登陆
+            # 插件登录
             $user = $this->get_user_by_username($username);
             $password = md5($password);
             if ($user && ($user['password'] == $password || (md5(md5($user['password'])) == $password && $type = 'md5'))) {
-                # 系统登陆接口
+                # 系统登录接口
+                if (!$user['valid']) {
+                    return $user;
+                }
                 //将帐号和密码的加密字符串以及加密密钥写入cookie
                 $this->setauth($user['username'], $user['password']);
                 //完善会员信息的头像地址
@@ -263,7 +336,7 @@ class user {
             //解码，获取帐号和密码
             $user = $this->getauth($auth, $key);
             
-            //重新登陆
+            //重新登录
             return $this->login_by_password($user['username'], $user['password'], 'md5');
         } else {
             return false;
@@ -588,7 +661,7 @@ class user {
         met_setcookie("acc_auth", '');
         met_setcookie("acc_key", '');
         $this->set_m('');
-        # 系统登陆退出接口
+        # 系统登录退出接口
         load::plugin('dologout'); 
     }
 

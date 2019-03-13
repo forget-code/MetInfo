@@ -56,6 +56,7 @@ class view_compile
          * 模板内容
          */
         $this->content = file_get_contents($this->view->tplFile);
+
         // 解析css
         $this->ui_compile->parse_tag_static('css');
         $this->ui_compile->parse_tag_static('js');

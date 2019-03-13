@@ -88,7 +88,7 @@ class  banner_database{
 		$query = "SELECT * FROM {$_M['table']['flash']} WHERE (module LIKE '%,{$id},%' OR module = 'metinfo' ) AND lang = '{$lang}' {$sql} ORDER BY no_order ASC, id DESC";
 		return DB::get_all($query);
 	}
-  
+
 	public function update_by_id($list){
 		global $_M;
 		$sql='';
@@ -102,13 +102,24 @@ class  banner_database{
 		return DB::query($query);
 	}
 
-  public function del_by_id($id) {
+  	public function del_by_id($id) {
     global $_M;
 		$query = "DELETE FROM {$_M['table']['flash']} WHERE id = '{$id}'";
 		return DB::query($query);
 	}
 
 
+	public function update_flash_by_cid($cid,$lang)
+	{
+		global $_M;
+		$query = "SELECT id,module FROM {$_M['table']['flash']} WHERE module like '%,{$cid},%' AND lang = '{$lang}'";
+		$flash = DB::get_all($query);
+		foreach ($flash as $f) {
+			$new_module = str_replace(",{$cid},", ',', $f['module']);
+			$query = "UPDATE {$_M['table']['flash']} SET module = '{$new_module}' WHERE id = {$f['id']}";
+			DB::query($query);
+		}
+	}
 
 }
 

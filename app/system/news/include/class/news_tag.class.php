@@ -12,7 +12,7 @@ class news_tag extends tag {
         $cid    = isset( $attr['cid'] ) ? ( $attr['cid'][0] == '$' ? $attr['cid']
             : "'{$attr['cid']}'" ) : 0;
         $order  = isset($attr['order']) ? $attr['order'] : 'no_order';
-        $num    = isset($attr['num']) ? $attr['num'] : 10;
+        $num    = isset($attr['num']) ? $attr['num'] : $_M['config']['met_news_list'];
         $php    = <<<str
 <?php
     \$cid = $cid;

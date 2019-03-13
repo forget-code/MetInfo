@@ -1,6 +1,3 @@
-.metcms_top_right{display:none;}
-.metappcontentbox{padding:0px;}
-.theme{margin:0px;}
 .theme-left{float:left;width:380px;position:relative;z-index:99;}
 .theme-right{float:right;width:100%;margin-left:-380px;}
 .theme-right .theme-right-iframe{margin-left:380px;font-size:0px;overflow:hidden;position:relative;}

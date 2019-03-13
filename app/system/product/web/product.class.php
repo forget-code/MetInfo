@@ -25,13 +25,13 @@ class product extends news {
 	public function doshowproduct(){
 		global $_M;
 		$this->showpage('product');
-		if($_M['config']['shopv2_open']){
+        $shop_plugin_file = PATH_ALL_APP.'shop/plugin/plugin_shop.class.php';
+		if($_M['config']['shopv2_open']  && file_exists($shop_plugin_file)){
 			load::plugin('doproduct_show',0,$this->input);
+		}else{
+			require_once $this->template('tem/showproduct');
 		}
-		
-		require_once $this->template('tem/showproduct');
 	}
-	
 }
 
 # This program is an open source system, commercial use, please consciously to purchase commercial license.

@@ -30,7 +30,7 @@ class product_admin extends admin {
 	function dorefresh_discount_list(){
 		global $_M;
 		$list = $this->shop->discount_list();
-		$re = "<option value=\"0\">请选择</option>";
+		$re = "<option value=\"0\">{$_M['word']['skinerr3']}</option>";
 		foreach($list as $val){
 			$re.= "<option value=\"{$val[id]}\">{$val[name]}</option>";
 		}
@@ -64,10 +64,10 @@ class product_admin extends admin {
 	function docheck_filename() {
 		global $_M;
 		if(!$this->moduleclass->check_filename($_M['form']['filename'],$_M['form']['id'],$this->module)){
-			$errorno = $this->moduleclass->errorno=='error_filename_cha'?'仅支持中文、大小写字母、数字、下划线':'静态页面名称已被使用';
+			$errorno = $this->moduleclass->errorno=='error_filename_cha'?$_M[word][js74]:$_M[word][js73];
 			echo '0|'.$errorno;
 		}else{
-			echo '1|名称可用';
+			echo '1|'.$_M[word][js75];
 		}
 	}
 	function dopara() {
@@ -94,7 +94,7 @@ class product_admin extends admin {
 				turnover("{$_M[url][own_form]}a=doindex");
 			}
 		}else{
-			turnover("{$_M[url][own_form]}a=doindex",'数据错误');
+			turnover("{$_M[url][own_form]}a=doindex","{$_M[word][dataerror]}");
 		}
 
 	}
@@ -151,7 +151,7 @@ class product_admin extends admin {
 				turnover("{$_M[url][own_form]}a=doindex");
 			}
 		}else{
-			turnover("{$_M[url][own_form]}a=doindex",'数据错误');
+			turnover("{$_M[url][own_form]}a=doindex","{$_M[word][dataerror]}");
 		}
 
 	}
@@ -200,7 +200,7 @@ class product_admin extends admin {
 
 			$ps = '';
 
-			$where = $class1&&$class1!='所有栏目'&&$class1!='null'?"and {$ps}class1 = '{$class1}'":'';
+			$where = $class1&&$class1!='{$_M[word][allcategory]}'&&$class1!='null'?"and {$ps}class1 = '{$class1}'":'';
 			$where.= $class2&&$class2!='null'?"and {$ps}class2 = '{$class2}'":'';
 			$where.= $class3&&$class3!='null'?"and {$ps}class3 = '{$class3}'":'';
 			$where.= $keyword?"and {$ps}title like '%{$keyword}%'":'';
@@ -224,10 +224,10 @@ class product_admin extends admin {
 
 			foreach($userlist as $key=>$val){
 				$val['url']   = $this->moduleclass->url($val,$this->module);
-				$val['state'] = $val['displaytype']?'':'<span class="label label-default">前台隐藏</span>';
-				if(!$val['state'])$val['state'] = strtotime($val['addtime'])>time()?'<span class="label label-default">定时发布</span>':'';
-				$val['state'].= $val['com_ok']?'<span class="label label-info" style="margin-left:8px;">推荐</span>':'';
-				$val['state'].= $val['top_ok']?'<span class="label label-success" style="margin-left:8px;">置顶</span>':'';
+				$val['state'] = $val['displaytype']?'':'<span class="label label-default">{$_M[word][displaytype2]}</span>';
+				if(!$val['state'])$val['state'] = strtotime($val['addtime'])>time()?'<span class="label label-default">{$_M[word][timedrelease]}</span>':'';
+				$val['state'].= $val['com_ok']?'<span class="label label-info" style="margin-left:8px;">{$_M[word][recom]}</span>':'';
+				$val['state'].= $val['top_ok']?'<span class="label label-success" style="margin-left:8px;">{$_M[word][top]}</span>':'';
 				$list = array();
 				$list[] = "<input name=\"id\" type=\"checkbox\" value=\"{$val[id]}\">";
 				$list[] = "
@@ -247,7 +247,7 @@ class product_admin extends admin {
 				$list[] = $val['updatetime'];
 				$list[] = $val['state'];
 				$list[] = "<input name=\"no_order-{$val['id']}\" type=\"text\" class=\"ui-input text-center\" value=\"{$val[no_order]}\">";
-				$list[] = "<a href=\"{$_M[url][own_form]}a=doeditor&id={$val['id']}&select_class1={$_M['form']['select_class1']}&select_class2={$_M['form']['select_class2']}&select_class3={$_M['form']['select_class3']}\" class=\"edit\">编辑</a><span class=\"line\">-</span><a href=\"{$_M[url][own_form]}a=dolistsave&submit_type=del&allid={$val['id']}\" data-toggle=\"popover\" class=\"delet\">删除</a>
+				$list[] = "<a href=\"{$_M[url][own_form]}a=doeditor&id={$val['id']}&select_class1={$_M['form']['select_class1']}&select_class2={$_M['form']['select_class2']}&select_class3={$_M['form']['select_class3']}\" class=\"edit\">{$_M[word][editor]}</a><span class=\"line\">-</span><a href=\"{$_M[url][own_form]}a=dolistsave&submit_type=del&allid={$val['id']}\" data-toggle=\"popover\" class=\"delet\">{$_M[word][delete]}</a>
 				";
 				$rarray[] = $list;
 			}
@@ -337,7 +337,7 @@ class product_admin extends admin {
 			$list[] = $val['id_html'];
 			$list[] = $val['name_html'];
 			$list[] = $val['paratype_html'];
-			$list[] = "<select name=\"class-{$val[id]}\" data-checked=\"{$val['value']}\"><option value=\"0-0-0\">所有栏目</option>".$this->moduleclass->class_option($this->module).'</select>';
+			$list[] = "<select name=\"class-{$val[id]}\" data-checked=\"{$val['value']}\"><option value=\"0-0-0\">{$_M[word][allcategory]}</option>".$this->moduleclass->class_option($this->module).'</select>';
 			$list[] = $this->moduleclass->access_option("access-{$val[id]}",$val['access']);
 			$list[] = $val['no_order_html'];
 			$list[] = $val['options_html'];
@@ -350,15 +350,15 @@ class product_admin extends admin {
 		$id = 'new-'.$_M['form']['ai'];
 		$para_type = $this->paraclass->para_type($id);
 		$access_option = $this->moduleclass->access_option("access-{$id}");
-		$class_option = "<select name=\"class-{$id}\" data-checked=\"0-0-0\"><option value=\"0-0-0\">所有栏目</option>".$this->moduleclass->class_option($this->module).'</select>';
+		$class_option = "<select name=\"class-{$id}\" data-checked=\"0-0-0\"><option value=\"0-0-0\">{$_M[word][allcategory]}</option>".$this->moduleclass->class_option($this->module).'</select>';
 		$metinfo ="<tr class=\"even newlist\">
 					<td class=\"met-center\"><input name=\"id\" type=\"checkbox\" value=\"{$id}\" checked></td>
-					<td><input type=\"text\" name=\"name-{$id}\" class=\"ui-input listname\" value=\"\" placeholder=\"名称\"></td>
+					<td><input type=\"text\" name=\"name-{$id}\" class=\"ui-input listname\" value=\"\" placeholder=\"{$_M[word][content_name_v6]}\"></td>
 					<td class=\"met-center\">{$para_type}</td>
 					<td class=\"met-center\">{$class_option}</td>
 					<td class=\"met-center\">{$access_option}</td>
 					<td class=\"met-center\"><input type=\"text\" name=\"no_order-{$id}\" class=\"ui-input met-center\" value=\"\"></td>
-					<td><button type=\"button\" class=\"btn btn-info none paraoption\" data-id=\"{$id}\">设置选项</button><input name=\"options-{$id}\" type=\"hidden\" value=\"\"></td>
+					<td><button type=\"button\" class=\"btn btn-info none paraoption\" data-id=\"{$id}\">{$_M[word][listTitle]}</button><input name=\"options-{$id}\" type=\"hidden\" value=\"\"></td>
 				</tr>";
 		echo $metinfo;
 	}

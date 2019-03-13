@@ -50,7 +50,7 @@ echo <<<EOT
 				</div>
 			</dd>
 		</dl>
-		<h3 class="v52fmbx_hr clearfix">SEO{$_M[word][unitytxt_39]}<button type='button' class='btn btn-default btn-sm showmoreset-btn'>展开更多设置</button></h3>
+		<h3 class="v52fmbx_hr clearfix">SEO{$_M[word][unitytxt_39]}<button type='button' class='btn btn-default btn-sm showmoreset-btn'>{$_M[word][click_enter]}</button></h3>
 		<div class='showmoreset-content'>
 			<dl>
 				<dt>{$_M[word][managertyp5]}{$_M[word][columnmtitle]}</dt>
@@ -156,7 +156,7 @@ EOT;
 if($_M['config']['met_webhtm']){
 	$list['addtype'] = 1;
 	$disabled = 'disabled';
-	$tips = '<span class="tips">{$_M[word][]}定时发布不支持静态页面，请关闭静态页面。（可以使用伪静态）</span>';
+	$tips = '<span class="tips">{$_M[word][tips5_v6]}</span>';
 }
 echo <<<EOT
 -->

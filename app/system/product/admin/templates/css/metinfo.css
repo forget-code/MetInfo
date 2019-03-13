@@ -4,7 +4,7 @@ dd.standard  .popover{ min-width:330px; }
 dd.standard  span.option{ display:inline-block; position:relative; margin-right:6px; padding:6px 12px; border:1px solid #ddd; border-radius:4px; color:#333; }
 dd.standard  .panel{ max-width:600px; }
 dd.standard  .panel-heading{ position:relative;}
-dd.standard  span.option:hover span,dd.standard  .panel-heading:hover span{ display:block!important; }
+dd.standard  span.option:hover span,dd.standard  .panel-heading:hover span{ display:block!important;}
 dd.standard  span.close{ 
 position: absolute;
 right: -8px;
@@ -25,9 +25,18 @@ dl.stock .table{ max-width:700px; color:#333;}
 dl.stock .table th{ font-weight:normal; }
 dl.stock .table td{ vertical-align:middle; border:1px solid #ddd; }
 
-.met_affix_save{ position: fixed;bottom: 0px; z-index:999999; height:45px; line-height:45px; margin-left:-10px; width:100%; }
+.met_affix_save{ position: fixed;bottom: 0px; z-index:999; height:45px; line-height:45px; margin-left:-10px; width:100%; }
 .met_affix_save button{ margin-left:20px; }
 
 .orderby-arrow.desc:before{ content: '\2193'; }
 .orderby-arrow.asc:before{ content: '\2191'; }
 .orderby-arrow{ margin-left:5px;}
+@media (max-height: 800px) {
+	.auto-sent-modal iframe{height: 600px;}
+}
+@media (max-height: 700px) {
+	.auto-sent-modal iframe{height: 500px;}
+}
+@media (max-height: 600px) {
+	.auto-sent-modal iframe{height: 400px;}
+}

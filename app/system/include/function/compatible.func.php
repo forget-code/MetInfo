@@ -147,9 +147,15 @@ function template($template){
         $uifile = "met";
         $uisuffix = 'html';
     }
-    $path = PATH_WEB."templates/{$_M['config']['met_skin_user']}/{$template}.html";
-    !file_exists($path) && $path=PATH_WEB."templates/{$_M['config']['met_skin_user']}/{$template}.php";
-    if($metinfover=='v2') !file_exists($path) && $path=PATH_ALL_APP."shop/web/templates/met/{$template}.php";// 商城V3使用默认模板时
+    $path = PATH_WEB."templates/{$_M['config']['met_skin_user']}/{$template}.{$uisuffix}";
+    if(!file_exists($path) && $metinfover=='v2'){
+    	if(M_NAME=='product'){
+    		$path=PATH_APP_FILE."web/templates/met/{$template}.php";// 商城V3使用默认模板时
+		}else{
+			$path=PATH_OWN_FILE."templates/met/{$template}.php";
+    		!file_exists($path) && $path=PATH_SYS."include/public/ui/admin/{$template}.php";
+		}
+    }
     !file_exists($path) && $path=PATH_WEB."public/ui/{$uifile}/{$template}.{$uisuffix}";
 	return $path;
 }
@@ -174,13 +180,13 @@ function cache_online(){
 	while($list = DB::fetch_array($result)){
 		$data[]=$list;
 	}
-	return cache_page('online_'.$lang.'.inc.php',$data);
+	return cache_page('online_'.$_M['lang'].'.inc.php',$data);
 }
 
 function cache_otherinfo($retype=1){
 	global $_M;
     $data = DB::get_one("SELECT * FROM {$_M['table']['otherinfo']} WHERE lang='{$_M['lang']}' ORDER BY id");
-	return cache_page('otherinfo_'.$lang.'.inc.php',$data,$retype);
+	return cache_page('otherinfo_'.$_M['lang'].'.inc.php',$data,$retype);
 }
 
 function cache_str(){
@@ -197,7 +203,7 @@ function cache_str(){
 		$str_list_temp[2]=$list['num'];
 		$str_list[]=$str_list_temp;
 	}
-	return cache_page("str_".$lang.".inc.php",$str_list);
+	return cache_page("str_".$_M['lang'].".inc.php",$str_list);
 }
 
 function cache_column(){

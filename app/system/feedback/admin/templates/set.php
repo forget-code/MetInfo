@@ -7,7 +7,7 @@ defined('IN_MET') or exit('No permission');
 require $this->template('ui/head');
 echo <<<EOT
 -->
-<form method="POST"  class="ui-form" name="myform" action="{$_M[url][own_form]}a=dosaveinc" target="_self">
+<form method="POST"  class="ui-from" name="myform" action="{$_M[url][own_form]}a=dosaveinc" target="_self">
 	<input name="action" type="hidden" value="modify">
 	<input name="class1" type="hidden" value="{$_M[form][class1]}">
 	<input name="met_fd_back" type="hidden" value="0">
@@ -75,6 +75,12 @@ echo <<<EOT
 							<span class="tips">{$_M[word][fdincTip6]}</span>
 						</dd>
 					</dl>
+<!--
+EOT;
+
+
+/*echo <<<EOT
+
 					<dl>
 						<dt>{$_M[word][listproductre]}{$_M[word][marks]}</dt>
 						<dd class="ftype_select">
@@ -86,8 +92,8 @@ echo <<<EOT
 EOT;
 $module = load::mod_class('column/column_op', 'new')->get_sorting_by_module();
 foreach($module['3']['class1'] as $val){
-	if($val[id]==$metlistrele)$select1="selected='selected'";
-echo <<<EOT
+    $select1=$val[id]==$metlistrele?"selected='selected'":'';
+    echo <<<EOT
 -->
 									<option value="{$val['id']}" {$select1}>{$val['name']}</option>
 <!--
@@ -96,9 +102,78 @@ EOT;
 echo <<<EOT
 -->
 								</select>
+								<span class="tips">{$_M[word][fdincTip13]}</span>
 							</div>
 						</dd>
 					</dl>
+<!--
+EOT;*/
+
+
+echo <<<EOT
+-->
+                    <dl>
+						<dt>{$_M[word][listproductre]}{$_M[word][marks]}</dt>
+						<dd class="ftype_select">
+							<div class="fbox">
+								<select name="met_fd_related">
+									<option value="0" {$select0}>{$_M[word][listproductreok]}</option>
+<!--
+EOT;
+foreach($fd_related as $val){
+    $select1=$val[id]==$met_fd_related?"selected='selected'":'';
+    echo <<<EOT
+-->
+									<option value="{$val['id']}" {$select1}>{$val['name']}</option>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+								</select>
+								<span class="tips">{$_M[word][fdincTip13]}</span>
+							</div>
+						</dd>
+					</dl>
+
+
+				    <dl>
+                        <dt>{$_M[word][fdincTip12]}</dt>
+                        <dd class="ftype_checkbox">
+                            <div class="fbox">
+<!--
+EOT;
+foreach($fbcol as $key=>$val){
+    $checked='';
+    foreach($met_fd_showcol as $v){
+        if($val['id']==$v)$checked="checked='checked'";
+    }
+echo <<<EOT
+-->
+                                <label><input name="met_fd_showcol" type="checkbox" value="{$val[id]}" data-checked={$met_fd_showcol} >{$val[name]}</label>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+                            </div>
+                            <span class="tips"></span>
+                        </dd>
+                    </dl>
+
+					<dl>
+						<dt>{$_M['word']['feedbackinquiry']}{$_M['word']['[marks']}</dt>
+						<dd class="ftype_radio">
+							<div class="fbox">
+								<label>
+									<input name="met_fd_inquiry" type="radio" value="1"  data-checked="{$met_fd_inquiry}">{$_M[word][open]}</label>
+								<label>
+									<input name="met_fd_inquiry" type="radio" value="0" >{$_M[word][close]}</label>
+							</div>
+							<span class="tips">{$_M['word']['feedbackinquiryinfo']}</span>
+						</dd>
+					</dl>
+
 					<dl>
 						<dt>{$_M[word][fdincAcceptType]}{$_M[word][marks]}</dt>
 						<dd class="ftype_radio">
@@ -113,6 +188,7 @@ echo <<<EOT
 						</dd>
 					</dl>
 				</div>
+
 				<dl>
 					<dt>{$_M[word][fdincAcceptMail]}{$_M[word][marks]}</dt>
 					<dd class="ftype_input">
@@ -139,7 +215,7 @@ echo <<<EOT
 								<select name="met_fd_email">
 <!--
 EOT;
-foreach($fd_para[1] as $key=>$val){
+foreach($fd_para[9] as $key=>$val){
 $select1='';
 if($val[id]==$met_fd_email)$select1="selected='selected'";
 echo <<<EOT
@@ -191,7 +267,7 @@ echo <<<EOT
 				    				<select name="met_fd_sms_dell">
 <!--
 EOT;
-foreach($fd_para[1] as $key=>$val){
+foreach($fd_para[8] as $key=>$val){
 $select1='';
 if($val[id]==$met_fd_sms_dell)$select1="selected='selected'";
 echo <<<EOT

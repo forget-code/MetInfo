@@ -65,20 +65,35 @@ class product_database extends news_database {
         $sql .= " class3 = '{$class3}' AND ";
       }
       $sql = substr($sql, 0 , -4);
-      $sql .= " OR ("; 
-      $sql .= " classother REGEXP '/|-{$class1}-"; 
+      $sql .= " OR (";
+      $sql .= " classother REGEXP '/|-{$class1}-";
       $sql .= $class2?"{$class2}-":"[0-9]*-";
       $sql .= $class3?"{$class3}-|/'":"[0-9]*-|/'";
-      $sql .= " )"; 
-      $sql .= " )"; 
+      $sql .= " )";
+      $sql .= " )";
     }
     return $sql;
 	}
 
   public function del_plist($id,$module){
       global $_M;
-      $query="delete from {$_M[table][plist]} where listid='$id' and lang='{$_M[lang]}' and module='$module'"; 
+      $query="delete from {$_M[table][plist]} where listid='$id' and lang='{$_M[lang]}' and module='$module'";
       DB::query($query);
+  }
+
+  public function get_list_by_class123($class1,$class2,$class3)
+  {
+      global $_M;
+      $where = "WHERE class1 = {$class1}";
+      if($class2){
+         $where .= " AND WHERE class2 = {$class2}";
+      }
+
+      if($class3){
+         $where .= " AND WHERE class3 = {$class3}";
+      }
+      $query = "SELECT id,title FROM {$this->table} {$where} AND lang='{$_M['lang']}' ORDER BY no_order DESC";
+      return DB::get_all($query);
   }
 }
 

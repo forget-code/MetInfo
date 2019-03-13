@@ -257,7 +257,7 @@ die();
 						@unlink('../../templates/'.$val[filename]);
 					}
 				}
-				$metinfo='含有危险函数，禁止上传！！';
+				$metinfo=$lang_upload_dangerfunction_v6;
 			}else{
 				$metinfo='1$'.$filenamearray[0];
 			}
@@ -324,7 +324,7 @@ die();
 
                                  if(!$zip->close()){
 
-                           	        echo '上传的压缩包含有非sql文件';
+                           	        echo $lang_upload_descript1_v6;
                            	         exit;
                                 
                               }

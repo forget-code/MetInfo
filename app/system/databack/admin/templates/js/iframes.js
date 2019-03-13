@@ -171,7 +171,7 @@ function changepower(classtype){
 			}
 		});
 	}
-	
+
 }
 function tocloumn(){
 	$.cookie('coul','25',{path:'/'});
@@ -412,7 +412,7 @@ function metuploadify(id, type, ureturn, module, wate, fileExt, fileDesc) {
 	$(id).wrap("<div class='file_uploadfrom'></div>");
 	$(id).parent().wrap("<div class='metuplaodify'></div>");
 	$(id).parent().wrap("<form id='upfileForm"+upload_type+"' enctype='multipart/form-data'></form>");
-	$(id).parent().after("<a href='javascript:;' title='" + user_msg['jsx15'] + "' class='upbutn round btn btn-primary btn-sm'>" + user_msg['jsx15'] + "</a>");
+	$(id).parent().after("<a href='javascript:;' title='" +METLANG.jsx15+ "' class='upbutn round btn btn-primary btn-sm'>" +METLANG.jsx15+ "</a>");
 	if (module != 67) $(id).parent().parent().after("<span class='uptips'></span>");
 	var img_url = own_tem + 'js/uploadify.swf';
 	var depths = adminurls + 'include/uploadify.php'+'?type='+type+'&wate='+wate+'&module='+module+'&lang='+lang;
@@ -432,6 +432,7 @@ function metuploadify(id, type, ureturn, module, wate, fileExt, fileDesc) {
 				//tips.width(pd);
 			},
 			error: function (response) {
+				console.log(response,'err')
 				if(typeof response !== 'string')response=user_msg['js35'];
 				else{
 					var responses=response.split(',');
@@ -444,6 +445,7 @@ function metuploadify(id, type, ureturn, module, wate, fileExt, fileDesc) {
 				uponComplete(response, ureturn, tips, module,type,id);
 			},
 			success: function (response) {
+				console.log(response,'suc')
 				if(typeof response !== 'string')response=user_msg['js35'];
 				else{
 					var responses=response.split(',');
@@ -457,7 +459,7 @@ function metuploadify(id, type, ureturn, module, wate, fileExt, fileDesc) {
 			}
 		});
 		return false;
-		
+
 		$("#upfileForm"+upload_type).submit();
 	}
 	});
@@ -643,21 +645,21 @@ function sitemp(url) {
 		$('#sitemap').hide();
 	}
 }
-  
+
  function func(){
 	$('#update_content_back').height($(document).height());
 	$('#update_content_back').width($(document).width());
 	$('#update_contents').css('left',$(window).width()/2-$('#update_contents').width()/2);
 	$('#update_contents').css('top',$(window).height()/2-$('#update_contents').height()/2+$("html,body").scrollTop()+$("body").scrollTop());
-} 
-  
+}
+
 function xian(data){
 	parent.$('#update_content_back').show();
 	parent.$('#update_contents').show();
 	parent.$('#uptitle').html('升级失败');
 	parent.$('html,body').css('overflow','hidden');
 	parent.zsyfunc();
-	ver=$('#ver_now_cms').val();	
+	ver=$('#ver_now_cms').val();
 	parent.$("#update_content_back").css({ opacity: 0.7 });
 	parent.$('#update_contents .content').html(data);
 	parent.$(".nano").nanoScroller({alwaysVisible: true});
@@ -851,7 +853,7 @@ function olflie(id, ver, action, numnow) {
 	});
 }
 function appdel(my, id) {
-	var tp = confirm(user_msg['js7']) ? 1: '';
+	var tp = confirm(METLANG.js7) ? 1: '';
 	if (tp == 1) {
 		url = my.attr('href');
 		$.ajax({
@@ -898,15 +900,15 @@ function allid(ary, all) {
 function Atoform(form, type) {
 	var tn;
 	var noselect = form.find("select.noselect");
-	
+
 	if (noselect.size() > 0) {
 		noselect.each(function() {
 			var tit = type == 1 ? '': $(this).parent("dd").parent("dl").find("dt").text();
 			tn = $(this).val() == 0 ? tit + user_msg['js41'] : ($(this).val() == '' ? tit + user_msg['js41'] : '');
 			if ($(this).find('option').size() == 1) tn = '';
-			
+
 			if (tn != '') {
-			
+
 				$(this).focus();
 				return false;
 			}
@@ -951,7 +953,7 @@ function Atoform(form, type) {
 		});
 		if (tn != '') return tn;
 	}
-	
+
 	var nul = form.find("input.nonull,textarea.nonull");
 	if (nul.size() > 0) {
 		nul.each(function() {
@@ -966,21 +968,21 @@ function Atoform(form, type) {
 		});
 		if (tn != '') return tn;
 	}
-	
+
 	var name = $("div[name='paralist']");
 	var checkbox = name.find("label.nonull input.checkbox");
-	t = '0';	
+	t = '0';
 	if (checkbox.size() > 0) {
-		checkbox.each(function() {		
+		checkbox.each(function() {
 			if($(this).prop("checked")){
 				t++;
-			}			
+			}
 		});
 		var tn = '';
 		var tit = type == 1 ? '': checkbox.parent("label").parent("dd").parent("dl").find("dt").text();
-		
+
 		if(t=='0'){
-			tn = tit + user_msg['js41'];	
+			tn = tit + user_msg['js41'];
 		}
 		if (tn != '') {
 			checkbox.focus();
@@ -990,36 +992,36 @@ function Atoform(form, type) {
 	var radio = name.find("label.nonull input.radio");
 	t = '0';
 	if (radio.size() > 0) {
-		radio.each(function() {			
+		radio.each(function() {
 			if($(this).prop("checked")){
-				t++;	
-			}			
+				t++;
+			}
 		});
 		tn = '';
 		var tit = type == 1 ? '': radio.parent("label").parent("dd").parent("dl").find("dt").text();
 		if(t=='0'){
-			tn = tit + user_msg['js41'];	
+			tn = tit + user_msg['js41'];
 		}
 		if (tn != '') {
 			radio.focus();
 			return tn;
 		}
 	}
-	
+
 	var name1 = $("div[name='paralist1']");
 	var checkbox1 = name1.find("label.nonull input.checkbox");
-	t = '0';	
+	t = '0';
 	if (checkbox1.size() > 0) {
-		checkbox1.each(function() {		
+		checkbox1.each(function() {
 			if($(this).prop("checked")){
 				t++;
-			}			
+			}
 		});
 		var tn = '';
 		var tit = type == 1 ? '': checkbox1.parent("label").parent("dd").parent("dl").find("dt").text();
-		
+
 		if(t=='0'){
-			tn = tit + user_msg['js41'];	
+			tn = tit + user_msg['js41'];
 		}
 		if (tn != '') {
 			checkbox1.focus();
@@ -1029,36 +1031,36 @@ function Atoform(form, type) {
 	var radio1 = name1.find("label.nonull input.radio");
 	t = '0';
 	if (radio1.size() > 0) {
-		radio1.each(function() {			
+		radio1.each(function() {
 			if($(this).prop("checked")){
-				t++;	
-			}			
+				t++;
+			}
 		});
 		tn = '';
 		var tit = type == 1 ? '': radio1.parent("label").parent("dd").parent("dl").find("dt").text();
 		if(t=='0'){
-			tn = tit + user_msg['js41'];	
+			tn = tit + user_msg['js41'];
 		}
 		if (tn != '') {
 			radio1.focus();
 			return tn;
 		}
 	}
-	
+
 	var name2 = $("div[name='paralist2']");
 	var checkbox2 = name2.find("label.nonull input.checkbox");
-	t = '0';	
+	t = '0';
 	if (checkbox2.size() > 0) {
-		checkbox2.each(function() {		
+		checkbox2.each(function() {
 			if($(this).prop("checked")){
 				t++;
-			}			
+			}
 		});
 		var tn = '';
 		var tit = type == 1 ? '': checkbox2.parent("label").parent("dd").parent("dl").find("dt").text();
-		
+
 		if(t=='0'){
-			tn = tit + user_msg['js41'];	
+			tn = tit + user_msg['js41'];
 		}
 		if (tn != '') {
 			checkbox2.focus();
@@ -1068,22 +1070,22 @@ function Atoform(form, type) {
 	var radio2 = name2.find("label.nonull input.radio");
 	t = '0';
 	if (radio2.size() > 0) {
-		radio2.each(function() {			
+		radio2.each(function() {
 			if($(this).prop("checked")){
-				t++;	
-			}			
+				t++;
+			}
 		});
 		tn = '';
 		var tit = type == 1 ? '': radio2.parent("label").parent("dd").parent("dl").find("dt").text();
 		if(t=='0'){
-			tn = tit + user_msg['js41'];	
+			tn = tit + user_msg['js41'];
 		}
 		if (tn != '') {
 			radio2.focus();
 			return tn;
 		}
 	}
-	
+
 	var lank = form.find("input[name='langmark']");
 	if (lank.size() > 0) {
 		var tit = lank.parent("dd").parent("dl").find("dt").text();
@@ -1171,7 +1173,7 @@ function Smit(M, fn) {
 	}
 }
 function linkSmit(my, type, txt) {
-	text = txt ? txt: user_msg['js7'];
+	text = txt ? txt: METLANG.js7;
 	var tp = type != 1 ? 1: confirm(text) ? 1: '';
 	if (tp == 1) {
 		return true;
@@ -1196,7 +1198,7 @@ function met_modify(my, form, type) {
 			Problem(Ato);
 		}
 		 else {
-			msg = recycle == 1 ? user_msg['jsx28'] : user_msg['js7'];
+			msg = recycle == 1 ? user_msg['jsx28'] :METLANG.js7;
 			var df = type ? (type == 'editor' ? 1: (confirm(msg) ? 1: 0)) : 1;
 			if (df == 1) {
 				if (type) $("input[name='action']").val(type);
@@ -1609,8 +1611,8 @@ $(document).ready(function() {
 		//$(this).addClass('ond');
 		var sliding = $(this).attr('sliding');
 		var top = $("h3[sliding='"+sliding+"']").offset().top+50;
-		$("html",parent.document).animate({scrollTop: top}, 1000); 
-		$("body",parent.document).animate({scrollTop: top}, 1000); 
+		$("html",parent.document).animate({scrollTop: top}, 1000);
+		$("body",parent.document).animate({scrollTop: top}, 1000);
 	});
 
 });
@@ -1793,7 +1795,7 @@ $(window).resize(function() {
 //模板设置快捷导航定位
 $(document).ready(function() {
 	if($("#skedtype").size()>0){
-		var navH = $("#skedtype").offset().top + 84; 
+		var navH = $("#skedtype").offset().top + 84;
 		$("#skedtype").wrap("<div style='height:45px'></div>");
 		var dbox = new Array;
 		$(".skedtype span").each(function(i){
@@ -1801,7 +1803,7 @@ $(document).ready(function() {
 				dbox[i] = $("h3[sliding='"+sliding+"']").offset().top - 40;
 		});
 		$(window.parent).scroll(function(){
-			var scroH = $(this).scrollTop(); 
+			var scroH = $(this).scrollTop();
 			if(scroH>navH){
 				var scroZ=scroH-84-5;
 				$("#skedtype").css({

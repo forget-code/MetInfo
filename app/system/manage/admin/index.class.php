@@ -5,7 +5,7 @@ class index extends base_admin {
   public function __construct() {
     global $_M;
     parent::__construct();
-
+    $_M['url']['help_tutorials_helpid']='99';
   }
 
   public function doindex() {
@@ -50,7 +50,7 @@ class index extends base_admin {
       met_setcookie("topara", '', time() - 3600);
     }
 
-    
+
     $admin = admin_information();
     $met_content_type = $admin['content_type'];
     if ($met_content_type == 0) {
@@ -429,6 +429,7 @@ class index extends base_admin {
           foreach ($met_class2[$class1] as $key => $val2) {
             $contentlistes[] = $val2;
           }
+
           //dump($contentlistes);
           foreach ($contentlistes as $key => $val) {
             if ($val['module'] == 1) {
@@ -454,6 +455,7 @@ class index extends base_admin {
               $val['set'] .= '</div>';
               $contentlist[] = $val;
             }
+
             $column_types5 = array();
             $column_types5 = DB::get_one("select * from {$_M[table][column]} where id='$val[bigclass]'");
             if ($val['module'] == 2) {
@@ -463,6 +465,7 @@ class index extends base_admin {
             }
             if (($val['module'] == 2 && $val['bigclass'] == '0') || ($val['module'] == 2 && $column_types5[module] != 2 && $val['bigclass'] != '0')) {
               $val['url'] = 'article/content.php?class1=' . $val[id] . '&action=add&lang=' . $lang . '&anyid=' . $_M[form][anyid];
+
               $val['conturl'] = $new_news_module_url . '&class1=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
               $val['set'] = "<div>
             <p class='lt'><a href='{$val[url]}'>{$_M[word][addinfo]}</a></p><span>-</span><p class='rt'><a href='{$val[conturl]}'>{$_M[word][manager]}</a></p>
@@ -470,9 +473,10 @@ class index extends base_admin {
               $contentlist[] = $val;
             } else {
               if ($val['module'] == 2 && $val['bigclass'] != '0') {
+
                 if ($val['classtype'] == 2) {
                   $val['url'] = 'article/content.php?class1=' . $val[id] . '&action=add&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-                  $val['conturl'] = $new_news_module_url . '&class1=' . $val[classtype] . '&class2=' . $val['id'] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
+                  $val['conturl'] = $new_news_module_url . '&class1=' . $val['bigclass'] . '&class2=' . $val['id'] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
                   $val['set'] = "<div>
                 <p class='lt'><a href='{$val[url]}'>{$_M[word][addinfo]}</a></p><span>-</span><p class='rt'><a href='{$val[conturl]}'>{$_M[word][manager]}</a></p>
                 </div>";
@@ -493,7 +497,7 @@ class index extends base_admin {
               if ($val['module'] == 3 && $val['bigclass'] != '0') {
                 if ($val['classtype'] == 2) {
                   $val['url'] = 'product/content.php?class1=' . $val[id] . '&action=add&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-                  $val['conturl'] = $new_product_module_url . '&class1=' . $val[classtype] . '&class2=' . $val['id'] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
+                  $val['conturl'] = $new_product_module_url . '&class1=' . $val['bigclass'] . '&class2=' . $val['id'] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
                   $val['set'] = "<div>
                   <p class='lt'><a href='{$val[url]}'>{$_M[word][addinfo]}</a></p><span>-</span><p class='rt'><a href='{$val[conturl]}'>{$_M[word][manager]}</a></p>
                   </div>";

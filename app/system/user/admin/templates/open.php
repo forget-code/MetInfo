@@ -12,15 +12,15 @@ echo <<<EOT
 		<h3 class="v52fmbx_hr">QQ</h3>
 		<dl>
 			<dd>
-				<span class="tips">需要到 <a href="http://connect.qq.com/" target="_blank">QQ互联</a> 申请 （管理中心-登录-创建引用-网站）</span>
+				<span class="tips">{$_M[word][user_tips8_v6]} <a href="http://connect.qq.com/" target="_blank">{$_M[word][user_QQinterconnect_v6]}</a> {$_M[word][user_tips9_v6]}</span>
 			</dd>
 		</dl>
 		<dl>
-			<dt>QQ登录</dt>
+			<dt>{$_M[word][qqlogin]}</dt>
 			<dd class="ftype_radio ftype_transverse">
 				<div class="fbox">
-					<label><input name="met_qq_open" type="radio" value="1" data-checked="{$_M['config']['met_qq_open']}">开启</label>
-					<label><input name="met_qq_open" type="radio" value="0">关闭</label>
+					<label><input name="met_qq_open" type="radio" value="1" data-checked="{$_M['config']['met_qq_open']}">{$_M[word][open]}</label>
+					<label><input name="met_qq_open" type="radio" value="0">{$_M[word][close]}</label>
 				</div>
 			</dd>
 		</dl>
@@ -41,31 +41,31 @@ echo <<<EOT
 			</dd>
 		</dl>
 		<dl>
-			<dt>回调地址</dt>
+			<dt>{$_M[word][user_backurl_v6]}</dt>
 			<dd class="ftype_input">
 				<div class="fbox">
 						{$_M['url']['site']}member/login.php
 				</div>
 			</dd>
 		</dl>
-		<h3 class="v52fmbx_hr">微信</h3>
+		<h3 class="v52fmbx_hr">{$_M[word][pay_WeChat_v6]}</h3>
 		<dl>
-			<dt>微信登录</dt>
+			<dt>{$_M[word][weixinlogin]}</dt>
 			<dd class="ftype_radio ftype_transverse">
 				<div class="fbox">
-					<label><input name="met_weixin_open" type="radio" value="1" data-checked="{$_M['config']['met_weixin_open']}">开启</label>
-					<label><input name="met_weixin_open" type="radio" value="0">关闭</label>
+					<label><input name="met_weixin_open" type="radio" value="1" data-checked="{$_M['config']['met_weixin_open']}">{$_M[word][open]}</label>
+					<label><input name="met_weixin_open" type="radio" value="0">{$_M[word][close]}</label>
 				</div>
 			</dd>
 		</dl>
 		<dl>
 			<dd>
-				<span class="tips">需要到 <a href="https://open.weixin.qq.com/cgi-bin/frame?t=home/web_tmpl&lang=zh_CN" target="_blank">微信开放平台</a> 申请</span>
-				<br /><span class="tips">用于PC端会员登录</span>
+				<span class="tips">{$_M[word][user_tips8_v6]}<a href="https://open.weixin.qq.com/cgi-bin/frame?t=home/web_tmpl&lang=zh_CN" target="_blank">{$_M[word][user_tips10_v6]}</a> {$_M[word][user_Apply_v6]}</span>
+				<br /><span class="tips">{$_M[word][user_tips11_v6]}</span>
 			</dd>
 		</dl>
 		<dl>
-			<dt>开放平台App ID</dt>
+			<dt>{$_M[word][user_Openplatform_v6]}App ID</dt>
 			<dd class="ftype_input">
 				<div class="fbox">
 					<input type="text" name="met_weixin_appid" value="{$_M['config']['met_weixin_appid']}">
@@ -73,7 +73,7 @@ echo <<<EOT
 			</dd>
 		</dl>
 		<dl>
-			<dt>开放平台App Secret</dt>
+			<dt>{$_M[word][user_Openplatform_v6]}App Secret</dt>
 			<dd class="ftype_input">
 				<div class="fbox">
 					<input type="text" name="met_weixin_appsecret" value="{$_M['config']['met_weixin_appsecret']}">
@@ -82,13 +82,13 @@ echo <<<EOT
 		</dl>
 		<dl>
 			<dd>
-				<span class="tips">需要到 <a href="https://mp.weixin.qq.com/cgi-bin/frame?t=home/web_tmpl&lang=zh_CN" target="_blank">微信公众平台</a> 申请</span>
-				<br /><span class="tips">用于微信端会员登录，移动端非微信的其他浏览器访问暂不支持微信登陆</span>
-				<br /><span class="tips">需要获取网页授权功能，并设置授权域名为您的网站域名。<span style="color:red">并且将此微信公众号添加至开放平台账号下。</span></span>
+				<span class="tips">{$_M[word][user_tips8_v6]}<a href="https://mp.weixin.qq.com/cgi-bin/frame?t=home/web_tmpl&lang=zh_CN" target="_blank">{$_M[word][user_publicplatform_v6]}</a>{$_M[word][user_Apply_v6]}</span>
+			    <br/><span class="tips">{$_M[word][user_tips12_v6]}</span>
+				<br/><span class="tips">{$_M[word][user_tips13_v6]}<span style="color:red">{$_M[word][user_tips14_v6]}</span></span>
 			</dd>
 		</dl>
 		<dl>
-			<dt>公众平台App ID</dt>
+			<dt>{$_M[word][user_publicplatform_v6]}App ID</dt>
 			<dd class="ftype_input">
 				<div class="fbox">
 					<input type="text" name="met_weixin_gz_appid" value="{$_M['config']['met_weixin_gz_appid']}">
@@ -96,25 +96,25 @@ echo <<<EOT
 			</dd>
 		</dl>
 		<dl>
-			<dt>公众平台App Secret</dt>
+			<dt>{$_M[word][user_publicplatform_v6]}App Secret</dt>
 			<dd class="ftype_input">
 				<div class="fbox">
 					<input type="text" name="met_weixin_gz_appsecret" value="{$_M['config']['met_weixin_gz_appsecret']}">
 				</div>
 			</dd>
 		</dl>
-		<h3 class="v52fmbx_hr">新浪微博</h3>
+		<h3 class="v52fmbx_hr">{$_M[word][user_tips15_v6]}</h3>
 		<dl>
 			<dd>
-				<span class="tips">需要到 <a href="http://open.weibo.com/authentication/" target="_blank">微博开放平台</a> 申请 （注意：请申请网站不要申请应用）</span>
+				<span class="tips">{$_M[word][user_tips8_v6]}<a href="http://open.weibo.com/authentication/" target="_blank">{$_M[word][user_tips16_v6]}</a> {$_M[word][user_Apply_v6]} {$_M[word][user_tips17_v6]}</span>
 			</dd>
 		</dl>
 		<dl>
-			<dt>微博登录</dt>
+			<dt>{$_M[word][sinalogin]}</dt>
 			<dd class="ftype_radio ftype_transverse">
 				<div class="fbox">
-					<label><input name="met_weibo_open" type="radio" value="1" data-checked="{$_M['config']['met_weibo_open']}">开启</label>
-					<label><input name="met_weibo_open" type="radio" value="0">关闭</label>
+					<label><input name="met_weibo_open" type="radio" value="1" data-checked="{$_M['config']['met_weibo_open']}">{$_M[word][open]}</label>
+					<label><input name="met_weibo_open" type="radio" value="0">{$_M[word][close]}</label>
 				</div>
 			</dd>
 		</dl>
@@ -137,7 +137,7 @@ echo <<<EOT
 		<dl class="noborder">
 			<dt>&nbsp;</dt>
 			<dd>
-				<input type="submit" name="submit" value="保存" class="submit" />
+				<input type="submit" name="submit" value="{$_M[word][save]}" class="submit" />
 			</dd>
 		</dl>
 	</div>

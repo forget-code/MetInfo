@@ -1,6 +1,6 @@
 <!--<?php
-# MetInfo Enterprise Content Management System 
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+# MetInfo Enterprise Content Management System
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 
 defined('IN_MET') or exit('No permission');
 
@@ -135,7 +135,7 @@ echo <<<EOT
 				</div>
 				<span class="tips">{$_M['word']['columntip7']}</span>
 			</dd>
-		</dl>		
+		</dl>
 <!--
 EOT;
 }
@@ -177,6 +177,16 @@ echo <<<EOT
 				<span class="tips">{$_M['word']['columntip14']}</span>
 			</dd>
 		</dl>
+		<dl>
+			<dt>{$_M['word']['columnnofollow']}</dt>
+			<dd class="ftype_checkbox">
+				<div class="fbox">
+					<input type="checkbox" name="nofollow" value="1" data-checked="{$column_list['nofollow']}">
+					<span class="tips">{$_M['word']['columnnofollowinfo']}</span>
+				</div>
+
+			</dd>
+		</dl>
 		<h3 class="v52fmbx_hr metsliding">{$_M['word']['columnnamemarkinfo']}</h3>
 		<dl>
 			<dt>{$_M['word']['columnmark']}</dt>
@@ -199,11 +209,11 @@ echo <<<EOT
 			<dt>{$_M['word']['columnImg1']}</dt>
 			<dd class="ftype_upload">
 				<div class="fbox">
-					<input 
-						name="indeximg" 
-						type="text" 
+					<input
+						name="indeximg"
+						type="text"
 						data-upload-type="doupimg"
-						value="{$column_list['indeximg']}" 
+						value="{$column_list['indeximg']}"
 					/>
 				</div>
 			</dd>
@@ -212,11 +222,11 @@ echo <<<EOT
 			<dt>{$_M['word']['columnImg2']}</dt>
 			<dd class="ftype_upload">
 				<div class="fbox">
-					<input 
-						name="columnimg" 
-						type="text" 
+					<input
+						name="columnimg"
+						type="text"
 						data-upload-type="doupimg"
-						value="{$column_list['columnimg']}" 
+						value="{$column_list['columnimg']}"
 					/>
 				</div>
 			</dd>

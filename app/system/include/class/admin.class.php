@@ -17,6 +17,12 @@ class admin extends common {
 		$this->check();
 		$this->lang_switch();
 		load::plugin('doadmin');
+		$_M['url']['help_tutorials_url']="http://help.metinfo.cn/help/show.php?langset={$_M['langset']}&helpid=";
+		if($_M['user']['cookie'] && $_M['form']['sysui_pack']){
+			require PATH_WEB.'public/ui/v2/static/library.php';
+			die;
+		}
+		$_M['config']['m_type']=M_TYPE;
 	}
 
 	protected function load_url_site() {
@@ -38,15 +44,13 @@ class admin extends common {
 		$_M['url']['adminurl'] =  $_M['url']['site_admin']."index.php?lang={$_M['lang']}".'&';
 		$_M['url']['own_name'] =  $_M['url']['adminurl'].'anyid='.$_M['form']['anyid'].'&n='.M_NAME.'&';
 		$_M['url']['own_form'] = $_M['url']['own_name'].'c='.M_CLASS.'&';
-		$_M['url']['own'] = $_M['url']['site'].'app/'.M_TYPE.'/'.M_NAME.'/'.M_MODULE.'/';
-		$_M['url']['own_tem'] = $_M['url']['own'].'templates/';
 	}
 
 	protected function load_language() {
 		global $_M;
 		$_M['langset'] = get_met_cookie('languser');
-		if(!$_M['langset']) {
-			$_M['langset'] = 'cn';
+		if(!$_M['langset']){
+			$_M['langset'] = $_M['config']['met_admin_type'];
 		}
 		$this->load_word($_M['langset'], 1);
 		$this->load_agent_word($_M['langset']);
@@ -251,17 +255,24 @@ class admin extends common {
 				}
 			}
 		}
+        if(stristr(M_NAME, 'column') && M_ACTION == 'doadd') {
+            if(!stristr($membercp_ok['admin_type'], 's9999') && $membercp_ok['admin_type'] != 'metinfo') {
+                echo("<script type='text/javascript'> alert('{$_M['word']['js81']}');location.reload()</script>");
+                exit;
+            }
+        }
 	}
 
 	public function access_option($name='',$value=''){
+		global $_M;
 		$group = load::sys_class('group', 'new')->get_group_list();
 		$re = "<select name=\"{$name}\" data-checked=\"{$value}\">";
-		$re.= "<option value=\"0\">不限制</option>";
+		$re.= "<option value=\"0\">{$_M['word']['unrestricted']}</option>";
 		foreach($group as $val){
 			$re.= "<option value=\"{$val['id']}\">{$val['name']}</option>";
 		}
 		$val['id']=$val['id']+1;
-		$re.= "<option value=\"{$val['id']}\">管理员</option>";
+		$re.= "<option value=\"{$val['id']}\">{$_M['word']['metadmin']}</option>";
 		$re.= "</select>";
 		return $re;
 	}

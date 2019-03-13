@@ -1,6 +1,6 @@
 <?php
 # MetInfo Enterprise Content Management System ceshi
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 header("Content-type: text/html;charset=utf-8");
 error_reporting(E_ERROR | E_PARSE);
 @set_time_limit(0);
@@ -163,18 +163,29 @@ switch ($action)
 			$fstr.="<li class='WARN'>空间不支持ini_set函数，系统无法正常包含文件，导致后台会出现空白现象。</li>";
 		}
 
-        
-        
+
+
         if(!function_exists('mb_strlen')){
 			$function='WARN';
 			$fstr.="<li class='WARN'>空间不支持mb_strlen函数，系统无法正常包含文件，会导致前台显示不全。</li>";
 		}
 
+        if(!function_exists('file_get_contents')){
+            $function='WARN';
+            $fstr.="<li class='WARN'>空间不支持file_get_contents函数，系统无法获取内容，会导致有些操作不起作用或者错误。</li>";
+        }
 
-		session_start();
+        if(!function_exists('curl_init')){
+            $function='WARN';
+            $fstr.="<li class='WARN'>空间不支持curl_init函数，系统无法远程获取内容，会导致有些操作不起作用或数据不显示。</li>";
+        }
+
+
+
+        session_start();
 		if($_SESSION['install']!='metinfo'){
 			$function='WARN';
-			$fstr.="<li class='WARN'>空间不支持session，无法登陆后台。</li>";
+			$fstr.="<li class='WARN'>空间不支持session，无法登录后台。</li>";
 		}
 		$w_check=array(
 		'../about/',
@@ -188,13 +199,16 @@ switch ($action)
 		'../member/',
 		'../upload/',
 		'../config/',
+		'../app/app/met_template/admin/zip/',
 		'../config/config_db.php',
 		'../config/config_safe.php',
 		'../cache/',
 		'../upload/file/',
-		'../upload/image/',
+		'../templates/metv6/cache/',
 		'../message/',
 		'../feedback/',
+		'../app/',
+		'../app/system/',
 		'../admin/databack/',
 		'../admin/update/'
 		);
@@ -277,15 +291,15 @@ switch ($action)
 				#$content=preg_replace("/{#(.+?)}/eis",'$lang[\\1]',$content);
                 $content = preg_replace_callback("/{#(.+?)}/is", function($r)use($lang){ return $lang[$r[1]]; }, $content);
 				$installinfo.=creat_table($content, $db);
-            }			
+            }
 		    if($endata=="yes"){
 				$content=readover("en_config.sql");
 				#$content=preg_replace("/{#(.+?)}/eis",'$lang[\\1]',$content);
 				$content = preg_replace_callback("/{#(.+?)}/is", function($r)use($lang){ return $lang[$r[1]]; }, $content);
 				$installinfo.=creat_table($content, $db);
-				
-            }	
-			
+
+            }
+
 			if($showdata=='yes'){
 				if($cndata=="yes"){
 					$content=readover("cn.sql");
@@ -294,17 +308,28 @@ switch ($action)
 					$installinfo.=creat_table($content, $db);
 				}
 				if($endata=="yes"){
-					$content=readover("en.sql"); 
+					$content=readover("en.sql");
 					#$content=preg_replace("/{#(.+?)}/eis",'$lang[\\1]',$content);
                     $content = preg_replace_callback("/{#(.+?)}/is", function($r)use($lang){ return $lang[$r[1]]; }, $content);
 					$installinfo.=creat_table($content, $db);
 				}
-				
+
 			}
-			$content=readover("lang.sql"); 
-			#$content=preg_replace("/{#(.+?)}/eis",'$lang[\\1]',$content);
-            $content = preg_replace_callback("/{#(.+?)}/is", function($r)use($lang){ return $lang[$r[1]]; }, $content);
-			$installinfo.=creat_table($content, $db);
+			//后台语言
+//			$content=readover("lang.sql");
+//			#$content=preg_replace("/{#(.+?)}/eis",'$lang[\\1]',$content);
+//            $content = preg_replace_callback("/{#(.+?)}/is", function($r)use($lang){ return $lang[$r[1]]; }, $content);
+//			$installinfo.=creat_table($content, $db);
+            if($admin_cndata=="yes"){
+                $content=readover("lang_cn.sql");
+                $content = preg_replace_callback("/{#(.+?)}/is", function($r)use($lang){ return $lang[$r[1]]; }, $content);
+                $installinfo.=creat_table($content, $db);
+            }
+            if($admin_endata=="yes"){
+                $content=readover("lang_en.sql");
+                $content = preg_replace_callback("/{#(.+?)}/is", function($r)use($lang){ return $lang[$r[1]]; }, $content);
+                $installinfo.=creat_table($content, $db);
+            }
 			file_put_contents('../config/config_safe.php','<?php/*'.met_rand_i(32).'*/?>');
 			header("location:index.php?action=adminsetup&cndata={$cndata}&endata={$endata}&showdata={$showdata}");exit;
 		}else {
@@ -318,7 +343,7 @@ switch ($action)
 			if($regname=='' || $regpwd=='' || $email==''){
 				echo("<script type='text/javascript'> alert('请填写管理员信息！'); history.go(-1); </script>");
 			}
-			
+
 			if($email_scribe==1){
 				$post=array(
 					'id'=>'67d6b20a0ee8352affc40bd275b55299df2e04aded66c4e4',
@@ -330,7 +355,7 @@ switch ($action)
             $regname = trim($regname);
             $regpwd  = md5(trim($regpwd));
             $email   = trim($email);
-			
+
             $m_now_time = time();
             $config = parse_ini_file('../config/config_db.php','ture');
             @extract($config);
@@ -357,9 +382,9 @@ switch ($action)
 					  admin_mobile       = '$tel',
 					  admin_register_date= '$m_now_date',
 					  admin_shortcut='[{\"name\":\"lang_skinbaseset\",\"url\":\"system/basic.php?anyid=9&lang=cn\",\"bigclass\":\"1\",\"field\":\"s1001\",\"type\":\"2\",\"list_order\":\"10\",\"protect\":\"1\",\"hidden\":\"0\",\"lang\":\"lang_skinbaseset\"},{\"name\":\"lang_indexcolumn\",\"url\":\"column/index.php?anyid=25&lang=cn\",\"bigclass\":\"1\",\"field\":\"s1201\",\"type\":\"2\",\"list_order\":\"0\",\"protect\":\"1\",\"hidden\":\"0\",\"lang\":\"lang_indexcolumn\"},{\"name\":\"lang_unitytxt_75\",\"url\":\"interface/skin_editor.php?anyid=18&lang=cn\",\"bigclass\":\"1\",\"field\":\"s1101\",\"type\":\"2\",\"list_order\":\"0\",\"protect\":\"1\",\"hidden\":\"0\",\"lang\":\"lang_unitytxt_75\"},{\"name\":\"lang_tmptips\",\"url\":\"interface/info.php?anyid=24&lang=cn\",\"bigclass\":\"1\",\"field\":\"\",\"type\":\"2\",\"list_order\":\"0\",\"protect\":\"1\",\"hidden\":\"0\",\"lang\":\"lang_tmptips\"},{\"name\":\"lang_mod2add\",\"url\":\"content/article/content.php?action=add&lang=cn&anyid=29\",\"bigclass\":\"1\",\"field\":\"\",\"type\":\"2\",\"list_order\":\"0\",\"protect\":\"0\",\"hidden\":\"0\",\"lang\":\"lang_mod2add\"},{\"name\":\"lang_mod3add\",\"url\":\"content/product/content.php?action=add&lang=cn&anyid=29\",\"bigclass\":\"1\",\"field\":\"\",\"type\":2,\"list_order\":\"0\",\"protect\":0}]',
-					  usertype        	 = '3',
+					  usertype       = '3',
 					  content_type   = '1',
-					  admin_ok           = '1'";
+					  admin_ok       = '1'";
 
             mysqli_query($link , $query) or die('写入数据库失败XXX: ' . mysqli_error($link));
             $query = " UPDATE $met_config set value='$webname_cn' where name='met_webname' and lang='cn'";
@@ -383,7 +408,7 @@ switch ($action)
 			$adminurl=$install_url.'admin/';
 			$query = " UPDATE $met_column set out_url='$adminurl' where module='0'";
             mysqli_query($link , $query) or die('写入数据库失败: ' . mysqli_error($link));
-		
+
 			$SQL="SELECT * FROM $met_skin_table";
 			$query=mysqli_query($link , $SQL);
 			#while($row=mysql_fetch_array($query)){
@@ -412,7 +437,7 @@ switch ($action)
 			}
 
             mysqli_query($link , $query) or die('写入数据库失败: ' . mysqli_error($link));
-            @chmod('../config/config_db.php',0554);
+            // @chmod('../config/config_db.php',0554);
             /*require_once '../include/mysql_class.php';
             $db = new dbmysql()*/;
 
@@ -421,7 +446,7 @@ switch ($action)
             $db = new DB();
 
         	$db->dbconn($con_db_host,$con_db_id,$con_db_pass,$con_db_name, $con_db_port);
-			
+
 			if($showdata != 'yes'){
 				 if($cndata == 'yes'){
 					install_tag_templates($db,$met_templates,'metv6','cn');
@@ -431,6 +456,13 @@ switch ($action)
 					install_tag_templates($db,$met_templates,'metv6','en');
 				}
 			}
+
+            //只安装英文时
+            $admin_langnow = $db->get_one("SELECT * FROM {$tablepre}lang_admin where lang='cn'");
+            if(!$admin_langnow){
+                $query = "update {$met_config} set value='en' where name='met_admin_type'";
+                $db->query($query);
+            }
 
 			$conlist = $db->get_one("SELECT * FROM $met_config WHERE name='met_weburl'");
 			$met_weburl=$conlist[value];
@@ -525,7 +557,7 @@ a:visited {color: #545454;}
 			$fp = @fopen("../404.html",w);
 			@fputs($fp, $met404);
 			@fclose($fp);
-			@chmod('../config/install.lock',0554);				
+			@chmod('../config/install.lock',0554);
 			include template('finished');
 		}else {
 			$langnum=($cndata=="yes"||$endata=="yes")?2:1;
@@ -538,7 +570,7 @@ a:visited {color: #545454;}
 		include template('license');
 	break;
 	default:
-	{	
+	{
 		session_start();
 		$_SESSION['install']='metinfo';
 		include template('index');
@@ -655,16 +687,16 @@ function curl_post1($post,$timeout){
 global $met_weburl;
 	$host='list.qq.com/cgi-bin/qf_compose_send';
 	if(get_extension_funcs('curl')&&function_exists('curl_init')&&function_exists('curl_setopt')&&function_exists('curl_exec')&&function_exists('curl_close')){
-		$curlHandle=curl_init(); 
-		curl_setopt($curlHandle,CURLOPT_URL,'http://'.$host); 
+		$curlHandle=curl_init();
+		curl_setopt($curlHandle,CURLOPT_URL,'http://'.$host);
 		curl_setopt($curlHandle,CURLOPT_REFERER,$met_weburl);
-		curl_setopt($curlHandle,CURLOPT_RETURNTRANSFER,1); 
+		curl_setopt($curlHandle,CURLOPT_RETURNTRANSFER,1);
 		curl_setopt($curlHandle,CURLOPT_CONNECTTIMEOUT,$timeout);
 		curl_setopt($curlHandle,CURLOPT_TIMEOUT,$timeout);
-		curl_setopt($curlHandle,CURLOPT_POST, 1);	
+		curl_setopt($curlHandle,CURLOPT_POST, 1);
 		curl_setopt($curlHandle,CURLOPT_POSTFIELDS, $post);
-		$result=curl_exec($curlHandle); 
-		curl_close($curlHandle); 
+		$result=curl_exec($curlHandle);
+		curl_close($curlHandle);
 	}
 	else{
 		if(function_exists('fsockopen')||function_exists('pfsockopen')){
@@ -696,18 +728,18 @@ global $met_weburl;
 				$out .="\r\n";
 				$out .= $post."\r\n";
 				fwrite($fp, $out);
-				$inheader = 1; 	
+				$inheader = 1;
 				while(!feof($fp)){
-					$line = fgets($fp,1024); 
-						if ($inheader == 0) {    
+					$line = fgets($fp,1024);
+						if ($inheader == 0) {
 							$result.=$line;
-						}  
-						if ($inheader && ($line == "\n" || $line == "\r\n")) {  
-							$inheader = 0;  
-					}    
+						}
+						if ($inheader && ($line == "\n" || $line == "\r\n")) {
+							$inheader = 0;
+					}
 
 				}
-			
+
 				while(!feof($fp)){
 					$result.=fgets($fp,1024);
 				}
@@ -727,16 +759,16 @@ global $met_weburl,$met_host,$met_file;
 	$host='api.metinfo.cn';
 	$file='/test/apilinktest.php';
 	if(get_extension_funcs('curl')&&function_exists('curl_init')&&function_exists('curl_setopt')&&function_exists('curl_exec')&&function_exists('curl_close')){
-		$curlHandle=curl_init(); 
-		curl_setopt($curlHandle,CURLOPT_URL,'http://'.$host.$file); 
+		$curlHandle=curl_init();
+		curl_setopt($curlHandle,CURLOPT_URL,'http://'.$host.$file);
 		curl_setopt($curlHandle,CURLOPT_REFERER,$met_weburl);
-		curl_setopt($curlHandle,CURLOPT_RETURNTRANSFER,1); 
+		curl_setopt($curlHandle,CURLOPT_RETURNTRANSFER,1);
 		curl_setopt($curlHandle,CURLOPT_CONNECTTIMEOUT,$timeout);
 		curl_setopt($curlHandle,CURLOPT_TIMEOUT,$timeout);
-		curl_setopt($curlHandle,CURLOPT_POST, 1);	
+		curl_setopt($curlHandle,CURLOPT_POST, 1);
 		curl_setopt($curlHandle,CURLOPT_POSTFIELDS, $post);
-		$result=curl_exec($curlHandle); 
-		curl_close($curlHandle); 
+		$result=curl_exec($curlHandle);
+		curl_close($curlHandle);
 	}
 	else{
 		if(function_exists('fsockopen')||function_exists('pfsockopen')){
@@ -768,18 +800,18 @@ global $met_weburl,$met_host,$met_file;
 				$out .="\r\n";
 				$out .= $post."\r\n";
 				fwrite($fp, $out);
-				$inheader = 1; 	
+				$inheader = 1;
 				while(!feof($fp)){
-					$line = fgets($fp,1024); 
-						if ($inheader == 0) {    
+					$line = fgets($fp,1024);
+						if ($inheader == 0) {
 							$result.=$line;
-						}  
-						if ($inheader && ($line == "\n" || $line == "\r\n")) {  
-							$inheader = 0;  
-					}    
+						}
+						if ($inheader && ($line == "\n" || $line == "\r\n")) {
+							$inheader = 0;
+					}
 
 				}
-			
+
 				while(!feof($fp)){
 					$result.=fgets($fp,1024);
 				}
@@ -848,7 +880,7 @@ function install_tag_templates($db,$templates,$skin_name,$lang)
 		if(file_exists($template_json)){
 			$configs = json_decode(file_get_contents($template_json),true);
 			$query = "DELETE FROM {$templates} WHERE no = '{$skin_name}' AND lang = '{$lang}'";
-			
+
 			$db->query($query);
 				foreach ($configs as $k => $v) {
 					$cid = $v['id'];

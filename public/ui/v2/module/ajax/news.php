@@ -18,7 +18,7 @@
 	</div>
 	</if>
 </if>
-<tag action='news.list' num="$c['met_news_list']">
+<list data="$result" name="$v">
 <if value="$ui['news_listtype'] eq 1">
 <!-- 极简模式 -->
 <if value="($ui['news_headlines'] && !$data[page] && !$data[class2] && $v['_index'] egt $ui[news_headlines_num]) || ($ui['news_headlines'] && !$data[page] && $data[class2]) || $data[page] || !$ui['news_headlines']">
@@ -84,4 +84,4 @@
 	</div>
 </div>
 </if>
-</tag>
+</list>

@@ -36,7 +36,7 @@ ACTIVE:".active",ACTIVE_CHILD:"> .nav-item > .active, > .active",DATA_TOGGLE:'[d
  * Copyright 2016 amazingsurge
  * Licensed under the Themeforest Standard Licenses
  */
-!function(global,factory){if("function"==typeof define&&define.amd)define("/Plugin",["exports","jquery"],factory);else if("undefined"!=typeof exports)factory(exports,require("jquery"));else{var mod={exports:{}};factory(mod.exports,global.jQuery),global.Plugin=mod.exports}}(this,function(exports,_jquery){"use strict";function getPluginAPI(name){return"undefined"==typeof name?apis:apis[name]}function getPlugin(name){return"undefined"!=typeof plugins[name]&&plugins[name]}function getDefaults(name){var PluginClass=getPlugin(name);return PluginClass&&(is_lteie9||is_ie10)?PluginClass.getDefaults():{}}function pluginFactory(name,$el){var options=arguments.length>2&&void 0!==arguments[2]?arguments[2]:{},PluginClass=getPlugin(name);if(PluginClass&&"undefined"==typeof PluginClass.api)return new PluginClass($el,_jquery2.default.extend(!0,{},getDefaults(name),options));if(_jquery2.default.fn[name]){var plugin=new Plugin($el,options);return plugin.getName=function(){return name},plugin.name=name,plugin}return"undefined"!=typeof PluginClass.api,!1}Object.defineProperty(exports,"__esModule",{value:!0}),exports.pluginFactory=exports.getDefaults=exports.getPlugin=exports.getPluginAPI=exports.Plugin=void 0;var _jquery2=babelHelpers.interopRequireDefault(_jquery),plugins={},apis={},Plugin=function(){function Plugin($el){var options=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{};babelHelpers.classCallCheck(this,Plugin),this.name=this.getName(),this.$el=$el,this.options=options,this.isRendered=!1}return babelHelpers.createClass(Plugin,[{key:"getName",value:function(){return"plugin"}},{key:"render",value:function(){return!!_jquery2.default.fn[this.name]&&void this.$el[this.name](this.options)}},{key:"initialize",value:function(){return!this.isRendered&&(this.render(),void(this.isRendered=!0))}}],[{key:"getDefaults",value:function(){return{}}},{key:"register",value:function(name,obj){"undefined"!=typeof obj&&(plugins[name]=obj,"undefined"!=typeof obj.api&&Plugin.registerApi(name,obj))}},{key:"registerApi",value:function(name,obj){var api=obj.api();"string"==typeof api?!function(){var api=obj.api().split("|"),event=api[0]+(".plugin."+name),func=api[1]||"render",callback=function(e){var $el=(0,_jquery2.default)(this),plugin=$el.data("pluginInstance");plugin||(plugin=new obj($el,_jquery2.default.extend(!0,{},getDefaults(name),$el.data())),plugin.initialize(),$el.data("pluginInstance",plugin)),plugin[func](e)};apis[name]=function(selector,context){context?((0,_jquery2.default)(context).off(event),(0,_jquery2.default)(context).on(event,selector,callback)):(0,_jquery2.default)(selector).on(event,callback)}}():"function"==typeof api&&(apis[name]=api)}}]),Plugin}();exports.default=Plugin,exports.Plugin=Plugin,exports.getPluginAPI=getPluginAPI,exports.getPlugin=getPlugin,exports.getDefaults=getDefaults,exports.pluginFactory=pluginFactory});
+!function(global,factory){if("function"==typeof define&&define.amd)define("/Plugin",["exports","jquery"],factory);else if("undefined"!=typeof exports)factory(exports,require("jquery"));else{var mod={exports:{}};factory(mod.exports,global.jQuery),global.Plugin=mod.exports}}(this,function(exports,_jquery){"use strict";function getPluginAPI(name){return"undefined"==typeof name?apis:apis[name]}function getPlugin(name){return"undefined"!=typeof plugins[name]&&plugins[name]}function getDefaults(name){var PluginClass=getPlugin(name);return PluginClass&&(M['is_lteie9']||M['is_ie10']?name!='appear':true)?PluginClass.getDefaults():{}}function pluginFactory(name,$el){var options=arguments.length>2&&void 0!==arguments[2]?arguments[2]:{},PluginClass=getPlugin(name);if(PluginClass&&"undefined"==typeof PluginClass.api)return new PluginClass($el,_jquery2.default.extend(!0,{},getDefaults(name),options));if(_jquery2.default.fn[name]){var plugin=new Plugin($el,options);return plugin.getName=function(){return name},plugin.name=name,plugin}return"undefined"!=typeof PluginClass.api,!1}Object.defineProperty(exports,"__esModule",{value:!0}),exports.pluginFactory=exports.getDefaults=exports.getPlugin=exports.getPluginAPI=exports.Plugin=void 0;var _jquery2=babelHelpers.interopRequireDefault(_jquery),plugins={},apis={},Plugin=function(){function Plugin($el){var options=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{};babelHelpers.classCallCheck(this,Plugin),this.name=this.getName(),this.$el=$el,this.options=options,this.isRendered=!1}return babelHelpers.createClass(Plugin,[{key:"getName",value:function(){return"plugin"}},{key:"render",value:function(){return!!_jquery2.default.fn[this.name]&&void this.$el[this.name](this.options)}},{key:"initialize",value:function(){return!this.isRendered&&(this.render(),void(this.isRendered=!0))}}],[{key:"getDefaults",value:function(){return{}}},{key:"register",value:function(name,obj){"undefined"!=typeof obj&&(plugins[name]=obj,"undefined"!=typeof obj.api&&Plugin.registerApi(name,obj))}},{key:"registerApi",value:function(name,obj){var api=obj.api();"string"==typeof api?!function(){var api=obj.api().split("|"),event=api[0]+(".plugin."+name),func=api[1]||"render",callback=function(e){var $el=(0,_jquery2.default)(this),plugin=$el.data("pluginInstance");plugin||(plugin=new obj($el,_jquery2.default.extend(!0,{},getDefaults(name),$el.data())),plugin.initialize(),$el.data("pluginInstance",plugin)),plugin[func](e)};apis[name]=function(selector,context){context?((0,_jquery2.default)(context).off(event),(0,_jquery2.default)(context).on(event,selector,callback)):(0,_jquery2.default)(selector).on(event,callback)}}():"function"==typeof api&&(apis[name]=api)}}]),Plugin}();exports.default=Plugin,exports.Plugin=Plugin,exports.getPluginAPI=getPluginAPI,exports.getPlugin=getPlugin,exports.getDefaults=getDefaults,exports.pluginFactory=pluginFactory});
 /*app/system/include/static2/js/Base.min.js*/
 /*!
  * remark (http://getbootstrapadmin.com/remark)
@@ -75,6 +75,7 @@ function run(){var site=getInstance();site.run()}Object.defineProperty(exports,"
 ;window.Modernizr=function(a,b,c){function C(a){j.cssText=a}function D(a,b){return C(n.join(a+";")+(b||""))}function E(a,b){return typeof a===b}function F(a,b){return!!~(""+a).indexOf(b)}function G(a,b){for(var d in a){var e=a[d];if(!F(e,"-")&&j[e]!==c)return b=="pfx"?e:!0}return!1}function H(a,b,d){for(var e in a){var f=b[a[e]];if(f!==c)return d===!1?a[e]:E(f,"function")?f.bind(d||b):f}return!1}function I(a,b,c){var d=a.charAt(0).toUpperCase()+a.slice(1),e=(a+" "+p.join(d+" ")+d).split(" ");return E(b,"string")||E(b,"undefined")?G(e,b):(e=(a+" "+q.join(d+" ")+d).split(" "),H(e,b,c))}function J(){e.input=function(c){for(var d=0,e=c.length;d<e;d++)u[c[d]]=c[d]in k;return u.list&&(u.list=!!b.createElement("datalist")&&!!a.HTMLDataListElement),u}("autocomplete autofocus list placeholder max min multiple pattern required step".split(" ")),e.inputtypes=function(a){for(var d=0,e,f,h,i=a.length;d<i;d++)k.setAttribute("type",f=a[d]),e=k.type!=="text",e&&(k.value=l,k.style.cssText="position:absolute;visibility:hidden;",/^range$/.test(f)&&k.style.WebkitAppearance!==c?(g.appendChild(k),h=b.defaultView,e=h.getComputedStyle&&h.getComputedStyle(k,null).WebkitAppearance!=="textfield"&&k.offsetHeight!==0,g.removeChild(k)):/^(search|tel)$/.test(f)||(/^(url|email)$/.test(f)?e=k.checkValidity&&k.checkValidity()===!1:e=k.value!=l)),t[a[d]]=!!e;return t}("search tel url email datetime date month week time datetime-local number range color".split(" "))}var d="2.8.3",e={},f=!0,g=b.documentElement,h="modernizr",i=b.createElement(h),j=i.style,k=b.createElement("input"),l=":)",m={}.toString,n=" -webkit- -moz- -o- -ms- ".split(" "),o="Webkit Moz O ms",p=o.split(" "),q=o.toLowerCase().split(" "),r={svg:"http://www.w3.org/2000/svg"},s={},t={},u={},v=[],w=v.slice,x,y=function(a,c,d,e){var f,i,j,k,l=b.createElement("div"),m=b.body,n=m||b.createElement("body");if(parseInt(d,10))while(d--)j=b.createElement("div"),j.id=e?e[d]:h+(d+1),l.appendChild(j);return f=["&#173;",'<style id="s',h,'">',a,"</style>"].join(""),l.id=h,(m?l:n).innerHTML+=f,n.appendChild(l),m||(n.style.background="",n.style.overflow="hidden",k=g.style.overflow,g.style.overflow="hidden",g.appendChild(n)),i=c(l,a),m?l.parentNode.removeChild(l):(n.parentNode.removeChild(n),g.style.overflow=k),!!i},z=function(){function d(d,e){e=e||b.createElement(a[d]||"div"),d="on"+d;var f=d in e;return f||(e.setAttribute||(e=b.createElement("div")),e.setAttribute&&e.removeAttribute&&(e.setAttribute(d,""),f=E(e[d],"function"),E(e[d],"undefined")||(e[d]=c),e.removeAttribute(d))),e=null,f}var a={select:"input",change:"input",submit:"form",reset:"form",error:"img",load:"img",abort:"img"};return d}(),A={}.hasOwnProperty,B;!E(A,"undefined")&&!E(A.call,"undefined")?B=function(a,b){return A.call(a,b)}:B=function(a,b){return b in a&&E(a.constructor.prototype[b],"undefined")},Function.prototype.bind||(Function.prototype.bind=function(b){var c=this;if(typeof c!="function")throw new TypeError;var d=w.call(arguments,1),e=function(){if(this instanceof e){var a=function(){};a.prototype=c.prototype;var f=new a,g=c.apply(f,d.concat(w.call(arguments)));return Object(g)===g?g:f}return c.apply(b,d.concat(w.call(arguments)))};return e}),s.flexbox=function(){return I("flexWrap")},s.canvas=function(){var a=b.createElement("canvas");return!!a.getContext&&!!a.getContext("2d")},s.canvastext=function(){return!!e.canvas&&!!E(b.createElement("canvas").getContext("2d").fillText,"function")},s.webgl=function(){return!!a.WebGLRenderingContext},s.touch=function(){var c;return"ontouchstart"in a||a.DocumentTouch&&b instanceof DocumentTouch?c=!0:y(["@media (",n.join("touch-enabled),("),h,")","{#modernizr{top:9px;position:absolute}}"].join(""),function(a){c=a.offsetTop===9}),c},s.geolocation=function(){return"geolocation"in navigator},s.postmessage=function(){return!!a.postMessage},s.websqldatabase=function(){return!!a.openDatabase},s.indexedDB=function(){return!!I("indexedDB",a)},s.hashchange=function(){return z("hashchange",a)&&(b.documentMode===c||b.documentMode>7)},s.history=function(){return!!a.history&&!!history.pushState},s.draganddrop=function(){var a=b.createElement("div");return"draggable"in a||"ondragstart"in a&&"ondrop"in a},s.websockets=function(){return"WebSocket"in a||"MozWebSocket"in a},s.rgba=function(){return C("background-color:rgba(150,255,150,.5)"),F(j.backgroundColor,"rgba")},s.hsla=function(){return C("background-color:hsla(120,40%,100%,.5)"),F(j.backgroundColor,"rgba")||F(j.backgroundColor,"hsla")},s.multiplebgs=function(){return C("background:url(https://),url(https://),red url(https://)"),/(url\s*\(.*?){3}/.test(j.background)},s.backgroundsize=function(){return I("backgroundSize")},s.borderimage=function(){return I("borderImage")},s.borderradius=function(){return I("borderRadius")},s.boxshadow=function(){return I("boxShadow")},s.textshadow=function(){return b.createElement("div").style.textShadow===""},s.opacity=function(){return D("opacity:.55"),/^0.55$/.test(j.opacity)},s.cssanimations=function(){return I("animationName")},s.csscolumns=function(){return I("columnCount")},s.cssgradients=function(){var a="background-image:",b="gradient(linear,left top,right bottom,from(#9f9),to(white));",c="linear-gradient(left top,#9f9, white);";return C((a+"-webkit- ".split(" ").join(b+a)+n.join(c+a)).slice(0,-a.length)),F(j.backgroundImage,"gradient")},s.cssreflections=function(){return I("boxReflect")},s.csstransforms=function(){return!!I("transform")},s.csstransforms3d=function(){var a=!!I("perspective");return a&&"webkitPerspective"in g.style&&y("@media (transform-3d),(-webkit-transform-3d){#modernizr{left:9px;position:absolute;height:3px;}}",function(b,c){a=b.offsetLeft===9&&b.offsetHeight===3}),a},s.csstransitions=function(){return I("transition")},s.fontface=function(){var a;return y('@font-face {font-family:"font";src:url("https://")}',function(c,d){var e=b.getElementById("smodernizr"),f=e.sheet||e.styleSheet,g=f?f.cssRules&&f.cssRules[0]?f.cssRules[0].cssText:f.cssText||"":"";a=/src/i.test(g)&&g.indexOf(d.split(" ")[0])===0}),a},s.generatedcontent=function(){var a;return y(["#",h,"{font:0/0 a}#",h,':after{content:"',l,'";visibility:hidden;font:3px/1 a}'].join(""),function(b){a=b.offsetHeight>=3}),a},s.video=function(){var a=b.createElement("video"),c=!1;try{if(c=!!a.canPlayType)c=new Boolean(c),c.ogg=a.canPlayType('video/ogg; codecs="theora"').replace(/^no$/,""),c.h264=a.canPlayType('video/mp4; codecs="avc1.42E01E"').replace(/^no$/,""),c.webm=a.canPlayType('video/webm; codecs="vp8, vorbis"').replace(/^no$/,"")}catch(d){}return c},s.audio=function(){var a=b.createElement("audio"),c=!1;try{if(c=!!a.canPlayType)c=new Boolean(c),c.ogg=a.canPlayType('audio/ogg; codecs="vorbis"').replace(/^no$/,""),c.mp3=a.canPlayType("audio/mpeg;").replace(/^no$/,""),c.wav=a.canPlayType('audio/wav; codecs="1"').replace(/^no$/,""),c.m4a=(a.canPlayType("audio/x-m4a;")||a.canPlayType("audio/aac;")).replace(/^no$/,"")}catch(d){}return c},s.localstorage=function(){try{return localStorage.setItem(h,h),localStorage.removeItem(h),!0}catch(a){return!1}},s.sessionstorage=function(){try{return sessionStorage.setItem(h,h),sessionStorage.removeItem(h),!0}catch(a){return!1}},s.webworkers=function(){return!!a.Worker},s.applicationcache=function(){return!!a.applicationCache},s.svg=function(){return!!b.createElementNS&&!!b.createElementNS(r.svg,"svg").createSVGRect},s.inlinesvg=function(){var a=b.createElement("div");return a.innerHTML="<svg/>",(a.firstChild&&a.firstChild.namespaceURI)==r.svg},s.smil=function(){return!!b.createElementNS&&/SVGAnimate/.test(m.call(b.createElementNS(r.svg,"animate")))},s.svgclippaths=function(){return!!b.createElementNS&&/SVGClipPath/.test(m.call(b.createElementNS(r.svg,"clipPath")))};for(var K in s)B(s,K)&&(x=K.toLowerCase(),e[x]=s[K](),v.push((e[x]?"":"no-")+x));return e.input||J(),e.addTest=function(a,b){if(typeof a=="object")for(var d in a)B(a,d)&&e.addTest(d,a[d]);else{a=a.toLowerCase();if(e[a]!==c)return e;b=typeof b=="function"?b():b,typeof f!="undefined"&&f&&(g.className+=" "+(b?"":"no-")+a),e[a]=b}return e},C(""),i=k=null,function(a,b){function l(a,b){var c=a.createElement("p"),d=a.getElementsByTagName("head")[0]||a.documentElement;return c.innerHTML="x<style>"+b+"</style>",d.insertBefore(c.lastChild,d.firstChild)}function m(){var a=s.elements;return typeof a=="string"?a.split(" "):a}function n(a){var b=j[a[h]];return b||(b={},i++,a[h]=i,j[i]=b),b}function o(a,c,d){c||(c=b);if(k)return c.createElement(a);d||(d=n(c));var g;return d.cache[a]?g=d.cache[a].cloneNode():f.test(a)?g=(d.cache[a]=d.createElem(a)).cloneNode():g=d.createElem(a),g.canHaveChildren&&!e.test(a)&&!g.tagUrn?d.frag.appendChild(g):g}function p(a,c){a||(a=b);if(k)return a.createDocumentFragment();c=c||n(a);var d=c.frag.cloneNode(),e=0,f=m(),g=f.length;for(;e<g;e++)d.createElement(f[e]);return d}function q(a,b){b.cache||(b.cache={},b.createElem=a.createElement,b.createFrag=a.createDocumentFragment,b.frag=b.createFrag()),a.createElement=function(c){return s.shivMethods?o(c,a,b):b.createElem(c)},a.createDocumentFragment=Function("h,f","return function(){var n=f.cloneNode(),c=n.createElement;h.shivMethods&&("+m().join().replace(/[\w\-]+/g,function(a){return b.createElem(a),b.frag.createElement(a),'c("'+a+'")'})+");return n}")(s,b.frag)}function r(a){a||(a=b);var c=n(a);return s.shivCSS&&!g&&!c.hasCSS&&(c.hasCSS=!!l(a,"article,aside,dialog,figcaption,figure,footer,header,hgroup,main,nav,section{display:block}mark{background:#FF0;color:#000}template{display:none}")),k||q(a,c),a}var c="3.7.0",d=a.html5||{},e=/^<|^(?:button|map|select|textarea|object|iframe|option|optgroup)$/i,f=/^(?:a|b|code|div|fieldset|h1|h2|h3|h4|h5|h6|i|label|li|ol|p|q|span|strong|style|table|tbody|td|th|tr|ul)$/i,g,h="_html5shiv",i=0,j={},k;(function(){try{var a=b.createElement("a");a.innerHTML="<xyz></xyz>",g="hidden"in a,k=a.childNodes.length==1||function(){b.createElement("a");var a=b.createDocumentFragment();return typeof a.cloneNode=="undefined"||typeof a.createDocumentFragment=="undefined"||typeof a.createElement=="undefined"}()}catch(c){g=!0,k=!0}})();var s={elements:d.elements||"abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video",version:c,shivCSS:d.shivCSS!==!1,supportsUnknownElements:k,shivMethods:d.shivMethods!==!1,type:"default",shivDocument:r,createElement:o,createDocumentFragment:p};a.html5=s,r(b)}(this,b),e._version=d,e._prefixes=n,e._domPrefixes=q,e._cssomPrefixes=p,e.hasEvent=z,e.testProp=function(a){return G([a])},e.testAllProps=I,e.testStyles=y,e.prefixed=function(a,b,c){return b?I(a,b,c):I(a,"pfx")},g.className=g.className.replace(/(^|\s)no-js(\s|$)/,"$1$2")+(f?" js "+v.join(" "):""),e}(this,this.document),function(a,b,c){function d(a){return"[object Function]"==o.call(a)}function e(a){return"string"==typeof a}function f(){}function g(a){return!a||"loaded"==a||"complete"==a||"uninitialized"==a}function h(){var a=p.shift();q=1,a?a.t?m(function(){("c"==a.t?B.injectCss:B.injectJs)(a.s,0,a.a,a.x,a.e,1)},0):(a(),h()):q=0}function i(a,c,d,e,f,i,j){function k(b){if(!o&&g(l.readyState)&&(u.r=o=1,!q&&h(),l.onload=l.onreadystatechange=null,b)){"img"!=a&&m(function(){t.removeChild(l)},50);for(var d in y[c])y[c].hasOwnProperty(d)&&y[c][d].onload()}}var j=j||B.errorTimeout,l=b.createElement(a),o=0,r=0,u={t:d,s:c,e:f,a:i,x:j};1===y[c]&&(r=1,y[c]=[]),"object"==a?l.data=c:(l.src=c,l.type=a),l.width=l.height="0",l.onerror=l.onload=l.onreadystatechange=function(){k.call(this,r)},p.splice(e,0,u),"img"!=a&&(r||2===y[c]?(t.insertBefore(l,s?null:n),m(k,j)):y[c].push(l))}function j(a,b,c,d,f){return q=0,b=b||"j",e(a)?i("c"==b?v:u,a,b,this.i++,c,d,f):(p.splice(this.i++,0,a),1==p.length&&h()),this}function k(){var a=B;return a.loader={load:j,i:0},a}var l=b.documentElement,m=a.setTimeout,n=b.getElementsByTagName("script")[0],o={}.toString,p=[],q=0,r="MozAppearance"in l.style,s=r&&!!b.createRange().compareNode,t=s?l:n.parentNode,l=a.opera&&"[object Opera]"==o.call(a.opera),l=!!b.attachEvent&&!l,u=r?"object":l?"script":"img",v=l?"script":u,w=Array.isArray||function(a){return"[object Array]"==o.call(a)},x=[],y={},z={timeout:function(a,b){return b.length&&(a.timeout=b[0]),a}},A,B;B=function(a){function b(a){var a=a.split("!"),b=x.length,c=a.pop(),d=a.length,c={url:c,origUrl:c,prefixes:a},e,f,g;for(f=0;f<d;f++)g=a[f].split("="),(e=z[g.shift()])&&(c=e(c,g));for(f=0;f<b;f++)c=x[f](c);return c}function g(a,e,f,g,h){var i=b(a),j=i.autoCallback;i.url.split(".").pop().split("?").shift(),i.bypass||(e&&(e=d(e)?e:e[a]||e[g]||e[a.split("/").pop().split("?")[0]]),i.instead?i.instead(a,e,f,g,h):(y[i.url]?i.noexec=!0:y[i.url]=1,f.load(i.url,i.forceCSS||!i.forceJS&&"css"==i.url.split(".").pop().split("?").shift()?"c":c,i.noexec,i.attrs,i.timeout),(d(e)||d(j))&&f.load(function(){k(),e&&e(i.origUrl,h,g),j&&j(i.origUrl,h,g),y[i.url]=2})))}function h(a,b){function c(a,c){if(a){if(e(a))c||(j=function(){var a=[].slice.call(arguments);k.apply(this,a),l()}),g(a,j,b,0,h);else if(Object(a)===a)for(n in m=function(){var b=0,c;for(c in a)a.hasOwnProperty(c)&&b++;return b}(),a)a.hasOwnProperty(n)&&(!c&&!--m&&(d(j)?j=function(){var a=[].slice.call(arguments);k.apply(this,a),l()}:j[n]=function(a){return function(){var b=[].slice.call(arguments);a&&a.apply(this,b),l()}}(k[n])),g(a[n],j,b,n,h))}else!c&&l()}var h=!!a.test,i=a.load||a.both,j=a.callback||f,k=j,l=a.complete||f,m,n;c(h?a.yep:a.nope,!!i),i&&c(i)}var i,j,l=this.yepnope.loader;if(e(a))g(a,0,l,0);else if(w(a))for(i=0;i<a.length;i++)j=a[i],e(j)?g(j,0,l,0):w(j)?B(j):Object(j)===j&&h(j,l);else Object(a)===a&&h(a,l)},B.addPrefix=function(a,b){z[a]=b},B.addFilter=function(a){x.push(a)},B.errorTimeout=1e4,null==b.readyState&&b.addEventListener&&(b.readyState="loading",b.addEventListener("DOMContentLoaded",A=function(){b.removeEventListener("DOMContentLoaded",A,0),b.readyState="complete"},0)),a.yepnope=k(),a.yepnope.executeStack=h,a.yepnope.injectJs=function(a,c,d,e,i,j){var k=b.createElement("script"),l,o,e=e||B.errorTimeout;k.src=a;for(o in d)k.setAttribute(o,d[o]);c=j?h:c||f,k.onreadystatechange=k.onload=function(){!l&&g(k.readyState)&&(l=1,c(),k.onload=k.onreadystatechange=null)},m(function(){l||(l=1,c(1))},e),i?k.onload():n.parentNode.insertBefore(k,n)},a.yepnope.injectCss=function(a,c,d,e,g,i){var e=b.createElement("link"),j,c=i?h:c||f;e.href=a,e.rel="stylesheet",e.type="text/css";for(j in d)e.setAttribute(j,d[j]);g||(n.parentNode.insertBefore(e,n),m(c,0))}}(this,document),Modernizr.load=function(){yepnope.apply(window,[].slice.call(arguments,0))};
 /*public/ui/v2/static/js/ini.js*/
 /*!
+ * 框架基础参数、基础功能
  * M['weburl']      网站网址
  * M['lang']        网站语言
  * M['tem']         模板目录路径
@@ -83,38 +84,42 @@ function run(){var site=getInstance();site.run()}Object.defineProperty(exports,"
  * M['module']      当前页面所属模块
  * M['metinfo_version'] 系统当前版本
  * M['user_name']   当前页面登录用户名
- * met_prevarrow,met_nextarrow slick插件翻页按钮自定义html
- * device_type      客户端判断（d：PC端，t：平板端，m：手机端）
+ * M['device_type'] 客户端判断（d：PC端，t：平板端，m：手机端）
+ * met_prevarrow,
+   met_nextarrow    slick插件翻页按钮自定义html
  */
 // 网站参数
-window.MSTR=$('meta[name=generator]').data('variable').split('|'),
-    M=[];
+window.MSTR=$('meta[name="generator"]').data('variable').split('|');
+window.M=[];
 M['weburl']=MSTR[0];
 M['lang']=MSTR[1];
-M['classnow']=MSTR[2]==''?MSTR[2]:parseInt(MSTR[2]);
-M['id']=MSTR[3]==''?MSTR[3]:parseInt(MSTR[3]);
+M['synchronous']=(typeof MET !='undefined' && MET['langset'])?MET['langset']:MSTR[2];
+M['tem']=MSTR[0]+'templates/'+MSTR[3]+'/';
 M['module']=MSTR[4]==''?MSTR[4]:parseInt(MSTR[4]);
-M['tem']=MSTR[0]+'templates/'+MSTR[5]+'/';
-M['metinfo_version']=$('meta[name=generator]').length?$('meta[name=generator]').attr('content').replace('MetInfo ','').replace(/\./g,''):'metinfo';
-M['user_name']=$('meta[name=generator]').data('user_name')||'';
+M['classnow']=MSTR[5]==''?MSTR[5]:parseInt(MSTR[5]);
+M['id']=MSTR[6]==''?MSTR[6]:parseInt(MSTR[6]);
+M['metinfo_version']=$('meta[name="generator"]').length?$('meta[name="generator"]').attr('content').replace('MetInfo ','').replace(/\./g,''):'metinfo';
+M['user_name']=$('meta[name="generator"]').data('user_name')||'';
+M['time']=new Date().getTime();
 // 客户端判断
-window.useragent=navigator.userAgent,
-    useragent_tlc=useragent.toLowerCase(),
-    device_type = /iPad/.test(useragent) ? 't' : /Mobile|iP(hone|od)|Android|BlackBerry|IEMobile|Silk/.test(useragent) ? 'm' : 'd',
-    is_ucbro=/UC/.test(useragent),
-    is_lteie9=is_ie10=false;
+M['useragent']=navigator.userAgent;
+M['useragent_tlc']=M['useragent'].toLowerCase();
+M['device_type']=device_type=/iPad/.test(M['useragent']) ? 't' : /Mobile|iP(hone|od)|Android|BlackBerry|IEMobile|Silk/.test(M['useragent']) ? 'm' : 'd';
+M['is_ucbro']=/UC/.test(M['useragent']);
+M['is_lteie9']=false;
+M['is_ie10']=false;
 // lte IE9、IE10浏览器判断
-if(new RegExp('msie').test(useragent_tlc)){
-    var iebrowser_ver=(useragent_tlc.match(/.+(?:rv|it|ra|ie)[\/: ]([\d.]+)/) || [0, '0'])[1];
-    if(iebrowser_ver==10) is_ie10=true;
-    if(iebrowser_ver<10) is_lteie9=true;
+if(new RegExp('msie').test(M['useragent_tlc'])){
+    M['iebrowser_ver']=(M['useragent_tlc'].match(/.+(?:rv|it|ra|ie)[\/: ]([\d.]+)/) || [0, '0'])[1];
+    if(M['iebrowser_ver']==10) M['is_ie10']=true;
+    if(M['iebrowser_ver']<10) M['is_lteie9']=true;
 }
 // 延迟加载参数(模板前台用户设置)
-window.met_lazyloadbg=$('input[name=met_lazyloadbg]').val()||M['weburl'] +'public/ui/v2/static/img/loading.gif',
-met_lazyloadbg_base64 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC';
+window.met_lazyloadbg=$('input[name=met_lazyloadbg]').val()||M['weburl'] +'public/ui/v2/static/img/loading.gif';
 if(met_lazyloadbg.indexOf(M['weburl'])<0 && met_lazyloadbg.indexOf('http')<0 && met_lazyloadbg.indexOf('../')<0) met_lazyloadbg=M['weburl']+met_lazyloadbg;
 if(met_lazyloadbg==M['weburl'] || (met_lazyloadbg.indexOf('.png')<0 && met_lazyloadbg.indexOf('.gif')<0 && met_lazyloadbg.indexOf('.jpg')<0)) met_lazyloadbg=M['weburl'] +'public/ui/v2/static/img/loading.gif';
-if (!!window.ActiveXObject || 'ActiveXObject' in window || is_ucbro) met_lazyloadbg=met_lazyloadbg_base64;
+if (!!window.ActiveXObject || 'ActiveXObject' in window || M['is_ucbro']) met_lazyloadbg='base64';
+M['lazyloadbg']=met_lazyloadbg;
 if(typeof Breakpoints != 'undefined') Breakpoints();// 窗口宽度断点函数
 // js严格模式
 (function(document, window, $) {
@@ -124,7 +129,7 @@ if(typeof Breakpoints != 'undefined') Breakpoints();// 窗口宽度断点函数
         Site.run();
         // 中间弹窗隐藏效果优化（点击弹窗框外上下方隐藏弹窗）
         $(document).on('click', '.modal-dialog.modal-center', function(e) {
-            if(!$(e.target).closest(".modal-dialog.modal-center .modal-content").length) $(this).parents('.modal:eq(0)').modal('hide');
+            if(!$(e.target).closest(".modal-dialog.modal-center .modal-content").length && $('.modal-backdrop').length) $(this).parents('.modal:eq(0)').modal('hide');
         });
         // 手机端弹窗位置取消垂直居中
         Breakpoints.on('xs',{
@@ -167,7 +172,7 @@ $.extend({
         if(includeFileIndex>=num_start && includeFileIndex<num_end){
             if(ext[0]=='js'){
                 var filesi=document.createElement('script'),
-                    src=name+'?'+M['metinfo_version'];
+                    src=name/*+'?'+M['metinfo_version']*/;
                 filesi.src=src;
                 filesi.type="text/javascript",
                 file_index=$.inArray(name,includeFile);
@@ -179,7 +184,7 @@ $.extend({
                     }else{
                         setTimeout(function(){
                             $.includeFile(file,num_start,num_end,fun,special);
-                        },10)
+                        },5)
                         return false;
                     }
                     // 文件加载完成回调
@@ -193,7 +198,7 @@ $.extend({
                 }
             }else if(ext[0]=='css'){
                 var filesi=document.createElement('link'),
-                    href=name+'?'+M['metinfo_version'];
+                    href=name/*+'?'+M['metinfo_version']*/;
                 filesi.href=href;
                 filesi.type='text/css';
                 filesi.rel="stylesheet";
@@ -203,7 +208,7 @@ $.extend({
         }else if(includeFileIndex<num_start){
             setTimeout(function(){
                 if(includeFileIndex<num_end) $.includeFile(includeFile[includeFileIndex],num_start,num_end,fun,special);
-            },10)
+            },5)
         }
     },
     /**
@@ -246,22 +251,12 @@ $.cachedScript = function(url, options) {
     scriptsArray.push(url); // 将url地址放入script标记数组中
     return $.ajax(options);
 };
-/*app/system/include/static2/vendor/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js*/
-/**
- * @preserve
- * Project: Bootstrap Hover Dropdown
- * Author: Cameron Spear
- * Version: v2.2.1
- * Contributors: Mattia Larentis
- * Dependencies: Bootstrap's Dropdown plugin, jQuery
- * Description: A simple plugin to enable Bootstrap dropdowns to active on hover and provide a nice user experience.
- * License: MIT
- * Homepage: http://cameronspear.com/blog/bootstrap-dropdown-on-hover-plugin/
- */
-!function(e,n){var o=e();e.fn.dropdownHover=function(t){return"ontouchstart"in document?this:(o=o.add(this.parent()),this.each(function(){function r(){d.parents(".navbar").find(".navbar-toggle").is(":visible")||(n.clearTimeout(a),n.clearTimeout(i),i=n.setTimeout(function(){o.find(":focus").blur(),v.instantlyCloseOthers===!0&&o.removeClass("open"),n.clearTimeout(i),d.attr("aria-expanded","true"),s.addClass("open"),d.trigger(h)},v.hoverDelay))}var a,i,d=e(this),s=d.parent(),u={delay:500,hoverDelay:0,instantlyCloseOthers:!0},l={delay:e(this).data("delay"),hoverDelay:e(this).data("hover-delay"),instantlyCloseOthers:e(this).data("close-others")},h="show.bs.dropdown",c="hide.bs.dropdown",v=e.extend(!0,{},u,t,l);s.hover(function(e){return s.hasClass("open")||d.is(e.target)?void r(e):!0},function(){n.clearTimeout(i),a=n.setTimeout(function(){d.attr("aria-expanded","false"),s.removeClass("open"),d.trigger(c)},v.delay)}),d.hover(function(e){return s.hasClass("open")||s.is(e.target)?void r(e):!0}),s.find(".dropdown-submenu").each(function(){var o,t=e(this);t.hover(function(){n.clearTimeout(o),t.children(".dropdown-menu").show(),t.siblings().children(".dropdown-menu").hide()},function(){var e=t.children(".dropdown-menu");o=n.setTimeout(function(){e.hide()},v.delay)})})}))},e(document).ready(function(){e('[data-hover="dropdown"]').dropdownHover()})}(jQuery,window);
 /*public/ui/v2/static/js/app.js*/
+/*
+应用通用功能
+ */
 // 判断地址栏是否有lang参数，没有则跳转到带lang参数的地址
-if(typeof basepath !='undefined'){
+if(MET['url']['basepath']){
     var str=window.parent.document.URL,
         s=str.indexOf("lang="+M['lang']),
         z=str.indexOf("lang");
@@ -278,23 +273,74 @@ if(typeof basepath !='undefined'){
 function getQueryString(name) {
     var reg=new RegExp("(^|&)"+name+"=([^&]*)(&|$)", "i");
     var r=window.location.search.substr(1).match(reg);
-    if (r!=null) return unescape(r[2]);
+    if (r!=null) return unescape(decodeURIComponent(r[2]));
     return null;
 }
+// 修改、添加、删除地址栏参数
+function replaceParamVal(paramName,replaceWith) {
+    var newUrl=oldUrl=window.location.href,
+        paramNames='&' + paramName + '=';
+        re = eval('/('+paramNames+')([^&]*)/gi');
+    if(replaceWith){
+        if(oldUrl.indexOf(paramNames)>=0){
+            newUrl = oldUrl.replace(re, paramNames + replaceWith);
+        }else{
+            newUrl = oldUrl+ paramNames + replaceWith;
+        }
+    }else if(oldUrl.indexOf(paramNames)>=0){
+        newUrl = oldUrl.replace(re, '');
+    }
+    history.pushState('','',newUrl);
+}
+// 可视化弹框中页面隐藏头部
+if (parent.window.location.search.indexOf('pageset=1') >= 0) $('.metadmin-head').hide();
+// 操作成功、失败提示信息
+if(top.location!=location) $("html",parent.document).find('.turnovertext').remove();
+// 弹出提示信息
+function metAlert(text,delay,bg_ok,type){
+    delay=typeof delay != 'undefined'?delay:2000;
+    bg_ok=bg_ok?'bgshow':'';
+    if(text!=' '){
+        text=text||METLANG.jsok;
+        text='<div>'+text+'</div>';
+        if(parseInt(type)==0) text+='<button type="button" class="close white" data-dismiss="alert"><span aria-hidden="true">×</span></button>';
+        if(!$('.metalert-text').length){
+            var html='<div class="metalert-text p-x-40 p-y-10 bg-purple-600 white font-size-16">'+text+'</div>';
+            if(parseInt(type)==0) html='<div class="metalert-wrapper w-full alert '+bg_ok+'">'+html+'</div>';
+            $('body').append(html);
+        }
+        var $met_alert=$('.metalert-text'),
+            $obj=parseInt(type)==0?$('.metalert-wrapper'):$met_alert;
+        $met_alert.html(text);
+        $obj.show();
+        if($met_alert.height()%2) $met_alert.height($met_alert.height()+1);
+    }
+    if(delay){
+        setTimeout(function(){
+            var $obj=parseInt(type)==0?$('.metalert-wrapper'):$('.metalert-text');
+            $obj.fadeOut();
+        },delay);
+    }
+}
+// 弹出页面返回的提示信息
+var turnover=[];
+turnover['text']=getQueryString('turnovertext');
+turnover['type']=parseInt(getQueryString('turnovertype'));
+turnover['delay']=turnover['type']?undefined:0;
+if(turnover['text']) metAlert(turnover['text'],turnover['delay'],!turnover['type'],turnover['type']);
 // 系统参数
-var lang=getQueryString('lang'),
+var lang=M['lang'],
     siteurl=M['weburl'],
-    pubjspath=M['weburl']+'app/system/include/public/';
+    basepath=MET['url']['basepath']?MET['url']['basepath']:'';
+if(typeof MET != 'undefined'){
+    for(var name in MET){
+        if(!M[name]) M[name]=MET[name];
+    }
+}
 M['n']=getQueryString('n'),
 M['c']=getQueryString('c'),
 M['a']=getQueryString('a');
-M['langtxt']=langtxt;
-M['langset']=typeof langset!='undefined'?langset:'';
-M['anyid']=typeof anyid!='undefined'?anyid:'';
-M['met_editor']=met_editor;
-M['met_keywords']=met_keywords;
-M['url']=[];
-M['url']['admin']=typeof basepath != 'undefined'?basepath:'';
+if(!M['url']) M['url']=[];
 M['url']['system']=M['weburl']+'app/system/';
 M['url']['static']=M['url']['system']+'include/static/';
 M['url']['static_vendor']=M['url']['static']+'vendor/';
@@ -304,16 +350,11 @@ M['url']['static2_plugin']=M['url']['static2']+'js/Plugin/';
 M['url']['uiv2']=M['weburl']+'public/ui/v2/';
 M['url']['uiv2_css']=M['url']['uiv2']+'static/css/';
 M['url']['uiv2_js']=M['url']['uiv2']+'static/js/';
+M['url']['uiv2_plugin']=M['url']['uiv2']+'static/plugin/';
 M['url']['app']=M['weburl']+'app/app/';
-M['url']['pub']=pubjspath;
+M['url']['pub']=M['weburl']+'app/system/include/public/';
 M['url']['epl']=M['url']['pub']+'js/examples/';
-M['url']['ui']=url_ui;
-M['url']['own_form']=typeof url_own_form!='undefined'?url_own_form:'';
-M['url']['own_name']=typeof url_own_name!='undefined'?url_own_name:'';
-M['url']['own']=url_own;
-M['url']['own_tem']=url_own_tem;
-M['url']['api']=url_api;
-M['url']['edtor']=M['url']['app']+M['met_editor']+'/';
+M['url']['editor']=M['url']['app']+MET['met_editor']+'/';
 // 插件路径
 M['plugin']=[];
 M['plugin']['formvalidation']=[
@@ -342,7 +383,8 @@ M['plugin']['minicolors']=[
 ];
 M['plugin']['tokenfield']=[
     M['url']['static2_vendor']+'bootstrap-tokenfield/bootstrap-tokenfield.min.css',
-    M['url']['static2_vendor']+'bootstrap-tokenfield/bootstrap-tokenfield.min.js'
+    M['url']['static2_vendor']+'bootstrap-tokenfield/bootstrap-tokenfield.min.js',
+    M['url']['static2_plugin']+'bootstrap-tokenfield.min.js'
 ];
 M['plugin']['ionrangeslider']=[
     M['url']['static2_vendor']+'ionrangeslider/ionrangeslider.min.css',
@@ -362,7 +404,12 @@ M['plugin']['selectable']=[
     M['url']['static2_plugin']+'asselectable.min.js',
     M['url']['static2_plugin']+'selectable.min.js'
 ];
-M['plugin']['fileinput']=M['url']['static2_vendor']+'fileinput/fileinput.min.js';
+M['plugin']['fileinput']=[
+    M['url']['static2']+'fonts/glyphicons/glyphicons.min.css',
+    M['url']['pub']+'bootstrap/fileinput/css/fileinput.min.css',
+    M['url']['static2_vendor']+'fileinput/fileinput.min.js',
+    M['url']['static2_vendor']+'fileinput/fileinput_locale_zh.js'
+];
 M['plugin']['lazyload']=M['weburl']+'public/ui/v2/static/plugin/jquery.lazyload.min.js';
 M['plugin']['hover-dropdown']=M['url']['static_vendor']+'bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js';
 M['plugin']['asscrollable']=[
@@ -371,154 +418,446 @@ M['plugin']['asscrollable']=[
     M['url']['static2_vendor']+'asscrollable/jquery-asScrollable.min.js',
     M['url']['static2_plugin']+'asscrollable.min.js'
 ]
-$(function(){
-	// 可视化弹框中页面隐藏头部
-    if (parent.window.location.search.indexOf('pageset=1') >= 0) $('.metadmin-head').hide();
-    /*操作成功，失败提示信息*/
-    if(top.location!=location) $("html",parent.document).find('.turnovertext').remove();
-    if($('.metalert').length){
-        setTimeout(function(){
-            $('.metalert').fadeOut(500,function(){
-                $(this).remove();
+M['plugin']['touchspin']=[
+    M['url']['static2_vendor']+'bootstrap-touchspin/bootstrap-touchspin.min.css',
+    M['url']['static2_vendor']+'bootstrap-touchspin/bootstrap-touchspin.min.js'
+]
+M['plugin']['masonry']=M['url']['static2_vendor']+'masonry/masonry.pkgd.min.js';
+M['plugin']['appear']=[
+    M['url']['static2_vendor']+'jquery-appear/jquery.appear.min.js',
+    M['url']['static2_plugin']+'jquery-appear.min.js'
+];
+M['plugin']['ladda']=[
+    M['url']['static2_vendor']+'ladda/ladda.min.css',
+    M['url']['static2_vendor']+'ladda/spin.min.js',
+    M['url']['static2_vendor']+'ladda/ladda.min.js',
+    M['url']['static2_plugin']+'ladda.min.js'
+];
+M['plugin']['webui-popover']=[
+    M['url']['static2_vendor']+'webui-popover/webui-popover.min.css',
+    M['url']['static2_vendor']+'webui-popover/jquery.webui-popover.min.js'
+];
+$.extend({
+    // ajax请求返回后通用处理
+    metAjaxFun:function(result,false_fun,true_fun,status_key='status',msg_key='msg'){
+        var resultFun=function(){
+                if(parseInt(result[status_key])){
+                    alertify.success(result[msg_key]);
+                    if(typeof true_fun =='function'){
+                        true_fun();
+                    }else{
+                        setTimeout(function(){
+                            location.reload();
+                        },500)
+                    }
+                }else{
+                    alertify.error(result[msg_key]);
+                    if(typeof false_fun =='function') false_fun();
+                }
+            };
+        if(typeof alertify =='undefined'){
+            $.include(M['plugin']['alertify'],function(){
+                resultFun();
             });
-        },1500)
+        }else resultFun();
     }
-    // 表单验证
-    if($('form').length){
-    	$('form').addClass('met-form-validation');
-        $.include(M['plugin']['formvalidation'],function(){
-    		validate[0].success(function(e,form){
-                // 多选值组合
-                var checkbox_val=[];
-                form.find('input[type=checkbox]:not([disabled])').each(function(index, el) {
-                    var name=$(this).attr('name'),
-                        val=$(this).val();
-                    if($(this).prop('checked')){
-                        if(typeof checkbox_val[name] !='undefined'){
-                            checkbox_val[name]+='|'+val;
+});
+// 系统功能
+$.fn.extend({
+    // 编辑器
+    metEditor:function(){
+        if(!$(this).length) return;
+        if(M['met_editor']=='ueditor'){// 百度编辑器
+            if(typeof textarea_editor_val =='undefined') window.textarea_editor_val=[];
+            var $self=$(this);
+            $.include(M['plugin']['ueditor'],function(){
+                $self.each(function(index, val) {
+                    var index1=$(this).index('textarea[data-plugin="editor"]');
+                    if(!$(this).attr('id')) $(this).attr({id:'textarea-editor'+index1});
+                    textarea_editor_val[index1]=UE.getEditor(val.id,{
+                        scaleEnabled:true, // 是否可以拉伸长高,默认false(当开启时，自动长高失效)
+                        autoFloatEnabled:false, // 是否保持toolbar的位置不动，默认true
+                        initialFrameWidth : $(this).data('editor-x')||'100%',
+                        initialFrameHeight : $(this).data('editor-y')||400,
+                    });
+                });
+            });
+        }else if(M['met_editor']=='editormd'){// markdown编辑器
+
+        }
+    },
+    // 颜色选择器
+    metDatetimepicker:function(){
+        if(!$(this).length) return;
+        $(this).each(function(index, el) {
+            var $self=$(this);
+            $(this).datetimepicker({
+                lang:M['lang']=='cn'?'ch':'en',
+                timepicker:$self.attr("data-day-type")==2?true:false,
+                format:$self.attr("data-day-type")==2?'Y-m-d H:i:s':'Y-m-d'
+            });
+        });
+    },
+    // 联动菜单
+    metCitySelect:function(){
+        if(!$(this).length) return;
+        if(typeof citySelect =='undefined') window.citySelect=[];
+        $(this).each(function(index){
+            var country=$(this).find(".country").attr("data-checked"),
+                p=$(this).find(".prov").attr("data-checked"),
+                c=$(this).find(".city").attr("data-checked"),
+                s=$(this).find(".dist").attr("data-checked"),
+                url=$(this).attr('data-select-url')?$(this).attr('data-select-url'):M['url']['static2_vendor']+'select-linkage/citydata.min.json',
+                option={url:url,prov:p, city:c, dist:s, nodata:'none'};
+            if($(this).hasClass('shop-address-select')){
+                option={
+                    url:url,country:country, prov:p, city:c, dist:s, nodata:'none',
+                    required:false,
+                    country_name_key:'name',
+                    p_name_key:'name',
+                    n_name_key:'name',
+                    s_name_key:'name',
+                    p_children_key:'children',
+                    n_children_key:'children',
+                    value_key:'id',
+                    getCityjson:function(json,key){
+                        key=key||0;
+                        return json[key]['children'];
+                    }
+                };
+            }
+            citySelect[index]=$(this).citySelect(option);
+        });
+    },
+    // 上传文件
+    metFileInput:function(){
+        if(!$(this).length) return;
+        var errorFun=function(obj,data){
+                obj.find('.file-preview-thumbnails .file-preview-frame.disabled').remove();
+                // 显示报错文字
+                // obj.removeClass('has-success').addClass('has-danger');
+                // if(!obj.find('small.form-control-label').length) obj.append('<small class="form-control-label"></small>');
+                // obj.find('small.form-control-label').text(data.response.error);
+            },
+            successFun=function(obj1,obj2,data,multiple){
+                var $obj1=obj1.parents('.input-group').find('input[type="hidden"][name="'+obj1.attr('name')+'"]'),
+                    path='';
+                if(multiple){
+                    path=$obj1.val()?$obj1.val()+','+data.response.path:data.response.path;
+                }else{
+                    path=data.response.path;
+                    obj2.find('.file-preview-thumbnails .file-preview-frame:last-child').prev().remove();
+                }
+                $obj1.val(path); // input值更新
+                // 显示上传成功文字
+                obj2.find('.file-input .input-group .file-caption-name').html('<span class="glyphicon glyphicon-file kv-caption-icon"></span>'+path);
+                obj2.removeClass('has-danger').addClass('has-success');
+                if(!obj2.find('small.form-control-label').length) obj2.append('<small class="form-control-label"></small>');
+                var tips=M['langtxt'].jsx17||M['langtxt'].fileOK;
+                obj2.find('small.form-control-label').text(tips);
+            };
+        $(this).each(function(index, el) {
+            var $self=$(this),
+                $form_group=$(this).parents('.form-group:eq(0)'),
+                name=$(this).attr('name'),
+                url=$(this).data('url')||M['url']['system']+'entrance.php?lang='+M['lang']+'&c=uploadify&m=include&a=doupfile&type=1',
+                multiple=typeof $(this).attr('multiple') !='undefined'?true:false,
+                minFileCount=$(this).data('fileinput-minFileCount')||1,
+                maxFileCount=$(this).data('fileinput-maxFileCount')||20,
+                maxFileSize=$(this).data('fileinput-maxFileSize')||0,
+                accept=$(this).attr('accept')||'',
+                format='',
+                initialPreview=[],
+                dropZoneEnabled=$(this).data('drop-zone-enabled')=='false'?false:true,
+                value=$(this).attr('value');
+            if(typeof value !='undefined' && value!='' && (value.indexOf('.png')>=0||value.indexOf('.jpg')>=0||value.indexOf('.bmp')>=0||value.indexOf('.gif')>=0||value.indexOf('.ico')>=0)){
+                if(value.indexOf(',')>=0){
+                    value=value.split(',');
+                }else{
+                    value=[value];
+                }
+                $.each(value, function(index, val) {
+                    var html='<a href="'+val+'" target="_blank"><img src="'+val+'" class="file-preview-image"></a>'
+                            +'<div class="file-thumbnail-footer">'
+                                +'<div class="file-caption-name" title="'+val+'">'+val+'</div>'
+                                    +'<div class="file-actions">'
+                                    +'<div class="file-footer-buttons">'
+                                        +'<button type="button" class="kv-file-remove btn btn-xs btn-default" title="Remove file"><i class="glyphicon glyphicon-trash text-danger"></i></button>'
+                                    +'</div>'
+                                    +'<div class="clearfix"></div>'
+                                +'</div>'
+                            +'</div>';
+                    initialPreview.push(html);
+                });
+            }
+            if(accept){
+                if(accept.indexOf(',')>=0){
+                    accept=accept.split(',');
+                }else{
+                    accept=[accept];
+                }
+                $.each(accept, function(index, val) {
+                    val=val.indexOf('/')>=0?val.split('/')[1]:'';
+                    if(val=='*') val='';
+                    if(val){
+                        if(format) format+='|';
+                        format+=val;
+                    }
+                });
+                if(accept=='image/*') format='jpg|png|bmp|gif|webp';
+            }
+            if(format) url+='&format='+format;
+            var allowedFileExtensions=format?(format.indexOf('|')?format.split('|'):[format]):'';
+            $(this).removeAttr('hidden').fileinput({// fileinput插件
+                uploadUrl: url,            // 处理上传
+                uploadAsync:multiple,      // 异步批量上传
+                allowedFileExtensions:allowedFileExtensions,// 接收的文件后缀
+                minFileCount:minFileCount,
+                maxFileCount:maxFileCount,
+                maxFileSize:maxFileSize,
+                language:M.synchronous=='cn'?'zh':'en',// 语言文字
+                initialPreview:initialPreview,
+                initialCaption:value,         // 初始化输入框值
+                // showCaption:false,         // 输入框
+                // showRemove:false,          // 删除按钮
+                // browseLabel:'',            // 按钮文字
+                showUpload:false,             // 上传按钮
+                dropZoneEnabled:dropZoneEnabled,// 是否显示拖拽区域
+                // browseClass:"btn btn-primary", //按钮样式
+            }).on("filebatchselected", function(event, files) {
+                $(this).fileinput("upload");
+            }).on('filebatchuploadsuccess', function(event, data, previewId, index) {// 同步上传成功结果处理
+                successFun($(this),$form_group,data,multiple);
+            }).on('fileuploaded', function(event, data, previewId, index) {// 异步上传成功结果处理
+                successFun($(this),$form_group,data,multiple);
+            }).on('filebatchuploaderror', function(event, data, previewId, index) {// 同步上传错误结果处理
+                errorFun($form_group,data);
+            }).on('fileuploaderror', function(event, data, previewId, index) {// 异步上传错误结果处理
+                errorFun($form_group,data);
+            });
+            if(!$(this).parents('form').find('input[type="hidden"][name="'+name+'"]').length) $(this).after('<input type="hidden" name="'+name+'" value="'+value+'">');
+            // $(this).siblings('i').attr({class:'icon wb-upload'}).parents('.btn-file').insertAfter($(this).parents('.file-input'));
+            // 删除图片后图片路径数据更新
+            $form_group.on('click', '.file-preview-thumbnails .file-preview-frame .kv-file-remove,.fileinput-remove', function(event) {
+                event.preventDefault();
+                var $input_name=$form_group.find('input[type="hidden"][name="'+name+'"]'),
+                    $caption_name=$form_group.find('.file-input .input-group .file-caption-name');
+                if($(this).hasClass('kv-file-remove')){
+                    var active=$(this).parents('.file-preview-frame').index(),
+                        input_value=$input_name.val(),
+                        path='';
+                    setTimeout(function(){
+                        if(multiple){
+                            if(input_value){
+                                if(input_value.indexOf(',')>=0){
+                                    input_value=input_value.split(',');
+                                }else{
+                                    input_value=[input_value];
+                                }
+                                $.each(input_value, function(index, val) {
+                                    if(index!=active) path=path?path+','+val:val;
+                                });
+                            }
                         }else{
-                            checkbox_val[name]=val;
+                            var $file_preview_frame=$form_group.find('.file-preview-thumbnails .file-preview-frame');
+                            path=$file_preview_frame.length?$file_preview_frame.find('img').attr('src'):'';
+                        }
+                        $input_name.val(path); // input值更新
+                        $caption_name.html('<span class="glyphicon glyphicon-file kv-caption-icon"></span>'+path);
+                    },1000)
+                }else{
+                    $input_name.val(''); // input值更新
+                    $caption_name.html('<span class="glyphicon glyphicon-file kv-caption-icon"></span>');
+                }
+                $form_group.removeClass('has-success').find('small.form-control-label').remove();
+            });
+        });
+    },
+    // 单选、多选默认选中
+    metRadioCheckboxChecked:function(){
+        if(!$(this).length) return;
+        $(this).each(function(index, el) {
+            var checked=String($(this).data('checked'));
+            if(checked!=''){
+               checked=checked.indexOf('#@met@#')>=0?checked.split('#@met@#'):[checked];
+                var name=$(this).attr('name');
+                for (var i=0; i < checked.length; i++) {
+                    $('input[name="'+name+'"][value="'+checked[i]+'"]').attr('checked', true);
+                }
+            }
+        });
+    },
+    // 下拉菜单默认选中
+    metSelectChecked:function(){
+        if(!$(this).length) return;
+        $(this).each(function(index, el) {
+            $('option[value="'+$(this).data('checked')+'"]',this).attr({selected:true});
+        });
+    },
+    // 图片延迟加载
+    metlazyLoad:function(){
+        if(!$(this).length) return;
+        var $self=$(this);
+        if(typeof $.fn.lazyload == 'undefined'){
+            $.include(M['plugin']['lazyload'],function(){
+                $self.lazyload({placeholder:M['lazyloadbg']});
+            })
+        }else if($('script[src*="js/basic_admin.js"]').length){
+            $self.lazyload({placeholder:M['lazyloadbg']});
+        }else{
+            if(typeof M['lazyload_load_num'] =='undefined') M['lazyload_load_num']=0;
+            var delay=M['lazyload_load_num']?0:500;
+            if(delay){
+                setTimeout(function(){
+                    var is_lazyload=true;
+                    $self.each(function(index, el) {
+                        if($(this).attr('data-lazyload')=='true'){
+                            is_lazyload=false;
+                            return false;
+                        }
+                    });
+                    if(is_lazyload) $self.lazyload({placeholder:M['lazyloadbg']});
+                    M['lazyload_load_num']++;
+                },delay);
+            }else{
+                $self.lazyload({placeholder:M['lazyloadbg']});
+            }
+        }
+    },
+    // 表单删除按钮ajax提交
+    metFormAjaxDel:function(url){
+        var $form=$(this).parents('form'),
+            del_id=$form.find('[name="all_id"]')?$form.find('[name="all_id"]').val():'';
+        if(del_id!=''){
+            $.ajax({
+                url: $(this).data('url')||$form.attr('action'),
+                type: "POST",
+                dataType:'json',
+                data:{del_id:del_id},
+                success: function(result){
+                    $.metAjaxFun(result);
+                }
+            });
+        }else{
+            metAlert(METLANG.jslang3,'','bgshow',0);
+        }
+    },
+    // 表单两种类型提交前的处理（保存、删除）
+    metSubmit:function(type=1){
+        // 插入submit_type字段
+        var type_str=type?'save':'delet';
+        if($(this).find('[name="submit_type"]').length){
+            $(this).find('[name="submit_type"]').val(type_str);
+        }else $(this).append('<input type="hidden" name="submit_type" value="'+type_str+'"/>');
+        // 插入表格的all_id字段
+        if($(this).find('.dataTable').length){
+            var $table=$(this).find('.dataTable'),
+                checked_str=type?'':':checked',
+                $checkbox=$table.find('tbody input[type="checkbox"][name="id"]'+checked_str),
+                all_id='';
+            $checkbox.each(function(index, el) {
+                var val=parseInt($(this).val())
+                all_id+=all_id?','+val:val;
+            })
+            if(!$(this).find('[name="all_id"]').length) $(this).append('<input type="hidden" name="all_id"/>');
+            $(this).find('[name="all_id"]').val(all_id);
+        }
+    },
+    // 表单更新验证
+    metFormAddField:function(name){
+        var $form=$(this)[0].tagName=='FORM'?$(this):$(this).parents('form');
+        if($form.length){
+            if(name){
+                if(!$.isArray(name)){
+                    if(name.indexOf(',')>=0){
+                        name=name.split(',');
+                    }else name=[name];
+                }
+                $.each(name, function(index, val) {
+                    $form.data('formValidation').addField(val);
+                })
+            }else{
+                var name_array=[];
+                $('[name]',this).each(function(index, el) {
+                    var name=$(this).attr('name');
+                    if($.inArray(name, name_array)<=0){
+                        name_array.push(name);
+                        if(typeof $(this).attr('required') !='undefined'){
+                            $form.data('formValidation').addField(name);
+                        }else{
+                            $.each($(this).data(), function(index, val) {
+                                var third_str=index.substr(2,1);
+                                if(index.substr(0,2)=='fv' && index.length>2 && third_str >= 'A' && third_str <= 'Z'){
+                                    $form.data('formValidation').addField(name);
+                                    return false;
+                                }
+                            });
                         }
                     }
                 });
-                $.each(checkbox_val, function(index, val) {
-                    form.append('<input type="hidden" name="'+index+'" value="'+val+'"/>');
-                });
-            },false);
-    	});
-	}
-	// ajax表格
-    if($('.dataTable').length) $.include(M['plugin']['datatables']);
-	// 编辑器
-	var $textarea_editor=$("textarea[data-plugin=editor]"),
-		textarea_editor_val=[];
-	if($textarea_editor.length){
-		if(M['met_editor']=='ueditor'){// 百度编辑器
-			$.include(M['plugin']['ueditor'],function(){
-				$textarea_editor.each(function(index, val) {
-					if(!$(this).attr('id')) $(this).attr({id:'textarea-editor'+index});
-					textarea_editor_val[index]=UE.getEditor(val.id,{
-						scaleEnabled:true, // 是否可以拉伸长高,默认false(当开启时，自动长高失效)
-						autoFloatEnabled:false, // 是否保持toolbar的位置不动，默认true
-						initialFrameWidth : '100%',
-						initialFrameHeight : 400,
-					});
-				});
-			});
-		}else if(M['met_editor']=='editormd'){// markdown编辑器
-
-		}
-	}
-	// 颜色选择器
-	if($('input[data-plugin=minicolors]').length) $.include(M['plugin']['minicolors'],function(){
-		$('input[data-plugin=minicolors]').minicolors();
-	});
-	// 标签
-	if($('input[data-plugin=tokenfield]').length) $.include(M['plugin']['tokenfield'],'','siterun');
-	// 滑块
-	if($('input[type=text][data-plugin=ionRangeSlider]').length) $.include(M['plugin']['ionrangeslider']);
-	// 日期选择器
-	var $datetimepicker=$('input[data-plugin=datetimepicker]');
-	if($datetimepicker.length) $.include(M['plugin']['datetimepicker'],function(){
-		$datetimepicker.datetimepicker({
-			lang:M['lang']=='cn'?'ch':'en',
-			timepicker:$datetimepicker.attr("data-day-type")==2?true:false,
-			format:$datetimepicker.attr("data-day-type")==2?'Y-m-d H:i:s':'Y-m-d'
-		});
-	});
-	// 联动菜单
-	if($('[data-plugin="select-linkage"]').length) $.include(M['plugin']['select-linkage'],function(){
-		$('[data-plugin="select-linkage"]').each(function(){
-			var p=$(this).find(".prov").attr("data-checked")||'',
-				c=$(this).find(".city").attr("data-checked")||undefined,
-				s=$(this).find(".dist").attr("data-checked")||undefined;
-			var url=$(this).attr('data-selectdburl')?$(this).attr('data-selectdburl'):M['url']['static2_vendor']+'select-linkage/citydata.min.json';
-			$(this).citySelect({url:url,prov:p, city:c, dist:s, nodata:"none"});
-		});
-	});
-	// 模态对话框
-	if($('[data-plugin=alertify]').length) $.include(M['plugin']['alertify'],'','siterun');
-	// 全选、全不选
-	if($('[data-plugin=selectable]').length) $.include(M['plugin']['selectable'],'','siterun');
-    // 上传文件
-    if($('input[type=file][data-plugin=fileinput]').length) $.include(M['plugin']['fileinput'],function(){
-        $('input[type=file][data-plugin=fileinput]').each(function(index, el) {
-            var url=$(this).data('url')||M['url']['system']+'entrance.php?lang='+M['lang']+'&c=uploadify&m=include&a=doupfile&type=1',
-                $form_group=$(this).parents('.form-group');
-            $(this).removeAttr('hidden').fileinput({// fileinput插件
-                language:'zh',             // 语言文字
-                showCaption:false,         // 输入框
-                showRemove:false,          // 删除按钮
-                browseLabel:'',            // 按钮文字
-                showUpload:false,          // 上传按钮
-                uploadUrl: url,            // 处理上传
-                uploadAsync:false          // 异步批量上传
-            }).on("filebatchselected", function(event, files) {
-                $(this).fileinput("upload");
-            }).on('filebatchuploadsuccess', function(event, data, previewId, index) {
-                $(this).parents('.input-group-file').find('input[type=text]').val(data.response.path);// 输入框文件路径更新
-                // 显示上传成功文字
-                $form_group.removeClass('has-danger').addClass('has-success');
-                if(!$form_group.find('small.form-control-label').length) $form_group.append('<small class="form-control-label"></small>');
-                $form_group.find('small.form-control-label').text(langtxt.jsx17);
-            }).on('filebatchuploaderror', function(event, data, previewId, index) {
-                // 显示报错文字
-                $form_group.removeClass('has-success').addClass('has-danger');
-                if(!$form_group.find('small.form-control-label').length) $form_group.append('<small class="form-control-label"></small>');
-                $form_group.find('small.form-control-label').text(data.response.error);
-            });
-            $(this).siblings('i').attr({class:'icon wb-upload'}).parents('.btn-file').insertAfter($(this).parents('.file-input'));
-        });
-    })
-    // 滚动条
-    if($('[data-plugin=scrollable]').length) $.include(M['plugin']['asscrollable']);
-	// 单选、多选
-	$('input[data-checked]').each(function(index, el) {
-		var checked=String($(this).data('checked'));
-		checked=checked.indexOf('|')>=0?checked.split('|'):[checked];
-		if(checked){
-			var name=$(this).attr('name');
-			for (var i=0; i < checked.length; i++) {
-				$('input[name='+name+'][value='+checked[i]+']').attr('checked', true);
-			}
-		}
-	});
-	// 下拉菜单
-	$('select[data-checked]').each(function(index, el) {
-		$('option[value='+$(this).data('checked')+']',this).attr({selected:true});
-	});
-    // 非前台模板页面、兼容老模板
-    if(typeof $.fn.navtabSwiper !='undefined'){
-        // 图片延迟加载
-        var $original=$('[data-original]');
-        if($original.length){
-            $.include(M['plugin']['lazyload'],function(){
-                $original.lazyload({placeholder:met_lazyloadbg});
-            })
+            }
         }
+    },
+    // 通用功能开启
+    metCommon:function(){
+        var dom=this;
+        // 编辑器
+        if($('textarea[data-plugin="editor"]',dom).length) $('textarea[data-plugin="editor"]',dom).metEditor();
+        // 颜色选择器
+        if($('input[data-plugin="minicolors"]',dom).length) $.include(M['plugin']['minicolors'],function(){
+            $('input[data-plugin="minicolors"]',dom).minicolors();
+        });
+        // 标签
+        if($('input[data-plugin="tokenfield"]',dom).length) $.include(M['plugin']['tokenfield'],'','siterun');
+        // 滑块
+        if($('input[type="text"][data-plugin="ionRangeSlider"]',dom).length) $.include(M['plugin']['ionrangeslider'],'','siterun');
+        // 日期选择器
+        if($('input[data-plugin="datetimepicker"]',dom).length) $.include(M['plugin']['datetimepicker'],function(){
+            $('input[data-plugin="datetimepicker"]',dom).metDatetimepicker();
+        });
+        // 联动菜单
+        if($('[data-plugin="select-linkage"]',dom).length) $.include(M['plugin']['select-linkage'],function(){
+            $('[data-plugin="select-linkage"]',dom).metCitySelect();
+        });
+        // 模态对话框
+        if($('[data-plugin="alertify"]',dom).length) $.include(M['plugin']['alertify'],'','siterun');
+        // 全选、全不选
+        if($('[data-plugin="selectable"]',dom).length) $.include(M['plugin']['selectable'],'','siterun');
+        // 上传文件
+        if($('input[type="file"][data-plugin="fileinput"]',dom).length) $.include(M['plugin']['fileinput'],function(){
+            $('input[type="file"][data-plugin="fileinput"]',dom).metFileInput();
+        })
+        // 滚动条
+        if($('[data-plugin="scrollable"]',dom).length) $.include(M['plugin']['asscrollable'],'','siterun');
+        // 单选、多选默认选中
+        if($('input[data-checked]',dom).length) $('input[data-checked]',dom).metRadioCheckboxChecked();
+        // 下拉菜单默认选中
+        if($('select[data-checked]',dom).length) $('select[data-checked]',dom).metSelectChecked();
+        // 数量改变
+        if($('[data-plugin="touchSpin"]',dom).length && typeof $.fn.TouchSpin =='undefined') $.include(M['plugin']['touchspin'],function(){
+            $('[data-plugin="touchSpin"]',dom).TouchSpin();
+        });
+        // 图片延迟加载
+        if($('[data-original]',dom).length) $('[data-original]',dom).metlazyLoad();
+    }
+});
+// 表单验证
+if($('form').length && typeof validate =='undefined') $.include(M['plugin']['formvalidation']);
+// ajax表格
+if($('.dataTable').length && typeof datatableOption =='undefined') $.include(M['plugin']['datatables']);
+// 通用功能开启
+$(document).metCommon();
+// 勾选开关
+$(document).on('change', 'input[type="checkbox"][data-plugin="switchery"]', function(event) {
+    var val=$(this).is(':checked')?1:0;
+    $(this).val(val);
+});
+$(function(){
+    // 非前台模板页面-兼容老模板
+    if(M['url']['basepath'] || $('script[src*="js/basic_web.js"]').length){
         // 返回顶部
         $(".met-scroll-top").click(function(){
-            $('html,body').animate({'scrollTop':0},300);
+            $('html,body').animate({scrollTop:0},300);
         });
         // 返回顶部按钮显示/隐藏
         var wh=$(window).height();
@@ -530,18 +869,515 @@ $(function(){
             }
         });
     }
+    // 会员侧栏手机端当前页面标题显示在导航徒步
+    Breakpoints.on('xs',{
+        enter:function(){
+            if($('.met-sidebar-nav-active-name').length) $('.met-sidebar-nav-active-name').html($('.met-sidebar-nav-mobile .dropdown-menu .dropdown-item.active').text());
+        }
+    })
+    // 表单功能
+    // 添加项
+    $(document).on('click', '[table-addlist]', function(event) {
+        var $self=$(this),
+            $table=$(this).parents('table').length?$(this).parents('table'):$($(this).data('table-id')),
+            addlist=function(data){
+                $table.find('tbody').append(data);
+                var $new_tr=$table.find('tbody tr:last-child');
+                if(!$new_tr.find('[table-cancel]').length && typeof $self.data('nocancel')=='undefined') $new_tr.find('td:last-child').append('<button type="button" class="btn btn-default btn-outline m-l-5" table-cancel>'+METLANG.js49+'</button>');
+                // 添加表单验证
+                $new_tr.metFormAddField();
+            };
+        if($table.find('[table-addlist-data]').length){
+            var html=$table.find('[table-addlist-data]').val();
+            addlist(html);
+        }else{
+            $.ajax({
+                url: $(this).data('url'),
+                type: 'POST',
+                success:function(result){
+                    addlist(result);
+                }
+            });
+        }
+    });
+    // 撤销项
+    $(document).on('click', '[table-cancel]', function(event) {
+        $(this).parents('tr').remove();
+    })
+    // 删除项-不提交
+    $(document).on('click', '[table-del]', function(event) {
+        var $self=$(this),
+            remove=function(){
+                alertify.theme('bootstrap').okBtn(METLANG.confirm).cancelBtn(METLANG.jslang2).confirm(METLANG.delete_information, function (ev) {
+                    $self.parents('tr').remove();
+                })
+            };
+        if(typeof alertify =='undefined'){
+            $.include(M['plugin']['alertify'],function(){
+                remove();
+            });
+        }else{
+            remove();
+        }
+    })
+    // 点击保存按钮
+    $(document).on('click', 'form .btn[type="submit"]', function(event) {
+        if($(this).data('plugin')=='alertify' && $(this).data('type')=='confirm') event.preventDefault();
+        $(this).parents('form').metSubmit();
+    })
+    // 删除多项提交
+    $(document).on('click', '[table-delet]', function(event) {
+        event.preventDefault();
+        var $form=$(this).parents('form');
+        $form.metSubmit(0);
+        if($(this).data('plugin')!='alertify'){
+            if($(this).data('url')){
+                $(this).metFormAjaxDel();
+            }else $form.submit();
+        }
+    })
+    // 表单输入框回车时，触发提交按钮
+    $(document).on('keydown', 'form input[type="text"]', function(event) {
+        if(event.keyCode==13){
+            event.preventDefault();
+            $(this).parents('form').find('.btn[type="submit"]').click();
+        }
+    });
+    // 表单提交
+    $(document).on('submit', 'form', function(event) {
+        // 提交删除时没有勾选时提示
+        if($(this).find('[name="submit_type"]').length && $(this).find('[name="submit_type"]').val()=='delet' && $(this).find('[name="all_id"]').val()==''){
+            event.preventDefault();
+            metAlert(METLANG.jslang3,'','bgshow',0);
+        }
+    });
 });
-/*public/ui/v2/static/js/own.js*/
+/*app/system/include/static2/vendor/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js*/
+/**
+ * @preserve
+ * Project: Bootstrap Hover Dropdown
+ * Author: Cameron Spear
+ * Version: v2.2.1
+ * Contributors: Mattia Larentis
+ * Dependencies: Bootstrap's Dropdown plugin, jQuery
+ * Description: A simple plugin to enable Bootstrap dropdowns to active on hover and provide a nice user experience.
+ * License: MIT
+ * Homepage: http://cameronspear.com/blog/bootstrap-dropdown-on-hover-plugin/
+ */
+!function(e,n){var o=e();e.fn.dropdownHover=function(t){return"ontouchstart"in document?this:(o=o.add(this.parent()),this.each(function(){function r(){d.parents(".navbar").find(".navbar-toggle").is(":visible")||(n.clearTimeout(a),n.clearTimeout(i),i=n.setTimeout(function(){o.find(":focus").blur(),v.instantlyCloseOthers===!0&&o.removeClass("open"),n.clearTimeout(i),d.attr("aria-expanded","true"),s.addClass("open"),d.trigger(h)},v.hoverDelay))}var a,i,d=e(this),s=d.parent(),u={delay:500,hoverDelay:0,instantlyCloseOthers:!0},l={delay:e(this).data("delay"),hoverDelay:e(this).data("hover-delay"),instantlyCloseOthers:e(this).data("close-others")},h="show.bs.dropdown",c="hide.bs.dropdown",v=e.extend(!0,{},u,t,l);s.hover(function(e){return s.hasClass("open")||d.is(e.target)?void r(e):!0},function(){n.clearTimeout(i),a=n.setTimeout(function(){d.attr("aria-expanded","false"),s.removeClass("open"),d.trigger(c)},v.delay)}),d.hover(function(e){return s.hasClass("open")||s.is(e.target)?void r(e):!0}),s.find(".dropdown-submenu").each(function(){var o,t=e(this);t.hover(function(){n.clearTimeout(o),t.children(".dropdown-menu").show(),t.siblings().children(".dropdown-menu").hide()},function(){var e=t.children(".dropdown-menu");o=n.setTimeout(function(){e.hide()},v.delay)})})}))},e(document).ready(function(){e('[data-hover="dropdown"]').dropdownHover()})}(jQuery,window);
+/*public/ui/v2/static/js/common.js*/
+/*!
+ * 前台模板通用功能
+ * M['weburl'] 		网站网址
+ * M['lang']  		网站语言
+ * M['tem']  		模板目录路径
+ * M['classnow']  	当前栏目ID
+ * M['id']  		当前页面ID
+ * M['module']  	当前页面所属模块
+ * M['device_type'] 客户端判断（d：PC端，t：平板端，m：手机端）
+ * met_prevarrow,
+   met_nextarrow    slick插件翻页按钮自定义html
+ */
+$(function(){
+    if(M['classnow']==10001){
+        // 首页首屏内动画预加载
+        var $met_indexbody1_appear=$('.met-index-body:eq(0) [data-plugin="appear"]');
+        if($met_indexbody1_appear.length){
+            $met_indexbody1_appear.scrollFun(function(val){
+                val.appearDiy();
+            });
+        }
+    }
+    // 列表图片高度预设及删除
+    var $imagesize=$('.imagesize[data-scale]');
+    if($imagesize.length) $imagesize.imageSize();
+    // 图片延迟加载
+    var $original=$('[data-original]');
+    if($original.length){
+        if(typeof $.fn.lazyload == 'function'){
+            $original.lazyload();
+        }else if($('script[src*="js/basic.js"]').length){
+            var interval_lazyload_time=0,
+                interval_lazyload=setInterval(function(){
+                    interval_lazyload_time+=50;
+                    if(typeof $.fn.lazyload == 'function'){
+                        $original.lazyload();
+                        clearInterval(interval_lazyload);
+                    }else if(interval_lazyload_time>7000){
+                        console.log('lazyload插件没有加载！');
+                        clearInterval(interval_lazyload);
+                    }
+                },50);
+        }
+    }
+    // 内页子栏目导航水平滚动
+    var $metcolumn_nav=$('.met-column-nav-ul');
+    if($metcolumn_nav.length){
+        Breakpoints.on('xs',{
+            enter:function(){
+                $metcolumn_nav.navtabSwiper();
+            }
+        })
+    }
+    if($('[boxmh-mh]').length) $('[boxmh-mh]').boxMh('[boxmh-h]');//左右区块最小高度设置
+    // 侧栏图片列表
+    var $sidebar_piclist=$('.sidebar-piclist-ul');
+    if($sidebar_piclist.find('.masonry-child').length>1){
+        // 图片列表瀑布流
+        Breakpoints.on('xs sm',{
+            enter:function(){
+                setTimeout(function(){
+                    $sidebar_piclist.masonry({itemSelector:".masonry-child"});
+                },500)
+            }
+        });
+    }
+    // 视频插件异步加载
+    if($(".metvideobox").length && !$('link[href*="video-js.css"]').length && !$(".metvideobox .metvideo").length){
+        $(".metvideobox").each(function(){
+            var data=$(this).attr("data-metvideo").split("|"),
+                width=data[0],
+                height=data[1],
+                poster=data[2],
+                autoplay=data[3]||false,
+                src=data[4],
+                vhtml='<div class="metvideobox"><video class="metvideo video-js vjs-default-skin" controls preload="none" width="'+width+'" height="'+height+'" poster="'+poster+'" data-setup=\'{"autoplay":'+autoplay+'}\' webkit-playsinline playsinline x5-playsinline x-webkit-airplay="allow" x5-video-player-type="h5" x5-video-player-fullscreen><source src="'+src+'" type="video/mp4" /></video></div>';
+            $(this).after(vhtml).remove();
+        });
+        $.include(M['weburl']+'public/ui/v1/js/effects/video-js/video-js.css');
+        if(M['device_type']=='d'){
+            $.include(M['weburl']+"public/ui/v1/js/effects/video-js/video_hack.js",function(){
+                setTimeout(function(){
+                    $('.metvideo').videoSizeRes();
+                },0)
+            });
+        }else{
+            $('.metvideo').videoSizeRes();
+        }
+    }
+    if($('.met-editor iframe,.met-editor embed').length) $('.met-editor iframe,.met-editor embed').videoSizeRes();
+});
+// 全局函数
+$.fn.extend({
+    // 选项卡列表水平滚动处理（需调用swiper插件）
+    navtabSwiper:function(){
+        var $self=$(this),
+            $navObj_p=$(this).parents('.subcolumn-nav'),
+            navtabsDefault=function(){
+                if(typeof Swiper =='undefined') return false;
+                var navObjW=$self.find('>li').parentWidth();
+                if(navObjW>$self.parent().width()){
+                    // 添加或初始化水平滚动处理
+                    if($self.hasClass('swiper-wrapper')){
+                        if(!$self.hasClass('flex-start')) $self.addClass('flex-start');
+                    }else{
+                        $self
+                        .addClass("swiper-wrapper flex-start")
+                        .wrap("<div class=\"swiper-container swiper-navtab\"></div>").after('<div class="swiper-scrollbar"></div>')
+                        .find(">li").addClass("swiper-slide");
+                        var swiperNavtab=new Swiper('.swiper-navtab',{
+                            slidesPerView:'auto',
+                            scrollbar:'.swiper-scrollbar',
+                            scrollbarHide:false,
+                            scrollbarDraggable:true
+                        });
+                    }
+                    if($navObj_p.length && $('.product-search').length) $navObj_p.height('auto').css({'margin-bottom':10});
+                    // 下拉菜单被隐藏特殊情况处理
+                    if($self.find('.dropdown').length && $(".swiper-navtab").length){
+                        if(!$(".swiper-navtab").hasClass('overflow-visible')) $(".swiper-navtab").addClass("overflow-visible");
+                    }
+                }else if($self.hasClass('flex-start')){
+                    $self.removeClass('flex-start');
+                    $navObj_p.css({'margin-bottom':0});
+                }
+        };
+        navtabsDefault();
+        $(window).resize(function(){
+            navtabsDefault();
+        })
+        // 移动端下拉菜单浮动方向
+        Breakpoints.on('xs sm',{
+            enter:function(){
+                $self.find('.dropdown-menu').each(function(){
+                    if($(this).parent('li').offset().left > $(window).width()/2-$(this).parent('li').width()/2){
+                        $(this).addClass('dropdown-menu-right');
+                    }
+                });
+            }
+        });
+    },
+    // 单张图片加载完成回调
+    imageloadFunAlone:function(fun){
+        var img=new Image();
+        img.src=$(this).data('original') || $(this).data('lazy') || $(this).attr('src');
+        if (img.complete){
+            if (typeof fun==="function") fun();
+            return;
+        }
+        img.onload=function(){
+            if (typeof fun==="function") fun();
+        };
+    },
+    // 图片加载完成回调
+    imageloadFun:function(fun){
+        $(this).each(function(){
+            if($(this).data('lazy') || $(this).data('original')){// 图片延迟加载时
+                var thisimg=$(this),
+                    loadtime=setInterval(function(){
+                        if(thisimg.attr('src')==thisimg.data('original') || thisimg.attr('src')==thisimg.data('lazy')){
+                            clearInterval(loadtime);
+                            thisimg.imageloadFunAlone(fun);
+                        }
+                    },100)
+            }else if($(this).attr('src')){
+                $(this).imageloadFunAlone(fun);
+            }
+        });
+    },
+    /**
+     * imageSize 图片高度预设及删除
+     * @param    {String} imgObj 目标图片类
+     */
+    imageSize:function(imgObj){
+        var imgObj=imgObj||'img';
+        $(this).each(function(){
+            var scale=$(this).data('scale'),
+                $self_scale=$(this),
+                $img=$(imgObj,this),
+                img_length=$img.length;
+            if(!isNaN(scale)) scale=scale.toString();
+            // 图片对象筛选
+            for (var i = 0; i < img_length; i++) {
+                for (var s = 0; s < $img.length; s++) {
+                    if($($img[s]).parents('[data-scale]').eq(0).index('[data-scale]')!=$self_scale.index('[data-scale]')){
+                        $img.splice(s,1);
+                        break;
+                    }
+                }
+                if(s==$img.length) break;
+            }
+            if($img.length && scale.indexOf('x')>=0){
+                scale=scale.split('x');
+                scale=scale[0]/scale[1];
+                // 图片高度预设
+                if($img.attr('src')){
+                    $img.height(Math.round($img.width()*scale));
+                }else{
+                    var time=setInterval(function(){
+                        if($img.attr('src')){
+                            $img.height(Math.round($img.width()*scale));
+                            clearInterval(time);
+                        }
+                    },30);
+                }
+                $(window).resize(function(){
+                    $img.each(function(){
+                        if($(this).is(':visible') && $(this).data('original') && $(this).attr('src')!=$(this).data('original')) $(this).height(Math.round($(this).width()*scale));
+                    })
+                });
+                // 图片高度删除
+                $img.each(function(){
+                    var $self=$(this);
+                    $(this).imageloadFun(function(){
+                        $self.height('').removeAttr('height');
+                    })
+                });
+            }
+        });
+    },
+    // 父元素宽度计算
+    parentWidth:function(sonNum){
+        var sonTrueNum=$(this).length,
+            parentObjW=0;
+        if(sonNum>sonTrueNum||!sonNum) sonNum=sonTrueNum;
+        $(this).each(function(index, el) {
+            var sonObjW=$(this).outerWidth()+parseInt($(this).css('marginLeft'))+parseInt($(this).css('marginRight'));
+            parentObjW+=sonObjW;
+        });
+        return parentObjW+sonNum;
+    },
+    /**
+     * scrollFun 窗口距离触发
+     * @param  {Number}  top            离窗口触发的距离，默认为30
+     * @param  {Boolean} loop           是否循环触发，默认不循环触发
+     * @param  {Boolean} skip_invisible 不可见元素的是否触发事件，默认不触发
+     */
+    scrollFun:function(fun,options){
+        if (typeof fun==="function") {
+            options=$.extend({
+                top:30,
+                loop:false,
+                skip_invisible:true
+            },options);
+            $(this).each(function(){
+                var $self=$(this),
+                    fun_open=true,
+                    windowDistanceFun=function(){// 窗口距离触发回调
+                        if(fun_open){
+                            var this_t=$self.offset().top,
+                                scroll_t=$(window).scrollTop(),
+                                this_scroll_t=this_t-scroll_t-$(window).height(),
+                                this_scroll_b=this_t+$self.outerHeight()-scroll_t,
+                                visible=options.skip_invisible?$self.is(":visible"):true;
+                            if(this_scroll_t<options.top && this_scroll_b>0 && visible){
+                                if(!options.loop) fun_open=false;
+                                fun($self);
+                            }
+                        }
+                    };
+                windowDistanceFun();
+                // 滚动时窗口距离触发回调
+                if(fun_open){
+                    $(window).scroll(function(){
+                        if(fun_open) windowDistanceFun();
+                    })
+                }
+            });
+        }
+    },
+    /**
+     * appearDiy 手动appear动画（需调用appear插件）
+     */
+    appearDiy:function(){
+        if(typeof $.fn.appear !='undefined'){
+            setTimeout(function(){
+                $(this).appear({
+                    force_process:true,
+                    interval:0
+                });
+            },300);
+        }
+    },
+    /**
+     * galleryLoad 画廊（需调用lightGallery插件）
+     * @param  {Array} dynamic 自定义图片数组
+     */
+    galleryLoad:function(dynamic){
+        if(typeof $.fn.lightGallery == 'undefined') return false;
+        $("body").addClass("met-lightgallery");//画廊皮肤
+        if(dynamic){
+            // 自定义图片数组
+            $(this).lightGallery({
+                loop:true,
+                dynamic:true,
+                dynamicEl:dynamic,
+                thumbWidth:64,
+                thumbContHeight:84
+            });
+        }else{
+            // 默认加载画廊
+            $(this).lightGallery({
+                selector:'.lg-item-box:not(.slick-cloned)',
+                exThumbImage:'data-exthumbimage',
+                thumbWidth:64,
+                thumbContHeight:84,
+                nextHtml:'<i class="iconfont icon-next"></i>',
+                prevHtml:'<i class="iconfont icon-prev"></i>'
+            });
+        }
+    },
+    // 内页左右区块最小高度设置
+    boxMh:function(boxmh_h){
+        if($(this).length && $(boxmh_h).length){
+            var $self=$(this),
+                $boxmh_h=$(boxmh_h),
+                box_mh=function(){
+                    var boxmh_mh_t=$self.offset().top,
+                        boxmh_h_t=$boxmh_h.offset().top,
+                        mh=$boxmh_h.outerHeight();
+                    if(boxmh_mh_t==boxmh_h_t){//两个区块并排时
+                        if(mh!=$boxmh_h.attr('data-height')){
+                            $boxmh_h.attr({'data-height':mh});
+                            $self.css({'min-height':mh});
+                        }
+                    }else{
+                        $boxmh_h.attr({'data-height':''});
+                        $self.css({'min-height':''});
+                    }
+                };
+            box_mh();
+            setInterval(function(){
+                box_mh();
+            },50)
+        }
+    },
+    // 视频尺寸自适应
+    videoSizeRes:function(){
+        $(this).each(function(){
+            var $self=$(this),
+                scale=$(this).attr('height')/$(this).attr('width'),
+                width=$(this).width();
+            if(!scale) scale=parseInt($(this).css('height'))/parseInt($(this).css('width'));
+            if(scale){
+                $(this).height($(this).width()*scale);
+                $(window).resize(function() {
+                    if($self.width()<=width) $self.height($self.width()*scale);
+                });
+            }
+        });
+    },
+    // 表格响应式格式化（需调用tablesaw插件）
+    tablexys:function(){
+        var $self=$(this);
+        $self.each(function(){
+            if(!$(this).hasClass('tablesaw')) $(this).addClass('tablesaw table-striped table-bordered table-hover tablesaw-sortable tablesaw-swipe').attr({"data-tablesaw-mode":"swipe",'data-tablesaw-sortable':''});
+            var $editor=$(this).parents('.met-editor');
+            if($(this).width()>$editor.width()){
+                $(this).css({'max-width':$editor.width()-parseInt($editor.css('paddingLeft'))-parseInt($editor.css('paddingRight'))});
+            }
+        })
+        Breakpoints.get('xs').on({
+            enter:function(){
+                $self.each(function(){
+                    if(!$('thead',this).length){
+                        var td=$("tbody tr:eq(0) td",this),th='';
+                        if(td.length==0) td=$("tbody tr:eq(0) th",this);
+                        td.each(function(){
+                            th+=$(this).prop('outerHTML');
+                        });
+                        if(th.indexOf('</td>')>=0) th=th.replace(/<\/td>/g,'</th>');
+                        if(th.indexOf('<td')>=0) th=th.replace(/<td/g,'<th');
+                        $(this).prepend("<thead><tr>"+th+"</tr></thead>");
+                        $("tbody tr:eq(0)",this).remove();
+                        $("td,th",this).attr('width','auto');
+                    }
+                });
+                $(document).trigger("enhance.tablesaw");
+            }
+        });
+    }
+});
+// 加载当前页面js
+function metPageJs(js){
+    $('body').append('<script src="'+js+'"></script>');
+}
+// 执行模板UI自定义的函数
+function metui(array){
+    for (var key in array){
+        if(typeof array[key]=='string' && key=='name'){
+            METUI[array[key]]=$('.'+array[key]);
+        }else if(typeof array[key]=='function'){
+            array[key]();
+        }
+    }
+}
+window.METUI=[];
+window.METUI_FUN=[];
+/*public/ui/v2/static/js/web.js*/
+/*
+应用前台通用功能
+ */
 $(function(){
     var wh=$(window).height(),
         $met_navlist=$('.met-nav .navlist');
     if($met_navlist.length){
         // 导航点击跳转处理
         $met_navlist.find('.nav-link').click(function(){
-            if(device_type=='d' && !Breakpoints.is('xs') && $(this).data("hover")) location=$(this).attr('href');
+            if(M['device_type']=='d' && !Breakpoints.is('xs') && $(this).data("hover")) location=$(this).attr('href');
         });
         // 导航下拉菜单三级栏目展开处理
-        if(device_type=='d'){
+        if(M['device_type']=='d'){
             if($met_navlist.find('.dropdown-submenu').length){
                 $met_navlist.find('.dropdown-submenu').hover(function(){
                     $(this).parent('.dropdown-menu').addClass('overflow-visible');
@@ -576,16 +1412,6 @@ $(function(){
         var $other_collapse=$($(this).siblings('.navbar-toggler').data('target'));
         if($other_collapse.is(':visible')) $other_collapse.collapse('hide');
     });
-    // 返回顶部
-    $(".met-scroll-top").click(function(){
-        $('html,body').animate({'scrollTop':0},300);
-    });
-    // 返回顶部按钮显示/隐藏
-    $(window).scroll(function(){
-        if($(this).scrollTop()>wh){
-            $(".met-scroll-top").removeAttr('hidden').addClass("animation-slide-bottom");
-        }else{
-            $(".met-scroll-top").attr({hidden:''}).removeClass('animation-slide-bottom');
-        }
-    });
+    // 加载系统功能
+    if(M['classnow']) $.include(M['url']['uiv2_js']+'sys.js');
 });

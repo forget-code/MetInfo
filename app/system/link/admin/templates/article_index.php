@@ -15,6 +15,13 @@ echo <<<EOT
 		<a class="btn btn-danger" href="{$_M[url][own_form]}a=doadd" role="button">{$_M[word][mobiletips3]}</a>
 		</div>
 		<div class="ui-float-right">
+			<select name="search_type" data-table-search="1">
+				<option value="0">{$_M[word][smstips64]}</option>
+				<option value="1">{$_M[word][linkType1]}</option>
+				<option value="2">{$_M[word][linkType2]}</option>
+				<option value="3">{$_M[word][linkType4]}</option>
+				<option value="4">{$_M[word][linkType5]}</option>
+			</select>
 			<div class="ui-table-search">
 				<i class="fa fa-search"></i>
 				<input name="keyword" data-table-search="1" type="text" value="" class="ui-input" placeholder="{$_M[word][search]}">
@@ -28,31 +35,22 @@ echo <<<EOT
 		<thead>
 			<tr>
 				<th width="20" data-table-columnclass="met-center">{$_M[word][selected]}</th>
-				<th data-table-columnclass="met-center" width="40">
+				<th width="40" data-table-columnclass="met-center">
 				{$_M[word][sort]}
 				</th>
-				<th width="40">
+				<th width="100" data-table-columnclass="met-center">
 					{$_M[word][linkType]}
 				</th>
-				<th data-table-columnclass="met-center" width="70">
+				<th width="200">
 				    {$_M[word][linkName]}
 				</th>
-				<th data-table-columnclass="met-center" width="160">
+				<th width="400">
                     {$_M[word][linkUrl]}
 				</th>
-				<th width="120">
-					<select name="search_type" data-table-search="1">
-						<option value="0">{$_M[word][smstips64]}</option>
-						<option value="1">{$_M[word][linkType1]}</option>
-						<option value="2">{$_M[word][linkType2]}</option>
-						<option value="3">{$_M[word][linkType4]}</option>
-						<option value="4">{$_M[word][linkType5]}</option>
-					</select>
-				</th>
-				<th data-table-columnclass="met-center" width="160">
+				<th width="50" data-table-columnclass="met-center">
 				{$_M[word][linkCheck]}
 				</th>
-				<th data-table-columnclass="met-center" width="160">
+				<th width="50" data-table-columnclass="met-center">
 				{$_M[word][recom]}
 				</th>
 				<th>{$_M[word][operate]}</th>
@@ -63,7 +61,7 @@ echo <<<EOT
 		<tfoot>
 			<tr>
 				<th><input name="id" type="checkbox" data-table-chckall="id" value=""></th>
-				<th colspan="8" class="formsubmit" style="text-align:left!important;">
+				<th colspan="7" class="formsubmit" style="text-align:left!important;">
 <!--
 EOT;
 require $this->template('own/mod_batchoption');

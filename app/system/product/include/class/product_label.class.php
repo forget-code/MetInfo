@@ -52,12 +52,13 @@ class product_label extends news_label {
 		$data = parent::get_list_page($id, $page);
 		foreach($data as $key=>$val){
 			$data[$key]['para'] = load::mod_class('parameter/parameter_label', 'new')->get_parameter_contents($this->mod , $val['id'], $val['class1'], $val['class2'], $val['class3']);
+			$data[$key]['para_url'] = load::mod_class('parameter/parameter_label', 'new')->get_parameter_contents($this->mod , $val['id'], $val['class1'], $val['class2'], $val['class3'],10);
             foreach ($data[$key]['para'] as $key1 => $val2) {//兼容老模板问题
-			$data[$key]['para'.$val2['id']] =  $val2['value'];
-			$data[$key]['para'.$val2['id'].'name'] = $val2['name'];
+				$data[$key]['para'.$val2['id']] =  $val2['value'];
+				$data[$key]['para'.$val2['id'].'name'] = $val2['name'];
+			}
 		}
-		}
-		
+
 		return $data;
 	}
 
@@ -83,7 +84,7 @@ class product_label extends news_label {
 		foreach($one['contents'] as $key => $val){
 			$one['contents'][$key]['content'] = load::sys_class('label', 'new')->get('seo')->anchor_replace($val['content'].$add);
 		}
-		
+
 		return $one;
 	}
 }

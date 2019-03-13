@@ -24,13 +24,12 @@ class web extends common {
 		parent::__construct();
 		global $_M;
 		// 可视化窗口语言栏跳转后，整个可视化页面跳转到新语言
-		if(strpos($_SERVER['HTTP_REFERER'], 'pageset=1')!=false && strpos($_SERVER['HTTP_REFERER'], 'lang=')!=false){
+		if(strpos($_SERVER['HTTP_REFERER'], 'pageset=1')!==false && strpos($_SERVER['HTTP_REFERER'], 'lang=')!==false && strpos($_SERVER['HTTP_REFERER'], $_M['url']['site'])!==false){
 			preg_match('/lang=(\w+)/', $_SERVER['HTTP_REFERER'], $prev_lang);
-
 			if($prev_lang && $prev_lang[1] !=$_M['lang']){
 				$new_url="{$_M['url']['site_admin']}index.php?lang={$_M['lang']}&n=ui_set&pageset=1";
 				echo "<script>
-					parent.document.getElementById('page-iframe').setAttribute('data-dynamic','{$_M['url']['site']}index.php?lang={$_M['lang']}');
+					parent.document.getElementsByClassName('page-iframe')[0].setAttribute('data-dynamic','{$_M['url']['site']}index.php?lang={$_M['lang']}');
 					parent.window.location.href='{$new_url}';
 				</script>";
 				die;
@@ -40,12 +39,46 @@ class web extends common {
 		$this->tem_dir();//确定模板根目录
 		$this->load_domain();//加载绑定域名的语言
 		$this->load_language();//语言加载
-
 		$this->load_publuc_data();//加载公共数据
+        $this->mobile_config_exchange();//移动网页设置转换
 		$this->sys_input();
-		load::sys_class('user', 'new')->get_login_user_info();//会员登陆
+		load::sys_class('user', 'new')->get_login_user_info();//会员登录
 		load::plugin('doweb');//加载插件
-
+		load::mod_class('user/user_url', 'new')->insert_m();//会员模块url
+		if(!$_M['html']['app_sidebar']){
+			// 会员侧栏添加的数据
+			##$query = "SELECT * FROM {$_M['table']['ifmember_left']} WHERE lang='{$_M['lang']}' ORDER BY `no`,`own_order`";
+			$query = "SELECT * FROM {$_M['table']['ifmember_left']} WHERE lang='{$_M['lang']}' AND  effect = 1 ORDER BY `no`,`own_order`";
+			$navigation = DB::get_all($query);
+			foreach($navigation as $key=>$val){
+				if($val[columnid]){
+					$query = "SELECT * FROM {$_M['table']['column']} WHERE id = '{$val[columnid]} ' and lang='{$_M['lang']}'";
+					$column = DB::get_one($query);
+					$val['foldername'] = $val['foldername'] ? $val['foldername'] : $column['foldername'];
+					$val['filename'] = $val['filename'] ? $val['filename'] : 'index.php';
+					$list['url'] = "{$_M['url']['site']}{$val['foldername']}/{$val['filename']}";
+					$list['title'] = $column['name'];
+				}else{
+					$list['url'] = "{$_M['url']['site']}{$val['foldername']}/{$val['filename']}";
+					$list['title'] = $_M['word'][$val['title']];
+				}
+				$list['url'].=(strpos($list['url'],'?')!==false?'&':'?')."lang={$_M['lang']}";
+				$list['no']=$val['no'];
+				$list['target']=$val['target'];
+                $list['own_order'] = $val['own_order'];
+				$_M['html']['app_sidebar'][] = $list;
+			}
+		}
+		// 页面基本信息，应用页面专用
+		if($_M['config']['met_title_type'] == 0){
+            $this->add_input('page_title','');
+        }else if($_M['config']['met_title_type'] == 1){
+            $this->add_input('page_title','-'.$_M['config']['met_keywords']);
+        }else if($_M['config']['met_title_type'] == 2){
+        	$this->add_input('page_title','-'.$_M['config']['met_webname']);
+        }else if($_M['config']['met_title_type'] == 3){
+        	$this->add_input('page_title','-'.$_M['config']['met_keywords'].'-'.$_M['config']['met_webname']);
+        }
 	}
 
 
@@ -194,6 +227,8 @@ class web extends common {
 	protected function load_url_unique() {
 		global $_M;
 		$_M['url']['ui'] = $_M['url']['site'].'app/system/include/public/ui/web/';
+		$_M['url']['own_name'] =  "{$_M['url']['site']}app/index.php?lang={$_M['lang']}&n=".M_NAME.'&';
+		$_M['url']['own_form'] = $_M['url']['own_name'].'c='.M_CLASS.'&';
 	}
 
 	protected function load_domain(){
@@ -217,7 +252,7 @@ class web extends common {
 		$this->load_template_lang();
 	}
 
-	/**
+    /**
 	  * 获取前台公用数据
 	  */
 	protected function load_publuc_data() {
@@ -226,7 +261,7 @@ class web extends common {
 		$this->load_flashset_data();
 	}
 
-	/**
+    /**
 	  * 获取前台模板的语言参数配置，存放在$_M['word']中，系统语言参数数组。
 	  */
 	protected function load_template_lang() {
@@ -252,7 +287,17 @@ class web extends common {
 		$_M['word'] = array_merge($_M['word'],$templates);
 	}
 
-	/**
+    /**
+     * 移动网页设置转换
+     */
+    public function mobile_config_exchange(){
+        global $_M;
+        if (is_mobile()) {
+            $_M['config']['met_logo'] = $_M['config']['met_mobile_logo'] ? $_M['config']['met_mobile_logo'] : $_M['config']['met_logo'];
+        }
+    }
+
+    /**
 	  * 前台权限检测
 	  * @param int 会员组编号
 	  * 如果会员拥有权限则，程序代码向后正常执行，如果没有则提示没有权限。
@@ -267,10 +312,10 @@ class web extends common {
 				$lang = "&lang={$_M['lang']}";
 			}
 			if($power == -2){
-				okinfo($_M['url']['site'].'member/index.php?gourl='.$gourl.$lang, '您没有权限访问这个内容！请登陆后访问！');
+				okinfo($_M['url']['site'].'member/index.php?gourl='.$gourl.$lang, $_M['word']['systips1']);
 			}
 			if($power == -1){
-				okinfo($_M['url']['site'].'index.php?gourl='.$gourl.$lang, '您所在用户组没有权限访问这个内容！');
+				okinfo($_M['url']['site'].'index.php?gourl='.$gourl.$lang, $_M['word']['systips2']);
 			}
 		}
 		// if($groupid != 0 && !get_met_cookie('metinfo_admin_name')){
@@ -281,7 +326,7 @@ class web extends common {
 		// 		$lang = "&lang={$_M['lang']}";
 		// 	}
 		// 	if($groupid == 0 && !$user){
-		// 		okinfo($_M['url']['site'].'member/login.php?gourl='.$gourl.$lang, '您没有权限访问这个内容！请登陆后访问！');
+		// 		okinfo($_M['url']['site'].'member/login.php?gourl='.$gourl.$lang, '您没有权限访问这个内容！请登录后访问！');
 		// 	}
 
 		// 	$group = load::sys_class('group', 'new')->get_group($groupid);
@@ -293,8 +338,8 @@ class web extends common {
 
 	/**
 	  * 前台权限检测
-	  * @param string m_auth 会员登陆授权码
-	  * @param string m_key  会员登陆密钥
+	  * @param string m_auth 会员登录授权码
+	  * @param string m_key  会员登录密钥
 	  * 如果会员拥有权限则，程序代码向后正常执行，如果没有则提示没有权限。
 	  * get_met_cookie函数兼容也调用login_by_auth,如果修改请一并修改。
 	  */
@@ -318,20 +363,11 @@ class web extends common {
 				return parent::template('ui/metv5');
 			}
 		} else {
-			return $this->temcache(parent::template($file), $this->input);
+			return $this->view(parent::template($file), $this->input);
 		}
 	}
 
-	/**
-		* 模板解析
-		* @param string $file 模板文件
-		*/
-	protected function temcache($file, $mod) {
-		global $_M;
-		$view = load::sys_class('engine','new');
-		return  $view->dodisplay($file, $mod);
 
-	}
 
 	/**
 	  * 应用兼容模式加载前台模板，会自动加载当前选定模板的顶部，尾部，左侧导航(可选)，只有内容主题可以自定义。
@@ -478,13 +514,19 @@ class web extends common {
 			preg_match_all('/height=(\'|")([0-9]+)(\'|")/', $val, $h_out);
 			$height = $h_out[2][0];
 
+			preg_match_all('/poster=(\'|")(.+?)(\'|")/', $val, $poster_out);
+			$poster = $poster_out[2][0];
+
+			preg_match_all('/autoplay=(\'|")(.+?)(\'|")/', $val, $autoplay_out);
+			$autoplay = $autoplay_out[2][0];
+
 			preg_match_all('/src=(\'|")(.+?)(\'|")/', $val, $src_out);
 			$src = $src_out[2][0];
 
 			preg_match_all('/style=(\'|")(.+?)(\'|")/', $val, $style_out);
 			$style = $style_out[2][0];
 
-			$str = "<video class=\"metvideobox\" data-metvideo=\"{$width}|{$height}||false|{$src}\" style=\"width:{$width}px; height:{$height}px; background:#000 url() no-repeat 50% 50%; background-size:contain;{$style}\" /></video>";
+			$str = "<video class=\"metvideobox\" data-metvideo=\"{$width}|{$height}|{$poster}|{$autoplay}|{$src}\" style=\"width:{$width}px; height:{$height}px; background:#000 url() no-repeat 50% 50%; background-size:contain;{$style}\" /></video>";
 
 			$content = str_replace($out[0][$key], $str, $content);
 		}

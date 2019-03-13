@@ -1,11 +1,9 @@
 <!--<?php
-# MetInfo Enterprise Content Management System 
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+# MetInfo Enterprise Content Management System
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 
 defined('IN_MET') or exit('No permission');
-
 require $this->template('ui/head');
-
 if($_M[config][met_agents_type] < 2) {
 	$copyright_info = $_M[word][copyright];
 	$metinfo_info = $_M[word][metinfo];
@@ -36,15 +34,7 @@ var ownlangtxt = {
 		<dt>{$_M['word']['upfiletips39']}</dt>
 		<dd>
 			{$metinfo_info}&nbsp;&nbsp;&nbsp;&nbsp;
-			
-<span class="bdsharebuttonbox" 
-			data-bdUrl="http://www.metinfo.cn/web/metcms.htm" 
-			data-bdText="{$_M[word][metinfo_explain]}" 
-			data-bdPic="{$_M[url][site]}templates/{$_M[config][met_skin_user]}/view.jpg" 
-			data-bdCustomStyle="{$_M[url][own_tem]}css/metinfo.css" 
-			data-tag="share_1">
-			<a href="#" class="bds_more" data-cmd="more" {$met_agents_display}><i class="fa fa-share-alt"></i>&nbsp;{$_M[word][share_friends]}</a>
-</span>
+
 		</dd>
 	</dl>
 	<dl>
@@ -85,18 +75,28 @@ var ownlangtxt = {
 		<dt>MySQL{$_M['word']['the_version']}</dt>
 		<dd>{$mysql}</dd>
 	</dl>
-	<!--
-	<h3 class="v52fmbx_hr" {$met_agents_display}>{$_M['word']['special_thanks']}</h3>
-	<dl {$met_agents_display}>
-		<dd>
-			小璇子
-			<i style="font-style:normal; padding:0px 8px; color:#eee;">|</i>
-			月明影
-		</dd>
-	</dl>
-	-->
 </div>
 <div class="remodal met_uplaod_remodal" data-remodal-id="modal"><div class="temset_box"></div></div>
+<div class="modal fade install-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">{$_M['word']['metinfoappinstallinfo4']}</h4>
+            </div>
+            <div class="modal-body">
+            	{$_M['word']['metinfoappinstallinfo4']}
+        	</div>
+        	<div class="modal-footer" style='text-align: center;'>
+                <button type="button" class="btn btn-default" data-dismiss="modal" style='margin-right: 10px;'>{$_M['word']['indexonlieno']}</button>
+                <a href='{$_M['url']['adminurl']}anyid=13&n=databack&c=index&a=doindex' target='_blank' class="btn btn-primary" style='margin-right: 10px;'>{$_M['word']['databackup4']}</a>
+                <button type="button" class="btn btn-success btn_metcms_install">{$_M['word']['appinstall']}</button>
+            </div>
+    	</div>
+	</div>
+</div>
 <!--
 EOT;
 require $this->template('ui/foot');

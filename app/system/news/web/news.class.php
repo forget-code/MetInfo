@@ -38,15 +38,15 @@ class news extends web {
 
 		$classnow = $_M['form']['class3'] ? $_M['form']['class3'] :($_M['form']['class2'] ? $_M['form']['class2'] : $_M['form']['class1']);
 		$classnow = $classnow ? $classnow : $_M['form']['metid'];
-		if(!is_numeric($classnow)){
-			$custom = load::sys_class('label', 'new')->get('column')->get_column_folder($_M['form']['metid']);
-			$classnow = $custom['0']['id'];
-		}
-		$classnow = $this->input_class($classnow);
-		$data = load::sys_class('label', 'new')->get('column')->get_column_id($classnow);
-		$this->check($data['access']);
-		unset($data['id']);
-		$this->add_array_input($data);
+        if(!is_numeric($classnow)){
+            $custom = load::sys_class('label', 'new')->get('column')->get_column_folder($_M['form']['metid']);
+            $classnow = $custom['0']['id'];
+        }
+        $classnow = $this->input_class($classnow);
+        $data = load::sys_class('label', 'new')->get('column')->get_column_id($classnow);
+        $this->check($data['access']);
+        unset($data['id']);
+        $this->add_array_input($data);
 		$this->seo($data['name'], $data['keywords'], $data['description']);
 		$this->seo_title($data['ctitle']);
 		$this->add_input('page', $_M['form']['page']);

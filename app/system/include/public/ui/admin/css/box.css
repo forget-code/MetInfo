@@ -24,12 +24,10 @@ textarea{resize:none}
 .metlogo a{ display:block; font-size:0px; text-align:center; }
 .metlogo a:hover img{ filter:alpha(opacity=70);-moz-opacity:.7;-khtml-opacity:.7;opacity:.7}
 .metlogo a img{ height:50px; transition:all .5s;-webkit-transition:all .5s;-moz-transition:all .5s;-o-transition:all .5s}
-body
-{
+body{
     overflow-x:hidden;
     overflow-y:hidden;
 }
-
 
 .metcms_cont{ width:100%; margin:0px auto; }
 .metcms_cont_left{ float:left; width:200px; position:relative; background:#1c2b36; color:#fff; z-index:99;height:780px; }
@@ -68,19 +66,10 @@ i.fa-mobile{ font-size:26px!important; top:4px!important;}
 .goup-text{ display:none!important; }
 
 
-@media (max-width: 768px) { 
+@media (max-width: 768px) {
 	.metcms_cont_right{ margin-left:0px; }
 	.metcms_cont_right_box{ margin-left:0px; }
 }
-
-
-
-
-
-
-
-
-
 /* 6.0 */
 .metlogo a { height: 60px; line-height: 60px;padding-left:25px; text-align: left;}
 .metlogo a img { height: 40px; vertical-align: middle; }

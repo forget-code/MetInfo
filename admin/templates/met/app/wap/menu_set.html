@@ -202,7 +202,7 @@ function check(my,from){
 	var len=get_length($("[name='menu_name']").val());
 
 if(len>6){
-alert('名称的字符数不能超过6个！');
+alert('{$lang_wap_descript8_v6}');
 return false;
 }
 	return Smit(my,from);
@@ -212,7 +212,7 @@ function check11(){
 var len=get_length($("[name='menu_name']").val());
 
 if(len>10){
-alert('字符数过多！');
+alert('{$lang_wap_charover_v6}');
 return false;
 }
 }
@@ -221,11 +221,11 @@ function check1(){
 		var len=$("[name='menu_name']").val();
 
 		if(len==""){
-		alert('字符数过多！');
+		alert('{$lang_wap_charover_v6}');
 		return false;
 		}
 		if(len>10){
-			alert('字符数过多！');
+			alert('{$lang_wap_charover_v6}');
 			return false;
 		}
 		
@@ -252,10 +252,10 @@ function originate(id){
 	//alert($("#met_menu_type").html());
 	var type=$("#met_menu_type").val();
 	if(id==1){
-		$("#met_menu_type").html("<option value='#0065bc'>蓝色</option><option value='#ffc0cb'>粉色</option><option value='#000000'>黑色</option><option value='#f7ff00'>黄色</option><option value='#1cdb29'>绿色</option><option value='#d91f1f'>红色</option><option value='#6e6e75'>灰色</option><option value='5'>自定义颜色</option>");
+		$("#met_menu_type").html("<option value='#0065bc'>{$lang_setimgBlue}</option><option value='#ffc0cb'>{$lang_pink}</option><option value='#000000'>{$lang_setimgBlack}</option><option value='#f7ff00'>{$lang_setimgYellow}</option><option value='#1cdb29'>{$lang_setimgGreen}</option><option value='#d91f1f'>{$lang_setimgRed}</option><option value='#6e6e75'>{$lang_onlinegray}</option><option value='5'>{$lang_custom_colors}</option>");
 	}
 	if(id==2){
-		$("#met_menu_type").html("<option value='#0065bc'>蓝色</option><option value='#ffc0cb'>粉色</option><option value='#000000'>黑色</option><option value='#f7ff00'>黄色</option><option value='#1cdb29'>绿色</option><option value='#d91f1f'>红色</option><option value='#6e6e75'>灰色</option><option value='5'>自定义颜色</option><option value='6'>自定义图片</option>");
+		$("#met_menu_type").html("<option value='#0065bc'>{$lang_setimgBlue}</option><option value='#ffc0cb'>{$lang_pink}</option><option value='#000000'>{$lang_setimgBlack}</option><option value='#f7ff00'>{$lang_setimgYellow}</option><option value='#1cdb29'>{$lang_setimgGreen}</option><option value='#d91f1f'>{$lang_setimgRed}</option><option value='#6e6e75'>{$lang_onlinegray}</option><option value='5'>{$lang_custom_colors}</option><option value='6'>{$lang_custom_picture}</option>");
 	}
 	$("#met_menu_type option[value='"+type+"']").attr("selected", true);
 /*

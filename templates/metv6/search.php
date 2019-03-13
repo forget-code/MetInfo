@@ -20,5 +20,4 @@
         </div>
     </div>
 </section>
-
 <include file="foot.php" />

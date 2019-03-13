@@ -94,8 +94,7 @@ final class met_view
             //编译文件
             $this->compileFile
                 = $cachePath
-                . '/_' . substr(md5($this->tplFile), 0, 8) . '.php';
-
+                . '/_' . substr(md5($this->tplFile.$_M['lang'].intval($_M['form']['pageset'])), 0, 8) . '.php';
 
             // 编译文件不存在或DEBUG时都会重新编译
             if ($this->compileInvalid($tplFile)) {
@@ -121,7 +120,6 @@ final class met_view
             if (!headers_sent()) {
                 header("Content-type:" . $contentType . ';charset=' . $charset);
             }
-
             echo $content;die;
         } else {
             return $content;
@@ -174,24 +172,58 @@ final class met_view
     private function getTemplateFile($file)
     {
         global $_M;
-
         if (!is_file($file)) {
-            if(strstr($file, 'ui_ajax/')){
-                $file = PATH_WEB . 'public/ui/v2/module/ajax/' . str_replace('ui_ajax/', '', $file);
-            }elseif(strstr($file, 'ui_v2')){
-                $file = PATH_WEB . 'public/ui/v2/' . str_replace('ui_v2/', '', $file);
+            $file_info = explode('/',$file,2);
+            if(count($file_info)>1){
+                switch ($file_info[0]) {
+                    case 'ui_ajax':
+                        $file = PATH_WEB . str_replace('ui_ajax/','public/ui/v2/module/ajax/', $file);
+                        break;
+                    case 'ui_v2':
+                        $file = PATH_WEB . str_replace('ui_v2/','public/ui/v2/', $file);
+                        if(strpos($file_info[1], 'module/shop/shop_option_ui')!==false) $file=$this->getTemplateFile('app/module/shop_option');
+                        break;
+                    case 'app':
+                        $folder=M_MODULE=='web'?'/met':'';
+                        $app_path=PATH_OWN_FILE;
+                        if(M_NAME=='product' && $_M['config']['shopv2_open']) $app_path=PATH_APP.'app/shop/'.M_MODULE.'/';
+                        $file = $app_path . str_replace('app/', "templates{$folder}/", $file);
+                        break;
+                    case 'sys_admin':
+                        $file = PATH_WEB .str_replace('sys_admin/', 'app/system/include/public/ui/admin/', $file);
+                        break;
+                    case 'sys_web':
+                        $folder=$_M['config']['metinfover']=='v2'?'app/system/include/public/ui/web/':'public/ui/v2/';
+                        $file = PATH_WEB.str_replace('sys_web/', $folder, $file);
+                        break;
+                    case 'app_system':
+                        $file = PATH_WEB . str_replace('app_system/','app/system/', $file);
+                        break;
+                    case 'site':
+                        $file = PATH_WEB . str_replace('site/','', $file);
+                        break;
+                    default:
+                        $onlyfile=true;
+                        break;
+                }
             }else{
-                $file = PATH_TEM . $file;
+                $onlyfile=true;
             }
-
+            if($onlyfile){
+                if($file == 'user_sidebar'){
+                    $file = PATH_WEB . 'app/system/user/web/templates/met/sidebar';
+                }else{
+                    $file = PATH_TEM . $file;
+                }
+            }
             /**
              * 添加后缀
              */
              if (!preg_match('/\.[a-z]+$/i', $file)) {
                 $file .= '.php';
             }
-
         }
+
         /**
          * 模板文件检测
          */
@@ -210,9 +242,10 @@ final class met_view
      */
     private function compileInvalid()
     {
+        global $_M;
         $tplFile = $this->tplFile;
         $compileFile = $this->compileFile;
-        return !file_exists($compileFile) || DEBUG
+        return !file_exists($compileFile) || $_M['config']['debug']
         || (filemtime($tplFile) > filemtime($compileFile));
     }
 
@@ -224,7 +257,6 @@ final class met_view
         /**
          * 编译是否失效
          */
-
         if (!$this->compileInvalid()) {
             return;
         }

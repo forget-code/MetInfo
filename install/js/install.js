@@ -2,7 +2,7 @@ function checke_mail(){
 	if(!checkemail())
 	{
 		document.getElementById('div_email').style.cssText = "";
-		document.getElementById('div_email').innerHTML = "<font color=red>邮件格式错误!</font>";
+		document.getElementById('div_email').innerHTML = "<font color=red>{$lang_emailerror_V6}</font>";
 		return  false;
 	}
 	else
@@ -17,7 +17,7 @@ function chkpassword(){
 	if(m.length > 20 || m.length < 6 || !fucPWDchk(m))
 	{
 		document.getElementById('div_pwd').style.cssText = "";
-		document.getElementById('div_pwd').innerHTML = "[<font color=red>密码:英文/数字/下划线，长度:6~20</font>]";
+		document.getElementById('div_pwd').innerHTML = "[<font color=red>{$lang_install_descript1_v6}</font>]";
 		return  false;
 	}
 	else
@@ -35,7 +35,7 @@ function comfirmpassword(){
 		if( m != n)
 		{
 			document.getElementById('div_aginpwd').style.cssText = "";
-			document.getElementById('div_aginpwd').innerHTML = "[<font color=red>两次密码不相同</font>]";
+			document.getElementById('div_aginpwd').innerHTML = "[<font color=red>{$lang_install_descript2_v6}</font>]";
 			return  false;
 		}
 		else
@@ -80,7 +80,7 @@ function chkanswer()//回答问题答案
 		if(m=='')
 		{
 			document.getElementById('div_answer').style.cssText = "";
-			document.getElementById('div_answer').innerHTML = "[<font color=red>回答问题答案不能为空</font>]";
+			document.getElementById('div_answer').innerHTML = "[<font color=red>{$lang_install_descript3_v6}</font>]";
 			return  false;
 		}
 		else
@@ -98,7 +98,7 @@ function chkname(){
 	if(m.length > 20 || m.length < 3 )
 	{
 		document.getElementById('div_regname').style.cssText = "";
-		document.getElementById('div_regname').innerHTML = "[<font color=red>用户名长度错误</font>]";
+		document.getElementById('div_regname').innerHTML = "[<font color=red>{$lang_install_descript4_v6}</font>]";
 		return  false;
 	}
 	else

@@ -433,13 +433,19 @@ function video_replace($preg, $content){
 		preg_match_all('/height=(\'|")([0-9]+)(\'|")/', $val, $h_out);
 		$height = $h_out[2][0];
 
+		preg_match_all('/poster=(\'|")(.+?)(\'|")/', $val, $poster_out);
+		$poster = $poster_out[2][0];
+
+		preg_match_all('/autoplay=(\'|")(.+?)(\'|")/', $val, $autoplay_out);
+		$autoplay = $autoplay_out[2][0];
+
 		preg_match_all('/src=(\'|")(.+?)(\'|")/', $val, $src_out);
 		$src = $src_out[2][0];
 
 		preg_match_all('/style=(\'|")(.+?)(\'|")/', $val, $style_out);
 		$style = $style_out[2][0];
 
-		$str = "<video class=\"metvideobox\" data-metvideo=\"{$width}|{$height}||false|{$src}\" style=\"width:{$width}px; height:{$height}px; background:#000 url() no-repeat 50% 50%; background-size:contain;{$style}\" /></video>";
+		$str = "<video class=\"metvideobox\" data-metvideo=\"{$width}|{$height}|{$poster}|{$autoplay}|{$src}\" style=\"width:{$width}px; height:{$height}px; background:#000 url() no-repeat 50% 50%; background-size:contain;{$style}\" /></video>";
 
 		$content = str_replace($out[0][$key], $str, $content);
 	}

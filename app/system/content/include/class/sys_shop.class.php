@@ -45,9 +45,9 @@ class sys_shop{
 
 	}
 
-	public function get_plist($pid){
+	/*public function get_plist($pid){
 
-	}
+	}*/
 
 	public function get_para(){
 

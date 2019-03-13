@@ -95,8 +95,10 @@ echo <<<EOT
 -->
 	</form>
 </div>
+<script>var dataexplain4='{$_M[word][dataexplain4]}';</script>
 <!--
 EOT;
+
 require $this->template('ui/foot');
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.

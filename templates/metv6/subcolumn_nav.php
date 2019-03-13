@@ -8,18 +8,12 @@
                 <tag action='category' cid="$data['class1']" class="active">
                 <if value="$m['module'] neq 1">
                     <li>
-                        <a href="{$m.url}"  title="{$lang.sub_all}" <if value="$data['classnow'] eq $m['id']">
-                    class="active"
-                    </if>
->{$lang.sub_all}</a>
+                        <a href="{$m.url}"  title="{$lang.sub_all}" <if value="$data['classnow'] eq $m['id']">class="active"</if>>{$lang.sub_all}</a>
                     </li>
                     <else/>
                     <if value="$m[isshow]">
-                        <li>
-                        <a href="{$m.url}"  title="{$m.name}" <if value="$data['classnow'] eq $m['id']">
-                    class="active"
-                    </if>
->{$m.name}</a>
+                    <li>
+                        <a href="{$m.url}"  title="{$m.name}" <if value="$data['classnow'] eq $m['id']">class="active"</if>>{$m.name}</a>
                     </li>
                     </if>
                 </if>

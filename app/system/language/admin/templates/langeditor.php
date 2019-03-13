@@ -20,12 +20,7 @@ echo <<<EOT
 <script src="{$_M[url][own_tem]}js/jQuery1.8.2.js"></script>
 <script src="{$_M[url][own_tem]}js/iframes.js"></script>
 <script src="{$_M[url][own_tem]}js/metvar.js"></script>
-<div class="stat_list">
-	<ul>
-		<li ><a href="{$_M[url][own_form]}a=doindex" title="{$_M[word][langwebmanage]}">{$_M[word][langwebmanage]}</a></li>
-		<li class="now" ><a href="{$_M[url][own_form]}a=dolangset" title="{$_M[word][indexlang]}">{$_M[word][indexlang]}</a></li>
-	</ul>
-</div>
+
 <div class="clear"></div>
 <script type="text/javascript">
     var langmarks = Array();

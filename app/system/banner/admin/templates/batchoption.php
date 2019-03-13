@@ -25,27 +25,27 @@ echo <<<EOT
 </div>
 <div class="dropup pull-left" style="margin-left:5px;">
   <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-expanded="true">
-    移动商品
+    {$_M[word][banner_Mobilegoods_v6]}
   </button>
   <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu2">
     <li role="presentation dropdown">
-		<a role="menuitem" data-toggle="dropdown" class="dropdown-toggle" tabindex="-1" href="#">栏目一</a>
+		<a role="menuitem" data-toggle="dropdown" class="dropdown-toggle" tabindex="-1" href="#">{$_M[word][banner_column1_v6]}</a>
 		<ul class="dropdown-menu">
-			 <li><a href="#">栏目123123123</a></li>
-			 <li><a href="#">栏目134653463423</a></li>
+			 <li><a href="#">{$_M[word][banner_column_v6]}</a></li>
+			 <li><a href="#">{$_M[word][banner_column_v6]}</a></li>
 		</ul>
 	</li>
-    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">栏目二</a></li>
+    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">{$_M[word][banner_column2_v6]}</a></li>
 	<li role="presentation" class="divider"></li>
   </ul>
 </div>
 <div class="dropup pull-left" style="margin-left:5px;">
   <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-expanded="true">
-    复制商品
+    {$_M[word][copyproduct]}
   </button>
   <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu2">
-    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">栏目一</a></li>
-    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">栏目二</a></li>
+    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">{$_M[word][banner_column1_v6]}</a></li>
+    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">{$_M[word][banner_column2_v6]}</a></li>
 	<li role="presentation" class="divider"></li>
   </ul>
 </div>

@@ -17,12 +17,7 @@ echo <<<EOT
 <link rel="stylesheet" type="text/css" href="{$_M[url][own_tem]}css/newstyle.css?{$jsrand}" />
 <link rel="stylesheet" href="{$_M[url][pub]}font-awesome/css/font-awesome.min.css?{$jsrand}" />
 <script type="text/javascript">var basepath='{$img_url}?$jsrand',lang = '$lang',adminurl='{$_M[url][site_admin]}';</script>
-<div class="stat_list">
-	<ul>
-		<li ><a href="{$_M[url][own_form]}a=doindex" title="{$_M[word][langwebmanage]}">{$_M[word][langwebmanage]}</a></li>
-		<li class="now" ><a href="{$_M[url][own_form]}a=dolangset" title="{$_M[word][indexlang]}">{$_M[word][indexlang]}</a></li>
-	</ul>
-</div>
+
 <div class="clear"></div>
 
  <form method="POST" name="myform" action="{$_M[url][own_form]}a=doupdate" class="ui-from" target="_self">

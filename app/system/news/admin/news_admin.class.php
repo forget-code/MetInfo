@@ -36,7 +36,7 @@ class news_admin extends base_admin {
 		$list[class3]=$_M[form][class3_select];
 		$turnurl="&class1={$_M['form']['class1_select']}&class2={$_M['form']['class2_select']}&class3={$_M['form']['class3_select']}";
 		$access_option = $this->access_option('access');
-		$_M['url']['help_tutorials_url'].='98#1、基本信息';
+		$_M['url']['help_tutorials_helpid']='98#1、基本信息';
 		require $this->template('own/article_add');
 	}
 
@@ -69,7 +69,6 @@ class news_admin extends base_admin {
 			turnover("{$_M[url][own_form]}a=doindex",$_M[word][dataerror]);
 		}
 	}
-
 
 	/**
 	 * 新增内容插入数据处理
@@ -190,7 +189,7 @@ class news_admin extends base_admin {
 		//$list[description]=str_replace(' ','',$list[description]);
 		$a = 'doeditorsave';
 		$access_option = $this->access_option('access',$list['access']);
-		$_M['url']['help_tutorials_url'].='98#1、基本信息';
+		$_M['url']['help_tutorials_helpid']='98#1、基本信息';
 		require $this->template('own/article_add');
 	}
 
@@ -315,7 +314,7 @@ class news_admin extends base_admin {
 		$list['class1'] = $_M['form']['class1'] ? $_M['form']['class1'] : '' ;
 		$list['class2'] = $_M['form']['class2'] ? $_M['form']['class2'] : '' ;
 		$list['class3'] = $_M['form']['class3'] ? $_M['form']['class3'] : '' ;
-		$_M['url']['help_tutorials_url'].='99';
+		$_M['url']['help_tutorials_helpid']='99';
 		require $this->template('own/article_index');
 	}
 

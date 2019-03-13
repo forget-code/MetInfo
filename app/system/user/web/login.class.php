@@ -6,90 +6,129 @@ defined('IN_MET') or exit('No permission');
 
 load::mod_class('user/web/class/userweb');
 
-class login extends userweb {
+class login extends userweb
+{
 
-	public function __construct() {
-		global $_M;
-		parent::__construct();
-		if($_M['form']['gourl']){
-			$_M['url']['user_home'] = $_M['form']['gourl'];
-			if(strpos($_M['url']['login'], 'lang=')){
-				$_M['url']['login'] .= "&gourl=".urlencode($_M['form']['gourl']);
-			}else{
-				$_M['url']['login'] .= "?gourl=".urlencode($_M['form']['gourl']);
-			}
-		}
-	}
+    public function __construct()
+    {
+        global $_M;
+        parent::__construct();
+        if ($_M['form']['gourl']) {
+            $_M['url']['user_home'] = $_M['form']['gourl'];
+            if (strpos($_M['url']['login'], 'lang=')) {
+                $_M['url']['login'] .= "&gourl=" . urlencode($_M['form']['gourl']);
+            } else {
+                $_M['url']['login'] .= "?gourl=" . urlencode($_M['form']['gourl']);
+            }
+        }
+    }
 
-	public function check() {
+    public function check()
+    {
 
-	}
+    }
 
-	public function doindex() {
-		global $_M;
-		$session = load::sys_class('session', 'new');
+    public function doindex()
+    {
+        global $_M;
+        $session = load::sys_class('session', 'new');
+        // 如果已登录直接跳转到个人中心
+        if ($_M['user']['id']) {
+            okinfo($_M['url']['user_home']);
+        }
 
-		// 如果已登录直接跳转到个人中心
-		if($_M['user']['metinfo_member_id'])
-		{
-			okinfo($_M['url']['user_home']);
-		}
+        // 如果从其他页面过来
+        if (isset($_SERVER['HTTP_REFERER'])) {
+            // 是否从本站过来
+            $referer = parse_url($_SERVER['HTTP_REFERER']);
+            if ($referer['host'] == $_SERVER['HTTP_HOST']) {
+                // 来源页面保存到cookie
+                setcookie("referer", $_SERVER['HTTP_REFERER']);
+            }
+        }
+        if ($session->get("logineorrorlength") > 3) $_M['code'] = 1;
 
-		// 如果从其他页面过来
-		if(isset($_SERVER['HTTP_REFERER']))
-		{
-			// 是否从本站过来
-			$referer = parse_url($_SERVER['HTTP_REFERER']);
-			if($referer['host']==$_SERVER['HTTP_HOST'])
-			{
-				// 来源页面保存到cookie
-				setcookie("referer",$_SERVER['HTTP_REFERER']);
-			}
-		}
-		if($session->get("logineorrorlength")>3)$code=1;
-		require_once $this->template('tem/login');
-	}
+        require $this->view('app/login', $this->input);
+    }
 
-	public function dologin() {
-		global $_M;
-		$this->login($_M['form']['username'], $_M['form']['password'],'');
-	}
+    public function dologin()
+    {
+        global $_M;
+        $this->login($_M['form']['username'], $_M['form']['password'], '');
+    }
 
-	public function login($username, $password, $type = 'pass') {
-		global $_M;
-		$session = load::sys_class('session', 'new');
-		if($session->get("logineorrorlength")>3){
-			if(!load::sys_class('pin', 'new')->check_pin($_M['form']['code'])){
-				okinfo($_M['url']['user_home'], $_M['word']['membercode']);
-			}
-		}
-		$user = $this->userclass->login_by_password($username,  $password, $type);
-		if($user){
-			$session->del('logineorrorlength');
-			$this->userclass->set_login_record($user);
-			// 如果有来源页面,登录之后跳回原来页面 否则跳到个人中心
-			if(isset($_COOKIE['referer']) && !strstr($_COOKIE['referer'], 'member/login')  &&!strstr($_COOKIE['referer'], 'getpassword') )
-			{
-				$referer = $_COOKIE['referer'];
-				  if(strstr($referer,'/member/register_include.php')){
-                           	okinfo($_M['url']['user_home']);
-				  }
-				// 删除cookie保存的来源地址
+    public function login($username, $password, $type = 'pass')
+    {
+        global $_M;
+        $session = load::sys_class('session', 'new');
+        $paygroup = load::mod_class('user/sys_group', 'new');
 
-				setcookie("referer");
-				okinfo($referer);
+        if ($session->get("logineorrorlength") > 3) {
+            if (!load::sys_class('pin', 'new')->check_pin($_M['form']['code'])) {
+                okinfo($_M['url']['user_home'], $_M['word']['membercode']);
+            }
+        }
+        $user = $this->userclass->login_by_password($username, $password, $type);
+        if ($user) {
+            if (!$user['valid']) {
+                okinfo($_M['url']['login'], $_M['word']['membererror6']);
+            }
 
-			}else{
-				okinfo($_M['url']['user_home']);
-			}
+            //消费会员组升级
+            $pglist = $paygroup->get_paygroup_list_recharge();
+            $payopen = $_M['config']['payment_open'];
+            if ($pglist && $payopen) {
+                $web_pay = load::mod_class('pay/pay_op', 'new');
+                $user_op = load::mod_class('user/user_op', 'new');
 
-		}else{
-			$length = $session->get("logineorrorlength");
-			$length ++;
-			$session->set("logineorrorlength",$length);
-			okinfo($_M['url']['login'], $_M['word']['membererror1']);
-		}
-	}
+                $payrecode = $web_pay->get_record($user,1);
+                $total = 0;
+                foreach ($payrecode as $value) {
+                    if ($value['type'] == 1) {
+                        $total = $value['price'] + $total;
+                    }
+                }
+
+                foreach ($pglist as $pgroup) {
+                    if ($pgroup['recharge_price'] <= $total) {
+                        $groupnew = $pgroup;
+                    }
+
+                    if ($pgroup['groupid'] == $user['groupid']) {
+                        $groupnow = $pgroup;
+                    }
+                }
+
+                if($groupnew['recharge_price'] >= $groupnow['$groupnow']){
+                    $res = $user_op->modity_group($user['id'], $groupnew['groupid']);
+                }
+            }
+
+            $session->del('logineorrorlength');
+            $this->userclass->set_login_record($user);
+            // 如果有来源页面,登录之后跳回原来页面 否则跳到个人中心
+            if (isset($_COOKIE['referer']) && !strstr($_COOKIE['referer'], 'member/login') && !strstr($_COOKIE['referer'], 'getpassword')) {
+                $referer = $_COOKIE['referer'];
+                if (strstr($referer, '/member/register_include.php')) {
+                    okinfo($_M['url']['user_home']);
+                }
+                // 删除cookie保存的来源地址
+
+                setcookie("referer");
+                okinfo($referer);
+
+            } else {
+                okinfo($_M['url']['user_home']);
+            }
+
+        } else {
+            $length = $session->get("logineorrorlength");
+            $length++;
+            $session->set("logineorrorlength", $length);
+            okinfo($_M['url']['login'], $_M['word']['membererror1']);
+        }
+    }
+
 
 	public function dologout() {
 		global $_M;
@@ -163,7 +202,7 @@ class login extends userweb {
 
 	public function dologin_other_info(){
 		global $_M;
-		require_once $this->template('tem/other_info');
+		require_once $this->view('app/other_info',$this->input);
 	}
 }
 

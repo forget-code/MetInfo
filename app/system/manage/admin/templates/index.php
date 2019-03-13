@@ -12,8 +12,8 @@ echo <<<EOT
 img{ behavior: url({$img_url}/iepngfix.htc); }
 .Layer {float: left;position: absolute;left: 81px;top: 13px;font-weight: normal;color:#666;}
 </style>
-<link rel="stylesheet" type="text/css" href="{$_M[url][own_tem]}/css/newstyle.css">
-<script src="{$_M[url][own_tem]}/js/jQuery1.8.2.js"></script>
+<link rel="stylesheet" type="text/css" href="{$_M[url][own_tem]}css/newstyle.css">
+<script src="{$_M[url][own_tem]}js/jQuery1.8.2.js"></script>
 </head>
 <body>
 <!--

@@ -39,11 +39,22 @@ class feedback_label extends message_label{
 	public function get_module_form_html($id,$fdtitle='') {
 		global $_M;
 		$feedback = $this->get_module_form($id);
+
+		if($_M['form']['fdtitle']){
+			$fdtitle = $_M['form']['fdtitle'];
+		}
+
+		if($_M['form']['lang']){
+			$this->lang = $_M['form']['lang'];
+		}
+
+		$referer = HTTP_REFERER;
 $str .= <<<EOT
 		<form method='POST' class="met-form met-form-validation" enctype="multipart/form-data" action='{$feedback['config']['url']}'>
 		<input type='hidden' name='id' value="{$id}" />
 		<input type='hidden' name='lang' value="{$this->lang}" />
 		<input type='hidden' name='fdtitle' value='{$fdtitle}' />
+		<input type='hidden' name='referer' value='{$referer}' />
 EOT;
 		foreach($feedback['para'] as $key => $val){
 $str .= <<<EOT
@@ -83,7 +94,7 @@ EOT;
 			if(load::mod_class('parameter/parameter_label', 'new')->insert_list($fid, 'feedback', $paras)){
                 return true;
 			}
-			
+
 		}
 	}
 

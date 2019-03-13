@@ -17,20 +17,20 @@ if($action){
 			$name='name_'.$val;
 			$names=$$name;
 			if($valsmun>8){
-				metsave('../app/wap/custommenu.php?anyid='.$anyid.'&cs='.$cs.'&lang='.$lang,'名称最多支持4个汉字字符（英文字符算半个汉字字符）',$depth);
+				metsave('../app/wap/custommenu.php?anyid='.$anyid.'&cs='.$cs.'&lang='.$lang,$lang_wap_descript1_v6,$depth);
 			}
 			$query = "UPDATE $met_wapmenu SET sequence='$sequences', name='$names'  where id='$val'";
 			$menus=$db->query($query);
 		
 		}
-		metsave('../app/wap/custommenu.php?anyid='.$anyid.'&cs='.$cs.'&lang='.$lang,'操作成功',$depth);
+		metsave('../app/wap/custommenu.php?anyid='.$anyid.'&cs='.$cs.'&lang='.$lang,$lang_success,$depth);
 	}
 	if($action=='del'){
 		foreach($sign as $key=>$val){
 			$querys = "DELETE FROM $met_wapmenu where id='$val'";
 			$menus=$db->query($querys);	
 		}	
-		metsave('../app/wap/custommenu.php?anyid='.$anyid.'&cs='.$cs.'&lang='.$lang,'操作成功',$depth);
+		metsave('../app/wap/custommenu.php?anyid='.$anyid.'&cs='.$cs.'&lang='.$lang,$lang_success,$depth);
 	}
 
 }

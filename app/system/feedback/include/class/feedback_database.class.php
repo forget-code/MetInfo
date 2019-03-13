@@ -46,7 +46,7 @@ class  feedback_database extends message_database{
      $_M[config][met_fd_class]=$feedcfg[value];
    	 $query = "SELECT * FROM {$_M['table']['list']} where bigid='{$_M[config][met_fd_class]}' order by no_order";
      $result=DB::get_all($query);
-     
+
      return $result;
    }
 

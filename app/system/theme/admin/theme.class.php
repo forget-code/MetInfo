@@ -14,21 +14,25 @@ class theme extends admin {
 		global $_M;
 		parent::__construct();
 		$this->iniclass = new skinc($_M['form']['met_skin_user'], $_M['lang']);
-
 	}
 
 	function doindex() {
 		global $_M;
 
-
 		$file = $_M['form']['met_skin_user'] ? $_M['form']['met_skin_user'] : $_M['config']['met_skin_user'];
 
-		if(file_exists(PATH_WEB.'templates/'.$file.'/metinfo.inc.php') && !$_M['form']['pageset']){
-			require PATH_WEB.'templates/'.$file.'/metinfo.inc.php';
-			if($template_type == 'ui'){
-				header("location:".$_M['url']['site_admin']."index.php?lang={$_M['lang']}&n=ui_set&pageset=1");die;
+		if($_M['form']['from_page']=='met_template'){
+			nav::set_nav(1, $_M['word']['met_template_templates'], $_M['url']['adminurl'].'anyid=44&n=met_template&c=temtool&a=dotemlist');
+			nav::set_nav(2, $_M['word']['met_template_othertemplates'], "{$_M['url']['own_form']}a=doindex");
+			nav::select_nav(2);
+		}else{
+			$_M['form']['head_no']=1;
+			if(file_exists(PATH_WEB.'templates/'.$file.'/metinfo.inc.php')){
+				require PATH_WEB.'templates/'.$file.'/metinfo.inc.php';
+				if($metinfover == 'v2') header("location:".$_M['url']['adminurl']."n=ui_set&pageset=1");
 			}
 		}
+
 		$this->checktem($file);
 		$devices = 0 ;//默认电脑版
 		if($_M[form][mobile])$devices = 1 ;

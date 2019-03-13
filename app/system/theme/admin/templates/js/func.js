@@ -3,9 +3,14 @@ define(function(require, exports, module) {
 	var $ = require('jquery');
 	var common = require('common');
 	function iht(){
-		var ih = $(window).height();
+		var ih = $(window).height(),
+			top_h=90,
+			tab_content_h=0;
+		if(location.search.indexOf('&from_page=met_template')>=0) top_h=140;
+		if($('.metcms_top_right').length) top_h=190;
+		tab_content_h=ih-top_h;
 		$(".theme-right iframe").height(ih);
-		$(".theme .tab_content").height(ih-80);
+		$(".theme .tab_content").height(tab_content_h);
 		if($(".mobileiframe").length>0){
 			$(".mobileiframe").css("margin",function(){
 				return ((ih-$(this).outerHeight())/2)+'px auto';

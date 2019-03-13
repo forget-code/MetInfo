@@ -49,9 +49,6 @@
 .index_news li a:hover{ color:#1784bd!important; }
 .index_news li:last-child{ border-bottom:0; }
 
-
-
-
-
-
-
+/* 后台首页百度分享按钮 */
+.bdshare-button-style2-16 .bds_more{height: auto !important;line-height: inherit !important;float: none !important;opacity: 1 !important;margin: 0 !important;background: none !important;padding: 0 !important;font-size:inherit !important;color: #777 !important;}
+.bdshare-button-style2-16 .bds_more:hover{color: inherit !important;}

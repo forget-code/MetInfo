@@ -1,6 +1,19 @@
 <!--<?php
 # MetInfo Enterprise Content Management System
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
+// 判断来源页面是否有pageset=1 ，如果有而本页url没有pageset=1，则本页加上pageset=1跳转
+if(strpos($_SERVER["HTTP_REFERER"], 'pageset=1')!==false && !$_M['form']['pageset'] && !$_M['form']['no_pageset']){
+    echo '--><script>
+        var newurl=location.href;
+        if(location.search!=""){
+            newurl+="&pageset=1";
+        }else{
+            newurl+="?pageset=1";
+        }
+        location.href=newurl;
+    </script>';
+    die;
+}
 $msecount = $db->counter($_M['table']['infoprompt'], " WHERE lang='{$_M[lang]}' and see_ok='0'", "*");
 $_M['url']['adminurl'] = $_M['url']['site'].$met_adminfile."/index.php?lang={$lang}&";
 if($_M[config][met_agents_type] > 2) $met_agents_display = "style=\"display:none\"";
@@ -29,25 +42,6 @@ function is_strinclude($str, $needle, $type = 0){
 		}
 	}
 	return $flag;
-}
-// 判断来源页面是否有pageset=1 ，如果有而本页url没有pageset=1，则本页加上pageset=1跳转
-$pageURL = 'http';
-if ($_SERVER["HTTPS"] == "on") $pageURL .= "s";
-$pageURL .= "://";
-if($_SERVER["SERVER_PORT"] != "80"){
-	$pageURL .= $_SERVER["SERVER_NAME"].":" . $_SERVER["SERVER_PORT"] . $_SERVER['REQUEST_URI'];
-}else{
-	$pageURL .= $_SERVER["SERVER_NAME"] . $_SERVER['REQUEST_URI'];
-}
-if(strpos($_SERVER["HTTP_REFERER"], 'pageset=1')!=false && strpos($pageURL, 'pageset=1')==false){
-	$newurl=$pageURL;
-	if(strpos($pageURL, '?')!=false){
-		$newurl.='&pageset=1';
-	}else{
-		$newurl.='?pageset=1';
-	}
-	header("Location:{$newurl}");
-	exit;
 }
 $head_hide=$_M['form']['pageset']?' hide':'';
 echo <<<EOT
@@ -310,27 +304,27 @@ echo <<<EOT
 	</ul>
 </div>
 <div class="btn-group pull-right met-tool supportbox" {$met_agents_display}>
-	<a href="http://www.metinfo.cn/bangzhu/index.php?ver=metcms" class="btn btn-success dropdown-toggle" target="_blank">技术支持<a>
+	<a href="http://www.metinfo.cn/bangzhu/index.php?ver=metcms" class="btn btn-success dropdown-toggle" target="_blank">{$lang_indexbbs}<a>
 	<!--<button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-		<i class="fa fa-life-ring"></i><span class="hidden-xs">技术支持</span>
+		<i class="fa fa-life-ring"></i><span class="hidden-xs">{$lang_indexbbs}</span>
 		<span class="caret"></span>
 		<input name="supporturldata" type="hidden" value="user_key={$_M['config']['met_secret_key']}&siteurl={$_M['url']['site']}" />
 	</button>-->
 	<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-		<li class="met-tool-list text-center support_loading">获取中...</li>
-		<li class="met-tool-list text-center support_youok">处理时间：每天 </li>
+		<li class="met-tool-list text-center support_loading">{$lang_loading}</li>
+		<li class="met-tool-list text-center support_youok">{$lang_systips3} </li>
 		<li class="met-tool-list text-center support_youok"><button class="btn btn-primary" type="submit">工单</button></li>
 		<li class="divider support_youok"></li>
-		<li class="met-tool-list text-center support_youok">在线时间：工作日</li>
-		<li class="met-tool-list text-center support_youok"><button class="btn btn-info supportmechatlink" type="submit">点我咨询</button></li>
+		<li class="met-tool-list text-center support_youok">{$lang_systips5}</li>
+		<li class="met-tool-list text-center support_youok"><button class="btn btn-info supportmechatlink" type="submit">{$lang_systips6}</button></li>
 		<li class="divider support_youok"></li>
-		<li class="met-tool-list text-center support_desc">于 <span id="support_expiretime"></span> 到期</li>
-		<li class="met-tool-list text-center support_desc"><a href="{$_M[url][adminurl]}n=appstore&c=support&a=doindex">续费服务</a></li>
-		<li class="met-tool-list text-center support_no"><span class="text-danger">尚未开通服务</span>
-		<a href="http://www.metinfo.cn/news/shownews1248.htm" target="_blank">什么是技术支持？</a>
+		<li class="met-tool-list text-center support_desc">{$lang_systips8} <span id="support_expiretime"></span> {$lang_systips7}</li>
+		<li class="met-tool-list text-center support_desc"><a href="{$_M[url][adminurl]}n=appstore&c=support&a=doindex">{$lang_systips9}</a></li>
+		<li class="met-tool-list text-center support_no"><span class="text-danger">{$lang_systips10}</span>
+		<a href="http://www.metinfo.cn/news/shownews1248.htm" target="_blank">{$lang_systips11}</a>
 		</li>
 		<li class="met-tool-list text-center support_no">
-		<button class="btn btn-primary" type="submit" onclick="location.href = '{$_M[url][adminurl]}n=appstore&c=support&a=doindex';">开通服务</button>
+		<button class="btn btn-primary" type="submit" onclick="location.href = '{$_M[url][adminurl]}n=appstore&c=support&a=doindex';">$lang_systips12}</button>
 		</li>
 	</ul>
 </div>

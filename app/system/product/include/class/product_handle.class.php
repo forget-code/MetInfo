@@ -54,15 +54,14 @@ class product_handle extends news_handle{
         $content['contents'][] = array('title'=>$_M['config']['met_productTabname_'.$i], 'content'=>$content['content'.$i]);
       }
     }
-
-    if($_M['config']['shopv2_open']){
+    if($_M['config']['shopv2_open'] && $this->contents_page_name == 'product'){
         // 商品
       $goods = load::plugin('doget_goods',1,$content['id']);
       if($goods){
          $content = array_merge($content,$goods);
       }
     }
-    
+
     return $content;
   }
 }

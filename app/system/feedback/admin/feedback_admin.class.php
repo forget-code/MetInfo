@@ -17,9 +17,10 @@ class feedback_admin extends message_admin {
   function __construct() {
     global $_M;
     parent::__construct();
-    nav::set_nav(1, $_M[word][indexfeedbackm], "{$_M[url][own_form]}a=doindex&class1={$_M['form']['class1']}");
-    nav::set_nav(2, $_M[word][columnmfeedback], "{$_M[url][adminurl]}anyid={$_M['form']['anyid']}&n=parameter&c=parameter_admin&a=doparaset&module=8&class1={$_M['form']['class1']}");
-    nav::set_nav(3, $_M[word][fdincTitle], "{$_M[url][own_form]}a=dosyset&class1={$_M['form']['class1']}");
+      $fname = DB::get_one("SELECT * FROM {$_M['table']['column']} WHERE id='{$_M['form']['class1']}'");
+      nav::set_nav(1, $fname[name].$_M[word][msgmanager], "{$_M[url][own_form]}a=doindex&class1={$_M['form']['class1']}");
+      nav::set_nav(2, $fname[name].$_M[word][feedback_formset_v6], "{$_M[url][adminurl]}anyid={$_M['form']['anyid']}&n=parameter&c=parameter_admin&a=doparaset&module=8&class1={$_M['form']['class1']}");
+      nav::set_nav(3, $fname[name].$_M[word][syssetting], "{$_M[url][own_form]}a=dosyset&class1={$_M['form']['class1']}");
     $this->module = 8;
     $this->database = load::mod_class('feedback/feedback_database', 'new');
     $this->tabledata = load::sys_class('tabledata', 'new');
@@ -177,12 +178,15 @@ class feedback_admin extends message_admin {
     $query = "UPDATE {$_M[table][feedback]} SET readok='1' WHERE id='{$_M['form']['id']}'";
     DB::query($query);
     $feedback_list = DB::get_one("select * from {$_M[table][feedback]} where id='$id' and class1 = '$class1'");
+    $feedback_list['customerid'] = $feedback_list['customerid'] ? $feedback_list['customerid'] : $_M['word']['feedbackAccess0'];
     $query = "SELECT * FROM  {$_M[table][parameter]} where lang='{$this->lang}' and ((module='{$this->module}' and class1 = '0') or (module='{$this->module}' and class1 = '$class1')) order by no_order";
     $result = DB::query($query);
     $weburl = $_M[config][weburl];
+    $parameter_database = load::mod_class('parameter/parameter_database', 'new');
     while ($list = DB::fetch_array($result)) {
-      $info_list = DB::get_one("select * from {$_M[table][flist]} where listid='$id' and paraid='$list[id]' and lang='{$this->lang}'");
-      $list[content] = $list[type] == 5 ? (($info_list[info] != '../upload/file/') ? "<a href='{$weburl}" . $info_list[info] . "' target='_blank'>{$_M[word][clickview]}</a>" : $_M[word][filenomor]) : $info_list[info];
+        $info_list = DB::get_one("select * from {$_M[table][flist]} where listid='$id' and paraid='$list[id]' and lang='{$this->lang}'");
+        $list[content] = $list[type] == 5 ? (($info_list[info] != '../upload/file/') ? "<a href='{$weburl}" . $info_list[info] . "' target='_blank'>{$_M[word][clickview]}</a>" : $_M[word][filenomor]) :$info_list[info];
+
       $feedback_para[] = $list;
     }
     $fnam = DB::get_one("SELECT * FROM {$_M[table][column]} WHERE id='$class1' and lang='{$this->lang}'");
@@ -256,9 +260,7 @@ class feedback_admin extends message_admin {
 				   <option value="-1">' . $_M[word][feedbackTip4] . '</option>';
 
       foreach ($selectlist as $key => $val) {
-
         $metinfo .= '<option value="' . $val[info] . '">' . $val[info] . '</option>';
-
       }
 
       $metinfo .= '</select>';
@@ -266,8 +268,49 @@ class feedback_admin extends message_admin {
       echo $metinfo;
       die;
     }
-    $query = "select * from {$_M[table][feedback]} where lang='{$this->lang}'";
-    $class = DB::get_one($query);
+      $query = "select * from {$_M[table][feedback]} where lang='{$this->lang}' AND class1 = {$_M['form']['class1']}";
+      $class = DB::get_one($query);
+      $met_fd_showcol = DB::get_one("select * from {$_M[table][config]} where name='met_fd_showcol' and lang='{$_M[form][lang]}' and columnid={$_M[form][class1]}");
+      $met_fd_class = DB::get_one("select * from {$_M[table][config]} where name='met_fd_class' and lang='{$_M[form][lang]}' and columnid={$_M[form][class1]}");
+      $met_fd_showcol = explode('|', $met_fd_showcol['value']);
+      $query = "SELECT * FROM {$_M[table][parameter]} where  lang='{$_M[form][lang]}' and ((module='{$this->module}' and class1='{$_M[form][class1]}') or (module='{$this->module}' and class1='0')) order by no_order";
+      $result = DB::get_all($query);
+      $showcol = array();
+      $met_fd_related = load::mod_class('config/config_database','new')->get_value_by_classid($_M['form']['class1'],'met_fd_related');
+      $parameter_handle = load::mod_class('parameter/parameter_handle','new');
+
+      //循环显示列表项
+      foreach ($met_fd_showcol as $paraid){
+          foreach ($result as $val ){
+              if($paraid==$val['id']){
+                  //表单分类字段下拉列表
+                  if($val['type'] == 2 || $val['type'] == 6){
+                    if($met_fd_related == $val['id']){
+                      // 如果有产品关联，筛选就用产品
+                      $options = $parameter_handle->related_product($val['related']);
+                    }else{
+                       $options = jsondecode($val['options']);
+                    }
+
+                      $options_item = "<option value=''>{$_M['word']['cvall']}</option>";
+                      foreach ($options as $item) {
+                          $options_item .= "<option value='{$item['value']}'>{$item['value']}</option>";
+                      }
+
+                      $option_str = "<select name='para_{$val['id']}' data-table-search='1'>";
+                      $option_str .= $options_item;
+                      $option_str .= "</select>";
+                      $val['name'] = $val['name'] ."&nbsp;&nbsp;&nbsp;". $option_str;
+
+                      $showcol[] = $val;
+                  }else{
+                      $showcol[] = $val;
+                  }
+              }
+          }
+      }
+      $colnum = count($showcol) + 4 ;
+    $_M['url']['help_tutorials_helpid']='101#3、反馈信息管理';
     require $this->template('own/article_index');
   }
 
@@ -284,40 +327,93 @@ class feedback_admin extends message_admin {
    */
   function dojson_list() {
     global $_M;
+    $parameter_database = load::mod_class('parameter/parameter_database', 'new');
     $lang = $_M[form][lang];
-    $where = "lang='{$lang}'";
+    $where = "lang='{$lang}' AND class1 = {$_M['form']['class1']} ";
+    $met_fd_showcol = DB::get_one("select * from {$_M[table][config]} where name='met_fd_showcol' and lang='{$_M[form][lang]}' and columnid={$_M[form][class1]}");
+      if ($met_fd_showcol['value']) {
+          $met_fd_showcol = explode('|', $met_fd_showcol['value']);
+      }else{
+          $met_fd_showcol = '';
+      }
     $userlist = $this->json_list('', '');
-    if ($_M['form']['class1_select'] == 'null' && $_M['form']['class2_select'] == 'null' && $_M['form']['class3_select'] == 'null') {
+
       $class1 = $_M['form']['class1'];
       $class2 = $_M['form']['class2'];
       $class3 = $_M['form']['class3'];
-    } else {
-      $class1 = $_M['form']['class1_select'];
-      $class2 = $_M['form']['class2_select'];
-      $class3 = $_M['form']['class3_select'];
-    }
-    $keyword = $_M['form']['keyword'];
-    $class1 = $class1 == ' ' ? 'null' : $class1;
-    $class2 = $class2 == ' ' ? 'null' : $class2;
-    $class3 = $class3 == ' ' ? 'null' : $class3;
-    #$where.= $class1&&$class1!='所有栏目'&&$class1!='null'?"and class1 = '{$class1}'":'';
-    $where .= $class1 && $class1 != $_M[word][allcategory] && $class1 != 'null' ? "and class1 = '{$class1}'" : '';
-    $where .= $class2 && $class2 != 'null' ? "and class2 = '{$class2}'" : '';
-    $where .= $class3 && $class3 != 'null' ? "and class3 = '{$class3}'" : '';
-    $where .= $keyword ? "and fdtitle like '%{$keyword}%'" : '';
-    switch ($_M[form][search_type]) {
-    case 0:break;
-    case 1:
-      $where .= "and readok = '0'";
-      break;
-    case 2:
-      $where .= "and readok = '1'";
-      break;
-    }
-    $where .= 'order by addtime desc';
-    $result = $this->tabledata->getdata($_M[table][feedback], '*', $where);
-    foreach ($result as $key => $list) {
+      $keyword = $_M['form']['keyword'];
+      $classify = $_M['form']['search_fd_class'];
+      $class1 = $class1 == ' ' ? 'null' : $class1;
+      $class2 = $class2 == ' ' ? 'null' : $class2;
+      $class3 = $class3 == ' ' ? 'null' : $class3;
+      #$where.= $class1&&$class1!='所有栏目'&&$class1!='null'?"and class1 = '{$class1}'":'';
+      $where .= $class1 && $class1 != $_M[word][allcategory] && $class1 != 'null' ? "and class1 = '{$class1}'" : '';
+      $where .= $class2 && $class2 != 'null' ? "and class2 = '{$class2}'" : '';
+      $where .= $class3 && $class3 != 'null' ? "and class3 = '{$class3}'" : '';
+      $where .= $keyword ? "and fdtitle like '%{$keyword}%'" : '';
+      switch ($_M[form][search_type]) {
+        case 0:break;
+        case 1:
+          $where .= "and readok = '0'";
+          break;
+        case 2:
+          $where .= "and readok = '1'";
+          break;
+      }
+      $where .= 'order by addtime desc';
+      $result = $this->tabledata->getdata($_M[table][feedback], '*', $where);
+      $parameters = $parameter_database->get_parameter($this->module,$class1,$class2,$class3);
 
+
+      $query  ="SELECT * FROM {$_M[table][feedback]} WHERE class1={$class1} AND lang = '{$_M['lang']}' order by  addtime desc";
+      $feedbacks = $this->tabledata->getdata($_M[table][feedback], '*', $where, '', $query);
+
+      $is_select = 0;
+      foreach ($feedbacks as $key =>$val) {
+        $query = "SELECT * FROM {$_M['table']['flist']} WHERE listid = {$val['id']}";
+        $flist = DB::get_all($query);
+        $false = array();
+        foreach ($flist as $f) {
+
+            if($_M['form']['para_'.$f['paraid']] != $f['info'] && $_M['form']['para_'.$f['paraid']]){
+                $false[] = $f;
+            }
+
+            if($_M['form']['keyword'] && !strstr($f['info'], $_M['form']['keyword'])){
+                $false[] = $f;
+            }
+            if($_M['form']['para_'.$f['paraid']]){
+                $is_select = 1;
+            }
+        }
+        if(!$false){
+            $res[] = $val;
+        }
+    }
+
+    if($is_select){
+        $result = $res;
+    }
+
+      // if ($_M['form']['search_fd_class']) {
+      //     $met_fd_class = DB::get_one("select * from {$_M[table][config]} where name='met_fd_class' and lang='{$_M[form][lang]}' and columnid={$_M[form][class1]}");
+      //     $met_fd_class = $met_fd_class['value'];
+      //     $search = "info = '{$_M['form']['search_fd_class']}' AND paraid = {$met_fd_class}";
+      //     $query = "SELECT * FROM {$_M[table][flist]} WHERE {$search}";
+      //     $res = DB::get_all($query);
+      //     $insql = array();
+      //     foreach ($res as $val) {
+      //         $insql[] = $val['listid'];
+      //     }
+      //     $insql = implode(',', $insql);
+
+      //     $query  ="SELECT * FROM {$_M[table][feedback]} WHERE id IN ({$insql}) order by addtime desc";
+
+      //     $result = $this->tabledata->getdata($_M[table][feedback], '*', $where, '', $query);
+      // }
+
+
+    foreach ($result as $key => $list) {
       $list['customerid'] = $list['customerid'] == '0' ? $_M[word][feedbackAccess0] : $list['customerid'];
       if ($_M[config][met_member_use]) {
         switch ($list['access']) {
@@ -335,28 +431,28 @@ class feedback_admin extends message_admin {
       $feedback_list[] = $list;
     }
     $admininfo = admin_information();
-
-    // dump($feedback_list);
-    // exit;
     foreach ($feedback_list as $key => $val) {
       $val['url'] = $this->url($val, $this->module);
-      //$val['state'] = $val['readok']?'':'<span class="label label-default">未阅读</span>';
-      //if(!$val['state'])$val['state'] = strtotime($val['addtime'])>time()?'<span class="label label-default">已阅读</span>':'';
-
-      //$val['state'].= $val['com_ok']?'<span class="label label-info" style="margin-left:8px;">未审核信息</span>':'';
-      //$val['state'].= $val['top_ok']?'<span class="label label-success" style="margin-left:8px;">已审核信息</span>':'';
       if ($val[readok] == $_M[word][yes]) {
         $val['state'] = '<span class="label label-default">' . $_M[word][read] . '</span>';
       } else {
         $val['state'] = '<span class="label label-default">' . $_M[word][unread] . '</span>';
       }
-      $list = array();
-      $list[] = "<input name=\"id\" type=\"checkbox\" value=\"{$val[id]}\">";
-      $list[] = $val['id'];
-      $list[] = $val['fdtitle'];
-      //$list[] = $val['readok'];
-      $list[] = $val['state'];
-      $list[] = $val['customerid'];
+        $list = array();
+        $list[] = "<input name=\"id\" type=\"checkbox\" value=\"{$val[id]}\">";
+        $list[] = $val['id'];
+        $list[] = $val['state'];
+        //$list[] = $val['fdtitle'];
+        //$list[] = $val['readok'];
+        //$list[] = $val['customerid'];
+
+        if($_M['form']['class1']){
+            foreach ($met_fd_showcol as $paraid) {
+                $info_list = DB::get_one("select * from {$_M[table][flist]} where listid='{$val['id']}' and paraid='{$paraid}' and lang='{$this->lang}'");
+                $list[] =$info_list['info'];
+            }
+        }
+
       $list[] = $val['addtime'];
       $list[] = "<a href=\"{$_M[url][own_form]}a=doeditor&id={$val['id']}&class1={$val['class1']}&class2={$val['class2']}&class3={$val['class3']}\" class=\"edit\">{$_M[word][View]}</a><span class=\"line\">-</span><a href=\"{$_M[url][own_form]}a=dolistsave&submit_type=del&allid={$val['id']}\" data-toggle=\"popover\" class=\"delet\">{$_M[word][delete]}</a>
 			";
@@ -446,12 +542,6 @@ class feedback_admin extends message_admin {
     $list['$class2'] = $class2;
     $list['$class3'] = $class3;
     return $this->database->update_by_id($list);
-    // $query = "UPDATE {$this->tablename} SET
-    //   class1 = '{$class1}',
-    //   class2 = '{$class2}',
-    //   class3 = '{$class3}'
-    //   WHERE id = '{$id}'";
-    // DB::query($query);
   }
 
   /*修改排序*/
@@ -459,8 +549,6 @@ class feedback_admin extends message_admin {
     $list['id'] = $id;
     $list['no_order'] = $no_order;
     return $this->database->update_by_id($list);
-    // $query = "UPDATE {$this->tablename} SET no_order = '{$no_order}' WHERE id = '{$id}'";
-    // DB::query($query);
   }
 
   /*上架下架*/
@@ -468,8 +556,6 @@ class feedback_admin extends message_admin {
     $list['id'] = $id;
     $list['displaytype'] = $display;
     return $this->database->update_by_id($list);
-    // $query = "UPDATE {$this->tablename} SET displaytype = '{$display}' WHERE id = '{$id}'";
-    // DB::query($query);
   }
 
   /*置顶*/
@@ -477,8 +563,6 @@ class feedback_admin extends message_admin {
     $list['id'] = $id;
     $list['top_ok'] = $top;
     return $this->database->update_by_id($list);
-    // $query = "UPDATE {$this->tablename} SET top_ok = '{$top}' WHERE id = '{$id}'";
-    // DB::query($query);
   }
 
   /*推荐*/
@@ -486,8 +570,6 @@ class feedback_admin extends message_admin {
     $list['id'] = $id;
     $list['com_ok'] = $com;
     return $this->database->update_by_id($list);
-    // $query = "UPDATE {$this->tablename} SET com_ok = '{$com}' WHERE id = '{$id}'";
-    // DB::query($query);
   }
 
   /*删除*/
@@ -497,23 +579,20 @@ class feedback_admin extends message_admin {
       $list['id'] = $id;
       $list['recycle'] = 2;
       return $this->database->update_by_id($list);
-      // $query = "UPDATE {$this->tablename} SET recycle = '2' WHERE id='{$id}'";
-      // DB::query($query);
     } else {
       if ($this->database->del_by_id($id) && $this->database->del_flist_by_id($id)) {
         return true;
       } else {
         return false;
       }
-      //return $this->database->del_by_id($id);
-      // $query = "DELETE FROM {$this->tablename} WHERE id='{$id}'";
-      // DB::query($query);
     }
   }
 
   /*保存配置*/
   public function dosaveinc() {
     global $_M;
+    // $_M['form']['met_fd_showcol'] = implode('|', $_M['form']['met_fd_showcol']);
+
     $list = $_M[form];
     $query = "select * from {$_M[table][config]} where (lang ='{$this->lang}' or lang ='metinfo') and columnid='{$_M[form][class1]}'";
     $res = DB::get_all($query);
@@ -522,8 +601,17 @@ class feedback_admin extends message_admin {
       if ($value['value'] != $_M[form][$value['name']] && isset($_M[form][$value['name']])) {
         $query = "UPDATE {$_M[table][config]} SET value='{$_M[form][$value['name']]}' WHERE name='{$value['name']}' and columnid='{$_M[form][class1]}' and lang='{$_M[lang]}'";
         DB::query($query);
+      }elseif($value['name']=='met_fd_showcol'){
+          $query = "UPDATE {$_M[table][config]} SET value='{$_M[form][$value['name']]}' WHERE name='{$value['name']}' and columnid='{$_M[form][class1]}' and lang='{$_M[lang]}'";
+          DB::query($query);
       }
 		}
+
+    if($_M['form']['met_fd_related']){
+        $query = "UPDATE {$_M['table']['parameter']} SET related = '' WHERE id != {$_M['form']['met_fd_related']} AND lang = '{$_M['lang']}' AND module = 8";
+        DB::query($query);
+    }
+
 
 		$query = "UPDATE {$_M['table']['list']} SET info = '{$_M['form']['metlistrele']}' WHERE bigid='{$_M[form][class1]}' AND no_order='99999' AND lang='{$_M['lang']}'";
 		DB::query($query);
@@ -554,13 +642,18 @@ class feedback_admin extends message_admin {
     $_M[config][met_fd_ok] = $met_fd_ok[value];
     $met_fd_type = DB::get_one("select * from {$_M[table][config]} where name='met_fd_type' and lang='{$_M[form][lang]}' and columnid={$_M[form][class1]}");
     $_M[config][met_fd_type] = $met_fd_type[value];
-
     $met_fd_sms_back = DB::get_one("select * from {$_M[table][config]} where name='met_fd_sms_back' and lang='{$_M[form][lang]}' and columnid={$_M[form][class1]}");
+    $met_fd_showcol = DB::get_one("select * from {$_M[table][config]} where name='met_fd_showcol' and lang='{$_M[form][lang]}' and columnid={$_M[form][class1]}");
+    $met_fd_inquiry = DB::get_one("select * from {$_M[table][config]} where name='met_fd_inquiry' and lang='{$_M[form][lang]}' and columnid={$_M[form][class1]}");
     $_M[config][met_fd_sms_back] = $met_fd_sms_back[value];
     $met_sms_back = DB::get_one("select * from {$_M[table][config]} where name='met_sms_back' and lang='{$_M[form][lang]}' and columnid={$_M[form][class1]}");
     $_M[config][met_sms_back] = $met_sms_back[value];
     $met_fd_class = DB::get_one("select * from {$_M[table][config]} where name='met_fd_class' and lang='{$_M[form][lang]}' and columnid={$_M[form][class1]}");
+      $met_fd_class = DB::get_one("select * from {$_M[table][config]} where name='met_fd_related' and lang='{$_M[form][lang]}' and columnid={$_M[form][class1]}");
+      $met_fd_related = $met_fd_class['value'];
+
     $met_fd_class=$met_fd_class[value];
+    // $met_fd_inquiry1 = $_M[config][met_fd_inquiry] ? "checked='checked'" : "";
     $met_fd_back1 = ($_M[config][met_fd_back]) ? "checked='checked'" : "";
     $met_fd_ok1[$_M[config][met_fd_ok]] = "checked='checked'";
     $met_fd_type1[$_M[config][met_fd_type]] = "checked=checked";
@@ -576,29 +669,37 @@ class feedback_admin extends message_admin {
     $_M[config][met_fd_sms_content] = $_met_fd_sms_content[value];
     foreach ($settings_arr as $key => $val) {
       if ($val['columnid'] == $fnam['id']) {
-        $$val['name'] = $val['value'];
+        ${$val['name']} = $val['value'];
       }
 
     }
-    $query = "SELECT * FROM {$_M[table][parameter]} where  lang='{$_M[form][lang]}' and ((module='{$this->module}' and class1='{$_M[form][class1]}') or (module='{$this->module}' and class1='0')) order by no_order";
-    $result = DB::query($query);
+    // $met_fd_showcol = explode( '|',$met_fd_showcol);
     $query = "select * from {$_M[table][column]} where id={$_M[form][class1]} and lang='{$_M[form][lang]}'";
-
     $columnna = DB::get_one($query);
     $columnname = $columnna[name];
-    while ($list = DB::fetch_array($result)) {
-      $fd_para[$list[type]][] = $list;
-      if ($list[type] == 2 || $list[type] == 6) {
-        $fd_paraall[] = $list;
+
+    $query = "SELECT * FROM {$_M[table][parameter]} where  lang='{$_M[form][lang]}' and ((module='{$this->module}' and class1='{$_M[form][class1]}') or (module='{$this->module}' and class1='0')) order by no_order";
+    $result = DB::get_all($query);
+    $fbcol = $result;
+
+      foreach ($result as $list) {
+          $fd_para[$list[type]][] = $list;
+          //信息分類字段
+          if ($list[type] == 2|| $list[type] == 4 || $list[type] == 6) {
+              $fd_paraall[] = $list;
+          }
+          //关联产品字段
+          if ($list[type] == 2 || $list[type] == 4 || $list[type] == 6) {
+              $fd_related[] = $list;
+          }
       }
 
-    }
     if ($columnname) {
       $fdname = $columnname . $_M[word][syssetting];
     } else {
       $fdname = $_M[word][fdincTitle];
 		}
-		
+
 		$query = "SELECT * FROM {$_M['table']['list']} WHERE bigid='{$_M[form][class1]}' AND no_order='99999' AND lang='{$_M['lang']}'";
 		$metlistrele = DB::get_one($query);
 		if(!$metlistrele['id']){
@@ -608,6 +709,8 @@ class feedback_admin extends message_admin {
 		}else{
 			$metlistrele = $metlistrele['info'];
 		}
+    $_M['url']['help_tutorials_helpid']='101#2、反馈系统设置';
+    $met_fd_inquiry = intval($met_fd_inquiry);
     require $this->template('own/set');
   }
 
@@ -633,6 +736,11 @@ class feedback_admin extends message_admin {
       }
     }
     $query = "SELECT * FROM {$_M[table][parameter]} where module='{$this->module}' and lang='{$this->lang}' order by no_order";
+      if ($_M['form']['custom']) {
+          $met_fd_showcol = DB::get_one("select * from {$_M[table][config]} where name='met_fd_showcol' and lang='{$_M[form][lang]}' and columnid={$_M[form][class1]}");
+          $met_fd_showcol = str_replace('|',',', $met_fd_showcol['value']);
+          $query = "SELECT * FROM {$_M[table][parameter]} where module='{$this->module}' and lang='{$this->lang}' and id in($met_fd_showcol) order by no_order";
+      }
     $result = DB::query($query);
     while ($list = DB::fetch_array($result)) {
       $feedbackpara[$list['id']] = $list;
@@ -675,20 +783,29 @@ class feedback_admin extends message_admin {
 
     /*set xls*/
 
-    $column = array("", $_M[word][fdeditorInterest]);
-    $param = array('fdtitle');
-    foreach ($feedback_para as $key => $val) {
-      $column[] = $val['name'];
-      $param[] = "para" . $val[id];
-    }
-    $column[] = $_M[word][fdeditorTime];
-    $column[] = $_M[word][fdeditorFrom];
-    $column[] = $_M[word][feedbackID];
-    $column[] = $_M[word][fdeditorRecord];
-    $param[] = 'addtime';
-    $param[] = 'fromurl';
-    $param[] = 'customerid';
-    $param[] = 'useinfo';
+   if($_M['form']['custom']){
+       $column = array("");
+       $param = array();
+       foreach ($feedback_para as $key => $val) {
+           $column[] = $val['name'];
+           $param[] = "para" . $val[id];
+       }
+   }else{
+       $column = array("", $_M[word][fdeditorInterest]);
+       $param = array('fdtitle');
+       foreach ($feedback_para as $key => $val) {
+           $column[] = $val['name'];
+           $param[] = "para" . $val[id];
+       }
+       $column[] = $_M[word][fdeditorTime];
+       $column[] = $_M[word][fdeditorFrom];
+       $column[] = $_M[word][feedbackID];
+       $column[] = $_M[word][fdeditorRecord];
+       $param[] = 'addtime';
+       $param[] = 'fromurl';
+       $param[] = 'customerid';
+       $param[] = 'useinfo';
+   }
     //$xls=new PHP_XLS();
     $this->xls->AddSheet($_M[word][editor]);
     $this->xls->NewStyle('hd_t');
@@ -756,12 +873,12 @@ class feedback_admin extends message_admin {
     global $_M;
     $mail=load::sys_class('jmail','new');
     $_M[form][contents]=str_replace('\\', '', $_M[form][contents]);
-    $time="<p>回复时间：".date('Y-m-d H:i:s')."</p>";
-    $title="回复标题：".$_M[form][title];
+    $time="<p>".$_M['word']['feedbackrinfotime'].date('Y-m-d H:i:s')."</p>";
+    $title=$_M['word']['feedbackrinfotitle'].$_M[form][title];
     $query="select * from {$_M[table][feedback]} where id={$_M[form][id]}";
     $feedbackinfo=DB::get_one($query);
     $contentinfo=$feedbackinfo['useinfo'];
-    $content='<p>回复内容'.$_M[word][marks].$_M[form][contents];
+    $content='<p>'.$_M['word']['feedbackrinfocontent'].$_M[word][marks].$_M[form][contents];
     $content=str_replace($_M[word][setbasicmainbody].$_M[word][marks],'',$content);
     $useinfo=$title.$content.$time."<br>".$contentinfo;
     $query="update {$_M[table][feedback]} set useinfo='$useinfo' where id={$_M[form][id]}";

@@ -55,7 +55,7 @@ echo <<<EOT
 <!--
 EOT;
 $j=count($langtext[0]);
-for($i=1;$i<=$j;$i++){
+for($i=0;$i<=$j;$i++){
 echo <<<EOT
 -->
 	<div class="metsliding_box metsliding_box_{$i}">

@@ -5,7 +5,7 @@ class column_tag extends tag {
     public $config = array(
         '_category'         => array( 'block' => 1, 'level' => 4 ),
         '_list'             => array( 'block' => 1, 'level' => 4 ),
-    );  
+    );
 
 
     public function _category( $attr, $content ) {
@@ -25,11 +25,11 @@ class column_tag extends tag {
     \$type=strtolower(trim('$type'));
     \$cid=$cid;
     \$column = load::sys_class('label', 'new')->get('column');
-    
+
     unset(\$result);
     switch (\$type) {
             case 'son':
-                \$result = \$column->get_column_son(\$cid);   
+                \$result = \$column->get_column_son(\$cid);
                 break;
             case 'current':
                 \$result[0] = \$column->get_column_id(\$cid);
@@ -60,12 +60,13 @@ class column_tag extends tag {
             \$m['hide'] = \$hide;
             \$m['sub'] = 0;
         }
-    
+
 
         if(substr(trim(\$m['icon']),0,1) == 'm' || substr(trim(\$m['icon']),0,1) == ''){
             \$m['icon'] = 'icon fa-pencil-square-o '.\$m['icon'];
         }
         \$m['urlnew'] = \$m['new_windows'] ? "target='_blank'" :"target='_self'";
+        \$m['urlnew'] = \$m['nofollow'] ? \$m['urlnew']." rel='nofollow'" :\$m['urlnew'];
         \$m['_first']=\$index==0 ? true:false;
         \$m['_last']=\$index==(count(\$result)-1)?true:false;
         \$$name = \$m;
@@ -97,17 +98,18 @@ str;
     \$num = $num;
     \$module = "$module";
     \$type = $type;
+    \$order = $order;
     \$para = "$para";
     if(!\$module){
         if(!\$cid){
-            \$value = \$m['classnow'];  
+            \$value = \$m['classnow'];
         }else{
             \$value = \$cid;
         }
     }else{
         \$value = \$module;
     }
-   
+
     \$result = load::sys_class('label', 'new')->get('tag')->get_list(\$value, \$num, \$type, \$order, \$para);
     \$sub = count(\$result);
     foreach(\$result as \$index=>\$v):
@@ -125,5 +127,5 @@ str;
 
     }
 
-  
+
 }

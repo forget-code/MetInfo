@@ -29,13 +29,13 @@ echo <<<EOT
   </button>
   <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu2">
     <li role="presentation dropdown">
-		<a role="menuitem" data-toggle="dropdown" class="dropdown-toggle" tabindex="-1" href="#">栏目一</a>
+		<a role="menuitem" data-toggle="dropdown" class="dropdown-toggle" tabindex="-1" href="#">$_M[word][banner_column1_v6]}</a>
 		<ul class="dropdown-menu">
 			 <li><a href="#">{$_M[word][htmColumn]}</a></li>
 			 <li><a href="#">{$_M[word][htmColumn]}</a></li>
 		</ul>
 	</li>
-    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">栏目二</a></li>
+    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">{$_M[word][banner_column1_v6]}</a></li>
 	<li role="presentation" class="divider"></li>
   </ul>
 </div>
@@ -44,8 +44,8 @@ echo <<<EOT
     {$_M[word][Copy]}{$_M[word][goods]}
   </button>
   <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu2">
-    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">栏目一</a></li>
-    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">栏目二</a></li>
+    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">{$_M[word][banner_column1_v6]}</a></li>
+    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">{$_M[word][banner_column1_v6]}</a></li>
 	<li role="presentation" class="divider"></li>
   </ul>
 </div>

@@ -497,26 +497,59 @@ class config_tem{
             $lang = $_M['lang'];
         }
 
-        $query = "SELECT * FROM {$_M['table']['templates']} WHERE lang = '{$lang}' AND no = '{$skin_name}'";
-        $config = DB::get_all($query);
+        $this->copy_tempates($skin_name,$lang);
+	}
 
-        foreach ($config as $v) {
-            $query = "SELECT id FROM {$_M['table']['templates']} WHERE name = '{$v['name']}' AND lang = '{$_M['lang']}' AND no = '{$skin_name}'";
+	public function copy_tempates($skin_name,$from_lang,$to_lang)
+	{
+		global $_M;
+		if(!$to_lang){
+			$to_lang = $_M['lang'];
+		}
+		$query="select * from {$_M['table']['templates']} where lang='{$from_lang}' and no='$skin_name' AND bigclass=0";
+		$templates = DB::get_all($query);
+
+		foreach ($templates as $key => $val) {
+			$query = "SELECT id FROM {$_M['table']['templates']} WHERE name = '{$val['name']}' AND lang = '{$to_lang}' AND no = '{$skin_name}'";
+
             $has = DB::get_one($query);
 
             if(!$has){
-                $new = $v;
-                unset($new['id'],$new['value']);
-                $new['lang'] = $_M['lang'];
-                $insert = $this->get_sql($new);
-                $query = "INSERT INTO {$_M['table']['templates']} SET {$insert}";
-                $row = DB::query($query);
-                if(!$row){
-                    return false;
-                }
+            	$id = $val['id'];
+				unset($val['id']);
+				$parent = $val;
+				$parent['lang'] = $to_lang;
+				$this->insert_templates($parent);
+				$cid =DB::insert_id();
+				$query = "SELECT * FROM {$_M['table']['templates']} where lang='{$from_lang}' and no='{$skin_name}' AND bigclass={$id}";
+				file_put_contents(PATH_WEB.'cache/test.txt', $query."\n",FILE_APPEND);
+				$source = DB::get_all($query);
+				foreach ($source as $k => $v) {
+					$sub = $v;
+					unset($v,$sub['id']);
+					$sub['bigclass'] = $cid;
+					$sub['lang'] = $to_lang;
+					$this->insert_templates($sub);
+					unset($sub);
+				}
             }
-        }
+		}
 	}
+
+	public function insert_templates($data)
+    {
+    	global $_M;
+    	$sql = "";
+        foreach ($data as $key => $value) {
+            if(strstr($value, "'")){
+                $value = str_replace("'", "\'", $value);
+            }
+            $sql .= " {$key} = '{$value}',";
+        }
+        $sql = trim($sql,',');
+        $query = "INSERT INTO {$_M['table']['templates']} SET {$sql}";
+        return DB::query($query);
+    }
 
 	public function get_sql($data) {
         global $_M;

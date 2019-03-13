@@ -66,7 +66,9 @@ define(function(require, exports, module) {
 	$(document).on('change',".opwer-select-all", function(){
 		if($(this).attr('checked')){
 			$('.opwer-select-one').attr('checked', 'checked');
-		}
+		}else{
+            $('.opwer-select-one').attr('checked', false);
+        }
 	});
 
 	$(document).on('change',".opwer-select-one", function(){

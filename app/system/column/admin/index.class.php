@@ -18,6 +18,7 @@ class index extends admin {
     $met_class1 = $met_class1x;
     $met_class2 = $met_class2x;
     $met_class3 = $met_class3x;
+    $_M['url']['help_tutorials_helpid']='91';
     require_once $this->template('own/index');
   }
 
@@ -351,23 +352,16 @@ class index extends admin {
   }
   public function doeditor() {
     global $_M;
-    //模板权限控制
-    // $metinfoadminfile = PATH_WEB . 'templates/' . $_M[config][met_skin_user] . '/metinfo.inc.php';
-    // if (file_exists($metinfoadminfile)) {
-    //   require_once $metinfoadminfile;
-    // } else {
-    //   require_once PATH_WEB . 'config/metinfo.inc.php';
-    // }
-    // $metadmin[pagename] = 1;
-    // $metadmin[newscom] = 1;
-    // $metadmin[productcom] = 1;
-    // $metadmin[imgcom] = 1;
-    // $metadmin[downloadcom] = 1;
+
+    //YTODO:测试时使用，上线前提取出来
+    $query = "ALTER TABLE `{$_M['table']['column']}` ADD COLUMN `nofollow`  varchar(100) NULL DEFAULT NULL";
+    DB::query($query);
 
     $column_list = $this->database->get_list_one_by_id($_M['form']['id']);
     $column_list['new_windows'] = $column_list['new_windows'] ? 1 : 0;
     $access = $this->access_option('access', $column_list['access']);
     $column_list['list_order'] = $column_list['list_order'] ? $column_list['list_order'] : 1;
+    $_M['url']['help_tutorials_helpid']='90';
     require_once $this->template('own/editor');
   }
 
@@ -398,16 +392,18 @@ class index extends admin {
     $list['icon'] = $_M['form']['icon'];
     $list['out_url'] = $_M['form']['out_url'];
     $list['list_order'] = $_M['form']['list_order'];
+    $list['nofollow'] = $_M['form']['nofollow'];
 
     if($list['filename']){
       $filenames = $this->database->get_column_by_filename($list['filename']);
       if($filenames && $filenames['id'] != $list['id']){
-        turnover("{$_M[url][own_form]}&a=doeditor&id={$list['id']}", $_M['word']['jsx27']);
+        turnover("{$_M[url][own_form]}&a=doeditor&id={$list['id']}", $_M['word']['jsx27'],0);
 
       }
     }
+
     $this->database->update_by_id($list);
-    turnover("{$_M[url][own_form]}&a=doindex", '');
+    turnover("{$_M[url][own_form]}&a=doindex");
   }
 
   public function list_editor($id, $list){
@@ -433,7 +429,14 @@ class index extends admin {
       $releclass = 0;
     }
     $alist['name'] = $list['name-'.$id];
+    if(!trim($alist['name'])){
+      turnover("{$_M[url][own_form]}&a=doindex", "{$_M[word][column_descript1_v6]}",0);
+    }
+    $mod = load::sys_class('handle', 'new')->file_to_mod($_M['form']['foldername-'.$id]);
 
+    if($mod && $mod!=$_M['form']['module-'.$id]){
+      turnover("{$_M[url][own_form]}&a=doindex", "{$_M['word']['columndeffflor']}",0);
+    }
     if($bigclass['module'] == $_M['form']['module-'.$id]){
       $alist['foldername'] = $bigclass['foldername'];
     }else{
@@ -441,7 +444,7 @@ class index extends admin {
         if(!$if_in){
             #die($_M['form']['foldername-' . $id]);
             if(!$this->is_foldername_ok($_M['form']['foldername-'.$id], $_M['form']['module-'.$id])){
-                turnover("{$_M[url][own_form]}&a=doindex", '目录名称只能为小写字母或者数子，且不能和其他栏目重名！');
+                turnover("{$_M[url][own_form]}&a=doindex", "{$_M[word][column_descript1_v6]}",0);
         }
       }
       $alist['foldername'] = $list['foldername-'.$id];
@@ -481,7 +484,7 @@ class index extends admin {
     if($list['filename']){
       $filenames = $this->database->get_column_by_filename($list['filename']);
       if($filenames && $filenames['id'] != $list['id']){
-        turnover("{$_M[url][own_form]}}&a=doindex", $_M['word']['jsx27']);
+        turnover("{$_M[url][own_form]}}&a=doindex", $_M['word']['jsx27'],0);
       }
     }
     $id = $this->database->insert($alist);
@@ -592,7 +595,7 @@ class index extends admin {
             if($c['classtype'] != 1){
               $class123 = load::sys_class('label', 'new')->get('column')->get_class123_reclass($val['id']);
               if(!$classlist[$class123['class1']['id']]){
-                turnover("{$_M[url][own_form]}a=doindex", $_M['word']['copyotherlang5']);
+                turnover("{$_M[url][own_form]}a=doindex", $_M['word']['copyotherlang5'],0);
               }else{
                 continue;
               }
@@ -600,26 +603,17 @@ class index extends admin {
             }else{
               $classlist[$c['id']] = 1;
             }
-
-
-
-           // if($this->database->get_column_by_foldername($c['foldername'], $_M['form']['to_lang'])['0']['id']){
-              //turnover("{$_M[url][own_form]}a=doindex", $_M['word']['copyotherlang4'] );
-           // }
 		   $columninfo=$this->database->get_column_by_foldername($c['foldername'], $_M['form']['to_lang']);
             if($columninfo['0']['id']){
-              turnover("{$_M[url][own_form]}a=doindex", $_M['word']['copyotherlang4'] );
+              turnover("{$_M[url][own_form]}a=doindex", $_M['word']['copyotherlang4'],0);
             }
 
             $son_class2 = load::sys_class('label', 'new')->get('column')->get_column_son($c['id']);
             foreach($son_class2 as $key=>$val){
               if($val['module'] != $c['module']){
-                //if($this->database->get_column_by_foldername($val['foldername'], $_M['form']['to_lang'])['0']['id']){
-                  //turnover("{$_M[url][own_form]}a=doindex", $_M['word']['ssss']);
-                //}
 				$columninfo=$this->database->get_column_by_foldername($c['foldername'], $_M['form']['to_lang']);
                 if($columninfo['0']['id']){
-                  turnover("{$_M[url][own_form]}a=doindex", $_M['word']['ssss']);
+                  turnover("{$_M[url][own_form]}a=doindex", $_M['word']['ssss'],0);
                 }
               }
             }
@@ -749,10 +743,10 @@ class index extends admin {
         fputs($fp, $config_save);
         fclose($fp);
       }
-      turnover("{$_M[url][own_form]}&a=doindex", '');
+      turnover("{$_M[url][own_form]}&a=doindex");
       die();
     }
-    turnover("{$_M[url][own_form]}&a=doindex", '');
+    turnover("{$_M[url][own_form]}&a=doindex");
   }
 /*获取网站地图列表*/
   public function dogetmaplist($lang) {
@@ -1013,6 +1007,11 @@ class index extends admin {
       $address = "../img/showimg.php";
       $this->Copyfile($address, $newfile);
       break;
+    case 6:
+        $array[1][0] = 'met_cv_showcol';
+        $array[1][1] = '';
+        $this->verbconfig($array, $id);
+        break;
     case 7:
       $array[1][0] = 'met_fd_time';
       $array[1][1] = '120';
@@ -1082,6 +1081,12 @@ class index extends admin {
       $array[13][1] = '';
       $array[14][0] = 'met_fd_sms_dell';
       $array[14][1] = '';
+      $array[15][0] = 'met_fd_showcol';
+      $array[15][1] = '';
+      $array[16][0] = 'met_fd_inquiry';
+      $array[16][1] = '';
+      $array[17][0] = 'met_fd_related';
+      $array[17][1] = '';
       $this->verbconfig($array, $id);
       break;
       default :
@@ -1103,7 +1108,7 @@ class index extends admin {
 
   /*是否是系统模块*/
   public function unkmodule($filename) {
-    $modfile = array('app','admin','about', 'news', 'product', 'download', 'img', 'job', 'cache', 'config', 'feedback', 'include', 'lang', 'link', 'member', 'message', 'public', 'search', 'sitemap', 'templates', 'upload', 'wap');
+    $modfile = array('app','admin','about', 'news', 'product', 'download', 'img', 'job', 'cache', 'config', 'install', 'feedback', 'include', 'lang', 'link', 'member', 'message', 'public', 'search', 'sitemap', 'templates', 'upload', 'wap', 'online', 'hits', 'shop', 'pay', '');
     $ok = 0;
     foreach ($modfile as $key => $val) {
       if ($filename == $val) {
@@ -1142,9 +1147,13 @@ class index extends admin {
 
   public function delcolumn($id) {
     global $_M;
+    $config = load::mod_class('config/config_database', 'new');
     $column = $this->database->get_list_one_by_id($id);
     //删除下级不同模块文件夹
     $lv = load::mod_class('column/column_op', 'new')->get_sorting_by_lv();
+    $module = load::sys_class('handle', 'new')->mod_to_name($column['module']);
+
+    self::del_column_content($column['module'],$id,$column['classtype']);
     $classtype = $column['classtype'] + 1 ;
     foreach($lv['class'.$classtype][$id] as $key=>$val){
       $this->delcolumn($val['id']);
@@ -1160,8 +1169,10 @@ class index extends admin {
       case 5:
       case 6:
       case 7:
+      $config->del_value_by_columnid($id);
+      break;
       case 8:
-        $module = load::sys_class('handle', 'new')->mod_to_name($column['module']);
+
         load::mod_class("{$module}/{$module}_op", 'new')->del_by_class($column['id']);
       break;
     }
@@ -1172,10 +1183,13 @@ class index extends admin {
     /*删除栏目图片*/
     $this->fileUnlink($adminurl . $column[indeximg]);
     $this->fileUnlink($adminurl . $column[columnimg]);
-
     /*删除栏目*/
     $this->database->del_by_id($column['id']);
 
+
+    $config->del_value_by_columnid($id);
+    $config->del_value_by_flashid($id);
+    load::mod_class('banner/banner_database', 'new')->update_flash_by_cid($id,$_M['lang']);
   }
 
   /*删除栏目文件*/
@@ -1392,25 +1406,35 @@ class index extends admin {
 
   public function doset_icon() {
     global $_M;
-    require_once $this->template('own/set_icon');
+    require_once $this->view('app/set_icon');
   }
 
-    /**
-     * 恢复栏目文件
-     * @param $foldername
-     * @param $module
-     * @param $id\
-     */
-  /*public function do_recover_column_files($foldername, $module, $id)
+  public function del_column_content($module,$cid, $classtype)
   {
-      die('OK');
-      $default_module = Array('about','news','product','download','img','case','job','message','feedback','link','member','search','');
-      $modulenum = Array(1,2,3,4,5,8,0);
-      if(!in_array($foldername,$default_module) && in_array($module,$modulenum)){
-          if(is_dir(PATH_WEB."$foldername") && !file_exists(PATH_WEB."$foldername/index.php")){
-              $this->columnCopyconfig($foldername, $module, $id);
+      global $_M;
+      if($module >1 && $module < 10){
+         $module_name = load::sys_class('handle', 'new')->mod_to_file($module);
+          $name = load::sys_class('label', 'new')->get($module_name);
+          $database = load::mod_class("{$module_name}/{$module_name}_database",'new');
+
+          if($classtype == 1){
+
+              $list = $database->del_list_by_class($cid, null, null);
+
+          }elseif($classtype == 2){
+               $list = $database->del_list_by_class(null, $cid, null);
+          }else{
+              $list = $database->del_list_by_class(null, null,$cid);
+          }
+
+          $para_list = load::mod_class('parameter/parameter_list_database', 'new');
+          $para_list->construct($module);
+          $para_list->del_parameter_by_class($classtype,$cid);
+
+          foreach ($list as $c) {
+              $para_list->del_by_listid($c['id']);
           }
       }
-  }*/
+  }
 
 }

@@ -11,7 +11,7 @@ class weibo extends other {
 	public function __construct() {
 		global $_M;
 		if(!$_M['config']['met_weibo_open']){
-			okinfo($_M['url']['login'], '微信登录功能已关闭');
+			okinfo($_M['url']['login'], $_M['word']['userwenboclose']);
 		}
 		$this->appid = $_M['config']['met_weibo_appkey'];
 		$this->appkey = $_M['config']['met_weibo_appsecret'];

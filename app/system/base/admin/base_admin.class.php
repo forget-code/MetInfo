@@ -463,21 +463,33 @@ class base_admin extends admin {
 		}
 		echo jsonencode($metinfo);
 	}
-	/*栏目选择*/
-	function class_option($module){
-		$column = $this->column(3,$module);
-		foreach($column['class1'] as $val){
-			$re.= "<option value=\"{$val['id']}-0-0\">{$val['name']}</option>";
-			foreach($column['class2'][$val[id]] as $val2){
-				$re.= "<option value=\"{$val2['bigclass']}-{$val2['id']}-0\"> —— {$val2['name']}</option>";
-				foreach($column['class3'][$val2[id]] as $val3){
-					$re.= "<option value=\"{$val2['bigclass']}-{$val3['bigclass']}-{$val3['id']}\"> ———— {$val3['name']}</option>";
-				}
-			}
-		}
-		$re.= "</select>";
-		return $re;
-	}
+
+    /**
+     * 栏目选择
+     * @param $module
+     * @param string $choice
+     * @return string
+     */
+    function class_option($module ,$choice = ''){
+        $column = $this->column(3,$module);
+        /*dump($column);
+        die();*/
+        foreach($column['class1'] as $val){
+            $re.= "<option value=\"{$val['id']}-0-0\">{$val['name']}</option>";
+            foreach($column['class2'][$val[id]] as $val2){
+                #dump("{$val2['bigclass']}-{$val2['id']}-0");
+                $selected = "{$val2['bigclass']}-{$val2['id']}-0" == $choice ? "selected='selected'" : '';
+                $re.= "<option value=\"{$val2['bigclass']}-{$val2['id']}-0\" $selected> —— {$val2['name']}</option>";
+                foreach($column['class3'][$val2[id]] as $val3){
+                    #dump("{$val2['bigclass']}-{$val3['bigclass']}-{$val3['id']}");
+                    $selected = "{$val2['bigclass']}-{$val3['bigclass']}-{$val3['id']}" == $choice ? "selected='selected'" : '';
+                    $re.= "<option value=\"{$val2['bigclass']}-{$val3['bigclass']}-{$val3['id']}\" $selected> ———— {$val3['name']}</option>";
+                }
+            }
+        }
+        $re.= "</select>";
+        return $re;
+    }
 
 	/**
 	 * 保存修改sql

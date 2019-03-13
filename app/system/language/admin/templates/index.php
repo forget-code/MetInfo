@@ -1,6 +1,6 @@
 <?php
-# MetInfo Enterprise Content Management System 
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+# MetInfo Enterprise Content Management System
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 
 defined('IN_MET') or exit('No permission');
 
@@ -28,12 +28,7 @@ function linkSmit(my, type, txt) {
 	return false;
 }
 </script>
-<div class="stat_list">
-	<ul>
-		<li class="now"><a href="{$_M[url][own_form]}a=doindex" title="{$_M[word][langwebmanage]}">{$_M[word][langwebmanage]}</a></li>
-		<li ><a href="{$_M[url][own_form]}a=dolangset" title="{$_M[word][indexlang]}">{$_M[word][indexlang]}</a></li>
-	</ul>
-</div>
+
 <div class="clear"></div>
 <!--
 EOT;
@@ -42,7 +37,7 @@ echo <<<EOT
 <div class="v52fmbx_tbmax">
 <div class="v52fmbx_tbbox">
     <table cellpadding="2" cellspacing="1" class="table">
-        <tr> 
+        <tr>
             <td width="30" class="list">{$_M[word][sort]}</td>
             <td width="60" class="list">{$_M[word][langname]}</td>
             <td width="60" class="list">{$_M[word][langflag]}</td>
@@ -73,38 +68,46 @@ $val[moren]=$met_index_type==$val[mark]?"<img src='{$_M[url][own_tem]}images/gre
 $val['linka']=str_ireplace("http://","",$val['link']);
 $val['links']=utf8substr($val['linka'],0,26);
 echo <<<EOT
--->	
-		<tr class="mouse"> 
+-->
+		<tr class="mouse">
             <td class="list-text">{$val[no_order]}</td>
             <td class="list-text list_left">{$val[name]}</td>
             <td class="list-text">{$val[flag]}</td>
 			<td class="list-text">{$val[useok]}</td>
 			<td class="list-text">{$val[moren]}</td>
 			<td class="list-text list_left"><a href="{$val[link]}" target="_blank" title="{$val[link]}">{$val[link]}</a></td>
-			<td class="list-text">
+			<td class="list-text list_left">
 <!--
 EOT;
 if(1){
+	if($val['mark'] == 'cn' || $val['mark'] == 'en'){
+		$syn = "<a href=\"{$_M[url][own_form]}a=dosys&langsite=web&langeditor={$val[lang]}\" title=\"\" onclick=\"return syn('$val[synchronous]');\">{$_M[word][unitytxt_9]}</a>";
+	}else{
+		$syn = "";
+	}
 echo <<<EOT
--->	
+-->
 			<a href="{$_M[url][own_form]}a=dolangeditor&langeditor={$val[lang]}" title="{$_M[word][editor]}">{$_M[word][editor]}</a>
 			&nbsp;
-			<a href="{$_M[url][own_form]}a=dolangdelete&langeditor={$val[lang]}" onClick="return linkSmit($(this),1);" title="{$_M[word][delete]}">{$_M[word][delete]}</a>
+			<a href="{$_M[url][own_form]}a=dolangdelete&langeditor={$val[lang]}" onClick="return linkSmit($(this),1,'{$_M['word']['columndefallinfo']}');" title="{$_M[word][delete]}">{$_M[word][delete]}</a>
 			&nbsp;
-			<a href="{$_M[url][own_form]}a=doexportpack&langeditor={$val[lang]}" title="{$_M[word][delete]}">{$_M[word][language_outputlang_v6]}</a>
+			<a href="{$_M[url][own_form]}a=doexportpack&langsite=web&langeditor={$val[lang]}" title="{$_M[word][delete]}">{$_M[word][language_outputlang_v6]}</a>
 			&nbsp;
-			<a href="{$_M[url][own_form]}a=domengenedit&langeditor={$val[lang]}" title="{$_M[word][delete]}">{$_M[word][language_batchreplace_v6]}</a>
+			<a href="{$_M[url][own_form]}a=domengenedit&langsite=web&langeditor={$val[lang]}" title="{$_M[word][language_batchreplace_v6]}">{$_M[word][language_batchreplace_v6]}</a>
+			&nbsp;
+			<a href="{$_M[url][own_form]}a=doparaeditor&langeditor={$val[lang]}" title="{$_M[word][langwebeditor]}" style="margin-bottom:5px;">{$_M[word][langwebeditor]}</a>
+            &nbsp;
+
+            {$syn}
 <!--
 EOT;
 }
 echo <<<EOT
--->	
+-->
 			</td>
 			<td class="list-text list_left">
-				<a href="{$_M[url][own_form]}a=doparaeditor&langeditor={$val[lang]}" title="{$_M[word][langwebeditor]}" style="margin-bottom:5px;">{$_M[word][langwebeditor]}</a>
-				&nbsp;
-				<a href="{$_M[url][own_form]}a=dosys&langeditor={$val[lang]}" title="" onclick="return syn('$val[synchronous]');">{$_M[word][unitytxt_9]}</a>
-			</td>			
+				<a href="{$_M[url][own_form]}a=doapplangset&langsite=0&langeditor={$val['lang']}" title="" onclick="return syn('$val[synchronous]');">{$_M[word][edit_app_lang]}</a>
+			</td>
         </tr>
 <!--
 EOT;
@@ -115,7 +118,7 @@ echo <<<EOT
 EOT;
 if(1){
 echo <<<EOT
--->	
+-->
 		<tr>
 			<td class="list-text"></td>
 			<td colspan="8" class="list-text list_left"><a href="{$_M[url][own_form]}a=dolangadd" title="{$_M[word][langadd]}">+{$_M[word][langadd]}</a></td>
@@ -124,7 +127,7 @@ echo <<<EOT
 EOT;
 }
 echo <<<EOT
--->	
+-->
 		</table>
 </div>
 </div>

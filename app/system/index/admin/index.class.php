@@ -40,7 +40,7 @@ class index extends admin {
 			
 			$met_agents_display = "style=\"display:none\"";
 		}else{
-			$met_admin_logo = "{$_M[url][ui]}images/logo.png";
+			$met_admin_logo = "{$_M['url']['ui']}images/logo.png";
 		}
 		setcookie("page_iframe_url", '',0,'/');
         require $this->template('own/index');
@@ -127,6 +127,7 @@ class index extends admin {
             }
             $arr1 = explode( '/',trim($_M['url']['site_admin'],'/'));
             $adfile = end($arr1);
+            unset($arr1[1]);
             foreach ($arr1 as $val) {
                 if($val == $_M['config']['met_keywords'] || $val == 'admin' ){
                     $adflag = 1;

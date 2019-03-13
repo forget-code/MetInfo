@@ -1,8 +1,8 @@
-<!--<?php defined('IN_MET') or exit('No permission');
-echo <<<EOT
--->
+<?php defined('IN_MET') or exit('No permission'); ?>
 <style>
 body{color:#76838f}.icondemo-wrap{position:relative;height:100px;margin:18px 0;text-align:center}.icondemo-wrap:hover{color:#fff;background-color:#62a8ea}.icondemo .icon{font-size:24px}.icon-title{margin-top:2px;-webkit-user-select:text;-moz-user-select:text;-ms-user-select:text;user-select:text}.page-content .panel-body .example{padding:15px 30px;margin-top:0;margin-bottom:50px}.example .icondemo{height:40px;margin:15px auto;font-size:16px;line-height:40px;text-align:center}
+.icon-detail .icondemo-wrap{cursor: pointer;}
+.icon-detail .icondemo-wrap.checked{background-color: #62a8ea;color: #fff;}
 </style>
 <div class="icon-list">
     <h3 class="panel-title">{$_M[word][iconsettips]}</h3>
@@ -5456,6 +5456,3 @@ body{color:#76838f}.icondemo-wrap{position:relative;height:100px;margin:18px 0;t
         </div>
     </div>
 </div>
-<!--
-EOT;
-?>-->

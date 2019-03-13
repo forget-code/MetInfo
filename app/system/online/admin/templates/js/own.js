@@ -65,13 +65,13 @@ window.onload=function(){
     var type_name = $("input[name='met_online_type']");
     type_name.each(function(i){
         //console.log($(this)[0]);
-        if($(this).attr("value") == type && $(this).attr("value")!=3){
+        if($(this).attr("value") == type && $(this).attr("value")!=0){
             $("cc").html($(this).next().html());
         }
     })
 
     $("input[name='met_online_type']").change(function(){
-        if($(this).attr("value")!=3){
+        if($(this).attr("value")!=0){
             console.log($(this).attr("value"))
             $("cc").html($(this).next().html());
         }

@@ -23,6 +23,7 @@ class imgmanager extends admin {
     {
         global $_M;
         nav::select_nav(1);
+        $_M['url']['help_tutorials_helpid']='105';
         require $this->template('tem/thumbs');
     }
 
@@ -49,6 +50,7 @@ class imgmanager extends admin {
     {
         global $_M;
         nav::select_nav(2);
+        $_M['url']['help_tutorials_helpid']='106';
         require $this->template('tem/watermark');
     }
 

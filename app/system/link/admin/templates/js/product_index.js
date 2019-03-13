@@ -13,7 +13,7 @@ define(function(require, exports, module) {
 		var nm = $(this).data('value'),ip=$("input[name='submit_type']");
 		if(nm){
 			if(!$("input[name='id']:checked").length){
-				common.metalert({html:'没有选中的记录'});
+				common.metalert({html:'{$_M[word][unselected]}'});
 				return false;
 			}
 			if($(this).parents('.list-type-update').data('type')){
@@ -32,7 +32,7 @@ define(function(require, exports, module) {
 	function popovers(){
 		$('a[data-toggle="popover"]').popover({
 			content:function(){
-				return '<a class="btn btn-primary btn-sm" role="button" href="'+$(this).attr("href")+'&recycle=1" style="margin-right:5px;display:none">放入回收站</a><a class="btn btn-danger btn-sm" role="button" href="'+$(this).attr("href")+'&recycle=0" style="margin-right:5px;">删除</a><a class="btn btn-default btn-sm listdeleteno" role="button" href="javascript:;">取消</a>';
+				return '<a class="btn btn-danger btn-sm" role="button" href="'+$(this).attr("href")+'&recycle=0" style="margin-right:5px;">'+METLANG.thoroughlyDeleting+'</a><a class="btn btn-default btn-sm listdeleteno" role="button" href="javascript:;">'+METLANG.cancel+'</a>';
 			},
 			html:true,
 			placement:'left'
@@ -55,7 +55,7 @@ define(function(require, exports, module) {
 	
 	$(document).on('click','.list-type-del',function(){
 		if(!$("input[name='id']:checked").length){
-			common.metalert({html:'没有选中的记录'});
+			common.metalert({html:'{$_M[word][unselected]}'});
 			return false;
 		}
 		var nm = 'del',ip=$("input[name='submit_type']");
@@ -70,7 +70,7 @@ define(function(require, exports, module) {
 	
 	$('button[data-toggle="popover"]').popover({
 		content:function(){
-			return '<button class="btn btn-primary btn-sm list-type-del" role="button" data-value="1" style="margin-right:5px;display:none">放入回收站</button><button class="btn btn-danger btn-sm list-type-del" role="button" data-value="0" style="margin-right:5px;">删除</button><a class="btn btn-default btn-sm listdeleteno" role="button" href="javascript:;">取消</a>';
+			return '<button class="btn btn-danger btn-sm list-type-del" role="button" data-value="0" style="margin-right:5px;">'+METLANG.jslang1+'</button><a class="btn btn-default btn-sm listdeleteno" role="button" href="javascript:;">'+METLANG.jslang2+'</a>';
 		},
 		html:true,
 		placement:'top'

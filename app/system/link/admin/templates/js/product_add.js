@@ -5,7 +5,7 @@ define(function(require, exports, module) {
 	
 	$("button[type='submit']").click(function(){
 		if(!$("select[name='class']").val()){
-			common.metalert({html:'请选择所属栏目'});
+			common.metalert({html:'{$_M[word][selectcolumn]}'});
 			return false;
 		}
 		$("input[name='class']").val($("select[name='class']").val());

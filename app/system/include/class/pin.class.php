@@ -10,7 +10,7 @@ class pin {
 	public function check_pin($pin){
 		global $_M;
 		$authpin = $this->getpin();
-		if($authpin && $authpin ==  strtoupper($pin)){		
+		if($authpin && $authpin ==  strtoupper($pin)){
 			$this->setpin($this->make_rand(4));
 			return true;
 		}else{

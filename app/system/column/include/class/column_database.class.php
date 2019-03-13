@@ -96,7 +96,7 @@ class column_database extends database {
   }
 
   public function table_para() {
-    return 'name|foldername|filename|bigclass|samefile|module|no_order|wap_ok|wap_nav_ok|if_in|nav|ctitle|keywords|content|description|list_order|new_windows|classtype|out_url|index_num|access|indeximg|columnimg|isshow|lang|namemark|releclass|display|icon';
+    return 'name|foldername|filename|bigclass|samefile|module|no_order|wap_ok|wap_nav_ok|if_in|nav|ctitle|keywords|content|description|list_order|new_windows|classtype|out_url|index_num|access|indeximg|columnimg|isshow|lang|namemark|releclass|display|icon|nofollow';
   }
 
 }; # This program is an open source system, commercial use, please consciously to purchase commercial license.; # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.

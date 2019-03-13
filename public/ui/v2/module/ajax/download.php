@@ -1,5 +1,5 @@
 <?php defined('IN_MET') or exit('No permission'); ?>
-<tag action='download.list' num="$c['met_download_list']">
+<list data="$result" name="$v">
 <li class="list-group-item">
 	<div class="media">
 		<div class="media-left p-r-5 p-l-10 hidden-xs-down">
@@ -19,4 +19,4 @@
 		</div>
 	</div>
 </li>
-</tag>
+</list>

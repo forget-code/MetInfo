@@ -33,6 +33,7 @@ class webset extends admin {
 			$tel   = $adrry['admin_mobile'];
 			$record = "http://api.metinfo.cn/record_install.php?url={$_M['config']['met_weburl']}&email={$email}&webname={$_M['config']['met_webname']}&webkeywords={$_M['config']['met_keywords']}&tel={$tel}&version={$_M['config']['metcms_v']}&softtype=1";
 		}
+		$_M['url']['help_tutorials_helpid']='93';
 		require $this->template('own/index');
 	}
 
@@ -57,6 +58,7 @@ class webset extends admin {
 		$configlist[] = 'met_footaddress';
 		$configlist[] = 'met_foottel';
 		$configlist[] = 'met_footother';
+        $configlist[] = 'met_mobile_logo';
 		configsave($configlist);/*保存系统配置*/
 
 		// if($_M['form']['met_weburl']!=$_M['config']['met_weburl']){//当首页网址变更时
@@ -84,6 +86,7 @@ class webset extends admin {
 	function doemailset() {
 		global $_M;
 		nav::select_nav(2);
+		$_M['url']['help_tutorials_helpid']='94';
 		require $this->template('own/email');
 	}
 
@@ -144,6 +147,7 @@ class webset extends admin {
 	function dothirdparty(){
 		global $_M;
 		nav::select_nav(3);
+		$_M['url']['help_tutorials_helpid']='95';
 		require $this->template('own/thirdparty');
 	}
 

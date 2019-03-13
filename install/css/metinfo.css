@@ -48,11 +48,11 @@ div#language input, div#language select { margin: 0; padding: 0; }
 .inpp{ width:155px\9;}
 
 div.section ul.inspect-list{ padding:0px;}
-div.section ul.inspect-list li  { list-style-type: none; padding-left:20px; margin-left:20px;}
-div.section ul.inspect-list li  span{ float:left; width:180px; font-weight:bold;}
-div.section ul.inspect-list li.OK { background:url(../images/greencheck.png) no-repeat 180px center; color:#009933; }
+div.section ul.inspect-list li  { list-style-type: none; padding-left:20px; margin-left:10px;}
+div.section ul.inspect-list li  span{ float:left; width:280px; font-weight:bold;}
+div.section ul.inspect-list li.OK { background:url(../images/greencheck.png) no-repeat 270px center; color:#009933; }
 div.section ul.inspect-list li.FAIL { list-style-image: url(../images/redx.gif); color:#FF0000; }
-div.section ul.inspect-list li.WARN { background:url(../images/yellowcaution.png) no-repeat 180px center; color:#f00; }
+div.section ul.inspect-list li.WARN { background:url(../images/yellowcaution.png) no-repeat 270px center; color:#f00; }
 div#error ul li.FAIL  { list-style-image: url(../images/redx.gif); color:#FF0000; }
 div#error ul li.WARN { background:url(../images/yellowcaution.png) no-repeat left center; color:#f00; }
 div.section ul.inspect-list li.NA { list-style-type:none;}

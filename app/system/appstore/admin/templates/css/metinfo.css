@@ -1,13 +1,3 @@
-.appbox_left{  }
-.appbox_left_box{  }
-.appbox_right{  position:absolute; right:0px; top:10px; z-index:9; height:40px; line-height:40px; padding-right:5px; }
-.appbox_right .login{  margin-top:5px; margin-right:10px; }
-.appbox_right li{  display:inline;margin: 0 5px;}
-.appbox_right li.mi{  color:#eee; }
-.memberinfo{ font-weight:normal!important; color:#666; padding-right:10px;}
-@media(max-width:1200px){
-	.appbox_right li.mi{margin: 0;}
-}
 .applistdiv td img{ width:80px; border:1px solid #eee;}
 .applistmb td img{ width:200px; border:1px solid #eee;}
 .applistmb .appprice{ color:#E4393C;}
@@ -16,16 +6,17 @@
 .applistdiv td h4 span{ padding-right:10px; }
 
 
-.hotlist{ border:1px solid #dfe5e7; background:#fff; margin-top:8px; }
-.hotlist h3{ height:38px; line-height:38px; padding-left:15px; background:#f6f8f8; border-bottom:1px solid #dfe5e7; font-size:14px; font-weight:normal; color:#656565; position:relative;}
+.hotapplist{ border:1px solid #dfe5e7;padding: 15px 0;}
+/*.hotlist h3{ height:38px; line-height:38px; padding-left:15px; background:#f6f8f8; border-bottom:1px solid #dfe5e7; font-size:14px; font-weight:normal; color:#656565; position:relative;}*/
 
 .hotapplist .row{ padding:10px 0px; }
-.hotapplist .media-heading{ font-size:15px; color:#333;  }
+.hotapplist .media-heading{ font-size:16px; color:#333;}
 .hotapplist .media-heading span{ padding-left:20px;  }
-.hotapplist .media{ padding:10px; height:102px; overflow:hidden;  }
+.hotapplist .media{height:102px; overflow:hidden;margin: 15px 0;padding:10px;}
 .hotapplist .media:hover{ background:#F4F5F9;}
 .hotapplist .media-body{ padding:5px 0px; color:#333; position:relative;}
-.hotapplist .media-body p{ color:#777; line-height:1.8; height:50px; overflow:hidden; margin-top:8px; font-size:13px; }
+.hotapplist .media-body>div{display: block;height: 75px;overflow: hidden;}
+.hotapplist .media-body p{ color:#999; line-height:1.8; height:50px; overflow:hidden; margin-top:8px; font-size:13px; }
 .hotapplist .media-body .label{ position:absolute;right:0px; top:0px; font-weight:normal; }
 .hotapplist .media-body .through{ display:none; }
 
@@ -46,15 +37,22 @@
 .appdetail_dl dd .evaluation{ position:relative; top:4px;}
 .appdetail_dl dd .buyprice{ color:#E4393C; display:block; height:30px; line-height:30px;}
 .appdetail_dl dd .buyprice span{ padding-right:10px;}
-.appdetail_dl dd .buybuttondiv{ margin-top:3px;}
-.appdetail_dl dd .buybuttondiv a,.appdetail_dl dd .downloaddiv .metcms_upload_download a,.completediv .complete a,.download-noclick a,.try_again a{ font-weight:normal;float:left; background:#23ad44; height:25px; line-height:25px; color:#fff; padding:0px 12px; border-radius: 2px; font-size:12px; margin-right:5px;}
-.appdetail_dl dd .buybuttondiv a:hover,.appdetail_dl dd .downloaddiv .metcms_upload_download a:hover,.completediv .complete a:hover,.download-noclick a:hover,.try_again a:hover{ color:#fff; background:#42c762; }
-.appdetail_dl dd .buybuttondiv a:active,.appdetail_dl dd .downloaddiv .metcms_upload_download a:active,.completediv .complete a:active,.download-noclick a:active,.try_again a:active{ color:#fff; background:#1c9439; }
+.appdetail_dl dd .downloaddiv .metcms_upload_download a,
+.completediv .complete a,
+.downloaddiv .download-noclick a,
+.try_again a{ font-weight:normal;float:left; background:#23ad44; height:25px; line-height:25px; color:#fff; padding:0px 12px; border-radius: 2px; font-size:12px; margin-right:5px;}
+.appdetail_dl dd .downloaddiv .metcms_upload_download a:hover,
+.completediv .complete a:hover,
+.downloaddiv .download-noclick a:hover,.try_again a:hover{ color:#fff; background:#42c762; }
+.appdetail_dl dd .downloaddiv .metcms_upload_download a:active,
+.completediv .complete a:active,
+.downloaddiv .download-noclick a:active,.try_again a:active{ color:#fff; background:#1c9439; }
 .appdetail_dl dd .downloaddiv .metcms_upload_download{ font-weight:normal; color:#999; height:25px; line-height:25px;}
+.buybuttondiv{margin-top: 10px;}
 
-.appdetail_ol{ list-style:none; height:40px; padding:0px; line-height:40px; border-top:1px solid #e7e9e8; background:#f9fafc; }
-.appdetail_ol li { float:left; width:50%; text-align:center; cursor:pointer; }
-.appdetail_ol li.on{ background:#e7e9e8;  }
+.appdetail-nav-tab li{padding: 0;text-align: center;}
+.appdetail-nav-tab li a{border-color: #eee #eee #ddd;margin-right: 0;border-radius: 0;color: #777;}
+.appdetail-nav-tab>li.active>a{border-color: #eee #eee #ddd !important;background-color: #eee !important;color: #333;}
 
 .appdetail_cont{ width:75%;}
 .appdetail_develp{ position:absolute; right:0px; top:0px; width:25%; height:100%; background:#fff;}
@@ -64,7 +62,7 @@
 
 .developer_weburl{ text-align:center!important; font-size:14px; }
 .developer_weburl i{ font-size:14px; margin-left:5px; }
-
+#purchase-notice{padding: 15px;color: #777;}
 .evaluationinfo dl dd h5{ font-weight:normal; }
 .evaluationinfo h5 span{ position:relative; top:4px; margin-right:5px;}
 .evaluationinfo dd{ margin:0px 0px!important; }
@@ -104,7 +102,12 @@
 	display: inline;
 	margin-right:20px;
 }
-
+#purchase-notice-modal .modal-footer,
+#download-notice-modal .modal-footer{text-align: center;}
+#purchase-notice-modal .modal-footer .btn,
+#download-notice-modal .modal-footer .btn{padding-left: 100px;padding-right: 100px;}
+#download-notice-modal{background: rgba(0,0,0,.8);}
+#download-notice-modal .modal-footer .download-noclick a{float: none;display: inline-block;}
 
 /*应用市场模板点击放大*/
 .lightboxOverlay { position: absolute; top: 0; left: 0; z-index: 9999; background-color: black; filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=80); opacity: 0.8; display: none; } 

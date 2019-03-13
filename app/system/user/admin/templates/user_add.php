@@ -10,7 +10,7 @@ echo <<<EOT
 <form method="POST" class="ui-from" name="myform" action="{$_M[url][own_form]}a=doaddsave" target="_self">
 	<div class="v52fmbx">
 		<dl>
-			<dt>用户名</dt>
+			<dt>{$_M[word][loginusename]}</dt>
 			<dd class="ftype_input">
 				<div class="fbox">
 					<input type="text" name="username" data-size="2-30" data-ajaxcheck-url="{$_M[url][own_form]}a=douserok" value="" data-required="1" />
@@ -18,7 +18,7 @@ echo <<<EOT
 			</dd>
 		</dl>
 		<dl>
-			<dt>密码</dt>
+			<dt>{$_M[word][loginpassword]}</dt>
 			<dd class="ftype_input">
 				<div class="fbox">
 					<input type="password" name="password" data-size="6-30" value="" data-required="1" />
@@ -26,7 +26,7 @@ echo <<<EOT
 			</dd>
 		</dl>
 		<dl>
-			<dt>用户组</dt>
+			<dt>{$_M[word][admintips5]}</dt>
 			<dd class="ftype_select">
 				<div class="fbox">
 					<select name="groupid">
@@ -46,12 +46,12 @@ echo <<<EOT
 			</dd>
 		</dl>
 		<dl>
-			<dt>是否激活</dt>
+			<dt>{$_M[word][memberCheck]}</dt>
 			<dd class="ftype_select">
 				<div class="fbox">
 					<select name="valid">
-						<option value="1">是</option>
-						<option value="0">否</option>
+						<option value="1">{$_M[word][yes]}</option>
+						<option value="0">{$_M[word][no]}</option>
 					</select>
 				</div>
 			</dd>
@@ -59,7 +59,7 @@ echo <<<EOT
 		<dl class="noborder">
 			<dt>&nbsp;</dt>
 			<dd>
-				<input type="submit" name="submit" value="添加会员" class="submit" />
+				<input type="submit" name="submit" value="{$_M[word][memberAdd]}" class="submit" />
 			</dd>
 		</dl>
 	</div>

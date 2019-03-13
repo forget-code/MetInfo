@@ -74,8 +74,7 @@ define ('MAGIC_QUOTES_GPC', get_magic_quotes_gpc());
 
 //当前访问的主机名
 define ('HTTP_HOST', isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME']);
-//来源页面
-define('HTTP_REFERER', $_SERVER['HTTP_REFERER']);
+
 //来源页面
 define('REQUEST_URI', $_SERVER['REQUEST_URI']);
 

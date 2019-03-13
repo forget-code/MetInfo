@@ -19,41 +19,13 @@ class userweb extends web {
 		parent::__construct();
 		$this->check();
 		$this->userclass = load::sys_class('user', 'new');
+		// 页面基本信息
 		$query = "SELECT * FROM {$_M['table']['column']} WHERE module='10' AND lang='{$_M['lang']}'";
 		$member = DB::get_one($query);
-		if($_M['config']['met_title_type'] == 0){
-			$_M['tem_data']['title'] = $member['name'];
-		}else if($_M['config']['met_title_type'] == 1){
-			$_M['tem_data']['title'] = $member['name'].'-'.$_M['config']['met_keywords'];
-		}else if($_M['config']['met_title_type'] == 2){
-			$_M['tem_data']['title'] = $member['name'].'-'.$_M['config']['met_webname'];
-		}else if($_M['config']['met_title_type'] == 3){
-			$_M['tem_data']['title'] = $member['name'].'-'.$_M['config']['met_keywords'].'-'.$_M['config']['met_webname'];
-		}
-
-		$query = "SELECT * FROM {$_M['table']['ifmember_left']}";
-		$navigation = DB::get_all($query);
-		foreach($navigation as $key=>$val){
-			if($val[columnid]){
-				//$column = $class_list[$val[columnid]];
-				$query = "SELECT * FROM {$_M['table']['column']} WHERE id = '{$val[columnid]} ' and lang='{$_M['lang']}'";
-				$column = DB::get_one($query);
-				$val['foldername'] = $val['foldername'] ? $val['foldername'] : $column['foldername'];
-				$val['filename'] = $val['filename'] ? $val['filename'] : 'index.php';
-				$list['url'] = "../{$val['foldername']}/{$val['filename']}";
-				$list['title'] = $column['name'];
-			}else{
-				$list['url'] = "../{$val['foldername']}/{$val['filename']}";
-				$list['title'] = $val['title'];
-			}
-			$_M['html']['app_sidebar'][] = $list;
-		}
-		// 前台模板公共参数
-		$query = "SELECT * FROM {$_M['table']['ui_config']} WHERE skin_name = '{$_M['config']['met_skin_user']}' and lang='{$_M['lang']}' and ui_name='system'";
-		$ui_config = DB::get_all($query);
-		foreach ($ui_config as $key => $value) {
-			$_M['ui_config'][$value['uip_name']]=$value['uip_value']?$value['uip_value']:$value['uip_default'];
-		}
+		$_M['config']['app_no']=0;
+		 $this->add_input('page_title','-'.$member['name'].$this->input['page_title']);
+		 $this->add_input('name',$member['name']);
+		 $this->add_input('classnow',$this->input_class());
 	}
 
 	public function check() {
@@ -71,32 +43,22 @@ class userweb extends web {
 
 	protected function template($path){
 		global $_M;
-		list($postion, $file) = explode('/',$path);
-		if ($postion == 'own') {
-			return PATH_OWN_FILE."templates/met/{$file}.php";
-		}
-		if ($postion == 'ui') {
-			return PATH_SYS."include/public/ui/web/{$file}.php";
-		}
+		$postion = strstr($path, '/',true);
+		$file = substr(strstr($path, '/'),1);
+		if ($postion == 'own') return PATH_OWN_FILE."templates/met/{$file}.php";
+		if ($postion == 'ui') return PATH_SYS."include/public/ui/web/{$file}.php";
 		if($postion == 'tem'){
-			if (file_exists(PATH_TEM."user/{$file}.php")) {
-				$dir = PATH_TEM."user/{$file}.php";
+			$sys_content=$_M['custom_template']['sys_content'];
+			$flag=$sys_content?1:0;
+			$sys_content = PATH_OWN_FILE."templates/met/{$file}.php";
+			!file_exists($sys_content) && $sys_content = PATH_WEB."public/ui/v2/{$file}.php";
+			$_M['custom_template']['sys_content']=$sys_content;
+			if($flag){
+				return $sys_content;
 			}else{
-				if (file_exists(PATH_SYS."user/web/templates/met/{$file}.php")) {
-					$dir = PATH_SYS."user/web/templates/met/{$file}.php";
-				}
-			}
-
-			if($_M['custom_template']['sys_content']){
-				return $dir;
-			}else{
-				$_M['custom_template']['sys_content'] = $dir;
 				return $this->template('ui/compatible');
-
 			}
-
 		}
-
 	}
 
 	/**
@@ -105,7 +67,7 @@ class userweb extends web {
 	protected function load_url_unique() {
 		global $_M;
 		parent::load_url_unique();
-		load::mod_class('user/user_url', 'new')->insert_m();
+		// load::mod_class('user/user_url', 'new')->insert_m();
 	}
 
 	protected function navlist(){

@@ -1,0 +1,3602 @@
+[
+    {
+        "name": "app_shop_ok",
+        "value": "Yes",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_cancel",
+        "value": "No",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_save",
+        "value": "Save",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_operatorok",
+        "value": "Operation successful",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_saveok",
+        "value": "Save Successful",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_delok",
+        "value": "Deleted successfully",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_del",
+        "value": "Delete",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_deled",
+        "value": "deleted",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_deling",
+        "value": "Deleting...",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_deleteok",
+        "value": "Still delete it?",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_clear",
+        "value": "Delete",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_close",
+        "value": "Close",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_operator",
+        "value": "Operating",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_menager",
+        "value": "Management",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_addto",
+        "value": "Add",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_editor",
+        "value": "Edit",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_select_all",
+        "value": "Select all",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_select",
+        "value": "Select",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_selected",
+        "value": "Selected",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_select_able",
+        "value": "Optional",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_show_open",
+        "value": "Expand",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_show_modify",
+        "value": "Modify",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_setting",
+        "value": "Settings",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_buy",
+        "value": "Purchase",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_js_tips1",
+        "value": "At least select one option",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_js_tips2",
+        "value": "A positive number indicates a price increase\/A negative number indicates a price reduction",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_freight_tips1",
+        "value": "Don't support international logistics inquiry",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_freight_tips2",
+        "value": "The text was not found",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_freight_tips3",
+        "value": "At least enable one payment method",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_freight_tips4",
+        "value": "Processing，please be patient to wait",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_freight_tips5",
+        "value": "zone",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_freight_tips6",
+        "value": "Processing，please be patient to wait.",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_freight_tips7",
+        "value": "Once deleting the area, the subordinate zone of the zone will also be deleted. Are you sure to delete them?",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_freight_tips8",
+        "value": "Are you sure to delete the shipping template?",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_freight_country",
+        "value": "Country",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_freight_set_distr_area",
+        "value": "Add shipping zone",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_freight_table_row1",
+        "value": "Shipping zone",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_freight_table_row2",
+        "value": "Per order\/piece",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_freight_table_row3",
+        "value": "Shipping fee",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_freight_table_row4",
+        "value": "Plus（piece）",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_freight_table_row5",
+        "value": "Recharge",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_freight_add_subarea",
+        "value": "Increase sub-zone",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_freight_package_tips1",
+        "value": "All have been consumed, please continue",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_freight_package_tips2",
+        "value": "Purchase",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_guest",
+        "value": "Guest",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_save_success_tips1",
+        "value": "Save successful",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_login_tips1",
+        "value": "You haven't logged in,please",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_login_tips2",
+        "value": "Log in background",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_login_tips3",
+        "value": ",refresh the page again",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_mom",
+        "value": "Monday",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_tues",
+        "value": "Tuesday",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_wed",
+        "value": "Wednesday",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_thur",
+        "value": "Thursday",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_fri",
+        "value": "Friday",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_sat",
+        "value": "Saturday",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_sun",
+        "value": "Sunday",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_goods_tips1",
+        "value": "Don't add the same specification",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_goods_tips2",
+        "value": "Preset more specification value",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_goods_tips3",
+        "value": "Only add up to three specifications",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_goods_tips4",
+        "value": "Enter number",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_goods_tips5",
+        "value": "Inventory can't be empty",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_goods_toadd",
+        "value": "+add",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_goods_table_row1",
+        "value": "Standard price",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_goods_table_row2",
+        "value": "Inventory",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_goods_table_row3",
+        "value": "Sales",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_goods_table_row4",
+        "value": "Picture",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_goods_price",
+        "value": "Price",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_goods_stock",
+        "value": "Inventory",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_spec_tips1",
+        "value": "After deleting specification，Specification value will also be delete，still delete it?",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_spec_input_tips1",
+        "value": "Enter specification value",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_spec_value",
+        "value": "Specification value",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_not_null_tips",
+        "value": "Can't be empty",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_price_set",
+        "value": "Price Settings",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_decimal_len",
+        "value": "decimal places",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_price_set_type",
+        "value": "Price settings",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_price_type1",
+        "value": "Uniform price",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_price_type2",
+        "value": "Set according to member group",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_user_group_set",
+        "value": "Member Group Settings",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_more",
+        "value": "Advanced Settings",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_user_gdiscount",
+        "value": "Member discount",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_web_hidden",
+        "value": "Hidden in front desk",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_timing_release",
+        "value": "Publish on time",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_tocom",
+        "value": "Recommend",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_totop",
+        "value": "Place to top",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_sold_out",
+        "value": "Sold out",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_shipping_code",
+        "value": "Set Shipping code",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_card_detail",
+        "value": "Card details",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_back",
+        "value": "Return",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_vgoods_info",
+        "value": "Virtual product information record",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_vgoods_set",
+        "value": "Virtual product information settings",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_serial_number",
+        "value": "Shipping code",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_grantable",
+        "value": "Send or not",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_addtime",
+        "value": "Add time",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_granttime",
+        "value": "Automatically send",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_grant_user",
+        "value": "Buyer",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_all",
+        "value": "All",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_discount_coupon",
+        "value": "Coupons",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_discount_edit",
+        "value": "Edit Coupons",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_discount_add",
+        "value": "New Coupons",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_discount_name",
+        "value": "Coupons Name",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_discount_price",
+        "value": "Value",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_discount_condition",
+        "value": "Condition of Use",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_discount_use_tips1",
+        "value": "Amout is only more than",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_discount_use_tips2",
+        "value": ",It is used",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_discount_suer_limit",
+        "value": "Limit User",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_discount_suerable",
+        "value": "Member can get coupons.",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_discount_suerable1",
+        "value": "can get coupons.",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_discount_total_amount",
+        "value": "Total",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_discount_zhang",
+        "value": "piece",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_discount_begin_time",
+        "value": "Start time",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_discount_end_time",
+        "value": "End time",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_discount_create_time",
+        "value": "Create time",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_discount_include_good",
+        "value": "Valid for",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_discount_all_good",
+        "value": "All Products",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_discount_appoint_good",
+        "value": "Some Products",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_discount_use_script",
+        "value": "Instructions",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_discount_select_goods",
+        "value": "Select product",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_discount_goods_editor",
+        "value": "Edit product",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_discount_selected",
+        "value": "Selected",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_discount_unselected",
+        "value": "Unselected",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_discount_limit_collar",
+        "value": "Everyone only get",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_discount_tips1",
+        "value": "Total quantity must be larger than limit quantity",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_discount_goods_name",
+        "value": "Product Name",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_discount_goods",
+        "value": "Product",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_discount_select_all",
+        "value": "Select all",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_discount_unselect_all",
+        "value": "Select all",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_discount_not_begining",
+        "value": "Not Start",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_discount_runing",
+        "value": "Processing",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_discount_end",
+        "value": "Completed",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_discount_restriction",
+        "value": "Limit",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_discount_term_of_validity",
+        "value": "Valid",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_discount_table_title1",
+        "value": "Received \/ Used \/ Total",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_discount_state",
+        "value": "Status",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_discount_state1",
+        "value": "Processing",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_discount_state2",
+        "value": "Not Start",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_discount_state4",
+        "value": "Completed",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_discount_set_price",
+        "value": "Price Settings",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_discount_sale",
+        "value": "Discount",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_discount_sale_goods_num",
+        "value": "According to order quantity",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_discount_sale_static",
+        "value": "Price reduction",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_discount_discount",
+        "value": "Discount",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_discount_amount",
+        "value": "Quantity",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_discount_static_discount",
+        "value": "Fixed discount",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_discount_order_free",
+        "value": "Buyer order any product,money off",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_discount_table_row1",
+        "value": "No limit",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_discount_table_row2",
+        "value": "Person",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_discount_table_row3",
+        "value": "to",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_discount_data_error",
+        "value": "Data error",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_discount_error1",
+        "value": "End time must be larger than start time.",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_freight_temp_name",
+        "value": "Shipping template name(Such as:for American.Required field cannot be empty)",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_freight_distribution_area",
+        "value": "Shipping zone",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_freight_add_distribution_area",
+        "value": "Add new shipping zone and costs",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_freight_first_piece",
+        "value": "Per order\/piece",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_freight_continued",
+        "value": "Plus（piece）",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_freight_freight",
+        "value": "Shipping fee",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_freight_renew",
+        "value": "Recharge",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_freight_reftemp_set",
+        "value": "Shipping Templates-Settings",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_freight_add_ftemp",
+        "value": "Add a new shipping template",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_freight_add_area",
+        "value": "Add shipping zone",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_freight_select_area",
+        "value": "Select shipping zone",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_freight_pselect",
+        "value": "Select",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_freight_add",
+        "value": "Add",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_freight_refresh_area",
+        "value": "Update（after adding new data,please click to update）",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_freight_add_country",
+        "value": "Country",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_freight_tips9",
+        "value": "Select the zones with same shipping cost.",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_freight_tips10",
+        "value": "Enter zone name,Press the Enter key to add more zones.",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_goods_manager",
+        "value": "Products Management",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_head_shop_module",
+        "value": "Mall module",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_head_order_survey",
+        "value": "Order Overview",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_head_order_all",
+        "value": "All Order",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_head_set",
+        "value": "Settings",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_head_help",
+        "value": "Help",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_head_order_reminding",
+        "value": "Order Reminder",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_head_financial_details",
+        "value": "Transaction Records",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_head_goods_manager",
+        "value": "Products Management",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_head_discount",
+        "value": "Coupons and Discounts",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_head_coupon",
+        "value": "Coupons",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_head_order",
+        "value": "Order",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_head_application",
+        "value": "Application",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_plac_order",
+        "value": "Order",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_pay",
+        "value": "Pay",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_deliver",
+        "value": "Shipping",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_complete",
+        "value": "Complete order",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_not_logistics",
+        "value": "Needn't to shipping",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_logistics_info",
+        "value": "Shipping information",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_logistics_progress",
+        "value": "Delivery progress",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_no",
+        "value": "Order Number",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_pay_type",
+        "value": "Payment Method",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_buyer",
+        "value": "Buyer",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_distribution_mode",
+        "value": "Shipping method",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_express_delivery",
+        "value": "Shipping by express",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_address_info",
+        "value": "Receipt information",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_invoice_info",
+        "value": "Invoice information",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_buyer_message",
+        "value": "Buyer Message",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_business_notes",
+        "value": "Seller Remarks",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_return_message_record",
+        "value": "Message about return",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_reply",
+        "value": "Reply",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_close_tips1",
+        "value": "The order will be",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_close_tips2",
+        "value": "automatically close",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_goods_name",
+        "value": "Product Name",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_unit_price",
+        "value": "Price",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_amount",
+        "value": "Quantity",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_freight",
+        "value": "Shipping fee",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_subtotal",
+        "value": "subtotal",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_view_goods_detail",
+        "value": "View product details",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_amount_price",
+        "value": "Order sum",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_discount",
+        "value": "discount",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_price_rise_down",
+        "value": "Price increase\/reduction",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_real_payment",
+        "value": "Order Amount",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_need_logistics",
+        "value": "Need to shipping",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_receiving_address",
+        "value": "Shipping Address",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_logistics_company",
+        "value": "shipping company",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_logistics_tips1",
+        "value": "add a shipping method",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_logistics_tips2",
+        "value": "Add a logistics compay",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_logistics_tips3",
+        "value": "Please enter a valid tracking number",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_logistics_no",
+        "value": "Tracking number",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_price_modify",
+        "value": "Modify price",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_close",
+        "value": "Close order",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_complete",
+        "value": "Complete order",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_refunds",
+        "value": "Complete refund",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_income",
+        "value": "Income",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_income_tips1",
+        "value": "Last month",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_income_tips2",
+        "value": "Compare with last month",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_count",
+        "value": "Order Quantity",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_plac_order_user_num",
+        "value": "Ordered buyers",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_today",
+        "value": "Today",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_week",
+        "value": "This Week",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_month",
+        "value": "This Month",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_order_all",
+        "value": "All Order",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_pending_papy",
+        "value": "Waiting for payment",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_pending_delivery",
+        "value": "Waiting for shipment",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_already_shipped",
+        "value": "Delivering",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_conplete",
+        "value": "Completed",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_closed",
+        "value": "Closed",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_order_no_usernaem",
+        "value": "Order number、member name",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_screening_exporting",
+        "value": "Filter and Export",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_exporting",
+        "value": "Export",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_to",
+        "value": "to",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_export_option",
+        "value": "Export options",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_number",
+        "value": "Quantity",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_username",
+        "value": "Member Name",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_order_time",
+        "value": "Order Time",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_order_state",
+        "value": "Status",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_goods",
+        "value": "Product",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_refund",
+        "value": "Returns and Exchanges",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_deny_refund",
+        "value": "Refuse returns and exchanges",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_cancel_reason",
+        "value": "Reason of cancel",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_refund_reason",
+        "value": "reason of return",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_reason_detail",
+        "value": "Reason",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_click_show_detail",
+        "value": "More",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_closeok",
+        "value": "Are you sure to close the order?",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_complateok",
+        "value": "Are you sure to set the order as completed order?",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_refund_denyok",
+        "value": "Are you sure to refuse refunding\/returning for this order?",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_refund_conplateok",
+        "value": "Are you sure to set as completing refund for this order?",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_refund_conplate_tips",
+        "value": "This operation does not automatically generate refund records, please manually add income & expenditure record in the “Transaction Records”",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_count_tips1",
+        "value": "Total",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_count_tips2",
+        "value": "pieces",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_item",
+        "value": "piece",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_invoice",
+        "value": "Invoice",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_select_logistics",
+        "value": "Select shipping company",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_order_closed",
+        "value": "Order is closed",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_price_modifyok",
+        "value": "Modified price successfully",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_buyok",
+        "value": "Complete order",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_comment_modifyok",
+        "value": "Modified successfully",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_error_tips1",
+        "value": "No products or beyond purchase limit",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_sendok",
+        "value": "Complete shipping",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_order_state0",
+        "value": "Closed",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_order_state1",
+        "value": "Waiting for payment",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_order_state2",
+        "value": "Waiting for shipment",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_order_state3",
+        "value": "Delivering",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_order_state4",
+        "value": "Completed",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_order_state5",
+        "value": "Refunding",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_order_state6",
+        "value": "Refund because of no product",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_order_paymethod1",
+        "value": "Pay when receiving items.",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_order_paymethod2",
+        "value": "Pay via company's bank card",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_order_paymethod3",
+        "value": "Other payment method",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_xport_row1",
+        "value": "Product name*quantity",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_xport_row2",
+        "value": "Member Name",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_xport_row3",
+        "value": "Order Time",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_xport_row4",
+        "value": "Status",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_xport_row5",
+        "value": "Order Amount",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_xport_row6",
+        "value": "Shipping Address",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_xport_row7",
+        "value": "Buyer Message",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_order_xport_row8",
+        "value": "Seller Remarks",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_product_tips1",
+        "value": "After modifing",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_product_tips2",
+        "value": "Customer needn't to set a delivery address",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_product_tips3",
+        "value": "0 is no limit",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_product_tips4",
+        "value": "Please set in Mall-Settings，open",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_product_tips5",
+        "value": "After completing settings and close pop-ups，click\"Update specification\" button,then add a specification\/specification value.",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_product_table_title",
+        "value": "Specification \/ Price \/ Inventory",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_product_goods_specification",
+        "value": "Product specification",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_product_select_spec",
+        "value": "Select a specification",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_product_input_spec_name",
+        "value": "Enter specification name",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_product_goods_stock",
+        "value": "Product Inventory",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_product_price",
+        "value": "Price",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_product_original_price",
+        "value": "Original price",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_product_show_goods_stock",
+        "value": "Display the product inventory in the page",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_product_logistics_other",
+        "value": "logistics\/other",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_product_freight_set",
+        "value": "Shipping Settings",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_product_unified_freight",
+        "value": "Flat rate",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_product_temp_freight",
+        "value": "Shipping template",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_product_create",
+        "value": "Add new",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_product_refresh",
+        "value": "Refresh",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_product_not_logistics",
+        "value": "Need no logistics",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_product_message_set",
+        "value": "Leave a message",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_product_add_field",
+        "value": "+add fields",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_product_field_name",
+        "value": "Fields name",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_product_multiline",
+        "value": "Mutil line",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_product_required",
+        "value": "Can't be empty",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_product_restrictions",
+        "value": "Purchase limit",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_product_user_discount",
+        "value": "Member discount",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_product_not_discount",
+        "value": "Can't be empty",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_product_invoice",
+        "value": "Invoice",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_product_exist",
+        "value": "exist",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_product_not_exist",
+        "value": "Not exist",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_product_vgoods_delivery",
+        "value": "Automatically delivery virtual goods",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_product_vgoods_delivery_open",
+        "value": "Open the function and save product,then set a automatic shipping code in product management list page",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_product_publish",
+        "value": "Add a product",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_product_search",
+        "value": "Search",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_product_product",
+        "value": "Product",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_product_price",
+        "value": "Price",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_product_hits",
+        "value": "Views",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_product_stock",
+        "value": "Inventory",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_product_stock",
+        "value": "Inventory",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_product_total_sales",
+        "value": "Total sales",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_product_update_time",
+        "value": "Update Time",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_product_search_option1",
+        "value": "Status",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_product_search_option2",
+        "value": "Hidden in front desk",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_product_search_option3",
+        "value": "Recommend",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_product_search_option4",
+        "value": "Sold out",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_product_order_by",
+        "value": "Order",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_product_order_by_tips1",
+        "value": "The larger value ,the more forward position",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_spec_more",
+        "value": "Preset more specification",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_spec_setting",
+        "value": "Specification preset",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_spec_refresh",
+        "value": "Update specification",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_specification_setting",
+        "value": "Specification library management-Mall",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_spce_tips1",
+        "value": "Enter specification name",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_spce_tips2",
+        "value": "Enter specification value",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_spce_tips3",
+        "value": "After adding a [Specification\/Specification Value], you must modify the [Specification Name\/Specification Value] ,then can add the next [Specification\/Specification Value]; after modification, the mouse leaves the input box and clicks any area of the page or press Enter key to save it.",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_spce_management",
+        "value": "Specification library management",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_spce_name",
+        "value": "Specification name",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_spce_value",
+        "value": "Specification name",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_spce_value_add",
+        "value": "Add Specification value",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_spce_add",
+        "value": "Add Specification",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_card_manager",
+        "value": "Products Management",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_card_table_row1",
+        "value": "Specification group",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_card_table_row2",
+        "value": "Total \/ Sent \/ Used \/Sending",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_card_table_row3",
+        "value": "Sending",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_card_table_row4",
+        "value": "Sent",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_card_table_row5",
+        "value": "Used",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_card_add_card",
+        "value": "Add shipping codes",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_card_tips1",
+        "value": "Enter shipping code,press Enter key to enter more",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_card_title_modify",
+        "value": "Modify",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_remind_title",
+        "value": "Admistrator Reminder-Order Reminder",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_remind_tips1",
+        "value": "If buyer paid,remind adminitrator to deliver product",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_remind_tips2",
+        "value": "Set mutiple",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_remind_tips3",
+        "value": "Enter phone number，then save it.",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_remind_tips4",
+        "value": "Note: If  want to enable email and SMS reminder, first need to add an email address and open SMS function.",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_remind_phone_number",
+        "value": "Phone number",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_remind_mail",
+        "value": "Email Address",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_remind_userremind",
+        "value": "Reminder for buyer",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_remind_adminremind",
+        "value": "Reminder for administrator",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_remind_user_title",
+        "value": "User Reminder -Order Reminder",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_remind_tips5",
+        "value": "Firstly set [outbox] and [SMS] function",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_remind_tips6",
+        "value": "Settings-General-Mail Sending Settings",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_remind_tips7",
+        "value": "「SMS」My Applications-SMS Function",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_remind_tips8",
+        "value": "Variable parameters, If add the following parameters to the reminder content,this parameters will automatically change.",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_remind_ordernum",
+        "value": "-Order number",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_remind_suername",
+        "value": "-Member Name",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_remind_logistics",
+        "value": "shipping company",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_remind_courier_number",
+        "value": "Delivery number",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_remind_ordered",
+        "value": "Added to cart",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_remind_payed",
+        "value": "paid",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_remind_send",
+        "value": "Shipped",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_remind_short_message_reminding",
+        "value": "SMS reminder",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_remind_message_set",
+        "value": "SMS Settings",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_remind_short_mail_reminding",
+        "value": "Email reminder",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_remind_mail_set",
+        "value": "Email Settings",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_remind_mail_title",
+        "value": "Title",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_remind_mail_content",
+        "value": "Contents",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_remind_reminding",
+        "value": "SMS reminder",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_basic_setting",
+        "value": "General",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_pay_setting",
+        "value": "Payment",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_temp_freight_setting",
+        "value": "Shipping template",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_price_setting",
+        "value": "Price",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_discount_setting",
+        "value": "Discount",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_shop_switch",
+        "value": "Mall Swtich",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_shop_tips1",
+        "value": "",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_shop_tips2",
+        "value": "This function is only used for China business company,please ignore it.",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_shop_tips3",
+        "value": "",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_shop_tips4",
+        "value": "",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_shop_tips5",
+        "value": "",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_shop_tips6",
+        "value": "",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_shop_tips7",
+        "value": "",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_shop_tips8",
+        "value": "Checkout as Guest，need no register.",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_shop_tips9",
+        "value": "Buyer can cancel orders before delivering products.",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_shop_tips10",
+        "value": "The reason of canceling orders（Click",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_shop_tips11",
+        "value": "The reason of returns and exchanges（Click",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_shop_tips12",
+        "value": "Once added a product to cart,reduce inventory quantity.",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_shop_tips13",
+        "value": "",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_shop_tips14",
+        "value": "Log in by registered or social account",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_shop_tips15",
+        "value": "Need to set in",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_shop_tips16",
+        "value": "",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_guest_mod",
+        "value": "Checkout as Guest",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_second",
+        "value": "",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_logistics_tracking",
+        "value": "Shipping tracking",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_cancel_order",
+        "value": "Cancel orders",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_refund_order",
+        "value": "Function of returns and exchanges",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_refund_hints",
+        "value": "Reminder contents",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_stock_type",
+        "value": "Inventory Change Settings",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_show_goods_order",
+        "value": "Rule of displaying recommend products",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_goods_detail",
+        "value": "Product details page",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_goods_select",
+        "value": "Recommend products",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_goods_all_goods",
+        "value": "All product in the same product category",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_shop_com_goods",
+        "value": "Recommended product in mall settings",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_module_com_goods",
+        "value": "Recommended products in product management settings",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_sort_rule",
+        "value": "Sort Rule",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_order_by_module",
+        "value": "Order by column settings",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_order_by_hits",
+        "value": "Order by clicks",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_order_by_update_time",
+        "value": "Order by update time",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_show_goods_amount",
+        "value": "，quantity of displaying",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_show_cart_page",
+        "value": "Cart page",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_shop_all_goods",
+        "value": "All products in Mall",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_order_state_auto",
+        "value": "Order status",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_order_auto_close",
+        "value": "Close order",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_order_auto_close_tips",
+        "value": "minutes，automitical close the order if add a product to cart but no paid.",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_order_auto_complete",
+        "value": "Automatically complete orders",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_order_auto_complete_tips",
+        "value": "days, the shipped order will be automatically classified as completed orders",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_order_auto_delete",
+        "value": "Automatically delete orders",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_order_auto_delete_tips",
+        "value": "days，delete the closed orders.",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_invoice_setting",
+        "value": "Invoice Settings",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_plain_invoice",
+        "value": "Invoice",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_invoice_able",
+        "value": "If open it,buyer can ask a invoice",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_invoice_content",
+        "value": "Invoice contents",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_logistics_package",
+        "value": "Logistics service",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_logistics_table_title1",
+        "value": "Price\/ USD",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_logistics_table_title2",
+        "value": "Consumption \/ times",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_account_login",
+        "value": "Application account login",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_payapi_setting",
+        "value": "Payment interface settings",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_paymentcod",
+        "value": "Pay when receiving items.",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_paymentonline",
+        "value": "Pay online",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_paymentmod",
+        "value": "Payment method",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_price_default_setting",
+        "value": "Price settings",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_price_unified_price",
+        "value": "Uniform price",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_price_by_group",
+        "value": "Set according to member group",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_group_setting",
+        "value": "Member Group Settings",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_price_setting_example",
+        "value": "Such as 0.8",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shop_set_price_zhe",
+        "value": "Discount",
+        "site": "1",
+        "array": "1",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shopv2_para_search",
+        "value": "Selection of commodity list parameters",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    },
+    {
+        "name": "app_shopv2_para_search_tips",
+        "value": "Open to use the mall parameter filtering (requires foreground template support)",
+        "site": "1",
+        "array": "0",
+        "app": "10043",
+        "lang": "en"
+    }
+]

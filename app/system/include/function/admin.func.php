@@ -1,20 +1,21 @@
 <?php
-# MetInfo Enterprise Content Management System 
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+# MetInfo Enterprise Content Management System
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 
 defined('IN_MET') or exit('No permission');
 
 /**
  * 页面跳转
  */
-function turnover($url, $text = '') {
-	global $_M;	
+function turnover($url, $text = '',$success=1) {
+	global $_M;
 	if(!$text)$text = $_M['word']['jsok'];
 	if($text == 'No prompt') {
 		$text = '';
 	}
+
 	$text = urlencode($text);
-	echo("<script type='text/javascript'>location.href='{$url}&turnovertext={$text}';</script>");
+	echo("<script type='text/javascript'>location.href='{$url}&turnovertext={$text}&turnovertype=".$success."';</script>");
 	exit;
 }
 
@@ -101,7 +102,7 @@ function background_privilege(){
 				if($val == 9999){
 					$privilege['see'] = "metinfo";
 				}
-			}	
+			}
 			$privilege['navigation'] = trim($privilege['navigation'], '|');
 			$privilege['column'] = trim($privilege['column'], '|');
 			$privilege['application'] = trim($privilege['application'], '|');
@@ -250,9 +251,9 @@ function get_adminnav() {
 		foreach ($sidebarcolumn as $key => $val) {
 			if(trim($val['name']) == 'lang_adminmobile' && $_M['config']['met_wap'] == 0){
 				unset($sidebarcolumn[$key]);
-			}	
+			}
 		}
-		
+
 	}
 	foreach ($sidebarcolumn as $key => $val) {
 		if($val['id'] == 68)$val['field'] = '1301';
@@ -265,7 +266,7 @@ function get_adminnav() {
 		$val['name'] = get_word($val['name']);
 		$val['info'] = get_word($val['info']);
 		$bigclass[$val['bigclass']] = 1;
-		
+
 		switch ($val['type']) {
 			case 1:
 				if($bigclass[$val['id']] == 1)$adminnav[$val['id']] = $val;
@@ -365,7 +366,7 @@ function get_applist() {
 
 /**
  * 向met_tablename中插入表名
- * @param string $tablename 表名称 
+ * @param string $tablename 表名称
  */
 function add_table($tablenames) {
 	global $_M;
@@ -380,10 +381,10 @@ function add_table($tablenames) {
 		}
 	}
 }
- 
+
 /**
  * 删除met_tablename中的表名
- * @param string $tablename 表名称 
+ * @param string $tablename 表名称
  */
 function del_table($tablenames) {
 	global $_M;
@@ -424,6 +425,35 @@ function configsave($config, $have = '', $lang = ''){
 			}
 		}
 	}
+}
+
+/**
+ * 保存应用配置
+ * @param array $config  需要保存的配置的Name数组
+ * @param string $app_pre 应用名前缀
+ * @param string $have   需要保存的配置的value数组，键值为Name
+ * @param string $lang   需要保存的配置的语言
+ */
+function appconfigsave($config, $appno, $have = '', $lang = ''){
+    global $_M;
+    if($lang == '')$lang = $_M['lang'];
+    if($have == '')$have = $_M['form'];
+    $c = copykey($have, $config);
+    foreach ($c as $key => $val) {
+        $value = mysqlcheck($have[$key]);
+        if ($appno) {
+            $query = "SELECT * FROM {$_M['table']['app_config']} WHERE appno='{$appno}' AND name = '{$key}' AND lang = '{$_M['lang']}';";
+            if(!DB::get_one($query)){
+                $query = "INSERT INTO {$_M['table']['app_config']} SET appno='{$appno}', name = '{$key}', value = '{$val}', lang='{$_M['lang']}';";
+                DB::query($query);
+            }else{
+                if(isset($_M['config'][$key])&&$value!=$_M['app_config'][$key]&&(isset($have[$key])or(isset($have[$key]) && !$have[$key]))){
+                    $query = "update {$_M['table']['app_config']} SET value = '{$value}' WHERE appno='{$appno}' AND name = '{$key}' AND lang='{$_M['lang']}'";
+                    DB::query($query);
+                }
+            }
+        }
+    }
 }
 
 /**

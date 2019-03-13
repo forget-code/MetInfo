@@ -20,26 +20,27 @@ class news_database extends base_database {
 	}
 
 	/**
+	 * 搜索功能
 	 * 获取列表数据（产品，图片，下载，新闻模块使用）
 	 * @param  string  $lang    语言
 	 * @param  string  $id      栏目id
 	 * @param  string  $start   limit开始条数
 	 * @param  string  $rows    limit取的条数
-	 * @return array            配置数组
+	 * @return array            配置数组get_list_by_class
 	 */
 	public function get_list_by_class($id, $start = 0, $rows = '', $type, $order) {
-		$sql = $this->get_list_by_class_sql($id, $type, $order);
+		global $_M;
 
+		$sql = $this->get_list_by_class_sql($id, $type, $order);
 		if ($rows) {
 			$sql .= "LIMIT $start , $rows";
 		}
 
 		$query = "SELECT * FROM {$this->table} WHERE {$sql} ";
+
 		$para['query'] = $query;
-		//dump($para['query']);
 		$query = load::plugin('module_get_list_by_class_query', 1 , $para);//加载插件
-		//dump($query);
-		//exit;
+
 		return DB::get_all($query);
 	}
 
@@ -66,11 +67,26 @@ class news_database extends base_database {
         global $_M;
 		$time = date("Y-m-d H:i:s");
 
+		$column = load::sys_class('label', 'new')->get('column');
 		$sql = " {$this->langsql} AND (recycle='0' or recycle='-1') AND displaytype='1' AND addtime<'{$time}' ";
 
-		$class123 = load::sys_class('label', 'new')->get('column')->get_class123_no_reclass($id);
+		if($_M['form']['classnow']){
+			$class = $column->get_class123_reclass($_M['form']['classnow']);
+			if($class['class1']){
+				$sql .= " AND class1 = {$class['class1']['id']} ";
+			}
 
-		if(is_array($type)){
+			if($class['class2']){
+				$sql .= " AND class2 = {$class['class2']['id']} ";
+			}
+
+			if($class['class3']){
+				$sql .= " AND class3 = {$class['class3']['id']} ";
+			}
+		}
+		$class123 = $column->get_class123_no_reclass($id);
+
+        if(is_array($type)){
 			//自定义条件
 			if ($type['type'] == 'array') {
 				$serach = '';
@@ -90,10 +106,28 @@ class news_database extends base_database {
 					}
 				}
 
+                if ($type['tag']['status'] && $type['tag']['info']) {
+					if($type['tag']['precision']){
+						$serach .= " OR tag = '{$type['tag']['info']}' ";
+					}else{
+						$serach .= " OR tag like '%{$type['tag']['info']}%' ";
+					}
+				}
+
 				if ($type['para']['status'] && $type['para']['info']) {
 					$para = load::sys_class('label', 'new')->get('parameter')->get_search_list_sql($this->module, $type['para']['precision'], $type['para']['info']);
 					$serach .= " OR id in ({$para}) ";//如果以后需要加强字段搜索，就在这里添加代码。
 				}
+
+				//商城規格 价格
+                if ($type['specv']['status'] && $type['specv']['info'] && $_M['config']['shopv2_open'] && $_M['config']['shopv2_para'] ||  ($_M['form']['price_low'] || $_M['form']['price_top'] )) {
+                    $specv_sql = load::app_class("shop/include/class/shop_search","new")->get_search_list_by_specv_sql($type['specv']['info']);
+
+					$serach .= " OR id in ({$specv_sql}) ";//如果以后需要加强字段搜索，就在这里添加代码。
+				}
+
+
+
 				if($serach){
 					$sql .= "AND ( 1 != 1 {$serach} ) ";
 					$sql = str_replace('1 != 1  OR', '', $sql);
@@ -105,9 +139,10 @@ class news_database extends base_database {
 			}
 		}
 
+
 		if($this->multi_column == 1 && !$_M['form']['searchword']){
 			$sql .= $this->get_multi_column_sql($class123['class1']['id'], $class123['class2']['id'], $class123['class3']['id']);
-		}else{
+        }else{
 			if ($class123['class1']['id'] && !$_M['form']['searchword']) {//搜索模块的兼容
 				$sql .= "AND class1 = '{$class123['class1']['id']}' ";
 			}
@@ -131,17 +166,17 @@ class news_database extends base_database {
 
 		if(is_array($order)){
 			//自定义条件
-			if($order['type'] == 'array'){
-				$order_sql .= $this->get_custom_order($order['status'], $defult_order);
-			}
-		}else{
-			$order = $order ? $order : $defult_order;
-			$order_sql .= $this->get_column_order($order);
-		}
-		$plugin['type'] = $type;
-		$plugin_order = load::plugin('list_order', $plugin);//商城这里加插件，当前代码只作演示用，开发商城的时候，需要根据实际情况修改。
+            if($order['type'] == 'array'){
+                $order_sql .= $this->get_custom_order($order['status'], $defult_order);
+            }
+        }else{
+            $order = $order ? $order : $defult_order;
+            $order_sql .= $this->get_column_order($order);
+        }
+        $plugin['type'] = $type;
+        $plugin_order = load::plugin('list_order', $plugin);//商城这里加插件，当前代码只作演示用，开发商城的时候，需要根据实际情况修改。
 		$sql .= $plugin_order ? $plugin_order : $order_sql;
-		return $sql;
+        return $sql;
 	}
 
 	/**
@@ -459,9 +494,14 @@ class news_database extends base_database {
 		if($class3){
 			$sql .= " AND class3 = '{$class3}'";
 		}
-		$query = "DELETE FROM $this->table WHERE {$this->langsql} {$sql}";
 
-		DB::query($query);
+		$query = "SELECT id FROM $this->table WHERE {$this->langsql} {$sql}";
+		$list = DB::get_all($query);
+		foreach ($list as $c) {
+			$query = "DELETE FROM $this->table WHERE id = {$c['id']}";
+			DB::query($query);
+		}
+		return $list;
 	}
 
 	//栏目批量移动

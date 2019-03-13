@@ -54,16 +54,64 @@ class  parameter_list_database  extends database{
 		return DB::get_one($query);
 	}
 
+	public function add_para_value($listid,$paraid,$info,$imgname)
+	{
+		global $_M;
+		if($this->module == 8){
+			$query = "INSERT INTO $this->table SET listid = {$listid},paraid={$paraid},info='{$info}',lang='{$_M['lang']}',module={$this->module}";
+		}else{
+			$query = "INSERT INTO $this->table SET listid = {$listid},paraid={$paraid},info='{$info}',lang='{$_M['lang']}',module={$this->module},imgname='{$imgname}'";
+		}
+
+		return DB::query($query);
+
+	}
+
+	public function delete_list_value($listid,$paraid)
+	{
+		global $_M;
+		$query = "DELETE FROM $this->table WHERE listid = {$listid} AND paraid = {$paraid} AND module = $this->module AND lang = '{$_M['lang']}'";
+		return DB::query($query);
+
+	}
+
 	public function update_by_listid_paraid($listid, $paraid, $info, $imgname){
 		global $_M;
-		$query = "UPDATE $this->table SET info='{$info}',imgname='{$imgname}' WHERE listid='{$listid}' AND paraid='{$paraid}'";
-		return DB::query($query);
+
+		if(!self::select_by_listid_paraid($listid, $paraid)){
+			self::add_para_value($listid,$paraid,$info,$imgname);
+		}else{
+			$query = "UPDATE $this->table SET info='{$info}',imgname='{$imgname}' WHERE listid='{$listid}' AND paraid='{$paraid}' AND lang='{$_M['lang']}' AND module = $this->module";
+			DB::query($query);
+		}
+
+		return true;
 	}
 
 	public function del_by_listid($listid){
 		global $_M;
-		$query = "DELETE FROM $this->table WHERE listid='{$listid}'";
+		$query = "DELETE FROM $this->table WHERE listid='{$listid}' AND module = $this->module";
 		return DB::query($query);
+	}
+
+	public function del_parameter_by_class($classtype,$cid)
+	{
+		global $_M;
+		$type = "class{$classtype}";//class1,class2,class3
+		$query = "SELECT * FROM {$_M['table']['parameter']} WHERE {$type} = {$cid} AND module = $this->module AND lang = '{$_M['lang']}'";
+		$parameter = DB::get_all($query);
+
+		foreach ($parameter as $para) {
+
+			$query = "DELETE FROM {$_M['table']['parameter']} WHERE id = {$para['id']}";
+			DB::query($query);
+
+			$query = "DELETE FROM {$_M['table']['para']} WHERE pid = {$para['id']}";
+			DB::query($query);
+
+			$query = "DELETE FROM $this->table WHERE module = $this->module AND lang = '{$_M['lang']}' AND paraid = {$para['id']}";
+			DB::query($query);
+		}
 	}
 
 }

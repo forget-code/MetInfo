@@ -28,7 +28,7 @@ echo <<<EOT
 						<select name="class2" class="city" data-checked="{$list[class2]}"></select>
 						<select name="class3" class="dist" data-checked="{$list[class3]}"></select>
 					</div>
-				<span class="tips pull-left" style="margin-left:20px;"><a href="{$_M[url][site_admin]}index.php?lang={$_M[lang]}#metnav_25" target="_blank">栏目管理</a></span>
+				<span class="tips pull-left" style="margin-left:20px;"><a href="{$_M[url][site_admin]}index.php?lang={$_M[lang]}#metnav_25" target="_blank">{$_M[word][admin_colunmmanage_v6]}</a></span>
 			</dd>
 		</dl>
 		<dl>

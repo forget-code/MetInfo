@@ -60,7 +60,7 @@ class message extends web {
 				    okinfo('javascript:history.back();',$_M[word][opfail]);
 				}
 			}
-		}	
+		}
 		$user = $this->get_login_user_info();
 		$addtime=date('Y-m-d H:i:s',time());
 		$paralist=load::mod_class('parameter/parameter_list','new')->get_parameter($_M['form']['lang'],7);
@@ -72,10 +72,8 @@ class message extends web {
 		foreach ($user as $key => $value) {
 		}
 		if(load::sys_class('label', 'new')->get('message')->insert_message($info, $value['metinfo_admin_name'],$addtime)){
-            $this-> notice_by_emial($addtime);
-            if($_M[config][met_nurse_massge]){
-                $this-> notice_by_sms($info);
-            }
+            $this->notice_by_emial($addtime);
+            $this->notice_by_sms($info);
 		}
 		setcookie('submit',time());
 		okinfo(HTTP_REFERER, $_M['word']['MessageInfo2']);
@@ -104,7 +102,7 @@ class message extends web {
 		$contact=strip_tags($contact);
 		$keyword=DB::get_one("select * from {$_M[table][config]} where lang ='{$_M[form][lang]}' and  name= 'met_fd_word' and columnid = 0");
 		$_M[config][met_fd_word]=$keyword[value];
-		$fdstr = $_M[config][met_fd_word]; 
+		$fdstr = $_M[config][met_fd_word];
 		$fdarray=explode("|",$fdstr);
 		$fdarrayno=count($fdarray);
 		$fdok=false;
@@ -127,12 +125,12 @@ class message extends web {
 		}else{
 			return true;
 		}
-		
+
 	}
  /*表单提交时间检测*/
 	public function checktime(){
 		global $_M;
-		$ip=$this->getip();
+		$ip=getip();
 		$addtime=time();
 		$ipok=DB::get_one("select * from {$_M[table][message]} where ip='$ip' order by addtime desc");
 		if($ipok){
@@ -149,8 +147,9 @@ class message extends web {
 		}
 		$met_fd_time=DB::get_one("select * from {$_M[table][config]} where lang ='{$_M[form][lang]}' and  name= 'met_fd_time' and columnid = {$_M[form][id]}");
         $_M[config][met_fd_time]= $met_fd_time[value];
+
 		if($timeok<=$_M[config][met_fd_time]&&$timeok2<=$_M[config][met_fd_time]){
-		$fd_time="{$_M[word][Feedback1]}".$_M[config][met_cv_time]."{$_M[word][Feedback2]}";
+		$fd_time="{$_M[word][Feedback1]}".$_M[config][met_fd_time]."{$_M[word][Feedback2]}";
 		okinfo('javascript:history.back();',$fd_time);
 		}else{
             return true;
@@ -173,7 +172,7 @@ class message extends web {
 /*通过邮箱通知*/
 	public function notice_by_emial($addtime){
         global $_M;
-		$ip=$this->getip();
+		$ip=getip();
 		$use_id=DB::get_one("SELECT * FROM {$_M[table][message]} WHERE ip='$ip' and addtime='$addtime'");
 		$query = "select * from {$_M[table][mlist]} where lang='{$_M[form][lang]}' and module='7' and listid=$use_id[id] order by id";
 		//dump($query);
@@ -185,6 +184,7 @@ class message extends web {
 		foreach($email_list as $val){
 			$body.="<b>$val[imgname]</b>:$val[info]<br />";
 		}
+
 		$pname="para".$_M[config][met_message_fd_class];
 	    $pname=$_M[form][$pname];
 		$title=$pname."{$_M[word][message_mailtext_v6]}";
@@ -204,23 +204,24 @@ class message extends web {
         $_M[config][met_fd_to]= $met_fd_to[value];
         $met_fd_email=DB::get_one("select * from {$_M[table][config]} where lang ='{$_M[form][lang]}' and  name= 'met_fd_email' and columnid = {$_M[form][id]}");
         $_M[config][met_fd_email]= $met_fd_email[value];
-        if($_M[config][met_fd_email]){
 
+
+        if($_M[config][met_fd_email]){
 	    	load::sys_class('jmail', 'new')->send_email($_M[config][met_fd_to],$title,$body);
 	    }
 	    if($_M[config][met_fd_back]==1 and $email!=""){
 			load::sys_class('jmail', 'new')->send_email($email,$_M[config][met_fd_title],$_M[config][met_fd_content]);
 			//($from,$fromname,$cvto,$met_cv_title,$met_cv_content,$usename,$usepassword,$smtp);
 		}
-	    
-			
+
+
 	}
-  
+
     /*通过短信通知*/
    public function notice_by_sms($title){
       global $_M;
-      $ct=strtotime(date("Y/m/d 00:00:00",time()));	
-	  $et=strtotime(date("Y/m/d 23:59:59",time()));	
+      $ct=strtotime(date("Y/m/d 00:00:00",time()));
+	  $et=strtotime(date("Y/m/d 23:59:59",time()));
 	  $maxnurse = DB::get_all("SELECT * FROM {$_M[table][sms]} WHERE time>='{$ct}' and time<='{$et}' and type='4' and remark='SUCCESS'");
 	  if($maxnurse<$_M[config][met_nurse_max]){//短信提醒
 	  $str       = str_replace("http://","",$_M[config][met_weburl]);
@@ -236,6 +237,10 @@ class message extends web {
 	   $met_fd_sms_content=DB::get_one("select * from {$_M[table][config]} where lang='{$_M[form][lang]}' and name='met_fd_sms_content' and columnid='{$_M[form][id]}'");
 	  $_M[config][met_fd_sms_content]=$met_fd_sms_content[value];
 
+
+	  $query = "SELECT * FROM {$_M['table']['config']} WHERE lang = '{$_M['lang']}' AND name = 'met_fd_sms_back' AND columnid = {$_M['form']['id']}";
+	  $sms_config = DB::get_one($query);
+
       #$message="您网站[{$domain}]收到了新的留言[{$title}]:".utf8substr($info,0,9)."，请尽快登录网站后台查看";
       $message="{$_M[word][reMessage1]}[{$domain}]{$_M[word][messagePrompt]}[{$title}]{$_M[word][reMessage2]}";
       load::sys_class('sms', 'new')->sendsms($_M[config][met_nurse_massge_tel], $message, $type = 6);
@@ -245,7 +250,8 @@ class message extends web {
 	  $title=$pname."{$_M[word][MessageInfo1]}";
 	  $tell='para'.$_M[config][met_message_fd_sms];
 	  $tel=$_M[form][$tell];
-	  if($tel&&$_M[config][met_fd_sms_back]){//短信回复
+
+	  if($tel&&$_M[config][met_message_fd_sms] && $sms_config){//短信回复
 		   load::sys_class('sms', 'new')->sendsms($tel,$_M[config][met_fd_sms_content],4);
 		}
 
@@ -263,25 +269,25 @@ class message extends web {
         foreach ($paralist as $key => $val) {
         	$para[$val[id]]=$val;
         }
-        if(!$met_message_fd_class){
-        	$name=$para[$messagecfg[met_message_fd_class][value]][name];
-        	$info=$name.$_M[word][noempty];
-            okinfo('javascript:history.back();',$info);
-        }elseif(!$met_message_fd_sms && $messagecfg[met_fd_sms_back][value]){
-            $name=$para[$messagecfg[met_message_fd_sms][value]][name];
-        	$info=$name.$_M[word][noempty];
-            okinfo('javascript:history.back();',$info);
-        }elseif(!$met_message_fd_content){
-            $name=$para[$messagecfg[met_message_fd_content][value]][name];
-        	$info=$name.$_M[word][noempty];
-            okinfo('javascript:history.back();',$info);
-        }else{
-           if($met_fd_back && !$met_message_fd_email){
-             $name=$para[$messagecfg[met_message_fd_email][value]][name];
-        	$info=$name.$_M[word][noempty];
-             okinfo('javascript:history.back();',$info);  
+
+       $paraarr = array();
+       foreach (array_keys($_M['form']) as $vale) {
+           if (strstr($vale, 'para')) {
+               if (strstr($vale, '_')) {
+                   $arr = explode('_',$vale);
+                   $paraarr[] = str_replace('para','',$arr[0]);
+               }else{
+                   $paraarr[] = str_replace('para','',$vale);
+               }
            }
-        }
+       }
+
+       foreach (array_keys($para) as $val) {
+           if($para[$val]['wr_ok']==1 && !in_array($val,$paraarr)){
+               $info="【{$para[$val]['name']}】".$_M[word][noempty];
+               okinfo('javascript:history.back();',$info);
+           }
+       }
         //met_message_fd_class  姓名
         //met_message_fd_content 留言内容
         //met_message_fd_email  邮箱

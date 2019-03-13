@@ -237,7 +237,7 @@ echo <<<EOT
 					</dd>
 				</dl>
 			</div>
-			<h3 class="v52fmbx_hr clearfix">{$_M[word][unitytxt_15]}<span class="tips"></span><button type='button' class='btn btn-default btn-sm showmoreset-btn'>展开更多设置</button></h3>
+			<h3 class="v52fmbx_hr clearfix">{$_M[word][unitytxt_15]}<span class="tips"></span><button type='button' class='btn btn-default btn-sm showmoreset-btn'>{$_M[word][jslang6]}</button></h3>
 			<div class='showmoreset-content'>
 			<dl>
 				<dt>{$_M[word][visitcount]}</dt>
@@ -321,7 +321,7 @@ echo <<<EOT
 		</div>
 	</div>
 	<div class="met_affix_save bg-success">
-		<button type="submit" class="btn btn-success">{$_M[word][submit]}</button>
+		<button type="submit" class="btn btn-success">{$_M[word][Submit]}</button>
 	</div>
 </form>
 <!--

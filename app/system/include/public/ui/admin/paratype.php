@@ -3,24 +3,11 @@
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 
 defined('IN_MET') or exit('No permission');
-echo <<<EOT
--->
-<!--
-EOT;
-// dump($para);
-// exit;
-// dump($paralist);
-// exit;
 foreach($paralist as $val){
-//$wr_ok = $val['wr_ok']?'data-required="1"':'';
-$wr_ok ='';
-$list = explode("$|$",$val['options']);
-$value = $para['info_'.$val['id']];
-echo <<<EOT
--->
-<!--
-EOT;
-if($val['type']==1){
+	//$wr_ok = $val['wr_ok']?'data-required="1"':'';
+	$wr_ok ='';
+	$value = $val['value'];
+	if($val['type']==1){
 echo <<<EOT
 -->
 		<dl>
@@ -34,12 +21,8 @@ echo <<<EOT
 		</dl>
 <!--
 EOT;
-}
-echo <<<EOT
--->
-<!--
-EOT;
-if($val['type']==2){
+	}
+	if($val['type']==2){
 echo <<<EOT
 -->
 		<dl>
@@ -50,14 +33,20 @@ echo <<<EOT
 						<option value="">{$_M[word][skinerr3]}</option>
 <!--
 EOT;
-foreach($val['list'] as $option){
-if($option){
+		foreach($val['list'] as $option){
+			if($option){
+				if($module == 10){
+					$para_value = $option['value'];
+				}else{
+					$para_value = $option['id'];
+				}
 echo <<<EOT
 -->
-						<option value="{$option}">{$option}</option>
+						<option value="{$para_value}">{$option['value']}</option>
 <!--
 EOT;
-}}
+			}
+		}
 echo <<<EOT
 -->
 					</select>
@@ -67,12 +56,8 @@ echo <<<EOT
 		</dl>
 <!--
 EOT;
-}
-echo <<<EOT
--->
-<!--
-EOT;
-if($val['type']==3){
+	}
+	if($val['type']==3){
 echo <<<EOT
 -->
 		<dl>
@@ -86,33 +71,33 @@ echo <<<EOT
 		</dl>
 <!--
 EOT;
-}
+	}
+	if($val['type']==4){
 echo <<<EOT
 -->
-<!--
-EOT;
-if($val['type']==4){
-
-echo <<<EOT
--->
-<input name="info_{$val['id']}" type="hidden" value="0">
 		<dl>
 			<dt>{$val['name']}</dt>
 			<dd class="ftype_checkbox">
 				<div class="fbox">
 <!--
 EOT;
-$check = "data-checked=\"".str_replace('-', '|', $value)."\"";
-foreach($val['list'] as $option){
-if($option){
+		$check = "data-checked=\"".str_replace('#@met@#', '|', $value)."\"";
+		foreach($val['list'] as $option){
+			if($option){
+				if($module == 10){
+					$para_value = $option['value'];
+				}else{
+					$para_value = $option['id'];
+				}
 echo <<<EOT
 -->
-					<label><input name="info_{$val['id']}" type="checkbox" value="{$option}" {$wr_ok} {$check}>{$option}</label>
+					<label><input name="info_{$val['id']}" type="checkbox" value="{$para_value}" {$wr_ok} {$check}>{$option['value']}</label>
 <!--
 EOT;
-$wr_ok='';
-$check='';
-}}
+				$wr_ok='';
+				$check='';
+			}
+		}
 echo <<<EOT
 -->
 				</div>
@@ -121,12 +106,8 @@ echo <<<EOT
 		</dl>
 <!--
 EOT;
-}
-echo <<<EOT
--->
-<!--
-EOT;
-if($val['type']==5){
+	}
+	if($val['type']==5){
 echo <<<EOT
 -->
 		<dl>
@@ -146,12 +127,9 @@ echo <<<EOT
 		</dl>
 <!--
 EOT;
-}
-echo <<<EOT
--->
-<!--
-EOT;
-if($val['type']==6){
+	}
+	if($val['type']==6){
+
 echo <<<EOT
 -->
 		<dl>
@@ -160,17 +138,24 @@ echo <<<EOT
 				<div class="fbox">
 <!--
 EOT;
-$check = "data-checked=\"{$value}\"";
-foreach($val['list'] as $option){
-if($option){
+		$value = $value ? $value : $val['list'][0]['id'];
+		$check = "data-checked=\"{$value}\"";
+		foreach($val['list'] as $option){
+			if($option){
+				if($module == 10){
+					$para_value = $option['value'];
+				}else{
+					$para_value = $option['id'];
+				}
 echo <<<EOT
 -->
-					<label><input name="info_{$val['id']}" type="radio" value="{$option}" {$wr_ok} {$check}>{$option}</label>
+					<label><input name="info_{$val['id']}" type="radio" value="{$para_value}" {$wr_ok} {$check}>{$option['value']}</label>
 <!--
 EOT;
-$wr_ok='';
-$check = '';
-}}
+				$wr_ok='';
+				$check = '';
+			}
+		}
 echo <<<EOT
 -->
 				</div>
@@ -179,15 +164,11 @@ echo <<<EOT
 		</dl>
 <!--
 EOT;
-}
-echo <<<EOT
--->
-<!--
-EOT;
-if($val['type']==7){
-$prov = $para['info_'.$val['id'].'_1'];
-$city = $para['info_'.$val['id'].'_2'];
-$dist = $para['info_'.$val['id'].'_3'];
+	}
+	if($val['type']==7){
+		$prov = $para['info_'.$val['id'].'_1'];
+		$city = $para['info_'.$val['id'].'_2'];
+		$dist = $para['info_'.$val['id'].'_3'];
 echo <<<EOT
 -->
 		<dl>
@@ -203,10 +184,9 @@ echo <<<EOT
 		</dl>
 <!--
 EOT;
-}
-
-if($val['type']==8){
-	echo <<<EOT
+	}
+	if($val['type']==8){
+echo <<<EOT
 -->
 		<dl>
 			<dt>{$val['name']}</dt>
@@ -220,17 +200,24 @@ if($val['type']==8){
 
 <!--
 EOT;
-}
+	}
+	if($val['type']==10){
+echo <<<EOT
+-->
+		<dl>
+			<dt>{$val['name']}</dt>
+			<dd class="ftype_input">
+				<div class="fbox">
+					<input type="text" name="info_{$val['id']}" value="{$value}" {$wr_ok} />
+				</div>
+				<span class="tips">{$val['description']}</span>
+			</dd>
+		</dl>
 
-echo <<<EOT
--->
 <!--
 EOT;
+	}
 }
-echo <<<EOT
--->
-<!--
-EOT;
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

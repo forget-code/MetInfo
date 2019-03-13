@@ -14,7 +14,7 @@ foreach($_M['form'] as $key => $val){
 
 }
 //变量，常量定义
-global $methtml_flash,$met_flasharray,$classnow,$met_flashimg,$navurl,$product,$news,$service,$about,$team,$partner,$hot,$service_home_column,$case,$ad,$coupon,$theme,$newpd,$quick,$notice,$theme1,$theme2,$theme3,$work,$column_column,$lang_inner_newlm,$inner_newlm,$cases,$tuandui,$footabout,$footimg,$inner_prolm,$item1,$item2,$item3,$item4,$user,$newsLeft,$newsRight,$home_procan,$jion,$special1_id,$special2_id,$special3_id,$img_txt,$client,$inews,$about_url,$ipro_lm,$ipro_lm2,$ipro_lm3,$imglist,$imgshow,$list,$linkyq,$case_column,$info_column,$picture_column,$video_column,$hotnews,$bottomcontact,$info_column,$about_column,$four_column;
+global $methtml_flash,$met_flasharray,$classnow,$met_flashimg,$navurl,$product,$news,$service,$about,$team,$partner,$hot,$service_home_column,$case,$ad,$coupon,$theme,$newpd,$quick,$notice,$theme1,$theme2,$theme3,$work,$column_column,$lang_inner_newlm,$inner_newlm,$cases,$tuandui,$footabout,$footimg,$inner_prolm,$item1,$item2,$item3,$item4,$user,$newsLeft,$newsRight,$home_procan,$jion,$special1_id,$special2_id,$special3_id,$img_txt,$client,$inews,$about_url,$ipro_lm,$ipro_lm2,$ipro_lm3,$imglist,$imgshow,$list,$linkyq,$case_column,$info_column,$picture_column,$video_column,$hotnews,$bottomcontact,$info_column,$about_column,$four_column,$servic_home_column,$team_home_column,$info_home_column,$image_home_column,$about_home_column,$product_home_column,$footimg,$footnews,$footabout,$down;
 
 
 

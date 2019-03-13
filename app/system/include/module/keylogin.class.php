@@ -18,17 +18,17 @@ class keylogin extends web {//一键登录功能
 		global $_M;
 		//$_M['form']['metmd5'] = '';//自动登录发起串，由服务器传入
 		if($admin = $this->sendmetmd5($_M['form']['metmd5'])){//用curl模块远程访问服务器http://account.metinfo.cn/keylogin/md5check
-			//$_M['form']['loginpass']服务器返回用于登陆的用户后台的账号密码MD5，如md5(md5(admin123456))
-			//验证账号，密码进行登陆
+			//$_M['form']['loginpass']服务器返回用于登录的用户后台的账号密码MD5，如md5(md5(admin123456))
+			//验证账号，密码进行登录
 			$this->login($admin);
 			$this->modify_weburl();
             header("location:../{$_M['config']['met_adminfile']}/index.php?lang=".$_M['config']['met_index_type']);
         }else{
 			if($this->sendmetmd5_error == -2){
-				echo "您的服务器链接不上Met用户中心，请联系官网客服人员对服务器进行检测！！！";
+				echo $_M['word']['linkmetinfoerror'];
 			}
 			if($this->sendmetmd5_error == -1){
-				echo "后台登陆账号密码错误，请在Met用户中心重新设置账号密码！！！";
+				echo $_M['word']['appusererror'];
 			}
 		}
 	}
@@ -37,7 +37,7 @@ class keylogin extends web {//一键登录功能
 		global $_M;
 		//$_M['form']['metmd5'] = '';//自动登录发起串，由服务器传入
 		if($this->sendmetmd5($_M['form']['metmd5'])){//用curl模块远程访问服务器http://account.metinfo.cn/keylogin/md5check
-			//$_M['form']['loginpass']服务器返回用于登陆的用户后台的账号密码MD5，如md5(md5(admin123456))
+			//$_M['form']['loginpass']服务器返回用于登录的用户后台的账号密码MD5，如md5(md5(admin123456))
 			//验证账号密码。正确返回绑定成功,成功输出1，失败输出0
 			echo "metinfosuc|1";
 		}else{

@@ -59,7 +59,7 @@ class column_handle extends handle {
     if($content['columnimg']){
         $content['columnimg'] = $this->url_transform($content['columnimg']);
     }else{
-        $content['columnimg'] = $_M['url']['site'].'public/images/metinfo.gif';
+        $content['columnimg'] = $_M['url']['site'].$_M['config']['met_agents_img'];
     }
     if($content['new_windows']){
       $content['target'] = 'target="_blank"';

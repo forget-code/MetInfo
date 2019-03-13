@@ -18,7 +18,7 @@ class login extends admin {
 	public function doindex() {
 		global $_M;
 		$_M['config']['met_agents_logo_login'] = $_M['url']['site_admin'].'templates/met/images/login-logo.png';
-		$met_langadmin=DB::get_all("select * from {$_M[table][lang]} where lang !='metinfo'");
+		$met_langadmin=DB::get_all("select * from {$_M[table][lang_admin]} where lang !='metinfo'");
 		$langset=$_M[form][langset];
 		$query="select * from {$_M[table][language]} where lang='{$_M[form][langset]}' and site = 1";
 		$langwordlist=DB::get_all($query);

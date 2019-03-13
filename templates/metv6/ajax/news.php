@@ -4,7 +4,7 @@
 <if value="$lang['news_imgok']">
 	<div class="media-left">
 		<a href="{$v.url}" title="{$v.title}" {$v.urlnew}>
-			<img class="media-object" src="{$v.imgurl|thumb:$c['met_newsimg_x'],$c['met_newsimg_y']}" alt="{$v.title}" height='100'></a>
+			<img class="media-object" <if value="$v['_index'] gt 3 || $data['page'] gt 1">data-original<else/>src</if>="{$v.imgurl|thumb:$c['met_newsimg_x'],$c['met_newsimg_y']}" alt="{$v.title}" height='100'></a>
 	</div>
 </if>
 	<div class="media-body">

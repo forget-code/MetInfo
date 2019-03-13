@@ -122,6 +122,7 @@ class uploadify extends web {
 		if($back['error']){
 			$re['error'] = $back['errorcode'];
 			echo jsonencode($re);
+			die;
 		}
 		$file_old = PATH_WEB.str_replace('../', '', $back['path']);
 
@@ -171,7 +172,7 @@ class uploadify extends web {
 			$back['y'] = $img_info[1];
 		}else{
 			$back['error'] = 1;
-			$back['errorcode'] = '无权限上传';
+			$back['errorcode'] = $_M['word']['uploadfilenop'];
 			echo jsonencode($back);
 			die();
 		}

@@ -11,7 +11,7 @@ define(function(require, exports, module) {
 			$(this).parents("tr").find("button").addClass("none");
 		}
 	});
-	
+
 	$(document).on('click',"button.paraoption",function(){
 		var md = $('#myModal'),id = $(this).data('id');
 		md.find(".modal-body dt").html($("input[name='name-"+id+"']").val());
@@ -19,7 +19,7 @@ define(function(require, exports, module) {
 		common.AssemblyLoad(md);
 		md.modal('toggle');
 	});
-	
+
 	$(document).on('click',"#myModal button.btn-primary",function(){
 		var option = $("#myModal").find("input[name='options']"),name = $("input[name='"+option.data('inname')+"']");
 		name.val(option.val());

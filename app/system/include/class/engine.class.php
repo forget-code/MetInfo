@@ -14,7 +14,6 @@ defined('IN_MET') or exit('No permission');
         global $_M;
         define("TEMP_CACHE_PATH" , PATH_WEB.'cache/templates');
         define("PATH_TEM" , PATH_WEB.'templates/'.$_M['config']['met_skin_user'].'/');
-        define("DEBUG", TRUE);
         load::sys_class('view/met_view');
         $view = new met_view();
         $view->assign('data',$mod);

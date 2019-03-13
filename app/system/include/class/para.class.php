@@ -1,20 +1,20 @@
 <?php
-# MetInfo Enterprise Content Management System 
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+# MetInfo Enterprise Content Management System
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 
 defined('IN_MET') or exit('No permission');
 
 /**
  * 字段类
- * @param string $paralist  字段缓存数组	
- * @param string $lang      操作的语言	
+ * @param string $paralist  字段缓存数组
+ * @param string $lang      操作的语言
  */
 
-class para{	
+class para{
 	protected $paralist;
 	protected $lang;
 	protected $table;
-	
+
 	public function __construct() {
 		global $_M;
 		$this->lang = $_M['lang'];
@@ -39,11 +39,19 @@ class para{
 		}
 		return $info;
 	}
-	
+
 	public function paratem($listid,$module,$class1,$class2,$class3){
 		global $_M;
-		if($listid)$para = $this->get_para($listid,$module,$class1,$class2,$class3);
 		$paralist = $this->get_para_list($module,$class1,$class2,$class3);
+		$parameter_database = load::mod_class('parameter/parameter_database','new');
+		foreach ($paralist as $key => $para) {
+			$query = "SELECT * FROM {$_M['table']['user_list']} WHERE listid = {$listid} AND paraid={$para['id']} AND lang = '{$_M['lang']}'";
+			$user_info = DB::get_one($query);
+
+			$values = $user_info['info'];
+			$paralist[$key]['value'] = $values;
+		}
+
 		require PATH_WEB.'app/system/include/public/ui/admin/paratype.php';
 	}
 	public function parawebtem($listid,$module,$wr_oks = 0,$class1,$class2,$class3){
@@ -51,18 +59,22 @@ class para{
 		if($listid)$para = $this->get_para($listid,$module,$class1,$class2,$class3);
 		$paralist = $this->get_para_list($module,$class1,$class2,$class3);
 		if($wr_oks){
-			foreach($paralist as $val){
-				if($val['wr_oks'])$paralists[] = $val;
+			foreach($paralist as $key => $val){
+				if($val['wr_oks']){
+					$paralists[$key] = $val;
+					$paralists[$key]['list'] = json_decode($val['options'],true);
+				}
 			}
 			$paralist = $paralists;
 		}
+
 		require PATH_WEB.'app/system/include/public/ui/web/paratype.php';
 	}
 	public function get_para($listid,$module,$class1,$class2,$class3){
 		global $_M;
 		$paralist = $this->get_para_list($module,$class1,$class2,$class3);
 		foreach($paralist as $val){
-			$para = DB::get_one("SELECT * FROM {$this->table($module)} WHERE listid='{$listid}' and paraid='{$val[id]}' and lang = '{$this->lang}'"); 
+			$para = DB::get_one("SELECT * FROM {$this->table($module)} WHERE listid='{$listid}' and paraid='{$val[id]}' and lang = '{$this->lang}'");
 			if($val['type']==7){
 				$para7 = explode("-",$para['info']) ;
 				$list['info_'.$val['id'].'_1'] = $para7[0];
@@ -83,11 +95,10 @@ class para{
 			$this->paralist[$module][$this->lang] = cache::get("para/paralist_{$module}_{$this->lang}");
 			if(!$this->paralist[$module][$this->lang]){
 				$query = "SELECT * FROM {$_M['table']['parameter']} WHERE module='{$module}' and lang='{$_M['lang']}' order by no_order ASC, id ASC";
-				$result = DB::query($query);
-				while($list = DB::fetch_array($result)){
+				$result = DB::get_all($query);
+				foreach ($result as $list) {
 					if($list['options']){
-						$lists = explode("$|$",$list['options']);
-						$list['list'] = $lists;
+						$list['list'] = json_decode($list['options'],true);
 					}
 					$this->paralist[$module][$this->lang][$list['id']] = $list;
 				}
@@ -114,14 +125,14 @@ class para{
 		global $_M;
 		foreach($infos as $paraid=>$val){
 			if($val){
-				$query = "INSERT INTO {$this->table($module)} SET 
+				$query = "INSERT INTO {$this->table($module)} SET
 							listid  = '{$listid}',
 							paraid  = '{$paraid}',
 							info    = '{$val}',
-						";	
+						";
 				if($module != 10)$query .= "
 							module  = '{$module}',
-							imgname = '',		
+							imgname = '',
 				";
 				$query .= "lang    = '{$this->lang}'";
 				DB::query($query);
@@ -141,14 +152,14 @@ class para{
 					DB::query($query);
 				}
 				if(count($para) == 0 || count($para) > 1){
-					$query = "INSERT INTO {$this->table($module)} SET 
+					$query = "INSERT INTO {$this->table($module)} SET
 							listid  = '{$listid}',
 							paraid  = '{$paraid}',
 							info    = '{$val}',
-						";	
+						";
 					if($module != 10)$query .= "
 								module  = '{$module}',
-								imgname = '',		
+								imgname = '',
 					";
 					$query .= "lang    = '{$this->lang}'";
 					DB::query($query);
@@ -159,7 +170,7 @@ class para{
 			}
 		}
 	}
-	
+
 }
 
 # This program is an open source system, commercial use, please consciously to purchase commercial license.

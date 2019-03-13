@@ -27,7 +27,9 @@ echo <<<EOT
 	<span class="caret"></span>
   </button>
   <ul class="dropdown-menu list-type-update" data-type="move" role="menu" >
-	<li role="presentation" class="dropdown-header">{$_M[word][admin_movetocolumn_v6]}EOT;
+	<li role="presentation" class="dropdown-header">{$_M[word][admin_movetocolumn_v6]}
+<!--
+EOT;
 require $this->template('own/mod_column');
 echo <<<EOT
 -->

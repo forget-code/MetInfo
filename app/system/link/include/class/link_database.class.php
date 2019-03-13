@@ -36,7 +36,7 @@ class link_database extends base_database {
 	}
 
 	public function table_para(){
-		return 'id|webname|weburl|weblogo|link_type|info|contact|orderno|com_ok|show_ok|addtime|lang';
+		return 'id|webname|weburl|weblogo|link_type|info|contact|orderno|com_ok|show_ok|addtime|lang|nofollow';
 	}
 
 }

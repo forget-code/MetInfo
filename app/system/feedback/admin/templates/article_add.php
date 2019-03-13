@@ -1,6 +1,6 @@
 <!--<?php
-# MetInfo Enterprise Content Management System 
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+# MetInfo Enterprise Content Management System
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 
 defined('IN_MET') or exit('No permission');
 require $this->template('ui/head');
@@ -10,7 +10,7 @@ echo <<<EOT
 		<input name="id" type="hidden" value="$id">
 <div class="v52fmbx_tbmax">
 <div class="v52fmbx_tbbox">
-<div class="v52fmbx">	
+<div class="v52fmbx">
 <!--
 EOT;
 foreach($feedback_para as $key=>$val){
@@ -51,6 +51,14 @@ echo <<<EOT
 			<dt>{$_M[word][feedbackID]}{$_M[word][marks]}</dt>
 			<dd>
 				{$feedback_list[customerid]}
+			</dd>
+		</dl>
+		</div>
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>IP{$_M[word][marks]}</dt>
+			<dd>
+				{$feedback_list[ip]}
 			</dd>
 		</dl>
 		</div>

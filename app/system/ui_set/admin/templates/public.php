@@ -50,7 +50,7 @@ echo <<<EOT
 	</dd>
 </dl>
 <dl>
-	<dt>{$_M['word']['page_range']}</dt>
+	<dt>{$_M['word']['setpnorder']}</dt>
 	<dd class="ftype_radio">
 		<div class="fbox">
 			<label><input name="met_pnorder" type="radio" value="0" data-checked="{$_M[config][met_pnorder]}" />{$_M[word][settopcolumns]}{$_M[word][skinunder]}</label>

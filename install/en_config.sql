@@ -54,7 +54,7 @@ INSERT INTO met_language VALUES (null, 'memberclose', 'Member features have not 
 INSERT INTO met_language VALUES (null, 'memberLogin', 'Member Login', 0, 2, 4, 0, 'en');
 INSERT INTO met_language VALUES (null, 'memberRegisterName', 'please enter user name', 0, 3, 4, 0, 'en');
 INSERT INTO met_language VALUES (null, 'memberPassword', 'Please enter the password', 0, 4, 4, 0, 'en');
-INSERT INTO met_language VALUES (null, 'memberCookie', 'Please open the browser\'s COOKIE function!', 0, 5, 4, 0, 'en');
+INSERT INTO met_language VALUES (null, 'memberCookie', "Please open the browser's COOKIE function!", 0, 5, 4, 0, 'en');
 INSERT INTO met_language VALUES (null, 'memberName', 'Member name', 0, 6, 4, 0, 'en');
 INSERT INTO met_language VALUES (null, 'memberPs', 'Password', 0, 7, 4, 0, 'en');
 INSERT INTO met_language VALUES (null, 'memberImgCode', 'Verification code', 0, 8, 4, 0, 'en');
@@ -366,7 +366,7 @@ INSERT INTO met_language VALUES (null, 'regfail', 'registration failed', 0, 154,
 INSERT INTO met_language VALUES (null, 'codetimeout', 'Verification code has timed out', 0, 155, 4, 0, 'en');
 INSERT INTO met_language VALUES (null, 'telcheckfail', 'Phone number and SMS verification number is inconsistent', 0, 156, 4, 0, 'en');
 INSERT INTO met_language VALUES (null, 'regsuc', 'registration success!', 0, 157, 4, 0, 'en');
-INSERT INTO met_language VALUES (null, 'activesuc', 'Activation successful', 0, 158, 4, 0, 'en');
+INSERT INTO met_language VALUES (null, 'activesuc', 'Activation successful，please login now', 0, 158, 4, 0, 'en');
 INSERT INTO met_language VALUES (null, 'emailvildtips1', 'The verification information is wrong', 0, 159, 4, 0, 'en');
 INSERT INTO met_language VALUES (null, 'emailvildtips2', 'Verification information is incorrect or timed out', 0, 160, 4, 0, 'en');
 INSERT INTO met_language VALUES (null, 'telreg', 'Phone number has been registered', 0, 161, 4, 0, 'en');
@@ -386,6 +386,7 @@ INSERT INTO met_language VALUES (null, 'membererror1', 'wrong user name or passw
 INSERT INTO met_language VALUES (null, 'membererror2', 'Please open the session!', 0, 175, 4, 0, 'en');
 INSERT INTO met_language VALUES (null, 'membererror3', 'Authorization failed', 0, 176, 4, 0, 'en');
 INSERT INTO met_language VALUES (null, 'membererror4', 'unknown mistake', 0, 177, 4, 0, 'en');
+INSERT INTO met_language VALUES (null, 'membererror6', 'The account is not activated. Please contact the administrator', 0, 174, 4, 0, 'en');
 INSERT INTO met_language VALUES (null, 'emailsucpass', 'Password recovery email has been sent to your email address, click the link in the email to reset your password.', 0, 178, 4, 0, 'en');
 INSERT INTO met_language VALUES (null, 'emailvildtips3', 'Please enter the correct email or phone number', 0, 179, 4, 0, 'en');
 INSERT INTO met_language VALUES (null, 'membererror5', 'Failed to send! error code:', 0, 180, 4, 0, 'en');
@@ -401,7 +402,8 @@ INSERT INTO met_language VALUES (null, 'close', 'shut down', 0, 0, 0, 0, 'en');
 INSERT INTO met_language VALUES (null, 'error404', '404 error, the page is gone. . .', 0, 0, 0, 0, 'en');
 INSERT INTO met_language VALUES (null, 'browserupdatetips', 'You are using a <strong> obsolete </ strong> browser. Please <a href=https://browsehappy.com/ target=_blank> upgrade your browser </a> to enhance your experience.', 0, 0, 0, 0, 'en');
 INSERT INTO met_language VALUES (null, 'newFeedback', 'You received new feedback', 0, 0, 0, 0, 'en');
-INSERT INTO met_language VALUES (null, 'opfailed', 'operation failed', 0, 0, 0, 0, 'en');
+INSERT INTO met_language VALUES (null, 'opfailed', 'operation failed', 0, 0, 1, 0, 'en');
+INSERT INTO met_language VALUES (null, 'opsuccess', 'operation success', 0, 0, 1, 0, 'en');
 INSERT INTO met_language VALUES (null, 'jobPrompt', 'Received a new resume', 0, 0, 0, 0, 'en');
 INSERT INTO met_language VALUES (null, 'reMessage1', 'Your website', 0, 0, 0, 0, 'en');
 INSERT INTO met_language VALUES (null, 'feedbackPrompt', 'Received new feedback', 0, 0, 0, 0, 'en');
@@ -413,6 +415,33 @@ INSERT INTO met_language VALUES (null, 'listnew', 'update', 0, 0, 0, 0, 'en');
 INSERT INTO met_language VALUES (null, 'listhot', 'Popular', 0, 0, 0, 0, 'en');
 INSERT INTO met_language VALUES (null, 'listsales', 'Sales', 0, 0, 0, 0, 'en');
 INSERT INTO met_language VALUES (null, 'weball', 'All', 0, 0, 0, 0, 'en');
+INSERT INTO met_language VALUES (null, 'accsaftips4', 'Binding user confirmation of identity information', 0, 9, 2, 0, 'en');
+INSERT INTO met_language VALUES (null, 'rnvalidate', 'Real name authentication', 0, 9, 2, 0, 'en');
+INSERT INTO met_language VALUES (null, 'notauthen', 'Uncertified', 0, 9, 2, 0, 'en');
+INSERT INTO met_language VALUES (null, 'authen', 'Certified', 0, 9, 1, 0, 'en');
+INSERT INTO met_language VALUES (null, 'realname', 'Real name', 0, 9, 2, 0, 'en');
+INSERT INTO met_language VALUES (null, 'idcode', 'ID card No.', 0, 9, 2, 0, 'en');
+INSERT INTO met_language VALUES (null, 'idvalidok', 'Success of real name authentication', 0, 9, 2, 0, 'en');
+INSERT INTO met_language VALUES (null, 'idvalidfailed', 'Real name authentication failure', 0, 9, 2, 0, 'en');
+INSERT INTO met_language VALUES (null, 'systips1', 'You do not have permission to access this content! Please login to visit!', 0, 0, 0, 0, 'en');
+INSERT INTO met_language VALUES (null, 'systips2', 'Your user group does not have permission to access this content!', 0, 0, 0, 0, 'en');
+
+INSERT INTO met_language VALUES (null, 'usercheckok', 'Verification success!', 0, 0, 1, 0, 'en');
+INSERT INTO met_language VALUES (null, 'usereadinfo', 'Reading permission value must be greater than 0', 0, 0, 0, 0, 'en');
+INSERT INTO met_language VALUES (null, 'usersetprice', 'Please set the amount', 0, 0, 0, 0, 'en');
+INSERT INTO met_language VALUES (null, 'userselectname', 'Tab', 0, 0, 0, 0, 'en');
+INSERT INTO met_language VALUES (null, 'userwenxinclose', 'Wechat login is off', 0, 0, 0, 0, 'en');
+INSERT INTO met_language VALUES (null, 'userwenboclose', 'Weibo login is turned off', 0, 0, 0, 0, 'en');
+INSERT INTO met_language VALUES (null, 'userqqclose', 'QQ login function is closed', 0, 0, 0, 0, 'en');
+INSERT INTO met_language VALUES (null, 'userbuy', 'buy', 0, 0, 0, 0, 'en');
+INSERT INTO met_language VALUES (null, 'userbuylist', 'Order', 0, 0, 0, 0, 'en');
+INSERT INTO met_language VALUES (null, 'usesendcode', 'The verification code is', 0, 0, 0, 0, 'en');
+INSERT INTO met_language VALUES (null, 'usesendcodeinfo', 'Please enter the verification in time', 0, 0, 0, 0, 'en');
+INSERT INTO met_language VALUES (null, 'feedbackinquiry', 'Online Inquiry', 0, 0, 0, 0, 'en');
+INSERT INTO met_language VALUES (null, 'templatesusererror', 'The current language template is not configured or the template file does not exist', 0, 0, 0, 0, 'en');
+INSERT INTO met_language VALUES (null, 'phonecode', 'Get phone verification code', 0, 0, 0, 0, 'en');
+INSERT INTO met_language VALUES (null, 'phonecodeerror', 'Mobile phone verification code error', 0, 0, 0, 0, 'en');
+INSERT INTO met_language VALUES (null, 'memberbuytitle', 'Paid upgrade member group', 0, 0, 0, 0, 'en');
 
 
 INSERT INTO met_config VALUES (null, 'metconfig_cv_time', '120', '', 0, 0, 'en');
@@ -424,6 +453,7 @@ INSERT INTO met_config VALUES (null, 'metconfig_cv_to', '', '', 0, 0, 'en');
 INSERT INTO met_config VALUES (null, 'metconfig_weburl', '', '', 0, 0, 'en');
 INSERT INTO met_config VALUES (null, 'metconfig_webname', 'Website Name', '', 0, 0, 'en');
 INSERT INTO met_config VALUES (null, 'metconfig_logo', '../upload/201801/1515663135.png', '', 0, 0, 'en');
+INSERT INTO met_config VALUES (null, 'metconfig_mobile_logo', '../upload/201807/1532139830.png', '', 0, 0, 'en');
 INSERT INTO met_config VALUES (null, 'metconfig_skin_user', 'metv6', '', 0, 0, 'en');
 INSERT INTO met_config VALUES (null, 'metconfig_big_wate', '0', '', 0, 0, 'en');
 INSERT INTO met_config VALUES (null, 'metconfig_thumb_wate', '0', '', 0, 0, 'en');
@@ -475,6 +505,8 @@ INSERT INTO met_config VALUES (null, 'metconfig_skin_css', 'metinfo.css', '', 0,
 INSERT INTO met_config VALUES (null, 'metconfig_autothumb_ok', '0', '', 0, 0, 'en');
 INSERT INTO met_config VALUES (null, 'metconfig_member_use', '1', '', 0, 0, 'en');
 INSERT INTO met_config VALUES (null, 'metconfig_member_register', '1', '', 0, 0, 'en');
+INSERT INTO met_config VALUES (null, 'metconfig_member_idvalidate', '0', '', 0, 0, 'en');
+INSERT INTO met_config VALUES (null, 'metconfig_idvalid_key', '', '', 0, 0, 'en');
 INSERT INTO met_config VALUES (null, 'metconfig_newsdays', '3', '', 0, 0, 'en');
 INSERT INTO met_config VALUES (null, 'metconfig_hot', '100', '', 0, 0, 'en');
 INSERT INTO met_config VALUES (null, 'metconfig_listtime', 'Y/m/d', '', 0, 0, 'en');
@@ -503,11 +535,8 @@ INSERT INTO met_config VALUES (null, 'metconfig_productdetail_x', '400', '', 0, 
 INSERT INTO met_config VALUES (null, 'metconfig_productdetail_y', '300', '', 0, 0, 'en');
 INSERT INTO met_config VALUES (null, 'metconfig_imgdetail_x', '900', '', 0, 0, 'en');
 INSERT INTO met_config VALUES (null, 'metconfig_imgdetail_y', '500', '', 0, 0, 'en');
-INSERT INTO met_config VALUES (null, 'metconfig_onlineright_top', '118', '', 0, 0, 'en');
-INSERT INTO met_config VALUES (null, 'metconfig_onlineright_right', '0', '', 0, 0, 'en');
-INSERT INTO met_config VALUES (null, 'metconfig_onlineleft_top', '118', '', 0, 0, 'en');
-INSERT INTO met_config VALUES (null, 'metconfig_onlineleft_left', '0', '', 0, 0, 'en');
-INSERT INTO met_config VALUES (null, 'metconfig_onlinenameok', '1', '', 0, 0, 'en');
+INSERT INTO met_config VALUES (null, 'metconfig_online_x', '10', '', 0, 0, 'en');
+INSERT INTO met_config VALUES (null, 'metconfig_online_y', '100', '', 0, 0, 'en');
 INSERT INTO met_config VALUES (null, 'metconfig_file_format', 'rar|zip|sql|doc|pdf|jpg|jpeg|xls|png|gif|mp3|ico|swf', '', 0, 0, 'en');
 INSERT INTO met_config VALUES (null, 'metconfig_file_maxsize', '5', '', 0, 0, 'en');
 INSERT INTO met_config VALUES (null, 'metconfig_memberlogin_code', '1', '', 0, 0, 'en');
@@ -593,17 +622,18 @@ INSERT INTO met_config VALUES (null, 'metconfig_member_email_password_content', 
 INSERT INTO met_config VALUES (null, 'metconfig_member_email_safety_title', '{webname} Member center to modify the binding mailbox', '', 0, 0, 'en');
 INSERT INTO met_config VALUES (null, 'metconfig_member_email_safety_content', '<div style=\"width:500px;margin:20px auto;\"><div class=\"header clearfix\" style=\"font-family: &#39;lucida Grande&#39;, Verdana, &#39;Microsoft YaHei&#39;; line-height: 23.7999992370605px; background-color: rgb(255, 255, 255);\"><a href=\"{weburl}\"><strong style=\"outline: none; cursor: pointer; color: rgb(30, 84, 148);\">{webname} Member Center</strong></a></div><p>&nbsp;</p><div class=\"content\" style=\"font-family: &#39;lucida Grande&#39;, Verdana, &#39;Microsoft YaHei&#39;; line-height: 23.7999992370605px; border: 1px solid rgb(233, 233, 233); margin: 2px 0px 0px; padding: 30px; background: none 0px 0px repeat scroll rgb(255, 255, 255);\"><p style=\"line-height: 23.7999992370605px;\">hello:</p><p style=\"line-height: 23.7999992370605px;\">This is your key message on the {webname} Important message on the member center, Function is to carry out&nbsp;Member center bound mailbox modification, please click on the link below to complete the verification</p><p style=\"line-height: 23.7999992370605px; border-top-width: 1px; border-top-style: solid; border-top-color: rgb(221, 221, 221); margin-top: 15px; margin-bottom: 25px; padding: 15px;\">Please click on the link to continue:{opurl}</p><p style=\"line-height: 23.7999992370605px;\">&nbsp;</p><p class=\"footer\" style=\"line-height: 23.7999992370605px; border-top-width: 1px; border-top-style: solid; border-top-color: rgb(221, 221, 221); padding-top: 6px; margin-top: 25px; color: rgb(131, 131,131);\">Please do not reply to this message, this mailbox is not monitored, you will not get any reply.<br/><br/><a href=\"{weburl}\"><strong style=\"outline: none; cursor: pointer; color: rgb(30, 84, 148);\">{webname}Member Center</strong></a></p></div></div>', '', 0, 0, 'en');
 INSERT INTO met_config VALUES (null, 'metconfig_defult_lang', '1', '0', 0, 0, 'en');
-INSERT INTO met_config VALUES (null,'metconfig_wap','0','','0','0','en');
+INSERT INTO met_config VALUES (null, 'metconfig_wap','0','','0','0','en');
 INSERT INTO met_config VALUES (null, 'metconfig_headstat_mobile', '', '', 0, 0, 'en');
 INSERT INTO met_config VALUES (null, 'metconfig_footstat_mobile', '', '', 0, 0, 'en');
-
+INSERT INTO met_config VALUES (null, 'debug','0','','0','0','en');
+INSERT INTO met_config VALUES(null, 'metconfig_fd_word', '', '', '0', '0', 'en');
+INSERT INTO met_config VALUES(null, 'flash_10000', '3|980|300|1', '', '0', '10000', 'en');
+INSERT INTO met_config VALUES(null, 'flash_10001', '1|980|600|', '', '0', '10001', 'en');
 
 INSERT INTO met_lang VALUES(null,'English','1','2','en','en','en.gif','','0','0','html','','en');
 
 INSERT INTO met_admin_array VALUES('4','Member','','0','','0','0','1','1','en','');
 INSERT INTO met_admin_array VALUES('5','Agents','','0','','0','0','2','1','en','');
-
-
 
 INSERT INTO `met_user_group` VALUES(4, 'Member', 1, 'en');
 INSERT INTO `met_user_group` VALUES(5, 'Agents', 2, 'en');

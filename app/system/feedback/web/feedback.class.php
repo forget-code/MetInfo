@@ -18,27 +18,29 @@ class feedback extends web {
   public function dofeedback() {
 		global $_M;
       if($_M['form']['action'] == 'add'){
-			$this->check_field();
-			$this->add($_M['form']);
-		}else{
-			$classnow = $this->input_class($_M['form']['id']);
-			$this->add_input('id', $classnow);
-			if($classnow)$this->load_config($_M['lang'], $classnow);
-			$data = load::sys_class('label', 'new')->get('column')->get_column_id($classnow);
-			$this->add_array_input($data);
-			$this->check($data['access']);
-			unset($data['id']);
-			$this->seo($data['name'], $data['keywords'], $data['description']);
-			$this->seo_title($data['ctitle']);
-			$this->seo_title($_M['config']['met_fdtable']);
-			$this->add_input('fdtitle',$data['name']);
-			require_once $this->template('tem/feedback');
+          $this->check_field();
+          $this->add($_M['form']);
+      }else{
+          $classnow = $this->input_class($_M['form']['id']);
+          $this->add_input('id', $classnow);
+          if($classnow)$this->load_config($_M['lang'], $classnow);
+          $data = load::sys_class('label', 'new')->get('column')->get_column_id($classnow);
+          $this->add_array_input($data);
+          $this->check($data['access']);
+          unset($data['id']);
+          $this->seo($data['name'], $data['keywords'], $data['description']);
+          $this->seo_title($data['ctitle']);
+          // $this->seo_title($_M['config']['met_fdtable']);
+		  $this->add_input('fdtitle',$data['name']);
+		  require_once $this->template('tem/feedback');
 		}
   }
 
 	public function add($info) {
 		global $_M;
+
 		$query="select * from {$_M[table][config]} where name ='met_fd_ok' and columnid='{$_M[form][id]}' and lang='{$_M[form][lang]}'";
+
 		$met_fd_ok=DB::get_one($query);
 		$_M[config][met_fd_ok]=$met_fd_ok[value];
 		if(!$_M[config][met_fd_ok]){
@@ -61,10 +63,8 @@ class feedback extends web {
 			}
 		}
 		$user = $this->get_login_user_info();
-		foreach ($user as $key => $value) {
-		}
-		$fromurl=HTTP_REFERER;
-		$ip=$this->getip();
+		$fromurl= $_M['form']['referer'] ? $_M['form']['referer'] : HTTP_REFERER;
+		$ip=getip();
 
 		$feedcfg=DB::get_one("select * from {$_M[table][config]} where lang ='{$_M[form][lang]}'and name='met_fd_class' and columnid ='{$_M[form][id]}'");
         $_M[config][met_fd_class]=$feedcfg[value];
@@ -74,14 +74,11 @@ class feedback extends web {
 		$addtime=date('Y-m-d H:i:s',time());
 		$met_fd_type=DB::get_one("select * from {$_M[table][config]} where lang ='{$_M[form][lang]}' and  name= 'met_fd_type' and columnid = {$_M[form][id]}");
          $_M[config][met_fd_type]= $met_fd_type[value];
-		if(load::sys_class('label', 'new')->get('feedback')->insert_feedback($info['id'], $info, $title, $value['metinfo_admin_name'],$fromurl,$addtime,$ip)){
-			  if($_M[config][met_fd_type]==0 or $_M[config][met_fd_type]==2){
-              $this->notice_by_emial($info,$fromurl,$title,$addtime);
-            }
+		if(load::sys_class('label', 'new')->get('feedback')->insert_feedback($info['id'], $info, $title, $user['username'],$fromurl,$addtime,$ip)){
 
-            if($_M[config][met_nurse_feed]){
-               $this->notice_by_sms();
-            }
+            $this->notice_by_emial($info,$fromurl,$title,$addtime);
+
+            $this->notice_by_sms($title);
 		}
 		setcookie('submit',time());
 		okinfo(HTTP_REFERER, $_M['word']['Feedback4']);
@@ -124,7 +121,7 @@ class feedback extends web {
  /*表单提交时间检测*/
 	public function checktime(){
 		global $_M;
-		$ip=$this->getip();
+		$ip=getip();
 		$addtime=time();
 		$ipok=DB::get_one("select * from {$_M[table][feedback]} where ip='$ip' order by addtime desc");
 		if($ipok){
@@ -173,11 +170,11 @@ class feedback extends web {
 	    $smtp=$_M[config][met_fd_smtp];
 	    $title=$_M[word][cv2].$job_list[position].'('.$_M[config][met_weburl].')';
 	    $fdtitle=$_M[config][met_fd_title];
-		$fromurl=$_SERVER['HTTP_REFERER'];
-        $fromurl=daddslashes($fromurl);
+		$fromurl=$info['referer'];
 		$body='';
 		$body=$body."<b>{$_M[word][AddTime]}</b>:".$addtime."<br>";
 		$body=$body."<b>{$_M[word][SourcePage]}</b>:".$fromurl."<br>";
+		$body=$body."<b>IP</b>:".getip()."<br>";
 		$j=0;
 		$cv_para = load::mod_class('parameter/parameter_list', 'new')->get_parameter($_M['form']['lang'],8,$_M[form][id]);
 		if($_M[config][met_cv_image]){
@@ -241,7 +238,10 @@ class feedback extends web {
     $_M[config][met_fd_title]= $met_fd_title[value];
     $title=$_M[word][newFeedback];
     $mail=load::sys_class('jmail','new');
-    $mail->send_email($_M[config][met_fd_to],$title,$body);
+    if($_M[config][met_fd_type]==0 or $_M[config][met_fd_type]==2){
+	    	$mail->send_email($_M[config][met_fd_to],$title,$body);
+	}
+
 
      if($_M[config][met_fd_back]==1){
 		 $mail->send_email($cvto,$_M[config][met_fd_title],$_M[config][met_fd_content]);
@@ -260,14 +260,22 @@ class feedback extends web {
 	  $domain = $strdomain[0];
       #$message="您网站[{$domain}]收到了新的反馈信息[{$title}]，请尽快登录网站后台查看";
       $message="{$_M[word][reMessage1]}[{$domain}]{$_M[word][feedbackPrompt]}[{$title}]{$_M[word][reMessage2]}";
-      load::sys_class('sms', 'new')->sendsms($_M[config][met_nurse_feed_tel], $message, $type = 6);
+      // load::sys_class('sms', 'new')->sendsms($_M[config][met_nurse_feed_tel], $message, $type = 6);
       }
       $met_fd_sms_dell=DB::get_one("select * from {$_M[table][config]} where lang='{$_M[form][lang]}' and name='met_fd_sms_dell' and columnid='{$_M[form][id]}'");
+
+
 	  $_M[config][met_fd_sms_dell]=$met_fd_sms_dell[value];
 	  $met_fd_sms_content=DB::get_one("select * from {$_M[table][config]} where lang='{$_M[form][lang]}' and name='met_fd_sms_content' and columnid='{$_M[form][id]}'");
 	  $_M[config][met_fd_sms_content]=$met_fd_sms_content[value];
 	  $tell='para'.$_M[config][met_fd_sms_dell];
 	  $tel=$_M[form][$tell];
+
+
+	  $met_fd_sms_back=DB::get_one("select * from {$_M[table][config]} where lang='{$_M[form][lang]}' and name='met_fd_sms_back' and columnid='{$_M[form][id]}'");
+	  $_M[config][met_fd_sms_back]=$met_fd_sms_back[value];
+
+
 	  if($tel&&$_M[config][met_fd_sms_back]){//短信回复
 		   load::sys_class('sms', 'new')->sendsms($tel,$_M[config][met_fd_sms_content],4);
 		}
@@ -286,21 +294,27 @@ class feedback extends web {
         foreach ($paralist as $key => $val) {
         	$para[$val[id]]=$val;
         }
-        if(!$met_fd_class){
-        	$name=$para[$feedbackcfg[met_fd_class][value]][name];
-        	$info=$name.$_M[word][noempty];
-            okinfo('javascript:history.back();',$info);
-        }elseif(!$met_fd_sms_dell && $feedbackcfg[met_fd_sms_back][value]){
-            $name=$para[$feedbackcfg[met_fd_sms_dell][value]][name];
-        	$info=$name.$_M[word][noempty];
-            okinfo('javascript:history.back();',$info);
-        }else{
-           if($met_fd_back && !$met_fd_email){
-             $name=$para[$feedbackcfg[met_fd_email][value]][name];
-        	 $info=$name.$_M[word][noempty];
-             okinfo('javascript:history.back();',$info);
+
+       $paraarr = array();
+       foreach (array_keys($_M['form']) as $vale) {
+           if (strstr($vale, 'para')) {
+               if (strstr($vale, '_')) {
+                   $arr = explode('_',$vale);
+                   $paraarr[] = str_replace('para','',$arr[0]);
+               }else{
+                   $paraarr[] = str_replace('para','',$vale);
+               }
+
            }
-        }
+       }
+
+       foreach (array_keys($para) as $val) {
+
+           if($para[$val]['wr_ok']==1 && !in_array($val,$paraarr)){
+               $info="【{$para[$val]['name']}】".$_M[word][noempty];
+               // okinfo('javascript:history.back();',$info);
+           }
+       }
    }
 }
 

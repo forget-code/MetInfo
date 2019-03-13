@@ -17,6 +17,7 @@ class parameter_label {
 		*/
 	public function __construct() {
 		global $_M;
+		$this->parameter_database = load::mod_class('parameter/parameter_database', 'new');
 	}
 
 	public function name_to_num($module) {
@@ -56,11 +57,40 @@ class parameter_label {
 	public function get_parameter_form($module, $id) {
 		global $_M;
 		$mod = $this->name_to_num($module);
-		$p = load::mod_class('parameter/parameter_database', 'new')->get_parameter($mod, $id);
+		$parameter_database = load::mod_class('parameter/parameter_database', 'new');
+		$p = $parameter_database->get_parameter($mod, $id);
+
+		foreach ($p as $key => $para) {
+			$list = $parameter_database->get_parameters($mod,$para['id']);
+			$p[$key]['para_list'] = $list;
+			$values = array();
+			if($para['type'] ==4 || $para['type'] ==2 || $para['type'] ==6){
+				foreach ($list as $val) {
+					$query = "SELECT * FROM {$_M['table']['plist']} WHERE listid = {$listid} AND paraid={$para['id']} AND module={$module} AND info = '{$val['id']}' AND lang = '{$_M['lang']}'";
+					$para_value = DB::get_one($query);
+
+					if($para_value){
+						$values[] = $para_value['info'];
+					}
+				}
+			}else{
+				$query = "SELECT * FROM {$_M['table']['plist']} WHERE listid = {$listid} AND paraid={$para['id']} AND module={$module} AND lang = '{$_M['lang']}'";
+				$para_value = DB::get_one($query);
+				$values = $para_value['info'];
+			}
+
+			if(is_array($values)){
+				$p[$key]['value'] = implode('|', $values);
+			}else{
+				$p[$key]['value'] = $values;
+			}
+		}
+
+
 		foreach ($p as $val) {
 			$power = load::sys_class('user', 'new')->check_power($val['access']);
 			if($power > 0){
-				$para[] = $val;
+				$paras[] = $val;
 			}
 		}
 		if($mod == '8'){
@@ -68,16 +98,15 @@ class parameter_label {
 			$metlistrele = DB::get_one($query);
 			if($metlistrele['info']){
 				$config = load::sys_class('label', 'new')->get('config')->get_column_config($id);
-				foreach($para as $key => $val){
+				foreach($paras as $key => $val){
 					if($val['id'] == $config['met_fd_class']){
-						$para[$key]['productlist'] = $metlistrele['info'];
+						$paras[$key]['productlist'] = $metlistrele['info'];
 					}
 				}
 			}
 		}
-		//dump($para);
-		$para = load::mod_class('parameter/parameter_handle', 'new')->para_handle_formation($para);
-		return $para;
+		$paras = load::mod_class('parameter/parameter_handle', 'new')->para_handle_formation($paras);
+		return $paras;
   }
 
 	/**
@@ -86,13 +115,25 @@ class parameter_label {
 	 * @param  number  $id      一级栏目
 	 * @return array            表单数组
 	 */
-	public function get_parameter_contents($module, $id, $class1, $class2, $class3) {
+	public function get_parameter_contents($module, $id, $class1, $class2, $class3,$type=0) {
 		global $_M;
 		$mod = $this->name_to_num($module);
-		$parameter = load::mod_class('parameter/parameter_database', 'new')->get_parameter($mod);
-		$list = load::mod_class('parameter/parameter_database', 'new')->get_list($id, $mod);
+		$parameter_database = load::mod_class('parameter/parameter_database', 'new');
+		$parameter = $parameter_database->get_parameter($mod);
+
+		$list = $parameter_database->get_list($id, $mod);
+
 		$userclass = load::sys_class('user', 'new');
 		foreach ($parameter as $key => $val) {
+			if($type){
+				if($val['type'] != $type){
+					continue;
+				}
+			}else{
+				if($val['type'] == 10){
+					continue;
+				}
+			}
 			if (
 				($val['class1'] == 0) ||
 				($val['class1'] == $class1 && $val['class2'] == 0) ||
@@ -103,15 +144,51 @@ class parameter_label {
 					$url = load::sys_class('handle', 'new')->url_transform($list[$val['id']]['info']);
 					$value = "<a target='_blank' href='{$list[$val['id']]['info']}'>{$_M['word']['downloadtext1']}</a>";
 				}else{
-					$value = $list[$val['id']]['info'];
+					if($val['type'] == 2 || $val['type'] == 4 || $val['type'] == 6){
+
+						$value_list = $parameter_database->get_parameter_value($mod,$id,$val['id']);
+						$value = "";
+						foreach ($value_list as $v) {
+							$para_value = $parameter_database->get_parameter_value_by_id($v['info']);
+							if($para_value){
+								$value .= ",".$para_value;
+							}
+						}
+					}else{
+						$value = $list[$val['id']]['info'];
+					}
 				}
+
+				$value = trim($value,',');
 				$pt['id'] =  $val['id'];
 				$pt['name'] =  $val['name'];
 				$pt['value'] =  $val['access'] ? $userclass->check_power_script($value, $val['access']) : $value;
+
 				$relist[] = $pt;
 			}
-
 		}
+		if($type){
+
+			$inquiry = load::mod_class('config/config_database','new')->get_inquiry();
+			if($inquiry){
+				$column = load::mod_class('column/column_database','new')->get_column_by_id($inquiry);
+				$feedback = array();
+				if($_M['form']['id']){
+					$product = load::mod_class('product/include/class/product_database','new')->get_list_one_by_id($_M['form']['id']);
+					$product_title = urlencode($product['title']);
+				}else{
+					$product_title = "";
+				}
+
+				$feedback['id'] = 0;
+				$feedback['name'] = $_M['word']['feedbackinquiry'];
+
+				$feedback['value'] = $_M['url']['site']."{$column['foldername']}/index.php?fdtitle={$product_title}&lang={$_M['lang']}";
+
+				$relist[] = $feedback;
+			}
+		}
+
 		return $relist;
 	}
 
@@ -158,7 +235,7 @@ class parameter_label {
 			$sql = "SELECT listid FROM {$_M['table']['plist']} WHERE 1=1 ";
 			foreach($info as $key => $val){
 				if($val['info']){
-					$sql .= " AND listid in (SELECT listid FROM {$_M['table']['plist']} WHERE paraid='{$val['id']}' AND info like '%{$val['info']}%')";
+					$sql .= " AND listid in (SELECT listid FROM {$_M['table']['plist']} WHERE paraid='{$val['id']}' AND info = '{$val['info']}')";
 				}
 			}
 			$sql = str_replace('WHERE 1=1 AND', 'WHERE', $sql);

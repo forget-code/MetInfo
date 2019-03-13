@@ -30,18 +30,7 @@ EOT;
 }
 echo <<<EOT
 -->
-	<tr class="mouse click">
-        <td class="list-text"></td>
-        <td class="list-text list_left" colspan="3">
-			{$_M[word][setdbEveryoneSize]}
-			<select name="sizelimit">
-				<option value="2048">2 Mb</optioin>
-				<option value="4096">4 Mb</optioin>
-				<option value="8192">8 Mb</optioin>
-			</select>
-			<span class="tips">{$_M[word][setdbTip4]}</span>
-		</td>
-	</tr>
+
 	<tr>
 		<td class="list"><input name='chkAll' type='checkbox' onclick="CheckAllx($(this),'myform','tables[]')" value='check' checked /></td>
 		<td class="list list_left" colspan="3">

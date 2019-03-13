@@ -7,9 +7,28 @@ echo <<<EOT
 -->
 <div class="v52fmbx">
 	<h3 class="v52fmbx_hr">{$_M['word']['inside_larger']}</h3>
+<!--
+EOT;
+if($metinfover!='v2'){
+echo <<<EOT
+-->
+	<dl>
+		<dt>{$_M['word']['call_way']}</dt>
+		<dd class="ftype_radio">
+			<div class="fbox">
+				<label><input name="met_bannerpagetype" type="radio" value="1" data-checked="{$_M['config']['met_bannerpagetype']}">{$_M['word']['consistent_home_page']}</label>
+				<label><input name="met_bannerpagetype" type="radio" value="0">{$_M['word']['managertyp5']}</label>
+			</div>
+		</dd>
+	</dl>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
 	<dl>
 		<dd style='padding-left:10px;'>
-			<a href="{$_M[url][adminurl]}anyid=18&n=banner&c=banner_admin&a=domanage" target="_blank" class="ui-addlist" style="width:100%;margin:0;text-align:center;">{$_M[word][indexflash]}</a>
+			<a href="{$_M['url']['adminurl']}anyid=18&n=banner&c=banner_admin&a=domanage" target="_blank" class="ui-addlist" style="width:100%;margin:0;text-align:center;">{$_M['word']['indexflash']}</a>
 		</dd>
 	</dl>
 <!--

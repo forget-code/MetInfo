@@ -4,7 +4,7 @@
 function getQueryString(name) {
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
     var r = window.location.search.substr(1).match(reg);
-    if (r != null) return unescape(r[2]);
+    if (r != null) return unescape(decodeURIComponent(r[2]));
     return null;
 }
 
@@ -29,9 +29,6 @@ var lang = getQueryString('lang'),
     basepath = siteurl + ret['admin'] + '/',
     pubjspath = siteurl + 'app/system/include/public/',
     table;
-    if(own.indexOf(ret['admin']) > -1 && own.indexOf('app/app') > -1){
-      own= own.replace(ret['admin']+'/','');
-    }
 var metn = getQueryString('n'),
     metc = getQueryString('c'),
     meta = getQueryString('a');
@@ -41,8 +38,9 @@ seajs.config({
         'epl': pubjspath + 'js/examples',
         'own': own.substring(0, own.length - 1),
         'own_tem': own_tem.substring(0, own_tem.length - 1),
-        //'tem': tem.substring(0, tem.length-1),
-        'edturl': siteurl + 'app/app/' + editorname
+        'tem': own_tem.substring(0, own_tem.length - 1),
+        'edturl': siteurl + 'app/app/' + editorname,
+        'siteurl':siteurl.substring(0, siteurl.length - 1)
     },
     alias: {
         "jquery": pubjspath + 'js/jquery/1.11.1/jquery_seajs.js',

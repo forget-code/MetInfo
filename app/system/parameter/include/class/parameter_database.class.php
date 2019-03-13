@@ -66,16 +66,28 @@ class  parameter_database extends database{
 		$array['listid'] = $listid;
 		$array['paraid'] = $paraid;
 		$array['info'] = $info;
-		
+
 		$array['lang'] = $lang;
 		$array['module'] = $module;
 		if($module!=8){
            $array['imgname'] = $imgname;
 		}
-		
 		return $para_list->insert($array);
 	}
 
+		/**
+	 * 写入字段
+	 * @param  string  $lang    语言
+	 * @param  string  $module  模块（3:产品|4:下载|5:图片|6:简历|7:留言|8:反馈|10:会员）
+	 * @param  string  $class1  一级栏目
+	 * @return array            字段数组
+	 */
+	public function add_list($listid, $paraid, $info, $imgname, $module){
+		global $_M;
+		$para_list = load::mod_class('parameter/parameter_list_database', 'new');
+		$para_list->construct($module);
+		return $para_list->add_para_value($listid, $paraid, $info, $imgname);
+	}
 	/**
 	 * 写入字段
 	 * @param  string  $lang    语言
@@ -104,6 +116,13 @@ class  parameter_database extends database{
 		return $para_list->del_by_listid($listid);
 	}
 
+	public function delete_list($listid,$paraid,$module)
+	{
+		$para_list = load::mod_class('parameter/parameter_list_database', 'new');
+		$para_list->construct($module);
+		return $para_list->delete_list_value($listid,$paraid);
+	}
+
 	/**
 	 * 获取字段
 	 * @param  string  $lang    语言
@@ -128,18 +147,6 @@ class  parameter_database extends database{
 		$where .= " ) )";
 		$query = "SELECT * FROM {$_M['table']['parameter']} {$where} ORDER BY no_order ASC, id DESC ";
 		$paras = DB::get_all($query);
-		foreach ($paras as $key => $val) {
-			if ($val['type'] == 2 or $val['type'] == 4 or $val['type'] == 6) {
-				if($val['options']){
-					$paras[$key]['para_list'] = explode("$|$", $val['options']);
-					$paras[$key]['para_list']=array_filter($paras[$key]['para_list']);
-				}else{
-					$paras[$key]['para_list'] = $this->get_parameter_list($val['id']);
-				}
-			} else {
-				$paras[$key]['para_list'] = '';
-			}
-		}
 
 		return $paras;
 	}
@@ -193,9 +200,103 @@ class  parameter_database extends database{
 	}
 
 	public function table_para(){
-		return 'id|name|options|description|no_order|type|access|wr_ok|class1|class2|class3|module|lang|wr_oks';
+		return 'id|name|options|description|no_order|type|access|wr_ok|class1|class2|class3|module|lang|wr_oks|related';
 	}
 
+	public function add_parameter($option)
+	{
+		global $_M;
+
+		$query = "SELECT * FROM {$_M['table']['para']} WHERE pid = {$option['pid']} AND value='{$option['value']}' AND module = {$option['module']} AND lang = '{$_M['lang']}'";
+		$para = DB::get_one($query);
+		if($para){
+			return false;
+		}
+
+		$query = "INSERT INTO {$_M['table']['para']} SET pid = {$option['pid']},module={$option['module']},value='{$option['value']}',lang='{$_M['lang']}'";
+		$row = DB::query($query);
+		if(!$row){
+			return false;
+		}
+		return DB::insert_id();
+	}
+
+	public function get_parameters($module,$pid)
+	{
+		global $_M;
+		$query = "SELECT * FROM {$_M['table']['para']} WHERE pid = {$pid} AND module = {$module} AND lang = '{$_M['lang']}' ORDER BY `order` ASC";
+		return DB::get_all($query);
+	}
+
+	public function get_parameter_value($module, $listid, $paraid){
+		global $_M;
+		$query = "SELECT * FROM {$_M['table']['plist']} WHERE listid = '{$listid}' AND module = '{$module}' AND paraid = '{$paraid}'";
+		$list = DB::get_all($query);
+		return $list;
+	}
+
+
+	public function get_para_value($paraid,$info)
+	{
+		$type = self::get_parameter_type($paraid);
+		if($type == 2 || $type == 4 || $type == 6){
+			return self::get_parameter_value_by_id($info);
+		}else{
+			return $info;
+		}
+	}
+
+	public function get_parameter_type($id)
+	{
+		global $_M;
+		$query = "SELECT type FROM {$_M['table']['parameter']} WHERE id = {$id}";
+		$parameter = DB::get_one($query);
+		return $parameter['type'];
+	}
+
+	public function get_parameter_value_by_id($id)
+	{
+		global $_M;
+		$query = "SELECT value FROM {$_M['table']['para']} WHERE id = {$id}";
+		$para = DB::get_one($query);
+		return $para['value'];
+	}
+
+	public function update_para_value($option)
+	{
+		global $_M;
+
+		$query = "UPDATE {$_M['table']['para']} SET value = '{$option['value']}',`order`='{$option['order']}' WHERE id = {$option['id']}";
+		$row = DB::query($query);
+		return $row;
+	}
+
+	public function add_para_value($option)
+	{
+		global $_M;
+		$query = "INSERT INTO {$_M['table']['para']} SET pid = {$option['pid']},module = '{$option['module']}',`order`='{$option['order']}',value='{$option['value']}',lang='{$_M['lang']}'";
+		$res = DB::query($query);
+
+		if($res){
+			return DB::insert_id();
+		}
+
+		return false;
+	}
+
+	public function delete_para_value($pid,$pids=array())
+	{
+		global $_M;
+		if(!empty($pids)){
+			$paraid = implode(',', $pids);
+			$query = "DELETE FROM {$_M['table']['para']} WHERE id NOT IN ($paraid) AND pid = {$pid}";
+			return DB::query($query);
+		}else{
+			$query = "DELETE FROM {$_M['table']['para']} WHERE pid = {$pid}";
+			return DB::query($query);
+		}
+
+	}
 }
 
 # This program is an open source system, commercial use, please consciously to purchase commercial license.

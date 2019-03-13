@@ -19,96 +19,157 @@ define(function(require, exports, module) {
 					extensions: 'gif,jpg,jpeg,bmp,png,svg',//增加文件格式（新模板框架v2）
 					mimeTypes: 'image/*'
 				}
+			}),
+			folder_name='';
+			// 文件上传中
+			uploader.on( 'startUpload', function() {
+				$("#filePicker span.filePicker-txt").html(METLANG.upload_progress_v6+"...");
 			});
 			//文件上传成功时
 			uploader.on( 'uploadSuccess', function( file, response ) {
 				if(response.error!='0'){
 					alert(response.errorcode);
 				}else{
-					var path = siteurl + response.path;
-					var $li = $(
-							'<li title="' + response.name + '" style="background-image:url('+path+');">' +
-								'<div class="check hide" data-value="'+response.original+'" data-path="'+path+'"><i class="fa fa-check"></i></div>' +
-								'<div class="widget-image-meta">'+response.x+'x'+response.y+'</div>' +
-							'</li>'
-						);
-						$("#upimglist").prepend( $li );
+					// 重新加载图片库列表，并跳转到上传的文件夹
+					var folder_name=response.path.replace('upload/','').split('/')[0];
+					imglistlaod(folder_name);
 				}
 			});
-			uploader.on( 'startUpload', function() {
-				$("#filePicker span.filePicker-txt").html("上传中...");
-			});
-			//文件全部上传完成时
+			// 文件全部上传完成时
 			uploader.on( 'uploadFinished', function( file ) {
-				$("#filePicker span.filePicker-txt").html("本地上传");
-				$("div.holder").jPages("destroy").jPages({
-					containerID : "upimglist",
-					perPage :20,
-					previous:'上一页',
-					next:'下一页'
-				});
+				$("#filePicker span.filePicker-txt").html(METLANG.upload_local_v6);
 			});
 		});
 	}
-	//图片列表
-	function imglistlaod(){
-		var set = setInterval(function(){
-			if($("#upimglist").attr('data-ok') == 1){
-				require('epl/upload/jPages.css');
-				require.async('epl/upload/jPages.min',function(){
-					$("div.holder").jPages({
-						containerID : "upimglist",
-						perPage :20,
-						previous:'上一页',
-						next:'下一页'
-					});
+	// 图片列表分页
+	function imglistPage(folder_id){
+		if($("#UploadModal .holder").html()!='') $("#UploadModal .holder").jPages("destroy");
+		$("#UploadModal .holder").jPages({
+			containerID : folder_id,
+			perPage :20,
+			previous:METLANG.back,
+			next:METLANG.next_page,
+			delay:0,
+			fallback:0,
+			callback:function(pages, items){
+				items.showing.each(function(index, el) {
+					if($(this).css('background-image')=='none') $(this).css({'background-image':'url("'+$(this).data('original')+'")'});
 				});
-				if($("#upimglist").attr('data-ok') == 1)clearInterval(set);
 			}
-		},1000);
+		});
+	}
+	// 图片加载完成处理
+	function imglistlaodFun(img_paths,index,name){
+		var name=name||'',
+			location='upload/'+(name?name+'/':''),
+			folder_id='folder-'+index,
+			folder_obj='#'+folder_id,
+			$folder=$(folder_obj);
+		$("#upimglist .folder-warrper").hide();
+		if($folder.length){// 展示需要打开的文件夹
+			$folder.show();
+		}else{// 加载需要打开的文件夹
+			var html='<ul class="folder-warrper clearfix" id="'+folder_id+'">',
+				weburl=siteurl.substring(0,siteurl.length-1);
+			for (var i in img_paths) {
+				if(i!='unique'){
+					if(img_paths[i]['name']){
+						var path = weburl + img_paths[i].path;
+						html += '<li title="'+img_paths[i].name+'" data-original="'+path+'">'
+								+'<div class="check hide" data-value="'+img_paths[i].value+'" data-path="'+path+'"><i class="fa fa-check"></i></div>'
+								+'<div class="widget-image-meta">'+img_paths[i].x+'x'+img_paths[i].y+'</div>'
+								+'</li>';
+					}else{
+						html += '<li class="folder" title="'+METLANG.enter_folder+'" data-original="'+siteurl+'public/images/thumb/folder.png">'
+								+'<div class="widget-image-meta" data-name="'+i+'">请双击'+METLANG.physicalfunction4+'<br>'+i+'</div>'
+								+'</li>';
+					}
+				}
+			}
+			html+='</ul>';
+			$("#upimglist").append(html);
+		}
+		// 图片列表分页
+		var $folder=$(folder_obj);
+		require('epl/upload/jPages.css');
+		require.async('epl/upload/jPages.min',function(){
+			if($("#UploadModal").is(':visible')){
+				imglistPage(folder_id);
+			}else{
+				var inteval=setInterval(function(){
+						if($("#UploadModal").is(':visible')){
+							imglistPage(folder_id);
+							clearInterval(inteval);
+						}
+					},10);
+			}
+		});
+		// 更新显示图片文件夹路径
+		$('#UploadModal .upimglist-location').html(location);
+		// 显示返回上一页按钮
+		if(name){
+			$('#UploadModal .imglist-back').removeClass('hide');
+		}else{
+			$('#UploadModal .imglist-back').addClass('hide');
+		}
+	}
+	// 加载图片列表
+	function imglistlaod(folder_name){
+		$("#upimglist").html('<div class="loader text-center">'+METLANG.fliptext2+'</div>');
 		$.ajax({
 		   type: "POST",
 		   dataType: "json",
 		   url: adminurl+'n=system&c=filept&a=dogetfile',
 		   success: function(obj){
-				var html = '',weburl = siteurl.substring(0,siteurl.length-1);
+				window.imgku_path=[];
+				var folder_array=[];
 				$.each(obj, function (n, value) {
-					var path = weburl + value.path;
-					html += '<li title="'+value.name+'" style="background-image:url('+path+');">';
-					html += '<div class="check hide" data-value="'+value.value+'" data-path="'+path+'"><i class="fa fa-check"></i></div>';
-					html += '<div class="widget-image-meta">'+value.x+'x'+value.y+'</div>';
-					html += '</li>';
+					var path_array=value.path.replace('/upload/','').split('/');
+					if(path_array.length>1){
+						if(!imgku_path[path_array[0]]) imgku_path[path_array[0]]=[];
+						imgku_path[path_array[0]].push(value);
+					}else{
+						imgku_path.push(value);
+					}
 				});
-				$("#upimglist").append(html);
-				$("#upimglist").attr('data-ok', 1);
-		   }
+				for (var i in imgku_path) {
+					if(i!='unique') folder_array.push(i);
+				}
+				var imgku=folder_name?imgku_path[folder_name]:imgku_path,
+					index=folder_name?folder_array.indexOf(folder_name):'all';
+				imglistlaodFun(imgku,index,folder_name);
+				$("#upimglist .loader").remove();
+		   	}
 		});
 	}
 	//图片库
 	function imgku(){
 		//生成模态框
-		var txt = '<div class="modal fade" id="UploadModal" aria-hidden="true">';
-			txt += '	<div class="modal-dialog">';
-			txt += '		<div class="modal-content">';
-			txt += '			<div class="modal-header clearfix" role="tabpanel">';
-			txt += '				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
-			txt += '				<h4>选择图片</h4><button class="btn btn-success" id="filePicker"><span class="filePicker-txt">本地上传</span></button>';
-			txt += '			</div>';
-			txt += '			<div class="modal-body">';
-			txt += '				<div class="tab-content">';
-			txt += '					<ul id="upimglist" class="clearfix"></ul><div class="holder"></div>';
-			txt += '				</div>';
-			txt += '			</div>';
-			txt += '			<div class="modal-footer">';
-			txt += '			<button type="button" class="btn btn-primary">确定</button>';
-			txt += '			<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>';
-			txt += '			</div>';
-			txt += '		</div>';
-			txt += '	</div>';
-			txt += '</div>';
+		var txt = '<div class="modal fade" id="UploadModal" aria-hidden="true">'
+				+'<div class="modal-dialog">'
+					+'<div class="modal-content">'
+						+'<div class="modal-header clearfix" role="tabpanel">'
+							+'<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
+							+'<h4>'+METLANG.upload_selectimg_v6+'</h4>'
+							+'<button class="btn btn-success" id="filePicker"><span class="filePicker-txt">'+METLANG.upload_local_v6+'</span></button>'
+							+'<span class="red tips" style="display: inline-block;margin-top: 5px;margin-left: 10px;">'+METLANG.enter_folder+'</span>'
+						+'</div>'
+						+'<div class="modal-body text-right">'
+							+'<div class="clearfix">'
+								+'<div class="upimglist-location pull-left"></div>'
+								+'<button class="btn btn-warning imglist-back hide"><i class="icon wb-reply" aria-hidden="true"></i>'+METLANG.js55+'</span></button>'
+								+'<button type="button" class="btn btn-default" data-dismiss="modal" style="margin-left:10px;">'+METLANG.jslang2+'</button>'
+								+'<button type="submit" class="btn btn-primary" style="margin-left:10px;">'+METLANG.confirm+'</button>'
+							+'</div>'
+							+'<div id="upimglist" class="clearfix"><div class="loader text-center">'+METLANG.fliptext2+'</div></div>'
+							+'<div class="holder"></div>'
+						+'</div>'
+					+'</div>'
+				+'</div>'
+			+'</div>';
 		$("body").append(txt);
 		//选中图片事件
-		$(document).on('click','#upimglist li',function(){
+		$(document).on('click','#upimglist li:not(.folder)',function(){
 			var dom = $("input[name='"+$("#UploadModal").data("inputname")+"']"),check = $(this).find("div.check"),ok = check.is(':hidden');
 			if(!dom.data('upload-many')){
 				$("#upimglist li div.check").addClass('hide');
@@ -122,7 +183,7 @@ define(function(require, exports, module) {
 			}
 		});
 		//鼠标经过显示隐藏尺寸
-		$(document).on('mouseenter mouseout','#upimglist li',function(){
+		$(document).on('mouseenter mouseout','#upimglist li:not(.folder)',function(){
 			var d = $(this).find('.widget-image-meta'),c=$(this).find('div.check');
 			if(event.type=='mouseover'){
 				d.addClass('hide');
@@ -131,7 +192,7 @@ define(function(require, exports, module) {
 			}
 		});
 		//确定选中图片事件
-		$(document).on('click','#UploadModal .modal-footer button.btn-primary',function(){
+		$(document).on('click','#UploadModal button[type="submit"]',function(){
 			var x = $("#upimglist li div.check:visible"),l = x.length;
 			if(l){
 				var dom = $("input[name='"+$("#UploadModal").data("inputname")+"']");
@@ -144,24 +205,37 @@ define(function(require, exports, module) {
 				imgvalue(dom);
 				$('#UploadModal').modal('hide');
 			}else{
-				alert("请选择图片");
+				alert(METLANG.upload_pselectimg_v6);
 			}
 		});
+		// 打开图片文件夹
+		$(document).on('dblclick','#upimglist li.folder',function(){
+			var name=$('.widget-image-meta',this).data('name');
+			imglistlaodFun(imgku_path[name],$(this).index(),name);
+		});
+		// 返回图片根目录
+		$(document).on('click','#UploadModal .imglist-back',function(){
+			imglistlaodFun(imgku_path,'all');
+		})
 		//点击图片库按钮
 		$(document).on('click','.ftype_upload .app-image-list li.imgku button',function(){
-			$('#UploadModal').modal('show');
-			if(!$("#UploadModal").data("ini")){
+			if($("#UploadModal").data("ini")){
+				if($("#UploadModal").data("reload")){
+					imglistlaod();
+					$("#UploadModal").data("reload",0);
+				}else{
+					$("#UploadModal").data("inputname",$(this).data('name'));
+					$("#upimglist li div.check").addClass('hide');
+					$('#upimglist li .widget-image-meta').removeClass('hide');
+				}
+			}else{
 				imglistlaod();//获取图片列表、分页
 				imgupload();//上传组件加载
 				$("#UploadModal").data("ini",'1').data("inputname",$(this).data('name'));
-			}else{
-				$("#UploadModal").data("inputname",$(this).data('name'));
-				$("#upimglist li div.check").addClass('hide');
-				$('#upimglist li .widget-image-meta').removeClass('hide');
 			}
 		});
 	}
-	/*插入图片*/
+	// 插入图片
 	function imgadd(dom,src,value){
 		// 函数重写（新模板框架v2）
 		var $appimagelist=dom.next().find(".app-image-list"),
@@ -181,7 +255,7 @@ define(function(require, exports, module) {
 			dom.next().find(".app-image-list li.sort:eq("+this.index+") img").attr({'data-size':this.width+'x'+this.height});
 		}
 	}
-	/*重新赋值*/
+	// 重新赋值
 	function imgvalue(dom){
 		var list = dom.next().find('li.sort'),value = '',l = list.length;
 		list.each(function(i){
@@ -189,6 +263,9 @@ define(function(require, exports, module) {
 			value += i>0 ? '|' + vl: vl;
 		});
 		dom.attr('value',value);
+		if($('.product_shop .stock').length) require.async(own+'admin/templates/js/product_shop.js',function(func){
+			func.standard_option();
+		})
 	}
 
 	exports.func = function(e){
@@ -205,12 +282,12 @@ define(function(require, exports, module) {
 				var html = '<div class="picture-list ui-sortable">';
 					html+= '<ul class="js-picture-list app-image-list clearfix">';
 					html+= '<li class="upnow">' +
-							'<div data-name="'+name+'" id="filePicker_'+name+'" class="btn btn-default" style="border-radius:0px"><span class="uptxt">上传</span></div>' +
+							'<div data-name="'+name+'" id="filePicker_'+name+'" class="btn btn-default" style="border-radius:0px"><span class="uptxt">'+METLANG.jsx15+'</span></div>' +
 							'</li>';
 					if($(this).data("upload-type")=='doupimg')html+= '<li class="imgku">';
-					if($(this).data("upload-type")=='doupimg')html+= '<button type="button" data-name="'+name+'" class="btn btn-default">从图片库选择</button>';
+					if($(this).data("upload-type")=='doupimg')html+= '<button type="button" data-name="'+name+'" class="btn btn-default" data-toggle="modal" data-target="#UploadModal">'+METLANG.upload_libraryimg_v6+'</button>';
 					if($(this).data("upload-type")=='doupimg')html+= '</li>';
-					html+= '<li class="add-outside"><button type="button" class="btn btn-default add-outside-btn" data-toggle="popover" data-original-title="" title="">添加外部图片</button>'
+					html+= '<li class="add-outside"><button type="button" class="btn btn-default add-outside-btn" data-toggle="popover" data-original-title="" title="">'+METLANG.upload_extraimglink_v6+'</button>'
 							+'</li>';
 					html+= '</ul>';
 					html+= '</div>';
@@ -218,7 +295,7 @@ define(function(require, exports, module) {
 				dom.parent().find('.picture-list .add-outside-btn').popover({
 					content:function(){
 						return '<div class="ftype_input outside-box">'
-									+'<div class="fbox" style="margin-right:0;"><input type="text" name="outside_img" placeholder="外部图片链接" style="width: 100% !important;margin-bottom: 5px;"/><br /><button type="button" class="btn btn-primary btn-sm outside-ok" style="margin-right:5px;">确定</button><button type="button" class="btn btn-default btn-sm  outside-cancel">取消</a></div>'
+									+'<div class="fbox" style="margin-right:0;"><input type="text" name="outside_img" placeholder="'+METLANG.upload_extraimglink_v6+'" style="width: 100% !important;margin-bottom: 5px;"/><br /><button type="button" class="btn btn-primary btn-sm outside-ok" style="margin-right:5px;">'+METLANG.confirm+'</button><button type="button" class="btn btn-default btn-sm  outside-cancel">'+METLANG.jslang2+'</a></div>'
 								+'</div>';
 					},
 					html:true,
@@ -248,7 +325,7 @@ define(function(require, exports, module) {
 						server: basepath + 'index.php?c=uploadify&m=include&a='+doaction+'&lang='+lang + '&data_key=' +data_key,
 						pick: {
 						id:'#filePicker_'+name,
-						multiple :false
+						multiple :dom.data('upload-many')?true:false,
 						},
 						compress:{
 							width: 2000,
@@ -272,14 +349,15 @@ define(function(require, exports, module) {
 							var path = siteurl + response.path;
 							imgadd(dom,path,response.original);
 							imgvalue(dom);
+							$("#UploadModal").data('reload', 1);
 						}
 					});
 					uploaders.on( 'startUpload', function() {
-						$('#filePicker_'+name+' span.uptxt').html("上传中...");
+						$('#filePicker_'+name+' span.uptxt').html(METLANG.upload_progress_v6+"...");
 					});
 					//文件全部上传完成时
 					uploaders.on( 'uploadFinished', function( file ) {
-						$('#filePicker_'+name+' span.uptxt').html("上传");
+						$('#filePicker_'+name+' span.uptxt').html(METLANG.jsx15);
 					});
 				});
 			}

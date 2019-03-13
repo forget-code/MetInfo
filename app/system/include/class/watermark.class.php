@@ -233,7 +233,8 @@ class watermark {
 		$src_image_w = ImageSX($src_image);
 		$src_image_h = ImageSY($src_image);
 		if ($this->water_mark_type == 'img') {
-			$this->water_image_name = strtolower(trim($this->water_image_name));
+			#$this->water_image_name = strtolower(trim($this->water_image_name));
+			$this->water_image_name = trim($this->water_image_name);
 			$met_image_type = $this->get_type($this->water_image_name);
 			$met_image = $this->createImage($met_image_type,$this->water_image_name);
 			$met_image_w=ImageSX($met_image);
@@ -264,7 +265,9 @@ class watermark {
 		makedir($save_path_water);
 		$save_file = $save_path_water.basename($water_scr_image);
 		if ($save_path_water) {
-			switch ($this->get_type($save_path_water)) {
+            $src_image_type = $this->get_type($save_file);
+            if ($src_image_type == "jpg") $src_image_type="jpeg";
+			switch ($src_image_type) {
 				case 'gif':
 					$src_img = ImagePNG($src_image, $save_file); 
 				break;
@@ -279,7 +282,7 @@ class watermark {
 				break;
 			}
 		} else {
-			if ($src_image_type = "jpg") $src_image_type="jpeg";
+			if ($src_image_type == "jpg") $src_image_type="jpeg";
 			header("Content-type: image/{$src_image_type}");
 			switch ($src_image_type) {
 				case 'gif':

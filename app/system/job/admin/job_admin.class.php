@@ -195,12 +195,13 @@ class job_admin extends message_admin {
 		$query = "SELECT * FROM  {$_M[table][parameter]} where module='{$this->module}' and lang='{$this->lang}' and class1='$class1' order by no_order";
 		$result = DB::query($query);
 		$weburl=$_M[config][weburl];
+		$parameter_database = load::mod_class('parameter/parameter_database', 'new');
 		while($list= DB::fetch_array($result)){
 		$info_list=DB::get_one("select * from {$_M[table][flist]} where listid='$id' and paraid='$list[id]' and lang='{$this->lang}'");
-		$list[content]=$list[type]==5?(($info_list[info]!='../upload/file/')?"<a href='{$weburl}".$info_list[info]."' target='_blank'>{$_M[word][clickview]}</a>":$_M[word][filenomor]):$info_list[info];
+		$list[content]=$list[type]==5?(($info_list[info]!='../upload/file/')?"<a href='{$weburl}".$info_list[info]."' target='_blank'>{$_M[word][clickview]}</a>":$_M[word][filenomor]):$parameter_database->get_para_value($list[id],$info_list[info]);
 		$job_list2[]=$list;
 		}
-        
+
 		// dump($job_list);
 		// exit;
 		$fnam=DB::get_one("SELECT * FROM {$_M[table][column]} WHERE id='$class1' and lang='{$this->lang}'");
@@ -222,6 +223,7 @@ class job_admin extends message_admin {
 					  readok  = '1'
 					  where id='$id'";
 		DB::query($query);
+		$parameter_database = load::mod_class('parameter/parameter_database', 'new');
 		$cv_list=DB::get_one("select * from {$_M[table][cv]} where id='$id'");
 		if(!$cv_list)turnover("{$_M[url][own_form]}",$_M[word][dataerror]);
 		$query = "SELECT * FROM {$_M[table][parameter]} where lang='{$this->lang}' and module=6  order by no_order";
@@ -229,11 +231,12 @@ class job_admin extends message_admin {
 		while($list= DB::fetch_array($result)){
 			$value_list=DB::get_one("select * from {$_M[table][plist]} where paraid=$list[id] and listid=$id ");
 			if($list[type]==5){
-				if($value_list[info]){  
+				if($value_list[info]){
 					$src = $value_list[info];
 					$value_list[info]="<a href='$value_list[info]'>$value_list[info]</a>";
 				}
 			}
+
 			$list[content]=$value_list[info];
 			// if($list[type]==5 && $met_cv_image == $value_list[paraid]){
 			// 	$jobzhaop='../../'.$src;
@@ -363,6 +366,7 @@ class job_admin extends message_admin {
 	function doindex() {
 		global $_M;
 		nav::select_nav(1);
+		$_M['url']['help_tutorials_helpid']='102';
 		$column = $this->column(3,$this->module);
 		require $this->template('own/article_index');
 	}
@@ -410,7 +414,7 @@ class job_admin extends message_admin {
 					case '3':$list['access']=$_M[word][access3];break;
 					default: $list['access']=$_M[word][access0];break;
 				}
-			}	
+			}
 			$list[displaytype1] = $list[displaytype] ? $_M[word][yes] : $_M[word][no];
 			if($list[count]==0)$list[count]=$_M[word][josAlways];
 			if($list[useful_life]==0)$list[useful_life]=$_M[word][josAlways];
@@ -445,6 +449,8 @@ class job_admin extends message_admin {
 	function dojson_list1(){
 		global $_M;
 		$where="lang='{$this->lang}'";
+        $met_cv_showcol = DB::get_one("select * from {$_M[table][config]} where name='met_cv_showcol' and lang='{$_M[form][lang]}' and columnid={$_M[form][class1]}");
+        $met_cv_showcol =$met_cv_showcol['value']?explode('|', $met_cv_showcol['value']):'';
 		if(isset($_M['form']['jobid']) && $_M['form']['jobid']){
            $where.="AND jobid='{$_M['form']['jobid']}'";
 		}
@@ -486,6 +492,7 @@ class job_admin extends message_admin {
 			$job_list[]=$list;
 		}
 		$admininfo = admin_information();
+		$parameter_database = load::mod_class('parameter/parameter_database', 'new');
 		foreach($job_list as $key=>$val){
 			$val['url']   = $this->url($val,$this->module);
 			if($val['readok']==$_M[word][yes]){
@@ -497,10 +504,14 @@ class job_admin extends message_admin {
 			$list = array();
 			$list[] = "<input name=\"id\" type=\"checkbox\" value=\"{$val[id]}\">";
 			$list[] = $val['position'];
-			$list[] = $val['customerid'];
+			#$list[] = $val['customerid'];
 			$list[] = $val['state'];
+            foreach ($met_cv_showcol as $paraid) {
+                $info_list = DB::get_one("select * from {$_M[table][plist]} where listid='{$val['id']}' and paraid='{$paraid}' and lang='{$this->lang}'");
+                $list[] =$info_list['info'];
+            }
 			$list[] = $val['addtime'];
-			$list[] = $val['readok'];
+			// $list[] = $val['readok'];
 			$list[] = "<a href=\"{$_M[url][own_form]}a=doview&id={$val['id']}&class1_select={$class1}&class2_select={$class2}&class3_select={$class3}\" class=\"edit\">{$_M[word][View]}</a><span class=\"line\">-</span><a href=\"{$_M[url][own_form]}a=dolistsave&submit_type=del&allid={$val['id']}&cv=1\" data-toggle=\"popover\" class=\"delet\">{$_M[word][delete]}</a>
 			";
 			$rarray[] = $list;
@@ -651,7 +662,7 @@ class job_admin extends message_admin {
                 }else{
                 	return $this->database->del_by_id($id);
                 }
-			
+
 			// $query = "DELETE FROM {$this->tablename} WHERE id='{$id}'";
 			// DB::query($query);
 		}
@@ -669,9 +680,13 @@ class job_admin extends message_admin {
 		}
 		$met_cv_type1[$_M[config][met_cv_type]]="checked=checked";
 		$met_cv_emtype1[$_M[config][met_cv_emtype]]="checked=checked";
-		$met_cv_back1=($_M[config][met_cv_back])?"checked":"";
+		$met_cv_back1=($_M[config][met_cv_back])?"checked":"";$met_cv_showcol = DB::get_one("select * from {$_M[table][config]} where name='met_cv_showcol' and lang='{$_M[form][lang]}' and columnid={$_M[form][class1]}");
+        $met_cv_showcol = explode('|', $met_cv_showcol['value']);
+        $query = "SELECT * FROM {$_M[table][parameter]} where  lang='{$_M[form][lang]}' and ((module='{$this->module}' and class1='{$_M[form][class1]}') or (module='{$this->module}' and class1='0')) order by no_order";
+        $fbcol = DB::get_all($query);
 		$m_list =DB::get_one("SELECT * FROM {$_M[table][column]} WHERE lang='{$this->lang}' and module='{$this->module}'");
 		$class1 = $m_list['id'];
+		$_M['url']['help_tutorials_helpid']='102#3、招聘模块参数设置';
 	    require $this->template('own/set');
 	}
 
@@ -679,12 +694,29 @@ class job_admin extends message_admin {
 	public function domanageinfo(){
 		global $_M;
 		nav::select_nav(2);
+		$_M['url']['help_tutorials_helpid']='102#4、简历信息管理';
+        $met_cv_showcol = DB::get_one("select * from {$_M[table][config]} where name='met_cv_showcol' and lang='{$_M[form][lang]}' and columnid={$_M[form][class1]}");
+
+        $met_cv_showcol = explode('|', $met_cv_showcol['value']);
+        $query = "SELECT * FROM {$_M[table][parameter]} where  lang='{$_M[form][lang]}' and ((module='{$this->module}' and class1='{$_M[form][class1]}') or (module='{$this->module}' and class1='0')) order by no_order";
+        $paras = DB::get_all($query);
+        $showcol = array();
+        foreach ($met_cv_showcol as $paraid){
+            foreach ($paras as $val ){
+                if($paraid==$val['id']){
+                    $showcol[] = $val;
+                }
+            }
+        }
+
+        $colnum = count($showcol) + 4 ;
 		require $this->template('own/info');
 	}
   /*保存配置*/
 	public function dosaveinc(){
       global $_M;
       $list=$_M[form];
+        $_M['form']['met_cv_showcol'] = implode('|', $_M['form']['met_cv_showcol']);
       $query="select * from {$_M[table][config]} where (lang ='{$this->lang}' or lang ='metinfo')";
       $res=DB::get_all($query);
       foreach ($res as $key => $value) {

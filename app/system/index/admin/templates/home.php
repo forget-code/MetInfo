@@ -21,14 +21,12 @@ if(in_array('metinfo',$arrlanguage)||in_array('1301',$arrlanguage)){
   }else{
    $fubu=0;
   }
-
-
 echo <<<EOT
 -->
    <script>
       function valide(){
 	      if({$langprivelage}){
-            $('#column').attr('href','{$_M[url][site_admin]}index.php?n=column&c=index&anyid=25&lang={$_M[lang]}');
+            $('#column').attr('href','{$_M['url']['adminurl']}n=column&c=index&anyid=25');
 	      }else{
 	        alert("{$_M[word][js81]}");
 	      }
@@ -36,7 +34,7 @@ echo <<<EOT
 
     function information(){
 	    if({$inforprivelage}){
-            $('#information').attr('href','{$_M[url][site_admin]}index.php?n=webset&c=webset&a=doindex&anyid=57&lang={$_M[lang]}');
+            $('#information').attr('href','{$_M['url']['adminurl']}n=webset&c=webset&a=doindex&anyid=57');
 	      }else{
 	        alert("{$_M[word][js81]}");
 	      }
@@ -44,7 +42,7 @@ echo <<<EOT
 
      function fubu(){
 	    if({$fubu}){
-            $('#fubu').attr('href','{$_M[url][site_admin]}index.php?n=content&c=content&a=doadd&anyid=68&lang={$_M[lang]}');
+            $('#fubu').attr('href','{$_M['url']['adminurl']}n=content&c=content&a=doadd&anyid=68');
 	      }else{
 	        alert("{$_M[word][js81]}");
 	      }
@@ -52,16 +50,15 @@ echo <<<EOT
    </script>
 <!--
 EOT;
-
 require $this->template('ui/head');
 echo <<<EOT
 -->
-<link rel="stylesheet" href="{$_M[url][own_tem]}css/metinfo.css?{$jsrand}" />
+<link rel="stylesheet" href="{$_M['url']['own_tem']}css/metinfo.css?{$jsrand}" />
 <script>
 var chartdata = '{$chartdata}';
 var ownlangtxt = {"installations":"{$_M[word][installations]}"};
 </script>
-<!--[if lte IE 8]><script src="{$_M[url][own_tem]}js/excanvas.js"></script><![endif]-->
+<!--[if lte IE 8]><script src="{$_M['url']['own_tem']}js/excanvas.js"></script><![endif]-->
 <input id="met_automatic_upgrade" type="hidden" value="{$_M['config']['met_automatic_upgrade']}" />
 <div class="index_box">
 	<section class="index_point hidden-xs">
@@ -94,7 +91,7 @@ echo <<<EOT
 				<i class="fa fa-angle-right"></i>
 			</li>
 			<li>
-				<a href="{$_M[url][site_admin]}index.php?n=theme&c=theme&a=doindex&anyid=18&lang={$_M[lang]}" target="_blank">
+				<a href="{$_M['url']['adminurl']}n=theme&c=theme&a=doindex&anyid=18" target="_blank">
 					<i class="fa fa-tachometer"></i>
 					{$_M['word']['debug_appearance']}
 				</a>
@@ -111,7 +108,7 @@ echo <<<EOT
 				<div class="bdsharebuttonbox"
 					data-bdUrl="{$_M[config][met_weburl]}"
 					data-bdText="{$_M['word']['sys_use']} MetInfo {$_M['word']['build_site']} {$_M[config][met_weburl]} {$_M['word']['everyone_see']}"
-					data-bdPic="{$_M[url][site]}templates/{$_M[config][met_skin_user]}/view.jpg"
+					data-bdPic="{$_M['url'][site]}templates/{$_M[config][met_skin_user]}/view.jpg"
 					data-tag="share_1">
 					<a href="#" class="bds_more" data-cmd="more">
 						<i class="fa fa-share-alt"></i>{$_M['word']['share_mood']}
@@ -120,15 +117,14 @@ echo <<<EOT
 			</li>
 		</ul>
 	</section>
-
 <!--
 EOT;
 if(!$_M['config']['met_agents_app_news']){
-if(($privilege['navigation'] == 'metinfo' || strstr($privilege['navigation'], '1507')) && $_M['config']['met_agents_app'] ) {
+	if(($privilege['navigation'] == 'metinfo' || strstr($privilege['navigation'], '1507')) && $_M['config']['met_agents_app'] ) {
 echo <<<EOT
 -->
 	<section class="index_hotapp index_hot">
-		<h3>{$_M['word']['recommended']}<a href="{$_M[url][site_admin]}index.php?lang={$_M[lang]}&anyid=65&n=appstore&c=appstore&a=doindex">{$_M['word']['more_applications']}<i class="fa fa-angle-right"></i></a>
+		<h3>{$_M['word']['recommended_tems']}<a href="{$_M['url']['adminurl']}anyid=65&n=appstore&c=appstore&a=doappstore">{$_M['word']['more_applications']}<i class="fa fa-angle-right"></i></a>
 		</h3>
 		<div class="container-fluid">
 			<div class="row">
@@ -225,8 +221,6 @@ echo <<<EOT
 			</div>
 		</div>
 	</section>
-
-
 	<div class="modal fade in" id="adpath" tabindex="-1" data={$adflag} role="dialog" aria-labelledby="functionEncy" aria-hidden="false" style="display: none; padding-left: 17px;">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
@@ -262,14 +256,10 @@ echo <<<EOT
             </div>
         </div>
     </div>
-
-
-
-
 <!--
 EOT;
-}
-if ($_M['config']['met_agents_type'] < 2 && !$_M['config']['met_agents_app_news']) {
+	}
+	if ($_M['config']['met_agents_type'] < 2 && !$_M['config']['met_agents_app_news']) {
 echo <<<EOT
 -->
 	<section class="index_news">
@@ -279,7 +269,7 @@ echo <<<EOT
 	</section>
 <!--
 EOT;
-}
+	}
 }
 echo <<<EOT
 -->

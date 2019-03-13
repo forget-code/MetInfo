@@ -42,19 +42,19 @@ echo <<<EOT
 	<dl>
 		<dt>{$_M[word][seotips6]}</dt>
 		<dd>
-			index-{$_M[word][langmark]}.html（{$_M[word][seotips7]}{$_M['word']['marks']}index-cn.html）
+			index-{$_M[word][langmark]}.html({$_M[word][seotips7]}{$_M['word']['marks']}index-cn.html)
 		</dd>
 	</dl>
 	<dl>
 		<dt>{$_M[word][setskinListPage]}</dt>
 		<dd>
-			{$_M[word][columndocument]}/list-{$_M[word][seotips8]}-{$_M[word][langmark]}.html（{$_M[word][seotips7]}{$_M['word']['marks']}product/list-1-cn.html）
+			{$_M[word][columndocument]}/list-{$_M[word][seotips8]}-{$_M[word][langmark]}.html({$_M[word][seotips7]}{$_M['word']['marks']}product/list-1-cn.html)
 		</dd>
 	</dl>
 	<dl>
 		<dt>{$_M[word][seotips9]}</dt>
 		<dd>
-			{$_M[word][columndocument]}/{$_M[word][seotips8]}-{$_M[word][langmark]}.html（{$_M[word][seotips7]}{$_M['word']['marks']}product/100-cn.html）
+			{$_M[word][columndocument]}/{$_M[word][seotips8]}-{$_M[word][langmark]}.html({$_M[word][seotips7]}{$_M['word']['marks']}product/100-cn.html)
 		</dd>
 	</dl>
 	<dl>

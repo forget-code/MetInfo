@@ -174,7 +174,7 @@
 .set-pageset-nav .ui-item .media-left{width: 80px;}
 .set-pageset-nav .ui-item h4{padding:5px;font-size: 16px;}
 .set-pageset-nav .ui-item .media-body p{
-    margin-top: 5px;color: #999;
+    margin-top: 5px;color: #999;line-height: 1.5;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;

@@ -179,11 +179,13 @@ class admin_admin extends admin {
 		global $_M;
 		$alist['admin_name'] = $_M['form']['admin_name'];
 		$admin = $this->database->get_list_one_by_id($_M['form']['id']);
-		if($admin['admin_pass'] != $list['admin_pass'] && $_M['form']['admin_pass']){
-			$alist['admin_pass'] = md5($_M['form']['admin_pass']);
-		}
-		if($this->update_list_sql($alist, $_M['form']['id'])){
-			turnover("{$_M[url][own_form]}a=doindex");
+        if(empty($_M['form']['admin_pass']) || $admin['admin_pass'] == md5($_M['form']['admin_pass'])){
+            $alist['admin_pass'] = $admin['admin_pass'];
+        }else{
+            $alist['admin_pass'] = md5($_M['form']['admin_pass']);
+        }
+        if($this->update_list_sql($alist, $_M['form']['id'])){
+            turnover("{$_M[url][own_form]}a=doindex");
 		}else{
 			turnover("{$_M[url][own_form]}a=doindex","{$_M['word']['dataerror']}");
 		}
@@ -263,6 +265,7 @@ class admin_admin extends admin {
 	function dojson_list(){
 		global $_M;
 		if($_M['form']['keyword'])$where = " admin_id like '%{$_M['form']['keyword']}%' ";
+        $order = '';
 		$userlist = $this->database->table_json_list($where, $order);
 		foreach($userlist as $key=>$val){
 			$list = array();
@@ -312,23 +315,23 @@ class admin_admin extends admin {
 		switch ($aid) {
 			case 0:
                 //自定义管理员
-				$str = $_M['wprd']['managertyp5'].$_M['wprd']['metadmin'];
+				$str = $_M['word']['managertyp5'].$_M['word']['metadmin'];
 			break;
 			case 1:
                 //内容管理员
-				$str = $_M['wprd']['managertyp4'];
+				$str = $_M['word']['managertyp4'];
 			break;
 			case 2:
 				//优化推广专员
-				$str = $_M['wprd']['managertyp3'];
+				$str = $_M['word']['managertyp3'];
 			break;
 			case 3:
                 //管理员
-				$str =  $_M['wprd']['metadmin'];
+				$str =  $_M['word']['metadmin'];
 			break;
 			case 10000:
                 //创始人
-				$str = $_M['wprd']['managertyp1'];
+				$str = $_M['word']['managertyp1'];
 			break;
 		}
 		return $str;

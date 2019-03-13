@@ -7,7 +7,7 @@ echo <<<EOT
 -->
 <div class="dropup pull-left" style="margin-left:5px;">
   <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">
-    状态修改 
+    {$_M[word][modistauts]}
 	<span class="caret"></span>
   </button>
   <ul class="dropdown-menu list-type-update" role="menu">

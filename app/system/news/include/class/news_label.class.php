@@ -31,25 +31,7 @@ class news_label extends base_label {
 	 */
 	public function get_module_list($id, $rows, $type, $order) {
 		global $_M;
-		//搜索信息
-		// list($search_type, $search_order) = $this->search();
-		// if($search_type){
-		// 	$type = $search_type;
-		// }
-		// if($search_order){
-		// 	$order = $search_order;
-		// }
-		// switch ($type) {
-		// 	case 'time':
-		// 		$order = 1;
-		// 	break;
-		// 	case 'hits':
-		// 		$order = 3;
-		// 	break;		
-		// 	default:
-		// 		$order = '';
-		// 	break;
-		// }
+
 		if(!$type)$type = 'all';
 		return $this->handle->para_handle(
 			$this->database->get_list_by_class($id, 0, $rows, $type, $order)
@@ -72,14 +54,14 @@ class news_label extends base_label {
 		$rows  = $this->page_num;
 		//搜索信息
 		$search = $this->search();
-		if($search['type']){
-			$type = $search['type'];
-		}
-		if($search['order']){
-			$order = $search['order'];
-		}
-		if(!$type)$type = 'all';
-		return $this->handle->para_handle(
+        if($search['type']){
+            $type = $search['type'];
+        }
+        if($search['order']){
+            $order = $search['order'];
+        }
+        if(!$type)$type = 'all';
+        return $this->handle->para_handle(
 			$this->database->get_list_by_class($id, $start, $rows, $type, $order)
 		);
 	}
@@ -176,6 +158,7 @@ class news_label extends base_label {
 
 		if($para == 1){
 			$one['para'] = load::mod_class('parameter/parameter_label', 'new')->get_parameter_contents($this->mod , $id, $one['class1'], $one['class2'], $one['class3']);
+			$one['para_url'] = load::mod_class('parameter/parameter_label', 'new')->get_parameter_contents($this->mod , $id, $one['class1'], $one['class2'], $one['class3'],10);
 		}
 
 		$class = $one['class3'] ? $one['class3'] : ($one['class2'] ? $one['class2'] : $one['class1']);
@@ -193,7 +176,12 @@ class news_label extends base_label {
 				$list['name'] = $val;
 				$urlval = urlencode($val);
 				if($_M['config']['met_pseudo'] || $_M['config']['met_pseudo']){
-					$list['url'] = "../tag/{$urlval}-{$_M['lang']}";
+					if($_M['config']['met_defult_lang']){
+						$list['url'] = "../tag/{$urlval}-{$_M['lang']}";
+					}else{
+						$list['url'] = "../tag/{$urlval}";
+					}
+
 				}else{
 					$list['url'] = "../search/search.php?searchtype=0&searchword={$urlval}&lang={$_M['lang']}";
 				}

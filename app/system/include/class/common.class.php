@@ -82,8 +82,8 @@ class common {
 	protected function load_lang() {
 		global $_M;
 		$query = "SELECT * FROM {$_M['config']['tablepre']}lang ORDER BY no_order";
-		$result = DB::query($query);
-		while ($list_config = DB::fetch_array($result)) {
+		$result = DB::get_all($query);
+		foreach ($result as $list_config) {
 			$list_config['order'] = $list_config['no_order'];
 			if ($list_config['lang'] == 'metinfo') {
 				$_M['langlist']['admin'][$list_config['mark']] = $list_config;
@@ -91,6 +91,13 @@ class common {
 				$_M['langlist']['web'][$list_config['mark']] = $list_config;
 			}
 		}
+
+        $query = "SELECT * FROM {$_M['config']['tablepre']}lang_admin ORDER BY no_order";
+        $result = DB::get_all($query);
+        foreach ($result as $list_config) {
+            $list_config['order'] = $list_config['no_order'];
+			$_M['langlist']['admin'][$list_config['mark']] = $list_config;
+        }
 	}
 
 	/**
@@ -100,6 +107,7 @@ class common {
 		global $_M;
 
 		$this->load_config('metinfo');
+		$this->load_app_config('metinfo');
 
 		$_M['config']['met_webkeys'] = trim(file_get_contents(PATH_WEB.'/config/config_safe.php'));
 		$_M['config']['met_webkeys'] = str_replace('<?php/*', '', $_M['config']['met_webkeys']);
@@ -138,6 +146,7 @@ class common {
 			die();
 		}
 		$this->load_config($_M['lang']);
+		$this->load_app_config($_M['lang']);
 	}
 
 	/**
@@ -148,6 +157,23 @@ class common {
 		global $_M;
 		if($columnid)$sql = " AND columnid = '{$columnid}'";
 		$query = "SELECT * FROM {$_M['config']['tablepre']}config WHERE lang='{$lang}' {$sql}";
+		$result = DB::get_all($query);
+
+		foreach ($result as $value) {
+			$_M['config'][$value['name']] = $this->filter_config($value['value']);
+		}
+
+		if($_M['form']['pageset']){
+			$_M['config']['debug'] = true;
+		}
+	}
+
+	/**
+	  * 获取网站的应用设置，存放在$_M['config']，网站设置数组
+	  */
+	protected function load_app_config($lang) {
+		global $_M;
+		$query = "SELECT * FROM {$_M['config']['tablepre']}app_config WHERE lang='{$lang}'";
 		$result = DB::get_all($query);
 
 		foreach ($result as $value) {
@@ -169,7 +195,8 @@ class common {
 	  */
 	protected function load_url() {
 		global $_M;
-
+		//来源页面
+		define('HTTP_REFERER', sqlinsert($_SERVER['HTTP_REFERER']));
 		$this->load_url_other();
 		$this->load_url_unique();
 	}
@@ -218,16 +245,15 @@ class common {
 	protected function load_url_other() {
 		global $_M;
 		$_M['url']['entrance'] = $_M['url']['site'].'app/system/entrance.php';
-		if(M_TYPE == 'system'){
-			$_M['url']['own'] = $_M['url']['site'].'app/'.M_TYPE.'/'.M_MODULE.'/'.M_NAME.'/';
-			//$_M['url']['module'] = $_M['url']['site'].'app/'.M_TYPE.'/'.M_MODULE.'/';
-		}else{
-			$_M['url']['own'] = $_M['url']['site'].'app/'.M_TYPE.'/'.M_NAME.'/';
-		}
+		$_M['url']['own'] = $_M['url']['site'].'app/'.M_TYPE.'/'.M_NAME.'/'.M_MODULE.'/';
+		$_M['url']['own_tem']=$_M['url']['own'].'templates/'.(M_MODULE=='web'?'met/':'');
 		$_M['url']['app'] = $_M['url']['site'].'app/app/';
 		$_M['url']['pub'] = $_M['url']['site'].'app/system/include/public/';
 		$_M['url']['static'] = $_M['url']['site'].'app/system/include/static/';
+		$_M['url']['static2'] = $_M['url']['site'].'app/system/include/static2/';
+		$_M['url']['ui_v2'] = $_M['url']['site'].'public/ui/v2/';
 		$_M['url']['api'] = 'https://'.$_M['config']['met_host'].'/'."index.php?lang=".$_M['lang'].'&';
+		$_M['url']['app_api'] = $_M['url']['api'].'n=platform&c=platform&';
 	}
 
 	/**
@@ -267,41 +293,42 @@ class common {
         global $_M;
         $langtype = $site ? 'admin_' : '';
         $json_cache = PATH_CACHE.'lang_json_'.$langtype.$lang.'.php';
+         $query = "SELECT * FROM {$_M['table']['language']} WHERE lang='{$lang}' AND site='{$site}'";
         if(!file_exists($json_cache)){
-            $query = "SELECT * FROM {$_M['table']['language']} WHERE lang='{$lang}' AND site='{$site}'";
-            $result = DB::query($query);
-            while ($listlang = DB::fetch_array($result)) {
-                $_M['word'][$listlang['name']] = trim($listlang['value']);
-            }
-            if($_M['form']['pageset'] == 1){
-                $result = DB::get_all($query);
-                foreach ($result as $value) {
-                    $_M['word'][$value['name']] = trim($value['value']);
-                }
-            }
-            if (!$_M[form][pageset]) {
-                file_put_contents($json_cache, jsonencode($_M['word']));
+            if(!$_M['form']['pageset']){
+            	$result = DB::query($query);
+	            while ($listlang = DB::fetch_array($result)) {
+	                $_M['word'][$listlang['name']] = trim($listlang['value']);
+	            }
+            	file_put_contents($json_cache, jsonencode($_M['word']));
             }
         }else{
             $langjson = file_get_contents($json_cache);
             $_M[word] = json_decode($langjson,true);
         }
 
-        //生成js语言文件  app字段为1则为js语言
+        if($_M['form']['pageset']){
+        	// 如果是可视化 语言就走过滤流程
+            $result = DB::get_all($query);
+            foreach ($result as $value) {
+                $_M['word'][$value['name']] = trim($value['value']);
+            }
+        }
+        //生成js语言文件  app或者array字段为1则为js语言
         $langtype = $site ? 'admin_' : '';
         $js_lang_cache = PATH_CACHE.'lang_json_'.$langtype.$lang.'.js';
         if(!file_exists($js_lang_cache)){
-            $query = "SELECT * FROM {$_M['table']['language']} WHERE lang='{$lang}' AND app=1 AND site='{$site}'";
+
+            $query = "SELECT * FROM {$_M['table']['language']} WHERE lang='{$lang}' AND (app=1 OR array=1) AND site='{$site}'";
+
             $result = DB::query($query);
             while ($listlang = DB::fetch_array($result)) {
                 $_M['jsword'][$listlang['name']] = trim($listlang['value']);
             }
-            $jslang = 'window.METLANG = ';
-            $jslang .= jsonencode($_M['jsword'] );
-            if (!$_M[form][pageset]) {
-                file_put_contents($js_lang_cache, $jslang);
-            }
 
+	        $jslang = 'window.METLANG = ';
+            $jslang .= jsonencode($_M['jsword']);
+            file_put_contents($js_lang_cache, $jslang);
         }
 	}
 

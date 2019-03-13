@@ -13,7 +13,7 @@ echo <<<EOT
 	<input name="met_deleteimg" type="hidden" value=0 />
 	<input name="met_img_rename" type="hidden" value=0 />
 	<div class="v52fmbx">
-		<h3 class="v52fmbx_hr metsliding" sliding="2">{$_M[word][unitytxt_5]}</h3>
+		<h3 class="v52fmbx_hr metsliding" sliding="2">{$_M[word][safety_efficiency]}</h3>
 		<div class="metsliding_box metsliding_box_2">
 			<div class="v52fmbx">
 				<dl>
@@ -37,18 +37,7 @@ echo <<<EOT
 				</dl>
 			</div>
 		</div>
-		<h3 class="v52fmbx_hr metsliding">{$_M[word][automatic_upgrade_mark]}</h3>
-		<div class="v52fmbx">
-			<dl>
-				<dt >{$_M[word][automatic_upgrade]}{$_M[word][marks]}</dt>
-				<dd class="ftype_radio">
-				<div class="fbox">
-					<label><input name="met_automatic_upgrade" type="radio" value="1" $met_automatic_upgrade1[1] >{$_M[word][open]}</label>
-					<label><input name="met_automatic_upgrade" type="radio" value="0" $met_automatic_upgrade1[0] >{$_M[word][close]}</label>
-				</div>
-				</dd>
-			</dl>
-		</div>
+
 <!--
 EOT;
 $fmsnone = 'none';

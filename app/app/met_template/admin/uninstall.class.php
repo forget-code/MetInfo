@@ -20,7 +20,7 @@ class uninstall extends admin{
      */
     public function dodel(){
         global $_M;
-        turnover("{$_M['url']['own_form']}a=doindex","系统应用不允许删除");
+        turnover("{$_M['url']['own_form']}a=doindex","{$_M['word']['met_template_nodelet']}");
         // $del_applist = "DELETE FROM {$_M['table']['applist']} WHERE no = {$this->appno}";
         // DB::query($del_applist);
 

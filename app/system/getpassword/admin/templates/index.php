@@ -1,6 +1,7 @@
 <!--<?php
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. .
+
 echo <<<EOT
 -->
 <title>{$_M[word][getTip5]} - {$_M[word][metinfo]}</title>
@@ -9,12 +10,23 @@ echo <<<EOT
 <link rel="stylesheet" type="text/css" href="{$_M[url][own_tem]}/css/own.css">
 <div id="adminbacktype">
 	<div class="lo">
-	<a href="http://www.metinfo.cn" style="font-size:0px;" target="_blank" title="{$_M[word][metinfo]}">
+EOT;
+if($_M['config']['met_agents_linkurl']){
+echo <<<EOT
+    <a href="{$_M['config']['met_agents_linkurl']}" style="font-size:0px;" target="_blank" title="{$_M[word][metinfo]}">
+EOT;
+}else{
+    echo <<<EOT
+    <a href="http://www.metinfo.cn" style="font-size:0px;" target="_blank" title="{$_M[word][metinfo]}">
+EOT;
+}
+echo <<<EOT
+	<!--<a href="http://www.metinfo.cn" style="font-size:0px;" target="_blank" title="{$_M[word][metinfo]}">-->
 		<img src="{$_M[config][met_agents_logo_login]}" alt="{$_M[word][metinfo]}" title="{$_M[word][metinfo]}" />
 	</a>
 	</div>
 	<p class="desc round">{$description}</p>
-	<form method='post' action='{$_M[url][own_form]}a=dogetpassword' class="round shadow">
+	<form method='post' action='{$_M[url][own_form]}a=dogetpassword&langset={$_M[form][langset]}' class="round shadow">
 <!--
 EOT;
 if($action=='next1'){

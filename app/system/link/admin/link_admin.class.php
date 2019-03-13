@@ -28,6 +28,7 @@ class link_admin extends base_admin {
 		$this->database = load::mod_class('link/link_database', 'new');
 		$this->tabledata = load::sys_class('tabledata', 'new');
 		//$this->database->construct('new');
+		$_M['url']['help_tutorials_helpid']='113';
 	}
 
 	/**
@@ -60,6 +61,7 @@ class link_admin extends base_admin {
 	 */
 	public function doaddsave() {
 		global $_M;
+
 		if($this->insert_list($_M['form'])){
 			// if(1){
 			// 	turnover("./content/article/save.php?lang={$_M['lang']}&action=html&class1_select={$_M['form']['class1_select']}&class2_select={$_M['form']['class2_select']}&class3_select={$_M['form']['class3_select']}");
@@ -158,7 +160,7 @@ class link_admin extends base_admin {
             $errorno = $this->moduleclass->errorno=='error_filename_cha'?$_M[word][js74]:$_M[word][js73];
 			echo '0|'.$errorno;
 		}else{
-			echo '1|名称可用';
+			echo '1|'.$_M[word][js75];
 		}
 	}
 
@@ -183,30 +185,14 @@ class link_admin extends base_admin {
 	 */
 	function doeditorsave() {
 		global $_M;
-
-		// $query = "INSERT INTO $met_link SET
-		// 	  webname              = '$webname',
-		// 	  info                 = '$info',
-		// 	  link_type            = '$link_type',
-		// 	  weburl               = '$weburl',
-		// 	  weblogo              = '$weblogo',
-		// 	  contact              = '$contact',
-		// 	  orderno              = '$orderno',
-		// 	  com_ok               = '$com_ok',
-		// 	  show_ok              = '$show_ok',
-		// 	  lang                 = '$lang',
-		// 	  addtime              = '$m_now_date'";
-	 //   DB::query($query);
 		$_M['form']['addtime'] = $_M['form']['addtype']==2?$_M['form']['addtime']:date("Y-m-d H:i:s");
+		if(!$_M['form']['nofollow']){
+			$_M['form']['nofollow'] = '';
+		}
 		if($this->update_list($_M['form'],$_M['form']['id'])){
-			//if($_M['config']['met_webhtm'] == 2 && $_M['config']['met_htmlurl'] == 0){
-			// if(1){
-			// 	turnover("./content/article/save.php?lang={$_M['lang']}&action=html&class1_select={$_M['form']['class1_select']}&class2_select={$_M['form']['class2_select']}&class3_select={$_M['form']['class3_select']}");
-			// }else{
 			 	turnover("{$_M[url][own_form]}a=doindex");
-			// }
 		}else{
-			turnover("{$_M[url][own_form]}a=doindex",'数据错误');
+			turnover("{$_M[url][own_form]}a=doindex","{$_M[word][dataerror]}");
 		}
 
 	}
@@ -294,6 +280,7 @@ class link_admin extends base_admin {
 		// 	WHERE id='{$id}'
 		// ";
 		// DB::query($query);
+
 		return $this->database->update_by_id($list);
 		//return true;
 	}
@@ -366,18 +353,14 @@ class link_admin extends base_admin {
 		    $link_list[]=$list;
 		 }
 
-		// 	$message_list[]=$list;
-		// }
 		$admininfo = admin_information();
 
-		// dump($result);
-		// exit;
 		foreach($link_list as $key=>$val){
 			$val['url']   = $this->url($val,$this->module);
 			if($val[readok]==$_M[word][yes]){
-				$val['state']='<span class="label label-default">已阅读</span>';
+				$val['state']='<span class="label label-default">'.$_M[word][read].'</span>';
 			}else{
-			    $val['state']='<span class="label label-default">未阅读</span>';
+			    $val['state']='<span class="label label-default">'.$_M[word][unread].'</span>';
 			}
 			$list = array();
 			$list[] = "<input name=\"id\" type=\"checkbox\" value=\"{$val[id]}\">";
@@ -385,10 +368,9 @@ class link_admin extends base_admin {
 			$list[] = $val['link_type'];
 			$list[] = $val['webname'];
 			$list[] = $val['weburl'];
-			$list[] =$val['email'];
 			$list[] = $val['show_ok'];
 			$list[] = $val['com_ok'];
-			$list[] = "<a href=\"{$_M[url][own_form]}a=doeditor&id={$val['id']}&class1_select={$class1}&class2_select={$class2}&class3_select={$class3}\" class=\"edit\">编辑</a><span class=\"line\">-</span><a href=\"{$_M[url][own_form]}a=dolistsave&submit_type=del&allid={$val['id']}\" data-toggle=\"popover\" class=\"delet\">删除</a>
+			$list[] = "<a href=\"{$_M[url][own_form]}a=doeditor&id={$val['id']}&class1_select={$class1}&class2_select={$class2}&class3_select={$class3}\" class=\"edit\">{$_M[word][editor]}</a><span class=\"line\">-</span><a href=\"{$_M[url][own_form]}a=dolistsave&submit_type=del&allid={$val['id']}\" data-toggle=\"popover\" class=\"delet\">{$_M[word][delete]}</a>
 			";
 			$rarray[] = $list;
 		}

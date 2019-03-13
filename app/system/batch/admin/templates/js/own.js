@@ -8,7 +8,7 @@ define(function(require, exports, module) {
     $("#class1select").change(function(){
         var $class1 = $(this).val();
         var $class2opt = $("#class2select");
-        $class2opt.html("<option value=''>二级栏目</option>");
+        $class2opt.html("<option value=''>{$_M[word][modClass2]}</option>");
             $.ajax({
              url: url+'&a=do_get_class2'+'&id='+$class1,
              type: 'POST',
@@ -17,11 +17,11 @@ define(function(require, exports, module) {
                      if(result){
                          $class2opt.append(result);
                          var $class3opt = $("#class3select");
-                         $class3opt.html("<option value=''>三级栏目</option>");
+                         $class3opt.html("<option value=''>{$_M[word][modClass3]}</option>");
                      }else{
-                         $class2opt.html("<option value=''>二级栏目</option>");
+                         $class2opt.html("<option value=''>{$_M[word][modClass2]}</option>");
                          var $class3opt = $("#class3select");
-                         $class3opt.html("<option value=''>三级栏目</option>");
+                         $class3opt.html("<option value=''>{$_M[word][modClass3]}</option>");
                      }
                  }
              });
@@ -31,7 +31,7 @@ define(function(require, exports, module) {
     $("#class2select").change(function(){
         var $class1 = $(this).val();
         var $class3opt = $("#class3select");
-        $class3opt.html("<option value=''>三级栏目</option>");
+        $class3opt.html("<option value=''>{$_M[word][modClass3]}</option>");
         $.ajax({
             url: url+'&a=do_get_class3'+'&id='+$class1,
             dataType: 'POST',
@@ -40,7 +40,7 @@ define(function(require, exports, module) {
                 if(result){
                     $class3opt.append(result);
                 }else{
-                    $class3opt.html("<option value=''>三级栏目</option>");
+                    $class3opt.html("<option value=''>{$_M[word][modClass3]}</option>");
 
                 }
             }
@@ -60,11 +60,10 @@ define(function(require, exports, module) {
             success: function(result) {
                 if(result.code==0){
                     $("#quantity").css('display','');
-                    $("#quantity span").html('生成水印，已更新' + result.message + '条记录');
+                    $("#quantity span").html("{$_M[word][batch_descript1_v6]}" + result.message + "{$_M[word][records]}");
                 }else{
-                    console.log('请求数据错误');
                     $("#quantity").css('display','');
-                    $("#quantity span").html('请选择栏目');
+                    $("#quantity span").html("{$_M['word']['please_select']");
                 }
             }
         });
@@ -84,11 +83,10 @@ define(function(require, exports, module) {
             success: function(result) {
                 if(result.code==0){
                     $("#quantity").css('display','');
-                    $("#quantity span").html('取消水印，已更新' + result.message + '条记录');
+                    $("#quantity span").html("{$_M['word']['batch_descript1_v6']}" + result.message + "{$_M[word][records]}");
                 }else{
-                    console.log("请求数据错误");
                     $("#quantity").css('display','');
-                    $("#quantity span").html('请选择栏目');
+                    $("#quantity span").html("{$_M['word']['please_select']");
                 }
             }
         });
@@ -109,11 +107,10 @@ define(function(require, exports, module) {
             success: function(result) {
                 if(result.code==0){
                     $("#quantity").css('display','');
-                    $("#quantity span").html('缩略图生产，已更新' + result.message + '条记录');
+                    $("#quantity span").html("{$_M[word][batch_descript3_v6]}" + result.message + "{$_M[word][records]}");
                 }else{
-                    console.log("请求数据错误");
                     $("#quantity").css('display','');
-                    $("#quantity span").html('请选择栏目');
+                    $("#quantity span").html("{$_M['word']['please_select']");
                 }
             }
         });

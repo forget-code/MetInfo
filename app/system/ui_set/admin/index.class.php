@@ -56,9 +56,12 @@ class index extends admin {
 		$iframesrc = $_M['form']['iframesrc']?$_M['form']['iframesrc']:$iframesrc;
 		$query="select * from {$_M[table][applist]} where display='2'";
 		$app=DB::get_all($query);
-		foreach ($app as $key => $value) {
-			$value['url'] = $_M['url']['adminurl']."n={$value['m_name']}&c={$value['m_class']}&a={$value['m_action']}";
-			$applist[] = $value;
+        $apphandle = load::mod_class('ui_set/class/config_app.class.php','new');
+        foreach ($app as $key => $value) {
+            $value['url'] = $_M['url']['adminurl']."n={$value['m_name']}&c={$value['m_class']}&a={$value['m_action']}";
+            $appname = $apphandle->standard($value);
+            $value['appname'] = $appname['appname'];
+            $applist[] = $value;
 		}
 
         //后台安全提示框
@@ -70,6 +73,7 @@ class index extends admin {
             }
             $arr1 = explode( '/',trim($_M['url']['site_admin'],'/'));
             $adfile = end($arr1);
+            unset($arr1[1]);
             foreach ($arr1 as $val) {
                 if($val == $_M['config']['met_keywords'] || $val == 'admin' ){
                     $adflag = 1;
@@ -85,7 +89,7 @@ class index extends admin {
         }
         load::app_class('met_template/admin/class/UI','new')->adminnav();
 		if($_GET['pageset']){
-			require $this->template('own/pageset/pageset');
+			require $this->template('own/pageset');
 		}else{
 			require $this->template('own/index');
 		}
@@ -159,6 +163,7 @@ class index extends admin {
 				turnover("{$_M['url']['own_name']}c=index&a=doindex",$_M[word][jsok]);
 			}else{
 				$this->config->save_config($_M['form']);
+				self::doclear_cache();
 				echo jsonencode(array('status'=>1));die;
 			}
 		}
@@ -590,7 +595,7 @@ class index extends admin {
 	 */
 	public function doset_icon(){
 		global $_M;
-		require $this->template('tem/set_icon');
+		require $this->view('app/set_icon');
 	}
 
 	/**
@@ -600,7 +605,11 @@ class index extends admin {
 	public function doset_pageset_nav(){
 		global $_M;
 		$query="select * from {$_M[table][applist]}";
-		$applist=DB::get_all($query);
+        $list=DB::get_all($query);
+        $apphandle = load::mod_class('ui_set/class/config_app.class.php','new');
+        foreach ($list as $value) {
+            $applist[] =$apphandle->standard($value);
+        }
 		require $this->template('tem/set_pageset_nav');
 	}
 
@@ -624,7 +633,7 @@ class index extends admin {
 	 */
 	public function dofunction_ency(){
 		global $_M;
-		require $this->template('tem/function_ency');
+		require $this->view('sys_admin/head_v2');
 	}
 
 }

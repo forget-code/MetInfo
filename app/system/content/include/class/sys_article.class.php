@@ -17,24 +17,7 @@ class sys_article extends module {
 		$this->tablename = $_M['table']['news'];
 		$this->module = 2;
 	}
-	// public function json_list($where, $order){
-	// 	global $_M;
-	// 	$this->table = load::sys_class('tabledata', 'new');
-	// 	$where = "lang='{$_M['lang']}' and (recycle = '0' or recycle = '-1') {$where}";
-	// 	$data = $this->table->getdata($this->tablename, '*', $where, $order);
-	// 	return $data;
-	// }
-	// public function json_return($data){
-	// 	global $_M;
-	// 	$this->table->rdata($data);
-	// }
-	// /*读取*/
-	// public function get_list($id){
-	// 	global $_M;
-	// 	$query = "SELECT * FROM {$this->tablename} WHERE id='{$id}'";
-	// 	$list = DB::get_one($query);
-	// 	return $list;
-	// }
+	
 	/*复制*/
 	public function list_copy($id,$class1,$class2,$class3){
 		global $_M;

@@ -20,9 +20,11 @@ echo <<<EOT
   </ul>
 </div>
 <div class="dropup pull-left" style="margin-left:5px;">
+  <button class="btn btn-default dropdown-toggle" type="button" name="move" data-toggle="dropdown" aria-expanded="true">
+    {$_M[word][columnmove1]}
+  <span class="caret"></span>
   </button>
   <ul class="dropdown-menu list-type-update" data-type="move" role="menu" >
-	
 <!--
 EOT;
 require $this->template('own/mod_column');

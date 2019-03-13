@@ -13,12 +13,12 @@ echo <<<EOT
 		<thead>
 			<tr>
 				<th width="20" data-table-columnclass="met-center"><input name="id" data-table-chckall="id" type="checkbox" value="" /></th>
-				<th width="40" data-table-columnclass="met-center">排序</th>
-				<th>名称</th>
-				<th width="80" data-table-columnclass="met-center">字段类型</th>
-				<th width="60" data-table-columnclass="met-center"><abbr title="不勾选则注册页面不显示，但是可以在用户个人资料中修改">注册时显示</abbr></th>
-				<th width="40" data-table-columnclass="met-center">必填</th>
-				<th width="240" ><abbr title="提示文字在注册页面不显示，仅修改个人资料处显示">提示文字</abbr></th>
+				<th width="40" data-table-columnclass="met-center">{$_M[word][sort]}</th>
+				<th>{$_M[word][paraname]}</th>
+				<th width="80" data-table-columnclass="met-center">{$_M[word][parametertype]}</th>
+				<th width="60" data-table-columnclass="met-center"><abbr title="{$_M[word][user_tips19_v6]}">{$_M[word][user_Regdisplay_v6]}</abbr></th>
+				<th width="40" data-table-columnclass="met-center">{$_M[word][user_must_v6]}</th>
+				<th width="240" ><abbr title="{$_M[word][user_tips20_v6]}">{$_M[word][user_Hintext_v6]}</abbr></th>
 				<th>操作</th>
 			</tr>
 		</thead>
@@ -28,9 +28,9 @@ echo <<<EOT
 			<tr>
 				<th><input name="id" type="checkbox" data-table-chckall="id" value=""></th>
 				<th colspan="7" class="formsubmit">
-					<input type="submit" name="save" value="保存" class="submit" />
+					<input type="submit" name="save" value="{$_M[word][save]}" class="submit" />
 					<input type="submit" name="del" value="{$_M['word']['delete']}" class="submit" data-confirm='{$_M[word][js7]}' />
-					<a href="#" class="ui-addlist" data-table-addlist="{$_M[url][own_form]}a=doparaaddlist"><i class="fa fa-plus-circle"></i>新增</a>
+					<a href="#" class="ui-addlist" data-table-addlist="{$_M[url][own_form]}a=doparaaddlist"><i class="fa fa-plus-circle"></i>{$_M[word][added]}</a>
 				</th>
 			</tr>
 		</tfoot>
@@ -42,24 +42,24 @@ echo <<<EOT
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">设置选项</h4>
+        <h4 class="modal-title">{$_M[word][listTitle]}</h4>
       </div>
       <div class="modal-body">
 		<div class="v52fmbx" style="border:0;">
 			<dl style="border:0;">
-				<dt>标签增加器</dt>
+				<dt>{$_M[word][admin_tagadder_v6]}</dt>
 				<dd class="ftype_tags">
 					<div class="fbox">
 						<input name="option" type="hidden" data-label="$|$" value="">
 					</div>
-					<span class="tips">点击 + 号输入选项名，再点击 + 号或回车完成添加</span>
+					<span class="tips">{$_M[word][tips3_v6]}</span>
 				</dd>
 			</dl>
 		</div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary">确定</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        <button type="button" class="btn btn-primary">{$_M['word']['confirm']}</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">{$_M['word']['close']}</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->

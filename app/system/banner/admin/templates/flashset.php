@@ -37,21 +37,21 @@ echo <<<EOT
 							<div class='clearfix'>
 								<span style='width:150px;display:inline-block;line-height:2.5;float:left;'>{$_M[word][banner_pcheight_v6]}:</span>
 								<div class="fbox">
-									<input name="height" type="text" value='{$flashrec1[height]}' data-required='1' class="ui-input" style='width:100px;'/>
+									<input name="height" type="text" value='{$flashrec1[height]}' class="ui-input" style='width:100px;'/>
 								</div>
 								<span class="tips">{$_M[word][banner_setalert_v6]}</span>
 							</div>
 							<div class='clearfix' style='margin-top: 10px;'>
 								<span style='width:150px;display:inline-block;line-height:2.5;float:left;'>{$_M[word][banner_pidheight_v6]}:</span>
 								<div class="fbox">
-									<input name="height_t" type="text" value='{$flashrec1[height_t]}' data-required='1' class="ui-input" style='width:100px;'/>
+									<input name="height_t" type="text" value='{$flashrec1[height_t]}' class="ui-input" style='width:100px;'/>
 								</div>
 								<span class="tips">{$_M[word][banner_setalert_v6]}</span>
 							</div>
 							<div class='clearfix' style='margin-top: 10px;'>
 								<span style='width:150px;display:inline-block;line-height:2.5;float:left;'>{$_M[word][banner_phoneheight_v6]}:</span>
 								<div class="fbox">
-									<input name="height_m" type="text" value='{$flashrec1[height_m]}' data-required='1' class="ui-input" style='width:100px;'/>
+									<input name="height_m" type="text" value='{$flashrec1[height_m]}' class="ui-input" style='width:100px;'/>
 								</div>
 								<span class="tips">{$_M[word][banner_setalert_v6]}</span>
 							</div>
@@ -62,7 +62,7 @@ echo <<<EOT
 -->
 							<span>{$flashrec1[banner_height_v6]}:</span>
 							<div class="fbox">
-								<input name="height" type="text" value='{$flashrec1[height]}' class="ui-input" data-required='1' style='width:50px;'/>
+								<input name="height" type="text" value='{$flashrec1[height]}' class="ui-input" style='width:50px;'/>
 							</div>
 <!--
 EOT;
@@ -99,6 +99,20 @@ echo <<<EOT
 								/>
 							</div>
 							<span class="tips">{$_M[word][indexflashexplain4]}</span>
+						</dd>
+					</dl>
+					 <dl>
+						<dt>{$_M[word][banner_setmobileImgUrl_v6]}{$_M[word][marks]}</dt>
+						<dd class="ftype_upload">
+							<div class="fbox">
+								<input
+									type="text"
+									name="mobile_img_path"
+									data-upload-type="doupimg"
+									value="{$flashrec1[mobile_img_path]}"
+								/>
+							</div>
+							<span class="tips">{$_M[word][indexflashexplain4]}&nbsp;{$_M[word][mobile_banner_tips1]}</span>
 						</dd>
 					</dl>
 					<dl>
@@ -151,7 +165,7 @@ echo <<<EOT
 						<dt>{$_M[word][banner_imgwordpos_v6]}{$_M[word][marks]}</dt>
 						<dd class="ftype_radio">
 							<div class="fbox">
-								<label><input type="radio" name="img_text_position" value="0" data-checked='4'>{$_M[word][posleft]}</label>
+								<label><input type="radio" name="img_text_position" value="0" data-checked='{$flashrec1['img_text_position']}'>{$_M[word][posleft]}</label>
 								<label><input type="radio" name="img_text_position" value="1">{$_M[word][posright]}</label>
 								<label><input type="radio" name="img_text_position" value="2">{$_M[word][posup]}</label>
 								<label><input type="radio" name="img_text_position" value="3">{$_M[word][poslower]}</label>
@@ -181,7 +195,8 @@ echo <<<EOT
 							<div class="fbox">
 								<input type="text" name="flash_back" data-upload-type="doupimg" value='{$flashrec1[flash_back]}'/>
 							</div>
-							<span class="tips">{$_M[word][indexflashexplain5]}</span>
+							<!--<span class="tips">{$_M[word][indexflashexplain5]}</span>-->
+							<span class="tips">{$_M[word][indexflashexplain4]}&nbsp;{$_M[word][mobile_banner_tips1]}</span>
 						</dd>
 					</dl>
 <!--

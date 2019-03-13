@@ -26,6 +26,7 @@ class index extends admin {
         if($_M[config][met_img_rename]==1)$met_img_rename1="checked='checked'";
         $query="SELECT * FROM {$_M[table][admin_table]} WHERE admin_id='{$metinfo_admin_name}'";
         $admin_list =DB::get_one($query);
+        $_M['url']['help_tutorials_helpid']='120';
         require_once $this->template('own/index');
     }
 

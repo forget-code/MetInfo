@@ -105,59 +105,7 @@ echo <<<EOT
 		<li role="presentation" class="active"><a href="#content" aria-controls="content" role="tab" data-toggle="tab">{$contxt1s}</a></li>-->
 <!--
 EOT;
-// 	for($i=1;$i<=$tems[productother];$i++){
-// 		$tabtitle = $tems?$tems['productTabname_'.$i]:"附加内容".$i;
-// 		$othermark ='content'.$i;
-// echo <<<EOT
-// -->
-// 		<li role="presentation"><a href="#{$othermark}" aria-controls="{$othermark}" role="tab" data-toggle="tab">{$tabtitle}</a></li>
-// <!--
-// EOT;
-// 	}
-// echo <<<EOT
-// -->
-// 		</ul>
-// 			  <!-- Tab panes -->
-// 		<div class="tab-content">
-// 			<div role="tabpanel" class="tab-pane active" id="content">
-// 				<dl style="border-top:0px;">
-// 					<dd class="ftype_ckeditor">
-// 						<div class="fbox">
-// 							<textarea name="content" data-ckeditor-y="500">{$list[content]}</textarea>
-// 						</div>
-// 					</dd>
-// 				</dl>
-// 			</div>
-// <!--
-// EOT;
-// 	for($i=1;$i<=$tems[productother];$i++){
-// 		$tabtitle = $tems?$tems['productTabname_'.$i]:"附加内容".$i;
-// 		$othermark ='content'.$i;
-// echo <<<EOT
-// -->
-// 			<div role="tabpanel" class="tab-pane" id="{$othermark}">
-// 				<dl style="border-top:0px;">
-// 					<dd class="ftype_ckeditor">
-// 						<div class="fbox">
-// 							<textarea name="{$othermark}" data-ckeditor-y="500">{$list[$othermark]}</textarea>
-// 						</div>
-// 					</dd>
-// 				</dl>
-// 			</div>
-// <!--
-// EOT;
-// 	}
-// echo <<<EOT
-// -->	
-	
-// 		</div>
 
-// 	</div>
-			
-// <!--
-// EOT;
-// }else{
-// 	$contxt1s="商品详情";
 echo <<<EOT
 -->
 <h3 class="v52fmbx_hr">{$_M[word][contentinfo]}</h3>

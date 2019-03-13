@@ -6,12 +6,11 @@ defined('IN_MET') or exit('No permission');
 require $this->template('ui/head');
 echo <<<EOT
 -->
-<div><div><div><div>
 <link rel="stylesheet" href="{$_M[url][own_tem]}css/metinfo.css?{$jsrand}" />
 <form method="POST" class="ui-from set-pageset-nav-form" name="myform" action="{$_M[url][own_form]}a=dosave_pageset_nav" target="_self">
 	<div class="v52fmbx">
 		<dl>
-			<dd class="ftype_description">勾选的应用将出现在导航栏【常用功能】下拉列表中</dd>
+			<dd class="ftype_description">{$_M[word][uiset_descript_v6]}</dd>
 		</dl>
 		<dl class="set-pageset-nav">
 <!--
@@ -25,7 +24,7 @@ echo <<<EOT
 			<div class="col-md-4 col-sm-6 col-xs-12">
 				<div class="media ui-item{$checked}" data-id="{$value['id']}">
 					<div class="media-left">
-						<img src="{$_M['url']['app']}{$value['m_name']}/icon.png" alt="{$value['appname']}" width="80">
+						<img src="{$value['ico']}" alt="{$value['appname']}" width="80">
 					</div>
 					<div class="media-body">
 						<h4 class="media-heading">{$value['appname']}</h4>
@@ -41,8 +40,10 @@ EOT;
 echo <<<EOT
 -->
 		</dl>
+		<div class="v52fmbx_submit clearfix">
+			<input type="submit" name="Submit" value="{$_M['word']['Submit']}" class="submit pull-right">
+		</div>
 	</div>
-	<input type="submit" value="{$_M['word']['Submit']}" class="submit hide">
 </form>
 <!--
 EOT;

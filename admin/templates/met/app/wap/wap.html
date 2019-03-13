@@ -11,9 +11,9 @@ EOT;
 if($cs==4){
 	$listclass='';
 	$listclass[4]='class="now"';
-	$title="二维码";
+	$title="{$_M['word']['unitytxt_71']}";
 }else{
-	$title="WAP设置";
+	$title="{$_M['word']['the_menu']}";
 }
 require_once template('app/wap/top');
 $rand=met_rand(4);
@@ -42,7 +42,7 @@ echo <<<EOT
 		<div class="v52fmbx_dlbox">
 		<dl>
 			<dd>
-				<span class="red">注意：您开启了静态页面功能！修改此页面设置后，需要到【优化推广—静态页面】重新生成所有静态页面后才能生效。</span>
+				<span class="red">{$lang_wap_descript9_v6}</span>
 			</dd>
 		</dl>
 		</div>
@@ -70,10 +70,10 @@ echo <<<EOT
 		</div>
 		<div class="v52fmbx_dlbox">
 		<dl>
-			<dt>手机网站域名{$lang_marks}</dt>
+			<dt>{$lang_wap_webhost_v6}{$lang_marks}</dt>
 			<dd>
 				<input type="text" name="met_wap_url" class="text" value="$met_wap_url" /><br/>
-				<span class="tips">设置一个域名（如 m.abcd.com ），访问该域名的时候将自动跳转到手机网站页面（先要做好解析绑定）</span>
+				<span class="tips">{$lang_wap_descript10_v6}</span>
 			</dd>
 		</dl>
 		</div>
@@ -90,20 +90,20 @@ echo <<<EOT
 	</div>
 		<div class="v52fmbx_dlbox">
 		<dl>
-			<dt>展示内容{$lang_marks}</dt>
+			<dt>{$lang_show_contents}{$lang_marks}</dt>
 			<dd>
-				<label><input name="met_wapshowtype" type="radio" class="radio" value="0" {$met_wapshowtype1[0]} />与电脑版一致</label>
-				<label><input name="met_wapshowtype" type="radio" class="radio" value="1" {$met_wapshowtype1[1]} />自定义</label>
+				<label><input name="met_wapshowtype" type="radio" class="radio" value="0" {$met_wapshowtype1[0]} />{$lang_wap_keepcomputer_v6}</label>
+				<label><input name="met_wapshowtype" type="radio" class="radio" value="1" {$met_wapshowtype1[1]} />{$lang_managertyp5}</label>
 			</dd>
 		</dl>
 		</div>
-	<h3 class="v52fmbx_hr metsliding" ctype="met_wapshowtype_1">以下为自定义需设置的选项</h3>
+	<h3 class="v52fmbx_hr metsliding" ctype="met_wapshowtype_1">{$lang_wap_descript11_v6}</h3>
 	<div class="v52fmbx_dlbox" ctype="met_wapshowtype_1">
 		<dl>
 			<dd>
 			<div class="flashaddclumn flashaddclumn_bing">
 			<h3><p>
-				<label style="height:15px; line-height:20px; text-align:left; color:red;">请设置允许显示在WAP中的栏目</label>
+				<label style="height:15px; line-height:20px; text-align:left; color:red;">{$lang_wap_descript12_v6}</label>
 				</p>
 			</h3>
 			<div class="list">
@@ -127,7 +127,7 @@ foreach($met_class3[$val2[id]] as $key=>$val3){
 $val3[cckk]=$val3[wap_ok]?'checked':'';
 echo <<<EOT
 -->	
-    <p class="met_bigloumn3id_{$val3[bigclass]}" style="margin-left:42px;"><label><input name="met_clumid_{$val3[id]}" type="checkbox" class="checkbox" value="{$val3[id]}" ctype="3" {$val3[cckk]} bigclass="{$val3[bigclass]}">{$val3[name]}</label></p>		
+    <p class="met_bigloumn3id_{$val3[bigclass]}" style="margin-left:42px;"><label><input name="met_clumid_{$val3[id]}" type="checkbox" class="checkbox" value="{$val3[id]}" ctype="3" {$val3[cckk]} bigclass="{$val3[bigclass]}">{$val3[name]}</label></p>
 <!--
 EOT;
 }}}  
@@ -137,7 +137,7 @@ echo <<<EOT
 				</div>
 			<div class="flashaddclumn flashaddclumn_nav">
 			<h3><p>
-				<label style="height:15px; line-height:20px; text-align:left; color:red;">请设置主导航栏目（先勾选左边栏目）</label>
+				<label style="height:15px; line-height:20px; text-align:left; color:red;">{$lang_wap_descript13_v6}</label>
 				</p>
 			</h3>
 			<div class="list">
@@ -186,19 +186,19 @@ echo <<<EOT
 			</dd>
 		</dl>
 		</div>
-		<h3 class="v52fmbx_hr metsliding" sliding="4">基本信息设置</h3>
+		<h3 class="v52fmbx_hr metsliding" sliding="4">{$lang_wap_setbasicInfo_v6}</h3>
 		<div class="v52fmbx_dlbox">
 		<dl>
-			<dt>页面标题(title){$lang_marks}</dt>
+			<dt>{$lang_wapindextitle}{$lang_marks}</dt>
 			<dd>
 				<input type="text" name="wap_title" class="text" value="$wap_title" />
-				<span class="tips">为空将显示网站首页标题，此标题一般显示在浏览器顶部</span>
+				<span class="tips">{$lang_wap_descript14_v6}</span>
 			</dd>
 		</dl>
 		</div>
 		<div class="v52fmbx_dlbox">
 		<dl>
-			<dt>LOGO{$lang_marks}</dt>
+			<dt>LOGO {$lang_marks}</dt>
 			<dd>
 				<input name="met_wap_logo" type="text" class="text" value="{$met_wap_logo}" />
 				<span class="tips" style="">{$lang_waptips9}</span>
@@ -213,7 +213,7 @@ echo <<<EOT
 		</div>
 		<div class="v52fmbx_dlbox">
 		<dl>
-			<dt>底部文字{$lang_marks}</dt>
+			<dt>{$lang_wapfoottext}{$lang_marks}</dt>
 			<dd>
 				<textarea name="wap_footertext" class="textarea">$wap_footertext</textarea>
 			</dd>

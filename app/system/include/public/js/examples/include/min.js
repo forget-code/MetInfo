@@ -1,75 +1,26 @@
 define(function(require, exports, module) {
-
 	var jQuery = $ = require('jquery');
 	require('lang_json_admin');
 
 	/*操作成功，失败提示信息*/
-	if(top.location != location)$("html",parent.document).find('.returnover').remove();
-	if($('.returnover').length>0){
-		//alert($('.returnover').html());
-		(function($){
-		jQuery.fn.PositionFixed = function(options) {
-			var defaults = {
-				css:'',
-				x:0,
-				y:0
-			};
-			var o = jQuery.extend(defaults, options);
-			var isIe6=false;
-			if($.browser.msie && parseInt($.browser.version)==6)isIe6=true;
-			var html= $('html');
-			if (isIe6 && html.css('backgroundAttachment') !== 'fixed') {
-				html.css('backgroundAttachment','fixed')
-			};
-			return this.each(function() {
-			var domThis=$(this)[0];
-			var objThis=$(this);
-				if(isIe6){
-					var left = parseInt(o.x) - html.scrollLeft(),
-						top = parseInt(o.y) - html.scrollTop();
-					objThis.css('position' , 'absolute');
-					domThis.style.setExpression('left', 'eval((document.documentElement).scrollLeft + ' + o.x + ') + "px"');
-					domThis.style.setExpression('top', 'eval((document.documentElement).scrollTop + ' + o.y + ') + "px"');
-				}else{
-					objThis.css('position' , 'fixed').css('top',o.y).css('left',o.x);
-				}
-			});
-		};
-		})(jQuery)
-		$(document).ready(function() {
-			$('body', parent.document).append('<div class="returnover">'+$('.returnover').html()+'</div>');
-			var tur_ml = $('body', parent.document).find('.returnover').outerWidth();
-			var tur_mt = $('body', parent.document).find('.returnover').outerHeight();
-			tur_ml = parseInt(($('html',parent.document)[0].clientWidth-tur_ml)/2);
-			tur_mt = parseInt(($('html',parent.document)[0].clientHeight-tur_mt)/2);
-			$("html",parent.document).find('.returnover').css({
-				top:tur_mt+'px',
-				left:tur_ml+'px'
-			});
-			$('body', parent.document).find('.returnover').show();
-			$("html",parent.document).find('.returnover').PositionFixed({x:tur_ml,y:tur_mt});
-			setTimeout(function(){ $("html",parent.document).find('.returnover').hide(); },1500 );
-		});
-	}
-
+	if(top.location != location) $("html",parent.document).find('.returnover').remove();
+	// 弹出页面返回的提示信息
+	var turnover=[];
+	turnover['text']=getQueryString('turnovertext');
+	turnover['type']=parseInt(getQueryString('turnovertype'));
+	turnover['delay']=turnover['type']?undefined:0;
+	if(turnover['text']) metAlert(turnover['text'],turnover['delay'],!turnover['type'],turnover['type']);
 	/*cookie*/
 	require('epl/include/cookie');
 	//adminlang = $.cookie('langset');当前后台语言
-
 	//bootstrap
 	require('pub/bootstrap/js/bootstrap.min');
-
 	//初始化
-
 	var common = require('common');   		//公用类
-
 	/*---------页面组件加载---------*/
-
 	/*表单验证*/
 	if($('form.ui-from').length>0)require.async('epl/form/form');
-
 	common.AssemblyLoad($("body"));
-
 	/*---------动态事件绑定-----------------*/
 	/*输入状态*/
 	$(document).on('focus',"input[type='text'],input[type='input'],input[type='password'],textarea",function(){
@@ -78,7 +29,6 @@ define(function(require, exports, module) {
 	$(document).on('focusout',"input[type='text'],input[type='input'],input[type='password'],textarea",function(){
 		$(this).removeClass('met-focus');
 	});
-
 	/*显示隐藏选项*/
 	function showhidedom(m){
 		var c = m.attr("data-showhide"),d=$("."+c);
@@ -113,7 +63,6 @@ define(function(require, exports, module) {
 			d.slideUp();
 		}
 	});
-
 	var dlp = '';
 	/*浏览器兼容*/
 	if($.browser.msie || ($.browser.mozilla && $.browser.version == '11.0')){
@@ -178,21 +127,16 @@ define(function(require, exports, module) {
 			});
 		}
 	}
-
 	/*宽度变化后调整*/
 	$("body").attr("data-body-wd",$("body").width());
 	$(window).resize(function() {
 		if($("body").attr("data-body-wd")!=$("body").width()){
-			if(dlp==1){
-				dlie(dl);
-			}
+			if(dlp==1) dlie(dl);
 			$(".ui-table").width("100%");
 			$("body").attr("data-body-wd",$("body").width());
 		}
 	});
-
 	require('own_tem/js/own');//加载应用脚本
-
 	/*返回顶部*/
 	require('epl/include/jquery.goup');
 	$(document).ready(function () {
@@ -205,48 +149,47 @@ define(function(require, exports, module) {
 			titleAsText: true
 		});
 	});
-
 	/*技术支持*/
-function support(){
-	var url = apppath+'n=platform&c=support&a=doinfo';
-	$.ajax({
-		url: url,
-		type: "GET",
-		cache: false,
-		data: $("input[name='supporturldata']").val(),
-		dataType: "jsonp",
-		success: function(data) {
-			$(".support_loading").hide();
-			if(data.support=='notlogin'){
-				$(".support_no").show();
-			}
-			if(data.support=='expire'){
-				$(".support_desc").show();
-				$("#support_expiretime").html('<span class="text-danger">'+data.expiretime+'</span>');
-			}else if(data.support=='notopen'){
-				$(".support_no").show();
-			}else if(data.support=='youok'){
-				$(".support_youok,.support_desc").show();
-				$("#support_expiretime").html(data.expiretime);
-				require.async(data.url,function(){
-					var obj = jQuery.parseJSON(data.metdata);
-					var inter = setInterval(function(){
-						if(window.mechatMetadata){
-							clearInterval(inter);
-							window.mechatMetadata(obj);
-						}
-					},500);
-					$(".supportmechatlink").click(function(){
-						mechatClick();
-						return false;
+	function support(){
+		var url = apppath+'n=platform&c=support&a=doinfo';
+		$.ajax({
+			url: url,
+			type: "GET",
+			cache: false,
+			data: $("input[name='supporturldata']").val(),
+			dataType: "jsonp",
+			success: function(data) {
+				$(".support_loading").hide();
+				if(data.support=='notlogin'){
+					$(".support_no").show();
+				}
+				if(data.support=='expire'){
+					$(".support_desc").show();
+					$("#support_expiretime").html('<span class="text-danger">'+data.expiretime+'</span>');
+				}else if(data.support=='notopen'){
+					$(".support_no").show();
+				}else if(data.support=='youok'){
+					$(".support_youok,.support_desc").show();
+					$("#support_expiretime").html(data.expiretime);
+					require.async(data.url,function(){
+						var obj = jQuery.parseJSON(data.metdata);
+						var inter = setInterval(function(){
+							if(window.mechatMetadata){
+								clearInterval(inter);
+								window.mechatMetadata(obj);
+							}
+						},500);
+						$(".supportmechatlink").click(function(){
+							mechatClick();
+							return false;
+						});
 					});
-				});
+				}
+				$(".supportbox").data('supportdropdown','1');
+				$.cookie('supportdropdown','1');
 			}
-			$(".supportbox").data('supportdropdown','1');
-			$.cookie('supportdropdown','1');
-		}
-	});
-}
+		});
+	}
 	$(".supportbox").on('show.bs.dropdown', function () {
 		if(!$(this).data('supportdropdown'))support();
 	})
@@ -255,7 +198,132 @@ function support(){
 	}
 	/*应用安装、升级*/
 	if($('.metcms_upload_download').length>0)require.async('epl/include/download');
+	// 可视化弹框中页面隐藏头部
+	if (parent.window.location.search.indexOf('&pageset=1') >= 0) $('.metcms_top_right').hide();
+	// 会员信息
+	function login(data, is_login){
+		var pos = $('input[name="appposition"]').val();
+		if(is_login){
+			switch(pos){
+				case 'memberinfo' :
+					$("input[name='user_id']").val(data.user_id);
+					$("input[name='user_mobile']").val(data.user_mobile);
+					$("input[name='user_email']").val(data.user_email);
+					$("input[name='user_qq']").val(data.user_qq);
+				break;
+				case 'lr' :
+					toapplist();
+				break;
+				case 'applist' :
+					$('.memberinfo').show();
+					$('.user_id').html(data.user_id);
+					$('.money').html(common.fmoney(data.money,2));
+					if($('input[name="appposition_1"]').val()=='memberinfo'){
+						$("input[name='user_id']").val(data.user_id);
+						$("input[name='user_mobile']").val(data.user_mobile);
+						$("input[name='user_email']").val(data.user_email);
+						$("input[name='user_qq']").val(data.user_qq);
+					}
+				break;
+			}
+		}else{
+			switch(pos){
+				case 'memberinfo' :
+					alert(js_error('error_code'));
+					tologin();
+				break;
+				case 'lr' :
+				break;
+				case 'applist' :
+					$('.login').show();
+				break;
+			}
 
-	// 可视化弹框表单保存后刷新可视化窗口
-	if (parent.window.location.search.indexOf('pageset=1') >= 0) $('.metcms_top_right').hide();
+		}
+	}
+	function toapplist() {
+		window.location.href = own_name+'c=appstore&a=appstore';
+	}
+	// 会员信息链接添加返回地址参数
+	if($('.appbox_right .login-info').length) {
+		$('.appbox_right .login-info .login .ui-addlist,.appbox_right .login-info .user-loginout').each(function(index, el) {
+			var encodeurl=$(this).hasClass('user-loginout')?encodeURIComponent(location.href):location.href,
+				href=$(this).attr('href')+encodeURIComponent(encodeurl);
+			$(this).attr({href:href});
+		});
+	}
+	//请求会员信息
+	window.secret_key = $('#secret_key').val();
+	if(secret_key){
+		$.ajax({
+			url: apppath+'n=platform&c=platform&a=domember_obtain',//新增行的数据源
+			type: "GET",
+			data: 'user_key=' + secret_key ,
+			cache: false,
+			dataType: "jsonp",
+			success: function(data) {
+				if(data.user_id){
+					login(data, 1);
+				}else{
+					login('', 0);
+				}
+			}
+		});
+	}else{
+		login('', 0);
+	}
 });
+// 弹出提示信息
+function metAlert(text,delay,bg_ok,type){
+    delay=typeof delay != 'undefined'?delay:2000;
+    bg_ok=bg_ok?'bgshow':'';
+    if(text!=' '){
+        text=text||METLANG.jsok;
+        text='<div>'+text+'</div>';
+        if(parseInt(type)==0) text+='<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">×</span></button>';
+        if(!$('.metalert-text').length){
+        	var html='<div class="metalert-text">'+text+'</div>';
+        	if(parseInt(type)==0) html='<div class="metalert-wrapper alert '+bg_ok+'">'+html+'</div>';
+        	$('body').append(html);
+        }
+        var $met_alert=$('.metalert-text'),
+            $obj=parseInt(type)==0?$('.metalert-wrapper'):$met_alert;
+        $met_alert.html(text);
+        $obj.show();
+        if($met_alert.height()%2) $met_alert.height($met_alert.height()+1);
+    }
+    if(delay){
+        setTimeout(function(){
+            var $obj=parseInt(type)==0?$('.metalert-wrapper'):$('.metalert-text');
+            $obj.fadeOut();
+        },delay);
+    }
+}
+function js_error(error) {
+	switch(error){
+		case 'error_code':
+			return langtxt.please_again;
+		break;
+		case 'error_passpay':
+			return langtxt.password_mistake;
+		break;
+		case 'error_code':
+			return langtxt.please_again;
+		break;
+		case 'error_evamuch':
+			return langtxt.product_commented;
+		break;
+		case 'error_nobuyeva':
+			return langtxt.goods_comment;
+		break;
+		case 'error_nop':
+			return langtxt.permission_download;
+		break;
+		default :
+			return error;
+		break;
+	}
+}
+function tologin() {
+	window.location.href = adminurl+'anyid=65&n=appstore&c=member&a=dologin&returnurl='+ encodeURIComponent(location.href);
+}

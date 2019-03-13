@@ -20,38 +20,32 @@ echo <<<EOT
             <dt>{$_M['word']['setskinOnline']}</dt>
             <dd class="ftype_radio">
                 <div class="fbox">
-                    <label><input name="met_online_type" type="radio" value="0" data-checked="{$_M['config']['met_online_type']}"><span>{$_M['word']['setskinOnline1']}</span></label>
+                    <label><input name="met_online_type" type="radio" value="3" data-checked="{$_M['config']['met_online_type']}"><span>{$_M['word']['setskinOnline1']}</span></label>
                     <label><input name="met_online_type" type="radio" value="4"><span>{$_M['word']['setskinOnline9']}</span></label>
                     <label><input name="met_online_type" type="radio" value="1"><span>{$_M['word']['setskinOnline2']}</span></label>
                     <label><input name="met_online_type" type="radio" value="2"><span>{$_M['word']['setskinOnline3']}</span></label>
-                    <label><input name="met_online_type" type="radio" value="3"><span>{$_M['word']['close']}</span></label>
+                    <label><input name="met_online_type" type="radio" value="0"><span>{$_M['word']['close']}</span></label>
                 </div>
             </dd>
         </dl>
 <!--
 EOT;
-$displayleft='none';
-$displayright='none';
-if($_M['config']['met_online_type']<2)$displayleft='';
-if($_M['config']['met_online_type']==2||$_M['config']['met_online_type']==4)$displayright='';
+if ($_M['config']['met_online_type'] == 0) {
+    $show = 'none';
+}
 echo <<<EOT
 -->
-		<div class="v52fmbx_dlbox" id="onlineleft" style="display:$displayleft">
-		<dl>
-			<dt>{$_M['word']['setskinOnline4']}</dt>
-			<dd>
-				<cc>{$_M['word']['setskinOnline5']}</cc>&nbsp;<input type="text" name="met_onlineleft_left" value="{$_M['config']['met_onlineleft_left']}" class='ui-input listname' mid">&nbsp;{$_M['word']['setflashPixel']}&nbsp;&nbsp;{$_M['word']['setskinOnline6']} <input type="text" name="met_onlineleft_top" value="{$_M['config']['met_onlineleft_top']}" class='ui-input listname' mid">{$_M['word']['setflashPixel']}
-			</dd>
-		</dl>
-		</div>
-		<div class="v52fmbx_dlbox" id="onlineright" style="display:{$displayright}">
-		<dl>
-			<dt>{$_M['word']['setskinOnline8']}</dt>
-			<dd>
-				<cc>{$_M['word']['setskinOnline7']}</cc><input type="text" name="met_onlineright_right" value="{$_M['config']['met_onlineright_right']}" class='ui-input listname' mid">&nbsp;{$_M['word']['setflashPixel']}&nbsp;&nbsp;{$_M['word']['setskinOnline6']} <input type="text" name="met_onlineright_top" value="{$_M['config']['met_onlineright_top']}" class='ui-input listname' mid">&nbsp;{$_M['word']['setflashPixel']}
-			</dd>
-		</dl>
-		</div>
+    <div class="v52fmbx_dlbox" id="onlineleft" style="display:$show">
+    <dl>
+        <dt>{$_M['word']['setskinOnline10']}</dt>
+        <dd>
+            <cc>{$_M['word']['setskinOnline5']}</cc>&nbsp;
+            <input type="text" name="met_online_x" value="{$_M['config']['met_online_x']}" class='ui-input listname' mid">&nbsp;{$_M['word']['setflashPixel']}&nbsp;&nbsp;{$_M['word']['setskinOnline6']} 
+            <input type="text" name="met_online_y" value="{$_M['config']['met_online_y']}" class='ui-input listname' mid">{$_M['word']['setflashPixel']}
+        </dd>
+    </dl>
+    </div>
+
 	</div>
 	<h3 class="v52fmbx_hr metsliding" sliding="2">{$_M['word']['unitytxt_14']}</h3>
 	<div class="metsliding_box metsliding_box_2">

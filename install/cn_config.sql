@@ -181,7 +181,7 @@ INSERT INTO met_language VALUES (null, 'js21', '操作成功!', 0, 21, 6, 0, 'cn
 INSERT INTO met_language VALUES (null, 'js22', '指定的路径不可写，或者没有此路径!', 0, 22, 6, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'js23', '文件格式不允许上传。', 0, 23, 6, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'js24', '管理员已阅读，没有权限修改！', 0, 24, 6, 0, 'cn');
-INSERT INTO met_language VALUES (null, 'js25', '注册成功，待管理审核即可登录控制面板！', 0, 25, 6, 0, 'cn');
+INSERT INTO met_language VALUES (null, 'js25', '注册成功，待管理员审核即可登录控制面板！', 0, 25, 6, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'other', '其他', 0, 7, 0, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'YES', '是', 0, 1, 7, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'NO', '否', 0, 2, 7, 0, 'cn');
@@ -366,7 +366,7 @@ INSERT INTO met_language VALUES (null, 'regfail', '注册失败', 0, 154, 4, 0, 
 INSERT INTO met_language VALUES (null, 'codetimeout', '验证码已超时', 0, 155, 4, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'telcheckfail', '手机号码与短信验证号码不一致', 0, 156, 4, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'regsuc', '注册成功！', 0, 157, 4, 0, 'cn');
-INSERT INTO met_language VALUES (null, 'activesuc', '激活成功', 0, 158, 4, 0, 'cn');
+INSERT INTO met_language VALUES (null, 'activesuc', '激活成功，请登录！', 0, 158, 4, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'emailvildtips1', '验证信息错误', 0, 159, 4, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'emailvildtips2', '验证信息错误或已超时', 0, 160, 4, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'telreg', '手机号已被注册', 0, 161, 4, 0, 'cn');
@@ -386,6 +386,7 @@ INSERT INTO met_language VALUES (null, 'membererror1', '用户名或密码错误
 INSERT INTO met_language VALUES (null, 'membererror2', '请开启session！', 0, 175, 4, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'membererror3', '授权失败', 0, 176, 4, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'membererror4', '未知错误', 0, 177, 4, 0, 'cn');
+INSERT INTO met_language VALUES (null, 'membererror6', '账号未激活，请联系管理员', 0, 174, 4, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'emailsucpass', '密码找回邮件已经发送至您的邮箱，点击邮件里的链接即可重设密码。', 0, 178, 4, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'emailvildtips3', '请输入正确的邮箱或手机号码', 0, 179, 4, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'membererror5', '发送失败！错误码：', 0, 180, 4, 0, 'cn');
@@ -401,7 +402,8 @@ INSERT INTO met_language VALUES (null, 'close', '关闭', 0, 0, 0, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'error404', '404错误，页面不见了。。。', 0, 0, 0, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'browserupdatetips', '你正在使用一个 <strong>过时</strong> 的浏览器。请 <a href=https://browsehappy.com/ target=_blank>升级您的浏览器</a>，以提高您的体验。', 0, 0, 0, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'newFeedback', '您收到了新的反馈', 0, 0, 0, 0, 'cn');
-INSERT INTO met_language VALUES (null, 'opfailed', '操作失败', 0, 0, 0, 0, 'cn');
+INSERT INTO met_language VALUES (null, 'opfailed', '操作失败', 0, 0, 1, 0, 'cn');
+INSERT INTO met_language VALUES (null, 'opsuccess', '操作成功', 0, 0, 1, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'jobPrompt', '收到了新的简历', 0, 0, 0, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'reMessage1', '您网站', 0, 0, 0, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'feedbackPrompt', '收到了新的反馈信息', 0, 0, 0, 0, 'cn');
@@ -413,10 +415,39 @@ INSERT INTO met_language VALUES (null, 'listnew', '最新', 0, 0, 0, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'listhot', '热门', 0, 0, 0, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'listsales', '销量', 0, 0, 0, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'weball', '全部', 0, 0, 0, 0, 'cn');
+INSERT INTO met_language VALUES (null, 'accsaftips4', '绑定用户证实身份信息', 0, 9, 2, 0, 'cn');
+INSERT INTO met_language VALUES (null, 'rnvalidate', '实名认证', 0, 9, 2, 0, 'cn');
+INSERT INTO met_language VALUES (null, 'notauthen', '未认证', 0, 9, 2, 0, 'cn');
+INSERT INTO met_language VALUES (null, 'authen', '已认证', 0, 9, 1, 0, 'cn');
+INSERT INTO met_language VALUES (null, 'realname', '真实姓名', 0, 9, 2, 0, 'cn');
+INSERT INTO met_language VALUES (null, 'idcode', '身份证号码', 0, 9, 2, 0, 'cn');
+INSERT INTO met_language VALUES (null, 'idvalidok', '实名认证成功', 0, 9, 2, 0, 'cn');
+INSERT INTO met_language VALUES (null, 'idvalidfailed', '实名认证失败', 0, 9, 2, 0, 'cn');
+INSERT INTO met_language VALUES (null, 'systips1', '您没有权限访问这个内容！请登录后访问！', 0, 0, 0, 0, 'cn');
+INSERT INTO met_language VALUES (null, 'systips2', '您所在用户组没有权限访问这个内容！', 0, 0, 0, 0, 'cn');
+
+INSERT INTO met_language VALUES (null, 'usercheckok', '验证成功！', 0, 0, 1, 0, 'cn');
+INSERT INTO met_language VALUES (null, 'usereadinfo', '阅读权限值必需大于0', 0, 0, 0, 0, 'cn');
+INSERT INTO met_language VALUES (null, 'usersetprice', '请设置金额', 0, 0, 0, 0, 'cn');
+INSERT INTO met_language VALUES (null, 'userselectname', '选项卡', 0, 0, 0, 0, 'cn');
+INSERT INTO met_language VALUES (null, 'userwenxinclose', '微信登录功能已关闭', 0, 0, 0, 0, 'cn');
+INSERT INTO met_language VALUES (null, 'userwenboclose', '微博登录功能已关闭', 0, 0, 0, 0, 'cn');
+INSERT INTO met_language VALUES (null, 'userqqclose', 'QQ登录功能已关闭', 0, 0, 0, 0, 'cn');
+INSERT INTO met_language VALUES (null, 'userbuy', '购买', 0, 0, 0, 0, 'cn');
+INSERT INTO met_language VALUES (null, 'userbuylist', '订单', 0, 0, 0, 0, 'cn');
+INSERT INTO met_language VALUES (null, 'usesendcode', '验证码为', 0, 0, 0, 0, 'cn');
+INSERT INTO met_language VALUES (null, 'usesendcodeinfo', '请及时输入验证', 0, 0, 0, 0, 'cn');
+INSERT INTO met_language VALUES (null, 'feedbackinquiry', '在线询价', 0, 0, 0, 0, 'cn');
+INSERT INTO met_language VALUES (null, 'templatesusererror', '当前语言模板未配置或模板文件不存在', 0, 0, 0, 0, 'cn');
+INSERT INTO met_language VALUES (null, 'phonecode', '获取手机验证码', 0, 0, 0, 0, 'cn');
+INSERT INTO met_language VALUES (null, 'phonecodeerror', '手机验证码错误', 0, 0, 0, 0, 'cn');
+INSERT INTO met_language VALUES (null, 'memberbuytitle', '付费升级会员组', 0, 0, 0, 0, 'cn');
+
 
 INSERT INTO met_config VALUES (null, 'metconfig_weburl', '', '', 0, 0, 'cn');
 INSERT INTO met_config VALUES (null, 'metconfig_webname', '网站名称', '', 0, 0, 'cn');
 INSERT INTO met_config VALUES (null, 'metconfig_logo', '../upload/201801/1515549638.png', '', 0, 0, 'cn');
+INSERT INTO met_config VALUES (null, 'metconfig_mobile_logo', '../upload/201807/1532137488.png', '', 0, 0, 'cn');
 INSERT INTO met_config VALUES (null, 'metconfig_skin_user', 'metv6', '', 0, 0, 'cn');
 INSERT INTO met_config VALUES (null, 'metconfig_big_wate', '0', '', 0, 0, 'cn');
 INSERT INTO met_config VALUES (null, 'metconfig_thumb_wate', '0', '', 0, 0, 'cn');
@@ -470,6 +501,8 @@ INSERT INTO met_config VALUES (null, 'metconfig_skin_css', 'metinfo.css', '', 0,
 INSERT INTO met_config VALUES (null, 'metconfig_autothumb_ok', '0', '', 0, 0, 'cn');
 INSERT INTO met_config VALUES (null, 'metconfig_member_use', '1', '', 0, 0, 'cn');
 INSERT INTO met_config VALUES (null, 'metconfig_member_register', '1', '', 0, 0, 'cn');
+INSERT INTO met_config VALUES (null, 'metconfig_member_idvalidate', '0', '', 0, 0, 'cn');
+INSERT INTO met_config VALUES (null, 'metconfig_idvalid_key', '', '', 0, 0, 'cn');
 INSERT INTO met_config VALUES (null, 'metconfig_newsdays', '3', '', 0, 0, 'cn');
 INSERT INTO met_config VALUES (null, 'metconfig_hot', '100', '', 0, 0, 'cn');
 INSERT INTO met_config VALUES (null, 'metconfig_listtime', 'Y-m-d', '', 0, 0, 'cn');
@@ -499,10 +532,8 @@ INSERT INTO met_config VALUES (null, 'metconfig_productdetail_x', '400', '', 0, 
 INSERT INTO met_config VALUES (null, 'metconfig_productdetail_y', '400', '', 0, 0, 'cn');
 INSERT INTO met_config VALUES (null, 'metconfig_imgdetail_x', '900', '', 0, 0, 'cn');
 INSERT INTO met_config VALUES (null, 'metconfig_imgdetail_y', '500', '', 0, 0, 'cn');
-INSERT INTO met_config VALUES (null, 'metconfig_onlineright_top', '110', '', 0, 0, 'cn');
-INSERT INTO met_config VALUES (null, 'metconfig_onlineright_right', '10', '', 0, 0, 'cn');
-INSERT INTO met_config VALUES (null, 'metconfig_onlineleft_top', '110', '', 0, 0, 'cn');
-INSERT INTO met_config VALUES (null, 'metconfig_onlineleft_left', '10', '', 0, 0, 'cn');
+INSERT INTO met_config VALUES (null, 'metconfig_online_x', '10', '', 0, 0, 'cn');
+INSERT INTO met_config VALUES (null, 'metconfig_online_y', '100', '', 0, 0, 'cn');
 INSERT INTO met_config VALUES (null, 'metconfig_onlinenameok', '0', '', 0, 0, 'cn');
 INSERT INTO met_config VALUES (null, 'metconfig_file_format', 'rar|zip|sql|doc|pdf|jpg|xls|png|gif|mp3|jpeg|bmp|swf|flv|ico', '', 0, 0, 'cn');
 INSERT INTO met_config VALUES (null, 'metconfig_file_maxsize', '8', '', 0, 0, 'cn');
@@ -592,13 +623,14 @@ INSERT INTO met_config VALUES (null, 'metconfig_member_email_password_title', '{
 INSERT INTO met_config VALUES (null, 'metconfig_member_email_password_content', '<div style=\"width:500px;margin:20px auto;\"><div class=\"header clearfix\" style=\"font-family: &#39;lucida Grande&#39;, Verdana, &#39;Microsoft YaHei&#39;; line-height: 23.7999992370605px; background-color: rgb(255, 255, 255);\"><a href=\"{weburl}\"><strong style=\"outline: none; cursor: pointer; color: rgb(30, 84, 148);\">{webname} 会员中心</strong></a></div><p>&nbsp;</p><div class=\"content\" style=\"font-family: &#39;lucida Grande&#39;, Verdana, &#39;Microsoft YaHei&#39;; line-height: 23.7999992370605px; border: 1px solid rgb(233, 233, 233); margin: 2px 0px 0px; padding: 30px; background: none 0px 0px repeat scroll rgb(255, 255, 255);\"><p style=\"line-height: 23.7999992370605px;\">您好：</p><p style=\"line-height: 23.7999992370605px;\">这是您在 {webname} 会员中心 上的重要邮件, 功能是进行&nbsp;会员中心 密码找回, 请点击下面的连接完成验证</p><p style=\"line-height: 23.7999992370605px; border-top-width: 1px; border-top-style: solid; border-top-color: rgb(221, 221, 221); margin-top: 15px; margin-bottom: 25px; padding: 15px;\">请点击链接继续：{opurl}</p><p style=\"line-height: 23.7999992370605px;\">&nbsp;</p><p class=\"footer\" style=\"line-height: 23.7999992370605px; border-top-width: 1px; border-top-style: solid; border-top-color: rgb(221, 221, 221); padding-top: 6px; margin-top: 25px; color: rgb(131, 131, 131);\">请勿回复本邮件, 此邮箱未受监控, 您不会得到任何回复。<br/><br/><a href=\"{weburl}\"><strong style=\"outline: none; cursor: pointer; color: rgb(30, 84, 148);\">{webname}会员中心</strong></a></p></div></div>', '', 0, 0, 'cn');
 INSERT INTO met_config VALUES (null, 'metconfig_member_email_safety_title', '{webname} 会员中心 修改绑定邮箱', '', 0, 0, 'cn');
 INSERT INTO met_config VALUES (null, 'metconfig_member_email_safety_content', '<div style=\"width:500px;margin:20px auto;\"><div class=\"header clearfix\" style=\"font-family: &#39;lucida Grande&#39;, Verdana, &#39;Microsoft YaHei&#39;; line-height: 23.7999992370605px; background-color: rgb(255, 255, 255);\"><a href=\"{weburl}\"><strong style=\"outline: none; cursor: pointer; color: rgb(30, 84, 148);\">{webname} 会员中心</strong></a></div><p>&nbsp;</p><div class=\"content\" style=\"font-family: &#39;lucida Grande&#39;, Verdana, &#39;Microsoft YaHei&#39;; line-height: 23.7999992370605px; border: 1px solid rgb(233, 233, 233); margin: 2px 0px 0px; padding: 30px; background: none 0px 0px repeat scroll rgb(255, 255, 255);\"><p style=\"line-height: 23.7999992370605px;\">您好：</p><p style=\"line-height: 23.7999992370605px;\">这是您在 {webname} 会员中心 上的重要邮件, 功能是进行&nbsp;会员中心 绑定邮箱修改, 请点击下面的连接完成验证</p><p style=\"line-height: 23.7999992370605px; border-top-width: 1px; border-top-style: solid; border-top-color: rgb(221, 221, 221); margin-top: 15px; margin-bottom: 25px; padding: 15px;\">请点击链接继续：{opurl}</p><p style=\"line-height: 23.7999992370605px;\">&nbsp;</p><p class=\"footer\" style=\"line-height: 23.7999992370605px; border-top-width: 1px; border-top-style: solid; border-top-color: rgb(221, 221, 221); padding-top: 6px; margin-top: 25px; color: rgb(131, 131,131);\">请勿回复本邮件,此邮箱未受监控,您不会得到任何回复。<br/><br/><a href=\"{weburl}\"><strong style=\"outline: none; cursor: pointer; color: rgb(30, 84, 148);\">{webname}会员中心</strong></a></p></div></div>', '', 0, 0, 'cn');
-INSERT INTO met_config VALUES (null,'metconfig_wap','0','','0','0','cn');
+INSERT INTO met_config VALUES (null, 'metconfig_wap','0','',0,0,'cn');
+INSERT INTO met_config VALUES (null, 'debug','0','',0,0,'cn');
+INSERT INTO met_config VALUES(null, 'metconfig_fd_word', '', '', '0', '0', 'cn');
+INSERT INTO met_config VALUES(null, 'flash_10000', '3|980|300|1', '', '0', '10000', 'cn');
+INSERT INTO met_config VALUES(null, 'flash_10001', '1|980|600|', '', '0', '10001', 'cn');
 
 
-
-
-INSERT INTO met_lang VALUES(null,'简体中文','1','1','cn','cn','cn.gif','','0','0','html','','cn');
-
+INSERT INTO met_lang VALUES (null,'简体中文','1','1','cn','cn','cn.gif','','0','0','html','','cn');
 
 INSERT INTO met_admin_array VALUES('1','普通会员','','0','','0','0','1','1','cn','');
 INSERT INTO met_admin_array VALUES('2','代理商','','0','','0','0','2','1','cn','');

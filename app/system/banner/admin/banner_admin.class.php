@@ -338,9 +338,8 @@ public function domanage(){
               $ftype1[all]="selected=selected";
          }
 		if($_M[form][module]) $module1[$_M[form][module]]='selected';
-		$_M['url']['help_tutorials_url'].='107#2、内容：';
-      require $this->template('own/article_index');
-
+		$_M['url']['help_tutorials_helpid']="107#2、内容：";
+      	require $this->template('own/article_index');
    }
 
 
@@ -641,9 +640,9 @@ public function domanage(){
 		}
 		$met_flash_type[$met_flasharray[10000][type]]="checked='checked'";
 		$style1=$met_flasharray[10000][type]==1?"style='display:block;'":"style='display:none;'";
-		$_M['url']['help_tutorials_url'].='107#添加 Banner';
-				require $this->template('own/article_add');
-			}
+		$_M['url']['help_tutorials_helpid']='107#添加 Banner';
+		require $this->template('own/article_add');
+	}
    /*数据添加保存*/
    public function doeditorsave() {
 		global $_M;
@@ -656,6 +655,7 @@ public function domanage(){
             $query = "INSERT INTO {$_M[table][flash]} SET
 			module             = '$module',
 			img_path           = '{$_M[form][img_path]}',
+			mobile_img_path    = '{$_M[form][mobile_img_path]}',
 			img_link           = '{$_M[form][img_link]}',
 			img_title          = '{$_M[form][img_title]}',
 			img_title_color    = '{$_M[form][img_title_color]}',
@@ -677,6 +677,7 @@ public function domanage(){
             $query = "UPDATE  {$_M[table][flash]} SET
 			module             = '$module',
 			img_path           = '{$_M[form][img_path]}',
+			mobile_img_path    = '{$_M[form][mobile_img_path]}',
 			img_link           = '{$_M[form][img_link]}',
 			img_title          = '{$_M[form][img_title]}',
 			img_title_color    = '{$_M[form][img_title_color]}',

@@ -654,15 +654,15 @@ function sitemp(url) {
 function xian(data){
 	parent.$('#update_content_back').show();
 	parent.$('#update_contents').show();
-	parent.$('#uptitle').html('升级失败');
+	parent.$('#uptitle').html(METLANG.columnupdatejs1);
 	parent.$('html,body').css('overflow','hidden');
 	parent.zsyfunc();
 	ver=$('#ver_now_cms').val();	
 	parent.$("#update_content_back").css({ opacity: 0.7 });
 	parent.$('#update_contents .content').html(data);
 	parent.$(".nano").nanoScroller({alwaysVisible: true});
-	parent.$('#a2').html('重试');
-	parent.$('#a1').html('退出');
+	parent.$('#a2').html(METLANG.columnupdatejs2);
+	parent.$('#a1').html(METLANG.columnupdatejs3);
 	parent.$("#oltest_cms a").eq(0).click();
 	parent.$('#a1').attr("onclick","shut();");
 }

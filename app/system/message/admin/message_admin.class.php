@@ -171,32 +171,37 @@ class message_admin extends base_admin {
         DB::query($query);
 		$message_contents=DB::get_one("select * from {$_M[table][config]} where lang='{$this->lang}' and name='met_message_fd_content' and columnid ='{$_M[form][class1_select]}'");
 		$message_content=DB::get_one("select * from {$_M[table][parameter]} where lang='{$this->lang}' and id='$message_contents[value]' and module='{$this->module}'");
-
 		$message_content_list=DB::get_all("select * from {$_M[table][parameter]} where lang='{$this->lang}' and id!='$message_contents[value]' and module='{$this->module}' order by no_order asc");
-
 		$message_content1=DB::get_one("select * from {$_M[table][mlist]} where lang='{$this->lang}' and module='{$this->module}' and listid='$id' and imgname='$message_content[name]'");
 		$message_content1['imgname'] = $message_content[name];
 		$query1 = "SELECT * FROM {$_M[table][mlist]} WHERE lang='{$this->lang}' and module='{$this->module}' and listid='$id' and paraid!='$message_content1[paraid]' order by id";
 		$result1 = DB::query($query1);
+
 		while($list1 = DB::fetch_array($result1)){
 			$para_list_tmp[$list1['paraid']]=$list1;
 		}
+
 		foreach($message_content_list as $key=>$val){
+			$plist = $para_list_tmp[$val['id']];
+			$para_list[$key] = $plist;
+
 			if($val['type'] == 5){
-				if($para_list_tmp[$val['id']][info] !='../upload/file/'){
-					$para_list_tmp[$val['id']][info] = "<a href=\"../../{$para_list_tmp[$val['id']][info]}\" target=\"_blank\">{$para_list_tmp[$val['id']][imgname]}</a>";
-				}else{
-					$para_list_tmp[$val['id']][info] = $_M[word][nopicture];
-				}
+				if($para_list[$key]['info']){
+						$para_list[$key]['info'] = "<a href=\"../../{$para_list[$key]['info']}\" target=\"_blank\">{$para_list[$key][imgname]}</a>";
+					}else{
+						$para_list[$key]['info'] = $_M[word][nopicture];
+					}
+
+			}else{
+				$para_list[$key]['info'] = $plist['info'];
 			}
-			
-			$para_list[] = $para_list_tmp[$val['id']];
 		}
 		$message_list=DB::get_one("select * from {$_M[table][message]} where id='$id'");
 		$access_option = $this->access_option('access',$message_list['access']);
 		$feedacs=DB::get_one("select * from {$_M[table][admin_table]} where admin_id='{$message_list['customerid']}'");
 	    $message_list['customerid']=$feedacs['usertype']==1?$_M[word][access1]:($feedacs['usertype']==2?$_M[word][access2]:($feedacs['usertype']==3?$_M[word][access3]:$_M[word][feedbackAccess0]));
 		$met_readok=($message_list[checkok])?"checked='checked'":"";
+		$class1 = $_M['form']['class1_select'];
 			require $this->template('own/article_add');
 	}
 
@@ -210,9 +215,9 @@ class message_admin extends base_admin {
 		$_M['form']['addtime'] = $_M['form']['addtype']==2?$_M['form']['addtime']:date("Y-m-d H:i:s");
 		if($this->update_list($_M['form'],$_M['form']['id'])){
 			//if($_M['config']['met_webhtm'] == 2 && $_M['config']['met_htmlurl'] == 0){
-			
+
 				turnover("{$_M[url][own_form]}a=doindex&class1=".$_M[form][class1_select]);
-			
+
 		}else{
             turnover("{$_M[url][own_form]}a=doindex&class1=".$_M[form][class1_select],$_M[word][dataerror]);
 		}
@@ -237,7 +242,6 @@ class message_admin extends base_admin {
 		}
 
 		$list = $this->form_imglist($list,2);
-
 		if($this->update_list_sql($list,$id)){
 			return true;
 		}else{
@@ -254,55 +258,8 @@ class message_admin extends base_admin {
 	public function update_list_sql($list,$id){
 		global $_M;
 
-		// dump($list);
-		// exit;
-		// if(!$list['title']){
-		// 	return false;
-		// }
-		// if(!$this->check_filename($list['filename'],$id,$this->module)){
-		// 	return false;
-		// }
-		// if($list['links']){
-		// 	$list['links'] = url_standard($list['links']);
-		// }
-		// if($list['description']){
-		// 	$listown = $this->database->get_list_one_by_id($id);
-		// 	$description = $this->description($listown['content']);
-		// 	if($list['description']==$description){
-		// 		$list['description'] = $this->description($list['content']);
-		// 	}
-		// }else{
-		// 	$list['description'] = $this->description($list['content']);
-		// }
 		$list['id'] = $id;
-		// $query = "UPDATE {$this->tablename} SET
-		// 	title              = '{$list['title']}',
-		// 	ctitle             = '{$list['ctitle']}',
-		// 	keywords           = '{$list['keywords']}',
-		// 	description        = '{$list['description']}',
-		// 	content            = '{$list['content']}',
-		// 	class1             = '{$list['class1']}',
-		// 	class2             = '{$list['class2']}',
-		// 	class3             = '{$list['class3']}',
-		// 	imgurl             = '{$list['imgurl']}',
-		// 	imgurls            = '{$list['imgurls']}',
-		// 	com_ok             = '{$list['com_ok']}',
-		// 	wap_ok             = '{$list['wap_ok']}',
-		// 	issue              = '{$list['issue']}',
-		// 	hits               = '{$list['hits']}',
-		// 	addtime            = '{$list['addtime']}',
-		// 	updatetime         = '{$list['updatetime']}',
-		// 	access             = '{$list['access']}',
-		// 	filename           = '{$list['filename']}',
-		// 	no_order       	   = '{$list['no_order']}',
-		// 	lang          	   = '{$_M['lang']}',
-		// 	displaytype        = '{$list['displaytype']}',
-		// 	tag                = '{$list['tag']}',
-		// 	links              = '{$list['links']}',
-		// 	top_ok             = '{$list['top_ok']}'
-		// 	WHERE id='{$id}'
-		// ";
-		// DB::query($query);
+
 		load::mod_class('message/message_database', 'new')->update_fd_content($list);
 		return $this->database->update_by_id($list);
 		//return true;
@@ -315,6 +272,7 @@ class message_admin extends base_admin {
 		global $_M;
 		$column = $this->column(3,$this->module);
 		$class[class1]=$column[class1][0][id];
+		$_M['url']['help_tutorials_helpid']='100#3、留言信息管理';
 		require $this->template('own/article_index');
 	}
 
@@ -370,7 +328,7 @@ class message_admin extends base_admin {
 					case '3':$list['access']=$_M[word][access3];break;
 					default: $list['access']=$_M[word][access0];break;
 				}
-			}	
+			}
 			$list[readok] = $list[readok] ? $_M[word][yes] : $_M[word][no];
 			if($keyword){
                  $query="select * from {$_M[table][mlist]} where listid='$list[id]' and lang='{$this->lang}' and info like '%{$keyword}%'";
@@ -395,17 +353,17 @@ class message_admin extends base_admin {
 						$list['tel'] =$message_list2[info];
 						$query="select * from {$_M[table][mlist]} where paraid='$messagesName3[value]' and listid='$list[id]' and lang='{$this->lang}'";
 						$message_list3=DB::get_one($query);
-						$list['email'] =$message_list3[info]; 
+						$list['email'] =$message_list3[info];
 			}
 			if($keyword){
 				   if(($list['email'] || $list['tel'] || $list['name'])){
 				   	     $message_list[]=$list;
 				   }
-	                
+
 			}else{
 				     $message_list[]=$list;
 			}
-		
+
 		}
 		$admininfo = admin_information();
 		foreach($message_list as $key=>$val){
@@ -582,16 +540,13 @@ class message_admin extends base_admin {
 	public function dosyset(){
 	    global $_M;
 	    $fnam=DB::get_one("SELECT * FROM {$_M[table][column]} WHERE id='{$_M[form][class1]}' and lang='{$_M[form][lang]}'");
-		$query = "select * from {$_M[table][parameter]} where lang='{$_M[form][lang]}' and module='{$this->module}' and type='1'";
-		$menus=DB::query($query);
-		while($list = DB::fetch_array($menus)) {
-			$fd_paraall[]=$list;
-		}
-		$query = "select * from {$_M[table][parameter]} where lang='{$_M[form][lang]}' and module='{$this->module}' and type='3'";
-		$menus=DB::query($query);
-		while($list = DB::fetch_array($menus)) {
-			$fd_paraalls[]=$list;
-		}
+
+
+		$name_para = self::get_config_field(1);
+		$email_para = self::get_config_field(9);
+		$phone_para = self::get_config_field(8);
+		$text_para = self::get_config_field(3);
+
 		 $query = "SELECT * FROM {$_M[table][config]} WHERE lang='{$_M[form][lang]}' or lang='metinfo'";
             $result = DB::query($query);
             while($list_config= DB::fetch_array($result)){
@@ -600,7 +555,7 @@ class message_admin extends base_admin {
                 if($metinfoadminok)$list_config['value']=str_replace('"', '&#34;', str_replace("'", '&#39;',$list_config['value']));
             }
         foreach($settings_arr as $key=>$val){
-		if($val['columnid']==$fnam['id'])$$val['name']=$val['value'];
+		if($val['columnid']==$fnam['id'])${$val['name']}=$val['value'];
 	    }
 
         $met_fd_back=DB::get_one("select * from {$_M[table][config]} where name='met_fd_back' and lang='{$_M[form][lang]}' and columnid={$_M[form][class1]}");
@@ -630,6 +585,8 @@ class message_admin extends base_admin {
 		$m_list = DB::get_one("SELECT * FROM {$_M[table][column]} WHERE module='{$this->module}' and lang='{$_M[form][lang]}'");
 		$class1 = $m_list['id'];
 		$class[class1]=$class1;
+		$_M['url']['help_tutorials_helpid']='100#2、留言系统设置';
+
 	    require $this->template('own/set');
 	}
 
@@ -637,24 +594,24 @@ class message_admin extends base_admin {
 	public function dosaveinc(){
       global $_M;
       $list=$_M[form];
-      // $query="select * from {$_M[table][config]} where (lang ='{$this->lang}' or lang ='metinfo')";
-      // $res=DB::get_all($query);
-      // foreach ($res as $key => $value) {
-      // 	  if($_M[config][$value['name']]!=$_M[form][$value['name']] &&isset($_M[form][$value['name']])){
-      // 	  	$query="UPDATE {$_M[table][config]} SET value='{$_M[form][$value['name']]}' WHERE name='{$value['name']}'";
-      // 	  	DB::query($query);
-      // 	  }
-      //   }
         $query="select * from {$_M[table][config]} where (lang ='{$this->lang}' or lang ='metinfo') and columnid='{$_M[form][class1]}'";
       $res=DB::get_all($query);
       foreach ($res as $key => $value) {
-      	
+
       	  if($value['value']!=$_M[form][$value['name']] &&isset($_M[form][$value['name']])){
       	  	$query="UPDATE {$_M[table][config]} SET value='{$_M[form][$value['name']]}' WHERE name='{$value['name']}' and columnid='{$_M[form][class1]}' and lang='{$_M[lang]}'";
       	  	DB::query($query);
       	  }
         }
       turnover("{$_M[url][own_form]}a=dosyset&class1={$_M[form][class1]}",'');
+    }
+
+    public function get_config_field($type)
+    {
+    	global $_M;
+    	$query = "SELECT * FROM {$_M['table']['parameter']} WHERE lang='{$_M['form']['lang']}' AND module='{$this->module}' AND type={$type}";
+		$para = DB::get_all($query);
+		return $para;
     }
 
 }

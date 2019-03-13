@@ -1,4 +1,4 @@
-﻿/**
+/**
  * jquery-s2t v0.1.0
  *
  * https://github.com/hustlzp/jquery-s2t

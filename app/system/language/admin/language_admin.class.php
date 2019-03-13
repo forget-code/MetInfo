@@ -1,10 +1,11 @@
 <?php
-# MetInfo Enterprise Content Management System 
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+# MetInfo Enterprise Content Management System
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 
 defined('IN_MET') or exit('No permission');
 
 load::sys_class('admin');
+load::sys_func('file');
 
 class language_admin extends admin {
 	public $iniclass;
@@ -14,15 +15,20 @@ class language_admin extends admin {
 		$this->handle=load::mod_class('language/class/language_handle','new');
 		$this->syn=load::mod_class('language/class/language_database','new');
 		$this->column=load::mod_class('column/column_label', 'new');
+        nav::set_nav(1,$_M[word][langwebmanage], "{$_M[url][own_form]}a=doindex");
+        nav::set_nav(2, $_M[word]['langadmin'], "{$_M[url][own_form]}a=dodaminlangset");
+        #nav::set_nav(3, $_M[word]['langapp'].'applang', "{$_M[url][own_form]}a=doapplangset");
+        nav::set_nav(3, $_M[word][indexlang], "{$_M[url][own_form]}a=dolangset");
 	}
 
 
 	public function doindex() {
 	 	global $_M;
+        nav::select_nav(1);
         $query = "SELECT * FROM {$_M[table][lang]} order by no_order";
-        $result =DB::query($query);
-        while($list_config=DB::fetch_array($result)){
-	          $list_config['order']=$list_config['no_order'];
+        $result =DB::get_all($query);
+        foreach ($result as $list_config) {
+        	$list_config['order']=$list_config['no_order'];
 			if($list_config['lang']=='metinfo'){
 				$met_langadmin[$list_config['mark']]=$list_config;
 				$_M[langlist][admin][$list_config['mark']]=$list_config;
@@ -31,14 +37,16 @@ class language_admin extends admin {
 				$_M[langlist][web][$list_config['mark']]=$list_config;
 			}
         }
-			 	$met_index_type = DB::get_one("SELECT * FROM {$_M[table][config]} WHERE name='met_index_type' and lang='metinfo'");
-			   	$met_index_type = $met_index_type['value'];
-				require $this->template('own/index');
+	 	$met_index_type = DB::get_one("SELECT * FROM {$_M[table][config]} WHERE name='met_index_type' and lang='metinfo'");
+	   	$met_index_type = $met_index_type['value'];
+	   	$_M['url']['help_tutorials_helpid']='114';
+		require $this->template('own/index');
 	}
 
      /*语言设置*/
 	 public function dolangset() {
 	 	global $_M;
+         nav::select_nav(3);
         if($_M['config']['met_admin_type_ok']==1)$met_admin_type_yes="checked";
 		if($_M['config']['met_admin_type_ok']==0)$met_admin_type_no="checked";
 		if($_M['config']['met_lang_mark']==1)$met_lang_mark_yes="checked";
@@ -46,6 +54,7 @@ class language_admin extends admin {
 		if($_M['config']['met_ch_lang']==1)$met_ch_lang1="checked";
 		if($_M['config']['met_ch_lang']==0)$met_ch_lang2="checked";
 	    $met_langok=DB::get_all("select * from {$_M[table][lang]} where lang !='metinfo'");
+	    $_M['url']['help_tutorials_helpid']='114#如何管理多语言网站';
 	    require $this->template('own/langset');
 
 	 }
@@ -62,10 +71,11 @@ class language_admin extends admin {
          DB::query($query);
          turnover("{$_M[url][own_form]}a=dolangset",$_M[word][savesuccess]);
 	 }
-    
+
     /*语言编辑*/
 	  public function dolangeditor(){
          global $_M;
+         nav::select_nav(1);
          $query = "SELECT * FROM {$_M[table][lang]} order by no_order";
          $result =DB::query($query);
          while($list_config=DB::fetch_array($result)){
@@ -80,15 +90,21 @@ class language_admin extends admin {
         }
                 $met_index_type = DB::get_one("SELECT * FROM {$_M[table][config]} WHERE name='met_index_type' and lang='metinfo'");
 			   	$met_index_type = $met_index_type['value'];
-        
+        $_M['url']['help_tutorials_helpid']='114#点击网站语言—新增多语言';
         require $this->template('own/langeditor');
-         
+
 	}
 
      /*语言删除*/
 	 public function dolangdelete(){
 	 	    global $_M;
-			$langeditor=$_M[form][langeditor];
+			$langeditor = $_M['form']['langeditor'];
+			if($langeditor == $_M['form']['lang']){
+				turnover("{$_M['url']['own_form']}a=doindex",$_M['word']['langadderr2']);
+			}
+			if($langeditor==$_M['config']['met_index_type']){
+				turnover("{$_M['url']['own_form']}a=doindex",$_M['word']['langadderr5']);
+			}
             $tables= DB::get_all('show tables');
             foreach ($tables as $key => $value) {
             	 foreach ($value as $key => $tablename) {
@@ -105,36 +121,14 @@ class language_admin extends admin {
             	 }
             }
 			$query = "SELECT * FROM {$_M[table][lang]} order by no_order where lang!='metinfo'";
-            $result =DB::get_all($query); 
+            $result =DB::get_all($query);
 			if(count($result)==1)turnover("{$_M[url][own_form]}a=doindex",$_M[word][langone]);
-			if($langeditor==$_M[form][lang])turnover("{$_M[url][own_form]}a=doindex",$_M[word][langadderr2]);
-			if($langeditor==$_M[config][met_index_type])turnover("{$_M[url][own_form]}a=doindex",$_M[word][langadderr5]);
-			// $query = "delete from {$_M[table][language]} where site='0' and app='0' and lang='$langeditor'";
-			// DB::query($query);
-			// $query = "delete from {$_M[table][config]} where lang='$langeditor'";
-			// DB::query($query);
-			// $query = "delete from {$_M[table][templates]} where lang='$langeditor'";
-			// DB::query($query);
-			// $query = "delete from {$_M[table][user_group]} where lang='$langeditor'";
-			// DB::query($query);
-			// $query = "delete from {$_M[table][online]} where lang='$langeditor'";
-			// DB::query($query);
-			// $query = "delete from {$_M[table][otherinfo]} where lang='$langeditor'";
-			// DB::query($query);
+
 			$query = "select * from {$_M[table][column]} where lang='$langeditor'";
 			$result = DB::query($query);
 			while($list = DB::fetch_array($result)){
 				$this->handle->delcolumn($list);
 			}
-			// if($this->syn->get_ui_by_lang($_M[form][langeditor])){
-			// 	$this->syn->del_ui_by_lang($_M[form][langeditor]);
-			// }
-			// $query = "delete from {$_M[table][lang]} where lang='$langeditor'";
-			// $result = DB::query($query);
-			// $query = "delete from {$_M[table][admin_array]} where lang='$langeditor'";
-			// DB::query($query);
-			// $query = "delete from {$_M[table][admin_table]} where lang='$langeditor'";
-			// DB::query($query);
 			turnover("{$_M[url][own_form]}a=doindex",$_M[word][physicaldelok]);
 	 }
 
@@ -142,6 +136,7 @@ class language_admin extends admin {
     /*语言添加*/
     public function dolangadd(){
   	    global $_M;
+        nav::select_nav(1);
 	    $query = "SELECT * FROM {$_M[table][lang]} order by no_order";
         $result =DB::query($query);
         while($list_config=DB::fetch_array($result)){
@@ -156,12 +151,14 @@ class language_admin extends admin {
         }
                 $met_index_type = DB::get_one("SELECT * FROM {$_M[table][config]} WHERE name='met_index_type' and lang='metinfo'");
 			 	$met_index_type = $met_index_type['value'];
+			 	$_M['url']['help_tutorials_helpid']='114#点击网站语言—新增多语言';
   	       require $this->template('own/langadd');
     }
 
    /*语言参数编辑*/
     public function doparaeditor(){
       global $_M;
+      nav::select_nav(1);
       $langeditor=$_M[form][langeditor];
       $query="select * from {$_M[table][language]} where site='0' and app='0' and lang='{$langeditor}' ORDER BY no_order";
 	  $result=DB::query($query);
@@ -171,6 +168,7 @@ class language_admin extends admin {
 		$langtext[$list['array']][]=$list;
 		$langtext_a[$list['name']]=$list;
 	    }
+	    $_M['url']['help_tutorials_helpid']='114#点击网站语言—新增多语言';
           require $this->template('own/paraeditor');
   }
 
@@ -198,7 +196,7 @@ class language_admin extends admin {
 			DB::query($query);
 		}
 	}
-	
+
 		$file=file_exists(PATH_WEB.'cache/lang_'.$langeditor.'.php');
 		if(unlink(PATH_WEB.'cache/lang_'.$langeditor.'.php')||!$file){
 			$relang=$_M[word][jsok];
@@ -295,23 +293,24 @@ class language_admin extends admin {
 			turnover("{$_M[url][own_form]}a=doindex",$_M[word][success]);
     }
 
-	/*同步系统语言数据*/
-	public function dosys(){
-	    global $_M;
-	    $langeditor=$_M[form][langeditor];
-	    $post=array('newlangmark'=>$langeditor,'metcms_v'=>$_M[config][metcms_v],'newlangtype'=>$newlangtype);
-		$site=$newlangtype=='admin'?1:0;
-		$file_basicname=PATH_WEB.$_M['config']['met_adminfile'].'/update/lang/lang_'.$langeditor.'.ini';
-		$re=$this->syn->syn_lang($post,$file_basicname,$langeditor,$site,0);
-		if($site==0)unlink(PATH_WEB.'cache/lang_'.$langeditor.'.php');
-		if($site==1)unlink(PATH_WEB.'cache/langadmin_'.$langeditor.'.php');
-		if($re==1){
-			turnover("{$_M[url][own_form]}a=doindex",$_M[word][success]);
-		}else{
-			turnover("{$_M[url][own_form]}a=doindex",$_M[word][langadderr4]);
-		}
+    /*同步系统语言数据*/
+    public function dosys(){
+        global $_M;
+        $langeditor=$_M['form']['langeditor'];
+        $newlangtype=$_M['form']['langsite'];
+        $back = $_M['form']['langsite'] == 'web' ? 'doindex' : 'dodaminlangset';
+        $post=array('newlangmark'=>$langeditor,'metcms_v'=>$_M['config']['metcms_v'],'newlangtype'=>$newlangtype);
+        $site=$newlangtype=='admin'?1:0;
+        $file_basicname=PATH_WEB.$_M['config']['met_adminfile'].'/update/lang/lang_'.$newlangtype.'_'.$langeditor.'.ini';
+        $re=$this->syn->syn_lang($post,$file_basicname,$langeditor,$site,0);
+        $this->clear_lang_cache();
+        if($re==1){
+            turnover("{$_M[url][own_form]}a={$back}",$_M[word][success]);
+        }else{
+            turnover("{$_M[url][own_form]}a={$back}",$_M[word][langadderr4]);
+        }
 
-	}
+    }
 
 
 	/*国旗标志*/
@@ -347,6 +346,7 @@ class language_admin extends admin {
 		$langfile=$_M['form']['langfile'];
 		$langdlok=$_M['form']['langdlok'];
 		$langeditor=$_M['form']['langeditor'];
+		$met_index_type1=$_M['form']['met_index_type1'];
         $query = "SELECT * FROM {$_M[table][lang]} order by no_order";
         $result =DB::query($query);
         while($list_config=DB::fetch_array($result)){
@@ -382,7 +382,7 @@ class language_admin extends admin {
 								'flag'		=>$langoflag,
 								'link'		=>$langlink,
 								'newwindows'=>$langnewwindows);
-	    
+
 				foreach($met_langok as $key=>$val){
 					if($key){
 						if($langmark==$val['mark'])okinfo('-1',$_M[word][langnamerepeat],$depth);
@@ -392,7 +392,7 @@ class language_admin extends admin {
 				$met_webhtm =$met_langok[$langfile]['met_webhtm'];
 				$met_htmtype=$met_langok[$langfile]['met_htmtype'];
 				$met_weburl =$met_langok[$langfile]['met_weburl'];
-                
+
 				$re=$this->syn->copyconfig();
 				if($re!=1){
 					$langdlok=0;
@@ -400,11 +400,14 @@ class language_admin extends admin {
 					$this->syn->copyconfig();
 					$retxt=$_M[word][jsok].'<br/>'.$_M[word][langadderr6];
 				}
-				if($_M[form][langui] && $_M[form][langconfig] ){
+				if($_M[form][langui]){
 				$query="select * from {$_M[table][config]} where name ='met_skin_user' and lang ='{$_M[form][langui]}'";
 				 $met_skin_user=DB::get_one($query);
                  $query="update {$_M[table][config]} set value='$met_skin_user[value]' where name ='met_skin_user' and lang ='$lang'";
 				 DB::query($query);
+				}else{
+					$query="update {$_M[table][config]} set value='' where name ='met_skin_user' and lang ='$lang'";
+				 	DB::query($query);
 				}
 				$query = "INSERT INTO {$_M['table']['lang']} SET
 					name          = '$langname',
@@ -428,16 +431,25 @@ class language_admin extends admin {
 	                	$query="INSERT INTO {$_M[table][user_group]} set name='$value[name]',access='$value[access]',lang='$langautor'";
 					    DB::query($query);
                     }
+
+                    $query = "SELECT * FROM {$_M['table']['app_config']} WHERE lang = {$_M['form']['langconfig']}";
+                    $app_config = DB::get_all($query);
+                    foreach ($app_config as $c) {
+                    	$new_app_config = $c;
+                    	$new_app_config['lang'] = $langmark;
+                    	unset($new_app_config['id']);
+                    	$sql = get_sql($new_app_config);
+                    	$query = "INSERT INTO {$_M['table']['app_config']} SET {$sql}";
+                    	DB::query($query);
+                    }
+
                 }
-				
-				// $query="INSERT INTO {$_M[table][admin_array]} set array_name='{$_M[word][access1]}',admin_type='',admin_ok='0',admin_op='',admin_issueok='0',admin_group='0',user_webpower='1',array_type='1',lang='$langmark',langok=''";
-				// DB::query($query);
-				// $query="INSERT INTO {$_M[table][admin_array]} set array_name='{$_M[word][access2]}',admin_type='',admin_ok='0',admin_op='',admin_issueok='0',admin_group='0',user_webpower='2',array_type='1',lang='$langmark',langok=''";
-				// DB::query($query);
+
 				if($met_index_type1){
 					if($languseok){
-						$met_index_type=$langmark;
-						$query = "update {$_M[table][config]} set value = '{$_M[form][langmark]}' where name='met_index_type'";
+						$met_index_type=$langmark ? $langmark : $langautor;
+
+						$query = "update {$_M[table][config]} set value = '{$met_index_type}' where name='met_index_type'";
 					    DB::query($query);
 					}else{
 						$retxt=$retxt?$retxt.'<br/>'.$_M[word][langexplain12]:$_M[word][jsok].$_M[word][langexplain12];
@@ -448,66 +460,428 @@ class language_admin extends admin {
 
 	    }
 
-     /*批量更新语言数据*/
-	    public function domengenedit() {
+    /*批量更新语言数据*/
+    public function domengenedit() {
         global $_M;
-
+        $navno = $_M['form']['langsite'] == 'web' ? 1 : 2;
+        $site = $_M['form']['langsite'];
+        $appno = $_M['form']['appno'];
+        $appname = urldecode($_M['form']['appname']);
+        nav::select_nav($navno);
         require_once $this->template('own/mengenedit');
- }
+    }
 
 
  /*更新语言数据*/
 public function doupdatelang(){
-      global $_M;
-     //$languagelist=explode('\\\\',str_replace("\r\n","",$_M['form']['langupdate']));
+    global $_M;
+    //$languagelist=explode('\\\\',str_replace("\r\n","",$_M['form']['langupdate']));
+    $_M['form']['langupdate'] = preg_replace("/\'/", "''", $_M['form']['langupdate']);
+    $languagelist=explode(PHP_EOL,$_M['form']['langupdate']);
+    $site = $_M['form']['langsite'] == 'admin' ? '1' : '0';
+    $appno = $_M['form']['appno'] ? $_M['form']['appno'] : '';
+    $sql = $appno ? " AND app = {$appno} " : '';
+    $insert_sql = $appno ? " , app = {$appno} " : '';
 
-      $_M['form']['langupdate'] = preg_replace("/\'/", "''", $_M['form']['langupdate']);
-      $languagelist=explode(PHP_EOL,$_M['form']['langupdate']);
-      foreach ($languagelist as $key => $value) {
-          $languagedata=explode('=',$value);
-          $query="select * from {$_M[table][language]} where name='{$languagedata[0]}' and lang='{$_M[form][langeditor]}' and site ='0'";
-          $result=DB::query($query);
-          if($result){
-              $query="update {$_M[table][language]} set value='{$languagedata[1]}' where name='{$languagedata[0]}' and lang='{$_M[form][langeditor]}' and site ='0'";
-          }else{
-              $query="insert into {$_M[table][language]} set value='{$languagedata[1]}',site='0',name='{$languagedata[0]}',lang='{$_M[form][langeditor]}'";
-          }
-           DB::query($query);
-      }
-     turnover("{$_M[url][own_form]}a=doindex",$_M[word][success]);
+    foreach ($languagelist as $key => $value) {
+        $languagedata=explode('=',$value);
+        $query="select * from {$_M[table][language]} where name='{$languagedata[0]}' and lang='{$_M[form][langeditor]}' and site ='{$site}' {$sql}";
+        if(DB::get_one($query)){
+            $query="update {$_M[table][language]} set value='{$languagedata[1]}' where name='{$languagedata[0]}' and lang='{$_M[form][langeditor]}' and site ='{$site}' {$sql}";
+        }else{
+            $query="insert into {$_M[table][language]} set value='{$languagedata[1]}',site='{$site}',name='{$languagedata[0]}',lang='{$_M[form][langeditor]}' {$insert_sql}";
+        }
+        DB::query($query);
+    }
+    turnover("{$_M[url][own_form]}a=doindex",$_M[word][success]);
 }
 
 
    /*获取后台语言包*/
    public function doget_adminlangpack(){
-        global $_M;
-        $query="select * from {$_M[table][language]} where lang='{$_M[form][langeditor]}' and site ='0'";
-        $res=DB::get_all($query);
-        $langpackurl=PATH_WEB.'cache/language'.$_M[form][langeditor].'.ini';
-        if(file_exists($langpackurl)){
-        	chmod($langpackurl,0777);
-            unlink($langpackurl);
-        }
-        foreach ($res as $key => $val) {
+       global $_M;
+       $appno = $_M['form']['appno'] ? $_M['form']['appno'] : '';
+       $sql = $appno ? "AND app = {$appno}" : '';
+
+       if ($_M['form']['langsite']=='admin') {
+           $query="SELECT * FROM {$_M[table][language]} WHERE lang='{$_M[form][langeditor]}' AND site ='1' $sql";
+           $res=DB::get_all($query);
+           $langpackurl=PATH_WEB.'cache/language_admin_'.$_M[form][langeditor].'.ini';
+       }else if($_M['form']['langsite']=='web'){
+           $query="SELECT * FROM {$_M[table][language]} WHERE lang='{$_M[form][langeditor]}' AND site ='0' $sql";
+           $res=DB::get_all($query);
+           $langpackurl=PATH_WEB.'cache/language_web_'.$_M[form][langeditor].'.ini';
+       }
+       if(file_exists($langpackurl)){
+           chmod($langpackurl,0777);
+           unlink($langpackurl);
+       }
+       foreach ($res as $key => $val) {
 
            file_put_contents($langpackurl, $val[name].'='.$val[value].PHP_EOL,FILE_APPEND);
 
-        }
+       }
     }
   /*导出语言包*/
    public function doexportpack(){
-     global $_M;
-     $this->doget_adminlangpack();
-     $filename=PATH_WEB.'cache/language'.$_M[form][langeditor].'.ini';
-     $filename=realpath($filename); //文件名
-     Header( "Content-type:  application/octet-stream "); 
-     Header( "Accept-Ranges:  bytes "); 
-     Header( "Accept-Length: " .filesize($filename));
-     header( "Content-Disposition:  attachment;  filename=language_".$_M[form][langeditor].".ini"); 
-    // echo file_get_contents($filename);
-     readfile($filename); 
+       global $_M;
+       $this->doget_adminlangpack();
+       $subname = $_M['form']['appno']?"app_".$_M['form']['appno'].'_':'';
+       $site = $_M['form']['langsite'] ? $_M['form']['langsite'] : 'web';
+       $filename=PATH_WEB.'cache/language_'.$site.'_'.$_M[form][langeditor].'.ini';
+       $filename=realpath($filename); //文件名
+       Header( "Content-type:  application/octet-stream ");
+       Header( "Accept-Ranges:  bytes ");
+       Header( "Accept-Length: " .filesize($filename));
+       header( "Content-Disposition:  attachment;  filename=language_{$site}_".$subname.$_M[form][langeditor].".ini");
+       // echo file_get_contents($filename);
+       readfile($filename);
    }
 
+    /**
+     * 后台多语言管理
+     */
+    public function dodaminlangset(){
+        global $_M;
+        nav::select_nav(2);
+        require $this->template('own/adminlangset');
+    }
+
+    public function doadmin_lang_list(){
+        global $_M;
+
+        $table = load::sys_class('tabledata', 'new');
+        $order = "no_order ASC";
+        $where = "lang != 'metinfo'";
+        $langlist = $table->getdata($_M['table']['lang_admin'], '*', $where, $order);
+
+        foreach($langlist as $key=>$val){
+            if(!$val['login_time'])$val['login_time'] = $val['register_time'];
+            $valid = $val['valid']?$_M[word][memberChecked]:$_M[word][memberUnChecked];
+            $list = array();
+            $list[] = $val['no_order'];
+            $list[] = $val['name'];
+            $list[] = $val['useok'] == 1 ? $_M['word']['yes']:$_M['word']['no'];
+            $list[] = $val['moren']= $_M['config']['met_admin_type']==$val['mark']?$_M['word']['yes']:$_M['word']['no'];
+            $operate = "<a href=\"{$_M['url']['own_form']}a=doadminlangeditor&langeditor={$val['lang']}\" title=\"{$_M['word']['editor']}\">{$_M['word']['editor']}</a>
+			&nbsp;
+			<a href=\"{$_M['url']['own_form']}a=doadminlangdelete&langeditor={$val['lang']}\" onClick=\"return linkSmit($(this),1,'{$_M['word']['delete_information']}');\" title=\"{$_M['word']['delete']}\">{$_M['word']['delete']}</a>
+			&nbsp;
+			<a href=\"{$_M['url']['own_form']}a=doexportpack&langsite=admin&langeditor={$val['lang']}\" title=\"{$_M['word']['delete']}\">{$_M['word']['language_outputlang_v6']}</a>
+			&nbsp;
+			<a href=\"{$_M['url']['own_form']}a=domengenedit&langsite=admin&langeditor={$val['lang']}\" title=\"{$_M['word']['language_batchreplace_v6']}\">{$_M['word']['language_batchreplace_v6']}</a>
+			&nbsp;
+			<a href=\"{$_M[url][own_form]}a=dopadminaraeditor&langsite=admin&langeditor={$val['lang']}\" title=\"{$_M[word][langwebeditor]}\" style=\"margin - bottom:5px;\">{$_M['word']['langwebeditor']}</a>
+            &nbsp;
+			";
+            if ($val['mark'] == 'cn' || $val['mark'] == 'en') {
+                $operate .= "<a href=\"{$_M['url']['own_form']}a=dosys&langsite=admin&langeditor={$val[lang]}\" title=\"\" onclick=\"return syn('$val[synchronous]');\">{$_M[word][unitytxt_9]}</a>";
+            }
+            $list[] = $operate;
+            $list[] = "<a href=\"{$_M[url][own_form]}a=doapplangset&langsite=admin&langeditor={$val['lang']}\" title=\"{$_M[word][langwebeditor]}\" style=\"margin-bottom:5px;\">{$_M['word']['edit_app_lang']}</a>";
+
+            $rarray[] = $list;
+        }
+
+        $table->rdata($rarray);
+    }
+
+    public function doadminlangadd(){
+        global $_M;
+        nav::select_nav(2);
+        $met_langok=DB::get_all("select * from {$_M['table']['lang_admin']} where lang !='metinfo'");
+        //$arr = array_column($met_langok, 'no_order');
+        $arr = array();
+        foreach ($met_langok as $val) {
+            $arr[] = $val['no_order'];
+        }
+        $new_no_order = max($arr)+1;
+        require $this->template('own/amdinlangadd');
+    }
+
+    /**
+     * 保存后台语言配置
+     */
+    public function doadminlangsave(){
+        global $_M;
+
+        $query="select * from {$_M['table']['lang_admin']} where mark = '{$_M['form']['langmark']}' OR lang = '{$_M['form']['langmark']}'";
+        if (DB::get_one($query)) {
+            turnover("{$_M[url][own_form]}a=doadminlangadd",$_M['word']['langexisted']);
+            die();
+        };
+
+        //复制本地后台语言
+        if($_M['form']['langdlok'] == 0){
+            $query = "SELECT * FROM {$_M['table']['language']} WHERE `lang`='{$_M['form']['ftype_select']}' AND `site`=1 AND `app`=0";
+            $langlist = DB::get_all($query);
+            foreach ($langlist as $value) {
+                $query="select * from {$_M['table']['language']} where name='{$value['name']}' and lang='{$_M['form']['langmark']}' and site ='1'";
+                $result=DB::get_one($query);
+                if($result){
+                    $query="update {$_M['table']['language']} set value='{$value['value']}' where name='{$value['name']}' and lang='{$_M['form']['langmark']}' and site ='1'";
+                }else{
+                    $query="insert into {$_M['table']['language']} set value='{$value['value']}',site='1',name='{$value['name']}',no_order='0',array='{$value['array']}',app='{$value['app']}',lang='{$_M['form']['langmark']}'";
+                }
+                DB::query($query);
+            }
+        }else{
+            //在线复制语言
+            $newlangtype = "admin";
+            $site = 1;
+            $post=array('newlangmark'=>$_M['form']['langmark'],'metcms_v'=>$_M['config']['metcms_v'],'newlangtype'=>$newlangtype);
+            $file_basicname=PATH_WEB.$_M['config']['met_adminfile'].'/update/lang/lang_'.$newlangtype.'_'.$_M['form']['langmark'].'.ini';
+            $res=$this->syn->syn_lang($post,$file_basicname,$_M['form']['langmark'],$site,0);
+            if($res != 1){
+                turnover("{$_M[url][own_form]}a=doadminlangadd",$_M[word][langadderr4]);
+            }
+        }
+
+        //添加后台语言
+        $query="insert into {$_M['table']['lang_admin']} set `name`='{$_M['form']['langname']}',`useok`='{$_M['form']['languseok']}',`mark`='{$_M['form']['langmark']}',`no_order`='{$_M['form']['order']}',`synchronous`='{$_M['form']['langmark']}',`lang`='{$_M['form']['langmark']}'";
+        DB::query($query);
+
+        //默认语言
+        if ($_M['form']['met_admin_type'] == 1 && $_M['form']['langmark']) {
+            $query="update {$_M['table']['config']} set value = '{$_M['form']['langmark']}' where name ='met_admin_type'";
+            DB::query($query);
+        }else{
+            $query="update {$_M['table']['config']} set value = 'cn' where name ='met_admin_type'";
+            DB::query($query);
+        }
+
+        $this->clear_lang_cache();
+        turnover("{$_M[url][own_form]}a=dodaminlangset", $_M['word']['success']);
+    }
+
+    public function dopadminaraeditor(){
+        global $_M;
+        nav::select_nav(2);
+        require $this->template('own/langparaeditor');
+    }
+
+    public function dosearchadmin(){
+        global $_M;
+        if(!$_M['form']['word']){
+            echo json_encode(array('msg'=>'empty'));
+            die();
+        }
+        $query = "SELECT * FROM {$_M['table']['language']} WHERE `value` like '%{$_M['form']['word']}%' AND `app`=0 AND `site`=1 AND `lang`='{$_M['form']['langeditor']}'";
+        $res = DB::get_all($query);
+        $langlist = array();
+        foreach ($res as $val){
+            $langlist[$val['name']]  = $val['value'];
+        }
+        echo json_encode(array('msg'=>'showlist','langlist'=>$langlist));
+        die();
+    }
+
+    /**
+     * 修改后台语言文字
+     */
+    public function domodifyadmin(){
+        global $_M;
+        foreach ($_M['form'] as $name=>$val){
+            if(strstr($name, 'change_')){
+                $name = str_replace('change_', '', $name);
+                $query = "SELECT * FROM {$_M['table']['language']} WHERE `name`='{$name}' AND `app`=0 AND `site`=1 AND `lang`='{$_M['form']['langeditor']}'";
+                $row = DB::get_one($query);
+                if ($row['value'] != $val) {
+                    $query="update {$_M['table']['language']} set value='{$val}' where name='{$name}'  AND `site` ='1' and lang='{$_M['form']['langeditor']}'";
+                    DB::query($query);
+                }
+            }
+        }
+        $this->clear_lang_cache();
+        turnover("{$_M[url][own_form]}a=dodaminlangset", $_M['word']['success']);
+    }
+
+    public function doadminlangdelete(){
+        global $_M;
+        if($_M['form']['langeditor'] == $_M['config']['met_admin_type']){
+        	turnover("{$_M[url][own_form]}a=dodaminlangset&", $_M['word']['langadderr5']);
+        }
+
+            //删除后台语言
+        $query = "DELETE FROM {$_M['table']['lang_admin']} WHERE lang='{$_M['form']['langeditor']}';";
+        DB::query($query);
+        $query = "DELETE FROM {$_M['table']['language']} WHERE lang='{$_M['form']['langeditor']}' AND site = 1 AND app = 0;";
+        DB::query($query);
+        turnover("{$_M[url][own_form]}a=dodaminlangset", $_M['word']['physicaldelok']);
+    }
+
+    public function doadminlangeditor(){
+        global $_M;
+        nav::select_nav(2);
+        $edlang = DB::get_one("select * from {$_M['table']['lang_admin']} where lang ='{$_M['form']['langeditor']}'");
+        $default = $_M['config']['met_admin_type'] == $edlang['mark'] ? 1 : 0;
+        require $this->template('own/adminlangeditor');
+    }
+
+    public function doadminlangeditorsave(){
+        global $_M;
+
+        //修改后台语言设置
+        $query = "SELECT * FROM {$_M['table']['lang_admin']} WHERE (`name`='{$_M['form']['langname']}' OR `no_order`='{$_M['form']['order']}') AND lang != '{$_M['form']['langeditor']}'";
+        if (DB::get_one($query)) {
+            turnover("{$_M[url][own_form]}a=dodaminlangset&", $_M['word']['loginFail']);
+        }
+        $query="update {$_M['table']['lang_admin']} set `name`='{$_M['form']['langname']}',`useok`='{$_M['form']['languseok']}',`no_order`='{$_M['form']['order']}' WHERE lang = '{$_M['form']['langeditor']}'";
+        DB::query($query);
+
+        //默认语言
+        if ($_M['form']['met_admin_type'] == 1 && $_M['form']['langeditor']) {
+            $query="update {$_M['table']['config']} set value = '{$_M['form']['langeditor']}' where name ='met_admin_type'";
+            DB::query($query);
+        }else{
+            $query="update {$_M['table']['config']} set value = 'cn' where name ='met_admin_type'";
+            DB::query($query);
+        }
+        turnover("{$_M[url][own_form]}a=dodaminlangset&", $_M['word']['opfailed']);
+    }
+
+
+    //修改应用语言
+    public function doapplangset()
+    {
+        global $_M;
+        $site = $_M['form']['langsite'] ? 1 : 0;
+        $langeditor = $_M['form']['langeditor'];
+        if ($site) {
+            nav::select_nav(2);
+        }else{
+            nav::select_nav(1);
+        }
+        require $this->template('own/applangset');
+    }
+
+    public function dogetapplist()
+    {
+        global $_M;
+        $site = $_M['form']['langsite'] ? 1 : 0;
+        $langsitestr = $_M['form']['langsite'] ? 'admin' : 'web';
+        $langeditor = $_M['form']['langeditor'];
+
+        $table = load::sys_class('tabledata', 'new');
+        $where = "`no` > 0 AND `mlangok`=1 ";
+        $order = "id";
+        $applist = $table->getdata($_M['table']['applist'], '*', $where ,$order);
+
+        foreach($applist as $key=>$val){
+            $appname = urlencode($val['appname']);
+            $list = array();
+            #$list[] = $val['no'];
+            $list[] = $val['appname'].' / ' .$val['no'];
+            $list[] = "
+			<a href=\"{$_M['url']['own_form']}a=doexportpack&langsite={$langsitestr}&langeditor={$langeditor}&appno={$val['no']}&appname={$appname}\" title=\"{$_M['word']['delete']}\">{$_M['word']['language_outputlang_v6']}</a>
+			&nbsp;
+			<a href=\"{$_M['url']['own_form']}a=domengenedit&langsite={$langsitestr}&langeditor={$langeditor}&appno={$val['no']}&appname={$appname}\" title=\"{$_M['word']['language_batchreplace_v6']}\">{$_M['word']['language_batchreplace_v6']}</a>
+			&nbsp;
+			<a href=\"{$_M[url][own_form]}a=dopapparaeditor&langsite={$site}&langeditor={$langeditor}&appno={$val['no']}&appname={$appname}\" title=\"{$_M[word][langwebeditor]}\" style=\"margin - bottom:5px;\">{$_M['word']['langwebeditor']}</a>";
+            $rarray[] = $list;
+        }
+        $table->rdata($rarray);
+    }
+
+    public function dopapparaeditor(){
+        global $_M;
+        $site = $_M['form']['langsite'] ? 1 : 0;
+        $appno = $_M['form']['appno'];
+        $langeditor = $_M['form']['langeditor'];
+        $appname = urldecode($_M['form']['appname']);
+        if ($site) {
+            nav::select_nav(2);
+        }else{
+            nav::select_nav(1);
+        }
+        require $this->template('own/langappditor');
+    }
+
+    public function dosearchapp (){
+        global $_M;
+        if(!$_M['form']['word']){
+            echo json_encode(array('msg'=>'empty'));
+            die();
+        }
+        $site = $_M['form']['langsite'] ? 1 : 0;
+        $appno = $_M['form']['appno'];
+        $langeditor = $_M['form']['langeditor'];
+        $word = $_M['form']['word'];
+
+        $query = "SELECT * FROM {$_M['table']['language']} WHERE `value` like '%{$word}%' AND `app`={$appno} AND `site`='{$site}' AND `lang`='{$langeditor}'";
+        $res = DB::get_all($query);
+        $langlist = array();
+        foreach ($res as $val){
+            $langlist[$val['name']]  = $val['value'];
+        }
+        echo json_encode(array('msg'=>'showlist','langlist'=>$langlist));
+        die();
+    }
+
+    public function domodifyapp()
+    {
+        global $_M;
+        $site = $_M['form']['langsite'] ? 1 : 0;
+        $appno = $_M['form']['appno'];
+        $langeditor = $_M['form']['langeditor'];
+
+        foreach ($_M['form'] as $name=>$val){
+            if(strstr($name, 'change_')){
+                $name = str_replace('change_', '', $name);
+                $query = "SELECT * FROM {$_M['table']['language']} WHERE `name`='{$name}' AND `app`='{$appno}' AND `site`='{$site}' AND `lang`='{$langeditor}'";
+                $row = DB::get_one($query);
+                if ($row['value'] != $val) {
+                    $query="update {$_M['table']['language']} set value='{$val}' where name='{$name}' and site ='{$site}' and app ='{$appno}' and lang='{$langeditor}'";
+                    DB::query($query);
+                }
+            }
+        }
+        $this->clear_lang_cache();
+        turnover("{$_M[url][own_form]}a=doapplangset&lang={$_M['lang']}&langsite={$site}&langeditor={$langeditor}", $_M['word']['success']);
+    }
+
+    /**
+     * 清除语言缓存
+     */
+    public function clear_lang_cache(){
+        global $_M;
+        if(file_exists(PATH_WEB.'cache')){
+            $files = scandir(PATH_WEB . 'cache');
+            foreach ($files as $val) {
+                if (strstr($val,"lang")) {
+                    delfile(PATH_WEB . 'cache/' . $val);
+                }
+            }
+        }
+    }
+
+
+    /**
+     * 生成安装语言包
+     */
+    public function dotool(){
+        global $_M;
+        $site = $_M['form']['site'];
+        $sitename = $_M['form']['site']?'admin':'web';
+        $app = $_M['form']['app']?$_M['form']['app']:0;
+        $appno = $app?$app:'';
+        $lang = $_M['form']['elang'];
+
+        /*$query = "SELECT * FROM {$_M['table']['language']} WHERE lang='{$lang}' AND app='{$app}' AND site='{$site}' ORDER BY id ";
+        $langlsit = DB::query($query);
+        $langstr = '';
+        foreach ($langlsit as $value) {
+            $value['value'] = addslashes($value['value']);
+            $langstr .= "INSERT INTO met_language VALUES (null, '{$value['name']}', \"{$value['value']}\", {$value['site']}, {$value['no_order']}, {$value['array']}, {$value['app']}, '{$value['lang']}');\n";
+        }*/
+
+        /*$query = "SELECT `name`,`value`,`site`,`array`,`app`,`lang` FROM {$_M['table']['language']} WHERE lang='{$lang}' AND app='{$app}' AND site='{$site}' ORDER BY id ";
+        $langlsit = DB::get_all($query);
+        $langlsit = json_encode($langlsit, JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT);
+        file_put_contents(__DIR__."/lang_{$sitename}_{$appno}_{$lang}.json",$langlsit);*/
+        dump('complete');
+
+    }
 
 }
 # This program is an open source system, commercial use, please consciously to purchase commercial license.

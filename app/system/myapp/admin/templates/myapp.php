@@ -18,9 +18,9 @@ EOT;
 echo <<<EOT
 -->
   				<div style="float: right;padding-right: 10px">
-    				<a href="{$_M['url']['site_admin']}index.php?lang=cn&anyid=65&n=appstore&c=appstore&a=doappstore&type=1"> 免费应用 |</a>
-    				<a href="{$_M['url']['site_admin']}index.php?lang=cn&anyid=65&n=appstore&c=appstore&a=doappstore&type=2"> 商业会员应用 | </a>
-    				<a href="{$_M['url']['site_admin']}index.php?lang=cn&anyid=65&n=appstore&c=appstore&a=doappstore&type=3"> 收费应用</a>
+    				<a href="{$_M['url']['site_admin']}index.php?lang=cn&anyid=65&n=appstore&c=appstore&a=doappstore&type=1"> {$_M[word][freeapp_v6]} |</a>
+    				<a href="{$_M['url']['site_admin']}index.php?lang=cn&anyid=65&n=appstore&c=appstore&a=doappstore&type=2"> {$_M[word][Business_membersapp_v6]}| </a>
+    				<a href="{$_M['url']['site_admin']}index.php?lang=cn&anyid=65&n=appstore&c=appstore&a=doappstore&type=3"> {$_M[word][payapp]}</a>
           </div>
 <!--
 EOT;
@@ -40,9 +40,8 @@ foreach($appl as $key=>$val){
 		$val['uninstallhtml'] = "<li class=\"uninstall\"><a href=\"{$val['uninstall']}\" data-confirm=\"{$_M['word']['app_datele']}\"><span class=\"glyphicon glyphicon-trash\"></span>{$_M['word']['dlapptips6']}</a></li>";
 	}
 	$val['info'] = get_word($val['info']);
-  	if($val['target']){
-	 	$target="target='_blank'";
-  	}
+	$val['target']=$val['target']?"target='_blank'":'';
+	if($val['target']) $val['url'].='&nopageset=1';
 	/*
 	if(strstr($val[info],"lang_")){
 		$info = explode('lang_',$val[info]);
@@ -55,13 +54,13 @@ echo <<<EOT
 						<div class="col-md-4 col-sm-6 col-xs-12 index_stat_chart">
 							<div class="media">
 								<div class="media-left">
-									<a href="{$val['url']}" {$target}>
+									<a href="{$val['url']}" {$val['target']}>
 										<img class="media-object" src="{$val['ico']}" width="80">
 									</a>
 								</div>
 								<div class="media-body">
 									<ul class="media-tool">{$val['updatehtml']}{$val['uninstallhtml']}</ul>
-									<a href="{$val['url']}" {$target}>
+									<a href="{$val['url']}" {$val['target']}>
 										<h4 class="media-heading">{$val[appname]}</h4>
 										<p>{$val[info]}</p>
 									</a>

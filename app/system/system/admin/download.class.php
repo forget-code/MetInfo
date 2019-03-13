@@ -68,7 +68,7 @@ class download extends admin {
 		$getdata = $this->curl->curl_post($post);
 		list($suc, $html) = explode('|', $getdata);
 		if ($suc == 'suc') {
-			return $this->suc_data('check_doc', '1', "{$_M['word']['file_permissions']}....", 0, 'confirm', $this->confirm("升级文档：", $html, $_M['word']['updatelater'], $_M['word']['updatenow']));
+			return $this->suc_data('check_doc', '1', "{$_M['word']['file_permissions']}....", 0, 'confirm', $this->confirm($_M['word']['document_upgrade'], $html, $_M['word']['updatelater'], $_M['word']['updatenow']));
 		}else if($suc == 'sucnodoc'){
 			return $this->suc_data('check', '1', "{$_M['word']['file_permissions']}....");
 		}else{
@@ -280,7 +280,7 @@ class download extends admin {
 				$tem_url = "{$_M['url']['adminurl']}n=theme&c=theme&a=doindex&mobile={$tem['devices']}&anyid=70&lang={$_M['lang']}";
 			}
 			$html = "<a target=\"_blank\" href=\"{$tem_url}\">{$_M['word']['configuratio_template']}</a>";
-			$html.="<a target=\"_blank\" href=\"https://account.metinfo.cn/profile/template/\">下载演示数据</a>";
+			$html.="<a target=\"_blank\" href=\"https://account.metinfo.cn/profile/template/\">{$_M['word']['appstore_downshowdata_v6']}</a>";
 			return $this->suc_data('end', 0, $html);
 		}
 	}
@@ -417,6 +417,7 @@ class download extends admin {
 		}
 		return $need;
 	}
+
 
 }
 

@@ -19,16 +19,16 @@ echo <<<EOT
 	<input type="hidden" name="select_class2" value="{$_M['form']['select_class2']}">
 	<input type="hidden" name="select_class3" value="{$_M['form']['select_class3']}">
 	<div class="v52fmbx">
-		<h3 class="v52fmbx_hr">基本信息</h3>
+		<h3 class="v52fmbx_hr">{$_M[word][upfiletips7]}</h3>
 		<dl>
-			<dt><em class="required">*</em>所属栏目</dt>
+			<dt><em class="required">*</em>{$_M[word][category]}</dt>
 			<dd>
 				<div class="fbox pull-left">
 					<select name="class" class="form-control" data-value="{$list['class']}{$list['classother']}" style="min-width:250px; height:250px;" class="dist" multiple>
 						{$class_option}
 					</select>
 					<input type="hidden" name="class" value='' />
-					<span class="tips" style="display:block; margin-top:5px;">按住 Ctrl 可以多选</span>
+					<span class="tips" style="display:block; margin-top:5px;">{$_M[word][admin_holdcanrlchoose_v6]}</span>
 				</div>
 <!--
 EOT;
@@ -36,7 +36,7 @@ EOT;
 if(in_array('metinfo',$arrlanguage)||in_array('1201',$arrlanguage)){
 echo <<<EOT
 -->
-		<span class="tips pull-left" style="margin-left:20px;"><a href="{$_M[url][site_admin]}index.php?lang={$_M[lang]}#metnav_25" target="_blank">栏目管理</a></span>
+		<span class="tips pull-left" style="margin-left:20px;"><a href="{$_M[url][site_admin]}index.php?lang={$_M[lang]}#metnav_25" target="_blank">{$_M[word][admin_colunmmanage_v6]}</a></span>
 			</dd>
 <!--
 EOT;
@@ -45,7 +45,7 @@ echo <<<EOT
 -->
 		</dl>
 		<dl>
-			<dt><em class="required">*</em>商品名称</dt>
+			<dt><em class="required">*</em>{$_M[word][goodsname]}</dt>
 			<dd class="ftype_input">
 				<div class="fbox">
 					<input type="text" name="title" value="{$list[title]}" data-required="1" />
@@ -53,7 +53,7 @@ echo <<<EOT
 			</dd>
 		</dl>
 		<dl>
-			<dt><em class="required">*</em>商品图</dt>
+			<dt><em class="required">*</em>{$_M[word][product_img_v6]}</dt>
 			<dd class="ftype_upload">
 				<div class="fbox">
 					<input 
@@ -64,20 +64,20 @@ echo <<<EOT
 						value="{$list[imgurl_all]}" 
 					/>
 				</div>
-				<span class="tips">可以拖拽图片调整图片顺序。</span>
+				<span class="tips">{$_M[word][tips11_v6]}</span>
 			</dd>
 		</dl>
-		<h3 class="v52fmbx_hr">商品参数</h3>
+		<h3 class="v52fmbx_hr">{$_M[word][goodspar]}</h3>
 		<dl>
 			<dd>
-			<a href="{$_M[url][own_form]}a=doparaset" target="_blank">参数管理</a>
-			<a href="javascript:;" class="refresh_para" style="margin-left:10px;">刷新</a>
+			<a href="{$_M[url][own_form]}a=doparaset" target="_blank">{$_M[word][parmanage]}</a>
+			<a href="javascript:;" class="refresh_para" style="margin-left:10px;">{$_M[word][refresh]}</a>
 			</dd>
 		</dl>
 		<div id="paralist" class="paralistbox" data-paralist="{$_M[url][own_form]}a=dopara&id={$_M['form']['id']}">
 		<dl>
 			<dd>
-				<span class="tips">请选择所属栏目</span>
+				<span class="tips">{$_M[word][selectcolumn]}</span>
 			</dd>
 		</dl>
 		</div>	
@@ -106,7 +106,7 @@ if($tems && $tems[productother]){
 	$contxt1s=$tems['productTabname'];
 echo <<<EOT
 -->
-	<h3 class="v52fmbx_hr">商品详情</h3>
+	<h3 class="v52fmbx_hr">{$_M[word][goodsdetails]}</h3>
 	<div style="margin-top:5px;margin-left:5px;">
 		<!-- Nav tabs -->
 		<ul class="nav nav-tabs" role="tablist">
@@ -114,7 +114,7 @@ echo <<<EOT
 <!--
 EOT;
 	for($i=1;$i<=$tems[productother];$i++){
-		$tabtitle = $tems?$tems['productTabname_'.$i]:"附加内容".$i;
+		$tabtitle = $tems?$tems['productTabname_'.$i]:"{$_M[word][columnmappend]}".$i;
 		$othermark ='content'.$i;
 echo <<<EOT
 -->
@@ -139,7 +139,7 @@ echo <<<EOT
 <!--
 EOT;
 	for($i=1;$i<=$tems[productother];$i++){
-		$tabtitle = $tems?$tems['productTabname_'.$i]:"附加内容".$i;
+		$tabtitle = $tems?$tems['productTabname_'.$i]:"{$_M[word][columnmappend]}".$i;
 		$othermark ='content'.$i;
 echo <<<EOT
 -->
@@ -165,7 +165,7 @@ echo <<<EOT
 <!--
 EOT;
 }else{
-	$contxt1s="商品详情";
+	$contxt1s="{$_M[word][goodsdetails]}";
 echo <<<EOT
 -->
 		<h3 class="v52fmbx_hr">{$contxt1s}</h3>
@@ -183,55 +183,55 @@ EOT;
 
 echo <<<EOT
 -->		
-		<h3 class="v52fmbx_hr">SEO优化</h3>
+		<h3 class="v52fmbx_hr">{$_M[word][seo_optimization]}</h3>
 		<dl>
-			<dt>自定义页面title</dt>
+			<dt>{$_M[word][tips10_v6]}</dt>
 			<dd class="ftype_input">
 				<div class="fbox">
 					<input type="text" name="ctitle" value="{$list[ctitle]}" />
 				</div>
-				<span class="tips">为空则系统自动构成，可以到 营销-SEO 中设置构成规则。</span>
+				<span class="tips">{$_M[word][tips6_v6]}</span>
 			</dd>
 		</dl>
 		<dl>
-			<dt>关键词</dt>
+			<dt>{$_M[word][keywords]}</dt>
 			<dd class="ftype_input">
 				<div class="fbox">
 					<input type="text" name="keywords" value="{$list[keywords]}" />
 				</div>
-				<span class="tips">多个关键词请用 , 或 | 隔开</span>
+				<span class="tips">{$_M[word][content_descript1_v6]}</span>
 			</dd>
 		</dl>
 		<dl>
-			<dt>描述文字</dt>
+			<dt>{$_M[word][desctext]}</dt>
 			<dd class="ftype_textarea">
 				<div class="fbox">
 					<textarea name="description">{$list[description]}</textarea>
 				</div>
-				<span class="tips">为空则系统自动抓取商品详情</span>
+				<span class="tips">{$_M[word][content_descript5_v6]}</span>
 			</dd>
 		</dl>
 		<dl>
-			<dt><abbr title="显示在商品详情页底部，用于聚合内容">TAG标签</abbr></dt>
+			<dt><abbr title="{$_M[word][admin_seotips3_v6]}">{$_M[word][tag]}</abbr></dt>
 			<dd class="ftype_tags">
 				<div class="fbox">
 					<input name="tag" type="hidden" data-label="|" value="{$list[tag]}">
 				</div>
-				<span class="tips">点击 + 号输入选项名，再点击 + 号或回车完成添加</span>
+				<span class="tips">{$_M[word][tips3_v6]}</span>
 			</dd>
 		</dl>
 		<dl>
-			<dt>静态页面名称</dt>
+			<dt>{$_M[word][columnhtmlname]}</dt>
 			<dd class="ftype_input">
 				<div class="fbox">
 					<input type="text" name="filename" data-ajaxcheck-url="{$_M[url][own_form]}a=docheck_filename&id={$_M['form']['id']}" style="width:200px;" value="{$list[filename]}" />
 				</div>
-				<span class="tips">支持中文、大小写字母、数字、下划线</span>
+				<span class="tips">{$_M[word][js74]}</span>
 			</dd>
 		</dl>
-		<h3 class="v52fmbx_hr">其它设置<span class="tips">访问权限、定时发布等</span></h3>
+		<h3 class="v52fmbx_hr">{$_M[word][unitytxt_15]}<span class="tips">{$_M[word][content_descript6_v6]}</span></h3>
 		<dl>
-			<dt>访问量</dt>
+			<dt>{$_M[word][visitcount]}</dt>
 			<dd class="ftype_input">
 				<div class="fbox">
 					<input type="text" name="hits" style="width:100px;" value="{$list[hits]}" />
@@ -239,16 +239,16 @@ echo <<<EOT
 			</dd>
 		</dl>
 		<dl>
-			<dt>链接至</dt>
+			<dt>{$_M[word][linkto]}</dt>
 			<dd class="ftype_input">
 				<div class="fbox">
 					<input type="text" name="links" value="{$list[links]}" />
 				</div>
-				<span class="tips">请输入要链接到的网址，设置后访问该商品将直接跳转到设置的网址。</span>
+				<span class="tips">{$_M[word][content_descript7_v6]}</span>
 			</dd>
 		</dl>
 		<dl>
-			<dt>访问权限</dt>
+			<dt>{$_M[word][webaccess]}</dt>
 			<dd class="ftype_select">
 				<div class="fbox">
 					{$access_option}
@@ -256,17 +256,17 @@ echo <<<EOT
 			</dd>
 		</dl>
 		<dl>
-			<dt>状态</dt>
+			<dt>{$_M[word][state]}</dt>
 			<dd class="ftype_checkbox ftype_transverse">
 				<div class="fbox">
-					<label><input name="displaytype" type="checkbox" value="1" data-checked="{$list[displaytype]}">前台显示</label>
-					<label><input name="com_ok" type="checkbox" value="1" data-checked="{$list[com_ok]}">推荐</label>
-					<label><input name="top_ok" type="checkbox" value="1" data-checked="{$list[top_ok]}">置顶</label>
+					<label><input name="displaytype" type="checkbox" value="1" data-checked="{$list[displaytype]}">{$_M[word][displaytype]}</label>
+					<label><input name="com_ok" type="checkbox" value="1" data-checked="{$list[com_ok]}">{$_M[word][recom]}</label>
+					<label><input name="top_ok" type="checkbox" value="1" data-checked="{$list[top_ok]}">{$_M[word][top]}</label>
 				</div>
 			</dd>
 		</dl>
 		<dl>
-			<dt>更新时间</dt>
+			<dt>{updatetime]}</dt>
 			<dd class="ftype_day">
 				<div class="fbox">
 					<input type="input" name="updatetime" data-day-type = "2" value="{$list[updatetime]}">
@@ -278,18 +278,18 @@ EOT;
 if($_M['config']['met_webhtm']){
 	$list['addtype'] = 1;
 	$disabled = 'disabled';
-	$tips = '<span class="tips">定时发布不支持静态页面，请关闭静态页面。（可以使用伪静态）</span>';
+	$tips = '<span class="tips">{$_M["word"]["admin_seotips6_v6"]}</span>';
 }
 echo <<<EOT
 -->
 		<dl>
-			<dt>发布时间</dt>
+			<dt>{$_M[word][addtime]}</dt>
 			<dd class="ftype_day">
 					<div class="form-inline" style="margin-bottom:10px;">
 					<div class="radio">
 						<label>
 							<input type="radio" name="addtype" value="1" data-checked="{$list[addtype]}">
-							立即发布
+							{$_M[word][releasenow]}
 						</label>
 					</div>
 				</div>
@@ -297,7 +297,7 @@ echo <<<EOT
 					<div class="radio">
 						<label>
 							<input type="radio" name="addtype" value="2" {$disabled} >
-							定时发布
+							{$_M[word][timedrelease]}
 						</label>
 					</div>
 					<div class="form-group" style="margin-left:10px;">
@@ -311,7 +311,7 @@ echo <<<EOT
 		</dl>
 	</div>
 	<div class="met_affix_save bg-success">
-		<button type="submit" class="btn btn-success">发布商品</button>
+		<button type="submit" class="btn btn-success">{$_M[word][publish]}</button>
 	</div>
 </form>
 <!--

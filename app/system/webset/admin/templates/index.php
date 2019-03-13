@@ -41,6 +41,15 @@ echo <<<EOT
 		</dd>
 	</dl>
 	<dl>
+		<dt>{$_M['word']['mobile_logo']}</dt>
+		<dd class="ftype_upload">
+			<div class="fbox">
+				<input name="met_mobile_logo" type="text" data-upload-type="doupimg" class="text" value="{$_M['config']['met_mobile_logo']}">
+			</div>
+			<span class="tips">{$_M['word']['suggested_size']} 90 * 30 ({$_M['word']['setimgPixel']})<br>{$_M['word']['indexmobilelogoinfo']}</span>
+		</dd>
+	</dl>
+	<dl>
 		<dt>{$_M[word][addbaricon]}</dt>
 		<dd class="ftype_upload">
 			<div class="fbox">

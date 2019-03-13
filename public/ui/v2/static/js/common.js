@@ -1,22 +1,46 @@
 /*!
+ * 前台模板通用功能
  * M['weburl'] 		网站网址
  * M['lang']  		网站语言
  * M['tem']  		模板目录路径
  * M['classnow']  	当前栏目ID
  * M['id']  		当前页面ID
  * M['module']  	当前页面所属模块
- * met_prevarrow,met_nextarrow slick插件翻页按钮自定义html
- * device_type       客户端判断（d：PC端，t：平板端，m：手机端）
+ * M['device_type'] 客户端判断（d：PC端，t：平板端，m：手机端）
+ * met_prevarrow,
+   met_nextarrow    slick插件翻页按钮自定义html
  */
-M['plugin_lang']=true;// 前台页面插件文件多语言开关
 $(function(){
+    if(M['classnow']==10001){
+        // 首页首屏内动画预加载
+        var $met_indexbody1_appear=$('.met-index-body:eq(0) [data-plugin="appear"]');
+        if($met_indexbody1_appear.length){
+            $met_indexbody1_appear.scrollFun(function(val){
+                val.appearDiy();
+            });
+        }
+    }
     // 列表图片高度预设及删除
     var $imagesize=$('.imagesize[data-scale]');
     if($imagesize.length) $imagesize.imageSize();
     // 图片延迟加载
-    if(typeof $.fn.lazyload == 'function'){
-        var $original=$('[data-original]');
-        if($original.length) $original.lazyload({placeholder:met_lazyloadbg});
+    var $original=$('[data-original]');
+    if($original.length){
+        if(typeof $.fn.lazyload == 'function'){
+            $original.lazyload();
+        }else if($('script[src*="js/basic.js"]').length){
+            var interval_lazyload_time=0,
+                interval_lazyload=setInterval(function(){
+                    interval_lazyload_time+=50;
+                    if(typeof $.fn.lazyload == 'function'){
+                        $original.lazyload();
+                        clearInterval(interval_lazyload);
+                    }else if(interval_lazyload_time>7000){
+                        console.log('lazyload插件没有加载！');
+                        clearInterval(interval_lazyload);
+                    }
+                },50);
+        }
     }
     // 内页子栏目导航水平滚动
     var $metcolumn_nav=$('.met-column-nav-ul');
@@ -47,13 +71,13 @@ $(function(){
                 width=data[0],
                 height=data[1],
                 poster=data[2],
-                autoplay=data[3],
+                autoplay=data[3]||false,
                 src=data[4],
-                vhtml='<div class="metvideobox"><video class="metvideo video-js vjs-default-skin" controls preload="none" width="'+width+'" height="'+height+'" poster="'+poster+'" data-setup=\'{\"autoplay\":'+autoplay+'}\'><source src="'+src+'" type="video/mp4" /></video></div>';
+                vhtml='<div class="metvideobox"><video class="metvideo video-js vjs-default-skin" controls preload="none" width="'+width+'" height="'+height+'" poster="'+poster+'" data-setup=\'{"autoplay":'+autoplay+'}\' webkit-playsinline playsinline x5-playsinline x-webkit-airplay="allow" x5-video-player-type="h5" x5-video-player-fullscreen><source src="'+src+'" type="video/mp4" /></video></div>';
             $(this).after(vhtml).remove();
         });
         $.include(M['weburl']+'public/ui/v1/js/effects/video-js/video-js.css');
-        if(device_type=='d'){
+        if(M['device_type']=='d'){
             $.include(M['weburl']+"public/ui/v1/js/effects/video-js/video_hack.js",function(){
                 setTimeout(function(){
                     $('.metvideo').videoSizeRes();
@@ -67,11 +91,11 @@ $(function(){
 });
 // 全局函数
 $.fn.extend({
-    // 选项卡列表水平滚动处理
+    // 选项卡列表水平滚动处理（需调用swiper插件）
     navtabSwiper:function(){
         var $self=$(this),
             $navObj_p=$(this).parents('.subcolumn-nav'),
-            navtabSdefault=function(){
+            navtabsDefault=function(){
                 if(typeof Swiper =='undefined') return false;
                 var navObjW=$self.find('>li').parentWidth();
                 if(navObjW>$self.parent().width()){
@@ -100,9 +124,9 @@ $.fn.extend({
                     $navObj_p.css({'margin-bottom':0});
                 }
         };
-        navtabSdefault();
+        navtabsDefault();
         $(window).resize(function(){
-            navtabSdefault();
+            navtabsDefault();
         })
         // 移动端下拉菜单浮动方向
         Breakpoints.on('xs sm',{
@@ -130,7 +154,7 @@ $.fn.extend({
     // 图片加载完成回调
     imageloadFun:function(fun){
         $(this).each(function(){
-            if($(this).data('lazy') || $(this).data('original')){//图片延迟加载时
+            if($(this).data('lazy') || $(this).data('original')){// 图片延迟加载时
                 var thisimg=$(this),
                     loadtime=setInterval(function(){
                         if(thisimg.attr('src')==thisimg.data('original') || thisimg.attr('src')==thisimg.data('lazy')){
@@ -153,10 +177,10 @@ $.fn.extend({
             var scale=$(this).data('scale'),
                 $self_scale=$(this),
                 $img=$(imgObj,this),
-            img_length=$img.length;
+                img_length=$img.length;
             if(!isNaN(scale)) scale=scale.toString();
             // 图片对象筛选
-            for (var i = 0; i < $img.length; i++) {
+            for (var i = 0; i < img_length; i++) {
                 for (var s = 0; s < $img.length; s++) {
                     if($($img[s]).parents('[data-scale]').eq(0).index('[data-scale]')!=$self_scale.index('[data-scale]')){
                         $img.splice(s,1);
@@ -207,19 +231,17 @@ $.fn.extend({
     },
     /**
      * scrollFun 窗口距离触发
-     * @param  {Number}  top            离窗口触发的距离
-     * @param  {Boolean} loop           是否循环触发
-     * @param  {Boolean} skip_invisible 是否跳过不可见元素的触发事件
+     * @param  {Number}  top            离窗口触发的距离，默认为30
+     * @param  {Boolean} loop           是否循环触发，默认不循环触发
+     * @param  {Boolean} skip_invisible 不可见元素的是否触发事件，默认不触发
      */
     scrollFun:function(fun,options){
         if (typeof fun==="function") {
-            var defaults={
-                    top:30,
-                    loop:false,
-                    skip_invisible:true,
-                    is_scroll:false
-                };
-            $.extend(defaults,options);
+            options=$.extend({
+                top:30,
+                loop:false,
+                skip_invisible:true
+            },options);
             $(this).each(function(){
                 var $self=$(this),
                     fun_open=true,
@@ -229,16 +251,16 @@ $.fn.extend({
                                 scroll_t=$(window).scrollTop(),
                                 this_scroll_t=this_t-scroll_t-$(window).height(),
                                 this_scroll_b=this_t+$self.outerHeight()-scroll_t,
-                                visible=defaults.skip_invisible?$self.is(":visible"):true;
-                            if(this_scroll_t<defaults.top && this_scroll_b>0 && visible){
-                                if(!defaults.loop) fun_open=false;
+                                visible=options.skip_invisible?$self.is(":visible"):true;
+                            if(this_scroll_t<options.top && this_scroll_b>0 && visible){
+                                if(!options.loop) fun_open=false;
                                 fun($self);
                             }
                         }
                     };
                 windowDistanceFun();
                 // 滚动时窗口距离触发回调
-                if(defaults.is_scroll){
+                if(fun_open){
                     $(window).scroll(function(){
                         if(fun_open) windowDistanceFun();
                     })
@@ -247,27 +269,20 @@ $.fn.extend({
         }
     },
     /**
-     * appearDiy 手动appear动画
-     * @param  {Boolean} is_reset 是否重置动画
+     * appearDiy 手动appear动画（需调用appear插件）
      */
-    appearDiy:function(is_reset){
-        $(this).each(function(){
-            var $self=$(this),
-                animation='animation-'+$(this).data('animate');
-            if(is_reset){
-                // 重置动画
-                $(this).removeClass(animation).removeClass('appear-no-repeat').addClass('invisible');
-            }else{
-                // 执行动画
-                $(this).addClass(animation).addClass('appear-no-repeat');
-                setTimeout(function(){
-                    $self.removeClass('invisible');
-                },0)
-            }
-        });
+    appearDiy:function(){
+        if(typeof $.fn.appear !='undefined'){
+            setTimeout(function(){
+                $(this).appear({
+                    force_process:true,
+                    interval:0
+                });
+            },300);
+        }
     },
     /**
-     * galleryLoad 画廊
+     * galleryLoad 画廊（需调用lightGallery插件）
      * @param  {Array} dynamic 自定义图片数组
      */
     galleryLoad:function(dynamic){
@@ -334,22 +349,30 @@ $.fn.extend({
             }
         });
     },
-    // 表格响应式格式化
+    // 表格响应式格式化（需调用tablesaw插件）
     tablexys:function(){
         var $self=$(this);
-        $(this).addClass('tablesaw table-striped table-bordered table-hover tablesaw-sortable tablesaw-swipe').attr({"data-tablesaw-mode":"swipe",'data-tablesaw-sortable':''});
+        $self.each(function(){
+            if(!$(this).hasClass('tablesaw')) $(this).addClass('tablesaw table-striped table-bordered table-hover tablesaw-sortable tablesaw-swipe').attr({"data-tablesaw-mode":"swipe",'data-tablesaw-sortable':''});
+            var $editor=$(this).parents('.met-editor');
+            if($(this).width()>$editor.width()){
+                $(this).css({'max-width':$editor.width()-parseInt($editor.css('paddingLeft'))-parseInt($editor.css('paddingRight'))});
+            }
+        })
         Breakpoints.get('xs').on({
             enter:function(){
                 $self.each(function(){
                     if(!$('thead',this).length){
-                        var td=$("tbody tr:eq(0) td",this),th;
+                        var td=$("tbody tr:eq(0) td",this),th='';
                         if(td.length==0) td=$("tbody tr:eq(0) th",this);
                         td.each(function(){
-                            th+='<th data-tablesaw-sortable-col>'+$(this).html()+'</th>';
+                            th+=$(this).prop('outerHTML');
                         });
+                        if(th.indexOf('</td>')>=0) th=th.replace(/<\/td>/g,'</th>');
+                        if(th.indexOf('<td')>=0) th=th.replace(/<td/g,'<th');
                         $(this).prepend("<thead><tr>"+th+"</tr></thead>");
                         $("tbody tr:eq(0)",this).remove();
-                        $("tbody td",this).attr('width','auto');
+                        $("td,th",this).attr('width','auto');
                     }
                 });
                 $(document).trigger("enhance.tablesaw");
@@ -357,22 +380,19 @@ $.fn.extend({
         });
     }
 });
-// UI执行
-function metui(obj) {
-    this.obj = obj;
-    var keys = [];
-    var values = [];
-    for (var key in obj) {
-        keys.push(key);
-        values.push(obj[key]);
-        if (typeof(obj[key]) == 'string') {
-            if (keys == 'name') {
-                METUI[obj[key]]=$('.' + obj[key]);
-            }
-        } else if (typeof(obj[key]) == 'function') {
-            this.obj[key]();
+// 加载当前页面js
+function metPageJs(js){
+    $('body').append('<script src="'+js+'"></script>');
+}
+// 执行模板UI自定义的函数
+function metui(array){
+    for (var key in array){
+        if(typeof array[key]=='string' && key=='name'){
+            METUI[array[key]]=$('.'+array[key]);
+        }else if(typeof array[key]=='function'){
+            array[key]();
         }
     }
-    return this;
 }
-window.METUI=METUI_FUN=new Array();
+window.METUI=[];
+window.METUI_FUN=[];

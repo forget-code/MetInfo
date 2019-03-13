@@ -13,6 +13,8 @@ class parameter_op {
 	/**
 	 * 初始化，继承类需要调用
 	*/
+
+	public $parameter_database;
 	public function __construct() {
 		global $_M;
 		if(IN_ADMIN){
@@ -20,6 +22,7 @@ class parameter_op {
 		}else{
 			$this->preg = '/^para([0-9]+)/';
 		}
+		$this->parameter_database = load::mod_class('parameter/parameter_database', 'new');
 	}
 
 	public function name_to_num($module) {
@@ -57,14 +60,35 @@ class parameter_op {
 		$mod = $this->name_to_num($module);
 		$list = array();
 		foreach ($paras as $key => $val) {
+
 			preg_match($this->preg, $key, $out);
+
 			if ($out[1]) {
-				$list[$out[1]] .= $val.',';
+
+				if($val){
+					if(strstr($val, '|')){
+						$list[$out[1]] = $val;
+					}else{
+						$list[$out[1]] .= $val.',';
+					}
+				}else{
+
+					$list[$out[1]] = $val;
+				}
 			}
 		}
+
 		foreach ($list as $key => $val) {
-			$val = trim($val, ',');
-			$paraid = load::mod_class('parameter/parameter_database', 'new')->insert_list($listid, $key, $val, '', $_M['lang'], $module);
+			if(strstr($val, '|')){
+
+				$this->parameter_database->delete_list($listid, $key,$module);
+				foreach (explode('|', $val) as $v) {
+					$this->parameter_database->insert_list($listid, $key, $v, $imgname, $_M['lang'], $module);
+				}
+			}else{
+				$val = trim($val, ',');
+				$paraid = $this->parameter_database->update_list($listid, $key, $val, '', $module);
+			}
 		}
 		return ture;
 	}
@@ -80,29 +104,78 @@ class parameter_op {
 		$mod = $this->name_to_num($module);
 		$list = array();
 		foreach ($paras as $key => $val) {
+
 			preg_match($this->preg, $key, $out);
+
 			if ($out[1]) {
-				$list[$out[1]] .= $val.',';
+
+				if($val){
+					if(strstr($val, '|')){
+						$list[$out[1]] = $val;
+					}else{
+						$list[$out[1]] .= $val.',';
+					}
+				}else{
+
+					$list[$out[1]] = $val;
+				}
 			}
 		}
+
 		foreach ($list as $key => $val) {
-			$val = trim($val, ',');
-			$paraid = load::mod_class('parameter/parameter_database', 'new')->update_list($listid, $key, $val, '', $module);
+			if(strstr($val, '|')){
+
+				$this->parameter_database->delete_list($listid, $key,$module);
+				foreach (explode('|', $val) as $v) {
+					$this->parameter_database->insert_list($listid, $key, $v, $imgname, $_M['lang'], $module);
+				}
+			}else{
+				$val = trim($val, ',');
+				$paraid = $this->parameter_database->update_list($listid, $key, $val, '', $module);
+			}
 		}
 		return ture;
 	}
 
 	public function paratem($listid,$module,$class1,$class2,$class3){
 		global $_M;
-		if($listid)$para = $this->get_para($listid,$module,$class1,$class2,$class3);
+
 		$paralist = $this->get_para_list($module,$class1,$class2,$class3);
+
+		foreach ($paralist as $key => $para) {
+			$list = $this->parameter_database->get_parameters($module,$para['id']);
+			$paralist[$key]['list'] = $list;
+			$values = array();
+			if($para['type'] ==4 || $para['type'] ==2 || $para['type'] ==6){
+				foreach ($list as $val) {
+					$query = "SELECT * FROM {$_M['table']['plist']} WHERE listid = {$listid} AND paraid={$para['id']} AND module={$module} AND info = '{$val['id']}' AND lang = '{$_M['lang']}'";
+					$para_value = DB::get_one($query);
+
+					if($para_value){
+						$values[] = $para_value['info'];
+					}
+				}
+			}else{
+				$query = "SELECT * FROM {$_M['table']['plist']} WHERE listid = {$listid} AND paraid={$para['id']} AND module={$module} AND lang = '{$_M['lang']}'";
+				$para_value = DB::get_one($query);
+				$values = $para_value['info'];
+			}
+
+
+			if(is_array($values)){
+				$paralist[$key]['value'] = implode('|', $values);
+			}else{
+				$paralist[$key]['value'] = $values;
+			}
+		}
 		require PATH_WEB.'app/system/include/public/ui/admin/paratype.php';
 	}
 
 	public function get_para($listid,$module,$class1,$class2,$class3){
 		global $_M;
 		$paralist = $this->get_para_list($module,$class1,$class2,$class3);
-		$list = load::mod_class('parameter/parameter_database', 'new')->get_list($listid, $module);
+		$list = $this->parameter_database->get_list($listid, $module);
+
 		foreach($paralist as $val){
 			$para = $list[$val['id']];
 			if($val['type']==7){
@@ -111,9 +184,20 @@ class parameter_op {
 				$list['info_'.$val['id'].'_2'] = $para7[1];
 				if($para7[2])$list['info_'.$val['id'].'_3'] = $para7[2];
 			}
-			$list['info_'.$val['id']] = $para['info'];
+
+			$parameter = $this->parameter_database->get_parameter_value($module,$listid,$val['id']);
+
+			if($val['type'] == 4){
+				foreach ($parameter as $v) {
+					$value[] = $v['info'];
+				}
+				$list['info_'.$val['id']] = implode('|', $value);
+			}else{
+				$list['info_'.$val['id']] = $para['info'];
+			}
+
 			if(!$para){
-				load::mod_class('parameter/parameter_database', 'new')->insert_list($listid, $val['id'], '', '', $_M['lang'], $module);
+				$this->parameter_database->insert_list($listid, $val['id'], '', '', $_M['lang'], $module);
 			}
 		}
 
@@ -122,23 +206,7 @@ class parameter_op {
 
 	public function get_para_list($module,$class1,$class2,$class3){
 		global $_M;
-		// if(!$this->paralist[$module][$this->lang]){
-		// 	$this->paralist[$module][$this->lang] = cache::get("para/paralist_{$module}_{$this->lang}");
-		// 	if(!$this->paralist[$module][$this->lang]){
-		// 		$query = "SELECT * FROM {$_M['table']['parameter']} WHERE module='{$module}' and lang='{$_M['lang']}' order by no_order ASC, id ASC";
-		// 		$result = DB::query($query);
-		// 		while($list = DB::fetch_array($result)){
-		// 			if($list['options']){
-		// 				$lists = explode("$|$",$list['options']);
-		// 				$list['list'] = $lists;
-		// 			}
-		// 			$this->paralist[$module][$this->lang][$list['id']] = $list;
-		// 		}
-		// 		cache::put("para/paralist_{$module}_{$this->lang}", $this->paralist[$module][$this->lang]);
-		// 	}
-		// }
-		// $re = $this->paralist[$module][$this->lang];
-		$re = load::mod_class('parameter/parameter_database', 'new')->get_parameter($module);
+		$re = $this->parameter_database->get_parameter($module);
 		$paralists = array();
 		foreach($re as $val){
 			$val['list'] = $val['para_list'];
@@ -173,7 +241,7 @@ class parameter_op {
 	//复制字段
 	public function copy_parameter($classnow, $toclass1, $toclass2, $toclass3, $tolang){
 		$c = load::sys_class('label', 'new')->get('column')->get_column_id($classnow);
-		$paras = load::mod_class('parameter/parameter_database', 'new')->get_list_by_class_no_next($classnow);
+		$paras = $this->parameter_database->get_list_by_class_no_next($classnow);
 		foreach($paras as $key => $val) {
 			$list = $val;
 			$list['class1'] = $toclass1;
@@ -181,7 +249,7 @@ class parameter_op {
 			$list['class3'] = $toclass3;
 			$list['lang'] = $tolang;
 			unset($list['id']);
-			$pids[$val['id']] = load::mod_class('parameter/parameter_database', 'new')->insert($list);
+			$pids[$val['id']] = $this->parameter_database->insert($list);
 		}
 		return $pids;
 	}

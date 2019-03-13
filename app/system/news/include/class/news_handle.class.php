@@ -225,7 +225,7 @@ class news_handle extends base_handle{
 							$cdname = 'show'.$module_name;
 						break;
 						case 1:
-							$cdname = strtotime($addtime);
+							$cdname = date('YmdH',strtotime($addtime));
 						break;
 						case 2:
 							$cdname = $column_file;

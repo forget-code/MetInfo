@@ -7,13 +7,19 @@ defined('IN_MET') or exit('No permission');
 require $this->template('ui/head');
 echo <<<EOT
 -->
-<form method="POST" class="ui-from" name="myform" action="{$_M[url][own_form]}a=doupdatelang&langeditor={$_M[form][langeditor]}" target="_self">
+<form method="POST" class="ui-from" name="myform" action="{$_M[url][own_form]}a=doupdatelang&langsite={$_M[form][langsite]}&langeditor={$_M[form][langeditor]}&appno={$appno}" target="_self">
 <div class="v52fmbx">
     <dl>
-        <dt>{$_M[word][language_updatelang_v6]}</dt>
+        <dt>
+            {$_M[word][language_updatelang_v6]}
+            <br><br><hr><br>
+            {$appname}
+            <br>
+            {$appno}        
+        </dt>
         <dd class="ftype_textarea">
             <div class="fbox">
-                <textarea name="langupdate" style="width:80%;height:500px">{$_M[config][met_headstat]}</textarea>
+                <textarea name="langupdate" style="width:80%;height:500px"></textarea>
             </div> 
         </dd>
     </dl>

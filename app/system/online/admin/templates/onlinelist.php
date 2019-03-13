@@ -12,7 +12,7 @@ echo <<<EOT
 <form method="POST" name="myform" class="ui-from" action="{$_M[url][own_form]}a=dosave" target="_self">
     <div class="v52fmbx">
         <div class="ui-float-left">
-            <a href="javascript:;" class="ui-addlist" data-table-addlist="{$_M[url][own_form]}a=do_table_add_list"><i class="fa fa-plus-circle"></i>添加客服</a>
+            <a href="javascript:;" class="ui-addlist" data-table-addlist="{$_M[url][own_form]}a=do_table_add_list"><i class="fa fa-plus-circle"></i>{$_M[word][online_addkefu_v6]}</a>
         </div>
         <table class="display dataTable ui-table" data-table-ajaxurl="{$_M[url][own_form]}a=doonline_list_json" data-table-pagelength="20">
             <thead>

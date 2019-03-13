@@ -29,7 +29,7 @@ var send_url = "{$_M['url']['own_form']}a=dosend"
 <br>
 短信签名提示文字要添加，签名审核需要人工审核，审核时间为1个工作日内
 <br>
-测试短信请只填写 测试，其他文字可能导致短信无法发送成功
+测试短信请填写 节日快乐，其他文字可能导致短信无法发送成功
 </dd>
 
 </dl>
@@ -39,7 +39,7 @@ var send_url = "{$_M['url']['own_form']}a=dosend"
     <dt>短信内容</dt>
     <dd class="ftype_textarea">
         <div class="fbox">
-            <textarea style="resize: both" name="sms_content" >测试</textarea>
+            <textarea style="resize: both" name="sms_content" >节日快乐</textarea>
 
         </div>
        

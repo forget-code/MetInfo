@@ -1,6 +1,6 @@
 <?php
-# MetInfo Enterprise Content Management System
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 function checkadd($p,$ipaddres){
 	$preg="/\A((([0-9]?[0-9])|(1[0-9]{2})|(2[0-4][0-9])|(25[0-5]))\.){3}(([0-9]?[0-9])|(1[0-9]{2})|(2[0-4][0-9])|(25[0-5]))\Z/";
 	if($p==2){
@@ -9,7 +9,7 @@ function checkadd($p,$ipaddres){
 		}else{
 			 $preg="/^http:\/\/[A-Za-z0-9\-]+\.[A-Za-z0-9]+[\/=\?%\-&_~`@[\]\':+!]*([^<>\"])*$/";
 		}
-
+		
 		if(substr($ipaddres,0,16)=='http://localhost' || substr($ipaddres,0,11)=='http://xn--')return true;
 	}
 	return preg_match($preg,$ipaddres);
@@ -36,24 +36,24 @@ function parttime($g,$value,$a,$b,$c){
 	return $met;
 }
 function get_keyword($url,$kw_start){
-	$start = stripos($url,$kw_start);
+	$start = stripos($url,$kw_start); 
 	if($start){
-		$url = substr($url,$start+strlen($kw_start));
-		$start = stripos($url,'&');
+		$url = substr($url,$start+strlen($kw_start)); 
+		$start = stripos($url,'&'); 
 		if($start>0){
-			if ($start>0){
-				$start=stripos($url,'&');
-				$s_s_keyword=substr($url,0,$start);
-			}else{
-				$s_s_keyword=substr($url,0);
-			}
+			if ($start>0){ 
+				$start=stripos($url,'&'); 
+				$s_s_keyword=substr($url,0,$start); 
+			}else{ 
+				$s_s_keyword=substr($url,0); 
+			} 
 		}else{
 			$s_s_keyword='';
 		}
 	}else{
 		$s_s_keyword='';
 	}
-	return $s_s_keyword;
+	return $s_s_keyword; 
 }
 function is_utf8($word){
 	if (preg_match("/^([".chr(228)."-".chr(233)."]{1}[".chr(128)."-".chr(191)."]{1}[".chr(128)."-".chr(191)."]{1}){1}/",$word) == true || preg_match("/([".chr(228)."-".chr(233)."]{1}[".chr(128)."-".chr(191)."]{1}[".chr(128)."-".chr(191)."]{1}){1}$/",$word) == true || preg_match("/([".chr(228)."-".chr(233)."]{1}[".chr(128)."-".chr(191)."]{1}[".chr(128)."-".chr(191)."]{1}){2,}/",$word) == true)
@@ -67,20 +67,20 @@ function is_utf8($word){
 }
 function keytype($search_url){
 	$config = array(
-		'谷歌'=>array( "domain" => "www.google.", "kw" => "q", "charset" => "utf-8",'type' => 0 ),
-		'百度'=>array( "domain" => "www.baidu.", "kw" => "wd", "charset" => "gbk",'type' => 1 ),
-		'搜搜'=>array( "domain" => "soso.", "kw" => "query", "charset" => "gbk",'type' => 2 ),
-		'雅虎'=>array( "domain" => "yahoo.", "kw" => "q", "charset" => "utf-8",'type' => 3 ),
-		'必应'=>array( "domain" => "bing.", "kw" => "q", "charset" => "utf-8",'type' => 4  ),
-		'搜狗'=>array( "domain" => "sogou.", "kw" => "query", "charset" => "gbk",'type' => 5 ),
-		'有道'=>array( "domain" => "youdao.", "kw" => "q", "charset" => "utf-8",'type' => 6 ),
+		'谷歌'=>array( "domain" => "www.google.", "kw" => "q", "charset" => "utf-8",'type' => 0 ), 
+		'百度'=>array( "domain" => "www.baidu.", "kw" => "wd", "charset" => "gbk",'type' => 1 ), 
+		'搜搜'=>array( "domain" => "soso.", "kw" => "query", "charset" => "gbk",'type' => 2 ), 
+		'雅虎'=>array( "domain" => "yahoo.", "kw" => "q", "charset" => "utf-8",'type' => 3 ), 
+		'必应'=>array( "domain" => "bing.", "kw" => "q", "charset" => "utf-8",'type' => 4  ), 
+		'搜狗'=>array( "domain" => "sogou.", "kw" => "query", "charset" => "gbk",'type' => 5 ), 
+		'有道'=>array( "domain" => "youdao.", "kw" => "q", "charset" => "utf-8",'type' => 6 ), 
 		'360搜索'=>array( "domain" => "so.360.", "kw" => "q", "charset" => "utf-8",'type' => 7 )
 	);
-	$arr_key = array();
+	$arr_key = array(); 
 	foreach($config as $key=>$item){
-		$sh = preg_match("/\b{$item['domain']}\b/",$search_url);
+		$sh = preg_match("/\b{$item['domain']}\b/",$search_url); 
 		if($sh){
-			$query = $item['kw']."=";
+			$query = $item['kw']."="; 
 			$s_s_keyword = get_keyword($search_url,$query);
 			$F_Skey=urldecode($s_s_keyword);
 			$agwe=0;
@@ -88,11 +88,11 @@ function keytype($search_url){
 				$agwe=get_keyword($search_url,'ie=');
 				$item['charset']=$agwe==''?$item['charset']:$agwe;
 			}
-			if($item['charset']!="utf-8" && (!is_utf8($F_Skey) || $agwe)){
+			if($item['charset']!="utf-8" && (!is_utf8($F_Skey) || $agwe)){ 
 				$F_Skey=iconv( "gb2312//IGNORE","UTF-8",$F_Skey);
-			}
-			$arr_key[0] = $F_Skey;
-			$arr_key[1] = $item['type'];
+			} 
+			$arr_key[0] = $F_Skey; 
+			$arr_key[1] = $item['type']; 
 		}
 	}
 	return  $arr_key;
@@ -176,11 +176,11 @@ function delet_estat_cr($type,$value){
 }
 function delete($str) {
     $str = trim($str);
-    $str = preg_replace("/\t/","",$str);
-    $str = preg_replace("/\r\n/","",$str);
-    $str = preg_replace("/\r/","",$str);
-    $str = preg_replace("/\n/","",$str);
-    $str = preg_replace(" ","",$str);
+    $str = ereg_replace("\t","",$str);
+    $str = ereg_replace("\r\n","",$str);
+    $str = ereg_replace("\r","",$str);
+    $str = ereg_replace("\n","",$str);
+    $str = ereg_replace(" ","",$str);
     return trim($str);
 }
 # This program is an open source system, commercial use, please consciously to purchase commercial license.

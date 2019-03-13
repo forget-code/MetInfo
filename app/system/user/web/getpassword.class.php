@@ -19,13 +19,13 @@ class getpassword extends userweb {
 
 	public function doindex() {
 		global $_M;
-		require_once $this->template('tem/getpassword');
+		require_once $this->view('app/getpassword',$this->input);
 	}
 
 	public function doemail() {
 		global $_M;
-		if(!load::sys_class('pin', 'new')->check_pin($_M['form']['code']) && $_M['config']['met_memberlogin_code']){
-			okinfo($_M['url']['getpassword'], $_M['word']['membercode']);
+        if(!load::sys_class('pin', 'new')->check_pin($_M['form']['code']) && $_M['config']['met_memberlogin_code']){
+            okinfo($_M['url']['getpassword'], $_M['word']['membercode']);
 		}
 		load::sys_func('str');
 		if(is_email($_M['form']['username'])){
@@ -44,7 +44,7 @@ class getpassword extends userweb {
 			if(!$user){
 				okinfo($_M['url']['getpassword'], $_M['word']['NoidJS']);
 			}
-			require_once $this->template('tem/getpassword_telset');
+			require_once $this->view('app/getpassword_telset',$this->input);
 		}else{
 			okinfo($_M['url']['getpassword'], $_M['word']['emailvildtips3']);
 		}
@@ -68,7 +68,7 @@ class getpassword extends userweb {
 	public function dotelvalid() {
 		global $_M;
 		$session = load::sys_class('session', 'new');
-		if($_M['form']['code']!=$session->get("phonecode")){
+		if($_M['form']['phonecode']!=$session->get("phonecode")){
 			okinfo($_M['url']['getpassword'], $_M['word']['membercode']);
 		}
 		if(time()>$session->get("phonetime")){
@@ -105,7 +105,7 @@ class getpassword extends userweb {
 					okinfo($_M['url']['login'], $_M['word']['NoidJS']);
 				}
 			}
-			require_once $this->template('tem/getpassword_mailset');
+			require_once $this->view('app/getpassword_mailset',$this->input);
 		}else{
 			okinfo($_M['url']['register'], $_M['word']['emailvildtips2']);
 		}

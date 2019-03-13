@@ -220,13 +220,16 @@ define(function(require, exports, module) {
 		$(document).on('click','.showmoreset-btn',function(e){
 			var $self=$(this),
 				index=$(this).index($('.showmoreset-btn')),
-				$content=$('.showmoreset-content').eq(index);
+				$content=$('.showmoreset-content').eq(index),
+				hidden_text=$(this).data('hidden_text')||METLANG.jslang7,
+				show_text=$(this).data('show_text')||METLANG.jslang6;
 			$content.slideToggle(300);
 			setTimeout(function(){
 				if($content.is(':visible')){
-					$self.html(METLANG.jslang7);
+					$('html,body').stop().animate({scrollTop:$content.offset().top},300);
+					$self.html(hidden_text);
 				}else{
-					$self.html(METLANG.jslang6);
+					$self.html(show_text);
 				}
 			},500)
 		})

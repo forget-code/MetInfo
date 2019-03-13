@@ -1,6 +1,6 @@
 <?php
-# MetInfo Enterprise Content Management System 
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+# MetInfo Enterprise Content Management System
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 
 class skinc{
 	public $iniclass;//旧方法类
@@ -10,7 +10,7 @@ class skinc{
 	public $metadmin;//模板后台功能
 	public $no;//模板编号
 	public $lang;//模板语言
-	
+
 	function __construct($no, $lang) {
 		global $_M;
 		$this->no = $no;
@@ -97,13 +97,13 @@ class skinc{
 		$langtextx = $this->iniclass -> tminiment($pos);
 		return $langtextx;
 	}
-	
+
 	/*预览*/
 	function tminipreview($have){
 		global $_M;
 		//新方法
 		$langtext = $this->iniclass -> tminiget('all');
-		
+
 		$cglist = $this->configlist;
 		if($have['mobile']=='1'){
 			$have['wap_skin_user'] = $have['met_skin_user'];
@@ -118,8 +118,8 @@ class skinc{
 			}
 			$preview['otherinfo']['imgurl1'] = $have['imgurl1'];
 			$preview['otherinfo']['imgurl2'] = $have['imgurl2'];
-			
-			
+
+
 			$have['flash_10001'] = '3|'.$have['met_flash_10001_x'].'|'.$have['met_flash_10001_y'].'|'.$have['met_flash_10001_imgtype'];
 		}
 		/*系统配置数据*/
@@ -134,7 +134,7 @@ class skinc{
 			$have[$val] = str_replace("\\","",$have[$val]);
 			$preview['config'][$val]=$have[$val];
 		}
-		
+
 		/*模板自定义参数*/
 		foreach($langtext as $key=>$val){
 			global $_M;
@@ -143,11 +143,11 @@ class skinc{
 				$preview['langini'][$val['name']] = str_replace("\\","",$have[$namelist]);
 			//}
 		}
-		
+
 		/*大图轮播*/
 		$have['indexbannerlist'] = str_replace("\\","",$have['indexbannerlist']);
 		$preview['banner']['index'] = json_decode($have['indexbannerlist'],true);
-		
+
 		/*写入数据表*/
 		$value = json_encode($preview);
 		$value = str_replace("'","''",$value);
@@ -156,14 +156,14 @@ class skinc{
 		//echo "UPDATE {$_M[table][config]} SET value = '{$value}' WHERE name = 'met_theme_preview' AND lang='{$lang}'";
 		//die();
 	}
-	
+
 	/*保存配置*/
 	function tminisave($have){
 		global $_M;
-		
+
 		//新方法
 		$this->iniclass->tminisave($have);
-		
+
 		$wap_ok = 0;
 		$cglist = $this->configlist;
 		if($have['mobile']=='1'){
@@ -190,7 +190,7 @@ class skinc{
 			DB::query($query);
 			load::sys_func('file');
 			delfile(PATH_WEB."cache/otherinfo_{$this->lang}.inc.php");
-			
+
 			$have['flash_10001'] = '1|'.$have['met_flash_10001_x'].'|'.$have['met_flash_10001_y'].'|'.$have['met_flash_10001_imgtype'];
 		}
 		$cglist[] = 'met_productTabok';
@@ -208,17 +208,17 @@ class skinc{
 		}
 		$nowidnew = array();
 		$have['indexbannerlist'] = str_replace("\\","",$have['indexbannerlist']);
-		
+
 		$bannerlist = json_decode($have['indexbannerlist'],true);
-         
+
 		foreach($bannerlist as $key=>$val){
 			if($val['img_path']!=''){
 				if(!strstr($val['img_path'],"../"))$val['img_path'] = '../'.$val['img_path'];
-		
+
 
 				if($val['id']){
 					// 添加banner属性img_title_color、img_des、img_des_color、img_text_position（新模板框架v2）
-					$query = "update {$_M[table][flash]} SET 
+					$query = "update {$_M[table][flash]} SET
 					img_path  = '{$val['img_path']}',
 					img_link  = '{$val['img_link']}',
 					img_title = '{$val['img_title']}',
@@ -231,7 +231,7 @@ class skinc{
 					$nowidnew[] = $val['id'];
 				}else{
 					// 添加banner属性img_title_color、img_des、img_des_color、img_text_position（新模板框架v2）
-					$query = "INSERT INTO {$_M[table][flash]} SET 
+					$query = "INSERT INTO {$_M[table][flash]} SET
 					img_path  = '{$val['img_path']}',
 					img_link  = '{$val['img_link']}',
 					img_title = '{$val['img_title']}',
@@ -244,7 +244,7 @@ class skinc{
 					wap_ok    = '{$wap_ok}',
 					lang      = '{$this->lang}'";
 				}
-				
+
 				DB::query($query);
 			}
 
@@ -257,24 +257,24 @@ class skinc{
 
 				 $query="select module from {$_M[table][flash]} where id='{$val}'";
 
-				   $result=DB::query($query);
+				   $result=DB::get_all($query);
 
-				  while ($metinfo=mysql_fetch_array($result)){
+				  	foreach ($result as $metinfo) {
 
 				       if($metinfo['module']!='metinfo'){
 
 				 	    $query = "delete from {$_M[table][flash]} where id='{$val}'";
 
 			              DB::query($query);
-				
+
 				       }
-				  }
-				
-				
-				
+
+				  	}
+
+
 			}
 		}
-		
+
 	}
 
 	/**
@@ -288,7 +288,7 @@ class skinc{
 			$row = DB::query($query);
 
 		}
-		
+
 	}
 
 

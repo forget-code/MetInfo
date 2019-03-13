@@ -1,6 +1,6 @@
 <?php
-# MetInfo Enterprise Content Management System 
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+# MetInfo Enterprise Content Management System
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 
 defined('IN_MET') or exit('No permission');
 
@@ -16,9 +16,9 @@ class DB {
 	 * @param  string  $con_db_host  主机地址
 	 * @param  string  $con_db_id    用户名
 	 * @param  string  $con_db_pass  密码
-	 * @param  string  $con_db_name  数据库名	 
-	 * @param  string  $db_charset   字符编码	 
-	 * @param  string  $pconnect     是否打开永久链接	 
+	 * @param  string  $con_db_name  数据库名
+	 * @param  string  $db_charset   字符编码
+	 * @param  string  $pconnect     是否打开永久链接
 	 */
 	public static function  dbconn($con_db_host,$con_db_id,$con_db_pass, $con_db_name = '', $con_db_port = '3306', $db_charset='utf8',$pconnect = 0) {
         self::$link = @ new mysqli($con_db_host, $con_db_id, $con_db_pass, $con_db_name, $con_db_port);
@@ -26,7 +26,11 @@ class DB {
             self::halt($con_db_host);
         }
 
+
         if(self::version() > '4.1') {
+        	if(!$db_charset){
+        		$db_charset = 'utf8';
+        	}
             if($db_charset!='latin1') {
                 self::$link->query("SET character_set_connection=$db_charset, character_set_results=$db_charset, character_set_client=binary");
             }
@@ -41,11 +45,11 @@ class DB {
 		}
 
 	}
-	
+
 	/**
 	 * 选择数据库
-	 * @param   string  $dbname     选择的数据库名	 
-	 * @return  bool                是否成功	
+	 * @param   string  $dbname     选择的数据库名
+	 * @return  bool                是否成功
 	 */
 	public static function select_db($con_db_name) {
 		return self::$link->select_db($con_db_name);
@@ -67,12 +71,12 @@ class DB {
         }
 		#return mysql_fetch_array($query,$result_type);
 	}
-		
+
 	/**
 	 * 获取一条数据
 	 * @param   string  $sql      select sql语句
 	 * @param   string  $type     为UNBUFFERED时，不获取缓存结果
-	 * @return  array             返回执行sql语句后查询到的数据	
+	 * @return  array             返回执行sql语句后查询到的数据
 	 */
 	public static function get_one($sql, $type = ''){
 		$result = self::query($sql, $type);
@@ -86,7 +90,7 @@ class DB {
 		self::free_result($result);
 		return $rs ;
 	}
-	
+
 	/**
 	 * 获取多条数据
 	 * @param   string  $sql      select sql语句
@@ -121,9 +125,9 @@ class DB {
         #	MYSQLI_NUM - 数字数组
         #	MYSQLI_BOTH - 同时产生关联和数字数组
        if ($result instanceof mysqli_result) {
-	       	while ($row = $result->fetch_array(MYSQLI_ASSOC)) {  
+	       	while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
 	          $rs[]=$row;
-	        }  
+	        }
         }else{
             self::error();
         }
@@ -152,7 +156,7 @@ class DB {
 	            @extract($db_settings);
 				self::dbconn($con_db_host,$con_db_id,$con_db_pass, $con_db_name = '',$pconnect);
 				self::query($sql, 'RETRY'.$type);
-			} 
+			}
 		}
 		self::$querynum++;
 		return $query;
@@ -169,7 +173,7 @@ class DB {
        }
         return $result;
     }
-	
+
 	/**
 	 * 获取指定条数数据
 	 * @param   string  $table       表名称
@@ -179,7 +183,7 @@ class DB {
 	 * @param   string  $limit_num   取条数数量
 	 * @param   string  $field_name  获取的字段
 	 * @return  array                查询得到的数据
-	 */	
+	 */
 	function get_data($table, $where , $order, $limit_start = 0, $limit_num = 20, $field_name = '*')
 	{
 		if($limit_start < 0){
@@ -193,7 +197,7 @@ class DB {
 		}
 		if($order){
 			$conds .= " ORDER BY {$order} ";
-		}   
+		}
 
 		$conds .= " LIMIT {$limit_start},{$limit_num}";
 		$query = "SELECT {$field_name} FROM {$table} {$conds}";
@@ -207,19 +211,21 @@ class DB {
 				return false;
 			}
 		}
-		
+
 	}
-	
+
 	/**
 	 * 统计条数
 	 * @param   string  $table_name      insert、update等 sql语句
 	 * @param   string  $where_str       where条件,建议添加上WEHER
 	 * @param   string  $field_name      统计的字段
 	 * @return  int                      统计条数
-	 */	
+	 */
 	public static function counter($table_name,$where_str="", $field_name="*"){
 	    $where_str = trim($where_str);
-	    if(strtolower(substr($where_str,0,5))!='where' && $where_str) $where_str = "WHERE ".$where_str;
+	    if(strtolower(substr($where_str,0,5))!='where' && $where_str){
+            $where_str = "WHERE ".$where_str;
+        }
 	    $query = " SELECT COUNT($field_name) FROM $table_name $where_str ";
 	    $result = self::query($query);
         if ($result instanceof mysqli_result) {
@@ -232,21 +238,21 @@ class DB {
 	    /*$fetch_row = mysql_fetch_row($result);
 	    return $fetch_row[0];*/
 	}
-	
+
 	/**
 	 * 返回前一次 MySQL 操作所影响的记录行数。
-	 * @param   string  $dbname     选择的数据库名	 
+	 * @param   string  $dbname     选择的数据库名
 	 * @return  int                 执行成功，则返回受影响的行的数目，如果最近一次查询失败的话，函数返回 -1。
 	 */
 	public static function affected_rows() {
         return self::$link->affected_rows;
 		#return mysql_affected_rows(self::$link);
 	}
-	
+
 	/**
 	 * 返回上一个 MySQLI 操作产生的文本错误信息
 	 * @return  string                    错误信息
-	 */		
+	 */
 	public static function error() {
         return self::$link->error;
 	}
@@ -254,7 +260,7 @@ class DB {
 	/**
 	 * 返回上一个 MySQLI 操作中的错误信息的数字编码
 	 * @return  string  错误信息的数字编码
-	 */		
+	 */
 	public static function errno() {
         return self::$link->errno;
 	}
@@ -273,7 +279,7 @@ class DB {
 	 * @param        $query 规定要使用的结果标识符。该标识符是 mysql_query() 函数返回的。
 	 * @param    int $row   规定行号。行号从 0 开始。
 	 * @return              结果集中一个字段的值
-	 */		
+	 */
 	public static function result($query, $row) {
         die("method disable");
 }
@@ -282,7 +288,7 @@ class DB {
 	 * 返回查询的结果中行的数目
 	 * @param        $result 规定要使用的结果标识符。该标识符是 mysqli_query() 函数返回的。
 	 * @return       int    行数
-	 */		
+	 */
 	public static function num_rows($result) {
         if ($result instanceof mysqli_result) {
             return $result->num_rows;
@@ -309,7 +315,7 @@ class DB {
 	 * 返回查询的结果中字段的数目
 	 * @param        $result 规定要使用的结果标识符。该标识符是 mysqli_query() 函数返回的。
 	 * @return       int    字段数
-	 */	
+	 */
 	public static function num_fields($result) {
         if ($result instanceof mysqli_result) {
             return $result->field_count;
@@ -321,7 +327,7 @@ class DB {
 	/**
 	 * 释放结果内存
 	 * @param        $result 规定要使用的结果标识符。该标识符是 mysqli_query() 函数返回的。
-	 */	
+	 */
 	public static function free_result($result) {
         if ($result instanceof mysqli_result) {
             return $result->free();
@@ -360,7 +366,7 @@ class DB {
 
 	/**
 	 * 关闭连接
-	 */	
+	 */
 	public static function close() {
         return @self::$link->close ();
 	}
@@ -383,7 +389,7 @@ class DB {
 		exit;
 	}
 
-	
+
 
 }
 # This program is an open source system, commercial use, please consciously to purchase commercial license.

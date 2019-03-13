@@ -64,7 +64,7 @@ class load {
 		return self::_load_class($filedir.$classdir['dir'], $classdir['file'], $action);
 
 	}
-	public static function app_func($classname) {
+	public static function app_func($funcname) {
 		$funcname=str_replace('.func.php', '', $funcname);
 		$filedir = PATH_ALL_APP;
 		$funcdir = self::dir_get($funcname);

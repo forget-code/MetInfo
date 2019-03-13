@@ -53,6 +53,7 @@ class img_admin extends news_admin {
 		$turnurl="&class1={$list[class1]}&class2={$list[class2]}&class3={$list[class3]}";
 		$class_option = $this->class_option($this->module);
 		$access_option = $this->access_option('access');
+		$_M['url']['help_tutorials_helpid']='98';
 		require $this->template('own/product_add');
 	}
 
@@ -217,6 +218,7 @@ class img_admin extends news_admin {
 		$a = 'doeditorsave';
 		$class_option = $this->class_option($this->module);
 		$access_option = $this->access_option('access',$list['access']);
+		$_M['url']['help_tutorials_helpid']='98';
 		require $this->template('own/product_add');
 	}
 	function doeditorsave() {
@@ -336,6 +338,7 @@ class img_admin extends news_admin {
 		$list[class2]=$_M[form][class2];
 		$list[class3]=$_M[form][class3];
 		$column = $this->column(3,$this->module);
+		$_M['url']['help_tutorials_helpid']='99';
 		require $this->template('tem/product_index');
 	}
 

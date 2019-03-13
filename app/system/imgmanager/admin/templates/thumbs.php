@@ -27,6 +27,7 @@ echo <<<EOT
                 <label><input name="met_thumb_kind" type="radio" value="2">{$_M['word']['upfiletips21']}</label>
                 <label><input name="met_thumb_kind" type="radio" value="3">{$_M['word']['upfiletips22']}</label>
             </div>
+            <span class="red">{$_M['word']['thumbs_tips1_v6']}</span>
         </dd>
     </dl>
     <dl>

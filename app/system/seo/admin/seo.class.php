@@ -25,7 +25,7 @@ class seo extends admin {
 	function doindex() {
 		global $_M;
 		nav::select_nav(1);
-		$_M['url']['help_tutorials_url'].='108';
+		$_M['url']['help_tutorials_helpid']='108';
 		require $this->template('own/seo');
 
 	}
@@ -48,7 +48,7 @@ class seo extends admin {
 	function dourl() {
 		global $_M;
 		nav::select_nav(2);
-		$_M['url']['help_tutorials_url'].='109';
+		$_M['url']['help_tutorials_helpid']='109';
 		require $this->template('own/url');
 	}
 
@@ -83,11 +83,11 @@ class seo extends admin {
 			}
 			if(stristr($_SERVER['SERVER_SOFTWARE'],'Apache')){
 				$htaccess = 'RewriteEngine on'."\n";
-				$htaccess.= '# 是否显示根目录下文件列表'."\n";
+				$htaccess.= '# '.$_M['word']['seohtaccess1']."\n";
 				$htaccess.= 'Options -Indexes'."\n";
 				$htaccess.= 'RewriteBase '.$metbase."\n";
 				$htaccess.= 'RewriteRule ^(.*)\.(asp|aspx|asa|asax|dll|jsp|cgi|fcgi|pl)(.*)$ /404.html'."\n";
-				$htaccess.= '# Rewrite 系统规则请勿修改'."\n";
+				$htaccess.= '# Rewrite '.$_M['word']['seohtaccess1']."\n";
 				$htaccess.= 'RewriteRule ^index-([a-zA-Z0-9_^\x00-\xff]+).html$ index.php?lang=$1&pseudo_jump=1'."\n";
 				$htaccess.= 'RewriteRule ^app/app/ueditor/([a-zA-Z0-9_^\x00-\xff]+).html$ app/app/ueditor/$1.html [L]'."\n";
 				$htaccess.= 'RewriteRule ^([a-zA-Z0-9_^\x00-\xff]+)/list-([a-zA-Z0-9_^\x00-\xff]+)-([0-9_]+)-([a-zA-Z0-9_^\x00-\xff]+).html$ $1/index.php?lang=$4&metid=$2&list=1&page=$3&pseudo_jump=1'."\n";
@@ -100,6 +100,7 @@ class seo extends admin {
 				$htaccess.= 'RewriteRule ^([a-zA-Z0-9_^\x00-\xff]+)/([a-zA-Z0-9_^\x00-\xff^\x00-\xff]+)-([a-zA-Z0-9_^\x00-\xff]+).html$ $1/index.php?lang=$3&metid=$2&pseudo_jump=1'."\n";
                 $htaccess.= 'RewriteRule ^([a-zA-Z0-9_^\x00-\xff]+)/([a-zA-Z0-9_^\x00-\xff]+).html$ $1/index.php?metid=$2&pseudo_jump=1'."\n";
 				$htaccess.= 'RewriteRule ^tag/([\s\S]+)-([a-zA-Z0-9_^\x00-\xff]+)$ search/search.php?class1=&class2=&class3=&searchtype=0&searchword=$1&lang=$2'."\n";
+				$htaccess.= 'RewriteRule ^tag/([\s\S]+)$ search/search.php?class1=&class2=&class3=&searchtype=0&searchword=$1'."\n";
 				$str = load::plugin('doseourl', 1, array('str'=>$str, 'type'=>'apache'));//加载插件
 				$htaccess = $htaccess.$str;
 				$httpdurl ='.htaccess';
@@ -119,6 +120,7 @@ class seo extends admin {
 				$htaccess.= 'rewrite ^/([a-zA-Z0-9_^x00-xff]+)/([a-zA-Z0-9_^x00-xff]+)-([a-zA-Z0-9_^x00-xff]+).html$ /$1/index.php?lang=$3&metid=$2&pseudo_jump=1;'."\n";
                 $htaccess.= 'rewrite ^/([a-zA-Z0-9_^x00-xff]+)/([a-zA-Z0-9_^x00-xff]+).html$ /$1/index.php?lang=$3&metid=$2&pseudo_jump=1;'."\n";
 				$htaccess.= 'rewrite ^/tag/([\s\S]+)-([a-zA-Z0-9_^\x00-\xff]+)$ /search/search.php?class1=&class2=&class3=&searchtype=0&searchword=$1&lang=$2;'."\n";
+				$htaccess.= 'rewrite ^/tag/([\s\S]+)$ /search/search.php?class1=&class2=&class3=&searchtype=0&searchword=$1;'."\n";
 				$str = load::plugin('doseourl', 1, array('str'=>$str, 'type'=>'nginx'));//加载插件
 				$htaccess = $htaccess.$str;
 				$httpdurl ='.htaccess';
@@ -184,6 +186,11 @@ class seo extends admin {
 				$web.= '<match url="^tag/([\s\S]+)-([a-zA-Z0-9_\u4e00-\u9fa5]+)" />'."\n";
 				$web.= '<action type="Rewrite" url="search/search.php?class1=&amp;class2=&amp;class3=&amp;searchtype=0&amp;searchword={R:1}&amp;lang={R:2}" />'."\n";
 				$web.= '</rule>'."\n";
+
+				$web.= '<rule name="rule14" stopProcessing="true">'."\n";
+				$web.= '<match url="^tag/([\s\S]+)" />'."\n";
+				$web.= '<action type="Rewrite" url="search/search.php?class1=&amp;class2=&amp;class3=&amp;searchtype=0&amp;searchword={R:1}" />'."\n";
+				$web.= '</rule>'."\n";
 				$str = load::plugin('doseourl', 1, array('str'=>$str, 'type'=>'iis7'));//加载插件
 				$web = $web.$str;
 				$web.= '</rules>'."\n";
@@ -212,6 +219,7 @@ class seo extends admin {
 				$httpd.= 'RewriteRule '.$metbase.'([a-zA-Z0-9_^\x00-\xff]+)/([a-zA-Z0-9_^\x00-\xff^\x00-\xff]+).html '.$metbase.'$1/index.php\?metid=$2&pseudo_jump=1'."\n";
 				$httpd.= 'RewriteRule '.$metbase.'([a-zA-Z0-9_^\x00-\xff]+)/([a-zA-Z0-9_^\x00-\xff^\x00-\xff]+)-([a-zA-Z0-9_^\x00-\xff]+).html '.$metbase.'$1/index.php\?lang=$3&metid=$2&pseudo_jump=1'."\n";
 				$httpd.= 'RewriteRule '.$metbase.'tag/([\s\S]+)-([a-zA-Z0-9_^\x00-\xff]+) '.$metbase.'search/search.php\?class1=&class2=&class3=&searchtype=0&searchword=$1&lang=$2'."\n";
+				$httpd.= 'RewriteRule '.$metbase.'tag/([\s\S]+) '.$metbase.'search/search.php\?class1=&class2=&class3=&searchtype=0&searchword=$1'."\n";
 				$str = load::plugin('doseourl', 1, array('str'=>$str, 'type'=>'iis6'));//加载插件
 				$httpd = $httpd.$str;
 				$httpdurl = 'httpd.ini';
@@ -237,7 +245,7 @@ class seo extends admin {
 	function doanchor() {
 		global $_M;
 		nav::select_nav(5);
-		$_M['url']['help_tutorials_url'].='111';
+		$_M['url']['help_tutorials_helpid']='111';
 		require $this->template('own/anchor');
 	}
 
@@ -256,7 +264,7 @@ class seo extends admin {
 			$list[] = "<input type=\"text\" name=\"newwords-{$val[id]}\" class=\"ui-input\" value=\"{$val[newwords]}\">";
 			$list[] = "<input type=\"text\" name=\"newtitle-{$val[id]}\" class=\"ui-input\" value=\"{$val[newtitle]}\">";
 			$list[] = "<input type=\"text\" name=\"url-{$val[id]}\" class=\"ui-input\" value=\"{$val[url]}\" data-required=\"1\">";
-			$list[] = "<input type=\"text\" name=\"num-{$val[id]}\" style='text-align:center; width:20px;' class=\"ui-input\" value=\"{$val[num]}\" data-required=\"1\">";
+			$list[] = "<input type=\"text\" name=\"num-{$val[id]}\" class=\"ui-input\" value=\"{$val[num]}\" data-required=\"1\">";
 			$list[] = "<a href=\"{$_M[url][own_form]}a=doanchortablesave&allid={$val[id]},&submit_type=del\" class=\"delet\" data-confirm='{$_M[word][js7]}'>{$_M[word][delete]}</a>";
 			$rarray[] = $list;
 		}
@@ -272,7 +280,7 @@ class seo extends admin {
 					<td><input type=\"text\" name=\"newwords-{$id}\" placeholder=\"{$_M[word][enter_replacement]}\" class=\"ui-input\" value=\"\"></td>
 					<td><input type=\"text\" name=\"newtitle-{$id}\" placeholder=\"{$_M[word][title_description]}\" class=\"ui-input\" value=\"\"></td>
 					<td><input type=\"text\" name=\"url-{$id}\" placeholder=\"{$_M[word][input_link_address]}\" class=\"ui-input\" value=\"http://\"  data-required=\"1\"></td>
-					<td class='met-center'><input type=\"text\" name=\"num-{$id}\" class=\"ui-input\" value=\"9999\"  data-required=\"1\" style='text-align:center; width:20px;'></td>
+					<td class='met-center'><input type=\"text\" name=\"num-{$id}\" class=\"ui-input\" value=\"9999\"  data-required=\"1\"></td>
 					<td><a href=\"\" class=\"delet\">{$_M[word][js49]}</a></td>
 				</tr>";
 		echo $metinfo;
@@ -337,7 +345,7 @@ class seo extends admin {
 	function dositemap(){
 		global $_M;
 		nav::select_nav(6);
-		$_M['url']['help_tutorials_url'].='112';
+		$_M['url']['help_tutorials_helpid']='112';
 		require $this->template('own/sitemap');
 	}
 

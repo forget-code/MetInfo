@@ -32,8 +32,13 @@ class myapp extends admin {
         $getapp = load::mod_class('myapp/class/getapp', 'new');
         $app = $getapp->get_oneapp($no);
         if ($app['m_class']) {
-            $uninstall = load::app_class($app['m_name'].'/admin/uninstall', 'new');
-            $uninstall->dodel();
+            if ($app['depend']=='sys') {
+                $uninstall = load::mod_class($app['m_name'].'/admin/uninstall', 'new');
+                $uninstall->dodel();
+            }else{
+                $uninstall = load::app_class($app['m_name'].'/admin/uninstall', 'new');
+                $uninstall->dodel();
+            }
             turnover($_M['url']['own_name'].'&c=myapp&a=doindex', $_M['word']['physicaldelok']);
         } else {
             $query = "DELETE FROM {$_M['table']['applist']} WHERE no='{$no}'";

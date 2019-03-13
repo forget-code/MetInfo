@@ -62,13 +62,17 @@ class met_tag extends tag {
         <?php
             \$sub = count($from);
             \$num = $num;
+
+
             if(!is_array($from)){
                 $from = explode('|',$from);
             }
+
             foreach ($from as \$index => \$val) {
                 if(\$index >= \$num){
                     break;
                 }
+
                 if(is_array(\$val)){
                     \$val['_index'] = \$index;
                     \$val['_first'] = \$index == 0 ? true : false;
@@ -157,12 +161,12 @@ php;
     if(!\$cid){
         \$cid = \$data['classnow'];
     }
-    \$result = load::sys_class('label', 'new')->get('column')->get_class123_no_reclass(\$cid);
+    \$location = load::sys_class('label', 'new')->get('column')->get_class123_no_reclass(\$cid);
     \$location_data = array();
-    \$location_data[0] = \$result['class1'];
-    \$location_data[1] = \$result['class2'];
-    \$location_data[2] = \$result['class3'];
-    unset(\$result);
+    \$location_data[0] = \$location['class1'];
+    \$location_data[1] = \$location['class2'];
+    \$location_data[2] = \$location['class3'];
+    unset(\$location);
     foreach(\$location_data as \$index=> \$v):
 ?>
 str;

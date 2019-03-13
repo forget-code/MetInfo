@@ -1,3 +1,4 @@
+function metPageJs(){
 /*!
  * M['weburl']      网站网址
  * M['lang']        网站语言
@@ -5,8 +6,9 @@
  * M['classnow']    当前栏目ID
  * M['id']          当前页面ID
  * M['module']      当前页面所属模块
- * met_prevarrow,met_nextarrow slick插件翻页按钮自定义html
- * device_type       客户端判断（d：PC端，t：平板端，m：手机端）
+ * met_prevarrow,
+   met_nextarrow    slick插件翻页按钮自定义html
+ * M['device_type'] 客户端判断（d：PC端，t：平板端，m：手机端）
  */
 $(function(){
     /*导航处理*/
@@ -64,7 +66,7 @@ $(function(){
     });
     // 导航下拉菜单三级栏目展开处理
     $met_navlist=$('.met-nav .navlist');
-    if(device_type=='d'){
+    if(M['device_type']=='d'){
         if($met_navlist.find('.dropdown-submenu').length){
             $met_navlist.find('.dropdown-submenu').hover(function(){
                 $(this).parent('.dropdown-menu').addClass('overflow-visible');
@@ -162,3 +164,14 @@ $(function(){
         });
     }
 });
+}
+if(typeof jQuery != 'undefined'){
+    metPageJs();
+}else{
+    var metPageInterval=setInterval(function(){
+            if(typeof jQuery != 'undefined'){
+                metPageJs();
+                clearInterval(metPageInterval);
+            }
+        },50)
+}

@@ -1,6 +1,6 @@
 <!--<?php
-# MetInfo Enterprise Content Management System 
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+# MetInfo Enterprise Content Management System
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 
 defined('IN_MET') or exit('No permission');
 
@@ -70,7 +70,7 @@ echo <<<EOT
 				<select name="met_message_fd_class">
 <!--
 EOT;
-foreach($fd_paraall as $key=>$val){
+foreach($name_para as $key=>$val){
 $select1='';
 if($val[id]==$met_message_fd_class)$select1="selected='selected'";
 echo <<<EOT
@@ -79,9 +79,9 @@ echo <<<EOT
 EOT;
 }
 echo <<<EOT
--->	
-			
-			</select>			
+-->
+
+			</select>
 			<span class="tips">{$_M[word][message_name1]}</span>
 			</dd>
 		</dl>
@@ -93,7 +93,7 @@ echo <<<EOT
 				<select name="met_message_fd_content">
 <!--
 EOT;
-foreach($fd_paraalls as $key=>$val){
+foreach($text_para as $key=>$val){
 $select1='';
 if($val[id]==$met_message_fd_content)$select1="selected='selected'";
 echo <<<EOT
@@ -102,16 +102,16 @@ echo <<<EOT
 EOT;
 }
 echo <<<EOT
--->	
-			
-			</select>			
+-->
+
+			</select>
 			<span class="tips">{$_M[word][message_content1]}</span>
 			</dd>
 		</dl>
 		</div>
 
 
-	
+
 
 
         <dl>
@@ -158,25 +158,25 @@ echo <<<EOT
 			<select name="met_message_fd_email">
 <!--
 EOT;
-foreach($fd_paraall as $key=>$val){
+foreach($email_para as $key=>$val){
 $select1='';
 if($val[id]==$met_message_fd_email)$select1="selected='selected'";
 echo <<<EOT
--->				
+-->
 				<option value="$val[id]" $select1 >$val[name]</option>
 <!--
 EOT;
 }
 echo <<<EOT
--->	
-			
+-->
+
 			</select>
 			<span class="tips">{$_M[word][fdincTip11]}</span>
 			</dd>
 		</dl>
 		</div>
 
-        
+
         <dl>
 	<dt>{$_M[word][fdincFeedbackTitle]}{$_M[word][marks]}</dt>
 	<dd class="ftype_input">
@@ -187,12 +187,12 @@ echo <<<EOT
 	</dd>
 </dl>
 
-	
 
 
 
 
-		
+
+
         <dl>
 	<dt>{$_M[word][fdincAutoContent]}{$_M[word][marks]}</dt>
 	<dd class="ftype_textarea">
@@ -223,18 +223,18 @@ echo <<<EOT
 			<select name="met_message_fd_sms">
 <!--
 EOT;
-foreach($fd_paraall as $key=>$val){
+foreach($phone_para as $key=>$val){
 $select1='';
 if($val[id]==$met_message_fd_sms)$select1="selected='selected'";
 echo <<<EOT
--->				
+-->
 				<option value="$val[id]" $select1 >$val[name]</option>
 <!--
 EOT;
 }
 echo <<<EOT
--->	
-			
+-->
+
 			</select>
 			<span class="tips">{$_M[word][fdinctells]}</span>
 			</dd>

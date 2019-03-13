@@ -34,7 +34,7 @@ class job extends web {
 		global $_M;
 		$this->check_field();
 		$info = $_M['form'];
-        if($_M[config][met_memberlogin_code]){ 
+        if($_M[config][met_memberlogin_code]){
 			if(!load::sys_class('pin', 'new')->check_pin($_M['form']['code'])){
 						okinfo(-1, $_M['word']['membercode']);
 			}
@@ -49,27 +49,22 @@ class job extends web {
 				    okinfo('javascript:history.back();',$_M[word][opfailed]);
 				}
 			}
-		}	
+		}
 	}
 
     $ip=$this->getip();
 	if(load::sys_class('label', 'new')->get('job')->insert_cv($_M['form']['jobid'], $info, $user['customerid'],$ip)){
-         if($_M[config][met_cv_type]==2){
-           
-              $this->notice_by_emial($info);
-         }
+         $this->notice_by_emial($info);
          if($_M[config][met_nurse_job]){
          	$this->notice_by_sms();
          }
 	}else{
-		 if($_M[config][met_cv_type]==0){
-           $this->notice_by_emial($info);
-	     }
+		 $this->notice_by_emial($info);
 	}
-	
+
 	setcookie('submit',time());
 	okinfo(HTTP_REFERER, $_M['word']['success']);
-	
+
 	}
 
 	public function doshowjob(){
@@ -116,7 +111,7 @@ class job extends web {
 		}else{
 			return true;
 		}
-		
+
 	}
  /*表单提交时间检测*/
 	public function checktime(){
@@ -183,37 +178,45 @@ class job extends web {
 		$j=0;
 		$cv_para = load::mod_class('parameter/parameter_list', 'new')->get_parameter($_M['form']['lang'],6);
 	    $usename=$_M[form]['para'.$cv_para[0][id]];
+
 		if($_M[config][met_cv_image]){
 		foreach($cv_para as $key=>$val){
 		    if($val[id]==$_M[config][met_cv_image]){
 
 			    $imgurl = $info['para'.$val[id]];
-		
+
 				break;
 			}
 		}
 		$imgurl=explode('../',$imgurl);
 		}
 		$bt=$imgurl[1]!=''?'<td class="pc" rowspan="5">'.'<img src="'.$_M[config][met_weburl].$imgurl[1].'" width="140" height="160" /></td>':'';
-		
+
 		foreach($cv_para as $key=>$val){
 			$j++;
 			if($j>1)$bt = '';
-			    if($val[type]!=4){
+			    if($val['type']!=4){
 				  $para=$_M[form][$val[para]];
 				}else{
+
 				  $para="";
-				  for($i=1;$i<=$_M[form][$val[para]];$i++){
-				  $para1="para".$val[id];
-				  $para2=$_M[form][$para1];
-				  $para=($para2!="")?$para.$para2."-":$para;
+				  $para_arr = array();
+				  $para_total = count(json_decode($val['options'],true));
+				  for($i=1;$i<=$para_total;$i++){
+
+				  $para_key="para".$val['id'].'_'.$i;
+				  $para_arr[] = $_M['form'][$para_key];
 				  }
-				  $para=substr($para, 0, -1); 
+				  if($para_arr){
+				  	$_M[form]['para'.$val[id]] = implode(',', $para_arr);
+				  }else{
+				  	$_M[form]['para'.$val[id]] = '';
+				  }
+
 				}
 				$para=strip_tags($para);
-
-
 	if($val[type]!=5){
+
 	$body=$body.'<tr><td class="l">'.$val[name].'</td><td class="r">'.$_M[form]['para'.$val[id]].'</td>'.$bt.'</tr>'."\n";
 	}else{
 	if($_M[config][met_cv_image]!=$val[id]){
@@ -230,19 +233,22 @@ class job extends web {
     $cvto=$_M[form][$cvto];
     $title="[{$job_list[position]}]-{$usename}";
     $mail=load::sys_class('jmail','new');
-	$mail->send_email($to,$title,$body);
+
+    if($_M[config][met_cv_type]==2 || $_M[config][met_cv_type]==0){
+    	$mail->send_email($to,$title,$body);
+    }
+
      if($_M[config][met_cv_back]==1){
-		$mail->send_email($cvto,$_M[config][met_cv_title],$_M[config][met_cv_content]);
-		
-	}
+			$mail->send_email($cvto,$_M[config][met_cv_title],$_M[config][met_cv_content]);
+		}
 	}
 
    /*通过短信通知*/
    public function notice_by_sms(){
       global $_M;
       $job_list =DB::get_one("SELECT * FROM {$_M[table][job]} WHERE id='{$_M[form][jobid]}'");
-      $ct=strtotime(date("Y/m/d 00:00:00",time()));	
-	  $et=strtotime(date("Y/m/d 23:59:59",time()));	
+      $ct=strtotime(date("Y/m/d 00:00:00",time()));
+	  $et=strtotime(date("Y/m/d 23:59:59",time()));
 	  $maxnurse = DB::get_all("SELECT * FROM {$_M[table][sms]} WHERE time>='{$ct}' and time<='{$et}' and type='4' and remark='SUCCESS'");
 	  $str       = str_replace("http://","",$_M[config][met_weburl]);
 	  $strdomain = explode("/",$str);
@@ -251,7 +257,7 @@ class job extends web {
 	  $_M[config][met_nurse_job_tel]=$met_nurse_job_tel[value];
       #$message="您网站[{$domain}]收到了新的简历[{$job_list[position]}]，请尽快登录网站后台查看";
        $message="{$_M[word][reMessage1]}[{$domain}]{$_M[word][jobPrompt]}[{$title}]{$_M[word][reMessage2]}";
-      load::sys_class('sms', 'new')->sendsms($_M[config][met_nurse_job_tel], $message, $type = 6);
+      load::sys_class('sms', 'new')->sendsms($_M[config][met_nurse_job_tel], $message, 6);
 
    }
 
@@ -263,11 +269,25 @@ class job extends web {
         foreach ($paralist as $key => $val) {
         	$para[$val[id]]=$val;
         }
-        if($_M[config][met_cv_back] && !$met_cv_email){
-         $name=$para[$_M[config][met_cv_email]][name];
-    	 $info=$name.$_M[word][noempty];
-         okinfo('javascript:history.back();',$info);  
-        }
+
+       $paraarr = array();
+       foreach (array_keys($_M['form']) as $vale) {
+           if (strstr($vale, 'para')) {
+               if (strstr($vale, '_')) {
+                   $arr = explode('_',$vale);
+                   $paraarr[] = str_replace('para','',$arr[0]);
+               }else{
+                   $paraarr[] = str_replace('para','',$vale);
+               }
+           }
+       }
+
+       foreach (array_keys($para) as $val) {
+           if($para[$val]['wr_ok']==1 && !in_array($val,$paraarr)){
+               $info="【{$para[$val]['name']}】".$_M[word][noempty];
+               okinfo('javascript:history.back();',$info);
+           }
+       }
     }
 }
 

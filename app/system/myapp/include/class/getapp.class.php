@@ -105,6 +105,9 @@ class getapp {
 			$list['appname'] = get_word($list['appname']);
 			$list['url'] = "{$_M['url']['site_admin']}index.php?lang={$_M['lang']}&anyid={$this->app_anyid}&n={$list['m_name']}&c={$list['m_class']}&a={$list['m_action']}";
 			$list['ico'] = "{$_M['url']['app']}{$list['m_name']}/icon.png";
+            if($list['depend']=='sys'){
+                $list['ico'] = "{$_M['url']['site']}app/system/{$list['m_name']}/icon.png";
+            }
 			$list['uninstall'] = "{$_M['url']['own_name']}c=myapp&a=dodelapp&no={$list['no']}";
 			if($list['no']>10000)$list['update'] = "{$_M['url']['adminurl']}n=appstore&c=appstore&a=doappdetail&type=app&no={$list['no']}&anyid=65";
 		}

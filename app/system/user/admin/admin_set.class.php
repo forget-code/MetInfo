@@ -18,13 +18,33 @@ class admin_set extends admin {
 		nav::set_nav(4, $_M[word][memberfunc], $_M['url']['own_name'].'c=admin_set&a=doindex');
 		nav::set_nav(5, $_M[word][thirdlogin], $_M['url']['own_name'].'c=admin_set&a=doopen');
 		nav::set_nav(6, $_M[word][mailcontentsetting], $_M['url']['own_name'].'c=admin_set&a=doemailset');
+        // nav::set_nav(7, $_M[word][paygroup], $_M['url']['own_name'].'c=admin_group&a=do_pay_group');
 		$this->paraclass = load::mod_class('system/class/sys_para', 'new');
 		
 	}
 	public function doindex(){
 		global $_M;
 		nav::select_nav(4);
-		require_once $this->template('tem/user_set');
+		$_M['url']['help_tutorials_helpid']='118#'.$_M[word][memberlogin];
+
+        //查询实名认证可用条数
+        $idvalid = load::mod_class('user/include/class/user_idvalid.class.php', 'new');
+        $result = $idvalid->checkNumber();
+
+        $number = 0;
+        if($result['status']==200){
+            if((int)$result['msg']===0){
+                $disabled = "disabled";
+                $_M['config']['met_member_idvalidate'] = 0;
+                $number = 0;
+            }else{
+                $number = (int)$result['msg'];
+            }
+        }else{
+            $disabled = "disabled";
+        }
+
+        require_once $this->template('tem/user_set');
 	}
 	public function doregsetsave(){
 		global $_M;
@@ -34,7 +54,8 @@ class admin_set extends admin {
 		$configlist[] = 'met_member_bgcolor';
 		$configlist[] = 'met_member_force';
 		$configlist[] = 'met_member_bgimage';
-		configsave($configlist);
+        $configlist[] = 'met_member_idvalidate';
+        configsave($configlist);
 		turnover("{$_M[url][own_form]}a=doindex");
 	}
 	public function dojson_para_list(){
@@ -87,6 +108,7 @@ class admin_set extends admin {
 	public function doopen(){
 		global $_M;
 		nav::select_nav(5);
+		$_M['url']['help_tutorials_helpid']='118#'.$_M[word][thirdlogin];
 		require_once $this->template('tem/open');
 	}
 	public function doopensave(){
@@ -110,6 +132,7 @@ class admin_set extends admin {
 	public function doemailset(){
 		global $_M;
 		nav::select_nav(6);
+		$_M['url']['help_tutorials_helpid']='118#'.$_M[word][user_tips32_v6];
 		require_once $this->template('tem/email');
 	
 	}
@@ -130,6 +153,81 @@ class admin_set extends admin {
 		turnover("{$_M[url][own_form]}a=doemailset");
 	
 	}
+
+    public function dorecharge(){
+        global $_M;
+        $this->geridvalid_key();
+        nav::select_nav(4);
+        //查询实名认证可用条数
+        $idvalid = load::mod_class('user/include/class/user_idvalid.class.php', 'new');
+        $number = $idvalid->checkNumber();
+        if((int)$number['msg']===0){
+            $number = 0;
+        }else{
+            $number = (int)$number['msg'];
+        }
+
+        $balance = $idvalid->checkBalance();
+        if((int)$balance['msg']===0){
+            $balance = 0;
+        }else{
+            $balance = (int)$balance['msg'];
+        }
+
+        #$package = array(10 => 1000, 50 => 5000, 100 => 10000);
+        $package = $idvalid->getpackage();
+        $package = $package['msg'];
+
+        require_once $this->template('tem/recharge');
+    }
+
+    public function doBuyRecharge(){
+        global $_M;
+        if (!$_M['config']['met_secret_key']) {
+            $this->ajax_return($_M['word']['please_again'],213);
+            die();
+        }
+        $idvalid = load::mod_class('user/include/class/user_idvalid.class.php', 'new');
+        $result = $idvalid->buy();
+        if($result['status']==200){
+            $this->insertidvalid_key($result['msg']);
+            $this->ajax_return($_M['word']['jsok'], $result['status']);
+        }else{
+            $this->ajax_return($result['msg'], $result['status']);
+            die();
+        }
+    }
+
+    public function geridvalid_key()
+    {
+        global $_M;
+        if (!$_M['config']['met_secret_key']) {
+            $shoplogin = $_M['url']['site_admin']."index.php?lang={$_M['lang']}&n=appstore&c=member&a=dologin";
+            okinfo($shoplogin, $_M['word']['please_again']);
+            die();
+        }
+        $idvalid = load::mod_class('user/include/class/user_idvalid.class.php', 'new');
+        $result = $idvalid->getexpresskey();
+        if ($result['status']==214) {
+            $this->insertidvalid_key($result['msg']['express_key']);
+        }
+    }
+
+    public function insertidvalid_key($express_key)
+    {
+        global $_M;
+        $query = "update {$_M['table']['config']} SET value = '{$express_key}' WHERE name = 'met_idvalid_key' and (lang='{$_M['lang']}' or lang='metinfo')";
+        DB::query($query);
+
+    }
+
+    public function ajax_return($msg,$status){
+        $data = array();
+        $data['msg']    = $msg;
+        $data['status'] = $status;
+        echo json_encode($data,JSON_UNESCAPED_UNICODE);
+        die;
+    }
 	
 }
 

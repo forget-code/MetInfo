@@ -20,6 +20,7 @@ class about_admin extends message_admin {
 		$this->module =1;
 		$this->database = load::mod_class('about/about_database', 'new');
 		$this->tabledata = load::sys_class('tabledata', 'new');
+		$_M['url']['help_tutorials_helpid']='99';
 	}
 
 	/**
@@ -233,7 +234,7 @@ class about_admin extends message_admin {
 		global $_M;
 		$_M['form']['addtime'] = $_M['form']['addtype']==2?$_M['form']['addtime']:date("Y-m-d H:i:s");
 		if($this->update_list($_M['form'],$_M['form']['id'])){
-			if(strpos($_M['form']['turnurl'], 'pageset=1')!=false){
+			if(strpos($_M['form']['turnurl'], 'pageset=1')!==false){
 				turnover("{$_M['url'][own_form]}a=doeditor&id={$_M['form']['id']}","");
 			}else{
 				turnover($_M['form']['turnurl'],"");
@@ -396,7 +397,7 @@ class about_admin extends message_admin {
 		$admininfo = admin_information();
 		foreach($job_list as $key=>$val){
 			$val['url']   = $this->url($val,$this->module);
-			$val['state'] = $val['displaytype']?'':'<span class="label label-default">'.$_M[woed][displaytype2].'</span>';
+			$val['state'] = $val['displaytype']?'':'<span class="label label-default">'.$_M[word][displaytype2].'</span>';
 			if(!$val['state'])$val['state'] = strtotime($val['addtime'])>time()?'<span class="label label-default">'.$_M[word][timedrelease].'</span>':'';
 			$val['state'].= $val['top_ok']==$_M[word][yes]?'<span class="label label-success" style="margin-left:8px;">'.$_M[word][top].'</span>':'';
 			$list = array();
@@ -468,7 +469,7 @@ class about_admin extends message_admin {
 			$list[] = $val['state'];
 			$list[] = $val['addtime'];
 			$list[] = $val['readok'];
-			$list[] = "<a href=\"{$_M[url][own_form]}a=doview&id={$val['id']}&select_class1={$class1}&select_class2={$class2}&select_class3={$class3}\" class=\"edit\">{$_M[word][View]}</a><span class=\"line\">-</span><a href=\"{$_M[url][own_form]}a=dolistsave&submit_type=del&allid={$val['id']}&cv=1\" data-toggle=\"popover\" class=\"delet\">删除</a>
+			$list[] = "<a href=\"{$_M[url][own_form]}a=doview&id={$val['id']}&select_class1={$class1}&select_class2={$class2}&select_class3={$class3}\" class=\"edit\">{$_M[word][View]}</a><span class=\"line\">-</span><a href=\"{$_M[url][own_form]}a=dolistsave&submit_type=del&allid={$val['id']}&cv=1\" data-toggle=\"popover\" class=\"delet\">{$_M[word][delete]}</a>
 			";
 			$rarray[] = $list;
 		}

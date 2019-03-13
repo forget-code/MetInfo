@@ -1,6 +1,6 @@
 <?php
-# MetInfo Enterprise Content Management System 
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+# MetInfo Enterprise Content Management System
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 
 defined('IN_MET') or exit('No permission');
 
@@ -17,7 +17,7 @@ class article_admin extends admin {
 	}
 	function doadd() {
 		global $_M;
-		
+
 		$list['class1'] = $_M['form']['class1'];
 		$list['class2'] = $_M['form']['class2'];
 		$list['class3'] = $_M['form']['class3'];
@@ -32,15 +32,15 @@ class article_admin extends admin {
 	function docheck_filename() {
 		global $_M;
 		if(!$this->moduleclass->check_filename($_M['form']['filename'],$_M['form']['id'],$this->module)){
-			$errorno = $this->moduleclass->errorno=='error_filename_cha'?'仅支持中文、大小写字母、数字、下划线':'静态页面名称已被使用';
+			$errorno = $this->moduleclass->errorno=='error_filename_cha'?'{$_M[word][js74]}:{$_M[word][js73]}';
 			echo '0|'.$errorno;
 		}else{
-			echo '1|名称可用';
+			echo '1|'.$_M[word][js75];
 		}
 	}
-	
+
 	function doaddsave() {
-	
+
 		global $_M;
 		$_M['form']['addtime'] = $_M['form']['addtype']==2?$_M['form']['addtime']:date("Y-m-d H:i:s");
 		if($this->moduleclass->insert_list($_M['form'])){
@@ -50,11 +50,11 @@ class article_admin extends admin {
 				turnover("{$_M[url][own_form]}a=doindex");
 			}
 		}else{
-			turnover("{$_M[url][own_form]}a=doindex",'数据错误');
+			turnover("{$_M[url][own_form]}a=doindex","{$_M[word][dataerror]}");
 		}
-		
+
 	}
-	
+
 	function doeditor() {
 		global $_M;
 		$list = $this->moduleclass->get_list($_M['form']['id']);
@@ -76,11 +76,11 @@ class article_admin extends admin {
 				turnover("{$_M[url][own_form]}a=doindex");
 			}
 		}else{
-			turnover("{$_M[url][own_form]}a=doindex",'数据错误');
+			turnover("{$_M[url][own_form]}a=doindex","{$_M[word][dataerror]}");
 		}
-		
+
 	}
-	
+
 	function doindex() {
 		global $_M;
 		$column = $this->moduleclass->column(3,$this->module);
@@ -108,36 +108,36 @@ class article_admin extends admin {
 		$search_type = $_M['form']['search_type'];
 		$orderby_hits = $_M['form']['orderby_hits'];
 		$orderby_updatetime = $_M['form']['orderby_updatetime'];
-		
-		$where = $class1&&$class1!='所有栏目'&&$class1!='null'?"and class1 = '{$class1}'":'';  
-		$where.= $class2&&$class2!='null'?"and class2 = '{$class2}'":'';  
-		$where.= $class3&&$class3!='null'?"and class3 = '{$class3}'":''; 
-		$where.= $keyword?"and title like '%{$keyword}%'":''; 
+
+		$where = $class1&&$class1!='{$_M[word][allcategory]}'&&$class1!='null'?"and class1 = '{$class1}'":'';
+		$where.= $class2&&$class2!='null'?"and class2 = '{$class2}'":'';
+		$where.= $class3&&$class3!='null'?"and class3 = '{$class3}'":'';
+		$where.= $keyword?"and title like '%{$keyword}%'":'';
 		switch($search_type){
 			case 0:break;
 			case 1:
-				$where.= "and displaytype = '0'"; 
+				$where.= "and displaytype = '0'";
 			break;
 			case 2:
-				$where.= "and com_ok = '1'"; 
+				$where.= "and com_ok = '1'";
 			break;
-		}		
-		$admininfo = admin_information();			
+		}
+		$admininfo = admin_information();
 		if($admininfo[admin_issueok] == 1)$where.= "and issue = '{$admininfo[admin_id]}'";
 		$met_class = $this->moduleclass->column(2,$this->module);
 		$order = $this->moduleclass->list_order($met_class[$classnow]['list_order']);
 		if($orderby_hits)$order = "hits {$orderby_hits}";
 		if($orderby_updatetime)$order = "updatetime {$orderby_updatetime}";
-		
+
 		$userlist = $this->moduleclass->json_list($where, $order);
-		
+
 		foreach($userlist as $key=>$val){
-		
+
 			$val['url']   = $this->moduleclass->url($val,$this->module);
-			$val['state'] = $val['displaytype']?'':'<span class="label label-default">前台隐藏</span>';
-			if(!$val['state'])$val['state'] = strtotime($val['addtime'])>time()?'<span class="label label-default">定时发布</span>':'';
-			$val['state'].= $val['com_ok']?'<span class="label label-info" style="margin-left:8px;">推荐</span>':'';
-			$val['state'].= $val['top_ok']?'<span class="label label-success" style="margin-left:8px;">置顶</span>':'';
+			$val['state'] = $val['displaytype']?'':'<span class="label label-default">{$_M[word][displaytype2]}</span>';
+			if(!$val['state'])$val['state'] = strtotime($val['addtime'])>time()?'<span class="label label-default">{$_M[word][timedrelease]}</span>':'';
+			$val['state'].= $val['com_ok']?'<span class="label label-info" style="margin-left:8px;">{$_M['word']['recom']}</span>':'';
+			$val['state'].= $val['top_ok']?'<span class="label label-success" style="margin-left:8px;">{$_M[word][top]}</span>':'';
 			$list = array();
 			$list[] = "<input name=\"id\" type=\"checkbox\" value=\"{$val[id]}\">";
 			$list[] = "<div class=\"ui-table-a\"><a title=\"{$val['title']}\" href=\"{$val['url']}\" target=\"_blank\">{$val['title']}</a></div>";
@@ -145,13 +145,13 @@ class article_admin extends admin {
 			$list[] = $val['updatetime'];
 			$list[] = $val['state'];
 			$list[] = "<input name=\"no_order-{$val['id']}\" type=\"text\" class=\"ui-input text-center\" value=\"{$val[no_order]}\">";
-			$list[] = "<a href=\"{$_M[url][own_form]}a=doeditor&id={$val['id']}&select_class1={$class1}&select_class2={$class2}&select_class3={$class3}\" class=\"edit\">编辑</a><span class=\"line\">-</span><a href=\"{$_M[url][own_form]}a=dolistsave&submit_type=del&allid={$val['id']}\" data-toggle=\"popover\" class=\"delet\">删除</a>
+			$list[] = "<a href=\"{$_M[url][own_form]}a=doeditor&id={$val['id']}&select_class1={$class1}&select_class2={$class2}&select_class3={$class3}\" class=\"edit\">{$_M[word][editor]}</a><span class=\"line\">-</span><a href=\"{$_M[url][own_form]}a=dolistsave&submit_type=del&allid={$val['id']}\" data-toggle=\"popover\" class=\"delet\">{$_M[word][delete]}</a>
 			";
 			$rarray[] = $list;
 		}
-		
+
 		$this->moduleclass->json_return($rarray);
-		
+
 	}
 	function dolistsave(){
 		global $_M;
@@ -206,7 +206,7 @@ class article_admin extends admin {
 		}else{
 			turnover("{$_M[url][own_form]}a=doindex");
 		}
-		
+
 	}
 }
 

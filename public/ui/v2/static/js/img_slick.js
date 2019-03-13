@@ -1,6 +1,8 @@
+/*
+详情页展示图片（需调用slick插件）
+ */
 $(function(){
-	// 详情页轮播图
-	// 产品详情页、图片模块详情页共用
+	// 产品详情页、图片模块详情页轮播图，共用插件
 	var $met_img_slick=$('#met-imgs-slick'),
 		$met_img_slick_slide=$met_img_slick.find('.slick-slide');
 	if($met_img_slick_slide.length>1){
@@ -11,14 +13,14 @@ $(function(){
 		// 开始轮播
 		var slick_lazyloadPrevNext=slick_swipe=true,
 			slick_fade=slick_arrows=false;
-		if(device_type=='d'){
+		if(M['device_type']=='d'){
 			if($met_img_slick.hasClass('fngallery')){
 				slick_lazyloadPrevNext=slick_swipe=false;
 				slick_fade=true;
 			}
 		}
-		if(!slick_swipe) $met_img_slick.addClass('slick-fade');// 如果切换效果为淡入淡出，则加上标记class
-		if(device_type!='m') slick_arrows=true;
+		if(!slick_swipe) $met_img_slick.addClass('slick-fade');// 如果切换效果为淡入淡出，则加上标记class，其slick-slide鼠标样式为缩放镜
+		if(M['device_type']!='m') slick_arrows=true;
 		$met_img_slick.slick({
 			arrows:slick_arrows,
 	        dots:true,
@@ -55,10 +57,10 @@ $(function(){
 			$fngalleryimg.each(function() {
 				$(this).one('click',function(){
 					if(fngallery_open){
-						if(device_type=='m'){
-							$.initPhotoSwipeFromDOM('.fngallery','.slick-slide:not(.slick-cloned) [data-med]');
+						if(M['device_type']=='m'){
+							$.initPhotoSwipeFromDOM('.fngallery','.slick-slide:not(.slick-cloned) [data-med]');//（需调用PhotoSwipe插件）
 						}else{
-							$fngallery.galleryLoad();
+							$fngallery.galleryLoad();//（需调用lightGallery插件）
 						}
 						fngallery_open=false;
 					}

@@ -20,8 +20,12 @@ class config_ui {
 	/*读取配置*/
 	public function get_config($mid) {
 		global $_M;
-		$query = "SELECT * FROM {$_M['table']['ui_config']} WHERE pid = {$mid} AND lang = '{$_M['lang']}' AND skin_name = '{$this->skin_name}' order by uip_order";
-		return DB::get_all($query);
+
+		$query = "ALTER TABLE `{$_M['table']['ui_config']}` ADD COLUMN `uip_hidden`  tinyint(1) NULL DEFAULT 0 AFTER `uip_order`";
+		DB::query($query);
+		$query = "SELECT * FROM {$_M['table']['ui_config']} WHERE pid = {$mid} AND lang = '{$_M['lang']}' AND skin_name = '{$this->skin_name}' order by uip_hidden,uip_order";
+		$config = DB::get_all($query);
+		return $config;
 	}
 
 
@@ -31,7 +35,7 @@ class config_ui {
 		global $_M;
 		$query = "SELECT * FROM {$_M['table']['ui_config']} WHERE parent_name = 'global' AND skin_name = '{$this->skin_name}' AND lang = '{$_M['lang']}' ORDER BY uip_order";
 		return DB::get_all($query);
-		
+
 	}
 
 	public function get_config_column($mid)
@@ -73,7 +77,7 @@ class config_ui {
 		$ui_config = $this->get_config($config['mid']);
 		foreach($ui_config as $key=>$val){
 			$id = $val['id']."_metinfo";
-			
+
 			$uip_value = $config[$id];
 			if($val['uip_value'] != $uip_value && $val['ui_type'] != 1){
 				$uip_value = mysqlcheck($uip_value);
@@ -84,7 +88,7 @@ class config_ui {
 	}
 
 
-	
+
 
 	public function list_html($mid){
 		global $_M;
@@ -97,7 +101,7 @@ class config_ui {
 	/*解析配置为html代码*/
 	public function parse_config($config) {
 		global $_M;
-		
+
 		$html = array();
 		foreach ($config as $key=>$val) {
 			switch($val['uip_type']){
@@ -415,7 +419,7 @@ class config_ui {
 
         $query = "SELECT * FROM {$_M['table']['ui_config']} WHERE lang = '{$lang}' AND skin_name = '{$skin_name}'";
         $config = DB::get_all($query);
-        
+
 
         foreach ($config as $v) {
             $query = "SELECT id FROM {$_M['table']['ui_config']} WHERE uip_key = '{$v['uip_key']}' AND lang = '{$_M['lang']}' AND skin_name = '{$skin_name}' AND parent_name = '{$v['parent_name']}' AND ui_name = '{$v['ui_name']}' AND pid = {$v['pid']}";

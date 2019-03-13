@@ -22,6 +22,7 @@ class online extends admin {
     function doindex() {
         global $_M;
         nav::select_nav(1);
+        $_M['url']['help_tutorials_helpid']='117';
         require $this->template('tem/onlinelist');
 
     }
@@ -63,7 +64,7 @@ class online extends admin {
                     <td><input type='text' name='qq-{$id}' class='ui-input listname' value='' placeholder='{$_M[word][onlineHolder2]}' ></td>
                     <td><input type='text' name='msn-{$id}' class='ui-input listname' value='' placeholder='{$_M[word][onlineHolder2]}'></td>
                     <td><input type='text' name='taobao-{$id}' class='ui-input listname' value='' placeholder='{$_M[word][onlineHolder2]}'></td>
-                    <td><input type='text' name='alibab-{$id}' class='ui-input listname' value='' placeholder='{$_M[word][onlineHolder2]}'></td>
+                    <td><input type='text' name='alibaba-{$id}' class='ui-input listname' value='' placeholder='{$_M[word][onlineHolder2]}'></td>
                     <td><input type='text' name='skype-{$id}' class='ui-input listname' value='' placeholder='{$_M[word][onlineHolder2]}'></td>
                     <td><a href='' class='delet'>{$_M[word][js49]}</a></td>
                 </tr>
@@ -156,7 +157,7 @@ class online extends admin {
         $met_online_skinarray[]=array(4,$_M['word']['onlinepurple'],3);
         $met_online_skinarray[]=array(4,$_M['word']['onlinegreen'],4);
         $met_online_skinarray[]=array(4,$_M['word']['onlinegray'],5);
-
+        $_M['url']['help_tutorials_helpid']='117#在线客服漂浮框设置';
         require $this->template('tem/setonline');
     }
 
@@ -169,6 +170,8 @@ class online extends admin {
         $configlist[] = 'met_onlineleft_top';
         $configlist[] = 'met_onlineright_right';
         $configlist[] = 'met_onlineright_top';
+        $configlist[] = 'met_online_x';
+        $configlist[] = 'met_online_y';
         $configlist[] = 'met_online_skin';
         $configlist[] = 'met_online_color';
         $configlist[] = 'met_onlinetel';

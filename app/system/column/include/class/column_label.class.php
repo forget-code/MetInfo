@@ -30,85 +30,87 @@ class column_label {
 	 */
 	public function get_column(){
 		global $_M;
-		if(!$this->column){
+		if(!$this->column || $_M['form']['pageset'] || !file_exists(PATH_WEB.'cache/column.php')){
 			//有缓存读取缓存
 			$column = $this->handle->para_handle(
 				load::mod_class('column/column_database', 'new')->get_all_column_by_lang($this->lang)
 			);
-			if($this->wap){//手机版模式，v5手机模板兼容使用
-				foreach ($column as $key => $val) {
-					if($val['wap_ok']){
-						$column[$key]['nav'] = $val[wap_nav_ok] ? 1 : 0;//手机版导航
-					}else{
-						unset($column[$key]);
-					}
+
+			file_put_contents(PATH_WEB.'cache/column.php', json_encode($column));
+		}else{
+			$column = json_decode(file_get_contents(PATH_WEB.'cache/column.php'));
+		}
+		if($this->wap){//手机版模式，v5手机模板兼容使用
+			foreach ($column as $key => $val) {
+				if($val['wap_ok']){
+					$column[$key]['nav'] = $val[wap_nav_ok] ? 1 : 0;//手机版导航
+				}else{
+					unset($column[$key]);
 				}
 			}
-			//简介不允许下级栏目时候，url替换问题。
-			foreach ($column as $key => $list) {
-				$column_bigclass[$list['bigclass']][] = $list;
+		}
+		//简介不允许下级栏目时候，url替换问题。
+		foreach ($column as $key => $list) {
+			$column_bigclass[$list['bigclass']][] = $list;
+		}
+		foreach ($column as $key => $list) {
+			if($list['module'] == 1 && !$list['isshow']){
+				if($list['classtype'] == 2){
+					$column[$key]['url'] = $column_bigclass[$list['id']][0]['url'];
+					$column[$key]['new_windows'] = $column_bigclass[$list['id']][0]['new_windows'];
+					$column[$key]['targeturl'] = $column_bigclass[$list['id']][0]['targeturl'];
+				}
 			}
-			foreach ($column as $key => $list) {
-				if($list['module'] == 1 && !$list['isshow']){
-					if($list['classtype'] == 2){
+		}
+		foreach ($column as $key => $list) {
+			if($list['module'] == 1 && !$list['isshow']){
+				if($list['classtype'] == 1){
+					//if($column_bigclass[$list['id']][0]['module'] != 1){
+					if($list['lang'] != $_M['config']['met_index_type']){
 						$column[$key]['url'] = $column_bigclass[$list['id']][0]['url'];
 						$column[$key]['new_windows'] = $column_bigclass[$list['id']][0]['new_windows'];
 						$column[$key]['targeturl'] = $column_bigclass[$list['id']][0]['targeturl'];
 					}
 				}
 			}
-			foreach ($column as $key => $list) {
-				if($list['module'] == 1 && !$list['isshow']){
-					if($list['classtype'] == 1){
-						//if($column_bigclass[$list['id']][0]['module'] != 1){
-						if($list['lang'] != $_M['config']['met_index_type']){
-							$column[$key]['url'] = $column_bigclass[$list['id']][0]['url'];
-							$column[$key]['new_windows'] = $column_bigclass[$list['id']][0]['new_windows'];
-							$column[$key]['targeturl'] = $column_bigclass[$list['id']][0]['targeturl'];
-						}
-					}
-				}
+		}
+
+		//dump($column);
+
+		foreach ($column as $key => $list) {
+			if($list['display'] == 1)$list['nav'] = 0;
+			//下列的所有数据都是老模板兼容需要使用的，新模板根据实际情况来使用，每使用到一个，在数组后进行注释。
+			//后续可以根据使用情况在进行优化
+			$this->column[nav_listall][]=$list;
+			$this->column[class_list][$list['id']]=$list;//使用
+			$this->column[module_listall][$list['module']][]=$list;
+			if($list['classtype']==1){
+				$this->column[nav_list_1][]=$list;//使用
+				$this->column[module_list1][$list['module']][]=$list;
+				$this->column[class1_list][$list['id']]=$list;
+				if($list['module']==2 or $list['module']==3 or $list['module']==4 or $list['module']==5)$this->column[nav_search][]=$list;
+			}
+			if($list['classtype']==2){
+				$this->column[nav_list_2][]=$list;
+				$this->column[module_list2][$list['module']][]=$list;
+				$this->column[nav_list2][$list['bigclass']][]=$list;//使用
+				$this->column[class2_list][$list['id']]=$list;
+			}
+			if($list['classtype']==3){
+				$this->column[nav_list_3][]=$list;
+				$this->column[module_list3][$list['module']][]=$list;
+				$this->column[nav_list3][$list['bigclass']][]=$list;//使用
+				$this->column[class3_list][$list['id']]=$list;
 			}
 
-			//dump($column);
+			if($list['nav']==1 or $list['nav']==3)$this->column[nav_list][]=$list;//使用
+			if($list['nav']==2 or $list['nav']==3)$this->column[navfoot_list][]=$list;//使用
 
-			foreach ($column as $key => $list) {
-				if($list['display'] == 1)$list['nav'] = 0;
-				//下列的所有数据都是老模板兼容需要使用的，新模板根据实际情况来使用，每使用到一个，在数组后进行注释。
-				//后续可以根据使用情况在进行优化
-				$this->column[nav_listall][]=$list;
-				$this->column[class_list][$list['id']]=$list;//使用
-				$this->column[module_listall][$list['module']][]=$list;
-				if($list['classtype']==1){
-					$this->column[nav_list_1][]=$list;//使用
-					$this->column[module_list1][$list['module']][]=$list;
-					$this->column[class1_list][$list['id']]=$list;
-					if($list['module']==2 or $list['module']==3 or $list['module']==4 or $list['module']==5)$this->column[nav_search][]=$list;
-				}
-				if($list['classtype']==2){
-					$this->column[nav_list_2][]=$list;
-					$this->column[module_list2][$list['module']][]=$list;
-					$this->column[nav_list2][$list['bigclass']][]=$list;//使用
-					$this->column[class2_list][$list['id']]=$list;
-				}
-				if($list['classtype']==3){
-					$this->column[nav_list_3][]=$list;
-					$this->column[module_list3][$list['module']][]=$list;
-					$this->column[nav_list3][$list['bigclass']][]=$list;//使用
-					$this->column[class3_list][$list['id']]=$list;
-				}
-
-				if($list['nav']==1 or $list['nav']==3)$this->column[nav_list][]=$list;//使用
-				if($list['nav']==2 or $list['nav']==3)$this->column[navfoot_list][]=$list;//使用
-
-				if($list['classtype']==1&&$list['module']==1&&$list['isshow']==1){$this->column[nav_listabout][]=$list;}
-				if($list['index_num']!="" and $list['index_num']!=0){
-					$list['classtype']=$list['releclass']?"class1":"class".$list['classtype'];
-					$this->column[class_index][$list['index_num']]=$list;
-				}
+			if($list['classtype']==1&&$list['module']==1&&$list['isshow']==1){$this->column[nav_listabout][]=$list;}
+			if($list['index_num']!="" and $list['index_num']!=0){
+				$list['classtype']=$list['releclass']?"class1":"class".$list['classtype'];
+				$this->column[class_index][$list['index_num']]=$list;
 			}
-			//缓存$column到文件，根据其他条件返回对应数组。
-			//之后所有处理的数组都可以缓存。
 		}
 		return $this->column;
 	}

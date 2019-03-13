@@ -58,7 +58,7 @@ if($id!=null){
 		$menursr[]=$list;
 	}
 	if(count($menursr)>3){
-		metsave('../app/wap/custommenu.php?anyid='.$anyid.'&cs='.$cs.'&lang='.$lang,'最多只能添加4个菜单',$depth);
+		metsave('../app/wap/custommenu.php?anyid='.$anyid.'&cs='.$cs.'&lang='.$lang,$lang_wap_descript2_v6,$depth);
 	}
 }
 switch($menur['type']){
@@ -157,7 +157,7 @@ if($action=='editor'){
 		$querys = "INSERT INTO $met_wapmenu SET `sequence`='$menu_list_order', `name`='$menu_name', `value`='$values',`columnicon`='$met_icon',`menu_iconrgb`='$menu_iconrgb' ,`menu_wordrgb`='$menu_wordrgb' , `values`='$classs',`type`='$type',`lang`='$lang'";
 		$menus=$db->query($querys);
 	}
-	metsave('../app/wap/custommenu.php?anyid='.$anyid.'&cs='.$cs.'&lang='.$lang,'操作成功',$depth);
+	metsave('../app/wap/custommenu.php?anyid='.$anyid.'&cs='.$cs.'&lang='.$lang,$lang_success,$depth);
 }
 
 $querys = "SELECT value FROM $met_config where name='met_wapshowtype' and lang='$lang'";

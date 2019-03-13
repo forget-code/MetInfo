@@ -166,7 +166,39 @@ function metlabel_flash(){
 					}
 					$metinfo.="</ul>\n";
 					$metinfo.="</div>\n";
-					$metinfo.="<script type='text/javascript'>$(document).ready(function(){ $('#slider6').bxSlider({ mode:'vertical',autoHover:true,auto:true,pager: true,pause: 5000,controls:false});});</script>";
+					$metinfo.="<script type='text/javascript'>
+								var bxSliderFun=function(){
+										$(document).ready(function(){
+											var slider_img=new Image();
+											slider_img.src=$('#slider6 img:eq(0)').attr('src');
+											slider_img.onload=function(){
+												var bxSlider=function(){
+														$('#slider6').bxSlider({ mode:'vertical',autoHover:true,auto:true,pager: true,pause: 5000,controls:false});
+													};
+												if(typeof $.fn.bxSlider !='undefined'){
+													bxSlider();
+												}else{
+													var interval_bxSliderFun=setInterval(function(){
+															if(typeof $.fn.bxSlider !='undefined'){
+																bxSlider();
+																clearInterval(interval_bxSliderFun);
+															}
+														},100);
+												}
+											};
+										});
+									};
+								if (typeof jQuery !='undefined'){
+									bxSliderFun();
+								}else{
+									var interval_bxSliderFunc=setInterval(function(){
+										if(typeof jQuery !='undefined'){
+											bxSliderFun();
+											clearInterval(interval_bxSliderFunc);
+										}
+									},100);
+								}
+								</script>";
 			break;
 			case 8:
 					$metinfo.="\n<link rel='stylesheet' href='{$navurl}public/banner/jq-flexslider/flexslider.css' type='text/css'>\n";

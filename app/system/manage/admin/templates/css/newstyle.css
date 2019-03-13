@@ -1786,7 +1786,7 @@ float:left; margin-top:5px; text-align:center; border:none;
 	line-height:36px;
 	overflow:hidden;
 	padding:0px 0 0 10px;
-	background:#f5f5f5 url(../metv5/lang.png) no-repeat 10px center;
+	background:#f5f5f5 url(../images/lang.png) no-repeat 10px center;
 	margin:0px 0px;
 	padding-left:38px;
 	border-bottom:1px solid #d3d3d3;
@@ -2471,10 +2471,10 @@ float:left; margin-top:5px; text-align:center; border:none;
 	vertical-align:middle;
 	padding:10px 0px 0px 15px;
 }
-.column_display{color:#ff3f00!important; background:#fff url(../metv5/titimg2_c.png) no-repeat 0px 14px; }
-.column_hidden{color:#999999!important; background:url(../metv5/titimg2_h.png) no-repeat 0px 14px;}
-.modular_display{color:#ff3f00!important; background:#fff url(../metv5/titimg_c.png) no-repeat 0px 14px;}
-.modular_hidden{color:#999999!important; background:url(../metv5/titimg_h.png) no-repeat 0px 14px;}
+.column_display{color:#ff3f00!important; background:#fff url(../images/titimg2_c.png) no-repeat 0px 14px; }
+.column_hidden{color:#999999!important; background:url(../images/titimg2_h.png) no-repeat 0px 14px;}
+.modular_display{color:#ff3f00!important; background:#fff url(../images/titimg_c.png) no-repeat 0px 14px;}
+.modular_hidden{color:#999999!important; background:url(../images/titimg_h.png) no-repeat 0px 14px;}
 
 
 .sectionh3{ border:1px solid #ccc;  float:left; margin-top:15px; margin-left:10px; height:35px; font-size:14px; font-weight:normal;}

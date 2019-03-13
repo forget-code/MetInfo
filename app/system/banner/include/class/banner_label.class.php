@@ -45,7 +45,7 @@ class banner_label {
 	 */
 	public function get_column_banner($column_id){
 		global $_M;
-		if ($_M['config']['met_bannerpagetype']) { //其他页面banner样式是否和首页一致，v5模板兼容代码
+		if ($_M['config']['met_bannerpagetype'] && $_M['config']['metinfover']!='v2') { //其他页面banner样式是否和首页一致，v5模板兼容代码
 			$column_id = 10001;
 		}
 

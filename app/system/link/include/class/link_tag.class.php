@@ -18,6 +18,7 @@ class link_tag extends tag {
         \$v['_index']   = \$index;
         \$v['_first']   = \$index == 0 ? true:false;
         \$v['_last']    = \$index == (count(\$result)-1) ? true : false;
+        \$v['nofollow'] = \$v['nofollow'] ? "rel='nofollow'" : '';
 ?>
 str;
         $php .= $content;

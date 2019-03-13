@@ -101,6 +101,7 @@ CREATE TABLE `met_column` (
   `releclass` int(11) default '0',
   `display` int(11) default '0',
   `icon` varchar(100) default '',
+  `nofollow` tinyint(1) default '0',
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
@@ -196,6 +197,7 @@ CREATE TABLE `met_flash` (
   `lang` varchar(50) default NULL,
   `height_m` int(11) default NULL,
   `height_t` int(11) default NULL,
+  `mobile_img_path` varchar(255) default NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
@@ -286,6 +288,20 @@ CREATE TABLE `met_label` (
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+
+DROP TABLE IF EXISTS `met_lang_admin`;
+CREATE TABLE `met_lang_admin` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL COMMENT '语言名称',
+  `useok` int(1) NOT NULL COMMENT '语言是否开启，1开启，0不开启',
+  `no_order` int(11) NOT NULL COMMENT '排序',
+  `mark` varchar(50) NOT NULL COMMENT '语言标识（唯一）',
+  `synchronous` varchar(50) NOT NULL COMMENT '同步官方语言标识',
+  `link` varchar(255) NOT NULL COMMENT '语言外部链接',
+  `lang` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
 DROP TABLE IF EXISTS `met_lang`;
 CREATE TABLE `met_lang` (
   `id` int(11) NOT NULL auto_increment,
@@ -332,6 +348,7 @@ CREATE TABLE `met_link` (
   `addtime` datetime default NULL,
   `lang` varchar(50) default NULL,
   `ip` varchar(255) default NULL,
+  `nofollow` tinyint(1) default '0',
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
@@ -446,6 +463,7 @@ CREATE TABLE `met_parameter` (
   `module` int(2) default NULL,
   `lang` varchar(50) default NULL,
   `wr_oks` int(2) default '0',
+  `related` varchar(50) default NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
@@ -573,6 +591,10 @@ CREATE TABLE IF NOT EXISTS `met_ifmember_left` (
   `title` varchar(50) NOT NULL,
   `foldername` varchar(255) NOT NULL,
   `filename` varchar(255) NOT NULL,
+  `target` int(11) NOT NULL,
+  `own_order` varchar(11) NOT NULL,
+  `effect` int(1) NOT NULL,
+  `lang` varchar(50) NOT NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -591,6 +613,17 @@ CREATE TABLE IF NOT EXISTS `met_applist` (
   `target` int(11) NOT NULL default '0',
   `display` int(11) NOT NULL default '1',
   `depend`  varchar(100) NULL,
+  `mlangok`  int(1) NULL default '0',
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `met_app_config`;
+CREATE TABLE `met_app_config` (
+  `id` int(11) NOT NULL auto_increment,
+  `appno` int(20) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `value` text NOT NULL,
+  `lang` varchar(50) NOT NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
@@ -675,6 +708,7 @@ CREATE TABLE `met_ui_config` (
   `uip_description` varchar(255) NOT NULL,
   `uip_order` int(10) unsigned NOT NULL DEFAULT '0',
   `lang` varchar(100) NOT NULL,
+  `uip_hidden` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
@@ -695,7 +729,8 @@ CREATE TABLE IF NOT EXISTS `met_user` (
   `valid` int(1) NOT NULL,
   `source` varchar(20) NOT NULL,
   `lang` varchar(50) NOT NULL,
-  `uid` int(11) NOT NULL default '0',
+  `idvalid` int(1) unsigned NOT NULL DEFAULT '0' COMMENT '实名认证状态',
+  `reidinfo` varchar(100) DEFAULT NULL COMMENT '实名信息  姓名|身份证|手机号',
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ;
 
@@ -707,6 +742,18 @@ CREATE TABLE IF NOT EXISTS `met_user_group` (
   `lang` varchar(50) default NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `met_user_group_pay`;
+CREATE TABLE IF NOT EXISTS`met_user_group_pay` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `groupid` int(11) NOT NULL COMMENT '会员组ID',
+  `price` double(10,2) NOT NULL COMMENT '购买价格',
+  `recharge_price` double(10,2) NOT NULL  COMMENT '充值价格',
+  `buyok` int(1) NOT NULL COMMENT '付费会员',
+  `rechargeok` int(50) NOT NULL COMMENT '充值会员',
+  `lang` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `met_user_list`;
 CREATE TABLE IF NOT EXISTS `met_user_list` (
@@ -752,12 +799,33 @@ CREATE TABLE `met_app` (
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
-INSERT INTO met_applist VALUES(null, '0', '1.0', 'ueditor', 'index', 'doindex', '百度编辑器', '编辑器', '0', '0', '0','0','');
-INSERT INTO met_applist VALUES(null,'10070','1.0', 'metconfig_sms', 'index', 'doindex', '短信功能', '短信接口', '0', '0', '0','1','');
-INSERT INTO met_applist VALUES(null,'50002','1.0', 'metconfig_template', 'temtool', 'dotemlist', '官方模板管理工具', '官方商业模板请在此进行管理操作', '0', '0', '0','2','');
+DROP TABLE IF EXISTS `met_app_config`;
+CREATE TABLE `met_app_config` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `appno` int(20) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `value` text NOT NULL,
+  `lang` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `met_para`;
+CREATE TABLE `met_para` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `pid` int(10) NOT NULL,
+  `value` varchar(255) DEFAULT NULL,
+  `module` int(10) NOT NULL,
+  `order` int(10) DEFAULT '0',
+  `lang` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+INSERT INTO met_applist VALUES(null, '0', '1.0', 'ueditor', 'index', 'doindex', '百度编辑器', '编辑器', '0', '0', '0','0','',0);
+INSERT INTO met_applist VALUES(null,'10070','1.2', 'metconfig_sms', 'index', 'doindex', '短信功能', '短信接口', '0', '0', '0','1','',0);
+INSERT INTO met_applist VALUES(null,'50002','1.0', 'metconfig_template', 'temtool', 'dotemlist', '官方模板管理工具', '官方商业模板请在此进行管理操作', '0', '0', '0','2','',1);
 INSERT INTO met_config VALUES(null,'metconfig_nurse_link_tel','','','0','0','metinfo');
 INSERT INTO met_config VALUES(null,'metconfig_nurse_link','0','','0','0','metinfo');
-INSERT INTO met_config VALUES(null,'metcms_v','6.0.0','','0','0','metinfo');
+INSERT INTO met_config VALUES(null,'metcms_v','6.1.0','','0','0','metinfo');
 INSERT INTO met_config VALUES(null,'metconfig_nurse_job_tel','','','0','0','metinfo');
 INSERT INTO met_config VALUES(null,'metconfig_nurse_job','0','','0','0','metinfo');
 INSERT INTO met_config VALUES(null,'metconfig_nurse_massge_tel','','','0','0','metinfo');
@@ -799,23 +867,10 @@ INSERT INTO met_config VALUES(null,'metconfig_sitemap_txt','0','','0','0','metin
 INSERT INTO met_config VALUES(null,'metconfig_sitemap_xml','1','','0','0','metinfo');
 INSERT INTO met_config VALUES(null,'metconfig_index_type','cn','','0','0','metinfo');
 INSERT INTO met_config VALUES(null,'metconfig_nurse_monitor_weekb','1','','0','0','metinfo');
-INSERT INTO met_config VALUES(null,'physical_time','2013-12-26 17:23:41','','0','0','metinfo');
-INSERT INTO met_config VALUES(null,'physical_admin','0','','0','0','metinfo');
-INSERT INTO met_config VALUES(null,'physical_backup','0','','0','0','metinfo');
-INSERT INTO met_config VALUES(null,'physical_update','528','','0','0','metinfo');
-INSERT INTO met_config VALUES(null,'physical_seo','1|1|1|','','0','0','metinfo');
-INSERT INTO met_config VALUES(null,'physical_static','1','','0','0','metinfo');
-INSERT INTO met_config VALUES(null,'physical_unread','0|3|0','','0','0','metinfo');
-INSERT INTO met_config VALUES(null,'physical_spam','1','','0','0','metinfo');
-INSERT INTO met_config VALUES(null,'physical_member','1','','0','0','metinfo');
-INSERT INTO met_config VALUES(null,'physical_web','0','','0','0','metinfo');
-INSERT INTO met_config VALUES(null,'physical_file','2|include/common.inc.php|,2|include/global/pseudo.php|,2|include/global/showmod.php|,2|include/global.func.php|,2|include/head.php|,1|install_bak/index.php|,1|install_bak/js/IE6-png.js|,1|install_bak/js/install.js|,1|lang/google_lang.php|,2|lang/lang.php|,2|lang/lang_en.php|,1|lang.php|,2|member/captcha.class.php|,2|member/save.php|,1|power.php|,1|public/js/mobile.js|,2|public/php/metlabel.inc.php|,2|wap/index.php|,2|admin/admin/save.php|,2|admin/app/dlapp/delapp.php|,2|admin/app/sms/sms.php|,1|admin/app/wap/content.php|,1|admin/app/wap/flash.php|,1|admin/app/wap/flashadd.php|,1|admin/app/wap/flashdelete.php|,1|admin/app/wap/flashedit.php|,1|admin/app/wap/flashsave.php|,1|admin/app/wap/index.php|,1|admin/app/wap/list.php|,1|admin/app/wap/map.php|,1|admin/app/wap/setflash.php|,1|admin/app/wap/skin_editor.php|,1|admin/app/wap/skin_manager.php|,2|admin/app/wap/wap.php|,2|admin/column/copycolumn.php|,2|admin/content/content.php|,2|admin/include/captcha.class.php|,2|admin/include/global.func.php|,2|admin/include/lang.php|,2|admin/include/metlist.php|,2|admin/include/return.php|,2|admin/interface/skin.php|,2|admin/interface/skin_editor.php|,2|admin/interface/skin_manager.php|,2|admin/seo/htm.php|,2|admin/system/lang/lang.php|,2|admin/system/olupdate.php|,2|admin/system/shortcut.php|,2|admin/system/shortcut_editor.php|,2|admin/system/sysadmin.php|,2|admin/system/universal.php|,2|admin/templates/met/admin/admin.html|,2|admin/templates/met/admin/admin_editor.html|,2|admin/templates/met/app/dlapp/dlapp.html|,2|admin/templates/met/app/dlapp/index.html|,2|admin/templates/met/app/sms/sms.html|,1|admin/templates/met/app/wap/content.html|,1|admin/templates/met/app/wap/flash.html|,1|admin/templates/met/app/wap/flashadd.html|,1|admin/templates/met/app/wap/flashedit.html|,1|admin/templates/met/app/wap/index.html|,1|admin/templates/met/app/wap/list.html|,1|admin/templates/met/app/wap/map.html|,1|admin/templates/met/app/wap/setflash.html|,1|admin/templates/met/app/wap/skin.html|,1|admin/templates/met/app/wap/skin_editor.html|,1|admin/templates/met/app/wap/top.html|,2|admin/templates/met/app/wap/wap.html|,2|admin/templates/met/content/article/article.html|,2|admin/templates/met/content/content.html|,2|admin/templates/met/content/download/download.html|,2|admin/templates/met/content/img/img.html|,2|admin/templates/met/content/product/product.html|,2|admin/templates/met/head.html|,2|admin/templates/met/images/js/iframes.js|,2|admin/templates/met/images/js/metinfo.js|,2|admin/templates/met/index.html|,2|admin/templates/met/interface/online/online.html|,2|admin/templates/met/interface/set_skin.html|,2|admin/templates/met/interface/skin.html|,2|admin/templates/met/interface/skin_editor.html|,2|admin/templates/met/seo/htm.html|,2|admin/templates/met/system/database/filedown.html|,2|admin/templates/met/system/set_safe.html|,2|admin/templates/met/system/shortcut.html|,2|admin/templates/met/system/shortcut_editor.html|,2|admin/templates/met/system/sysadmin.html|,2|admin/templates/met/system/universal.html|,2|admin/templates/met/system/uploadfile.html|,1|public/ui/mobile/addlink.html|,1|public/ui/mobile/ajax/download.html|,1|public/ui/mobile/ajax/img.html|,1|public/ui/mobile/ajax/job.html|,1|public/ui/mobile/ajax/member/cv.html|,1|public/ui/mobile/ajax/member/feedback.html|,1|public/ui/mobile/ajax/member/message.html|,1|public/ui/mobile/ajax/message.html|,1|public/ui/mobile/ajax/news.html|,1|public/ui/mobile/ajax/product.html|,1|public/ui/mobile/ajax/seach.html|,1|public/ui/mobile/cv.html|,1|public/ui/mobile/download.html|,1|public/ui/mobile/feedback.html|,1|public/ui/mobile/gap.html|,1|public/ui/mobile/img.html|,1|public/ui/mobile/job.html|,1|public/ui/mobile/link_index.html|,1|public/ui/mobile/member/basic.html|,1|public/ui/mobile/member/cv.html|,1|public/ui/mobile/member/cv_detail.html|,1|public/ui/mobile/member/editor.html|,1|public/ui/mobile/member/feedback.html|,1|public/ui/mobile/member/feedback_detail.html|,1|public/ui/mobile/member/getpassword.html|,1|public/ui/mobile/member/login.html|,1|public/ui/mobile/member/message.html|,1|public/ui/mobile/member/message_detail.html|,1|public/ui/mobile/member/register.html|,1|public/ui/mobile/member.html|,1|public/ui/mobile/message_index.html|,1|public/ui/mobile/news.html|,1|public/ui/mobile/product.html|,1|public/ui/mobile/search.html|,1|public/ui/mobile/show.html|,1|public/ui/mobile/showdownload.html|,1|public/ui/mobile/showimg.html|,1|public/ui/mobile/showjob.html|,1|public/ui/mobile/shownews.html|,1|public/ui/mobile/showproduct.html|,1|public/ui/mobile/sitemap.html|,2|wap/templates/met/head.html|','','0','0','metinfo');
-INSERT INTO met_config VALUES(null,'physical_fingerprint','3|install_bak/index.php|,3|install_bak/js/IE6-png.js|,3|install_bak/js/install.js|,3|lang/google_lang.php|,3|public/js/mobile.js|,3|templates/leadway/addlink.php|,3|templates/leadway/config.php|,3|templates/leadway/config02.php|,3|templates/leadway/cv.php|,3|templates/leadway/database.inc.php|,3|templates/leadway/download.php|,3|templates/leadway/feedback.php|,3|templates/leadway/foot.php|,3|templates/leadway/head.php|,3|templates/leadway/head03.php|,3|templates/leadway/images/js/cn.index.js|,3|templates/leadway/images/js/fixPNG.js|,3|templates/leadway/images/js/fun.inc.js|,3|templates/leadway/images/js/fun.inc01.js|,3|templates/leadway/images/js/image.js|,3|templates/leadway/images/js/indexx.js|,3|templates/leadway/images/js/jquery.slider.min.js|,3|templates/leadway/img.php|,3|templates/leadway/index.php|,3|templates/leadway/info.html|,3|templates/leadway/job.php|,3|templates/leadway/link_index.php|,3|templates/leadway/login.php|,3|templates/leadway/member.php|,3|templates/leadway/message.php|,3|templates/leadway/message_index.php|,3|templates/leadway/metinfo.inc.php|,3|templates/leadway/news.php|,3|templates/leadway/otherinfo.inc.php|,3|templates/leadway/product.php|,3|templates/leadway/register.php|,3|templates/leadway/search.php|,3|templates/leadway/show.php|,3|templates/leadway/showdownload.php|,3|templates/leadway/showimg.php|,3|templates/leadway/showjob.php|,3|templates/leadway/shownews.php|,3|templates/leadway/showproduct.php|,3|templates/leadway/sidebar.php|,3|templates/leadway/sidebar02.php|,3|templates/leadway/sitemap.php|,3|templates/wap001/block/about.html|,3|templates/wap001/block/imgtxt.html|,3|templates/wap001/block/imgtxtshow.html|,3|templates/wap001/block/map.html|,3|templates/wap001/block/newslist.html|,3|templates/wap001/config.html|,3|templates/wap001/foot.html|,3|templates/wap001/head.html|,3|templates/wap001/images/css/css.inc.php|,3|templates/wap001/images/gmu/js/core/event.js|,3|templates/wap001/images/gmu/js/core/gmu.js|,3|templates/wap001/images/gmu/js/core/widget.js|,3|templates/wap001/images/gmu/js/extend/detect.js|,3|templates/wap001/images/gmu/js/extend/event.ortchange.js|,3|templates/wap001/images/gmu/js/extend/event.scrollStop.js|,3|templates/wap001/images/gmu/js/extend/fix.js|,3|templates/wap001/images/gmu/js/extend/highlight.js|,3|templates/wap001/images/gmu/js/extend/imglazyload.js|,3|templates/wap001/images/gmu/js/extend/iscroll.js|,3|templates/wap001/images/gmu/js/extend/matchMedia.js|,3|templates/wap001/images/gmu/js/extend/offset.js|,3|templates/wap001/images/gmu/js/extend/parseTpl.js|,3|templates/wap001/images/gmu/js/extend/position.js|,3|templates/wap001/images/gmu/js/extend/support.js|,3|templates/wap001/images/gmu/js/extend/throttle.js|,3|templates/wap001/images/gmu/js/extend/touch.js|,3|templates/wap001/images/gmu/js/widget/add2desktop/add2desktop.js|,3|templates/wap001/images/gmu/js/widget/button/$input.js|,3|templates/wap001/images/gmu/js/widget/button/button.js|,3|templates/wap001/images/gmu/js/widget/calendar/$picker.js|,3|templates/wap001/images/gmu/js/widget/calendar/calendar.js|,3|templates/wap001/images/gmu/js/widget/dialog/$position.js|,3|templates/wap001/images/gmu/js/widget/dialog/dialog.js|,3|templates/wap001/images/gmu/js/widget/dropmenu/dropmenu.js|,3|templates/wap001/images/gmu/js/widget/dropmenu/horizontal.js|,3|templates/wap001/images/gmu/js/widget/dropmenu/placement.js|,3|templates/wap001/images/gmu/js/widget/gotop/$iscroll.js|,3|templates/wap001/images/gmu/js/widget/gotop/gotop.js|,3|templates/wap001/images/gmu/js/widget/historylist/historylist.js|,3|templates/wap001/images/gmu/js/widget/navigator/$scrollable.js|,3|templates/wap001/images/gmu/js/widget/navigator/evenness.js|,3|templates/wap001/images/gmu/js/widget/navigator/navigator.js|,3|templates/wap001/images/gmu/js/widget/navigator/scrolltonext.js|,3|templates/wap001/images/gmu/js/widget/panel/panel.js|,3|templates/wap001/images/gmu/js/widget/popover/arrow.js|,3|templates/wap001/images/gmu/js/widget/popover/collision.js|,3|templates/wap001/images/gmu/js/widget/popover/dismissible.js|,3|templates/wap001/images/gmu/js/widget/popover/placement.js|,3|templates/wap001/images/gmu/js/widget/popover/popover.js|,3|templates/wap001/images/gmu/js/widget/progressbar/progressbar.js|,3|templates/wap001/images/gmu/js/widget/refresh/$iOS5.js|,3|templates/wap001/images/gmu/js/widget/refresh/$iscroll.js|,3|templates/wap001/images/gmu/js/widget/refresh/$lite.js|,3|templates/wap001/images/gmu/js/widget/refresh/refresh.js|,3|templates/wap001/images/gmu/js/widget/slider/$autoplay.js|,3|templates/wap001/images/gmu/js/widget/slider/$dynamic.js|,3|templates/wap001/images/gmu/js/widget/slider/$lazyloadimg.js|,3|templates/wap001/images/gmu/js/widget/slider/$multiview.js|,3|templates/wap001/images/gmu/js/widget/slider/$touch.js|,3|templates/wap001/images/gmu/js/widget/slider/arrow.js|,3|templates/wap001/images/gmu/js/widget/slider/dots.js|,3|templates/wap001/images/gmu/js/widget/slider/imgzoom.js|,3|templates/wap001/images/gmu/js/widget/slider/slider.js|,3|templates/wap001/images/gmu/js/widget/suggestion/$iscroll.js|,3|templates/wap001/images/gmu/js/widget/suggestion/$posadapt.js|,3|templates/wap001/images/gmu/js/widget/suggestion/$quickdelete.js|,3|templates/wap001/images/gmu/js/widget/suggestion/compatdata.js|,3|templates/wap001/images/gmu/js/widget/suggestion/renderlist.js|,3|templates/wap001/images/gmu/js/widget/suggestion/sendrequest.js|,3|templates/wap001/images/gmu/js/widget/suggestion/suggestion.js|,3|templates/wap001/images/gmu/js/widget/tabs/$ajax.js|,3|templates/wap001/images/gmu/js/widget/tabs/$swipe.js|,3|templates/wap001/images/gmu/js/widget/tabs/tabs.js|,3|templates/wap001/images/gmu/js/widget/toolbar/$position.js|,3|templates/wap001/images/gmu/js/widget/toolbar/toolbar.js|,3|templates/wap001/images/gmu/js/zepto.js|,3|templates/wap001/images/js/fun.inc.js|,3|templates/wap001/images/js/met_Verification.js|,3|templates/wap001/index.html|,3|templates/wap001/metinfo.inc.php|,3|templates/wap001/mtop.html|,3|templates/wap001/otherinfo.inc.php|,3|templates/wap001/sidebar.html|,3|templates/wap001/top.html|,3|templates/yongtai/config.php|,3|templates/yongtai/foot.php|,3|templates/yongtai/head.php|,3|templates/yongtai/images/js/fun.inc.js|,3|templates/yongtai/images/js/lavaLamp/flash.js|,3|templates/yongtai/images/js/lavaLamp/jquery-1.1.3.1.min.js|,3|templates/yongtai/images/js/lavaLamp/jquery.easing.min.js|,3|templates/yongtai/images/js/lavaLamp/jquery.lavalamp.js|,3|templates/yongtai/images/js/lavaLamp/jquery.lavalamp.min.js|,3|templates/yongtai/img.php|,3|templates/yongtai/index.php|,3|templates/yongtai/metinfo.inc.php|,3|templates/yongtai/otherinfo.inc.php|,3|templates/yongtai/product.php|,3|templates/yongtai/showproduct.php|,3|templates/yongtai/sidebar.php|,3|admin/app/wap/content.php|,3|admin/app/wap/flash.php|,3|admin/app/wap/flashadd.php|,3|admin/app/wap/flashdelete.php|,3|admin/app/wap/flashedit.php|,3|admin/app/wap/flashsave.php|,3|admin/app/wap/index.php|,3|admin/app/wap/list.php|,3|admin/app/wap/map.php|,3|admin/app/wap/setflash.php|,3|admin/app/wap/skin_editor.php|,3|admin/app/wap/skin_manager.php|,3|admin/templates/met/app/wap/content.html|,3|admin/templates/met/app/wap/flash.html|,3|admin/templates/met/app/wap/flashadd.html|,3|admin/templates/met/app/wap/flashedit.html|,3|admin/templates/met/app/wap/index.html|,3|admin/templates/met/app/wap/list.html|,3|admin/templates/met/app/wap/map.html|,3|admin/templates/met/app/wap/setflash.html|,3|admin/templates/met/app/wap/skin.html|,3|admin/templates/met/app/wap/skin_editor.html|,3|admin/templates/met/app/wap/top.html|,2|config/config_safe.php|,1|cx.php|,1|file.php|,2|include/common.inc.php|,2|include/global/pseudo.php|,2|include/global/showmod.php|,2|include/global.func.php|,2|include/head.php|,2|include/lang.php|,1|install/index.php|,1|install/js/IE6-png.js|,1|install/js/install.js|,1|install/lang_cn_520.php|,1|install/lang_en_520.php|,1|install/phpinfo.php|,2|lang/lang.php|,1|lang/lang_cn.php|,2|lang/lang_en.php|,1|lang/lang_insert.php|,2|lang.php|,2|member/captcha.class.php|,2|member/save.php|,2|power.php|,2|public/php/metlabel.inc.php|,2|wap/index.php|,2|templates/default/config.html|,2|templates/default/index.html|,2|templates/default/metinfo.inc.php|,2|admin/admin/add.php|,2|admin/admin/save.php|,2|admin/app/dlapp/delapp.php|,2|admin/app/physical/physical.fun.php|,2|admin/app/physical/trust.php|,2|admin/app/sms/sms.php|,2|admin/app/wap/wap.php|,2|admin/column/copycolumn.php|,2|admin/content/content.php|,2|admin/include/captcha.class.php|,2|admin/include/global.func.php|,2|admin/include/lang.php|,2|admin/include/metlist.php|,2|admin/include/return.php|,2|admin/interface/flash/flash.php|,2|admin/interface/flash/flashdelete.php|,2|admin/interface/flash/flashsave.php|,2|admin/interface/flash/setflash.php|,2|admin/interface/skin.php|,2|admin/interface/skin_editor.php|,2|admin/interface/skin_manager.php|,2|admin/seo/htm.php|,2|admin/system/database/recovery.php|,2|admin/system/lang/lang.php|,2|admin/system/olupdate.php|,2|admin/system/shortcut.php|,2|admin/system/shortcut_editor.php|,2|admin/system/sysadmin.php|,2|admin/system/universal.php|,2|admin/templates/met/admin/admin.html|,2|admin/templates/met/admin/admin_add.html|,2|admin/templates/met/admin/admin_editor.html|,2|admin/templates/met/app/dlapp/dlapp.html|,2|admin/templates/met/app/dlapp/index.html|,2|admin/templates/met/app/sms/sms.html|,2|admin/templates/met/app/wap/wap.html|,2|admin/templates/met/content/article/article.html|,2|admin/templates/met/content/content.html|,2|admin/templates/met/content/download/download.html|,2|admin/templates/met/content/img/img.html|,2|admin/templates/met/content/product/product.html|,2|admin/templates/met/head.html|,2|admin/templates/met/images/js/iframes.js|,2|admin/templates/met/images/js/metinfo.js|,2|admin/templates/met/index.html|,2|admin/templates/met/interface/flash/flash.html|,2|admin/templates/met/interface/flash/flashadd.html|,2|admin/templates/met/interface/flash/flashedit.html|,2|admin/templates/met/interface/flash/setflash.html|,1|admin/templates/met/interface/flash/top.html|,2|admin/templates/met/interface/online/online.html|,2|admin/templates/met/interface/set_skin.html|,2|admin/templates/met/interface/skin.html|,2|admin/templates/met/interface/skin_editor.html|,1|admin/templates/met/interface/skin_top.html|,2|admin/templates/met/metlangs.html|,2|admin/templates/met/seo/htm.html|,2|admin/templates/met/seo/sitemap.html|,2|admin/templates/met/system/database/filedown.html|,2|admin/templates/met/system/set_safe.html|,2|admin/templates/met/system/shortcut.html|,2|admin/templates/met/system/shortcut_editor.html|,2|admin/templates/met/system/sysadmin.html|,2|admin/templates/met/system/universal.html|,2|admin/templates/met/system/uploadfile.html|','','0','0','metinfo');
-INSERT INTO met_config VALUES(null,'physical_function','1','','0','0','metinfo');
 INSERT INTO met_config VALUES(null,'metconfig_member_force','byuqujz','','0','0','metinfo');
 INSERT INTO met_config VALUES(null,'metconfig_nurse_sendtime','10','','0','0','metinfo');
 INSERT INTO met_config VALUES(null,'metconfig_recycle','1','','0','0','metinfo');
-INSERT INTO met_config VALUES(null,'metconfig_tablename','admin_array|admin_table|app|admin_column|column|config|cv|download|feedback|flash|flist|img|job|label|lang|language|link|list|message|news|online|otherinfo|parameter|plist|product|skin_table|sms|visit_day|visit_detail|visit_summary|mlist|ifcolumn|ifcolumn_addfile|ifmember_left|applist|app_plugin|wapmenu|infoprompt|templates|user|user_group|user_list|user_other|ui_list|ui_config','','0','0','metinfo');
+INSERT INTO met_config VALUES(null,'metconfig_tablename','admin_array|admin_table|app|admin_column|column|config|cv|download|feedback|flash|flist|img|job|label|lang|lang_admin|language|link|list|message|news|online|otherinfo|para|parameter|plist|product|skin_table|sms|visit_day|visit_detail|visit_summary|mlist|ifcolumn|ifcolumn_addfile|ifmember_left|applist|app_plugin|app_config|wapmenu|infoprompt|templates|user|user_group|user_list|user_other|ui_list|ui_config|app_config|lang_admin|user_group_pay','','0','0','metinfo');
 INSERT INTO met_config VALUES(null,'metconfig_smsprice','0.1','','0','0','metinfo');
 INSERT INTO met_config VALUES(null,'metconfig_agents_logo_login','templates/met/images/login-logo.png','','0','0','metinfo');
 INSERT INTO met_config VALUES(null,'metconfig_agents_logo_index','templates/met/images/logoen.gif','','0','0','metinfo');
@@ -845,14 +900,8 @@ INSERT INTO met_config VALUES(null,'metconfig_host_new','app.metinfo.cn','','0',
 INSERT INTO met_config VALUES(null,'metconfig_editor', 'ueditor', '', '0', '0', 'metinfo');
 INSERT INTO met_config VALUES(null,'metconfig_sms_url', 'https://appv2.metinfo.cn/sms', '', '0', '0', 'metinfo');
 INSERT INTO met_config VALUES(null,'metconfig_sms_token', '', '', '0', '0', 'metinfo');
-INSERT INTO met_config VALUES (NULL, 'metconfig_agents_metmsg', '1', '', '', '', 'metinfo');
+INSERT INTO met_config VALUES(NULL, 'metconfig_agents_metmsg', '1', '', '', '', 'metinfo');
 INSERT INTO met_config VALUES(null, 'metconfig_safe_prompt', '0', '', '0', '0', 'metinfo');
-INSERT INTO met_config VALUES(null, 'metconfig_fd_word', '', '', '0', '0', 'cn');
-INSERT INTO met_config VALUES(null, 'metconfig_fd_word', '', '', '0', '0', 'en');
-INSERT INTO met_config VALUES(null, 'flash_10000', '3|980|300|1', '', '0', '10000', 'cn');
-INSERT INTO met_config VALUES(null, 'flash_10001', '1|980|600|', '', '0', '10001', 'cn');
-INSERT INTO met_config VALUES(null, 'flash_10000', '3|980|300|1', '', '0', '10000', 'en');
-INSERT INTO met_config VALUES(null, 'flash_10001', '1|980|600|', '', '0', '10001', 'en');
 
 INSERT INTO met_admin_column VALUES('5','lang_unitytxt_39','','0','0','1','7','<i class=\"fa fa-sliders\"></i>','','1');
 INSERT INTO met_admin_column VALUES('73','lang_member','index.php?n=user&c=admin_user&a=doindex','72','1601','2','1','<i class=\"fa fa-users\"></i>','','1');
@@ -881,7 +930,7 @@ INSERT INTO met_admin_column VALUES('47','lang_managertyp2','index.php?n=admin&c
 INSERT INTO met_admin_column VALUES('68','lang_release','index.php?n=content&c=content&a=doadd','2','1301','2','1','<i class=\"fa fa-plus\"></i>','','1');
 INSERT INTO met_admin_column VALUES('72','lang_the_user','','0','0','1','5','<i class=\"fa fa-user\"></i>','','1');
 INSERT INTO met_admin_column VALUES('75','lang_checkupdate','index.php?n=update&c=about&a=doindex','5','1104','2','5','<i class=\"fa fa-info-circle\"></i>','','1');
-INSERT INTO met_admin_column VALUES('65','lang_dlapptips2','index.php?n=appstore&c=appstore&a=doindex','4','1507','2','9999','<i class=\"fa fa-cube\"></i>','','1');
+INSERT INTO met_admin_column VALUES('65','lang_dlapptips2','index.php?n=appstore&c=appstore&a=doappstore','4','1507','2','9999','<i class=\"fa fa-cube\"></i>','','1');
 
 
 INSERT INTO met_otherinfo VALUES('1','NOUSER','2147483647','','','','','','','','','','','','','','','','','metinfo');
@@ -889,14 +938,3 @@ INSERT INTO met_skin_table VALUES('1','metv6','metv6','MetInfo v6.0正式版新�
 INSERT INTO met_lang VALUES('2','English','1','2','en','en','','','0','0','','','metinfo');
 INSERT INTO met_lang VALUES('1','简体中文','1','1','cn','cn','','','0','0','','','metinfo');
 INSERT INTO met_admin_array VALUES('3','管理员','metinfo','1','metinfo','0','10000','256','2','metinfo','metinfo');
-
-INSERT INTO met_parameter VALUES(null,'公司名称','' ,'','9','1','0','0','0','0','0','10','cn','1');
-INSERT INTO met_parameter VALUES(null,'Company name','','','9','1','0','0','0','0','0','10','en','1');
-INSERT INTO met_parameter VALUES(null,'公司传真','','','10','1','0','0','0','0','0','10','cn','1');
-INSERT INTO met_parameter VALUES(null,'Fax','','','10','1','0','0','0','0','0','10','en','1');
-INSERT INTO met_parameter VALUES(null,'公司联系地址','','','11','1','0','0','0','0','0','10','cn','1');
-INSERT INTO met_parameter VALUES(null,'Company address','','','11','1','0','0','0','0','0','10','en','1');
-INSERT INTO met_parameter VALUES(null,'公司邮政编码','','','12','1','0','0','0','0','0','10','cn','1');
-INSERT INTO met_parameter VALUES(null,'Company Postcode','','','12','1','0','0','0','0','0','10','en','1');
-INSERT INTO met_parameter VALUES(null,'公司网址','','','13','1','0','0','0','0','0','10','cn','1');
-INSERT INTO met_parameter VALUES(null,'Website','','','13','1','0','0','0','0','0','10','en','1');

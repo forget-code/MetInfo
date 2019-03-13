@@ -49,12 +49,7 @@ class tabledata {
             }
             //整理查询条件
 
-            $result=DB::get_all("SELECT {$field} FROM {$table} {$conds} LIMIT {$start},1");
-            if(!$result){
-                $start=$start-$length;
-            }
             $query = "SELECT {$field} FROM {$table} {$conds} LIMIT {$start},{$length}";  //mysql语句
-
             $array = DB::get_all($query);                                           //执行查询，获得数组
             $error = DB::error();
             if($error){

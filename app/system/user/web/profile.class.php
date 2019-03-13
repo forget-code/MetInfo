@@ -1,6 +1,6 @@
 <?php
-# MetInfo Enterprise Content Management System 
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+# MetInfo Enterprise Content Management System
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 
 defined('IN_MET') or exit('No permission');
 
@@ -10,74 +10,99 @@ class profile extends userweb {
 
 	protected $paraclass;
 	protected $paralist;
-	
+	protected $no;
+
 	public function __construct() {
 		global $_M;
-		parent::__construct();
-		$this->paraclass = load::sys_class('para', 'new');
+        parent::__construct();
+        $this->paraclass = load::sys_class('para', 'new');
 		$this->paralist  = $this->paraclass->get_para_list(10);
-	}	
-	
-	
+		$this->sys_group  = load::mod_class('user/sys_group', 'new');
+        $this->paygroup_list  = $this->sys_group->get_paygroup_list_buyok();
+    }
+
+
 	/*未激活账户重发邮件验证*/
 	public function dovalid_email() {
-		global $_M;	
+		global $_M;
 		$valid = load::mod_class('user/web/class/valid','new');
 		if ($valid->get_email($_M['user']['username'])) {
 			echo $_M['word']['emailsuc'];
-		} else { 
+		} else {
 			echo $_M['word']['emailfail'];
 		}
 	}
-	
+
 	/*基本信息*/
-	
+
 	public function doindex() {
-		global $_M;	
+		global $_M;
+		$_M['config']['own_order'] = 1;
 		if(!$_M['user']['valid']){
 			$valid = $_M['config']['met_member_vecan'] == 1?'valid_email':'valid_admin';
-			require_once $this->template('tem/'.$valid);
+			require_once $this->view('app/'.$valid,$this->input);
 		}else{
-			require_once $this->template('tem/profile_index');
+			$_M['paralist']=$this->paralist;
+			$_M['paraclass']=$this->paraclass;
+
+            $paygroupnow = $this->sys_group->get_paygroup_by_id($_M['user']['groupid']);
+            foreach ($this->paygroup_list as $pgroup) {
+                if ($pgroup['price']> $paygroupnow['price']) {
+                    $groupshow[] = $pgroup;
+                }
+            }
+			$this->input['groupshow'] = $groupshow;
+			require_once $this->view('app/profile_index',$this->input);
 		}
 	}
-	
+
 	public function doinfosave() {
-		global $_M;	
+		global $_M;
 		$infos = $this->paraclass->form_para($_M['form'],10);
 		$this->paraclass->update_para($_M['user']['id'], $infos, 10);
 		$this->userclass->modify_head($_M['user']['id'], $_M['form']['head']);
 		okinfo($_M['url']['profile'], $_M['word']['modifysuc']);
 	}
-	
+
 	/*帐号安全*/
 	public function dosafety() {
-		global $_M;	
+		global $_M;
+		$_M['config']['own_order'] = 2;
 		if($_M['user']['email']){
-			$emailtxt = $_M['user']['email'];
-			$emailbut = $_M['word']['modify'];
-			$emailclass = 'emailedit';
+			$_M['profile_safety']['emailtxt'] = $_M['user']['email'];
+			$_M['profile_safety']['emailbut'] = $_M['word']['modify'];
+			$_M['profile_safety']['emailclass'] = 'emailedit';
 		}else{
-			$emailtxt = $_M['word']['notbound'];
-			$emailbut = $_M['word']['binding'];
-			$emailclass = 'emailadd';
+			$_M['profile_safety']['emailtxt'] = $_M['word']['notbound'];
+			$_M['profile_safety']['emailbut'] = $_M['word']['binding'];
+			$_M['profile_safety']['emailclass'] = 'emailadd';
 		}
 		if($_M['user']['tel']){
-			$teltxt = $_M['user']['tel'];
-			$telbut = $_M['word']['modify'];
-			$telclass = 'teledit';
+			$_M['profile_safety']['teltxt'] = $_M['user']['tel'];
+			$_M['profile_safety']['telbut'] = $_M['word']['modify'];
+			$_M['profile_safety']['telclass'] = 'teledit';
 		}else{
-			$teltxt = $_M['word']['notbound'];
-			$telbut = $_M['word']['binding'];
-			$telclass = 'teladd';
+			$_M['profile_safety']['teltxt'] = $_M['word']['notbound'];
+			$_M['profile_safety']['telbut'] = $_M['word']['binding'];
+			$_M['profile_safety']['telclass'] = 'teladd';
 		}
+        if($_M['user']['idvalid']){
+            $_M['profile_safety']['idvalitxt'] = $_M['word']['authen'];
+            $_M['profile_safety']['idvalibut'] = $_M['word']['memberDetail'];
+            $_M['profile_safety']['idvaliclass'] = 'idvalview';
+            $_M['user']['realidinfo']  = $this->userclass->getRealIdInfo($_M['user']);
+        }else{
+            $_M['profile_safety']['idvalitxt'] = $_M['word']['notauthen'];
+            $_M['profile_safety']['idvalibut'] = $_M['word']['binding'];
+            $_M['profile_safety']['idvaliclass'] = 'idvaliadd';
+        }
 		if($_M['config']['met_member_vecan']==1&&$_M['user']['email']&&$_M['user']['email']==$_M['user']['username']){
-			$emailbut = $_M['word']['accnotmodify'];
-			$disabled = 'disabled';
+			$_M['profile_safety']['emailbut'] = $_M['word']['accnotmodify'];
+			$_M['profile_safety']['disabled'] = 'disabled';
 		}
-		require_once $this->template('tem/profile_safety');
+		require_once $this->view('app/profile_safety',$this->input);
 	}
-	
+
 	/*邮箱绑定与修改*/
 	public function doemailedit() {
 		global $_M;
@@ -89,11 +114,11 @@ class profile extends userweb {
 					$valid = load::mod_class('user/web/class/valid','new');
 					if ($valid->get_email($_M['form']['email'],'emailadd')) {
 						okinfo($_M['url']['profile_safety'], $_M['word']['emailsuclink']);
-					} else { 
+					} else {
 						okinfo($_M['url']['profile_safety'], $_M['word']['emailfail']);
 					}
 				}else{
-					require_once $this->template('tem/profile_emailedit');
+					require_once $this->view('app/profile_emailedit',$this->input);
 				}
 			}else{
 				okinfo($_M['url']['profile_safety'], $_M['word']['emailvildtips2']);
@@ -102,11 +127,12 @@ class profile extends userweb {
 			$valid = load::mod_class('user/web/class/valid','new');
 			if ($valid->get_email($_M['user']['email'],'emailedit')) {
 				echo $_M['word']['emailsuclink'];
-			} else { 
+			} else {
 				echo $_M['word']['emailfail'];
 			}
 		}
 	}
+
 	public function doemailok() {
 		global $_M;
 		$valid = true;
@@ -117,6 +143,7 @@ class profile extends userweb {
 			'valid' => $valid
 		));
 	}
+
 	public function dosafety_emailadd() {
 		global $_M;
 		if($_M['form']['p']){
@@ -138,15 +165,15 @@ class profile extends userweb {
 			$valid = load::mod_class('user/web/class/valid','new');
 			if ($valid->get_email($_M['form']['email'],'emailadd')) {
 				okinfo($_M['url']['profile_safety'], $_M['word']['emailsuclink']);
-			} else { 
+			} else {
 				okinfo($_M['url']['profile_safety'], $_M['word']['emailfail']);
 			}
 		}
 	}
-	
+
 	/*密码修改*/
 	public function dopasssave() {
-		global $_M;	
+		global $_M;
 		if(md5($_M['form']['oldpassword'])==$_M['user']['password']){
 			if($this->userclass->editor_uesr_password($_M['user']['id'],$_M['form']['password'])){
 				okinfo($_M['url']['profile_safety'], $_M['word']['modifypasswordsuc']);
@@ -157,7 +184,7 @@ class profile extends userweb {
 			okinfo($_M['url']['profile_safety'], $_M['word']['lodpasswordfail']);
 		}
 	}
-	
+
 	/*手机绑定与修改*/
 	public function dosafety_teledit() {
 		global $_M;
@@ -178,16 +205,17 @@ class profile extends userweb {
 		}else{
 			$valid = load::mod_class('user/web/class/valid','new');
 			if ($valid->get_tel($_M['user']['tel'])) {
-				echo 'SUCCESS';  
+				echo 'SUCCESS';
 			} else {
-				echo $_M['word']['Sendfrequent'];  
+				echo $_M['word']['Sendfrequent'];
 			}
 		}
 	}
+
 	public function dosafety_teladd() {
 		global $_M;
 		$session = load::sys_class('session', 'new');
-		if($_M['form']['code']!=$session->get("phonecode")){
+		if($_M['form']['phonecode']!=$session->get("phonecode")){
 			okinfo($_M['url']['profile_safety'], $_M['word']['membercode']);
 		}
 		if(time()>$session->get("phonetime")){
@@ -199,14 +227,15 @@ class profile extends userweb {
 		$session->del('phonecode');
 		$session->del('phonetime');
 		$session->del('phonetel');
-		
+
 		if($this->userclass->editor_uesr_tel($_M['user']['id'], $_M['form']['tel'])){
 			okinfo($_M['url']['profile_safety'], $_M['word']['bindingok']);
 		}else{
 			okinfo($_M['url']['profile_safety'], $_M['word']['opfail']);
 		}
-		
+
 	}
+
 	public function dosafety_telvalid() {
 		global $_M;
 		if($this->userclass->get_user_by_tel($_M['form']['tel'])){
@@ -215,11 +244,12 @@ class profile extends userweb {
 		}
 		$valid = load::mod_class('user/web/class/valid','new');
 		if ($valid->get_tel($_M['form']['tel'])) {
-			echo 'SUCCESS';  
+			echo 'SUCCESS';
 		} else {
-			echo $_M['word']['Sendfrequent'];  
+			echo $_M['word']['Sendfrequent'];
 		}
 	}
+
 	public function dosafety_telok() {
 		global $_M;
 		$valid = true;
@@ -230,6 +260,30 @@ class profile extends userweb {
 			'valid' => $valid
 		));
 	}
+
+    /**
+     * 用户实名认证
+     */
+    public function dosafety_idvalid(){
+        global $_M;
+        if(!load::sys_class('pin', 'new')->check_pin($_M['form']['code']) ){
+            okinfo($_M['url']['profile_safety'], $_M['word']['membercode']);
+            die();
+        }
+        $idvalid = load::mod_class('user/include/class/user_idvalid.class.php', 'new');
+        $result = $idvalid->idvalidate();
+        if (!$result) {
+            okinfo($_M['url']['profile_safety'], $_M['word']['idvalidfailed']);
+            die();
+        }
+
+        $info = $_M['form']['realname']."|".$_M['form']['idcode']."|".$_M['form']['phone'];
+        if($this->userclass->editor_uesr_idvalid($_M['user']['id'],$info)){
+            okinfo($_M['url']['profile_safety'], $_M['word']['idvalidok']);
+            die();
+        }
+    }
+
 }
 
 # This program is an open source system, commercial use, please consciously to purchase commercial license.

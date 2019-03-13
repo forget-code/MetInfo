@@ -8,7 +8,7 @@ echo <<<EOT
 <!--矢量图标css begin-->
 <link rel="stylesheet" href="awesome/css/font-awesome.min.css">
 <!--矢量图标css end-->
-<title>菜单设置</title>
+<title>{$lang_wap_meunSetting_v6}</title>
 <script type="text/javascript" src="../../ckeditor/ckeditor.js"></script>
 <link rel="stylesheet" media="screen" type="text/css" href="../../templates/met/images/colorpicker/css/colorpicker.css" />
 <link rel="stylesheet" href="../../../public/ui/mobile/css/iconfont.css">
@@ -323,7 +323,7 @@ echo <<<EOT
 	});
 
 function get_ue_contents(){
-	var html ='请添加公司地址信息';
+	var html =$lang_wap_descript3_v6;
 	ue.ready(function() {
 		html = ue.getContent();
 	});
@@ -456,37 +456,37 @@ function dimensional(){
 	if(type==1){
 		var del=$("#displayname").val();
 		if(del==""){
-		alert('电话号码不能为空');
+		alert('{$lang_wap_nottel_v6}');
 		return false;
 		}
 	}
 	if(type==2){
 		var qq=$("#qqs").val();
 		if(qq==""){
-		alert('QQ号不能为空');
+		alert('{$lang_wap_notqq_v6}');
 		return false;
 		}
 	}
 	if(type==3){
 		var title=$("#title").val();
 		if(title==""){
-		alert('地图信息不能为空');
+		alert('{$lang_wap_notmap_v6}');
 		return false;
 		}
 	}
 	if(type==5){
 		var class1select=$("#class1select").val();
 		if(class1select==0){
-		alert('栏目不能为空');
+		alert('{$lang_wap_notcolumn_v6}');
 		return false;
 		}
 	}
 	if(len>8){
-		alert('名称的字符数不能超过8个！');
+		alert('{$lang_wap_descript4_v6}');
 		return false;
 	}
 	if(len==0){
-		alert('名称不能为空！');
+		alert('{$lang_wap_descript5_v6}');
 		return false;
 	}
 	$("input[name='met_maplng']").val(point.lng);
@@ -516,7 +516,7 @@ function dimensional(){
          <dl>
 			<dt></dt>
 			<dd style='position:relative;'>
-				<span class='color390'>点击该菜单跳转到网站首页</span>
+				<span class='color390'>{$lang_wap_descript6_v6}</span>
 			</dd>
 		</dl>
 
@@ -526,14 +526,14 @@ function dimensional(){
 		<dl>
 			<dt></dt>
 			<dd style='position:relative;'>
-				<span class='color390'>点击该菜单跳转到对应的栏目页面</span>
+				<span class='color390'>{$lang_wap_descript7_v6}</span>
 			</dd>
 		</dl>
          <dl>
-			<dt>栏目{$lang_marks}</dt>
+			<dt>{$lang_htmColumn}{$lang_marks}</dt>
 			<dd>
 		<select name="class1" id="class1select" onChange="changelocation1(document.myform.class1.options[document.myform.class1.selectedIndex].value,1)">		
-		<option value="0">所有一级栏目</option>
+		<option value="0">{$lang_AllBigclass_v6}</option>
 <!--
 EOT;
 foreach($clist1now as $key=>$val1){
@@ -548,7 +548,7 @@ echo <<<EOT
 -->
 		</select>
 		<select name="class2" id="class2select" onChange="changelocation1(document.myform.class2.options[document.myform.class2.selectedIndex].value,2)"> 
-		<option value="0">所有二级栏目</option>
+		<option value="0">{$lang_AllSmallclass_v6}</option>
 <!--
 EOT;
 foreach($clist2now as $key=>$val1){
@@ -563,7 +563,7 @@ echo <<<EOT
 -->
 		</select>
 		<select name="class3" id="class3select" onChange=""> 
-		<option value="0">所有三级栏目</option>
+		<option value="0">{$lang_AllThirdclass_v6}</option>
 <!--
 EOT;
 foreach($clist3now as $key=>$val1){
@@ -581,7 +581,7 @@ echo <<<EOT
 		</dd>
 		</dl>
 		<dl>
-			<dt>菜单图标{$lang_marks}</dt>
+			<dt>{lang_wap_meuntag_v6}{$lang_marks}</dt>
 			<dd style='position:relative;'>
 				<label style='display:inline-block; width:50px;'><input name="met_icon" type="radio" value="icon-mees" $selected_icon[0]><i class="iconfont icon-2x" id='ico1' style='color:$selected_iconbg[0]; font-size:32px;'>&#xe656;</i></label>
 				<label style='display:inline-block; width:50px;'><input name="met_icon" type="radio" value="icon-pencil" $selected_icon[1]>&nbsp;<i class="icon-pencil icon-2x" id='ico2' style='color:$selected_iconbg[1];'></i></label>
@@ -732,7 +732,7 @@ function get_length(s){
 function check(my,from){
 	var len=get_length($("[name='menu_name']").val());
 	if(len>8){
-	alert('名称最多支持4个汉字字符（英文字符算半个汉字字符）');
+	alert('{$lang_wap_descript1_v6}');
 	return false;
 	}
 	
@@ -744,7 +744,7 @@ function check11(){
 var len=get_length($("[name='menu_name']").val());
 
 if(len>10){
-alert('字符数过多！');
+alert('{$lang_wap_charover_v6}');
 return false;
 }
 }
@@ -753,11 +753,11 @@ function check1(){
 		var len=$("[name='menu_name']").val();
 
 		if(len==""){
-		alert('字符数过多！');
+		alert('{$lang_wap_charover_v6}');
 		return false;
 		}
 		if(len>10){
-			alert('字符数过多！');
+			alert('{$lang_wap_charover_v6}');
 			return false;
 		}
 		

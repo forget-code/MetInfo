@@ -18,45 +18,52 @@ class language_database {
        global $_M;
 	   $langmark=$_M['form']['langmark'];
 	   $langdlok=$_M['form']['langdlok'];
-	   $langautor=$_M['form']['langautor'];
-	   $langfile=$_M['form']['langfile'];
-       if($langautor!=''){
-				$synchronous=$langautor;
-				$lang=$langautor;
+	   $new_lang=$_M['form']['langautor'];
+	   $base_lang =$_M['form']['langfile'];
+	   $config_lang = $_M['form']['langconfig'];
+       if($new_lang!=''){
+				$synchronous=$new_lang;
+				$lang=$new_lang;
 			}else{
-				$synchronous=$langfile;
+				$synchronous=$base_lang;
 				$lang=$langmark;
 			}
-		$newlangmark=$langautor;
+		$newlangmark=$new_lang;
      	if($langdlok=='1'){
 		$post=array('newlangmark'=>$newlangmark,'metcms_v'=>$metcms_v);
 		$file_basicname=$depth.'../update/lang/lang_'.$newlangmark.'.ini';
-		$sun_re=$this->syn_lang($post,$file_basicname,$langautor,0,1);
+		$sun_re=$this->syn_lang($post,$file_basicname,$new_lang,0,1);
 	    }else{
-        if($_M[form][langfile]){
-        	$query="select * from {$_M[table][language]} where site='0' and app='0' and lang='{$_M[form][langfile]}'";
-        	$languages=DB::get_all($query);
+        if($base_lang){
+        	$query = "select * from {$_M['table']['language']} where site='0' and lang='{$base_lang}'";
+        	$languages = DB::get_all($query);
 			foreach($languages as $key=>$val){
 				$val[value] = str_replace("'","''",$val[value]);
 				$val[value] = str_replace("\\","\\\\",$val[value]);
-				$query = "insert into {$_M[table][language]} set name='$val[name]',value='$val[value]',site='0',no_order='$val[no_order]',array='$val[array]',lang='$lang'";
+				$val['lang'] = $lang;
+				unset($val['id']);
+				$sql = get_sql($val);
+				$query = "INSERT INTO {$_M['table']['language']} SET {$sql}";
 				DB::query($query);
 			}
         }
 		$sun_re=1;
 	    }
-        if($_M[form][langconfig]){
-	    	$query="select * from {$_M[table][otherinfo]} where lang='{$_M[form][langconfig]}'";
-	    }else{
-            $query="select * from {$_M[table][otherinfo]} where lang='cn'";
-	    }
-        if($_M[form][langconfig]){
-        	$query="select * from {$_M[table][config]} where (flashid ='10000' or flashid ='10001') and lang ='{$_M[form][langconfig]}'";
+
+
+        if($config_lang){
+        	$query="select * from {$_M[table][config]} where (flashid ='10000' or flashid ='10001') and lang ='{$config_lang}'";
         	$defaultflash=DB::get_all($query);
         	foreach ($defaultflash as $key => $value) {
         		$query="insert into {$_M[table][config]} set name='$value[name]',value='$value[value]',mobile_value='$value[mobile_value]',columnid='$value[columnid]',flashid='$value[flashid]',lang='$lang'";
         		DB::query($query);
         	}
+        	self::copy_lang('app_config',$config_lang,$lang);
+        	self::copy_lang('ifmember_left',$config_lang,$lang);
+        	self::copy_lang('other_info',$config_lang,$lang);
+        	self::copy_lang('online',$config_lang,$lang);
+        	self::copy_lang('pay_config',$config_lang,$lang);
+
         }
         if($_M[form][langcontent]){
         	$columnlist=load::mod_class('column/column_label','new')->get_column_by_classtype($_M[form][langcontent],'1');
@@ -64,41 +71,22 @@ class language_database {
 			 	   load::mod_class('column/column_op', 'new')->copy_column($val[id],$lang,1);
 			 	}
 		}
-        $infolist=DB::get_all($query);
-        foreach ($infolist as $key => $val) {
-        	if($_M[form][langconfig]){
-               	$query = "insert into {$_M[table][otherinfo]} set info1='$val[info1]',info2='$val[info2]',info3='$val[info3]',info4='$val[info4]',info5='$val[info5]',info6='$val[info6]',info7='$val[info7]',info8='$val[info8]',info9='$val[info9]',info10='$val[info10]',imgurl1='$val[imgurl1]',imgurl2='$val[imgurl2]',rightmd5='$val[rightmd5]',righttext='$val[righttext]',authcode='$val[authcode]',authpass='$val[authpass]',data='$val[data]',lang='$lang'";
-			}else{
-				$query = "insert into {$_M[table][otherinfo]} set info1='',info2='',info3='',info4='',info5='',info6='',info7='',info8='$val[info8]',info9='$val[info9]',info10='',imgurl1='',imgurl2='',rightmd5='',righttext='',authcode='',authpass='',data='',lang='$lang'";
-			}
-			DB::query($query);
-        }
+
 
       if($_M[form][langcontent]){
        $query="select * from {$_M[table][flash]} where (module ='metinfo' or module=',10001,') and lang ='{$_M[form][langcontent]}'";
        $flashval=DB::get_all($query);
 	       foreach ($flashval as $key => $val) {
-	        $query = "insert into {$_M[table][flash]} set module='$val[module]',img_title='$val[img_title]',img_path='$val[img_path]',img_link='$val[img_link]',flash_path='$val[flash_path]',flash_back='$val[flash_back]',no_order='$val[no_order]',width='$val[width]',height='$val[height]',wap_ok='$val[wap_ok]',img_title_color='$val[img_title_color]',img_des='$val[img_des]',img_des_color='$val[img_des_color]',img_text_position='$val[img_text_position]',height_m='$val[height_m]',height_t='$val[height_t]',lang='$lang'";
+	       	$val['lang'] = $lang;
+	       	unset($val['id']);
+	       	$sql = get_sql($val);
+	        $query = "INSERT INTO {$_M[table][flash]} SET {$sql}";
 	        DB::query($query);
 	        }
        }
 
-        if($_M[form][langconfig]){
-	    	$query="select * from {$_M[table][online]} where lang='{$_M[form][langconfig]}'";
-	    }else{
-            $query="select * from {$_M[table][online]} where lang='cn'";
-	    }
-        $onlinelist=DB::get_all($query);
-        foreach ($onlinelist as $key => $val) {
-        	if($_M[form][langconfig]){
-               	$query = "insert into {$_M[table][online]} set name='$val[name]',no_order='$val[no_order]',qq='$val[qq]',msn='$val[msn]',taobao='$val[taobao]',alibaba='$val[alibaba]',skype='$val[skype]',lang='$lang'";
-			}else{
-				$query = "insert into {$_M[table][online]} set name='',no_order='',qq='',msn='',taobao='',alibaba='',skype='',lang='$lang'";
-			}
-			DB::query($query);
-        }
-	    if($_M[form][langconfig]){
-	    	$query="select * from {$_M[table][config]} where lang='{$_M[form][langconfig]}' and columnid= 0 and flashid= 0";
+	    if($config_lang){
+	    	$query="select * from {$_M[table][config]} where lang='{$config_lang}' and columnid= 0 and flashid= 0";
 	    }else{
             $query="select * from {$_M[table][config]} where lang='cn' and columnid= 0 and flashid= 0";
 	    }
@@ -106,7 +94,7 @@ class language_database {
 		foreach($configs as $key=>$val){
 			$val[value] = str_replace("'","''",$val[value]);
 			$val[value] = str_replace("\\","\\\\",$val[value]);
-			if($_M[form][langconfig]){
+			if($config_lang){
                	$query = "insert into {$_M[table][config]} set name='$val[name]',value='$val[value]',columnid='$val[columnid]',flashid='$val[flashid]',lang='$lang'";
 			}else{
 				$query = "insert into {$_M[table][config]} set name='$val[name]',value='',columnid='$val[columnid]',flashid='$val[flashid]',lang='$lang'";
@@ -120,38 +108,27 @@ class language_database {
 		$uilist=DB::get_all($query);
         if($uilist){
 			foreach($uilist as $key=>$val){
-	           $query = "insert into {$_M[table][ui_config]} set pid='$val[pid]',parent_name='$val[parent_name]',ui_name='$val[ui_name]',skin_name='$val[skin_name]',uip_type='$val[uip_type]',uip_style='$val[uip_style]',uip_select='$val[uip_select]',uip_name='$val[uip_name]',uip_key='$val[uip_key]',uip_value='$val[uip_value]',uip_default='$val[uip_default]',uip_title='$val[uip_title]',uip_description='$val[uip_description]',uip_order='$val[uip_order]',lang='$lang'";
-	            	DB::query($query);
+				$val['lang'] = $lang;
+				unset($val['id']);
+				$sql = get_sql($val);
+				$query = "INSERT INTO {$_M['table']['ui_config']} SET {$sql}";
+				DB::query($query);
+
 				}
 		}else{
-			$query="select skin_name from {$_M[table][skin_table]}";
-            $res=DB::get_all($query);
-            foreach ($res as $key => $value) {
-            $met_skin_user= $value['skin_name'];
-            $query="select * from {$_M[table][templates]} where lang='{$_M[form][langui]}' and no='$met_skin_user'";
-            $configs=DB::get_all($query);
-            foreach($configs as $key=>$val){
-             $val[value] = str_replace("'","''",$val[value]);
-             $val[value] = str_replace("\\","\\\\",$val[value]);
-             $val[no]=$value['skin_name'];
+				// 6.1修改复制标签模板的配置
+				$skin_name = $ui['value'];
+				$from_lang = $_M['form']['langui'];
+				load::mod_class('ui_set/class/config_tem.class.php');
+				$tem = new config_tem($skin_name, $from_lang);
 
-	            if($_M[form][langui]){
-	            	if($_M[form][langcontent]){
-	                  $query= "insert into {$_M[table][templates]} set no='$val[no]',pos='$val[pos]',no_order='$val[no_order]',type='$val[type]',style='$val[style]',selectd='$val[selectd]',name='$val[name]',value='$val[value]',defaultvalue='$val[defaultvalue]',valueinfo='$val[valueinfo]',tips='$val[tips]',lang='$lang'";
-	            	}else{
-	             	  $query= "insert into {$_M[table][templates]} set no='$val[no]',pos='$val[pos]',no_order='$val[no_order]',type='$val[type]',style='$val[style]',selectd='$val[selectd]',name='$val[name]',value='',defaultvalue='$val[defaultvalue]',valueinfo='$val[valueinfo]',tips='$val[tips]',lang='$lang'";
-	               }
-	               DB::query($query);
-	            }
-
-            }
-
-        }
+				$tem->copy_tempates($skin_name,$from_lang,$lang);
 			}
 		}
 
         return $sun_re;
     }
+
 
 
 	function syn_lang($post,$filename,$langmark,$site,$type){
@@ -218,7 +195,7 @@ class language_database {
 				$query1="select * from {$_M[table][language]} where name='$name' and site='$site' and lang='$langmark'";
 				$result=DB::get_one($query1);
 				if($result){
-				   $query="update {$_M[table][language]} set value='$value' where name='$name' and site='$site'";
+				   $query="update {$_M[table][language]} set value='$value' where name='$name' and site='$site' and lang='$langmark'";
 				}else{
                    $query="insert into {$_M[table][language]} set name='$name',value='$value',site='$site',no_order='{$no_order}',array='$array',lang='$langmark'";
 				}
@@ -334,6 +311,28 @@ class language_database {
 			break;
 		}
 	}
+
+    /**
+     * 复制内容到其他语言
+     * @DateTime 2018-07-18
+     * @param    [type]     $table     表名，不要加前缀
+     * @param    [type]     $from_lang 从哪个语言复制
+     * @param    [type]     $to_lang   复制到哪个语言
+     */
+    public function copy_lang($table,$from_lang,$to_lang)
+    {
+    	global $_M;
+    	$query = "SELECT * FROM {$_M['table'][$table]} WHERE lang = '{$from_lang}'";
+    	$from = DB::get_all($query);
+    	foreach ($from as $f) {
+    		$new = $f;
+    		unset($new['id']);
+    		$new['lang'] = $to_lang;
+    		$sql = get_sql($new);
+    		$query = "INSERT INTO {$_M['table'][$table]} SET {$sql}";
+    		DB::query($query);
+    	}
+    }
 }
 
 # This program is an open source system, commercial use, please consciously to purchase commercial license.

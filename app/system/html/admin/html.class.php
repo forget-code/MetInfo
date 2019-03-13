@@ -25,6 +25,7 @@ class html extends admin {
 	public function doset() {
 		global $_M;
 		nav::select_nav(3);
+		$_M['url']['help_tutorials_helpid']='110';
 		require $this->template('own/set');
 	}
 
@@ -176,6 +177,11 @@ class html extends admin {
 		foreach($pageinfo as $key=>$val){
 			$mod = load::sys_class('handle', 'new')->mod_to_file($val['module']);
 			if($val['type'] == 'column'){
+				$path = pathinfo($val['filename']);
+				$html_dir = str_replace($_M['config']['met_weburl'], PATH_WEB, $path['dirname']);
+				if(!file_exists($html_dir)){
+					mkdir($html_dir,0777,true);
+				}
 				$page = 1;
 				while ($page <= $val['count']) {
 					$p = array();
@@ -210,8 +216,8 @@ class html extends admin {
 		foreach($pages as $key =>$val){
 			$now = $key + 1;
 			$f = urldecode($val['filename']);
-			$pages[$key]['suc'] = "<span style=\"color:green\">($now/$all)</span> <a target=\"_blank\" href=\"{$_M['url']['site']}{$f}\">{$f}生成成功</a>";
-			$pages[$key]['fail'] = "<span style=\"color:green\">($now/$all)</span> <a target=\"_blank\" href=\"{$_M['url']['site']}{$f}\" style=\"color:red\">{$f}生成失败</a>";
+			$pages[$key]['suc'] = "<span style=\"color:green\">($now/$all)</span> <a target=\"_blank\" href=\"{$_M['url']['site']}{$f}\">{$f}{$_M[word][physicalgenok]}</a>";
+			$pages[$key]['fail'] = "<span style=\"color:green\">($now/$all)</span> <a target=\"_blank\" href=\"{$_M['url']['site']}{$f}\" style=\"color:red\">{$f}{$_M[word][html_createfail_v6]}</a>";
 		}
 		jsoncallback(array('suc'=>1, 'json'=>$pages));
 	}

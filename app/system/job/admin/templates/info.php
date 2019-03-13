@@ -1,6 +1,6 @@
 <!--<?php
-# MetInfo Enterprise Content Management System 
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+# MetInfo Enterprise Content Management System
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 
 defined('IN_MET') or exit('No permission');
 
@@ -17,24 +17,32 @@ echo <<<EOT
 		<thead>
 			<tr>
 				<th width="20" data-table-columnclass="met-center"><input name="id" data-table-chckall="id" type="checkbox" value="" /></th>
-				<th data-table-columnclass="met-center" width="70">
+				<th data-table-columnclass="met-center" width="150">
 				{$_M[word][cvPosition]}
 				</th>
-				<th data-table-columnclass="met-center" width="160">
+				<!--<th data-table-columnclass="met-center" width="160">
 				{$_M[word][cvName]}
-				</th>
-				<th width="120">
+				</th>-->
+				<th width="70" data-table-columnclass="met-center">
 					<select name="search_type" data-table-search="1">
 						<option value="0">{$_M[word][smstips64]}</option>
 						<option value="1">{$_M[word][unread]}</option>
 						<option value="2">{$_M[word][read]}</option>
 					</select>
 				</th>
-				<th data-table-columnclass="met-center" width="160">
+<!--
+EOT;
+foreach ($showcol as $row){
+echo <<<EOT
+-->
+                <th data-table-columnclass="met-center">{$row[name]}</th>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+				<th data-table-columnclass="met-center" width="150">
 	            {$_M[word][cvAddtime]}
-				</th>
-				<th data-table-columnclass="met-center" width="160">
-	            {$_M[word][read]}
 				</th>
 				<th>{$_M[word][operate]}</th>
 			</tr>
@@ -44,7 +52,7 @@ echo <<<EOT
 		<tfoot>
 			<tr>
 				<th><input name="id" type="checkbox" data-table-chckall="id" value=""></th>
-				<th colspan="6" class="formsubmit" style="text-align:left!important;">	
+				<th colspan="{$colnum}" class="formsubmit" style="text-align:left!important;">
 <!--
 EOT;
 require $this->template('own/mod_batchoption');

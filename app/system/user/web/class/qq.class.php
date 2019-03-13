@@ -11,7 +11,7 @@ class qq extends other {
 	public function __construct() {
 		global $_M;
 		if(!$_M['config']['met_qq_open']){
-			okinfo($_M['url']['login'], 'QQ登录功能已关闭');
+			okinfo($_M['url']['login'], $_M['word']['userqqclose']);
 		}
 		$this->appid = $_M['config']['met_qq_appid'];
 		$this->appkey = $_M['config']['met_qq_appsecret'];

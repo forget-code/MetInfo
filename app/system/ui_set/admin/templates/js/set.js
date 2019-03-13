@@ -114,7 +114,7 @@ define(function(require, exports, module) {
 			$(this).addClass('now');
 		}
 	});
-
+	common.showMoreSet();
 	/*全部载入完成后*/
 	exports.rendering = function(f){
 		if($(window).width()>900) tipscl();

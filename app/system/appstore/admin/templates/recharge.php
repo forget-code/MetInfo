@@ -26,8 +26,8 @@ echo <<<EOT
 				<dt>{$_M['word']['payment_amount']}</dt>
 				<dd class="ftype_input">
 					<div class="fbox">
-						<input type="text" style="width:100px;" name="payprice" value="" placeholder="{$_M['word']['enter_amount']}" data-required="1">
-						<span style="color:red;display:inline-block;padding-left:15px">(提示:充值的钱将不予退还)</span>
+						<input type="text" style="width:150px;" name="payprice" value="" placeholder="{$_M['word']['enter_amount']}" data-required="1">
+						<span style="color:red;display:inline-block;padding-left:15px">{$_M['word']['recahrge_tips']}</span>
 					</div>
 					<span class="tips"></span>
 				</dd>
@@ -46,7 +46,7 @@ echo <<<EOT
 				<dt> </dt>
 				<dd>
 					<input type="submit" name="paysubmit" value="{$_M['word']['smstips19']}" class="submit paysubmit" />
-					<span class="tips"><a href="{$_M['url']['own_form']}a=dofinance">{$_M['word']['my_bill']}</a></span>
+					<!--<span class="tips"><a href="{$_M['url']['own_form']}a=dofinance">{$_M['word']['my_bill']}</a></span>-->
 				</dd>
 			</dl>
 		</form>
@@ -66,7 +66,6 @@ echo <<<EOT
 <!--
 EOT;
 require $this->template('ui/foot');
-
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

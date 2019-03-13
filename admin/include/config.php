@@ -9,7 +9,7 @@ $met_adminfile=$met_adminfile_code;
 foreach($settings_arr as $key=>$val){
 	if($val['columnid']==$columnid){
 		$name = $val['name'];
-		$newvalue1 = stripslashes($$val['name']);
+		$newvalue1 = stripslashes(${$val['name']});
 		$newvalue1 = str_replace("'","''",$newvalue1);
 		$newvalue = str_replace("\\","\\\\",$newvalue1);
 		if($val['value']!=$newvalue1){

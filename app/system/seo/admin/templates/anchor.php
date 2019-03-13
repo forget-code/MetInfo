@@ -18,12 +18,12 @@ echo <<<EOT
 		<thead>
 			<tr>
 				<th width="20" data-table-columnclass="met-center"><input name="id" data-table-chckall="id" type="checkbox" value="" /></th>
-				<th width="18%">{$_M['word']['labelOld']}</th>
-				<th width="18%">{$_M['word']['labelNew']}</th>
-				<th width="18%">Title</th>
-				<th width="18%">{$_M['word']['labelUrl']}</th>
+				<th>{$_M['word']['labelOld']}</th>
+				<th>{$_M['word']['labelNew']}</th>
+				<th>Title</th>
+				<th>{$_M['word']['labelUrl']}</th>
 				<th width="50" data-table-columnclass="met-center">{$_M['word']['labelnum']}</th>
-				<th>{$_M['word']['operate']}</th>
+				<th width='50'>{$_M['word']['operate']}</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -34,7 +34,7 @@ echo <<<EOT
 				<th colspan="6" class="formsubmit">
 					<input type="submit" name="save" value="{$_M['word']['Submit']}" class="submit" />
 					<input type="submit" name="del" value="{$_M['word']['delete']}" class="submit" data-confirm='{$_M[word][js7]}' />
-					<a href="javascript:;" class="ui-addlist" data-table-addlist="{$_M[url][own_form]}a=doanchor_add"><i class="fa fa-plus-circle"></i>{$_M['word']['anchor_text']}</a>
+					<a href="javascript:;" class="ui-addlist" data-table-addlist="{$_M[url][own_form]}a=doanchor_add"><i class="fa fa-plus-circle"></i>{$_M['word']['anchor_textadd']}</a>
 				</th>
 			</tr>
 		</tfoot>

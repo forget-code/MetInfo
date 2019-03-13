@@ -2,7 +2,7 @@
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 
-//½Ó¿Ú
+//ï¿½Ó¿ï¿½
 $M_MODULE='web';
 if(@$_GET['m'])$M_MODULE=$_GET['m'];
 if(@!$_GET['n'])$_GET['n']="user";

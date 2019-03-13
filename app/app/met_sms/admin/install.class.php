@@ -4,10 +4,10 @@ load::sys_class('admin');
 class install extends admin{
 
     public $appno = 10070;
-    public $ver = '1.0';
+    public $ver = '1.1';
     public $appname = 'met_sms';
     public $apptitle= '短信功能';
-    public $description = '短信接口';
+    public $description = '可以用于批量发送、查看发送记录、流水账，以及充值短信费用';
     
     public function __construct() {
         global $_M;
@@ -21,7 +21,6 @@ class install extends admin{
     public function dosql() {
 
         global $_M;
-
         $hasapp = DB::get_one("SELECT * FROM {$_M['table']['applist']} WHERE no = '{$this->appno}'");
 
         if($hasapp) {
@@ -61,7 +60,7 @@ class install extends admin{
         global $_M;
 
         DB::query("UPDATE {$_M['table']['applist']} SET ver = '{$this->ver}' WHERE no = '{$this->appno}'");
-        $this->dodel();
+        
     }
 
     public function addConfig($name,$value)

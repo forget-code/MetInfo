@@ -1,7 +1,7 @@
 define(function (require, exports, module) {
 	var $ = require('jquery');
 	var common = require('common');
-	require('own/templates/js/bootstrap-hover-dropdown.min');
+	// require('own/templates/js/bootstrap-hover-dropdown.min');
 	// require.async('tem/js/iframes',function(a){
 	// 	metuploadify('#file_upload','sql','');
 	// });
@@ -144,8 +144,6 @@ define(function (require, exports, module) {
 	});
 	var close=false;
 	$(document).on('click', '#expandall', function(event) {
-		var closeText='关闭所有子栏目',
-			expandText='展开所有子栏目';
 			if(close){
 				$(this).text(expandText);
 				close=false;

@@ -11,6 +11,11 @@ class index extends admin {
     public function __construct() {
         global $_M;
         parent::__construct();
+        $query="select * from {$_M[table][language]} where lang='{$_M[form][langset]}' and site = 1";
+		$langwordlist=DB::get_all($query);
+		foreach ($langwordlist as $key => $value) {
+			$_M[word][$value[name]]=$value[value];
+		}
         $this->jmail = load::sys_class('jmail', 'new');
     }
 
@@ -120,7 +125,7 @@ class index extends admin {
 			if(!$admin_list){
 				if(!is_email($admin_mobile))okinfo("{$_M[url][own_form]}a=doindex",$_M[word][password7]);
 				$admin_list = DB::get_one("SELECT * FROM {$_M[table][admin_table]} WHERE admin_email='$admin_mobile' and usertype='3'");
-				if(!$admin_list)okinfo("{$_M[url][own_form]}a=doindex",$_M[word][password14]);
+				if(!$admin_list)okinfo("{$_M[url][own_form]}a=doindex&langset={$_M[form][langset]}",$_M[word][password14]);
 			}
 			if($admin_list){
 				$met_fd_usename=$_M[config][met_fd_usename];
@@ -141,7 +146,7 @@ class index extends admin {
 				$outime=3600*24*3;
 				$String=authcode($admin_list[admin_id].".".$x,'ENCODE', $_M[config][met_webkeys], $outime);
 				$String=urlencode($String);
-				$mailurl= $_M[url][own_form].'a=doindex&p='.$String;
+				$mailurl= $_M[url][own_form].'a=doindex&langset='.$_M[form][langset].'&p='.$String;
 				$body ="<style type='text/css'>\n";
 				$body .="#metinfo{ padding:10px; color:#555; font-size:12px; line-height:1.8;}\n";
 				$body .="#metinfo .logo{ border-bottom:1px dotted #333; padding-bottom:5px;}\n";
@@ -170,7 +175,7 @@ class index extends admin {
 				}
 				
 				$text=$sendMail?$_M[word][getTip3].$_M[word][memberEmail].'：'.$admin_list['admin_email']:$_M[word][getTip4];
-				okinfo('./index.php',$text);
+				okinfo("./index.php?n=login&c=login&a=doindex&langset={$_M[form][langset]}",$text);
 			}
 		}
 	break;
@@ -234,7 +239,7 @@ class index extends admin {
 			   admin_pass='$password'
 			   where admin_id='$array[0]'";
 			DB::query($query);
-			okinfo('./index.php',$_M[word][jsok]);
+			okinfo("./index.php?n=login&c=login&a=doindex&langset={$_M[form][langset]}",$_M[word][jsok]);
 		}
 	break;
 	default :

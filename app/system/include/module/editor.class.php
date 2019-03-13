@@ -73,7 +73,7 @@ class editor extends admin {
 
 			default:
 				$result = json_encode(array(
-					'state'=> '请求地址出错'
+					'state'=> $_M['word']['rurlerror']
 				));
 				break;
 		}
@@ -83,7 +83,7 @@ class editor extends admin {
 				echo htmlspecialchars($_GET["callback"]) . '(' . $result . ')';
 			} else {
 				echo json_encode(array(
-					'state'=> 'callback参数不合法'
+					'state'=> 'callback'.$_M['word']['paranouse']
 				));
 			}
 		} else {

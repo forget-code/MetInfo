@@ -1,0 +1,674 @@
+[
+    {
+        "name": "cancel",
+        "value": "取消",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "time",
+        "value": "时间",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_payswitch",
+        "value": "支付开关",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "payapi",
+        "value": "支付接口管理",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_new",
+        "value": "新",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_course",
+        "value": "教程",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_merchantid",
+        "value": "商户号",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_financialdeta",
+        "value": "财务明细",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_management",
+        "value": "系统配置",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_apimanage",
+        "value": "接口管理",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_wxpay",
+        "value": "微信支付",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_alipaywappay",
+        "value": "支付宝wap支付",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_alipay",
+        "value": "支付宝支付",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_upayb2c",
+        "value": "银联B2C支付",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_upayb2b",
+        "value": "银联B2B支付",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_basiccongi",
+        "value": "基本信息设置",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_wxscan",
+        "value": "微信扫码",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_wxJsApiPay",
+        "value": "微信公众号支付",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_wxh5",
+        "value": "微信手机H5支付",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_wxapp_id",
+        "value": "公众账号ID",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_wxapp_mchid",
+        "value": "商户号",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_wxapp_key",
+        "value": "商户支付密钥",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_wxapp_secert",
+        "value": "公众帐号secert",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_wxtips1",
+        "value": "商户号（必须配置，开户邮件中可查看）",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_wxtips2",
+        "value": "商户支付密钥，参考开户邮件设置（必须配置，登录商户平台自行设置）",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_wxtips3",
+        "value": "公众帐号secert（仅JSAPI支付的时候需要配置， 登录公众平台，进入开发者中心可设置）",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_wxtips4",
+        "value": "微信公众号支付（微信手机客户端内支付），请按",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_wxtips5",
+        "value": "设置支付授权目录为",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_wxtips6",
+        "value": "绑定支付的APPID（必须配置，开户邮件中可查看）",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_alipay_oldapiset",
+        "value": "支付宝老接口配置（如已配置开放平台参数，以下无需配置，此接口不支持wap支付）",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_alipay_app_partner",
+        "value": "合作身份者ID",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_alipay_tips1",
+        "value": "合作身份者ID，以2088开头的16位纯数字",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_alipay_app_seller_email",
+        "value": "收款支付宝账号",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_alipay_tips2",
+        "value": "收款支付宝账号，一般情况下收款账号就是签约账号",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_alipay_app_key",
+        "value": "MD5密钥",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_alipay_tips3",
+        "value": "MD5密钥，以数字和字母组成的32位字符",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_alipay_openset",
+        "value": "开放平台配置",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_alipay_openset_tips1",
+        "value": "支付宝开放平台接口",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_alipay_openset_tips2",
+        "value": "你的服务器PHP版本为",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_alipay_openset_tips3",
+        "value": "，需要调整至5.5-7.0版本。",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_alipay_openset_tips4",
+        "value": "，你的服务器没有开启openssll扩展。如不需要支付宝WAP支付，可以仅配置老版本支付接口。",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_alipay_tips4",
+        "value": "支付宝开放平台支付接口需要php5.5及以上版本。如需使用支付宝wap网站支功能需要前往支付宝商户平台申请并配置此接口",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_alipay_private_key",
+        "value": "支付宝商户密钥",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_public_key",
+        "value": "支付宝公钥",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_alipay_tips6",
+        "value": "支付宝密钥配置地址",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_alipay_tips7",
+        "value": "支付宝密钥生成工具",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_alipay_tips8",
+        "value": "获取支付宝公钥",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_upay_merid",
+        "value": "商户号",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_upay_cert_path",
+        "value": "证书路径设置",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_upay_tips1",
+        "value": "上传证书前，请先至“安全与效率”中添加“pfx”、“cer”为“允许上传的文件格式”",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_upay_tips2",
+        "value": "此开关开启后将请求银联测试接口，银联账户不会产生真实交易，该模式仅测试之用，网站正式上线后请关闭，并确保所有配置信息为银联正式接口配置信息",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_upay_tips3",
+        "value": "上传证书前，请先至",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_upay_tips4",
+        "value": "安全与效率",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_upay_tips5",
+        "value": "中添加“pfx”、“cer”为“允许上传的文件格式”",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_upay_sign_cert_path",
+        "value": "商户私钥证书",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_upay_fpfx",
+        "value": "请上传.pfx 文件",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_upay_sign_cert_pwd",
+        "value": "签名使用密码",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_test_mod",
+        "value": "测试模式",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_aipmodset",
+        "value": "接口环境设置",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_aiptype",
+        "value": "接口",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_paypal_sandbox",
+        "value": "沙盒环境（SandBox）",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_paypal_live",
+        "value": "生产环境（Live）",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_paypal_liveset",
+        "value": "生产环境（Live）接口参数",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_paypal_sanboxset",
+        "value": "沙盒环境（SandBox）接口参数",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_paypal_usermail",
+        "value": "商户邮箱",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_paypal_pass",
+        "value": "商户密码",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_paypal_signature",
+        "value": "签名",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_finance_in",
+        "value": "入款",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_finance_out",
+        "value": "扣款",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_price",
+        "value": "金额",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_nobalance",
+        "value": "用户余额不足",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_nouser",
+        "value": "用户不存在",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_screen",
+        "value": "筛选",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_till",
+        "value": "至",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_membername",
+        "value": "会员名",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_opuser",
+        "value": "操作人",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_reason",
+        "value": "事由",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_paysuccess",
+        "value": "支付成功",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_payfailed",
+        "value": "支付失败",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_coinprefix",
+        "value": "货币前缀",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_coinsuffix",
+        "value": "货后前缀",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_tips1",
+        "value": "会员中心支付提示",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_tips2",
+        "value": "用户需要先在对应的支付官方平台自行开通支付接口获取参数后再在此处设置，因考虑到资金安全问题，系统暂不支持第三方代收支付接口。",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    },
+    {
+        "name": "pay_weixin_help_title",
+        "value": "【微信支付】公众号支付开发者文档",
+        "site": "1",
+        "array": "0",
+        "app": "10080",
+        "lang": "cn"
+    }
+]

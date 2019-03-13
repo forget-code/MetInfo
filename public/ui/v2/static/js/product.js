@@ -1,3 +1,6 @@
+/*
+产品模块
+ */
 $(function(){
 	// 产品列表页
 	if($('.met-product-list').length){
@@ -20,7 +23,7 @@ $(function(){
 	if($('#met-grid').length){
 		setTimeout(function(){
 			metAnimOnScroll('met-grid');
-		},0)
+		},500)
 	}
 	// 产品详情页
 	// 选项卡水平滚动
@@ -28,13 +31,13 @@ $(function(){
 	if($met_showpro_navtab.length) $met_showpro_navtab.navtabSwiper();
 
 	// 产品详情页标准模式
-	if($('.met-showproduct.pagetype1').length){
-		// 选项卡点击切换触发事件
-		$met_showpro_navtab.find('a[data-toggle="tab"]').on('shown.bs.tab',function(){
-			var href=$(this).attr('href');
-			$('img:eq(0)',href).trigger('scroll');
-		})
-	}
+	// if($('.met-showproduct.pagetype1').length){
+	// 	// 选项卡点击切换触发事件
+	// 	$met_showpro_navtab.find('a[data-toggle="tab"]').on('shown.bs.tab',function(){
+	// 		var href=$(this).attr('href');
+	// 		$('[data-original]:eq(0)',href).trigger('scroll');
+	// 	})
+	// }
 
 	// 产品详情页时尚模式
 	var $showprotype2=$('.met-showproduct.pagetype2');
@@ -86,7 +89,7 @@ function proTabTop(dom,topdom){
 	var offsettop=$(dom.attr("href")).offset().top-topdom.height();
 	return offsettop;
 }
-// 瀑布流配置
+// 瀑布流配置（需调用masonry、masonry-extend插件）
 function metAnimOnScroll(obj){
 	new AnimOnScroll( document.getElementById(obj),{
 		minDuration:0.4,

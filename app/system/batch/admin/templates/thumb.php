@@ -12,7 +12,7 @@ echo <<<EOT
 
 <form  method="POST" name="myform" action="{$_M[url][own_form]}" target="_self">
 <div class="v52fmbx" data-gent="{$_M[form][gent]}" data-webset-record="{$record}">
-	<h3 class="v52fmbx_hr">批量水印操作</h3>
+	<h3 class="v52fmbx_hr">{$_M[word][batch_watermarking_v6]}</h3>
 <div class="v52fmbx_tbbox">
 
 		<div class="v52fmbx_dlbox">

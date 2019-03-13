@@ -1,6 +1,5 @@
 <?php defined('IN_MET') or exit('No permission'); ?>
 <include file="head.php" />
-<div>
 <section class="met-showdownload animsition">
     <div class="container">
         <div class="row">
@@ -13,7 +12,7 @@
                             <span>{$data.issue}</span>
                             <span>
                                 <i class="icon wb-eye m-r-5" aria-hidden="true"></i>
-                                {$data.hits}
+                                <span class='met-hits' hidden>{$data.hits}</span>
                             </span>
                         </div>
                     </section>
@@ -67,7 +66,6 @@
                             </ul>
                         </div>
                         </if>
-
                         <if value="$lang['downloadsidebar_column_ok']">
                         <ul class="column list-icons p-l-0">
                             <tag action='category' cid="$data['class1']" class='active'>
@@ -95,12 +93,9 @@
                         </ul>
                         </if>
                     </div>
-
                 </div>
             </div>
-
         </div>
     </div>
 </section>
-</div>
 <include file="foot.php" />

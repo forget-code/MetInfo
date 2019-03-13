@@ -5,7 +5,7 @@
 		<div class="card card-shadow">
 			<figure class="card-header cover">
 				<a href="{$m.url}" title="{$m.name}" {$m.urlnew}>
-					<img class="cover-image" src="{$m.columnimg|thumb:$c['met_productimg_x'],$c['met_productimg_y']}" alt="{$m.name}" height='100'>
+					<img class="cover-image" <if value="$m['_index'] gt 3 || $data['page'] gt 1">data-original<else/>src</if>="{$m.columnimg|thumb:$c['met_productimg_x'],$c['met_productimg_y']}" alt="{$m.name}" height='100'>
 				</a>
 			</figure>
 			<h4 class="card-title m-0 p-x-10 font-size-16 text-xs-center">
@@ -20,7 +20,7 @@
 		<div class="card card-shadow">
 			<figure class="card-header cover">
 				<a href="{$v.url}" title="{$v.title}" {$v.urlnew} target="{$lang.met_listurlblank}">
-					<img class="cover-image" src="{$v.imgurl|thumb:$c['met_productimg_x'],$c['met_productimg_y']}" alt="{$v.title}" height='100'>
+					<img class="cover-image" <if value="$v['_index'] gt 3 || $data['page'] gt 1">data-original<else/>src</if>="{$v.imgurl|thumb:$c['met_productimg_x'],$c['met_productimg_y']}" alt="{$v.title}" height='100'>
 				</a>
 			</figure>
 			<h4 class="card-title m-0 p-x-10 font-size-16 text-xs-center">

@@ -233,7 +233,7 @@ class column_op {
     public function do_recover_column_files($type=0)
     {
         global $_M;
-        $default_module = Array('app','admin','about', 'news', 'product', 'download', 'img', 'job', 'cache', 'config', 'feedback', 'include', 'lang', 'link', 'member', 'message', 'public', 'search', 'sitemap', 'templates', 'upload', 'wap','online','');
+        $default_module = Array('app','admin','about', 'news', 'product', 'download', 'img', 'job', 'cache', 'config', 'install', 'feedback', 'include', 'lang', 'link', 'member', 'message', 'public', 'search', 'sitemap', 'templates', 'upload', 'wap', 'online', 'hits', 'shop', 'pay',  '');
         $modulenum = Array(1,2,3,4,5,8,0);
 
         $query = "SELECT `foldername`,`module`,`id` FROM {$_M['table']['column']}";

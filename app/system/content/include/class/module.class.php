@@ -286,10 +286,10 @@ class module extends admin {
 		$metinfo = array();
 		$i=0;
 		if($type){
-			$metinfo['citylist'][$i]['p']['name']='选择栏目';
+			$metinfo['citylist'][$i]['p']['name']=$_M['word']['columnselect1'];
 			$metinfo['citylist'][$i]['p']['value']='';
 		}else{
-			$metinfo['citylist'][$i]['p']='所有栏目';
+			$metinfo['citylist'][$i]['p']=$_M['word']['allcategory'];
 		}
 		foreach($array['class1'] as $key=>$val){ //一级级栏目
 			if($val['module']==$module){
@@ -298,7 +298,7 @@ class module extends admin {
 				$metinfo['citylist'][$i]['p']['value']=$val[id];
 
 				if(count($array['class2'][$val[id]])){ //二级栏目
-					$metinfo['citylist'][$i]['c'][0]['n']['name']='二级栏目';
+					$metinfo['citylist'][$i]['c'][0]['n']['name']=$_M['word']['modClass2'];
 					$metinfo['citylist'][$i]['c'][0]['n']['value']=' ';
 					$k=1;
 					foreach($array['class2'][$val[id]] as $key=>$val2){
@@ -306,7 +306,7 @@ class module extends admin {
 						$metinfo['citylist'][$i]['c'][$k]['n']['value']=$val2[id];
 
 						if(count($array['class3'][$val2[id]])){ //三级栏目
-							$metinfo['citylist'][$i]['c'][$k]['a'][0]['s']['name']='三级栏目';
+							$metinfo['citylist'][$i]['c'][$k]['a'][0]['s']['name']=$_M['word']['modClass3'];
 							$metinfo['citylist'][$i]['c'][$k]['a'][0]['s']['value']=' ';
 							$j=1;
 							foreach($array['class3'][$val2[id]] as $key=>$val3){
@@ -348,11 +348,11 @@ class module extends admin {
 	public function access_option($name,$value){
 		$group = load::sys_class('group', 'new')->get_group_list();
 		$re = "<select name=\"{$name}\" data-checked=\"{$value}\">";
-		$re.= "<option value=\"0\">不限制</option>";
+		$re.= "<option value=\"0\">{$_M['word']['unrestricted']}</option>";
 		foreach($group as $val){
 			$re.= "<option value=\"{$val['id']}\">{$val['name']}</option>";
 		}
-		$re.= "<option value=\"{$val['id']}\">管理员</option>";
+		$re.= "<option value=\"{$val['id']}\">{$_M['word']['metadmin']}</option>";
 		$re.= "</select>";
 		return $re;
 	}

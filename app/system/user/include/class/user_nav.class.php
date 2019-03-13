@@ -4,14 +4,14 @@
 
 defined('IN_MET') or exit('No permission');
 
-class user_nav {	
-	public function nav(){
-		global $_M;//¼ÇµÃglobal $_M
-		parent::__construct();//Èç¹ûÖØĞ´ÁË³õÊ¼»¯·½·¨,Ò»¶¨Òªµ÷ÓÃ¸¸ÀàµÄ³õÊ¼»¯º¯Êı¡£
-		nav::set_nav(1, "Ñ¡Ïî¿¨1", $_M['url']['own_form'].'a=admin_user');
-		nav::set_nav(2, "Ñ¡Ïî¿¨2", $_M['url']['own_form'].'a=admin_user');
-		nav::set_nav(3, "Ñ¡Ïî¿¨3", $_M['url']['own_form'].'a=admin_user');
-	}
+class user_nav {
+    public function nav(){
+        global $_M;//è®°å¾—global $_M
+        parent::__construct();//å¦‚æœé‡å†™äº†åˆå§‹åŒ–æ–¹æ³•,ä¸€å®šè¦è°ƒç”¨çˆ¶ç±»çš„åˆå§‹åŒ–å‡½æ•°ã€‚
+        nav::set_nav(1, $_M['word']['userselectname']."1", $_M['url']['own_form'].'a=admin_user');
+        nav::set_nav(2, $_M['word']['userselectname']."2", $_M['url']['own_form'].'a=admin_user');
+        nav::set_nav(3, $_M['word']['userselectname']."3", $_M['url']['own_form'].'a=admin_user');
+    }
 }
 
 # This program is an open source system, commercial use, please consciously to purchase commercial license.

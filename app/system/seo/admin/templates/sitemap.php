@@ -34,7 +34,7 @@ var ownlangtxt = {
 		<dt>{$_M[word][seotips16]}</dt>
 		<dd class="ftype_checkbox">
 			<div class="fbox">
-				<label><input type="checkbox" name="met_sitemap_not1" value="1" data-checked="{$_M[config][met_sitemap_not1]}" /><!--{$_M[word][seotips17]}-->{$_M[word][seotips1]}</label>
+				<label><input type="checkbox" name="met_sitemap_not1" value="1" data-checked="{$_M[config][met_sitemap_not1]}" /><!--{$_M[word][seotips17]}-->{$_M[word][seotipssitemap1]}</label>
 				<label><input type="checkbox" name="met_sitemap_not2" value="1" data-checked="{$_M[config][met_sitemap_not2]}" />{$_M[word][seotips18]}</label>
 				<span class="tips">{$_M[word][seotips2]}</span>
 			</div>
