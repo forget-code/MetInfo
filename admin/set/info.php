@@ -1,23 +1,16 @@
 <?php
-# 文件名称:info.php 2009-08-03 15:48:57
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn)). All rights reserved.
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 require_once '../login/login_check.php';
 $infofile="../../templates/".$met_skin_user."/info.html";
 if(!file_exists($infofile))die($lang_infoNoTem);
 
-$css_url="../templates/".$met_skin."/css";
-$img_url="../templates/".$met_skin."/images";
-include template1('info');
-footer();
+$content = file_get_contents($infofile);
+$content =str_replace('{$met_skin_user}',$met_skin_user,$content);
+$content =str_replace('$met_skin_user',$met_skin_user,$content);
 
-function template1($template,$EXT="html"){
-	global $met_skin_name,$met_skin_user;
-	unset($GLOBALS[con_db_id],$GLOBALS[con_db_pass],$GLOBALS[con_db_name]);
-	$path = ROOTPATH."templates/$met_skin_user/$template.$EXT";
-	!file_exists($path) && $path=ROOTPATH."templates/met/$template.$EXT";
-	return  $path;
-}
-# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+echo $content;
+footer();
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

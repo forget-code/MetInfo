@@ -1,7 +1,6 @@
 <!--<?php
-# 文件名称:index_set.html 2009-08-05 09:21:57
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 require_once template('head');
 echo <<<EOT
 -->
@@ -9,38 +8,38 @@ echo <<<EOT
 </head>
 <body>
 <form method="POST" name="myform"  action="index_set.php?action=modify" target="_self">
-		<input name="id" type="hidden" value="$index[id]">
+		<input name="lang" type="hidden" value="$lang">
 <table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
          <tr> 
             <td colspan="3" align="center" class="list1_title">{$lang_indexsetHomeSet}</td>
           </tr>
 		  <tr> 
             <td class="list1_text"><b>{$lang_indexsetOnline}</b></td>
-            <td class="list1_input"><input name="online_type" type="radio" value="1" $online_type1[1] >{$lang_open} <input name="online_type" type="radio" value="0" $online_type1[0]>{$lang_close} </td></tr>
+            <td class="list1_input"><input name="index_online_type" type="radio" value="1" $online_type1[1] >{$lang_open} <input name="index_online_type" type="radio" value="0" $online_type1[0]>{$lang_close} </td></tr>
 			 <tr> 
             <td class="list1_text"><b>{$lang_mod2}{$lang_indexsetnum}</b></td>
-            <td class="list1_input"><input name="news_no" type="text" size="4" value="$index[news_no]">{$lang_item}</td></tr>
+            <td class="list1_input"><input name="index_news_no" type="text" size="4" value="$index_news_no">{$lang_item}</td></tr>
 			<tr> 
             <td class="list1_text"><b>{$lang_mod3}{$lang_indexsetnum}</b></td>
-            <td class="list1_input"><input name="product_no" type="text" size="4" value="$index[product_no]">{$lang_item}</td></tr>
+            <td class="list1_input"><input name="index_product_no" type="text" size="4" value="$index_product_no">{$lang_item}</td></tr>
 			<tr> 
             <td class="list1_text"><b>{$lang_mod5}{$lang_indexsetnum}</b></td>
-            <td class="list1_input"><input name="img_no" type="text" size="4" value="$index[img_no]">{$lang_item}</td></tr>
+            <td class="list1_input"><input name="index_img_no" type="text" size="4" value="$index_img_no">{$lang_item}</td></tr>
 			<tr> 
             <td class="list1_text"><b>{$lang_mod4}{$lang_indexsetnum}</b></td>
-            <td class="list1_input"><input name="download_no" type="text" size="4" value="$index[download_no]">{$lang_item}</td></tr>
+            <td class="list1_input"><input name="index_download_no" type="text" size="4" value="$index_download_no">{$lang_item}</td></tr>
 			<tr> 
             <td class="list1_text"><b>{$lang_mod6}{$lang_indexsetnum}</b></td>
-            <td class="list1_input"><input name="job_no" type="text" size="4" value="$index[job_no]">{$lang_item}</td></tr>
+            <td class="list1_input"><input name="index_job_no" type="text" size="4" value="$index_job_no">{$lang_item}</td></tr>
 			<tr> 
             <td class="list1_text"><b>{$lang_indexsetFriendly}</b></td>
-            <td class="list1_input"><input name="link_ok" type="radio" value="1" $link_ok1[1] >{$lang_open} <input name="link_ok" type="radio" value="0" $link_ok1[0]>{$lang_close} </td></tr>
+            <td class="list1_input"><input name="index_link_ok" type="radio" value="1" $link_ok1[1] >{$lang_open} <input name="index_link_ok" type="radio" value="0" $link_ok1[0]>{$lang_close} </td></tr>
             <tr> 
             <td class="list1_text"><b>{$lang_indexsetImgLink}</b></td>
-            <td class="list1_input"><input name="link_img" type="text" size="4" value="$index[link_img]">{$lang_item}</td></tr>
+            <td class="list1_input"><input name="index_link_img" type="text" size="4" value="$index_link_img">{$lang_item}</td></tr>
 			<tr> 
             <td class="list1_text"><b>{$lang_indexsetWordLink}</b></td>
-            <td class="list1_input"><input name="link_text" type="text" size="4" value="$index[link_text]">{$lang_item}</td>
+            <td class="list1_input"><input name="index_link_text" type="text" size="4" value="$index_link_text">{$lang_item}</td>
 			</tr>
 <!--
 EOT;
@@ -85,6 +84,6 @@ echo <<<EOT
 </html>
 <!--
 EOT;
-# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>-->

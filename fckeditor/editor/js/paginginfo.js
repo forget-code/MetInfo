@@ -382,8 +382,18 @@ var Paging = {
      }
 
 }
-
 if ( FCKBrowserInfo.IsIE )
 	window.parent.document.forms[0].attachEvent("onsubmit", Paging.submit);
 else
-	window.parent.document.forms[0].addEventListener("submit", Paging.submit, false);
+	window.parent.document.forms[0].addEventListener(
+		"submit", 
+		function(event) 
+		{ 
+			if(pagingData.length > 1){
+				alert(FCKLang.Paging13);			
+				if (event.cancelable){event.preventDefault();}
+				return false;
+			}
+		},
+		false
+	);

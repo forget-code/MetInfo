@@ -89,12 +89,13 @@ A:hover { COLOR:#FF6600}
 
 .index_product{ width:998px; height:auto; overflow:auto; margin-top:5px; text-align:left; border:1px solid #D3D3D3;}
 .index_content li{ width:200px; height:auto; overflow:hidden; margin:10px; margin-left:18px; margin-right:18px; text-align:center; line-height:25px; float:left;}
+.index_content li .info_title{ width:100%; display:block;}
 .index_link{width:99%; height:auto;  text-align:left; padding:3px; line-height:20px; font-size:12px; margin:0px; overflow:auto;}
 .index_link_img{ width:100%; height:auto; overflow:auto;}
 .index_link_img li{float:left; width:88px; height:31px; margin:5px;  overflow:hidden;}
 .index_link_img li img{width:88px; height:31px; overflow:hidden;}
 .index_link_text{ width:100%; height:auto; overflow:auto; margin-top:5px;}
-.index_link_text li{ float:left; width:auto; margin:0px 5px 0px 5px;}
+.index_link_text li{ display:inline; width:auto; padding:0px 8px 0px 0px;}
 /*首页结束*/
 
 /*首页1开始*/

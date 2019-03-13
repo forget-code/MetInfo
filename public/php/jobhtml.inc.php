@@ -1,11 +1,8 @@
 <?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 
-# 文件名称:jobhtml.inc.php 2009-09-11 08:53:03
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserve
-
-
-//招聘模块输出函数
+//job list
 function methtml_job($titlenum,$person,$address,$deal,$time,$timelong,$cvonline,$newwindow=1,$news,$top,$listnav=0,$max,$topcolor){
  global $job_list,$lang_Detail,$lang_job,$lang_Position,$lang_PersonNumber,$lang_WorkPlace,$lang_Deal,$lang_AddDate,$lang_Validity,$lang_cvtitle;
  global $cv;
@@ -87,4 +84,6 @@ function methtml_showjob(){
   $listtext.="</ul>\n"; 
   return $listtext;
 }
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

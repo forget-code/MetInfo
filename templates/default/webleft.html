@@ -2,43 +2,17 @@
 $webnav=methtml_classlist('1');
 echo <<<EOT
 -->
-   <div class="webleft">
-<!--
-EOT;
-if(count($nav_list2[$class1]) !=0){
-echo <<<EOT
--->
-        <div class="webtitle"><span>$class1_info[name]</span></div>
+   <div class="left">
+        <h3 class="title"><span>{$class_list[$class1][name]}</span></h3>
         <div class="webnav">
-$webnav
+             $webnav
         </div>
-<!--
-EOT;
-}
-echo <<<EOT
--->
-		<div class="webtitle"><span>{$lang_Column1}</span></div>
-		<div class="webnav">
-<ul>
-<!--
-EOT;
-foreach(methtml_getarray('','com','time',$lang_way) as $key=>$val){
-echo <<<EOT
--->
-<li><a href="$val[url]" target="_blank" title="$val[title]">$val[title]</a></li>
-<!--
-EOT;
-}
-echo <<<EOT
--->
-</ul>
-     </div>
+		<h3 class="title"><span>{$lang_Column1}</span></h3>
+		<div class="text">
+             $otherinfo[info10]
+        </div>
 		$met_online
    </div>
-   <div class="webright">
-   <div class="web_title"><span>{$class_list[$classnow][name]}</span></div>
-
-
 <!--
 EOT;
 ?>

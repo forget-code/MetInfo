@@ -8,7 +8,7 @@ echo <<<EOT
 
 <!--
 EOT;
-if(count($nav_list2[$class1]) !=0){
+if(count($nav_list2[$class1]) !=0 or !$lang_lefthit){
 echo <<<EOT
 -->
 
@@ -18,29 +18,35 @@ echo <<<EOT
 <!--
 EOT;
 }
+if($lang_lefthit){
 echo <<<EOT
 -->
   		<div class="aq" style="margin-top:8px;">
-<div class="web_left_title"><span>{$lang_Column2}</span></div>
+<div class="web_left_title"><span>{$lang_leftnav}</span></div>
 	<div>
 <ul>
 <!--
 EOT;
 $i=0;
-foreach(methtml_getarray('','com','time','product') as $key=>$val){
+foreach(methtml_getarray('','com','time',$lang_way) as $key=>$val){
 $i++;
 echo <<<EOT
 -->
 <li><a href="$val[url]" target="_blank" title="$val[title]">$val[title]</a></li>
 <!--
 EOT;
-if($i>=$lang_HotMax)break;
+if($i>=10)break;
 }
 echo <<<EOT
 -->
 </ul>
 	</div>
         </div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
      $met_online
 	  
     </div>

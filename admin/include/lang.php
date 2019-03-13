@@ -1,7 +1,6 @@
 <?php
-# 文件名称:lang.php 2009-08-15 16:34:57
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 function daddslashes1($string, $force = 0) {
 	!defined('MAGIC_QUOTES_GPC') && define('MAGIC_QUOTES_GPC', get_magic_quotes_gpc());
 	if(!MAGIC_QUOTES_GPC || $force) {
@@ -15,37 +14,12 @@ function daddslashes1($string, $force = 0) {
 	}
 	return $string;
 }
-//ini
-switch($met_admin_type){
-case 0;
-$langusenow="cn";
-break;
-case 1;
-$langusenow="en";
-break;
-case 2;
-$langusenow="other";
-break;
-}
 
 if($_GET[langset]!="" and $met_admin_type_ok==1){
 $languser = $_GET[langset];
 }
-if($languser!="" and $met_admin_type_ok==1)$langusenow=$languser;
-if($langusenow=="en"){
- $file_name           =ROOTPATH_ADMIN.'language/language_en.ini';
-}else if($langusenow=="other")
-{
- $file_name           =ROOTPATH_ADMIN.'language/language_other.ini';
-}	
-else
-{
- if(file_exists(ROOTPATH_ADMIN.'language/language_cn.ini')){
- $file_name           =ROOTPATH_ADMIN.'language/language_cn.ini';
- }else{
- $file_name           =ROOTPATH_ADMIN.'language/language_china.ini';
- }
-}	
+$langset=($languser!="")?$languser:$met_admin_type;
+$file_name=ROOTPATH_ADMIN."language/language_".$langset.".ini";	
 $fp = @fopen($file_name, "r") or die("Cannot open $file_name");
 $js='var user_msg = new Array();';
 while ($conf_line = @fgets($fp, 1024)){ 
@@ -75,9 +49,9 @@ if($name[0]=='j' && $name[1]=='s')
 }
 list($value, $valueinfo)=explode ('/*', $value);
 $name = 'lang_'.daddslashes1(trim($name),1);
-$$name=trim($value);
+$$name=preg_replace('/\r|\n/', '', $value);
 }
 fclose($fp) or die("Can't close file $file_name");
-# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

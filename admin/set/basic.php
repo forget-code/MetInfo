@@ -1,13 +1,36 @@
 <?php
-# 文件名称:basic.php 2009-08-01 21:01:57
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn)). All rights reserved.
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 require_once '../login/login_check.php';
 if($action=="modify"){
 if(substr($met_weburl,-1,1)!="/")$met_weburl.="/";
 if(!strstr($met_weburl,"http://"))$met_weburl="http://".$met_weburl;
 require_once 'configsave.php';
-okinfo('basic.php',$lang_loginUserAdmin);
+
+$file_basicname      =ROOTPATH."config/lang.inc.php";
+if(file_exists($file_basicname)){
+$fp = @fopen($file_basicname, "r") or die("Cannot open $file_basicname");
+$k=0;
+while ($conf_line = @fgets($fp, 1024)){
+if(!strstr($conf_line, "$"."met_langok[".$lang."][met_weburl")){   
+$linenum = $conf_line;
+$linelist[$k]=$linenum;
+$k++;
+}}
+}
+$j=$k-4;
+for($i=0;$i<$k;$i++){
+$lang_save .=$linelist[$i];
+if($j==$i){
+   $lang_save .="$"."met_langok[".$lang."][met_weburl]='".$met_weburl."';\n";
+  }
+}
+if(!is_writable("../../config/lang.inc.php"))@chmod("../../config/lang.inc.php",0777);
+ $fp = fopen("../../config/lang.inc.php",w);
+ fputs($fp, $lang_save);
+ fclose($fp);
+
+okinfo('basic.php?lang='.$lang,$lang_jsok);
 }
 else{
 $localurl="http://";
@@ -24,6 +47,6 @@ $img_url="../templates/".$met_skin."/images";
 include template('set_basic');
 footer();
 }
-# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

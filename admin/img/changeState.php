@@ -1,15 +1,14 @@
 <?php
-# 文件名称:changeState.php 2009-08-11 11:57:57
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn)). All rights reserved.
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 require_once '../login/login_check.php';
-$backurl="index.php?class1=$class1&class2=$class2&class3=$class3";
+$backurl="index.php?lang=$lang&class1=$class1&class2=$class2&class3=$class3";
 if($action=="moveto")
 {
 	$allidlist=explode(',',$allid);
 	$k=count($allidlist)-1;
 
-	$query= "select * from $met_column where id='$class1' and classtype=1 ";
+	$query= "select * from $met_column where id='$class1'";
 	$result1=$db->get_one($query);
 	
 	$query= "select * from $met_column where bigclass='$class1' and classtype=2 ";
@@ -21,7 +20,7 @@ if($action=="moveto")
 	if(!$result1 || ($result2 && $class2==0) || ($result3 && $class3==0)) 
 	
 	{
-		okinfo($backurl,$lang_loginFail);
+		okinfo($backurl,$lang_dataerror);
 		exit();
 	}
 	for($i=0;$i<$k; $i++){
@@ -33,7 +32,7 @@ if($action=="moveto")
 	$query = $query." where id='$allidlist[$i]'";
 	$db->query($query);
 	}
-okinfo($backurl,$lang_loginUserAdmin);
+okinfo($backurl,$lang_jsok);
 }else
 {
 $admin_list = $db->get_one("SELECT * FROM $met_img WHERE id='$id'");
@@ -58,11 +57,11 @@ if(isset($top_ok))
 }
 
 $query = $query."id='$id' where id='$id'";
-
 $db->query($query);
-okinfo($backurl,$lang_loginUserAdmin);
+
+okinfo($backurl,$lang_jsok);
 }
 
-# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

@@ -1,11 +1,16 @@
 <?php
-# 文件名称:down.php 2009-08-18 08:53:03
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 require_once '../include/common.inc.php';
 $download=$db->get_one("select * from $met_download where id='$id'");
 	if(!$download){
 	okinfo('../',$lang_error);
+	}
+if($type=='para'){
+    $metinfodown=$db->get_one("select * from $met_parameter where id='$paraid'");
+    $download[downloadaccess]=$metinfodown[access];
+	$metinfoparadown=$db->get_one("select * from $met_plist where id='$listid' and module='4'");
+	$download[downloadurl]=$metinfoparadown[info];
 	}
 if(intval($metinfo_member_type)>=intval($download[downloadaccess])){
     header("location:$download[downloadurl]");exit;
@@ -17,6 +22,6 @@ $_SESSION['metinfo_member_type']=$metinfo_member_type;
 $_SESSION['metinfo_admin_name']=$metinfo_admin_name;
 	okinfo('../member/'.$member_index_url,$lang_downloadaccess);
 	}
-# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

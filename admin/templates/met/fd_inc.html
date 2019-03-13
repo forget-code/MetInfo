@@ -1,7 +1,6 @@
 <!--<?php
-# 文件名称:fd_inc.html 2009-08-12 10:15:03
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. d.
 require_once template('head');
 echo <<<EOT
 -->
@@ -10,47 +9,18 @@ echo <<<EOT
 <body>
 <form method="POST" name="myform" action="" target="_self">
 		<input name="action" type="hidden" value="modify">
+		<input name="lang" type="hidden" value="$lang">
 <table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
           <tr> 
             <td colspan="3" align="center" class="list1_title">{$lang_fdincTitle}</td>
-          </tr>
-<!--
-EOT;
-if($met_c_lang_ok==1){
-echo <<<EOT
--->
+          </tr>	  
 		  <tr> 
-            <td class="list1_text">{$lang_fdincName}[$met_c_lang]</td>
-            <td class="list1_input"><input name="met_c_fdtable" type="text" class="input" size="30" maxlength="250" value="$met_c_fdtable"></td>
+            <td class="list1_text">{$lang_fdincName}</td>
+            <td class="list1_input"><input name="met_fdtable" type="text" class="input" size="30"  value="$met_fdtable"></td>
           </tr> 
-<!--
-EOT;
-}
-if($met_e_lang_ok==1){
-echo <<<EOT
--->		  
-		  <tr> 
-            <td class="list1_text">{$lang_fdincName}[$met_e_lang]</td>
-            <td class="list1_input"><input name="met_e_fdtable" type="text" class="input" size="30" maxlength="250" value="$met_e_fdtable"></td>
-          </tr> 
-<!--
-EOT;
-}
-if($met_o_lang_ok==1){
-echo <<<EOT
--->		
-		<tr> 
-            <td class="list1_text">{$lang_fdincName}[$met_o_lang]</td>
-            <td class="list1_input"><input name="met_o_fdtable" type="text" class="input" size="30" maxlength="250" value="$met_o_fdtable"></td>
-          </tr>
-<!--
-EOT;
-}
-echo <<<EOT
--->	
 		   <tr> 
             <td class="list1_text">{$lang_fdincTime}</td>
-            <td class="list1_input"><input name="met_fd_time" type="text" class="input" size="3" maxlength="20" value="$met_fd_time">{$lang_fdincTip4}</td>
+            <td class="list1_input"><input name="met_fd_time" type="text" class="input" size="3"  value="$met_fd_time">{$lang_fdincTip4}</td>
           </tr> 
 		  <tr> 
             <td class="list1_text">{$lang_fdincSlash}</td>
@@ -58,7 +28,23 @@ echo <<<EOT
           </tr>
 		   <tr> 
             <td class="list1_text">{$lang_fdincClassName}</td>
-            <td class="list1_input"><input name="met_fd_class" type="text" class="input" size="20" maxlength="200" value="$met_fd_class">{$lang_fdincTip6}</td>
+            <td class="list1_input">
+			<select name="met_fd_class">
+<!--
+EOT;
+foreach($fd_para[2] as $key=>$val){
+$select1='';
+if($val[id]==$met_fd_class)$select1="selected='selected'";
+echo <<<EOT
+-->				<option value="$val[id]" $select1 >$val[name]</option>
+<!--
+EOT;
+}
+echo <<<EOT
+-->	
+			
+			</select>			
+			{$lang_fdincTip6}</td>
           </tr>
 		  <tr> 
             <td class="list1_text">{$lang_fdincAcceptType}</td>
@@ -66,7 +52,7 @@ echo <<<EOT
           </tr> 
 		   <tr> 
             <td class="list1_text">{$lang_fdincAcceptMail}</td>
-            <td class="list1_input"><input name="met_fd_to" type="text" class="input" size="30" maxlength="200" value="$met_fd_to">{$lang_fdincTip9}</td>
+            <td class="list1_input"><input name="met_fd_to" type="text" class="input" size="30"  value="$met_fd_to">{$lang_fdincTip9}</td>
           </tr> 
 		 <tr> 
             <td class="list1_text">{$lang_fdincAuto}</td>
@@ -74,76 +60,32 @@ echo <<<EOT
           </tr>
 		  <tr> 
             <td class="list1_text">{$lang_fdincEmailName}</td>
-            <td class="list1_input"><input name="met_fd_email" type="text" class="input" size="10" maxlength="200" value="$met_fd_email">{$lang_fdincTip11}</td>
-          </tr>
+            <td class="list1_input">
+			<select name="met_fd_email">
 <!--
 EOT;
-if($met_c_lang_ok==1){
+foreach($fd_para[1] as $key=>$val){
+$select1='';
+if($val[id]==$met_fd_email)$select1="selected='selected'";
 echo <<<EOT
--->
-			  
+-->				<option value="$val[id]" $select1 >$val[name]</option>
+<!--
+EOT;
+}
+echo <<<EOT
+-->	
+			
+			</select>
+			{$lang_fdincTip11}</td>
+          </tr>
 		  <tr> 
-            <td class="list1_text">{$lang_fdincFeedbackTitle}[$met_c_lang]</td>
-            <td class="list1_input"><input name="met_c_fd_title" type="text" class="input" size="30" maxlength="200" value="$met_c_fd_title">{$lang_fdincAutoFbTitle}</td>
+            <td class="list1_text">{$lang_fdincFeedbackTitle}</td>
+            <td class="list1_input"><input name="met_fd_title" type="text" class="input" size="30"  value="$met_fd_title">{$lang_fdincAutoFbTitle}</td>
           </tr>
-<!--
-EOT;
-}
-if($met_e_lang_ok==1){
-echo <<<EOT
--->
-		  <tr> 
-            <td class="list1_text">{$lang_fdincFeedbackTitle}[$met_e_lang]</td>
-            <td class="list1_input"><input name="met_e_fd_title" type="text" class="input" size="30" maxlength="200" value="$met_e_fd_title">{$lang_fdincAutoFbTitle}</td>
-          </tr>
-<!--
-EOT;
-}
-if($met_o_lang_ok==1){
-echo <<<EOT
--->
-		  <tr> 
-            <td class="list1_text">{$lang_fdincFeedbackTitle}[$met_o_lang]</td>
-            <td class="list1_input"><input name="met_o_fd_title" type="text" class="input" size="30" maxlength="200" value="$met_o_fd_title">{$lang_fdincAutoFbTitle}</td>
-          </tr>
-<!--
-EOT;
-}
-if($met_c_lang_ok==1){
-echo <<<EOT
--->
-	
 		   <tr> 
-            <td class="list1_text">{$lang_fdincAutoContent}[$met_c_lang]</td>
-            <td class="list1_input"><textarea name="met_c_fd_content" cols="50" rows="3" >$met_c_fd_content</textarea>{$lang_htmlok}</td>
+            <td class="list1_text">{$lang_fdincAutoContent}</td>
+            <td class="list1_input"><textarea name="met_fd_content" cols="50" rows="3" >$met_fd_content</textarea>{$lang_htmlok}</td>
           </tr>
-<!--
-EOT;
-}
-if($met_e_lang_ok==1){
-echo <<<EOT
--->
-	
-		   <tr> 
-            <td class="list1_text">{$lang_fdincAutoContent}[$met_e_lang]</td>
-            <td class="list1_input"><textarea name="met_e_fd_content" cols="50" rows="3" >$met_e_fd_content</textarea>{$lang_htmlok}</td>
-          </tr>
-<!--
-EOT;
-}
-if($met_o_lang_ok==1){
-echo <<<EOT
--->
-	
-		   <tr> 
-            <td class="list1_text">{$lang_fdincAutoContent}[$met_o_lang]</td>
-            <td class="list1_input"><textarea name="met_o_fd_content" cols="50" rows="3" >$met_o_fd_content</textarea>{$lang_htmlok}</td>
-          </tr>
-<!--
-EOT;
-}
-echo <<<EOT
--->
 	      <tr> 
             <td class="list1_text"></td>
 	      <td class="list1_submit"><input type="submit" name="Submit" value="{$lang_Submit}" class="tj" style="*padding-top:2px; *height:22px;"><input type="reset" name="Submit" value="{$lang_Reset}" class="tj" style="*padding-top:2px; *height:22px;"></td>
@@ -157,6 +99,6 @@ echo <<<EOT
 </html>
 <!--
 EOT;
-# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>-->

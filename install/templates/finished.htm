@@ -1,39 +1,36 @@
 <!--<?php
-# 文件名称:finished.htm 2009-08-18 08:53:03
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
-require_once template('header'); 
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+require_once template('head'); 
 echo <<<EOT
 -->
+<script language="javascript">
+parent.document.getElementById("license").className='stepnowno';
+parent.document.getElementById("inspect").className='stepnowno';
+parent.document.getElementById("databasesetup").className='stepnowno';
+parent.document.getElementById("db_setup").className='stepnowno';
+parent.document.getElementById("adminsetup").className='stepnowno';
+parent.document.getElementById("finished").className='stepnow';
+</script>
 <body>
-
-<div class="top">
-<div class="headright">第六步：完成安装</div>
-</div>
-
-<div class="head">
-<div class="logo"><img src="images/logosmall.gif" width="40" /></div>
-<div class="headtext"><font style="font-family:Arial, Helvetica, sans-serif">MetInfo</font>企业网站管理系统安装<font style="font-family:Arial, Helvetica, sans-serif; font-size:16px;"> V2.0 build</font></div>
-</div>
-
-<div class="content">
-<div class="content4">
+<div class="contenttext">
+<br>
+<br>
 <h1>安装成功！</h1>
 <br />
-<p>
-基于安全考虑，您需要设置<strong>config/config_db.php</strong>文件的权限，系统安装后默认设为只读。</p>
-<p>
-请删除或改名<strong>/install</strong>目录，以防止再次安装而覆盖数据。</p>
+<p>基于安全考虑，<strong>config/config_db.php</strong>文件的权限，已默认设为只读。</p>
 <br />
-<div class="center" style="text-align:center;">
-<a class="btn2" href="../" target="_blank">进入网站>></a>&nbsp;&nbsp;&nbsp;
-<a class="btn2" href="../admin/">管理网站>></a>
-<br/><br />
+<p style="color:#990000;">请登陆后台通过“安全与效率”设置删除<strong>/install</strong>目录，以防止再次安装而覆盖数据。</p>
+<br />
+<br />
+<div class="center" style="text-align:center; padding:0px 0px 0px 140px; width:360px;">
+<a class="btn3" href="../" target="_parent">进入网站</a>
+<a class="btn3" href="../admin/" target="_parent">管理网站</a>
 </div>
 </div>
+</body></html>
 <!--
 EOT;
-require_once template('footer'); 
-# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>-->

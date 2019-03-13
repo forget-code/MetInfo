@@ -1,26 +1,48 @@
 <?php
-# 文件名称:delete.php 2009-08-12 10:15:03
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 require_once '../login/login_check.php';
-$backurl="index.php";
+$backurl="index.php?lang=".$lang;
+$query = "select * from $met_parameter where lang='$lang' and module='8' and type='5' order by no_order";
+$result = $db->query($query);
+while($list = $db->fetch_array($result)){
+$para_list[]=$list;
+}
 if($action=="del"){
 $allidlist=explode(',',$allid);
 foreach($allidlist as $key=>$val){
+//delete images
+if($met_deleteimg){
+foreach($para_list as $key=>$val1){
+$imagelist=$db->get_one("select * from $met_flist where lang='$lang' and  paraid='$val1[id]' and listid='$val'");
+file_unlink("../../upload/file/".$imagelist[info]);
+}
+}
+$query = "delete from $met_flist where listid='$val' and module='8'";
+$db->query($query);
 $query = "delete from $met_feedback where id='$val'";
 $db->query($query);
 }
-okinfo($backurl,$lang_loginUserAdmin);
+okinfo($backurl,$lang_jsok);
 }
 else{
 $admin_list = $db->get_one("SELECT * FROM $met_feedback WHERE id='$id'");
 if(!$admin_list){
-okinfo($backurl,$lang_loginNoid);
+okinfo($backurl,$lang_dataerror);
 }
+//delete images
+if($met_deleteimg){
+foreach($para_list as $key=>$val){
+$imagelist=$db->get_one("select * from $met_flist where lang='$lang' and  paraid='$val[id]' and listid='$id'");
+file_unlink("../../upload/file/".$imagelist[info]);
+}
+}
+$query = "delete from $met_flist where listid='$id' and module='8'";
+$db->query($query);
 $query = "delete from $met_feedback where id='$id'";
 $db->query($query);
-okinfo($backurl,$lang_loginUserAdmin);
+okinfo($backurl,$lang_jsok);
 }
-# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.	
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.	
 ?>

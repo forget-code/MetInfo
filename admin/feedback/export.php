@@ -1,62 +1,67 @@
 <?php
-# 文件名称:export.php 2009-08-12 17:15:03
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.	
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 	ob_start();
 	require_once '../include/common.inc.php';
 	ob_clean();
 	ob_start();
 	
 	require('php_xls.php');
-	
-	$settings = parse_ini_file('../../feedback/config.inc.php');
-	@extract($settings);	
-	$fdclass1= $db->get_one("SELECT * FROM $met_fdparameter WHERE c_name='$met_fd_class'");
-	$fdclass2="para".$fdclass1[id];
+	$settings = parse_ini_file('../../feedback/config_'.$lang.'.inc.php');
+	@extract($settings);
+	$query = "SELECT * FROM $met_parameter where module=8 and lang='$lang' order by no_order";
+	$result = $db->query($query);
+	while($list= $db->fetch_array($result)){
+	$feedbackpara[$list[id]]=$list;
+	$feedback_para[]=$list;
+	}	
+	$query = "SELECT * FROM $met_flist where module=8 and lang='$lang'";
+	$result = $db->query($query);
+	while($list= $db->fetch_array($result)){
+	if($feedbackpara[$list[paraid]][type]==5 and $list[info]<>"")$list[info]=$met_weburl."upload/file/".$list[info];
+	$paravalue[$list[listid]][$list[paraid]]=$list;
+	}
+
 	if($met_fd_export==-1)
 	{
 		$where=" ";
 	}else
 	{
-		$where="and $fdclass2 like '$met_fd_export'";
+		$where=" and exists(select info from $met_flist where listid=$met_feedback.id and paraid=$met_fd_class and info='$met_fd_export')";
 	}
-	$query = "SELECT * FROM $met_feedback where 1=1 ".$where;
+	$query = "SELECT * FROM $met_feedback where lang='$lang' ".$where;
 	$result = $db->query($query);
 	while($list= $db->fetch_array($result)){
-	$list['customerid']=$list['customerid']=='0'?$lang_fdeditorAccess0:$list['customerid'];
+	$list['customerid']=$list['customerid']=='0'?$lang_feedbackAccess0:$list['customerid'];
+	  foreach($feedback_para as $key=>$val){
+	   $para='para'.$val[id];
+	   $list[$para]=$paravalue[$list[id]][$val[id]][info];
+	  }
 	$feedback_list[]=$list;
+
 	}
 
-	$query = "SELECT * FROM $met_fdparameter where use_ok='1' order by no_order";
-	$result = $db->query($query);
-	while($list= $db->fetch_array($result)){
-	$feedback_para[]=$list;
-	}
-	/*设置xls
+
+	/*set xls
 	*/
 	
 
 	$column=array("",$lang_fdeditorInterest);
 	$param=array('fdtitle');
 	foreach($feedback_para as $key=>$val){
-		if($feedback_list[en]=="en")
-		$column[]=$val['e_name'];//添加英文
-		elseif($feedback_list[en]=="other")
-		$column[]=$val['o_name'];
-		else
-		$column[]=$val['c_name'];
+		$column[]=$val['name'];
 		$param[]="para".$val[id];
 	}
 	$column[]=$lang_fdeditorTime;
 	$column[]=$lang_fdeditorFrom;
-	$column[]=$lang_fdeditorID;
+	$column[]=$lang_feedbackID;
 	$column[]=$lang_fdeditorRecord;
 	$param[]='addtime';
 	$param[]='fromurl';
 	$param[]='customerid';
 	$param[]='useinfo';
 	$xls=new PHP_XLS();
-	$xls->AddSheet($lang_fdeditorTitle);
+	$xls->AddSheet($lang_editor);
 	$xls->NewStyle('hd_t');
 
 	$xls->StyleSetFont(0, 10, 0, 1, 0, 0);
@@ -99,8 +104,8 @@
 	$xls->StyleAddBorder("Right", '#000000', 2);
 
 	
-	/*获取表中的反馈信息
-	 *导出xls
+	/*get feedback infomation
+	 *export xls
 	*/	
 		
 	for ($i=0; $i<count($feedback_list); $i++) 
@@ -108,20 +113,10 @@
 		
 		for ($j=0; $j<count($column)-1; $j++) {
 			$xls->SetActiveStyle('center');	
-			
-			if(($param[$j]=="para25" || $param[$j]=="para26" ||$param[$j]=="para27") && $feedback_list[$i][$param[$j]]!=NULL)
-			{
-				$x=explode('/', $feedback_list[$i]['fromurl']);
-				unset($x[count($x)-1]);
-				unset($x[count($x)-1]);
-				$path = implode('/', $x).'/upload/file/'.$feedback_list[$i][$param[$j]];
-				$xls->Textc($i+2,$j+1,$path);
-				continue;
-			}
 			$xls->Textc($i+2,$j+1,$feedback_list[$i][$param[$j]]);
 		}
 	}	
-	$xls->Output("$lang_fdeditorTitle.xls");
-# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.	
+	$xls->Output($met_module[8][0][name].".xls");
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

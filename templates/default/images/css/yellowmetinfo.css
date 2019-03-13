@@ -143,7 +143,7 @@ table td{ border-color:#CCCCCC;}
 .webnav ul li input{ background:#FFFFFF;}
 .webnav ul li select{ background:#FFFFFF;}
 span.span_class3 li{ *margin-top:-3px; *margin-bottom:4px; }
-span.span_class3 li{ background-position:30px center;padding-left:40px;}
+span.span_class3 li{ background-position:30px center;padding-left:40px; background:#F4F4F4 url(../cion04.gif) no-repeat 30px 12px;}
 .met_online{ height:30px; line-height:30px; background:url(../yellow/img.gif) no-repeat 0px -219px; margin-top:2px; padding-left:40px; font-weight:bold; color:#666666;}
 .met_onlinelist{ background:#F4F4F4; padding:5px; border:1px solid #E6E6E6; border-top:none; margin-top:1px; color:#666666;}
 

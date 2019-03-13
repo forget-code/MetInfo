@@ -31,11 +31,11 @@
 		{
 			with(b)
 			{
-				filters[0].Apply();	
+				//filters[0].Apply();	
 				fiterplay(b,num,"div","f","metdis","unmetdis");	
 				fiterplay(s,num,"div","f","","f1");
 				fiterplay(i,num,"div","f","metdis","unmetdis");
-				filters[0].metplay();
+				//filters[0].metplay();
 			}
 		}
 		catch(e)

@@ -1,8 +1,7 @@
 <!--<?php
-# 文件名称:inspect.htm 2009-08-18 08:53:03
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
-require_once template('header'); 
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+require_once template('head'); 
 $SERVER_SIGNATURE=$_SERVER['SERVER_SIGNATURE'];
 $SERVER_NAME=$_SERVER['SERVER_NAME'];
 $bigtime=ini_get("max_execution_time");
@@ -10,18 +9,13 @@ $PHP_VERSION=PHP_VERSION;
 $errormsg_v=$errormsg['version'];
 echo <<<EOT
 -->
+<script language="javascript">
+parent.document.getElementById("license").className='stepnowno';
+parent.document.getElementById("inspect").className='stepnow';
+</script>
 <body>
-<div class="top">
-<div class="headright">第二步：系统检测</div>
-</div>
-
-<div class="head">
-<div class="logo"><img src="images/logosmall.gif" width="40" /></div>
-<div class="headtext"><font style="font-family:Arial, Helvetica, sans-serif">MetInfo</font>企业网站管理系统安装<font style="font-family:Arial, Helvetica, sans-serif; font-size:16px;"> V2.0 build</font></div>
-</div>
-<div class="content">
-<div class="content4">
-<p>请花些时间检查您的服务器是否支持安装MetInfo企业网站管理系统所需要的功能，请在继续安装前消除错误或警告信息，然后点击<b>安装</b>继续。</p>
+<div class="contenttext">
+<p>此步骤将检查您的服务器是否支持安装MetInfo企业网站管理系统，请在继续安装前消除错误或警告信息，然后点击<b>安装</b>继续。</p>
 <form method="post" action="index.php?action=db_setup">
 <fieldset>
 <legend><strong>系统检测结果</strong></legend>
@@ -41,10 +35,10 @@ echo <<<EOT
 <legend><strong>文件和目录权限</strong></legend>
 <div class='section'>
 要能正常使用MetInfo企业网站管理系统，
-需要将几个文件/目录设置为 "可写".  下面是需要设置为 "可写" 的目录清单, 
+需要将几个文件/目录设置为 "可写"。下面是需要设置为"可写" 的目录清单， 
 以及建议的 CHMOD 设置。在继续安装前，请做修改。
 在浏览器中刷新本页面以重新检测设置。<br />
-<br />某些主机不允许您设置 CHMOD 777, 要用666。先试最高的值，不行的话，再逐步降低该值。
+<br />某些主机不允许您设置 CHMOD 777，要用666。先试最高的值，不行的话，再逐步降低该值。
 <ul class="inspect-list">
 <!--
 EOT;
@@ -65,14 +59,16 @@ echo <<<EOT
 
 <fieldset>
 <legend><strong>开始安装?  (将删除已有数据，不是升级模式!!!)</strong></legend>
-<div align="left" style="margin-top:-15px; *margin-top:0px;"><input type="submit" name="submit" class="btn2" tabindex="8" value=" 安装 "  $disabled style="*padding-top:4px;"/>
-<input type="button" name="refresh" class="btn2" tabindex="11" value="重新检查" onClick="history.go(0)" style="*padding-top:4px;" /></div>
+<div align="left" style="margin-top:-15px; *margin-top:0px;">
+<input type="submit" name="submit" class="btn2" tabindex="8" value=" 安装 "  $disabled style="*padding-top:4px;"/>
+<input type="button" name="refresh" class="btn2" tabindex="11" value="重新检查" onClick="history.go(0)" style="*padding-top:4px;" />
+</div>
 </fieldset>
 </form>
-
+</div>
+</body></html>
 <!--
 EOT;
-require_once template('footer'); 
-# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>-->

@@ -1,22 +1,13 @@
 <!--<?php
-# 文件名称:message.html 2009-08-13 08:24:03
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 require_once template('head');
-if($readok=="" && $langnow==""){
+if($readok==""){
    $style1="style='color:#FF0000'";
- }elseif($readok==0 && $langnow==""){
+ }elseif($readok==0){
    $style2="style='color:#FF0000'";
  }elseif($readok==1){
    $style3="style='color:#FF0000'";
- }elseif($langnow=="cn"){
-   $style4="style='color:#FF0000'";
- }
- elseif($langnow=="en"){
-   $style5="style='color:#FF0000'";
- }
- elseif($langnow=="other"){
-   $style6="style='color:#FF0000'";
  }
 echo <<<EOT
 -->
@@ -29,48 +20,33 @@ echo <<<EOT
           </tr>
       <tr>
  <td align="left" class="list1_input list9" colspan="10">{$lang_messageClass}：
- <a href="index.php?search=$search&useinfo=$useinfo" $style1>{$lang_messageClass1}</a>&nbsp;|&nbsp;
- <a href="index.php?search=$search&readok=0&useinfo=$useinfo" $style2 >{$lang_messageClass2}</a>&nbsp;|&nbsp;
- <a href="index.php?search=$search&readok=1&useinfo=$useinfo" $style3>{$lang_messageClass3}</a>
-<!--
-EOT;
-if($met_c_lang_ok){
-echo <<<EOT
---> 
-&nbsp;|&nbsp;<a href="index.php?search=$search&useinfo=$useinfo&langnow=cn" $style4>[$met_c_lang]{$lang_messageClass1}</a>
-<!--
-EOT;
-}
-if($met_e_lang_ok){
-echo <<<EOT
---> 
-&nbsp;|&nbsp;<a href="index.php?search=$search&useinfo=$useinfo&langnow=en" $style5>[$met_e_lang]{$lang_messageClass1}</a>
-<!--
-EOT;
-}
-if($met_o_lang_ok){
-echo <<<EOT
---> 
-&nbsp;|&nbsp;<a href="index.php?search=$search&useinfo=$useinfo&langnow=other" $style6>[$met_o_lang]{$lang_messageClass1}</a>
-<!--
-EOT;
-}
-echo <<<EOT
---> 
+ <a href="index.php?search=$search&useinfo=$useinfo&lang=$lang" $style1>{$lang_messageClass1}</a>&nbsp;|&nbsp;
+ <a href="index.php?search=$search&readok=0&useinfo=$useinfo&lang=$lang" $style2 >{$lang_messageClass2}</a>&nbsp;|&nbsp;
+ <a href="index.php?search=$search&readok=1&useinfo=$useinfo&lang=$lang" $style3>{$lang_messageClass3}</a> 
 </td> </tr>
               <tr>
                 <td width="5%" class="list1_top" align="center">{$lang_selected}</td>
 				<td width="5%" class="list1_top" align="center">ID</td>
 				<td width="12%" class="list1_top" align="center" >{$lang_messageID}</td>
-                <td width="10%" class="list1_top" align="center">{$lang_messageName}</td>
+                <td width="10%" class="list1_top" align="center">{$lang_name}</td>
 				<td width="10%" class="list1_top" align="center">{$lang_messageTel}</td>
 				<td width="10%" class="list1_top" align="center">email</td>
 				<td width="8%" class="list1_top" align="center" >{$lang_messageReply}</td>                
                 <td width="19%" class="list1_top" align="center" >{$lang_messageTime}</td>
-				<td width="8%"  class="list1_top" align="center" >{$lang_messageAccess}</td>
+<!--
+EOT;
+if($met_member_use){
+echo <<<EOT
+--> 
+				<td width="8%"  class="list1_top" align="center" >{$lang_access}</td>
+<!--
+EOT;
+}
+echo <<<EOT
+--> 
 				<td width="13%" class="list1_top" align="center" >{$lang_operate}</td>
               </tr>
-			  <form name="del" method="Post" action="delete.php" onSubmit="return ConfirmDelall();">
+			  <form name="del" method="Post" action="delete.php?lang=$lang" onSubmit="return ConfirmDelall();">
 <!--
 EOT;
 foreach ($message_list as $key=>$val){
@@ -85,8 +61,18 @@ echo <<<EOT
 				<td  class="list1_content" align="center">$val[email]</td>
                 <td  class="list1_content" align="center">$val[readok]</td>				
                 <td  class="list1_content" align="center">$val[addtime]</td>
+<!--
+EOT;
+if($met_member_use){
+echo <<<EOT
+--> 					
 				<td  class="list1_content" align="center">$val[access]</td>
-				<td align="center" class="list1_content" style="color:#0066FF" ></a> <a href="editor.php?id=$val[id]" >{$lang_editor}</a> | <a href="delete.php?id=$val[id]" onClick="return ConfirmDel();" >{$lang_delete}</a></td>
+<!--
+EOT;
+}
+echo <<<EOT
+--> 
+				<td align="center" class="list1_content" style="color:#0066FF" ></a> <a href="editor.php?id=$val[id]&lang=$lang" >{$lang_editor}</a> | <a href="delete.php?id=$val[id]&lang=$lang" onClick="return ConfirmDel();" >{$lang_delete}</a></td>
               </tr>
 <!--
 EOT;
@@ -104,8 +90,8 @@ echo <<<EOT
           </tr>
 		  <tr>
             <td align="left" class="input_search" colspan="10">
-			<form method="POST" name="myform"  action="index.php?search=detail_search" target="_self">
-			       <span><b>{$lang_messageSearch}</b></span> 
+			<form method="POST" name="myform"  action="index.php?search=detail_search&lang=$lang" target="_self">
+			       <span><b>{$lang_search}</b></span> 
 			    <input name="useinfo" type="text" size="30">
   <input type="submit" name="Submit2" value="{$lang_search}" class="tj" style="*padding-top:2px; *height:22px;">  
 	        {$lang_messageTip1}</form></td>
@@ -121,6 +107,6 @@ echo <<<EOT
 </html>
 <!--
 EOT;
-# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>-->

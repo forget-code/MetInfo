@@ -19,6 +19,10 @@ $dataoptimize[10000][hitsdownload]=0;//是否调用按点击次数排序的公�
 $dataoptimize[10000][img]=0;//是否调用按更新时间排序的公共图片列表
 $dataoptimize[10000][hitsimg]=0;//是否调用按点击次数排序的公共图片列表
 $dataoptimize[10000][link]=0;//是否调用公共友情链接列表
+$dataoptimize[10000][categoryname]=0;//是否调用公共信息列表对应的栏目名称
+$dataoptimize[10000][para][3]=0;//是否调用产品模块信息列表参数内容
+$dataoptimize[10000][para][4]=0;//是否调用下载模块信息列表参数内容
+$dataoptimize[10000][para][5]=0;//是否调用图片模块信息列表参数内容
 
 //首页调用参数配置(模板标识为10001)
 $dataoptimize[10001][news]=1;//是否调用按更新时间排序的公共文章列表
@@ -37,18 +41,29 @@ $dataoptimize[10001][job]=0;//是否调用首页招聘信息列表
 
 //文章模块调用参数配置(模板标识为2)
 $dataoptimize[2][otherlist]=1;//文章内容页是否调用相关文章信息列表
+$dataoptimize[2][classname]=0;//是否调用文字信息列表对应的栏目名称
+$dataoptimize[2][nextlist]=1;//是否调用文章模块上一条下一条信息
 
 //产品模块调用参数配置(模板标识为3)
 $dataoptimize[3][parameter]=1;//是否调用产品、图片、下载模块参数
 $dataoptimize[3][otherlist]=0;//产品内容页是否调用相关产品信息列表
+$dataoptimize[3][classname]=0;//是否调用产品信息列表对应的栏目名称
+$dataoptimize[3][nextlist]=1;//是否调用产品模块上一条下一条信息
+$dataoptimize[3][para][3]=1;//是否调用产品模块信息列表参数内容
 
 //下载模块调用参数配置(模板标识为4)
 $dataoptimize[4][parameter]=1;//是否调用产品、图片、下载模块参数
 $dataoptimize[4][otherlist]=0;//下载内容页是否调用相关下载信息列表
+$dataoptimize[4][classname]=0;//是否调用下载信息列表对应的栏目名称
+$dataoptimize[4][nextlist]=1;//是否调用下载模块上一条下一条信息
+$dataoptimize[4][para][4]=1;//是否调用下载模块信息列表参数内容
 
 //图片模块调用参数配置(模板标识为5)
 $dataoptimize[5][parameter]=1;//是否调用产品、图片、下载模块参数
 $dataoptimize[5][otherlist]=0;//图片内容页是否调用相关图片信息列表
+$dataoptimize[5][classname]=0;//是否调用图片信息列表对应的栏目名称
+$dataoptimize[5][nextlist]=1;//是否调用图片模块上一条下一条信息
+$dataoptimize[5][para][5]=1;//是否调用图片模块信息列表参数内容
 
 //招聘模块调用参数配置(模板标识为6)
 

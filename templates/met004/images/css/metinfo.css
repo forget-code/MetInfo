@@ -47,7 +47,7 @@ ul.spand li a:hover{ text-align:center; color:#ff0000;}
 /*导航结束*/
 
 /*Flash开始*/
-.flash{ width:800px; height:220px; float:left; overflow:hidden;}
+.flash1{ width:800px; height:220px; float:left; overflow:hidden;}
 .flashright{ width:195px; height:218px; border:1px solid #D8D8D8; float:right;overflow:hidden;}
 .right_nav{ width:100%; height:28px; border-bottom:1px solid #8B0000; color:#990000; font-size:13px; font-weight:bold; line-height:30px; text-align:left; margin-bottom:5px; }
 .right_nav img{ margin-top:8px; margin-left:5px; margin-right:5px;}
@@ -158,10 +158,20 @@ ul.spand li a:hover{ text-align:center; color:#ff0000;}
 .textline{ width:100%; height:20px; line-height:20px; color:#333333; text-align:center;}
 .webright{ width:192px; float:right; height:auto; overflow:hidden;  border:1px solid #D8D8D8; margin-top:3px;}
 .nav_x{height:28px; line-height:25px; color:#990000; text-align:left; border-bottom:1px solid #990000; margin-top:3px; margin-bottom:3px; font-weight:bold;}
+.nav_x1{ width:167px; font-size:13px; height:30px; font-weight:bold; padding:0px 0px 0px 25px; text-align:left; line-height:30px; background:url(../right.gif) no-repeat 5px 6px; background-color:#E9E9E9; color:#990000; border-bottom:1px solid #8B0000;}
+.nav_x1 a{color:#990000;}
 .met_online{height:28px; line-height:25px; color:#990000; text-align:left; border-bottom:1px solid #990000; margin-top:3px; margin-bottom:3px; font-weight:bold;}
 .met_online{ padding-left:30px; background:url(../right.gif) no-repeat 8px 3px;}
 .met_onlinelist{ border-bottom:1px dashed #CCCCCC; text-align:left; padding:3px 0px; padding-left:5px;}
-.navright{line-height:25px; text-align:left; padding-left:60px;}
+
+.navright{ width:192px; height:auto; overflow:auto; line-height:25px; text-align:left; }
+.navright font a{color: #666666;}
+.navright li { width:152px; height:25px; background-color:#EFEFEF; list-style:none; margin:0px 0px 0px 0px; padding:0px 0px 0px 40px; font-weight:bold;}
+.navright .li_class2{ background:url(../class2.gif) no-repeat 18px 5px; color:#CC0000; background-color:#F1F1F1; border-bottom:1px solid #FFFFFF;}
+.navright .li_class2 a{color:#990000;}
+.navright .li_class3{ background:url(../class3.gif) no-repeat 35px 5px; padding:0px 0px 0px 57px; width:135px; font-weight:normal;}
+.navright .classnow{ background:url(../class3.gif) no-repeat 18px 5px; color:#CC0000; background-color:#D3D3D3; border-bottom:1px solid #FFFFFF;}
+.navright .classnow a{color:#990000;}
 /*页面结束*/
 
 /*下载模块开始*/

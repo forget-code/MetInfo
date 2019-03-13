@@ -1,7 +1,6 @@
 <!--<?php
-# 文件名称:label.html 2009-08-15 14:34:57
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 require_once template('head');
 echo <<<EOT
 -->
@@ -20,7 +19,7 @@ echo <<<EOT
           </tr>
           <tr>
             <td class="au" colspan="6" >
-			  <form method="POST" name="myform"  action="strcontent.php?action=editor&id=$id" onSubmit="return CheckForm_label();" target="_self">
+			  <form method="POST" name="myform"  action="strcontent.php?action=editor&id=$id&lang=$lang" onSubmit="return CheckForm_label();" target="_self">
 			  <b>{$lang_modifyfy}</b>
 			    {$lang_labelOld}
 			    <input name="oldwords" type="text" size="10" value="$label_m[oldwords]">
@@ -49,7 +48,7 @@ echo <<<EOT
           </tr>
           <tr>
             <td class="au" colspan="6">
-			  <form method="POST" name="myform"  action="strcontent.php?action=add" onSubmit="return CheckForm_label();" target="_self">
+			  <form method="POST" name="myform"  action="strcontent.php?action=add&lang=$lang" onSubmit="return CheckForm_label();" target="_self">
 			  <b>{$lang_labelAdd}</b>
 			    {$lang_labelOld}:
 			    <input name="oldwords" type="text" size="10">
@@ -68,7 +67,7 @@ echo <<<EOT
                 <td width="40%" class="list1_top" align="center" >{$lang_labelUrl}</td>
 				<td width="10%" class="list1_top" align="center" >{$lang_operate}</td>
               </tr>
-			  <form name="del" method="Post" action="strcontent.php?action=delete" onSubmit="return ConfirmDelall();">
+			  <form name="del" method="Post" action="strcontent.php?action=delete&lang=$lang" onSubmit="return ConfirmDelall();">
 <!--
 EOT;
 foreach ($skin_list as $key=>$val){
@@ -77,10 +76,10 @@ echo <<<EOT
               <tr class="tdbg">
               <td class="list1_content_titile" align="center"><input name='id' type='checkbox' onClick="unselectall()" id="id" value='$val[id]' class="xz"></td>
                 <td align="center" class="list1_content">$val[id]</td>
-                <td class="list1_content" align="center">$val[oldwords]</a></td>
+                <td class="list1_content" align="center">$val[oldwords]</td>
                 <td class="list1_content" align="center">$val[newwords]</td>
                 <td align="center" class="list1_content">$val[url]</td>
-				<td align="center" class="list1_content" style="color:#0066FF;"><a href="strcontent.php?id=$val[id]&action=modify" >{$lang_editor}</a> | <a href="strcontent.php?id=$val[id]&action=delete" onClick="return ConfirmDel();" >{$lang_delete}</a></td>
+				<td align="center" class="list1_content" style="color:#0066FF;"><a href="strcontent.php?id=$val[id]&action=modify&lang=$lang" >{$lang_editor}</a> | <a href="strcontent.php?id=$val[id]&action=delete&lang=$lang" onClick="return ConfirmDel();" >{$lang_delete}</a></td>
               </tr>
 <!--
 EOT;
@@ -108,6 +107,6 @@ echo <<<EOT
 <!--
 EOT;
 }
-# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>-->

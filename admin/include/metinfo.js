@@ -1,4 +1,4 @@
-//管理员添加验证
+//add admin
 function CheckForm()
 {   
 	if (document.myform.useid.value.length == 0) {
@@ -22,7 +22,7 @@ function CheckForm()
 		return false;
 	}
 }
-//显示控制
+//
 function setCheckedValue(radioName, newValue) {  
     if(!radioName) return;  
        var radios = document.getElementsByName(radioName);     
@@ -34,6 +34,30 @@ function setCheckedValue(radioName, newValue) {
         }  
 }
 
+function showclass(classid,classtype)
+{ 
+//alert(document.getElementById('class3_1_1').style.display);
+for(var i=0; i<classcount; i++){
+if(classtype==2){
+  if(classid==subclass[i][1]){
+   if(document.getElementById('class_'+subclass[i][0]).style.display=="none"){
+     document.getElementById('class_'+subclass[i][0]).style.display="";
+   }else{
+     document.getElementById('class_'+subclass[i][0]).style.display="none";
+	  }
+    }
+  }else{
+  if(classid==subclass[i][2]){
+   if(document.getElementById('class_'+subclass[i][0]).style.display=="none" && classid==subclass[i][1]){
+     document.getElementById('class_'+subclass[i][0]).style.display="";
+   }else{
+     document.getElementById('class_'+subclass[i][0]).style.display="none";
+	  }
+    } 
+ 
+  }
+ }
+}
 function displayid(onid,offid)
 { 
  document.getElementById(onid).style.display="";
@@ -56,7 +80,7 @@ else{
 }
 }
 
-// 二级栏目联动options.remove(f.keywords.selectedIndex);
+// Two part linkage options.remove(f.keywords.selectedIndex);
 function changelocation(locationid)
     {
     document.myform.class3.length = 1; 
@@ -105,7 +129,7 @@ function changelocation2(locationid)
 	}
     }	
 	
-//三级栏目移动
+//Three part linkage
 function changelocation1(locationid,classtype)
 {   
     var locationid=locationid;
@@ -123,7 +147,7 @@ function changelocation1(locationid,classtype)
         }
 
 } 	
-//模板风格联动
+//templates linkage
 function changecss(locationid)
  {
 	
@@ -140,7 +164,7 @@ function changecss(locationid)
         }
 	
 }
-//在线交流风格联动
+//online skin linkage
 function changeonline(locationid)
  {
 	
@@ -157,7 +181,7 @@ function changeonline(locationid)
         }
 	
 }
-// 文件目录联动
+// folder names linkage
 function changefile(locationid)
     {
 	 foldernames = new Array();
@@ -170,12 +194,27 @@ function changefile(locationid)
 	 foldernames[7]=new Array("message","none");
 	 foldernames[8]=new Array("feedback","none");
 	 foldernames[9]=new Array("link","none");
+	 foldernames[10]=new Array("member","none");
+	 foldernames[11]=new Array("search","none");
+	 foldernames[12]=new Array("sitemap","none");
+	 foldernames[100]=new Array("product","none");
+	 foldernames[101]=new Array("img","none");
     document.myform.foldername.value =foldernames[locationid][0];
 	document.myform.foldername1.value =foldernames[locationid][0];
 	document.getElementById("list_order").style.display=foldernames[locationid][1];	
-	if(locationid!=1)
+	if(locationid>1 && locationid<7)
+	{	
+	if(!metadminpagename)document.getElementById("static1").style.display="none";
+	document.getElementById("static2").style.display="none";
+	}
+	else if(locationid>6 && locationid<13)
 	{	
 	document.getElementById("static1").style.display="none";
+	document.getElementById("static2").style.display="none";
+	}
+	else if(locationid>99)
+	{	
+	if(!metadminpagename)document.getElementById("static1").style.display="none";
 	document.getElementById("static2").style.display="none";
 	}
 	else	
@@ -183,10 +222,10 @@ function changefile(locationid)
 	document.getElementById("static1").style.display="";	
 	document.getElementById("static2").style.display="";	
 	}
-	if(locationid==6 || locationid==7 || locationid==8 || locationid==9)	document.getElementById("showdoc").disabled=true;
+	if(locationid>=6)	document.getElementById("showdoc").disabled=true;
 	else	document.getElementById("showdoc").disabled=false;
     }
-	//上传检查
+	//upload checked
 function CheckFormupload()
 
 {   
@@ -196,60 +235,38 @@ function CheckFormupload()
 		return false;
 	}
 }
-//添加flash检查
+//add flash
 function CheckFormflash()
 {   
-	if (document.myform.width.value.length == 0) {
+
+	if ((document.getElementById("met_flash_type_1").checked || document.getElementById("met_flash_type_3").checked) && document.myform.img_path.value.length == 0) {
 		alert(user_msg['js25']);
-		document.myform.width.focus();
-		return false;
-	}
-   if (document.myform.height.value.length ==0) {
-		alert(user_msg['js26']);
-		document.myform.height.focus();
+		document.myform.img_path.focus();
 		return false;
 	}
 
+	if (document.getElementById("met_flash_type_2").checked && document.myform.flash_path.value.length == 0) {
+		alert(user_msg['js26']);
+		document.myform.flash_path.focus();
+		return false;
+	}
 }
-//招聘模块检查
+//job check
 function CheckFormjob()
 
 {   
-	if (document.getElementById('c_position')!=null && document.myform.c_position.value.length == 0) {
+	if (document.myform.position.value==null || document.myform.position.value.length == 0) {
 		alert(user_msg['js17']);
-		document.myform.c_position.focus();
+		document.myform.position.focus();
 		return false;
-	}
-	
-	if (document.getElementById('c_position')==null && document.getElementById('e_position')!=null && document.myform.e_position.value.length == 0) {
-		alert(user_msg['js17']);
-		document.myform.e_position.focus();
-		return false;
-	}
-	if (document.getElementById('c_position')==null && document.getElementById('e_position')==null && document.getElementById('o_position')!=null && document.myform.o_position.value.length == 0) {
-		alert(user_msg['js17']);
-		document.myform.o_position.focus();
-		return false;
-	}
-	
+	}	
 }
-//文章模块检查
+//content check
 function CheckFormarticle()
 {   
-	if (document.getElementById('c_title')!=null && document.myform.c_title.value.length == 0) {
+	if (document.myform.title.value==null || document.myform.title.value.length == 0) {
 		alert(user_msg['js13']);
-		document.myform.c_title.focus();
-		return false;
-	}
-	
-	if (document.getElementById('c_title')==null && document.getElementById('e_title')!=null && document.myform.e_title.value.length == 0) {
-		alert(user_msg['js13']);
-		document.myform.e_title.focus();
-		return false;
-	}
-	if (document.getElementById('c_title')==null && document.getElementById('e_title')==null && document.getElementById('o_title')!=null && document.myform.o_title.value.length == 0) {
-		alert(user_msg['js13']);
-		document.myform.o_title.focus();
+		document.myform.title.focus();
 		return false;
 	}
    if (document.myform.class2.value =='0') {
@@ -258,37 +275,8 @@ function CheckFormarticle()
 		return false;
 	}
 }
-//下载模块检查
-function CheckFormdownload()
-{   
-	if (document.getElementById('c_title')!=null && document.myform.c_title.value.length == 0) {
-		alert(user_msg['js13']);
-		document.myform.c_title.focus();
-		return false;
-	}
-	
-	if (document.getElementById('c_title')==null && document.getElementById('e_title')!=null && document.myform.e_title.value.length == 0) {
-		alert(user_msg['js13']);
-		document.myform.e_title.focus();
-		return false;
-	}
-	if (document.getElementById('c_title')==null && document.getElementById('e_title')==null && document.getElementById('o_title')!=null && document.myform.o_title.value.length == 0) {
-		alert(user_msg['js13']);
-		document.myform.o_title.focus();
-		return false;
-	}
-   if (document.myform.class2.value =='0') {
-		alert(user_msg['js14']);
-		document.myform.class2.focus();
-		return false;
-	}
-   if (document.myform.downloadurl.value.length == 0) {
-		alert(user_msg['js16']);
-		document.myform.downloadurl.focus();
-		return false;
-	}
-}
-//模板添加
+
+//add templates
 function CheckForm_skin()
 {   
 	if (document.myform.skin_name.value.length == 0) {
@@ -296,13 +284,13 @@ function CheckForm_skin()
 		document.myform.skin_name.focus();
 		return false;
 	}
-   if (document.myform.skin_file.value.length == 0) {
+   if (document.myform.skin_file.value.length == 0 && document.myform.skin_files.value.length == 0) {
 		alert(user_msg['js9']);
 		document.myform.skin_file.focus();
 		return false;
 	}
 }
-//标签添加
+//add label
 function CheckForm_label()
 {   
 	if (document.myform.oldwords.value.length == 0) {
@@ -312,46 +300,27 @@ function CheckForm_label()
 	}
 }
 
-//模块添加
+//add module
 function CheckForm_moudle()
 {   
-	if (document.getElementById('c_name')!=null && document.myform.c_name.value.length == 0) {
-		alert(user_msg['js1']);
+	if (document.myform.name.value==null || document.myform.name.value.length == 0) {
 		alert(user_msg['js11']);
-		document.myform.c_name.focus();
+		document.myform.name.focus();
+		return false;
+	}
+	if (document.myform.module.value=='1' && document.getElementById('if_in1').checked && document.myform.filename.value.length == 0) {
+		alert(user_msg['js33']);
+		document.myform.filename.focus();
 		return false;
 	}
 	
-	if (document.getElementById('c_name')==null && document.getElementById('e_name')!=null && document.myform.e_name.value.length == 0) {
-		alert(user_msg['js1']);
-		alert(user_msg['js11']);
-		document.myform.e_name.focus();
-		return false;
-	}
-	if (document.getElementById('c_name')==null && document.getElementById('e_name')==null && document.getElementById('o_name')!=null && document.myform.o_name.value.length == 0) {
-		alert(user_msg['js1']);
-		alert(user_msg['js11']);
-		document.myform.o_name.focus();
-		return false;
-	}
 }
-//友情链接添加
+//add friendly link
 function CheckFormlink()
 {   
-	if (document.getElementById('c_webname')!=null && document.myform.c_webname.value.length == 0) {
+	if (document.myform.webname.value==null || document.myform.webname.value.length == 0) {
 		alert(user_msg['js19']);
-		document.myform.c_webname.focus();
-		return false;
-	}
-	
-	if (document.getElementById('c_webname')==null && document.getElementById('e_webname')!=null && document.myform.e_webname.value.length == 0) {
-		alert(user_msg['js19']);
-		document.myform.e_webname.focus();
-		return false;
-	}
-	if (document.getElementById('c_webname')==null && document.getElementById('e_webname')==null && document.getElementById('o_webname')!=null && document.myform.o_webname.value.length == 0) {
-		alert(user_msg['js19']);
-		document.myform.o_webname.focus();
+		document.myform.webname.focus();
 		return false;
 	}
 	
@@ -384,7 +353,16 @@ function ConfirmDel()
      return false;
 }
 
-//提示改变状态
+function Confirmarchive(langtext)
+{   
+   if(confirm(langtext))
+     return true;
+   else
+     return false;
+}
+
+
+//change
 function ConfirmChange()
 {   
    if(confirm(user_msg['js22']))
@@ -396,11 +374,11 @@ function ConfirmChange()
 function ConfirmDelall()
 {   
    var flag=0;
-   for (var i=0;i<del.elements.length;i++)
+   for (var i=0;i<document.del.elements.length;i++)
     {
-    var e = del.elements[i]; 
+    var e = document.del.elements[i]; 
     if (e.name=="id"&&e.checked){
-       del.allid.value=del.allid.value+e.value+",";
+       document.del.allid.value=document.del.allid.value+e.value+",";
 	   flag=1;
 	 }
     }
@@ -419,11 +397,11 @@ function ConfirmDelall()
 function Confirmall()
 {   
 	var flag=0;
-   for (var i=0;i<del.elements.length;i++)
+   for (var i=0;i<document.del.elements.length;i++)
     {
-    var e = del.elements[i]; 
+    var e = document.del.elements[i]; 
     if (e.name=="id"&&e.checked){
-       myform.allid.value=myform.allid.value+e.value+",";
+       document.myform.allid.value=document.myform.allid.value+e.value+",";
 	   flag=1;
 	 }
     }
@@ -456,7 +434,7 @@ function CheckAll(form)
   }
   
 
-//会员用户名检验
+//member usename
 function Usercheck(mode)
 {
         var adminname = encodeURIComponent(document.getElementById('' + mode + '').value);
@@ -480,7 +458,7 @@ function check_member() {
 }
 //end
 
-//发送一个请求
+//
 function makeRequest(url, functionName, httpType, sendData) {
 
 	http_request = false;

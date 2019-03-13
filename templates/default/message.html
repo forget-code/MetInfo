@@ -2,13 +2,9 @@
 require_once template('head'); 
 echo <<<EOT
 -->
-$fdjs
-<div class="web">
-<!--
-EOT;
-require_once template('webleft'); 
-echo <<<EOT
--->
+<div id="web">
+<div class="right">
+   <h3 class="title"><span>{$class_list[$classnow][name]}</span></h3>
 <div class="webcontent">
 <div class="message_line"><a href="$message[listurl]">{$lang_ReadInfo}&gt;&gt;</a></div>
 </div>
@@ -16,8 +12,12 @@ echo <<<EOT
 $methtml_message
 </div>
 </div>
+<!--
+EOT;
+require_once template('webleft'); 
+echo <<<EOT
+-->
 <div style="clear:both;"></div>
-
 </div>
 <!--
 EOT;

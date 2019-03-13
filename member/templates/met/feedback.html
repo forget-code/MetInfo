@@ -1,7 +1,6 @@
 <!--<?php
-# 文件名称:feedback.html 2009-08-20 10:44:03
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 echo <<<EOT
 -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -37,20 +36,20 @@ body {
           //-->
           </script>
 <select name="met_fd_class" style="float:right;" onChange="MM_jumpMenu(this)">
-<option value="feedback.php?search=$search&met_fd_classname=">{$lang_memberShowAll}</option>
+<option value="feedback.php?search=$search&lang=$lang&met_fd_classname=">{$lang_memberShowAll}</option>
 <!--
 EOT;
 foreach ($selectlist as $key=>$val){
-if($met_fd_classname==$val['list']){
+if($met_fd_classname==$val['info']){
 echo <<<EOT
 -->
-<option value="feedback.php?search=$search&lang=$lang&met_fd_classname=$val[list]" selected="selected">$val[list]</option>
+<option value="feedback.php?search=$search&lang=$lang&met_fd_classname=$val[info]" selected="selected">$val[info]</option>
 <!--
 EOT;
 }else{
 echo <<<EOT
 -->
-<option value="feedback.php?search=$search&lang=$lang&met_fd_classname=$val[list]">$val[list]</option>
+<option value="feedback.php?search=$search&lang=$lang&met_fd_classname=$val[info]">$val[info]</option>
 <!--
 EOT;
 }}
@@ -85,6 +84,6 @@ echo <<<EOT
 </html>
 <!--
 EOT;
-# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>-->

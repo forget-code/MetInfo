@@ -1,7 +1,6 @@
 <?php
-# 文件名称:login_check.php 2009-08-18 08:53:03
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
 require_once '../include/common.inc.php';
 if($action=="login"){
@@ -13,7 +12,7 @@ if($action=="login"){
    }else{
    $returnurl=$member_index_url;
    }
-   //登陆验证码判断
+   //code
      if($met_memberlogin_code==1){
          require_once 'outlogin/captcha.class.php';
          $Captcha= new  Captcha();
@@ -53,7 +52,7 @@ if($action=="login"){
 		   
   if($remember==1)
   {
-	setcookie("name", $metinfo_member_name, mktime()+86400*7, "/");//周期7天
+	setcookie("name", $metinfo_member_name, mktime()+86400*7, "/");//7 days
 	setcookie("ps", $metinfo_member_pass, mktime()+86400*7, "/");
   }
   
@@ -79,6 +78,6 @@ if ($memberindex!="metinfo"){
    }
    }
   }
-# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

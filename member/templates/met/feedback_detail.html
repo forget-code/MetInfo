@@ -1,7 +1,6 @@
 <!--<?php
-# 文件名称:feedback_detail.html 2009-08-12 14:21:03
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 echo <<<EOT
 -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -31,7 +30,7 @@ foreach($feedback_para as $key=>$val){
 echo <<<EOT
 -->
          <tr> 
-            <td class="member_text"><b>$val[name]:</b></td>
+            <td class="member_text"><b>$val[name]&nbsp;</b></td>
             <td colspan="2" class="member_input">$val[content]</td>
           </tr>
 <!--
@@ -39,12 +38,19 @@ EOT;
 }
 echo <<<EOT
 -->
-	
+         <tr> 
+            <td class="member_text"><b>{$lang_memberAddTime}&nbsp;</b></td>
+            <td colspan="2" class="member_input">$feedback_list[addtime]</td>
+          </tr>	
+         <tr> 
+            <td class="member_text"><b>{$lang_messageeditorReply}&nbsp;</b></td>
+            <td colspan="2" class="member_input">$feedback_list[useinfo]</td>
+          </tr>	
 </table>
 </body>
 </html>
 <!--
 EOT;
-# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>-->

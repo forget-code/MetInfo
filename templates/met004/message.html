@@ -11,45 +11,7 @@ $fdjs
 <div class="message_line"><a href="$message[listurl]">{$lang_ReadInfo}>></a></div>
 </div>
 <div class="content">
-<form method="POST" name="myform" onSubmit="return Checkmessage();" action="message.php?action=add" target="_self">
-<table width="90%" cellpadding="2" cellspacing="1" bgcolor="#CCCCCC" align="center">
-<tr>
-<td width="20%" height="25" align="right" bgcolor="#FFFFFF">{$lang_Name}</td>
-<td width="70%" bgcolor="#FFFFFF"><input name="pname" type="text" size="30" /></td>
-<td bgcolor="#FFFFFF" style="color:#990000">*</td>
-</tr>
-<tr>
-<td width="20%" height="25" align="right" bgcolor="#FFFFFF">{$lang_Phone}</td>
-<td width="70%" bgcolor="#FFFFFF"><input name="tel" type="text" size="30" /></td>
-<td bgcolor="#FFFFFF" style="color:#990000"></td>
-</tr>
-<tr>
-<td width="20%" height="25" align="right" bgcolor="#FFFFFF">{$lang_Email}</td>
-<td width="70%" bgcolor="#FFFFFF"><input name="email" type="text" size="30" /></td>
-<td bgcolor="#FFFFFF" style="color:#990000"></td>
-</tr>
-<tr>
-<td width="20%" height="25" align="right" bgcolor="#FFFFFF">{$lang_OtherContact}</td>
-<td width="70%" bgcolor="#FFFFFF"><input name="contact" type="text" size="30" />（{$lang_Info5}）</td>
-<td bgcolor="#FFFFFF" style="color:#990000"></td>
-</tr>
-<tr>
-<td width="20%" height="25" align="right" bgcolor="#FFFFFF">{$lang_SubmitContent}</td>
-<td width="70%" bgcolor="#FFFFFF"><textarea name="info" cols="50" rows="6"></textarea></td>
-<td bgcolor="#FFFFFF" style="color:#990000">*</td>
-</tr>
-<tr><td colspan="3" bgcolor="#FFFFFF" align="center">
-<input type="hidden" name="fromurl" value="$fromurl" />
-<input type="hidden" name="ip" value="$ip" />
-<input type="hidden" name="lang" value="$lang" />
-<input type="submit" name="Submit" value="{$lang_SubmitInfo}" class="tj">
-<input type="reset" name="Submit" value="{$lang_Reset}" class="tj"></td></tr>
-</table>
-</form>
-</div>
-</div>
-<div class="webright">
-$met_online
+$methtml_message
 </div>
 </div>
 <!--

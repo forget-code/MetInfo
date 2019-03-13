@@ -6,6 +6,7 @@ a{ text-decoration:none;}
 A:hover { COLOR:#FF6600}
 
 /*______________top_________________________________________*/
+.toplang{ width:100%; height:25px; text-align:left; background:url(topnav.gif) repeat-x 0px 0px; overflow:hidden; padding-top:2px; }
 .top{ width:100%; height:65px;  overflow:hidden;  background:#f4f7fb;}
 .top_admin{ color:#777777; position:absolute; right:200px; top:30px; height:30px; line-height:38px; }
 .top_top img{ width:20px; height:16px; }
@@ -30,14 +31,14 @@ A:hover { COLOR:#FF6600}
 /*______________left_________________________________________*/
 .bottom table{ }
 .bottom table td{ font-size:12px;}
-.left{  background:#f4f7fb; text-align:left; height:auto !important; height:500px; *height:550px; min-height:500px; *min-height:550px; border-right:4px solid #119fcf; border-bottom:1px solid #119fcf; position:relative;}
+.left{  background:#f4f7fb; text-align:left; height:auto !important; height:472px; *height:522px; min-height:472px; *min-height:522px; border-right:4px solid #119fcf; border-bottom:1px solid #119fcf; position:relative;}
 .left_top{ width:100%; border-bottom:1px solid #119fcf; height:25px; overflow:auto; line-height:25px; text-align:center;}
 .left_top a{ color:#666666; text-decoration:none;}
 .left_top a:hover{ color:#0066FF; text-decoration:underline;}
 .left_content{}
-.left_u{ margin:0px auto; height:auto !important; min-height:426px; min-height:425px\9; *height:466px; *min-height:466px; }
+.left_u{ margin:0px auto; height:auto !important; min-height:398px; min-height:403px\9; *height:438px; *min-height:438px; }
 .left_content ul{ margin-top:10px; }
-.left_content ul.pt li{ height:27px; line-height:26px;  margin-bottom:1px; *margin-bottom:0px;}
+.left_content ul.pt li{ height:27px; line-height:26px;  margin-bottom:1px; *margin-bottom:0px; overflow:hidden;}
 .left_content ul.pt li a{ text-decoration:none; color:#777777; display:block;  padding-left:30px; }
 .left_content ul.pt li a:hover{ background-color:#e7f6fc;}
 .left_clicka{ background:url(left_li.gif) repeat-y right top;}
@@ -53,18 +54,18 @@ A:hover { COLOR:#FF6600}
 
 /*___________栏目管理______________________________________________________*/
 .list3{ width:160px; margin:0px auto;}
-.lmgl li{ height:26px; line-height:26px; margin-bottom:5px; *margin-bottom:2px; padding:1px; border:1px solid #c5edf9; }
+.lmgl li{ height:26px; line-height:26px; margin-bottom:5px; *margin-bottom:2px; padding:1px; border:1px solid #c5edf9; overflow:hidden;}
 .lmgl li a{ display:block;  padding-left:30px; color:#1788c2; text-decoration:none; background:#e3f6fd url(li_bg1.gif) no-repeat 140px 8px; font-weight:bold;}
 .lmgl li a:hover{  }
 
-.lmgl span li { list-style-type:square; padding:0px; border:none; margin-bottom:-2px; margin-top:-3px;}
+.lmgl span li { list-style-type:square; padding:0px; border:none; margin-bottom:-2px; margin-top:-3px; overflow:hidden;}
 .lmgl span li a{ color:#666666; border:none; margin-bottom:0px; padding-left:50px; background:none; font-weight:normal;}
 .lmgl span li a:hover{ color:#FF0000; text-decoration:underline;}
 
 
 
 /*______________right_________________________________________*/
-.iframe_main{width:100%; height:509px; *height:550px; overflow:auto;  border-bottom:1px solid #119fcf;  position:relative; right:2px; bgcolor="#FFFFFF"}
+.iframe_main{width:100%; height:481px; *height:522px; overflow:auto;  border-bottom:1px solid #119fcf;  position:relative; right:2px; bgcolor="#FFFFFF"}
 
 /*____________________基本配置__________________________________________________________*/
 .table_list1{ border:1px solid #84d5fe; margin:10px auto; font-size:12px;}
@@ -82,6 +83,8 @@ A:hover { COLOR:#FF6600}
 .list1_text_title{ width:60%; color:#CC0000; font-weight:bold; background:#fafdff; height:20px; line-height:20px;}
 .list1_text_title a{ color:#FF0000;}
 .list1_text_title a:hover{ color:#ff0000;}
+.list1_text_title li{ text-align:left; color:#000099;}
+.list1_text_title li a{ color:#000099;}
 
 .list1_footer{ height:20px; line-height:20px;}
 .list1_footer{ font-family:Arial; color:#666666;}
@@ -120,8 +123,10 @@ A:hover { COLOR:#FF6600}
 .list1_lm1 a:hover,.list1_lm2 a:hover{ text-decoration:underline;}
 .list1_lm1{ height:25px; line-height:25px; background:#F9F9F9; color:#333333;}
 .list1_lm11{height:25px; line-height:25px; background:#F9F9F9 url(table.gif) no-repeat 2px 7px; color:#333333; font-weight:bold; padding-left:15px;}
+.list1_lm111{height:25px; line-height:25px; background:#F9F9F9 url(table1.gif) no-repeat 2px 7px; color:#333333; font-weight:bold; padding-left:15px;}
 .list1_lm2{height:25px; line-height:25px; background:#E6E6E6; color:#444444;}
-.list1_lm22{height:25px; line-height:25px; background:#E6E6E6 url(table1.gif) no-repeat 12px 7px; color:#0033FF; padding-left:25px;}
+.list1_lm22{height:25px; line-height:25px; background:#E6E6E6 url(table.gif) no-repeat 12px 7px; color:#0033FF; padding-left:25px;}
+.list1_lm222{height:25px; line-height:25px; background:#E6E6E6 url(table1.gif) no-repeat 12px 7px; color:#0033FF; padding-left:25px;}
 .list1_lm3{height:25px; line-height:25px; background:#BBBBBB; color:#ffffff;}
 .list1_lm33{height:25px; line-height:25px; background:#BBBBBB url(table1.gif) no-repeat 22px 7px; color:#ffffff; padding-left:35px;}
 span.list2 a{ color:#0033FF; text-decoration:none;}
@@ -167,4 +172,5 @@ font.t4{ color:#0099FF;}
 .login_text{ width:100%; height:30px; color:#ffffff; line-height:30px; text-align:left;}
 .login_text img{ position:relative; bottom:5px; *bottom:1px;}
 .login_text input{ width:150px; height:20px; }
+.login_text span{ width:70px; text-align:right; line-height:25px; padding:0px 5px 0px 0px; height:20px; display:block; float:left; }
 .text_input input{ height:23px; }

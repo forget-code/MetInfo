@@ -1,0 +1,43 @@
+<!--<?php
+# 文件名称
+require_once template('head');
+$title7=$lang_Column7; 
+echo <<<EOT
+-->
+<div id="web">
+<div class="left">
+	    <h3 class="title"><span>{$class_list[$classnow][name]}</span></h3>
+<div class="webcontent">
+<iframe frameborder="0" width="100%" style="height:auto !important; height:500px; min-height:500px;" id="main" name="main" src="login_member.php?lang=$lang" class="iframe_main" >
+</iframe>
+</div>
+</div>
+<div class="right">
+	    <h3 class="title"><span>{$class_list[$classnow][name]}</span></h3>
+		 <div class="webnav">
+   <ul>
+   <li><a target="main" onfocus="if(this.blur)this.blur();" href="basic.php?lang=$lang">{$lang_memberIndex3}</a></li>
+   <li><a target="main" onfocus="if(this.blur)this.blur();" href="editor.php?lang=$lang">{$lang_memberIndex4}</a></li>
+   <li><a target="main" onfocus="if(this.blur)this.blur();" href="feedback.php?lang=$lang">{$lang_memberIndex5}</a></li>
+   <li><a target="main" onfocus="if(this.blur)this.blur();" href="message.php?lang=$lang">{$lang_memberIndex6}</a></li>
+   <li><a target="main" onfocus="if(this.blur)this.blur();" href="cv.php?lang=$lang">{$lang_memberIndex7}</a></li>
+   <li><a href="login_out.php?lang=$lang">{$lang_memberIndex10}</a></li>
+   </ul>
+		 </div>
+			    <h3 class="title line"><span>{$title7}</span></h3>
+				<div class="bg-top"><div></div></div>
+				<div class="content">
+                        <div>
+						{$otherinfo[info10]}
+						{$metonline}
+						</div>
+				</div>
+				<div class="bg-bottom"><div></div></div>
+</div>
+<div style="clear:both;"></div>
+</div>
+
+<!--
+EOT;
+require_once template('foot'); 
+?>

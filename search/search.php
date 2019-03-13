@@ -1,17 +1,12 @@
 <?php
-# 文件名称:search.php 2009-08-18 08:53:03
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 require_once '../include/common.inc.php';
-$search_column=$db->get_one("select * from $met_column where module='11'");
+$search_column=$db->get_one("select * from $met_column where module='11' and lang='$lang'");
 $metaccess=$search_column[access];
 $classnow=$search_column[id];
 require_once '../include/head.php';
 unset($search_list);
-$searchpre=($lang=="en")?'e':(($lang=="other")?'o':'c');
-
-$searchword=$searchword?$searchword:(($lang=="en")?$e_searchword:(($lang=="other")?$o_searchword:$c_searchword));
-
 function replaceHtmlAndJs($document)
 {
 $document = trim($document);
@@ -19,15 +14,15 @@ if (strlen($document) <= 0)
 {
    return $document;
 }
-$search = array ("'<script[^>]*?>.*?</script>'si",  // 去掉 javascript
-                  "'<[\/\!]*?[^<>]*?>'si",          // 去掉 HTML 标记
-                  "'([\r\n])[\s]+'",                // 去掉空白字符
-                  "'&(quot|#34);'i",                // 替换 HTML 实体
+$search = array ("'<script[^>]*?>.*?</script>'si",  // Remove javascript
+                  "'<[\/\!]*?[^<>]*?>'si",          // Remove HTML
+                  "'([\r\n])[\s]+'",                // Remove black
+                  "'&(quot|#34);'i",                // Replace HTML
                   "'&(amp|#38);'i",
                   "'&(lt|#60);'i",
                   "'&(gt|#62);'i",
                   "'&(nbsp|#160);'i"
-                  );                    // 作为 PHP 代码运行
+                  );                    
 
 $replace = array ("",
                    "",
@@ -47,35 +42,32 @@ $search_list[0][title]="<font color=red>{$lang_SearchInfo1}</font>";
 $search_list[0][updatetime]=$m_now_date;  
 $search_list[0][url]=$index_url; 
 $class_info=$class1_info=$class_list[$search_column[id]];
-
-//兼容1.5
-$search_list[0][c_title]="<font color=red>{$lang_SearchInfo1}</font>";
-$search_list[0][e_title]="<font color=red>{$lang_SearchInfo1}</font>";
-$search_list[0][c_url]=$index_url;
-$search_list[0][e_url]=$index_url;
-//兼容1.5
 }
 else
 {
-if(($class1=="" || $class1==10000 || $class1==10001 || $class1==$classnow || $class1==0) and (intval($module)==0)){
+if(($class1=="" || $class1==10000 || $class1==10001 || $class1==0) and (intval($module)==0)){
    switch($searchtype){
    default:
-   if($searchword<>'')$serch_sql=" where ($searchpre"."_title like '%".trim($searchword)."%' or $searchpre"."_content like '%".trim($searchword)."%') ";
-   if($searchword<>'')$serch_sql1=" where ($searchpre"."_name like '%".trim($searchword)."%' or $searchpre"."_content like '%".trim($searchword)."%') ";
+   if($searchword<>'')$serch_sql=" where (title like '%".trim($searchword)."%' or content like '%".trim($searchword)."%') ";
+   if($searchword<>'')$serch_sql1=" where (name like '%".trim($searchword)."%' or content like '%".trim($searchword)."%') ";
    break;
    case 1:
-   if($searchword<>'')$serch_sql=" where $searchpre"."_title like '%".trim($searchword)."%' ";
-   if($searchword<>'')$serch_sql1=" where $searchpre"."_name like '%".trim($searchword)."%' ";
+   if($searchword<>'')$serch_sql=" where title like '%".trim($searchword)."%' ";
+   if($searchword<>'')$serch_sql1=" where name like '%".trim($searchword)."%' ";
    break;
    case 2:
-   if($searchword<>'')$serch_sql=" where $searchpre"."_content like '%".trim($searchword)."%' ";
-   if($searchword<>'')$serch_sql1=" where $searchpre"."_content like '%".trim($searchword)."%' ";
+   if($searchword<>'')$serch_sql=" where content like '%".trim($searchword)."%' ";
+   if($searchword<>'')$serch_sql1=" where content like '%".trim($searchword)."%' ";
    break;
-   }   
+   }
+$serch_sql.= "and lang='$lang' "; 
+if($met_member_use==2)$serch_sql.= " and access<=$metinfo_member_type";
+$searchitem="id,title,content,updatetime,filename,hits,imgurls,class1";
+$searchitem1="id,title,content,updatetime,filename,hits,class1";
 switch($met_htmpagename){
 case 0:   
 	$pagename="news";
-    $query = "SELECT * FROM $met_news $serch_sql order by updatetime desc";
+    $query = "SELECT $searchitem FROM $met_news $serch_sql order by updatetime desc";
     $result = $db->query($query);
 	while($list= $db->fetch_array($result)){
 	$filename=$navurl.$class_list[$list[class1]][foldername];
@@ -84,7 +76,7 @@ case 0:
 	}
 	
 	$pagename="product";
-    $query = "SELECT * FROM $met_product $serch_sql order by updatetime desc";
+    $query = "SELECT $searchitem FROM $met_product $serch_sql order by updatetime desc";
     $result = $db->query($query);
 	while($list= $db->fetch_array($result)){
 	$filename=$navurl.$class_list[$list[class1]][foldername];
@@ -93,7 +85,7 @@ case 0:
 	}
 	
 	$pagename="download";
-    $query = "SELECT * FROM $met_download $serch_sql order by updatetime desc";
+    $query = "SELECT $searchitem1 FROM $met_download $serch_sql order by updatetime desc";
     $result = $db->query($query);
 	while($list= $db->fetch_array($result)){
 	$filename=$navurl.$class_list[$list[class1]][foldername];
@@ -102,7 +94,7 @@ case 0:
 	}
     
 	$pagename="img";
-    $query = "SELECT * FROM $met_img $serch_sql order by updatetime desc";
+    $query = "SELECT $searchitem FROM $met_img $serch_sql order by updatetime desc";
     $result = $db->query($query);
 	while($list= $db->fetch_array($result)){
 	$filename=$navurl.$class_list[$list[class1]][foldername];
@@ -113,7 +105,7 @@ break;
 
 case 1:   
 	$pagename="news";
-    $query = "SELECT * FROM $met_news $serch_sql order by updatetime desc";
+    $query = "SELECT $searchitem FROM $met_news $serch_sql order by updatetime desc";
     $result = $db->query($query);
 	while($list= $db->fetch_array($result)){
 	$filename=$navurl.$class_list[$list[class1]][foldername];
@@ -122,7 +114,7 @@ case 1:
 	}
 	
 	$pagename="product";
-    $query = "SELECT * FROM $met_product $serch_sql order by updatetime desc";
+    $query = "SELECT $searchitem FROM $met_product $serch_sql order by updatetime desc";
     $result = $db->query($query);
 	while($list= $db->fetch_array($result)){
 	$filename=$navurl.$class_list[$list[class1]][foldername];
@@ -131,7 +123,7 @@ case 1:
 	}
 	
 	$pagename="download";
-    $query = "SELECT * FROM $met_download $serch_sql order by updatetime desc";
+    $query = "SELECT $searchitem1 FROM $met_download $serch_sql order by updatetime desc";
     $result = $db->query($query);
 	while($list= $db->fetch_array($result)){
 	$filename=$navurl.$class_list[$list[class1]][foldername];
@@ -140,7 +132,7 @@ case 1:
 	}
     
 	$pagename="img";
-    $query = "SELECT * FROM $met_img $serch_sql order by updatetime desc";
+    $query = "SELECT $searchitem FROM $met_img $serch_sql order by updatetime desc";
     $result = $db->query($query);
 	while($list= $db->fetch_array($result)){
 	$filename=$navurl.$class_list[$list[class1]][foldername];
@@ -151,7 +143,7 @@ break;
 
 case 2:   
 	$pagename="news";
-    $query = "SELECT * FROM $met_news $serch_sql order by updatetime desc";
+    $query = "SELECT $searchitem FROM $met_news $serch_sql order by updatetime desc";
     $result = $db->query($query);
 	while($list= $db->fetch_array($result)){
 	$filename=$navurl.$class_list[$list[class1]][foldername];
@@ -160,7 +152,7 @@ case 2:
 	}
 	
 	$pagename="product";
-    $query = "SELECT * FROM $met_product $serch_sql order by updatetime desc";
+    $query = "SELECT $searchitem FROM $met_product $serch_sql order by updatetime desc";
     $result = $db->query($query);
 	while($list= $db->fetch_array($result)){
 	$filename=$navurl.$class_list[$list[class1]][foldername];
@@ -169,7 +161,7 @@ case 2:
 	}
 	
 	$pagename="download";
-    $query = "SELECT * FROM $met_download $serch_sql order by updatetime desc";
+    $query = "SELECT $searchitem1 FROM $met_download $serch_sql order by updatetime desc";
     $result = $db->query($query);
 	while($list= $db->fetch_array($result)){
 	$filename=$navurl.$class_list[$list[class1]][foldername];
@@ -178,7 +170,7 @@ case 2:
 	}
     
 	$pagename="img";
-    $query = "SELECT * FROM $met_img $serch_sql order by updatetime desc";
+    $query = "SELECT $searchitem FROM $met_img $serch_sql order by updatetime desc";
     $result = $db->query($query);
 	while($list= $db->fetch_array($result)){
 	$filename=$navurl.$class_list[$list[class1]][foldername];
@@ -187,32 +179,18 @@ case 2:
 	}
 break;
 }
-	
+	$serch_sql1.=" and lang='$lang' and module=1";
 	$query1 = "SELECT * FROM $met_column $serch_sql1 order by id";
     $result = $db->query($query1);
 	while($list= $db->fetch_array($result)){
-	if($list[module]==1){
-	$url1_c="../".$list[foldername]."/show.php?id=".$list[id];
-	$url2_c="../".$list[foldername]."/".$list[filename].$met_c_htmtype;
-	$url1_e="../".$list[foldername]."/show.php?lang=en&id=".$list[id];
-	$url2_e="../".$list[foldername]."/".$list[filename].$met_e_htmtype;	
-	$url1_o="../".$list[foldername]."/show.php?lang=other&id=".$list[id];
-	$url2_o="../".$list[foldername]."/".$list[filename].$met_o_htmtype;	
-	$list[c_url]=$met_webhtm?$url2_c:$url1_c;
-	$list[e_url]=$met_webhtm?$url2_e:$url1_e;
-	$list[o_url]=$met_webhtm?$url2_o:$url1_o;
-	$list[url]=($lang=="en")?$list[e_url]:(($lang=="other")?$list[o_url]:$list[c_url]);
-	$list[c_title]=get_keyword_str($list[c_name],$searchword,50);
-	$list[c_content]=get_keyword_str($list[c_content],$searchword,68);
-	$list[e_title]=get_keyword_str($list[e_name],$searchword,50);
-	$list[e_content]=get_keyword_str($list[e_content],$searchword,68);
-	$list[o_title]=get_keyword_str($list[o_name],$searchword,50);
-	$list[o_content]=get_keyword_str($list[o_content],$searchword,68);
-	$list[title]=($lang=="en")?$list[e_title]:(($lang=="other")?$list[o_title]:$list[c_title]);
-	$list[content]=($lang=="en")?$list[e_content]:(($lang=="other")?$list[o_content]:$list[c_content]);
+	$url1="../".$list[foldername]."/show.php?lang=".$lang."&id=".$list[id];
+	$url2="../".$list[foldername]."/".$list[filename].$met_htmtype;	
+	$list[url]=$met_webhtm?$url2:$url1;
+	$list[title]=get_keyword_str($list[name],$searchword,50);
+	$list[content]=get_keyword_str($list[content],$searchword,68);
 	$list[updatetime]=$m_now_date;
     $search_list[]=$list;
-    }}
+    }
 
    	$total_count = count($search_list);
     require_once '../include/pager.class.php';
@@ -222,34 +200,30 @@ break;
     $rowset = new Pager($total_count,$list_num,$page);
     $from_record = $rowset->_offset();
 	$searchok=$search_list;
-	$search_list=array_slice($search_list,$from_record,$list_num);
-    $c_page_list = $rowset->link("search.php?class1=$class1&class2=$class2&class3=$class3&c_searchword=".trim($searchword)."&searchtype=$searchtype&page=");		
-    $e_page_list = $rowset->link("search.php?lang=en&class1=$class1&class2=$class2&class3=$class3&e_searchword=".trim($searchword)."&searchtype=$searchtype&page=");	
-	$o_page_list = $rowset->link("search.php?lang=other&class1=$class1&class2=$class2&class3=$class3&o_searchword=".trim($searchword)."&searchtype=$searchtype&page=");
-	$page_list=($lang=="en")?$e_page_list:(($lang=="other")?$o_page_list:$c_page_list);
-	
+	$search_list=array_slice($search_list,$from_record,$list_num);		
+    $page_list = $rowset->link("search.php?lang=$lang&class1=$class1&class2=$class2&class3=$class3&searchword=".trim($searchword)."&searchtype=$searchtype&page=");	
 	$class_info=$class1_info=$class_list[$search_column[id]];
 }else{
     if($class1)$module=0;
-    if(!intval($module)){
-    $class1_info=$class_list[$class1];
+    if(intval($module)){
+      $serch_sql.=" where lang='$lang' ";
+	}else{
+	$class1_info=$class_list[$class1];
 	if(!$class1_info)okinfo('../',$pagelang[noid]);
-	$serch_sql=" where class1=$class1 ";
+	$serch_sql=" where lang='$lang' and class1=$class1 ";
 	if($class2)$serch_sql .= " and class2=$class2";
 	if($class3)$serch_sql .= " and class3=$class3"; 
 	$order_sql=list_order($class1_info[list_order]); 
-	}else{
-	$serch_sql.=" where 1=1 ";
 	}
  switch($searchtype){
    default:
-   if($searchword<>'')$serch_sql.=" and ($searchpre"."_title like '%$searchword%' or $searchpre"."_content like '%$searchword%') ";
+   if($searchword<>'')$serch_sql.=" and (title like '%$searchword%' or content like '%$searchword%') ";
    break;
    case 1:
-   if($searchword<>'')$serch_sql.=" and $searchpre"."_title like '%$searchword%' ";
+   if($searchword<>'')$serch_sql.=" and title like '%$searchword%' ";
    break;
    case 2:
-   if($searchword<>'')$serch_sql.=" and $searchpre"."_content like '%$searchword%' ";
+   if($searchword<>'')$serch_sql.=" and content like '%$searchword%' ";
    break;
   } 
     $module_name=intval($module)?$module:$class1_info[module];
@@ -270,35 +244,21 @@ break;
 	$filenamenow=($met_htmpagename==2)?$filename:($met_htmpagename?date('Ymd',strtotime($list[updatetime])):$modulename[$module_name][1]);
     require 'searchlist.php';
 	}
-	$c_page_list = $rowset->link("search.php?class1=$class1&class2=$class2&class3=$class3&c_searchword=$searchword&searchtype=$searchtype&page=");		
-    $e_page_list = $rowset->link("search.php?lang=en&class1=$class1&class2=$class2&class3=$class3&e_searchword=$searchword&searchtype=$searchtype&page=");	
-    $o_page_list = $rowset->link("search.php?lang=other&class1=$class1&class2=$class2&class3=$class3&o_searchword=$searchword&searchtype=$searchtype&page=");
-    $page_list=($lang=="en")?$e_page_list:(($lang=="other")?$o_page_list:$c_page_list);
+    $page_list = $rowset->link("search.php?lang=$lang&class1=$class1&class2=$class2&class3=$class3&searchword=$searchword&searchtype=$searchtype&page=");
 	$class1_info=$class1?$class_list[$class1]:"";
 	$class2_info=$class2?$class_list[$class2]:"";
     $class3_info=$class3?$class_list[$class3]:"";
     $class_info=intval($module)?$class_list[$search_column[id]]:($class3?$class3_info:($class2?$class2_info:$class1_info));
 	
 }
-
-
 }
 
 if(!count($search_list)){
-$search_list[0][title]="{$lang_SearchInfo5}[<font color=red>$searchword</font>]{$lang_SearchInfo6}";
+$search_list[0][title]="{$lang_SearchInfo3}[<font color=red>$searchword</font>]{$lang_SearchInfo4}";
 $search_list[0][updatetime]=$m_now_date;  
 $search_list[0][url]=$index_url; 
-//兼容1.5
-$search_list[0][c_title]="{$lang_SearchInfo5}[<font color=red>$searchword</font>]{$lang_SearchInfo6}";
-$search_list[0][e_title]="{$lang_SearchInfo5}[<font color=red>$searchword</font>]{$lang_SearchInfo6}";
-$search_list[0][c_url]=$index_url;
-$search_list[0][e_url]=$index_url;
-//兼容1.5
 }
-
-
-
-	 $class_info[name]=($lang=="en")?$class_info[e_name]:(($lang=="other")?$class_info[o_name]:$class_info[c_name]);
+if($class_info[name]=="")$class_info=array('name'=>$lang_search,'url'=>'search.php?lang='.$lang);
      $show[description]=$class_info[description]?$class_info[description]:$met_keywords;
      $show[keywords]=$class_info[keywords]?$class_info[keywords]:$met_keywords;
 	 $met_title=$class_info[name]."--".$met_title;
@@ -320,34 +280,14 @@ global $search_list,$met_img_x,$met_img_y,$lang_Detail;
    $methtml_searchlist.="</ul>\n";
    return $methtml_searchlist;
    }
-
-if($class1=="" || $class1==10000 || $class1==10001 || $class1==$classnow || $class1==0 || $searchword=='' ){
-$nav_x[c_name]="<a href='$class_info[c_url]'>{$class_info[c_name]}</a> > {$lang_SearchInfo3}";
-$nav_x[c_name]="<a href='$class_info[e_url]'>{$class_info[e_name]}</a> > {$lang_SearchInfo3} ";
-$nav_x[name]="<a href='$class_info[url]'>{$class_info[name]}</a> > {$lang_SearchInfo3}";
+if($class1=="" || $class1==10000 || $class1==10001 || $class1==0 || $searchword=='' ){
+$nav_x[name]="<a href='$class_info[url]'>{$class_info[name]}</a> > {$lang_SearchInfo2}";
 }
 if($searchword<>''){
-$nav_x[c_name]=$nav_x[c_name]." > ".$lang_SearchInfo4.$searchword;
-$nav_x[e_name]=$nav_x[e_name]." > ".$lang_SearchInfo4.$searchword;
-$nav_x[name]=$nav_x[name]." > ".$lang_SearchInfo4.$searchword;
+$nav_x[name]=$nav_x[name]."&nbsp&nbsp<font color=red>'".$lang_Keywords.":&nbsp".$searchword."'</font>";
 }
-
-if(file_exists("templates/".$met_skin_user."/e_search.html")){
-   if($lang=="en"){
-     $show[e_description]=$met_e_keywords;
-     $show[e_keywords]=$met_e_keywords;
-     $e_title_keywords=$lang_SearchInfo."--".$met_e_webname;
-     include template('e_search');
-	}else{
-	 $show[c_description]=$met_c_keywords;
-     $show[c_keywords]=$met_c_keywords;
-     $c_title_keywords=$lang_SearchInfo."--".$met_c_webname;
-	 include template('search');
-	 }
-}else{
 include template('search');
-}
 footer();
-# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

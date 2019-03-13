@@ -1,10 +1,7 @@
 <?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 
-# 文件名称:newshtml.inc.php 2009-08-31 08:53:03
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserve
-
-//文章模块输出函数
 function methtml_news($listtype,$type,$topcolor,$titlenum,$desnum,$newwindow=1,$classname=1,$time=1,$news=1,$hot=1,$top=1,$hits=1,$listnav=1,$max){
  global $news_list,$news_list_com,$news_list_img,$news_class,$lang_Colunm,$lang_Hits,$lang_UpdateTime,$lang_Title,$lang_Detail;
  global $met_img_x,$met_img_y;

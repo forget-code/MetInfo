@@ -1,42 +1,29 @@
 <?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 class Captcha
 {
- //验证码位数
  var  $mCheckCodeNum  = 4;
 
- //产生的验证码
   var $mCheckCode   = '';
  
- //验证码的图片
  var $mCheckImage  = '';
 
- //干扰像素
  var$mDisturbColor  = '';
 
- //验证码的图片宽度
   var $mCheckImageWidth = '80';
 
- //验证码的图片宽度
   var $mCheckImageHeight  = '20';
   
-  //字体
+  //font
   var $FNT="../../font/arial.ttf";
 
- /**
- *
- * @输出头
- *
- */
  function OutFileHeader()
  {
   header ("Content-type: image/png");
  }
 
- /**
- *
- * @产生验证码
- *
- */
+
 function CreateCheckCode()
  {
   session_start();
@@ -46,11 +33,7 @@ function CreateCheckCode()
   return $this->mCheckCode;
  }
 
- /**
- *
- * @产生验证码图片
- *
- */
+
  function CreateImage()
  {
   $this->mCheckImage = @imagecreate ($this->mCheckImageWidth,$this->mCheckImageHeight);
@@ -59,8 +42,6 @@ function CreateCheckCode()
  }
 
  /**
- *
- * @设置图片的干扰像素
  *
  */
  function SetDisturbColor()
@@ -74,12 +55,7 @@ function CreateCheckCode()
 
  /**
  *
- * @设置验证码图片的大小
- *
- * @$width  宽
- *
- * @$height 高 
- *
+ * @set image size
  */
 function SetCheckImageWH($width,$height)
  {
@@ -90,9 +66,7 @@ function SetCheckImageWH($width,$height)
  }
 
  /**
- *
- * @在验证码图片上逐个画上验证码
- *
+ * @write code to Image
  */
 function WriteCheckCodeToImage()
  {
@@ -107,7 +81,7 @@ function WriteCheckCodeToImage()
 
  /**
  *
- * @   输出验证码图片
+ * @Out Image
  *
  */
  function OutCheckImage()
@@ -122,7 +96,7 @@ function WriteCheckCodeToImage()
  }
  /**
  *
- * @检查验证码
+ * @chech Code
  *
  */
  function CheckCode($code)
@@ -137,4 +111,6 @@ function WriteCheckCodeToImage()
   }
  } 
 }
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

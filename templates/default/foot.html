@@ -1,10 +1,10 @@
 <!--<?php
-$metfootnav=methtml_footnav('&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;');
+$metfootnav=methtml_footnav('<span>|</span>');
 echo <<<EOT
 -->
-<div class="foot">
-<div class="footnav">{$metfootnav}</div>
-<div class="foottext">
+<div id="footer">
+<div class="nav">{$metfootnav}</div>
+<div class="text">
 {$methtml_foot}
 <!-- 未经商业授权不允许去除 -->
 Powered by <a href="http://www.MetInfo.cn" target="_blank" title="{$lang_Info1}"><b>MetInfo</b></a> $metcms_v &copy;2008-$m_now_year <a href="http://www.MetInfo.cn" target="_blank" title="{$lang_Info3}">www.MetInfo.cn</a>

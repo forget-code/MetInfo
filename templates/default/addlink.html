@@ -2,19 +2,19 @@
 require_once template('head'); 
 echo <<<EOT
 -->
-$fdjs
-<div class="web">
+<div id="web">
+<div class="right">
+   <h3 class="title"><span>{$class_list[$classnow][name]}</span></h3>
+<div class="webcontent">
+$methtml_addlink
+</div>
+</div>
 <!--
 EOT;
 require_once template('webleft'); 
 echo <<<EOT
 -->
-<div class="webcontent">
-$methtml_addlink
-</div>
-</div>
 <div style="clear:both;"></div>
-
 </div>
 <!--
 EOT;

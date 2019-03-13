@@ -1,9 +1,8 @@
 <?php
-# 文件名称:check.php 2009-08-07 08:43:03
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 
-//更新下属二、三级栏目
+//Update the lower category
 
 $columntxt=array(
 				2=>"$met_news",
@@ -15,20 +14,19 @@ $columntxt=array(
 		);
 
 $column_list = $db->get_one("SELECT * FROM $met_column WHERE id='$id'");
-
+$module=$column_list['module'];
 $currentAccess= $column_list['access'];
 
-//增加权限
+//Increase access
 if(intval($currentAccess)<intval($access)) $cond="access < $access";
-//降低权限
+//Reduced access
 if(intval($currentAccess)>intval($access)) $cond="access <= $currentAccess";
 
 if(intval($currentAccess)!=intval($access))
 {
-
 if($classtype==1)
 {
-	//二级栏目
+	//class2
 	$table=$met_column;
 	$query ="update $table SET ".
 				" access='$access' ".
@@ -36,12 +34,14 @@ if($classtype==1)
 				" and $cond";
 	$db->query($query);
 	
-	//三级栏目
+	//class3
+foreach($met_class2[$id] as $key=>$vallist){
 	$query ="update $table SET ".
 				" access='$access' ".
-				" where $cond and bigclass in (select tmp2.id from (SELECT * FROM `met_column` as tmp) as tmp2 WHERE tmp2.bigclass=$id)";	
-
-	$db->query($query);
+				" where bigclass=$vallist[id] and $cond";	
+$db->query($query);
+}
+	
 	if (array_key_exists($module, $columntxt))
 	{		
 		$table=$columntxt[$module];
@@ -56,7 +56,7 @@ if($classtype==1)
 
 if($classtype==2)
 {
-	//三级栏目
+	//class3
 	$table=$met_column;
 	$query ="update $table SET ".
 				" access='$access' ".
@@ -89,6 +89,6 @@ if($classtype==3)
 
 }
 
-# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

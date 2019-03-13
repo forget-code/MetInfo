@@ -1,21 +1,20 @@
 <!--<?php
-# 文件名称:message_editor.html 2009-08-13 08:56:03
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 require_once template('head');
 echo <<<EOT
 -->
-<title>{$lang_messageeditorTitle}</title>
+<title>{$lang_editor}</title>
 </head>
 <body>
-<form  method="POST" name="myform"  action="editor.php?action=editor" target="_self">
+<form  method="POST" name="myform"  action="editor.php?action=editor&lang=$lang" target="_self">
 		<input name="id" type="hidden" value="$id">
 <table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
           <tr> 
-            <td colspan="3" align="center" class="list1_title">{$lang_messageeditorTitle}</td>
+            <td colspan="3" align="center" class="list1_title">{$lang_editor}</td>
           </tr>
           <tr> 
-            <td class="list1_text"><b>{$lang_messageName}</b></td>
+            <td class="list1_text"><b>{$lang_name}</b></td>
             <td colspan="2" class="list1_input">$message_list[name]</td>
           </tr> 
 		   <tr> 
@@ -44,12 +43,22 @@ echo <<<EOT
 			</td>
             <td colspan="2" class="list1_input">$message_list[customerid]</td>
 			</tr> 
+<!--
+EOT;
+if($met_member_use){
+echo <<<EOT
+-->
 			<tr> 
-            <td class="list1_text"><b>{$lang_messageAccess}</b></td>
+            <td class="list1_text"><b>{$lang_access}</b></td>
             <td colspan="2" class="list1_input"><select name="access" id="access" >
              $level
             </select></td>
           </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
 			 <tr> 
             <td class="list1_text"><b>{$lang_messageeditorReply}</b></td>
             <td colspan="2" class="list1_input"><textarea name="useinfo" cols="50" rows="5">$message_list[useinfo]</textarea></td></tr>
@@ -70,6 +79,6 @@ echo <<<EOT
 </html>
 <!--
 EOT;
-# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>-->

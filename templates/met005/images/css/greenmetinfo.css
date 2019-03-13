@@ -330,6 +330,7 @@ div.md div.main_content,.main_bottom div.bright div.main_content,.webleft_conten
 /*留言排版*/
 .mesmin{ border:1px dashed #CCCCCC; }       
 .message_list{ border:2px solid #cde7e9; }
-.message_list_line{ border:1px dashed #CCCCCC; }
-.message_list_reinfo{ border:1px dashed #CCCCCC; }
+.message_list_line{ border-top:1px dashed #CCCCCC; border-left:1px dashed #CCCCCC; border-right:1px dashed #CCCCCC; background-color:#E0E0E0;}
+.message_list_info{ border-left:1px dashed #CCCCCC; border-right:1px dashed #CCCCCC;}
+.message_list_reinfo{ border-bottom:1px dashed #CCCCCC; border-right:1px dashed #CCCCCC; border-left:1px dashed #CCCCCC; margin-bottom:30px; color:#003300; }
 /*------*/

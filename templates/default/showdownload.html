@@ -1,47 +1,28 @@
 <!--<?php
-$navdown="nav_".$class1_info[id];
-if($class_list[$classnow][nav]==1||$class_list[$classnow][nav]==3)$navdown="nav_".$class_list[$classnow][id];
 require_once template('head'); 
 $methits=methtml_hits('download');
-$met_downloadnext=methtml_prenextinfo();
+$metdownload=methtml_showdownload();
+$met_next=methtml_prenextinfo();
 echo <<<EOT
 -->
-<div class="web">
+<div id="web">
+<div class="right">
+   <h3 class="title"><span>{$class_list[$classnow][name]}</span></h3>
+<div class="webcontent">
+<h1 class="title">$download[title]</h1>
+<div class="download_list">
+$metdownload
+</div>
+<div class="text">$download[content]</div>
+<div class="page">$met_next</div>
+<div class="hits">$methits</div>
+</div>
+</div>
 <!--
 EOT;
 require_once template('webleft'); 
 echo <<<EOT
 -->
-<div class="webcontent">
-<h1>$download[title]</h1>
-<div class="download_list">
-<div class="download_list_para">
-<b>{$lang_FileSize}</b>:$download[filesize]<br />
-<!--
-EOT;
-foreach($download_para200 as $key=>$val1){
-$para_no="".$val1[name];
-echo <<<EOT
--->
-<b>$val1[mark]</b>:$download[$para_no]<br />
-<!--
-EOT;
-}
-echo <<<EOT
--->
-</div>
-<div class="download_url"><a href="$download[downloadurl]" target="_blank">{$lang_Download}</a></div>
-</div>
-<div class="pcontent">$download[content]</div>
-<br />$met_downloadnext
-<div class="hits">$methits</div>
-</div>
-
-
-
-
-
-</div>
 <div style="clear:both;"></div>
 
 </div>

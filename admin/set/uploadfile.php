@@ -1,11 +1,9 @@
 <?php
-# 文件名称:uploadfile.php 2009-08-03 16:03:57
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn)). All rights reserved.
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 require_once '../login/login_check.php';
 
-/* 遍历文件夹
- * 用法
+/*
  * foreach (getDir(dirname(__FILE__)) as $dir) {   
  *        echo $dir."<br>";   
  *    } 
@@ -178,7 +176,7 @@ if ( !$this->result )
 { 
 global $lang_setfileno,$file_classnow;
 if($file_classnow==3){
-okinfo('uploadfile.php',$lang_setfileno);
+okinfo('uploadfile.php?lang='.$lang,$lang_setfileno);
 exit; 
 } }
 return $this->result; 
@@ -210,14 +208,14 @@ function deldir($dir) {
 
 
 if($action=='deletefolder'){
-   $returnurl="uploadfile.php";
+   $returnurl="uploadfile.php?lang=".$lang;
    $filedir="../../".$filename;
    deldir($filedir);
-   okinfo($returnurl,$lang_loginUserAdmin);
+   okinfo($returnurl,$lang_jsok);
    }
 
 if($action=='delete'){
-$returnurl="uploadfile.php?fileurl=".$fileurl."&file_classnow=".$file_classnow."&page=".$page;
+$returnurl="uploadfile.php?lang=".$lang."&fileurl=".$fileurl."&file_classnow=".$file_classnow."&page=".$page;
 
 if($action_type=="del"){
 $allidlist=explode(',',$allid);
@@ -225,11 +223,11 @@ $k=count($allidlist)-1;
   for($i=0;$i<$k; $i++){
    if(file_exists($allidlist[$i]))@unlink($allidlist[$i]);
    }
-okinfo($returnurl,$lang_loginUserAdmin);
+okinfo($returnurl,$lang_jsok);
 }else{
   if(file_exists($filename)){
       @unlink($filename);
-	  okinfo($returnurl,$lang_loginUserAdmin);
+	  okinfo($returnurl,$lang_jsok);
 	}else{
 	  okinfo($returnurl,$lang_setfilenourl);
 	}
@@ -270,12 +268,12 @@ $metfile = $metdir->getRESULT();
 $page=$page?$page:1;
 $startnum=($page-1)*$list_num;
 $endnum=$page*$list_num;
-$page_list = $rowset->link("uploadfile.php?fileurl=$fileurl2&file_classnow=$file_classnow&page=");
+$page_list = $rowset->link("uploadfile.php?lang=$lang&fileurl=$fileurl2&file_classnow=$file_classnow&page=");
 $css_url="../templates/".$met_skin."/css";
 $img_url="../templates/".$met_skin."/images";
 include template('uploadfile');
 footer();
 }
-# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

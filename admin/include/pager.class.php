@@ -2,12 +2,12 @@
 
     class Pager
     {
-      var   $_total;                          //记录总数
-      var  $pagesize;                       //每一页显示的记录数
-      var     $pages;                         //总页数
-      var   $_cur_page;                    //当前页码
-      var  $offset;                      //记录偏移量
-      var  $pernum = 10;                //页码偏移量，这里可随意更改
+      var   $_total;                      
+      var  $pagesize;                    
+      var     $pages;                     
+      var   $_cur_page;                   
+      var  $offset;                     
+      var  $pernum = 10;                
     
       function Pager($total,$pagesize,$_cur_page)
         {   
@@ -18,13 +18,13 @@
         $this->cur_page($_cur_page);
     }
     
-    function _pager()//计算总页数
+    function _pager()//total pages
     { 
     return $this->pages = ceil($this->_total/$this->pagesize);
     }
    
    
-     function cur_page($_cur_page) //设置页数
+     function cur_page($_cur_page) //page number
     {     
    	    if (isset($_cur_page)&&$_cur_page!=0)
            {
@@ -32,17 +32,16 @@
            }
            else
            {
-            $this->_cur_page=1; //设置为第一页
+            $this->_cur_page=1; //first page
            }
         return  $this->_cur_page;
    }
    
- //数据库记录偏移量
   function _offset()
    {
    return $this->offset=$this->pagesize*($this->_cur_page-1);
    }
-      //html数字连接的标签
+      //html
  function num_link($tex='?',$url='')
   {
        $setpage  = $this->_cur_page ? ceil($this->_cur_page/$this->pernum) : 1;
@@ -80,29 +79,82 @@
          }
             return $text;
          }
- //html连接的标签 
+ //html 
 function link($url, $exc='')
   {
       global $lang_pageTotal,$lang_pages,$lang_pageLoction,$lang_pageHome,$lang_pageEnd,$lang_pageReturn,$lang_pageNext,$lang_pageGo;
-	 $text="<form method='POST' name='page1'  action='".$url."' target='_self'>";
-     $text.= "$lang_pageTotal<span>$this->pages</span>$lang_pages $lang_pageLoction<span>$this->_cur_page</span>$lang_pages ";
-      if ($this->_cur_page == 1 && $this->pages>1) 
-        {
-            //第一页
-            $text.= "$lang_pageHome $lang_pageReturn <a href=".$url.($this->_cur_page+1).$exc.">$lang_pageNext</a>  <a href=".$url.$this->pages.$exc.">$lang_pageEnd</a>";
-        } 
-        elseif($this->_cur_page == $this->pages && $this->pages>1) 
-        {
-            //最后一页
-             $text.= "<a href=".$url.'1'.$exc.">$lang_pageHome</a> <a href=".$url.($this->_cur_page-1).$exc.">$lang_pageReturn</a> $lang_pageNext $lang_pageEnd";
-        } 
-        elseif ($this->_cur_page > 1 && $this->_cur_page <= $this->pages) 
-        {
-            //中间
-             $text.= "<a href=".$url.'1'.$exc.">$lang_pageHome</a> <a href=".$url.($this->_cur_page-1).$exc.">$lang_pageReturn</a> <a href=".$url.($this->_cur_page+1).$exc.">$lang_pageNext</a>  <a href=".$url.$this->pages.$exc.">$lang_pageEnd</a>";
-        }
+   $text="<form method='POST' name='page1'  action='".$url."' target='_self'>";
+   $text.="<style>";
+   $text.=".digg4 { padding:3px; margin:3px; text-align:center; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px;}";
+   $text.=".digg4  a { border:1px solid #ccdbe4; padding:2px 8px 2px 8px; background-position:50%; margin:2px; color:#0061de; text-decoration:none;}";
+   $text.=".digg4  a:hover { border:1px solid #2b55af; color:#fff; background-color:#3666d4;}";
+   $text.=".digg4  a:active {border:1px solid #000099; color:#000000;}";
+   $text.=".digg4  span.current { padding:2px 8px 2px 8px; margin:2px; color:#000; text-decoration:none;}";
+   $text.=".digg4  span.disabled { border:1px solid #ccdbe4; padding:2px 8px 2px 8px; margin:2px; color:#ddd;}";
+   $text.=" </style>";
+   if($this->pages >12 ){
+     $startnum=floor(($this->_cur_page/10))*10+1;
+	 if(floor(($this->_cur_page/10))==($this->_cur_page/10))$startnum=floor(($this->_cur_page/10))*10+1-10;
+	   if(($this->pages-$startnum)>12){
+	      if($startnum!=1){
+		    $endnum=$startnum+9;
+			$middletext="...";
+			$prepagenow="<a href='".$url.($startnum-1).$exc."' style='font-family: Tahoma, Verdana;'>‹</a>";
+			$nextpagenow="<a href='".$url.($startnum+10).$exc."' style='font-family: Tahoma, Verdana;'>›</a>";
+		   }else{
+			$endnum=$startnum+9;
+			$middletext="...";
+			$prepagenow="<span class='disabled' style='font-family: Tahoma, Verdana;'>‹</span>";
+			$nextpagenow="<a href='".$url.($startnum+10).$exc."' style='font-family: Tahoma, Verdana;'>›</a>";
+		   }
+		 }else{
+		    $prepagenow="<a href='".$url.($startnum-1).$exc."' style='font-family: Tahoma, Verdana;'>‹</a>";
+			$nextpagenow="<span class='disabled' style='font-family: Tahoma, Verdana;'>›</span>";
+		    $endnum=$this->pages-2;
+			$middletext="";
+		  }
+	 }else{
+	   	$startnum=1;
+		$endnum=$this->pages-2;	
+		$middletext="";
+		$prepagenow="<span class='disabled' style='font-family: Tahoma, Verdana;'>‹</span>";
+		$nextpagenow="<span class='disabled' style='font-family: Tahoma, Verdana;'>›</span>";
+	 }
+	  $text.="<div class='digg4'>";
+    if ($this->_cur_page == 1){
+         $text.="<span class='disabled' style='font-family: Tahoma, Verdana;'><b>«</b></span>".$prepagenow;
+		}else{
+		 $text.="<a style='font-family: Tahoma, Verdana;' href=".$url."1".$exc."><b>«</b></a>".$prepagenow;
+		}   
+   for($i=$startnum;$i<=$endnum;$i++){
+	   if($i==$this->_cur_page){
+	    $text.="<span class='current'>".$i."</span>";
+		}else{
+	    $text.=" <a href=".$url.$i.$exc.">".$i."</a> ";
+		}
+	   }   
+        $text.=$middletext;
+ if($this->pages>1){
+	if(($this->pages-1)==$this->_cur_page){
+	     $text.="<span class='current'>".($this->pages-1)."</span>";
+	 }else{
+        $text.=" <a href=".$url.($this->pages-1).$exc.">".($this->pages-1)."</a> ";
+	 }
+	}
+	if($this->pages==$this->_cur_page){
+	     $text.="<span class='current'>".$this->pages."</span>";
+	 }else{
+        $text.=" <a href=".$url.$this->pages.$exc.">".$this->pages."</a> ";
+	 }
+    if ($this->_cur_page == $this->pages){
+         $text.=$nextpagenow."<span class='disabled' style='font-family: Tahoma, Verdana;'><b>»</b></span>";
+		}else{
+		$text.=$nextpagenow."<a style='font-family: Tahoma, Verdana;' href=".$url.$this->pages.$exc."><b>»</b></a>";
+		}  
+
 $text.=" $lang_pageGo<INPUT size='1' name='page_input'>$lang_pages ";
-$text.="<input type='submit' name='Submit3' value=' go ' class='tj'>  </form>";
+$text.="<input type='submit' name='Submit3' value=' go ' class='tj'>  </form>";	
+        $text.="</div>";	
         return $text;
   }
  }

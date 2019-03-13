@@ -1,13 +1,9 @@
 <?php
-# 文件名称:cv.php 2009-08-20 08:23:03
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 require_once 'login_check.php';
-	$serch_sql=" where customerid='$metinfo_member_name' ";
-	$item=$lang=="en"?"e_position":($lang=="other"?"o_position":"c_position");
-    
+	$serch_sql=" where lang='$lang' and customerid='$metinfo_member_name' ";
     $total_count = $db->counter($met_cv, "$serch_sql", "*");
-
     require_once '../include/pager.class.php';
     $page = (int)$page;
 	if($page_input){$page=$page_input;}
@@ -15,10 +11,10 @@ require_once 'login_check.php';
     $rowset = new Pager($total_count,$list_num,$page);
     $from_record = $rowset->_offset();	
 	
-	$query = "SELECT * FROM $met_job";
+	$query = "SELECT * FROM $met_job where lang='$lang'";
     $result = $db->query($query);
 	while($list = $db->fetch_array($result)){
-	$job_list[$list[id]]=$list[$item];
+	$job_list[$list[id]]=$list[position];
 	}
     $query = "SELECT id,jobid,addtime,customerid,readok FROM $met_cv $serch_sql order by addtime desc LIMIT $from_record, $list_num";
 
@@ -36,6 +32,6 @@ $css_url="templates/".$met_skin."/css";
 $img_url="templates/".$met_skin."/images";
 include templatemember('cv');
 footermember();
-# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

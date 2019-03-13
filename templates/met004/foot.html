@@ -1,5 +1,18 @@
 <!--<?php
 $metfootnav=methtml_footnav(' | ');
+$metrightnav=methtml_classlist('1');
+if($classnow!=10001 and $class_list[$classnow][module]!=11 ){
+echo <<<EOT
+-->
+<div class="webright">
+<div class="nav_x1">$class1_info[name] </div>
+<div class="navright">$metrightnav</div>
+$met_online
+</div>
+</div>
+<!--
+EOT;
+}
 echo <<<EOT
 -->
 <div class="foot">

@@ -1,13 +1,20 @@
 <?php
-# 文件名称:save.php 2009-08-15 16:34:57
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 $admin_power="metinfo";
 require_once '../login/login_check.php';
 $admin_ok = 1;
 $admin_issueok=0;
 if($admin_issue=="yes")$admin_issueok=1;
 $admin_op=$admin_op0."-".$admin_op1."-".$admin_op2."-".$admin_op3;
+if($langok<>'metinfo'){
+foreach($met_langok as $key=>$val){
+$langvalue="langok_".$val[mark];
+if($$langvalue<>"")$langok.="-".$$langvalue;
+}
+$langok.="-";
+}
+if($langok=="-" or $langok=="")$langok='metinfo';
 if($admin_pop=="yes"){
 $admin_type="metinfo";}
 else{
@@ -41,15 +48,20 @@ else{
   $admin_pop="admin_pop".$i;
   if($$admin_pop!="")$admin_type.=$$admin_pop."-";
   }
-  
-  
-$query = "select * from $met_column where bigclass=0 order by no_order";
-$result = $db->query($query);
-while($list = $db->fetch_array($result)){$column_list[]=$list;}
-foreach($column_list as $key=>$val){
-$column_pop="admin_pop".$val[id];
-if($$column_pop!="")$admin_type=$admin_type."-".$$column_pop;
-}
+  if(count($met_module[7])){
+ $admin_pop="admin_pop".$met_module[7][0][id];
+ if($$admin_pop!="")$admin_type.=$$admin_pop."-";
+ }
+   if(count($met_module[8])){
+ $admin_pop="admin_pop".$met_module[8][0][id];
+ if($$admin_pop!="")$admin_type.=$$admin_pop."-";
+ }
+foreach($met_classindex as $key=>$val){
+ foreach($val as $key=>$val1){
+ if($val1[module]<7){
+$admin_pop="admin_pop".$val1[id];
+if($$admin_pop!="")$admin_type=$admin_type."-".$$admin_pop;
+}}}
 }
 if($action=="add"){
 $admin_if=$db->get_one("SELECT * FROM $met_admin_table WHERE admin_id='$useid'");
@@ -75,9 +87,10 @@ $pass1=md5($pass1);
 					  admin_issueok      = '$admin_issueok',
 					  admin_op           = '$admin_op',
 					  usertype           = '3',
-					  admin_ok           = '$admin_ok'";
+					  admin_ok           = '$admin_ok',
+					  langok             = '$langok'";
          $db->query($query);
-okinfo('index.php',$lang_loginUserAdmin);
+okinfo('index.php?lang='.$lang,$lang_jsok);
 }
 
 if($action=="editor"){
@@ -96,6 +109,7 @@ $query = "update $met_admin_table SET
 					  admin_approval_date= '$m_now_date',
 					  admin_ok           = '$admin_ok'";
 if($editorpass!=1){
+$query .=",  langok             = '$langok'";
 $query .=", admin_type          = '$admin_type'";
 $query .=", admin_issueok      = '$admin_issueok'";
 $query .=", admin_op           = '$admin_op'";
@@ -107,13 +121,13 @@ $query .=", admin_pass         = '$pass1'";
 $query .="  where id='$id'";
 $db->query($query);
 if($editorpass!=1){
-okinfo('index.php',$lang_loginUserAdmin);
+okinfo('index.php?lang='.$lang,$lang_jsok);
 }
 else
 {
-okinfo('editor_pass.php?id='.$id,$lang_loginUserAdmin);
+okinfo('editor_pass.php?lang='.$lang.'&id='.$id,$lang_jsok);
 }
 }
-# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

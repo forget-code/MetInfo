@@ -1,14 +1,11 @@
 <?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 
-# 文件名称:downloadhtml.inc.php 2009-09-11 08:53:03
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserve
-
-
-//下载模块输出函数
+//download list
 function methtml_download($type,$titlenum,$downurl=1,$filesize=1,$paranum,$detail,$time,$hits,$newwindow=1,$desription,$desnum,$classname,$news,$hot,$top,$listnav=0,$max,$topcolor){
  global $download_list,$download_list_com,$download_list_img,$download_class,$lang_Colunm,$lang_Hits,$lang_UpdateTime,$lang_Title,$lang_Detail,$lang_FileSize,$lang_Download;
- global $download_para,$download_para200,$addfeedback_url,$met_submit_type,$met_download_page;
+ global $download_paralist,$addfeedback_url,$met_submit_type,$met_download_page;
  global $class1,$class2,$class3,$nav_list2,$nav_list3,$class_list,$module_list1,$search;
  $listarray=($type=='new')?$download_list_new:(($type=='com')?$download_list_com:$download_list);
  $listtext.="<ul>\n";
@@ -18,10 +15,10 @@ function methtml_download($type,$titlenum,$downurl=1,$filesize=1,$paranum,$detai
 	$listtext.="<span class='info_title'>".$lang_Title."</span>";
 	if($filesize==1)$listtext.="<span class='info_filesize'>".$lang_FileSize."</span>";
     $i=0;
-  foreach($download_para200 as $key=>$val1){
+  foreach($download_paralist as $key=>$val1){
     $i++;
 	if($i>$paranum)break;
-    $listtext.="<span class='info_para".$i."'>".$val1[mark]."</span>";
+    $listtext.="<span class='info_para".$i."'>".$val1[name]."</span>";
    }
     if($hits==1)$listtext.="<span class='info_hits'>".$lang_Hits."</span>";
 	if($time==1)$listtext.="<span class='info_updatetime'>".$lang_UpdateTime."</span>";
@@ -44,10 +41,11 @@ function methtml_download($type,$titlenum,$downurl=1,$filesize=1,$paranum,$detai
  if($listnav!=1)$listtext.="<b>".$lang_FileSize."</b>:";
  $listtext.=$val[filesize]."KB</span>";
  $j=0;
- foreach($download_para200 as $key=>$val1){
+ foreach($download_paralist as $key=>$val1){
  $j++;
  if($j>$paranum)break;
-    $listtext.="<span class='info_para".$j."' >".$val[$val1[name]]."</span>";
+   if($listnav!=1)$listtext.="<b>".$val1[name]."</b>:"; 
+    $listtext.="<span class='info_para".$j."' >".$val[$val1[para]]."</span>";
   }
  if($hits==1)$listtext.="<span class='info_hits' >";
  if($listnav!=1)$listtext.="<b>".$lang_Hits."</b>:"; 
@@ -71,44 +69,57 @@ function methtml_download($type,$titlenum,$downurl=1,$filesize=1,$paranum,$detai
  return $listtext;
  }
 
-function methtml_showdownload($type,$desription){
+function methtml_showdownload($type,$desription,$imgtype=1){
  global $download,$lang_Colunm,$lang_Hits,$lang_UpdateTime,$lang_Title,$lang_Detail,$lang_Download;
- global $download_para,$download_para200,$met_url,$download_paraimg,$lang_FileSize;
+ global $download_paralist,$downloadpara,$met_url,$download_paraimg,$lang_FileSize;
 if($type=='all' or $type==''){
  $j=0;
  $k=0;
  $listtext.="<ul>\n";
- $listtext.="<span class='info_filesize'><b>".$lang_FileSize."</b>:".$download[filesize]."</span>";
- foreach($download_para as $key=>$val){
-   if($val[maxsize]==200){
+ $listtext.="<li class='info_filesize'><b>".$lang_FileSize."</b>:".$download[filesize]."</li>";
+ foreach($download_paralist as $key=>$val){
      $j++;
-    $listtext.="<li class='info_para".$j."' ><b>".$val[mark].":</b>".$download[$val[name]]."</li>";
-   }elseif($val[maxsize]!=255){
-     $k++;
-    $listtext.="<li class='info_bigpara".$k."' ><b>".$val[mark].":</b>".$download[$val[name]]."</li>";
+    $listtext.="<li class='info_para".$j."' ><b>".$val[name].":</b>".$download[$val[para]]."</li>";
+ }
+ foreach($downloadpara[3] as $key=>$val){  
+    $k++;
+    $listtext.="<li class='info_bigpara".$k."' ><b>".$val[name].":</b>".$download[$val[para]]."</li>";
    }
-  }
   $listtext.="</ul>\n"; 
  if($desription==1 && $download[description]){
  $listtext.="<span class='info_description' >".$download[description]."</span>"; 
  }
  $listtext.="<span class='info_download'><a href='".$download[downloadurl]."' target='_blank'>".$lang_Download."</a></span>";
- 
+if($imgtype){
+    $i=0;
+  foreach($downloadpara[5] as $key=>$val){  
+    $i++;
+    $listtext.="<li class='info_download".$i."' ><b>".$val[name].":</b><a href='".$download[$val[para]]."' target='_blank'>".$val[name]."</a></li>";
+   }
+   }
 }elseif($type=='para'){
  $j=0;
  $k=0;
  $listtext.="<ul>\n";
- foreach($download_para as $key=>$val){
-   if($val[maxsize]==200){
+ foreach($download_paralist as $key=>$val){
      $j++;
-    $listtext.="<li class='info_para".$j."' ><b>".$val[mark].":</b>".$download[$val[name]]."</li>";
-   }elseif($val[maxsize]!=255){
-     $k++;
-    $listtext.="<li class='info_bigpara".$k."' ><b>".$val[mark].":</b>".$download[$val[name]]."</li>";
+    $listtext.="<li class='info_para".$j."' ><b>".$val[name].":</b>".$download[$val[para]]."</li>";
+ }
+ foreach($downloadpara[3] as $key=>$val){  
+    $k++;
+    $listtext.="<li class='info_bigpara".$k."' ><b>".$val[name].":</b>".$download[$val[para]]."</li>";
    }
-  }
   $listtext.="</ul>\n"; 
+ if($imgtype){
+    $i=0;
+  foreach($downloadpara[5] as $key=>$val){  
+    $i++;
+    $listtext.="<li class='info_download".$i."' ><b>".$val[name].":</b><a href='".$download[$val[para]]."' target='_blank'>".$val[name]."</a></li>";
+   }
+   }
 } 
   return $listtext;
 }
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

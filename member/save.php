@@ -1,13 +1,12 @@
 <?php
-# 文件名称:save.php 2009-08-17 10:11:57
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 
 require_once '../include/common.inc.php';
 
 if($action=="add"){
 
-	//登陆验证码判断
+	//code
      if($met_memberlogin_code==1){
          require_once 'captcha.class.php';
          $Captcha= new  Captcha();
@@ -51,7 +50,6 @@ $check=md5($timestamp);
 $met_webnamearray=explode('--Powered by MetInfo',$met_webname);
 $met_webname1=$met_webnamearray[0];
 $title=$met_webname1.$lang_js16;
-$met_memberemail=($lang=="en")?$met_e_memberemail:(($lang=="other")?$met_o_memberemail:$met_c_memberemail);
 $body="$yhid,<br><br> {$met_memberemail}<br><br><b>{$lang_js17}</b>{$lang_js18}[<a href='{$met_weburl}member/register_include.php?username=$yhid&code=$check&lang=$lang'>{$lang_js16} {$met_weburl}member/register_include.php?username=$yhid&code=$check&lang=$lang</a>] {$lang_js19}<br><div align='right'>$fromname</div> ";
 jmailsend($from,$fromname,$to,$title,$body,$usename,$usepassword,$smtp);
 }
@@ -69,6 +67,7 @@ $pass1=md5($mm);
 					  companyfax	     = '$companyfax',
 					  companycode	     = '$yzbm',
 					  companywebsite     = '$wz',
+					  lang               = '$lang',
 					  checkid            = '$checkid'";
          $db->query($query);
 if($met_member_login==2)
@@ -112,6 +111,6 @@ $query .="  where admin_id='$useid'";
 $db->query($query);
 okinfo('basic.php?lang='.$lang,$lang_js21);
 }
-# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

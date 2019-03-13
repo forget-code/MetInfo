@@ -1,7 +1,6 @@
 <?php
-# 文件名称:cv_editor.php 2009-08-13 14:13:13
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 require_once '../login/login_check.php';
 include_once("../../fckeditor/fckeditor.php");
 
@@ -11,20 +10,18 @@ $query = "update $met_cv SET
 $db->query($query);
 $cv_list=$db->get_one("select * from $met_cv where id='$id'");
 if(!$cv_list){
-okinfo('cv.php',$lang_loginNoid);
+okinfo('cv.php?lang='.$lang,$lang_dataerror);
 }
-$query = "SELECT * FROM $met_parameter where use_ok='1' and type=10000 order by no_order";
+$query = "SELECT * FROM $met_parameter where lang='$lang' and module=6  order by no_order";
 $result = $db->query($query);
 while($list= $db->fetch_array($result)){
-$tmp=intval($list[id])-46;
-$para="para".$tmp;
-if($list[maxsize]==255)
+$value_list=$db->get_one("select * from $met_plist where paraid=$list[id] and listid=$id ");
+if($list[type]==5)
 {
-	$cv_list[$para]="<a href='../../upload/file/$cv_list[$para]'>$cv_list[$para]</a>";
+	$value_list[info]="<a href='../$value_list[info]'>$value_list[info]</a>";
 }
 
-$list[content]=$cv_list[$para];
-$list[mark]=$langusenow=="en"?$list['e_mark']:($langusenow=="other"?$list['o_mark']:$list['c_mark']);
+$list[content]=$value_list[info];
 $cv_para[]=$list;
 }
 
@@ -32,6 +29,6 @@ $css_url="../templates/".$met_skin."/css";
 $img_url="../templates/".$met_skin."/images";
 include template('cv_editor');
 footer();
-# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

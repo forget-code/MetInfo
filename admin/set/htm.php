@@ -1,190 +1,171 @@
 <?php
-# 文件名称:htm.php 2009-08-07 16:01:57
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn)). All rights reserved.
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+set_time_limit(0);
 require_once '../login/login_check.php';
 if($met_webhtm!=0){
-
 if($action=="all"){
 
  indexhtm(1);
-
-    $query="select * from $met_column where bigclass='0' and if_in='0' order by id";
-	$result= $db->query($query);
-	while($list = $db->fetch_array($result)){
-	$class1_list[]=$list;
-	}
-foreach($class1_list as $key=>$val){
-  $class1=$val[id];
- if($val[module]==1){
-     $query="select * from $met_column where bigclass='$val[id]'";
-	 $result= $db->query($query);
-	 $i=0;
-	 while($list = $db->fetch_array($result)){
-	 $i++;
-	 $class_list[]=$list;
-	 }
-	 if($val[isshow])$class_list[$i]=$val;
-
-     foreach($class_list as $key=>$val1){
-     showhtm($val1[id],1);
-     }
-	 unset($class_list);
-     }
- if($val[module]>=2 && $val[module]<=5){
-    
-    $query="select * from $met_column where module='$val[module]'";
-	$result= $db->query($query);
-	while($list = $db->fetch_array($result)){
-	$class_list[]=$list;
-	}
-     foreach($class_list as $key=>$val1){
-	 switch($val1[classtype]){
-	 case 1;
-	 if($val1[id]==$class1)listhtm($val1[id],0,0,$val1[foldername],$val1[module],$val1[classtype],1);
-	 break;
-	 case 2;
-	  if($val1[bigclass]==$class1){
-	  $class3ok=$class3ok."-".$val1[id]."-";
-	  listhtm($val1[bigclass],$val1[id],0,$val1[foldername],$val1[module],$val1[classtype],1);
+//module 1
+ foreach($met_classindex[1] as $key=>$val){
+     if($val[isshow])showhtm($val[id],1);
+	  foreach($met_class22[$val[id]] as $key=>$val2){
+	    if($val2[isshow])showhtm($val2[id],1);
+		  foreach($met_class3[$val2[id]] as $key=>$val3){
+		    if($val3[isshow])showhtm($val3[id],1);
+		  }
 	  }
-	 break;
-	 case 3;
-	 if(strstr($class3ok,"-".$val1[bigclass]."-"))listhtm($class1,$val1[bigclass],$val1[id],$val1[foldername],$val1[module],$val1[classtype],1);
-	 break;
-     }}
-	 unset($class_list);
-	 unset($class3ok);
-   
-	switch($val[module]){
-	case 2;
-	$tablename=$met_news;
-	$filename='shownews';
-	break;
-	case 3;
-	$tablename=$met_product;
-	$filename='showproduct';
-	break;
-	case 4;
-	$tablename=$met_download;
-	$filename='showdownload';
-	break;
-	case 5;
-	$tablename=$met_img;
-	$filename='showimg';
-	break;
-	}
-    $query="select * from $tablename where class1='$val[id]'";
+ }
+ 
+ //module 2
+ foreach($met_classindex[2] as $key=>$val){
+     classhtm($val[id],0,0,1);
+	  foreach($met_class22[$val[id]] as $key=>$val2){
+	     classhtm($val[id],$val2[id],0,1,2);
+	      foreach($met_class3[$val2[id]] as $key=>$val3){
+		   classhtm($val[id],$val2[id],$val3[id],1,3);
+	      }
+		 }
+	$query="select * from $met_news where class1='$val[id]' and lang='$lang'";
 	$result= $db->query($query);
-	while($list = $db->fetch_array($result)){
-	$class_list[]=$list;
+	 while($list = $db->fetch_array($result)){
+	 contenthtm($val[id],$list[id],'shownews',$list[filename],1,$val[foldername],$list[updatetime]);
 	}
-     foreach($class_list as $key=>$val1){
-     contenthtm($val[id],$val1[id],$filename,1,$val[foldername],$val1[updatetime]);
-      }
-	unset($class_list);
-  }
-
-if($val[module]==6){
-     classhtm($class1,0,0,1);
-    $query="select * from $met_job";
+ }
+ //module 3
+ foreach($met_classindex[3] as $key=>$val){
+     classhtm($val[id],0,0,1);
+	  foreach($met_class22[$val[id]] as $key=>$val2){
+	     classhtm($val[id],$val2[id],0,1,2);
+	      foreach($met_class3[$val2[id]] as $key=>$val3){
+		   classhtm($val[id],$val2[id],$val3[id],1,3);
+	      }
+		 }
+	$query="select * from $met_product where class1='$val[id]' and lang='$lang'";
 	$result= $db->query($query);
-	while($list = $db->fetch_array($result)){
-	$class_list[]=$list;
+	 while($list = $db->fetch_array($result)){
+	 contenthtm($val[id],$list[id],'showproduct',$list[filename],1,$val[foldername],$list[updatetime]);
 	}
-     foreach($class_list as $key=>$val1){
-     contenthtm($class1,$val1[id],'showjob',1,'job',$val1[addtime]);
-     }
-	 onepagehtm('job','cv',1); 
-	 unset($class_list);
-}
+ }
+ 
+ //module 4
+ foreach($met_classindex[4] as $key=>$val){
+     classhtm($val[id],0,0,1);
+	  foreach($met_class22[$val[id]] as $key=>$val2){
+	     classhtm($val[id],$val2[id],0,1,2);
+	      foreach($met_class3[$val2[id]] as $key=>$val3){
+		   classhtm($val[id],$val2[id],$val3[id],1,3);
+	      }
+		 }
+	$query="select * from $met_download where class1='$val[id]' and lang='$lang'";
+	$result= $db->query($query);
+	 while($list = $db->fetch_array($result)){
+	 contenthtm($val[id],$list[id],'showdownload',$list[filename],1,$val[foldername],$list[updatetime]);
+	}
+ }
+ 
+ //module 5
+ foreach($met_classindex[5] as $key=>$val){
+     classhtm($val[id],0,0,1);
+	  foreach($met_class22[$val[id]] as $key=>$val2){
+	     classhtm($val[id],$val2[id],0,1,2);
+	      foreach($met_class3[$val2[id]] as $key=>$val3){
+		   classhtm($val[id],$val2[id],$val3[id],1,3);
+	      }
+		 }
+	$query="select * from $met_img where class1='$val[id]' and lang='$lang'";
+	$result= $db->query($query);
+	 while($list = $db->fetch_array($result)){
+	 contenthtm($val[id],$list[id],'showimg',$list[filename],1,$val[foldername],$list[updatetime]);
+	}
+ }
 
-if($val[module]==7){
+ //module 6
+ foreach($met_classindex[6] as $key=>$val){
+    classhtm($val[id],0,0,1);
+	onepagehtm('job','cv',1); 
+	$query="select * from $met_job where lang='$lang'";
+	$result= $db->query($query);
+	 while($list = $db->fetch_array($result)){
+	 contenthtm($val[id],$list[id],'showjob',$list[filename],1,$val[foldername],$list[updatetime]);
+	}
+ }
+ 
+ //module 7
+if(count($met_module[7])){
  classhtm('message',0,0,1);
  onepagehtm('message','message',1); 
 }
 
-if($val[module]==8){
+ //module 8
+if(count($met_module[8])){
  onepagehtm('feedback','index',1);
 }
 
-if($val[module]==9){
+ //module 9
+if(count($met_module[9])){
 onepagehtm('link','index',1);
 onepagehtm('link','addlink',1);
 }
-
- }
- 
-if($met_member_use!=0){
+ //module 10 
+if($met_member_use and count($met_module[10])){
 onepagehtm('member','index',1);
 onepagehtm('member','login',1);
 onepagehtm('member','register',1);
 }
 
+ //module 12 
+if(count($met_module[12])){
 onepagehtm('sitemap','sitemap',1);
-
-okinfo('htm.php',$lang_htm);
-
+}
+okinfo('htm.php?lang='.$lang,$lang_htm);
 }else{
 
-if($index=="index"){indexhtm(1); okinfo('htm.php',$lang_htm);}
+if($index=="index"){indexhtm(1); okinfo('htm.php?lang='.$lang,$lang_htm);}
 
 if($module==1){
-    $folder=$db->get_one("select * from $met_column where id='$class1'");
-    $query="select * from $met_column where bigclass='$class1'";
-	$result= $db->query($query);
-	$i=0;
-	while($list = $db->fetch_array($result)){
-	$i++;
-	$class_list[]=$list;
-	}
-	if($folder[isshow])$class_list[$i]=$folder;
 
-foreach($class_list as $key=>$val){
-showhtm($val[id],1);
+    $folder=$met_class[$class1];
+	if($folder[isshow])showhtm($class1,1);
+
+foreach($met_class22[$class1] as $key=>$val){
+    showhtm($val[id],1);
+    foreach($met_class3[$val[id]] as $key=>$val1){
+    showhtm($val1[id],1);
+	 }
 }
 
-okinfo('htm.php',$lang_htm);
+okinfo('htm.php?lang='.$lang,$lang_htm);
 }
-
 if($module>=2 && $module<=5){
-  if($list=="all"){
-    $query="select * from $met_column where module='$module'";
-	$result= $db->query($query);
-	while($list = $db->fetch_array($result)){
-	$class_list[]=$list;
-	}
-     foreach($class_list as $key=>$val){
-	 switch($val[classtype]){
-	 case 1;
-	 if($val[id]==$class1)listhtm($val[id],0,0,$val[foldername],$val[module],$val[classtype],1);
-	 break;
-	 case 2;
-	  if($val[bigclass]==$class1){
-	  $class3ok=$class3ok."-".$val[id]."-";
-	  listhtm($val[bigclass],$val[id],0,$val[foldername],$val[module],$val[classtype],1);
-	  }
-	 break;
-	 case 3;
-	 if(strstr($class3ok,"-".$val[bigclass]."-"))listhtm($class1,$val[bigclass],$val[id],$val[foldername],$val[module],$val[classtype],1);
-	 break;
-     }}
+  if($listall=="all"){
+  if($met_class[$class1][releclass]){
+     classhtm($class1,0,0,1);
   }else{
-    $folder=$db->get_one("select * from $met_column where id='$class1'");
+    classhtm($class1,0,0,1);
+	  foreach($met_class22[$class1] as $key=>$val){
+	     classhtm($class1,$val[id],0,1,2);
+	      foreach($met_class3[$val[id]] as $key=>$val3){
+		   classhtm($class1,$val[id],$val3[id],1,3);
+	      }
+		 }
+	 }
+  }else{
 	switch($module){
-	case 2;
+	case 2:
 	$tablename=$met_news;
 	$filename='shownews';
 	break;
-	case 3;
+	case 3:
 	$tablename=$met_product;
 	$filename='showproduct';
 	break;
-	case 4;
+	case 4:
 	$tablename=$met_download;
 	$filename='showdownload';
 	break;
-	case 5;
+	case 5:
 	$tablename=$met_img;
 	$filename='showimg';
 	break;
@@ -192,77 +173,68 @@ if($module>=2 && $module<=5){
     $query="select * from $tablename where class1='$class1'";
 	$result= $db->query($query);
 	while($list = $db->fetch_array($result)){
-	$class_list[]=$list;
+	contenthtm($class1,$list[id],$filename,$list[filename],1,$met_class[$class1][foldername],$list[updatetime]);
 	}
-     foreach($class_list as $key=>$val){
-     contenthtm($class1,$val[id],$filename,1,$folder[foldername],$val[updatetime]);
-      }
    }
-okinfo('htm.php',$lang_htm);
+
+okinfo('htm.php?lang='.$lang,$lang_htm);
 }
 
 if($module==6){
-if($list=="all"){
+if($listall=="all"){
  classhtm($class1,0,0,1);
  }else{
-    $query="select * from $met_job";
+    $query="select * from $met_job where lang='$lang'";
 	$result= $db->query($query);
 	while($list = $db->fetch_array($result)){
-	$class_list[]=$list;
+	contenthtm($class1,$list[id],'showjob',$list[filename],1,'job',$list[addtime]);
 	}
-     foreach($class_list as $key=>$val){
-     contenthtm($class1,$val[id],'showjob',1,'job',$val[addtime]);
-     }
 onepagehtm('job','cv',1);
 }
-okinfo('htm.php',$lang_htm);
+okinfo('htm.php?lang='.$lang,$lang_htm);
 }
 
 if($module==7){
-if($list=="all"){
+if($listall=="all"){
  classhtm('message',0,0,1);
  }else{
  onepagehtm('message','message',1); 
 }
-okinfo('htm.php',$lang_htm);
+okinfo('htm.php?lang='.$lang,$lang_htm);
 }
 
 if($module==8){
  onepagehtm('feedback','index',1);
-okinfo('htm.php',$lang_htm);
+okinfo('htm.php?lang='.$lang,$lang_htm);
 }
 
 if($module==9){
 onepagehtm('link','index',1);
 onepagehtm('link','addlink',1);
-okinfo('htm.php',$lang_htm);
+okinfo('htm.php?lang='.$lang,$lang_htm);
 }
 
 if($class1=='login'&&$met_member_use!=0){
 onepagehtm('member','index',1);
 onepagehtm('member','login',1);
 onepagehtm('member','register',1);
-okinfo('htm.php',$lang_htm);
+okinfo('htm.php?lang='.$lang,$lang_htm);
 }
 
 if($action=='sitemap'){
 onepagehtm('sitemap','sitemap',1);
-okinfo('htm.php',$lang_htm);
+okinfo('htm.php?lang='.$lang,$lang_htm);
 }
 
 }
-$query="select * from $met_column where bigclass='0' and if_in='0' order by no_order";
-	$result= $db->query($query);
-	while($list = $db->fetch_array($result)){
-	$class_list[]=$list;
-	}
+
 $css_url="../templates/".$met_skin."/css";
 $img_url="../templates/".$met_skin."/images";
 include template('htm');
 footer();
 }else{
-okinfo('sethtm.php',$lang_htmIf);
+okinfo('sethtm.php?lang='.$lang,$lang_htmIf);
 }
-# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

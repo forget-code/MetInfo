@@ -1,7 +1,6 @@
 <!--<?php
-# 文件名称:online.html 2009-08-15 14:34:57
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. .
 require_once template('head');
 echo <<<EOT
 -->
@@ -14,7 +13,7 @@ echo <<<EOT
             <td colspan="9" align="center" class="list1_title">{$lang_onlineTitle}</td>
           </tr> 
 		  <tr>
-            <td class="list1_text_title" colspan="9" align="left">&nbsp;&nbsp;<a href="add.php">{$lang_onlineAdd}</a></td>
+            <td class="list1_text_title" colspan="9" align="left">&nbsp;&nbsp;<a href="content.php?lang=$lang&action=add">{$lang_onlineAdd}</a></td>
           </tr>  
               <tr>
                 <td class="list1_lm"   align="center">{$lang_selected}</td>
@@ -27,7 +26,7 @@ echo <<<EOT
 				<td class="list1_lm"  align="center" >SKYPE</td>
 				<td class="list1_lm"  align="center" >{$lang_operate}</td>
               </tr>
-			  <form name="del" method="Post" action="delete.php?class1=$class1" onSubmit="return ConfirmDelall();">
+			  <form name="del" method="Post" action="delete.php?lang=$lang&class1=$class1" onSubmit="return ConfirmDelall();">
 <!--
 EOT;
 foreach ($online_list as $key=>$val){
@@ -42,7 +41,7 @@ echo <<<EOT
                 <td class="list1_content" align="center">$val[taobao]</td>
                 <td class="list1_content" align="center">$val[alibaba]</td>
 				<td class="list1_content" align="center">$val[skype]</td>
-				<td align="center" class="list1_content" style="color:#0066FF;"></a> <a href="editor.php?id=$val[id]" >{$lang_editor}</a> | <a href="delete.php?id=$val[id]" onClick="return ConfirmDel();" >{$lang_delete}</a></td>
+				<td align="center" class="list1_content" style="color:#0066FF;"></a> <a href="content.php?action=editor&lang=$lang&id=$val[id]" >{$lang_editor}</a> | <a href="delete.php?lang=$lang&id=$val[id]" onClick="return ConfirmDel();" >{$lang_delete}</a></td>
               </tr>
 <!--
 EOT;
@@ -60,8 +59,8 @@ echo <<<EOT
           </tr>
 		  <tr>
             <td class="input_search" align="left" colspan="9">
-			<form method="POST" name="myform"  action="index.php?search=detail_search" target="_self">
-			       <b>{$lang_onlineSearchByName}：</b> 
+			<form method="POST" name="myform"  action="index.php?search=detail_search&lang=$lang" target="_self">
+			       <b>{$lang_onlineSearchByName}</b> 
 			    <input name="name" type="text" size="30">
   <input type="submit" name="Submit2" value="{$lang_search}" class="tj" style="color:#333333;">  
 	        {$lang_onlineTip1}</form></td>
@@ -77,6 +76,6 @@ echo <<<EOT
 </html>
 <!--
 EOT;
-# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.ed.
 ?>-->

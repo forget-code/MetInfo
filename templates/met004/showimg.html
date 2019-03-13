@@ -2,6 +2,7 @@
 require_once template('head'); 
 $met_img=methtml_showimg('all');
 $methits=methtml_hits('img');
+$methtml_prenextinfo=methtml_prenextinfo();
 echo <<<EOT
 -->
 <div class="web">
@@ -17,14 +18,7 @@ $met_img
 <div class="content">$img[content]</div>
 
 <div class="hits">$methits</div>
-
-</div>
-</div>
-
-<div class="webright">
-<div class="nav_x">&nbsp;<img src="$img_url/right.gif" />&nbsp;$class1_info[name]</div>
-<div class="navright">$navlist_y1</div>
-$met_online
+<div class="prenext">$methtml_prenextinfo</div>
 </div>
 </div>
 <!--

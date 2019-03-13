@@ -1,39 +1,33 @@
 <!--<?php
-$navdown="nav_".$class1_info[id];
 require_once template('head'); 
 echo <<<EOT
 -->
-<div class="web">
-<!--
-EOT;
-require_once template('webleft'); 
-echo <<<EOT
--->
+<div id="web">
+<div class="right">
+   <h3 class="title"><span>{$class_list[$classnow][name]}</span></h3>
 <div class="webcontent">
+					    <dl class="job-list">
+						 <dt><span>{$lang_cvtitle}</span><span>{$lang_Detail}</span><span>{$lang_AddDate}</span><span>{$lang_WorkPlace}</span><span>{$lang_PersonNumber}</span>{$lang_Position}</dt>
 <!--
 EOT;
 foreach($job_list as $key=>$val){
 echo <<<EOT
 -->
-<div class="job_list">
-<div class="job_list_title">
-{$lang_Position}：<a href="$val[url]" target="_blank"><b>$val[position]</b></a>&nbsp;&nbsp;&nbsp;&nbsp;
-{$lang_PersonNumber}：$val[count]&nbsp;&nbsp;
-{$lang_WorkPlace}：$val[place]&nbsp;&nbsp;
-{$lang_AddDate}：$val[addtime]&nbsp;&nbsp;
-<div class="job_list_right"><a href="$val[url]"  onFocus="if(this.blur)this.blur();" target="_blank">{$lang_Detail}</a><a href="$val[cv]" onFocus="if(this.blur)this.blur();">{$lang_cv}</a></div>
-</div>
-
-
-</div>
+                            <dd><span><a href="$val[cv]" >{$lang_cvtitle}</a></span><span><a href="$val[url]" target="_blank">{$lang_Detail}</a></span><span>$val[addtime]</span><span>$val[place]</span><span>$val[count]</span><a href="$val[url]" target="_blank">$val[position]</a></dd> 
 <!--
 EOT;
 }
 echo <<<EOT
 -->
+                        </dl>
 </div>
 <div class="web_bottom">$page_list</div>
 </div>
+<!--
+EOT;
+require_once template('webleft'); 
+echo <<<EOT
+-->
 <div style="clear:both;"></div>
 
 </div>

@@ -1,28 +1,26 @@
 <?php
-# 文件名称:save.php 2009-08-11 16:47:13
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 require_once '../login/login_check.php';
-if($action=="add"){
-
-$query = "SELECT * FROM $met_parameter where type=4 order by no_order";
+$module=$met_class[$class1][module];
+$query = "select * from $met_parameter where lang='$lang' and module='".$met_class[$class1][module]."' and (class1=$class1 or class1=0) order by no_order";
 $result = $db->query($query);
-while($list = $db->fetch_array($result)) {
-if($list[use_ok]==1)$list_p[]=$list;
+while($list = $db->fetch_array($result)){
+ if($list[type]==4){
+  $query1 = " where lang='$lang' and bigid='".$list[id]."'";
+  $total_list[$list[id]] = $db->counter($met_list, "$query1", "*");
+  }
+$para_list[]=$list;
 }
+$filename=preg_replace("/\s/","_",trim($filename)); 
+$filenameold=preg_replace("/\s/","_",trim($filenameold));  
+if($action=="add"){
+$access=$access<>""?$access:0;
 $query = "INSERT INTO $met_download SET
-                      c_title            = '$c_title',
-                      e_title            = '$e_title',
-					  o_title            = '$o_title',
-					  c_keywords         = '$c_keywords',
-					  e_keywords         = '$e_keywords',
-					  o_keywords         = '$o_keywords',
-					  c_description      = '$c_description',
-					  e_description      = '$e_description',
-					  o_description      = '$o_description',
-					  c_content          = '$c_content',
-					  e_content          = '$e_content',
-					  o_content          = '$o_content',
+                      title              = '$title',
+					  keywords           = '$keywords',
+					  description        = '$description',
+					  content            = '$content',
 					  class1             = '$class1',
 					  class2             = '$class2',
 					  class3             = '$class3',
@@ -30,114 +28,129 @@ $query = "INSERT INTO $met_download SET
 					  downloadurl        = '$downloadurl',
 					  filesize           = '$filesize',
 				      com_ok             = '$com_ok',
+					  issue              = '$issue',
 					  hits               = '$hits', 
-					  issue              = '$metinfo_admin_name',
 					  addtime            = '$addtime', 
 					  updatetime         = '$updatetime',
-					  access         	 = '$access',
-					  downloadaccess     = '$downloadaccess',";
-foreach($list_p as $key=>$val)
-{		  
-$tmp="c_$val[name]";
-$query = $query."
-				  $tmp            	= '{$$tmp}', 
-				  ";
-$tmp="e_$val[name]";
-$query = $query."
-				  $tmp            	= '{$$tmp}', 
-				  ";
-$tmp="o_$val[name]";
-$query = $query."
-				  $tmp            	= '{$$tmp}', 
-				  ";
-}
-$query = $query." top_ok         	 = '$top_ok'";
+					  access          	 = '$access',
+					  downloadaccess     = '$downloadaccess',
+					  filename           = '$filename',
+					  lang          	 = '$lang',
+					  top_ok             = '$top_ok'";
          $db->query($query);
-//静态页面生成
-$later_download=$db->get_one("select * from $met_download where updatetime='$updatetime'");
+
+$later_download=$db->get_one("select * from $met_download where updatetime='$updatetime' and lang='$lang'");
 $id=$later_download[id];
-contenthtm($class1,$id,'showdownload');
+foreach($para_list as $key=>$val){
+    if($val[type]!=4){
+      $para="para".$val[id];
+	  $para=$$para;
+	   if($val[type]==5){
+	     $paraname="para".$val[id]."name";
+		 $paraname=$$paraname;
+		 }
+	}else{
+	  $para="";
+	  for($i=1;$i<=$total_list[$val[id]];$i++){
+	  $para1="para".$val[id]."_".$i;
+	  $para2=$$para1;
+	  $para=($para2<>"")?$para.$para2."-":$para;
+	  }
+	  $para=substr($para, 0, -1);
+	}
+	
+    $query = "INSERT INTO $met_plist SET
+                      listid   ='$id',
+					  paraid   ='$val[id]',
+					  info     ='$para',
+					  imgname  ='$paraname',
+					  module   ='$module',
+					  lang     ='$lang'";
+         $db->query($query);
+   $paraname="";
+ }
+//html
+contenthtm($class1,$id,'showdownload',$filename);
 indexhtm();
 classhtm($class1,$class2,$class3);
-okinfo('index.php?class1='.$class1,$lang_loginUserAdmin);
+
+okinfo('index.php?lang='.$lang.'&class1='.$class1,$lang_jsok);
 }
 
 if($action=="editor"){
-$query = "SELECT * FROM $met_parameter where type=4 order by no_order";
-$result = $db->query($query);
-while($list = $db->fetch_array($result)) {
-if($list[use_ok]==1)$list_p[]=$list;
-}
-$query = "update $met_download SET ";
-if($met_c_lang_ok==1){
-$query = $query."
-                      c_title            = '$c_title',
-					  c_keywords         = '$c_keywords',
-					  c_description      = '$c_description',
-					  c_content          = '$c_content',"
-					  ;
-	foreach($list_p as $key=>$val)
-	{		  
-	$tmp="c_$val[name]";
-	$query = $query."
-					  $tmp            	= '{$$tmp}', 
-					  ";			
-	}					  
-}
-if($met_e_lang_ok==1){
-$query = $query."
-                      e_title            = '$e_title',
-					  e_keywords         = '$e_keywords',
-					  e_description      = '$e_description',
-					  e_content          = '$e_content',"
-					  ;
-	foreach($list_p as $key=>$val)
-	{		  
-	$tmp="e_$val[name]";
-	$query = $query."
-					  $tmp            	= '{$$tmp}', 
-					  ";			
-	}				  
-}
-if($met_o_lang_ok==1){
-$query = $query."
-                      o_title            = '$o_title',
-					  o_keywords         = '$o_keywords',
-					  o_description      = '$o_description',
-					  o_content          = '$o_content',"
-					  ;
-					  
-	foreach($list_p as $key=>$val)
-	{		  
-	$tmp="o_$val[name]";
-	$query = $query."
-					  $tmp            	= '{$$tmp}', 
-					  ";			
-	}
-}
-$query = $query."
-					  class1             = '$class1',
+$query = "update $met_download SET 
+                      title              = '$title',
+					  keywords           = '$keywords',
+					  description        = '$description',
+					  content            = '$content',
+                      class1             = '$class1',
 					  class2             = '$class2',
 					  class3             = '$class3',
-					  new_ok             = '$new_ok',
 					  downloadurl        = '$downloadurl',
-					  filesize           = '$filesize',
-				      com_ok             = '$com_ok',
+					  filesize           = '$filesize',";
+if($metadmin[downloadnew])$query .= "					  
+					  new_ok             = '$new_ok',";
+if($metadmin[downloadcom])$query .= "	
+				      com_ok             = '$com_ok',";
+					  $query .= "
+					  issue              = '$issue',
 					  hits               = '$hits', 
 					  addtime            = '$addtime', 
-					  updatetime         = '$updatetime', 
-					  access         	 = '$access',
-					  downloadaccess     = '$downloadaccess',
-					  top_ok         	 = '$top_ok'
+					  updatetime         = '$updatetime',";
+if($met_member_use)  $query .= "
+                      downloadaccess     = '$downloadaccess',
+					  access			 = '$access',";
+if($metadmin[pagename])$query .= "
+					  filename       	 = '$filename',";
+					  $query .= "
+					  top_ok             = '$top_ok',
+					  lang               = '$lang'
 					  where id='$id'";
-
 $db->query($query);
-//静态页面生成
-contenthtm($class1,$id,'showdownload');
+
+foreach($para_list as $key=>$val){
+    if($val[type]!=4){
+      $para="para".$val[id];
+	  $para=$$para;
+	   if($val[type]==5){
+	     $paraname="para".$val[id]."name";
+		 $paraname=$$paraname;
+		 }
+	}else{
+	  $para="";
+	  for($i=1;$i<=$total_list[$val[id]];$i++){
+	  $para1="para".$val[id]."_".$i;
+	  $para2=$$para1;
+	  $para=($para2<>"")?$para.$para2."-":$para;
+	  }
+	  $para=substr($para, 0, -1);
+	}
+    $now_list=$db->get_one("select * from $met_plist where listid='$id' and  paraid='$val[id]'");
+	if($now_list){
+    $query = "update $met_plist SET
+					  info     ='$para',
+					  imgname  ='$paraname',
+					  lang     ='$lang'
+					  where listid='$id' and  paraid='$val[id]'";
+	}else{
+    $query = "INSERT INTO $met_plist SET
+                      listid   ='$id',
+					  paraid   ='$val[id]',
+					  info     ='$para',
+					  imgname  ='$paraname',
+					  module   ='$module',
+					  lang     ='$lang'";	
+	 }
+         $db->query($query);
+   $paraname="";
+ }
+//html
+contenthtm($class1,$id,'showdownload',$filename);
 indexhtm();
 classhtm($class1,$class2,$class3);
-okinfo('index.php?class1='.$class1,$lang_loginUserAdmin);
+if($filenameold<>$filename and $metadmin[pagename])deletepage($met_class[$class1][foldername],$id,'showdownlaod',$updatetimeold,$filenameold);
+okinfo('index.php?lang='.$lang.'&class1='.$class1,$lang_jsok);
 }
-# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

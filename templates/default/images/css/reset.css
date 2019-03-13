@@ -23,13 +23,8 @@ fieldset, img {
 	outline: 0;
 }
 address, caption, cite, code, dfn,
-em, strong, th, var, optgroup {
+em,th, var, optgroup {
 	font-style: normal;
-	font-weight:bold;
-}
-
-h1, h2, h3, h4, h5, h6 {
-	font-size: 100%;
 	font-weight: normal;
 }
 abbr, acronym {
@@ -50,14 +45,9 @@ code, kbd, samp, tt {
 /*@purpose To enable resizing for IE */
 /*@branch For IE6-Win, IE7-Win */
 input, button, textarea, select {
-	*font-size: 100%;
+	font-size: 100%;
 }
-body {
-	line-height: 1.5;
-}
-ol, ul {
-	list-style: none;
-}
+ 
 /* tables still need 'cellspacing="0"' in the markup */
 table {
 	border-collapse: collapse;

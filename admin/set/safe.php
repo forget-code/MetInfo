@@ -1,11 +1,10 @@
 <?php
-# 文件名称:safe.php 2009-08-01 21:01:57
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn)). All rights reserved.
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 require_once '../login/login_check.php';
 $adminfile=$url_array[count($url_array)-2];
 if($action=="delete"){
-
+if($filename=='update')@chmod('../../update/install.lock',0777);
 function deldir($dir) {
   $dh=opendir($dir);
   while ($file=readdir($dh)) {
@@ -30,15 +29,31 @@ function deldir($dir) {
 } 
  $dir='../../'.$filename;
 deldir($dir);
-okinfo('safe.php',$lang_loginUserAdmin);
+okinfo('safe.php?lang='.$lang,$lang_jsok);
 }
 
 if($action=="modify"){
 require_once 'configsave.php';
+$con_save       = "<?php
+                   /*
+                   con_db_host = \"$con_db_host\"
+                   con_db_id   = \"$con_db_id\"
+                   con_db_pass = \"$con_db_pass\"
+                   con_db_name = \"$con_db_name\"
+                   tablepre    = \"$tablepre\"
+				   met_sqlreplace = \"$met_sqlreplace\";
+                   db_charset  = \"$db_charset\";
+                  */
+                  ?>";
+@chmod('../../config/config_db.php',0777);
+$fpd = fopen("../../config/config_db.php",w);
+      fputs($fpd, $con_save);
+      fclose($fpd);
+@chmod('../../config/config_db.php',0554);
  if($met_adminfile!=""&&$met_adminfile!=$adminfile){
- Header("Location: ../index.php?action=renameadmin&met_adminfile=".$met_adminfile);
+ Header("Location: ../index.php?lang=".$lang."&action=renameadmin&met_adminfile=".$met_adminfile);
  }else{
-  okinfo('safe.php',$lang_loginUserAdmin);
+  okinfo('safe.php?lang='.$lang,$lang_jsok);
   }
 }
 else{
@@ -52,14 +67,16 @@ if(is_dir('../../install')){
  }else{
  $updatestyle="display:none;";
  }
+$met_sqlreplace=intval($met_sqlreplace);
 $met_login_code1[$met_login_code]="checked='checked'";
 $met_memberlogin_code1[$met_memberlogin_code]="checked='checked'";
 $met_submit_type1[$met_submit_type]="checked='checked'";
+$met_sqlreplace1[$met_sqlreplace]="checked='checked'";
 $css_url="../templates/".$met_skin."/css";
 $img_url="../templates/".$met_skin."/images";
 include template('set_safe');
 footer();
 }
-# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

@@ -1,17 +1,17 @@
 <!--<?php
-$navdown="nav_".$class1_info[id];
-if($class_list[$classnow][nav]==1||$class_list[$classnow][nav]==3)$navdown="nav_".$class_list[$classnow][id];
 require_once template('head'); 
 echo <<<EOT
 -->
-<div class="web">
+<div id="web">
+<div class="right">
+   <h3 class="title"><span>{$class_list[$classnow][name]}</span></h3>
+   <div class="webcontent">$show[content]</div>
+   </div>
 <!--
 EOT;
 require_once template('webleft'); 
 echo <<<EOT
 -->
-   <div class="webcontent">$show[content]</div>
-   </div>
 <div style="clear:both;"></div>
 </div>
 <!--

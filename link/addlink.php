@@ -1,29 +1,33 @@
 <?php
-# 文件名称:addlink.php 2009-08-18 08:53:03
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 require_once '../include/common.inc.php';
-$message_column=$db->get_one("select * from $met_column where module='9'");
-$metaccess=$message_column[access];
-$class1=$message_column[id];
+$link_list=$db->get_one("select * from $met_column where module='9' and lang='$lang'");
+$metaccess=$link_list[access];
+$class1=$link_list[id];
 require_once '../include/head.php';
-$class1_info=$class_list[$class1];
-$navtitle=($lang=="en")?$message_column[e_name]:(($lang=="other")?$message_column[o_name]:$message_column[c_name]);
+	$class1_info=$class_list[$class1][releclass]?$class_list[$class_list[$class1][releclass]]:$class_list[$class1];
+	$class2_info=$class_list[$class1][releclass]?$class_list[$class1]:$class_list[$class2];
+    $navtitle=$link_list[name];
+	$addlink_url=$met_webhtm?"addlink".$met_htmtype:"addlink.php?lang=".$lang;
 
-
-$link_lang=$lang;
 if($action=="add"){
-if($_GET[lang]=="en")
-{$e_webname=$webname;$c_webname="";$o_webname="";$e_info=$info;$c_info="";$o_info="";}
-else if($_GET[lang]=="other")
-{$o_webname=$webname;$e_webname="";$c_webname="";$o_info=$info;$e_info="";$c_info="";}
+$ip=$m_user_ip;
+$addtime=$m_now_date;
+$ipok=$db->get_one("select * from $met_link where ip='$ip' order by addtime desc");
+if($ipok)
+$time1 = strtotime($ipok[addtime]);
 else
-{$c_webname=$webname;$e_webname="";$o_webname="";$c_info=$info;$e_info="";$o_info="";}
+$time1 = 0;
+$time2 = strtotime($m_now_date);
+$timeok= (float)($time2-$time1);
+if($timeok<=120){
+$fd_time="{$lang_Feedback1} 120 {$lang_Feedback2}";
+okinfo('javascript:history.back();',$fd_time);
+}
 $query = "INSERT INTO $met_link SET
-                      c_webname            = '$c_webname',
-                      e_webname            = '$e_webname',
-					  c_info               = '$c_info',
-					  e_info               = '$e_info',
+                      webname              = '$webname',
+					  info                 = '$info',
 					  link_type            = '$link_type',
 					  weburl               = '$weburl',
 					  weblogo              = '$weblogo',
@@ -31,19 +35,36 @@ $query = "INSERT INTO $met_link SET
 					  orderno              = '$orderno',
 					  com_ok               = '$com_ok',
 					  show_ok              = '$show_ok', 
-					  link_lang            = '$link_lang', 
+					  lang                 = '$lang', 
+					  ip                   = '$ip', 
 					  addtime              = '$m_now_date'";
          $db->query($query);
-if($met_webhtm){
-$returnurl=($lang=="en")?'addlink'.$met_e_htmtype:(($lang=="other")?'addlink'.$met_o_htmtype:'addlink'.$met_c_htmtype);
+$returnurl=$module_listall[9][0][url];
+okinfo($returnurl,$lang_MessageInfo2);
+
 }else{
-$returnurl=($lang=="en")?'addlink.php?lang=en':(($lang=="other")?'addlink.php?lang=other':'addlink.php');
+$class2=$class_list[$class1][releclass]?$class1:$class2;
+$class1=$class_list[$class1][releclass]?$class_list[$class1][releclass]:$class1;
+$class_info=$class2?$class2_info:$class1_info;
+if($class2!=""){
+$class_info[name]=$class2_info[name]."--".$class1_info[name];
 }
-okinfo($returnurl,"{$lang_MessageInfo2}");
-
+     $show[description]=$class_info[description]?$class_info[description]:$met_keywords;
+     $show[keywords]=$class_info[keywords]?$class_info[keywords]:$met_keywords;
+	 $met_title=$navtitle."--".$met_title;
+	 
+if(count($nav_list2[$link_list[id]])){
+$k=count($nav_list2[$class1]);
+$nav_list2[$class1][$k]=$class1_info;
+$k++;
+$nav_list2[$class1][$k]=array('url'=>$addlink_url,'name'=>$lang_ApplyLink);
+}else{
+  $k=count($nav_list2[$class1]);
+  if(!$k){
+   $nav_list2[$class1][0]=array('url'=>$addlink_url,'name'=>$lang_ApplyLink);
+   $nav_list2[$class1][1]=$class1_info;
+   }
 }
-else{
-
 
 $fdjs="<script language='javascript'>";
 $fdjs=$fdjs."function Checklink(){ ";
@@ -65,24 +86,24 @@ require_once '../public/php/methtml.inc.php';
 
 $methtml_addlink.=$fdjs;
 $methtml_addlink.="<table width='90%' cellpadding='2' cellspacing='1' bgcolor='#F2F2F2' align='center' class=addlink_table>\n";
-$methtml_addlink.="<tr class='addlink_tr'><td width='20%' height='25' align='left' bgcolor='#FFFFFF' colspan='3' class='addlink_title'><b>".$lang_Info4."</b></td></tr>\n";
+$methtml_addlink.="<tr class='addlink_tr'><td width='20%' height='25' align='left' bgcolor='#FFFFFF' colspan='3' class='addlink_title'><b>".$lang_Info4."</b>&nbsp;</td></tr>\n";
 $methtml_addlink.="<tr class='addlink_tr'>\n";
-$methtml_addlink.="<td width='20%' height='25' align='right' bgcolor='#FFFFFF' class='addlink_td1'>".$lang_OurWebName."</td>\n";
-$methtml_addlink.="<td width='70%' bgcolor='#FFFFFF' lass='addlink_td2'>".$met_linkname."</td>\n";
+$methtml_addlink.="<td width='20%' height='25' align='right' bgcolor='#FFFFFF' class='addlink_td1'><b>".$lang_OurWebName."</b>&nbsp;</td>\n";
+$methtml_addlink.="<td width='70%' bgcolor='#FFFFFF' class='addlink_td2'>".$met_linkname."&nbsp;</td>\n";
 $methtml_addlink.="<td bgcolor='#FFFFFF' style='color:#990000'></td>\n";
 $methtml_addlink.="</tr>\n";
 $methtml_addlink.="<tr class='addlink_tr'>\n";
-$methtml_addlink.="<td align='right' bgcolor='#FFFFFF' class='addlink_td1'>".$lang_OurWebUrl."</td>\n";
-$methtml_addlink.="<td bgcolor='#FFFFFF' lass='addlink_td2'>".$met_weburl."</td>\n";
+$methtml_addlink.="<td align='right' bgcolor='#FFFFFF' class='addlink_td1'><b>".$lang_OurWebUrl."</b>&nbsp;</td>\n";
+$methtml_addlink.="<td bgcolor='#FFFFFF' class='addlink_td2'>".$met_weburl."</td>\n";
 $methtml_addlink.="<td bgcolor='#FFFFFF' style='color:#990000'></td>\n";
 $methtml_addlink.="</tr>\n";
 $methtml_addlink.="<tr class='addlink_tr'>\n";
-$methtml_addlink.="<td align='right' bgcolor='#FFFFFF' class='addlink_td1'>".$lang_OurWebLOGO."</td>\n";
-$methtml_addlink.="<td bgcolor='#FFFFFF' lass='addlink_td2'><img src='".$met_logo."' /></td>\n";
+$methtml_addlink.="<td align='right' bgcolor='#FFFFFF' class='addlink_td1'><b>".$lang_OurWebLOGO."</b>&nbsp;</td>\n";
+$methtml_addlink.="<td bgcolor='#FFFFFF' class='addlink_td2'><img src='".$met_logo."' height='33' /></td>\n";
 $methtml_addlink.="<td bgcolor='#FFFFFF' style='color:#990000'></td>\n";
 $methtml_addlink.="</tr>\n";
 $methtml_addlink.="<tr class='addlink_tr'>\n";
-$methtml_addlink.="<td align='right' bgcolor='#FFFFFF' class='addlink_td1'>".$lang_OurWebKeywords."</td>\n";
+$methtml_addlink.="<td align='right' bgcolor='#FFFFFF' class='addlink_td1'><b>".$lang_OurWebKeywords."</b>&nbsp;</td>\n";
 $methtml_addlink.="<td bgcolor='#FFFFFF' class='addlink_td2'>".$met_title_keywords."</td>\n";
 $methtml_addlink.="<td bgcolor='#FFFFFF' style='color:#990000'></td>\n";
 $methtml_addlink.="</tr>\n";
@@ -91,32 +112,32 @@ $methtml_addlink.="</table>\n";
 $methtml_addlink.="<form method='POST' name='myform' onSubmit='return Checklink();' action='addlink.php?action=add' target='_self'>\n";
 $methtml_addlink.="<table width='90%' cellpadding='2' cellspacing='1' bgcolor='#F2F2F2' align='center' class=addlink_table >\n";
 $methtml_addlink.="<tr class='addlink_tr'>\n";
-$methtml_addlink.="<td width='20%' height='25' align='right' bgcolor='#FFFFFF' class='addlink_td1'>".$lang_YourWebName."</td>\n";
+$methtml_addlink.="<td width='20%' height='25' align='right' bgcolor='#FFFFFF' class='addlink_td1'><b>".$lang_YourWebName."</b>&nbsp;</td>\n";
 $methtml_addlink.="<td width='70%' bgcolor='#FFFFFF' class='addlink_input'><input name='webname' type='text' size='30' /></td>\n";
 $methtml_addlink.="<td bgcolor='#FFFFFF' style='color:#990000' class='addlink_info'>*</td>\n";
 $methtml_addlink.="</tr>\n";
 $methtml_addlink.="<tr class='addlink_tr'>\n";
-$methtml_addlink.="<td class='addlink_td1' align='right' bgcolor='#FFFFFF'>".$lang_YourWebUrl."</td>\n";
+$methtml_addlink.="<td class='addlink_td1' align='right' bgcolor='#FFFFFF'><b>".$lang_YourWebUrl."</b>&nbsp;</td>\n";
 $methtml_addlink.="<td width='70%' bgcolor='#FFFFFF' class='addlink_input'><input name='weburl' type='text' size='30' value='http://' /></td>\n";
 $methtml_addlink.="<td bgcolor='#FFFFFF' style='color:#990000' class='addlink_info'>*</td>\n";
 $methtml_addlink.="</tr>\n";
 $methtml_addlink.="<tr class='addlink_tr'>\n";
-$methtml_addlink.="<td class='addlink_td1' align='right' bgcolor='#FFFFFF'>".$lang_LinkType."</td>\n";
+$methtml_addlink.="<td class='addlink_td1' align='right' bgcolor='#FFFFFF'><b>".$lang_LinkType."</b>&nbsp;</td>\n";
 $methtml_addlink.="<td width='70%' bgcolor='#FFFFFF' class='addlink_input'><input name='link_type' type='radio' value='0'  checked='checked' style='border:0px;' />{$lang_TextLink}  <input name='link_type' type='radio' value='1' style='border:0px;' />{$lang_PictureLink}</td>\n";
 $methtml_addlink.="<td bgcolor='#FFFFFF' style='color:#990000' class='addlink_info'>*</td>\n";
 $methtml_addlink.="</tr>\n";
 $methtml_addlink.="<tr class='addlink_tr'>\n";
-$methtml_addlink.="<td class='addlink_td1' align='right' bgcolor='#FFFFFF'>".$lang_YourWebLOGO."</td>\n";
+$methtml_addlink.="<td class='addlink_td1' align='right' bgcolor='#FFFFFF'><b>".$lang_YourWebLOGO."</b>&nbsp;</td>\n";
 $methtml_addlink.="<td width='70%' bgcolor='#FFFFFF' class='addlink_input'><input name='weblogo' type='text' size='30' value='http://'/></td>\n";
 $methtml_addlink.="<td bgcolor='#FFFFFF' style='color:#990000' class='addlink_info'></td>\n";
 $methtml_addlink.="</tr>\n";
 $methtml_addlink.="<tr class='addlink_tr'>\n";
-$methtml_addlink.="<td class='addlink_td1' align='right' bgcolor='#FFFFFF'>".$lang_YourWebKeywords."</td>\n";
+$methtml_addlink.="<td class='addlink_td1' align='right' bgcolor='#FFFFFF'><b>".$lang_YourWebKeywords."</b>&nbsp;</td>\n";
 $methtml_addlink.="<td width='70%' bgcolor='#FFFFFF' class='addlink_input'><input name='info' type='text' size='30' /></td>\n";
 $methtml_addlink.="<td bgcolor='#FFFFFF' style='color:#990000' class='addlink_info'></td>\n";
 $methtml_addlink.="</tr>\n";
 $methtml_addlink.="<tr class='addlink_tr'>\n";
-$methtml_addlink.="<td class='addlink_td1' align='right' bgcolor='#FFFFFF'>".$lang_Contact."</td>\n";
+$methtml_addlink.="<td class='addlink_td1' align='right' bgcolor='#FFFFFF'><b>".$lang_Contact."</b>&nbsp;</td>\n";
 $methtml_addlink.="<td width='70%' bgcolor='#FFFFFF' class='addlink_input'><textarea name='contact' cols='50' rows='6'></textarea></td>\n";
 $methtml_addlink.="<td bgcolor='#FFFFFF' style='color:#990000' class='addlink_info'></td>\n";
 $methtml_addlink.="</tr>\n";
@@ -128,24 +149,10 @@ $methtml_addlink.="</table>\n";
 $methtml_addlink.="</form>\n";
 
 
-if(file_exists("templates/".$met_skin_user."/e_addlink.html")){
-   if($lang=="en"){
-     $show[e_description]=$class_info[e_description]?$class_info[e_description]:$met_e_keywords;
-     $show[e_keywords]=$class_info[e_keywords]?$class_info[e_keywords]:$met_e_keywords;
-     $e_title_keywords=$navtitle."--".$met_e_webname;
-     include template('e_addlink');
-	}else{
-	 $show[c_description]=$class_info[c_description]?$class_info[c_description]:$met_c_keywords;
-     $show[c_keywords]=$class_info[c_keywords]?$class_info[c_keywords]:$met_c_keywords;
-     $c_title_keywords=$navtitle."--".$met_c_webname;
-	 include template('addlink');
-	 }
-}else{
 include template('addlink');
-}
 footer();
 
 }
-# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

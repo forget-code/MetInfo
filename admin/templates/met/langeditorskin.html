@@ -1,13 +1,12 @@
 <!--<?php
-# 文件名称:langeditoradmin.html 2009-08-01 21:01:57
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 require_once template('head'); 
 $colspan=($langnowok=='metinfo')?3:2;
 $colspan1=$colspan-1;
 echo <<<EOT
 -->
-<title>{$lang_skinlangeditorskin}</title>
+<title>{$lang_langskineditor}</title>
 </head>
 <body>
         <form method="POST" name="myform" action="" target="_self">
@@ -16,15 +15,15 @@ echo <<<EOT
 		<input name="langeditor" type="hidden" value="$langeditor">
 <table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1" >
 <tr>
-<td colspan="$colspan" align="center" class="list1_title">{$lang_skinlangeditorskin}【<b>{$met_lang}</b>】</td>
+<td colspan="$colspan" align="center" class="list1_title">{$lang_langskineditor}【<b>{$met_langok[$langeditor][name]}</b>】</td>
 </tr>
-   <tr><td class="list1_text" ><b>{$lang_skinlangeditorinfo}</b></td>
-    <td colspan="$colspan1" class="list1_input">{$lang_skinlangeditordetail1}<br>{$lang_skinlangeditordetail2}<br>{$lang_skinlangeditordetail3}</td></tr>
-<tr><td class="list1_text" colspan="$colspan"><a href="lang.php">{$lang_indexlang}</a></td></tr>
+   <tr><td class="list1_text" ><b>{$lang_langeditorinfo}</b></td>
+    <td colspan="$colspan1" class="list1_input">{$lang_langeditordetail1}<br>{$lang_langeditordetail2}<br>{$lang_langeditordetail3}</td></tr>
+<tr><td class="list1_text" colspan="$colspan"><a href="lang.php?lang=$lang">{$lang_indexlang}</a></td></tr>
 <tr>
-<td class="list1_text" width:20%><b>{$lang_skinlangclass2}</b></td>
-<td class="list1_input" width:40%><b>{$lang_skinlangvalue}</b></td>
-<td class="list1_input" width:40%><b>{$lang_skinlanginfo}</b></td>
+<td class="list1_text" width:20%><b>{$lang_langclass2}</b></td>
+<td class="list1_input" width:40%><b>{$lang_langvalue}</b></td>
+<td class="list1_input" width:40%><b>{$lang_langinfo}</b></td>
 </tr>
 <input name="metinfolangid" type="hidden" value="$langid">
 <!--
@@ -56,6 +55,6 @@ echo <<<EOT
 </html>
 <!--
 EOT;
-# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>-->

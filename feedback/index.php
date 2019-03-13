@@ -1,28 +1,23 @@
 <?php
-# 文件名称:feedbackindex.php 2009-08-18 08:53:03
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.  
 require_once '../include/common.inc.php';
-$settings = parse_ini_file('config.inc.php');
+$settings = parse_ini_file('config_'.$lang.'.inc.php');
 @extract($settings);
-$classaccess= $db->get_one("SELECT * FROM $met_column WHERE module='8'");
+$classaccess= $db->get_one("SELECT * FROM $met_column WHERE module='8' and lang='$lang'");
 $metaccess=$classaccess[access];
 $class1=$classaccess[id];
 require_once '../include/head.php';
-$class1_info=$class_list[$class1];
+	$class1_info=$class_list[$class1][releclass]?$class_list[$class_list[$class1][releclass]]:$class_list[$class1];
+	$class2_info=$class_list[$class1][releclass]?$class_list[$class1]:$class_list[$class2];
 $fromurl=$_SERVER['HTTP_REFERER'];
 $ip=$m_user_ip;
-$met_fd_title=($lang=="en")?$met_e_fd_title:(($lang=="other")?$met_o_fd_title:$met_c_fd_title);
-$met_fd_content=($lang=="en")?$met_e_fd_content:(($lang=="other")?$met_o_fd_content:$met_c_fd_content);
 if($title==""){
-$navtitle=($lang=="en")?$met_e_fdtable:(($lang=="other")?$met_o_fdtable:$met_c_fdtable);
+$navtitle=$met_fdtable;
 $title=$navtitle;
 }
 else{
-$c_navtitle1="[".$title."]".$met_c_fdtable;
-$e_navtitle1="[".$title."]".$met_e_fdtable;
-$o_navtitle1="[".$title."]".$met_o_fdtable;
-$navtitle=($lang=="en")?$e_navtitle1:(($lang=="other")?$o_navtitle1:$c_navtitle1);
+$navtitle="[".$title."]".$met_fdtable;
 }
 if($action=="add"){
 $addtime=$m_now_date;
@@ -38,13 +33,19 @@ if($timeok<=$met_fd_time){
 $fd_time="{$lang_Feedback1}".$met_fd_time."{$lang_Feedback2}";
 okinfo('javascript:history.back();',$fd_time);
 }
-
+$query = "SELECT * FROM $met_parameter where lang='$lang' and  module=8 order by no_order";
+if($met_member_use)$query = "SELECT * FROM $met_parameter where lang='$lang' and  module=8  and access<=$metinfo_member_type order by no_order";
+$result = $db->query($query);
+while($list= $db->fetch_array($result)){
+$list[para]="para".$list[id];
+$fd_para[]=$list;
+}
 $fdstr = $met_fd_word; 
 $fdarray=explode("|",$fdstr);
 $fdarrayno=count($fdarray);
 $fdok=false;
-for($j=1;$j<=20;$j++){
-$para="para".$j;
+foreach($fd_para as $key=>$val){
+$para="para".$val[id];
 $content=$content."-".$$para;
 }
 for($i=0;$i<$fdarrayno;$i++){ 
@@ -55,29 +56,16 @@ break;
 }
 }
 
-$c_fd_word="{$lang_Feedback3}[".$fd_word."]！";
-$e_fd_word="[".$fd_word."] {$lang_Feedback3}";
-$o_fd_word="[".$fd_word."] {$lang_Feedback3}";
-$fd_word=($_GET[lang]=="en")?$e_fd_word:(($_GET[lang]=="other")?$o_fd_word:$c_fd_word);
+$fd_word="[".$fd_word."] {$lang_Feedback3}";
 if($fdok==true)okinfo('javascript:history.back();',$fd_word);
 
 require_once 'uploadfile_save.php';
 
-$fdemail= $db->get_one("SELECT * FROM $met_fdparameter WHERE c_name='$met_fd_email'");
-$fdto="para".$fdemail[id];
+$fdto="para".$met_fd_email;
 $fdto=$$fdto;
-
-for($i=21;$i<25;$i++){
-$para="para".$i;
-for($j=1;$j<=$$para;$j++){
-$parad="para".$i."_".$j;
-$parad1=$$parad;
-$fdpara=($parad1=="")?$fdpara:$fdpara.$parad1.",";
-}
-$$para=$fdpara;
-$fdpara="";
-}
-if($met_fd_type==0 or $met_fd_type==2){
+$fdclass2="para".$met_fd_class;
+$fdclass=$$fdclass2;
+$title=$fdclass."--".$fdtitle;
 $from=$met_fd_usename;
 $fromname=$met_fd_fromname;
 $to=$met_fd_to;
@@ -85,34 +73,26 @@ $usename=$met_fd_usename;
 $usepassword=$met_fd_password;
 $smtp=$met_fd_smtp;
 
-$fdclass1= $db->get_one("SELECT * FROM $met_fdparameter WHERE c_name='$met_fd_class'");
-$fdclass2="para".$fdclass1[id];
-$fdclass=$$fdclass2;
+if($met_fd_type==0 or $met_fd_type==2){
+foreach($fd_para as $key=>$val){
+    if($val[type]!=4){
+	  $para=$$val[para];
+	}else{
+	  $para="";
+	  for($i=1;$i<=$$val[para];$i++){
+	  $para1="para".$val[id]."_".$i;
+	  $para2=$$para1;
+	  $para=($para2<>"")?$para.$para2."-":$para;
+	  }
+	  $para=substr($para, 0, -1);
+	}
+	$para=htmlspecialchars($para);
 
-$title=$fdclass."--".$fdtitle;
-
-$query = "SELECT * FROM $met_fdparameter order by no_order";
-$result = $db->query($query);
-while($list= $db->fetch_array($result)){
-$emaillist[]=$list;
-}
-for($k=0;$k<count($emaillist);$k++){
-if($emaillist[$k][use_ok]==1){
-$parafd="para".$emaillist[$k][id];
-$emailname=$lang=="en"?$emaillist[$k][e_name]:($lang=="other"?$emaillist[$k][o_name]:$emaillist[$k][c_name]);
-if($emaillist[$k][type]!=5)
-{
-$body=$body."<b>".$emailname."</b>:".$$parafd."<br>";
-}
-if($emaillist[$k][type]==5)
-{
-$x=explode('/', $fromurl);
-unset($x[count($x)-1]);
-unset($x[count($x)-1]);
-$path = implode('/', $x).'/upload/file/';
-$parafd="para".$emaillist[$k][id];
-$body=$body."<b>".$emailname."</b>:<a href=".$path.$$parafd.">{$$parafd}</a><br>";
-}
+if($val[type]!=5){
+$body=$body."<b>".$val[name]."</b>:".$para."<br>";
+}else{
+$para=$para<>""?"<a href=".$met_weburl."upload/file/".$para." >".$met_weburl."upload/file/".$para."</a>":$para;
+$body=$body."<b>".$val[name]."</b>:".$para."<br>";
 }
 }
 
@@ -130,105 +110,105 @@ jmailsend($from,$fromname,$fdto,$met_fd_title,$met_fd_content,$usename,$usepassw
 
 if($met_fd_type!=0){
 if(!isset($metinfo_member_name) || $metinfo_member_name=='') $metinfo_member_name=0;
-
 $query = "INSERT INTO $met_feedback SET
                       fdtitle            = '$title',
 					  fromurl            = '$fromurl',
 					  ip                 = '$ip',
 					  addtime            = '$addtime',
 					  customerid         = '$metinfo_member_name',
-					  en                 = '$_GET[lang]', 
-					  para1              = '$para1', 
-					  para2              = '$para2', 
-					  para3              = '$para3', 
-					  para4              = '$para4', 
-					  para5              = '$para5', 
-					  para6              = '$para6',
-					  para7              = '$para7', 
-					  para8              = '$para8', 
-					  para9              = '$para9', 
-					  para10             = '$para10', 
-					  para11             = '$para11', 
-					  para12             = '$para12', 
-					  para13             = '$para13', 
-					  para14             = '$para14', 
-					  para15             = '$para15', 
-					  para16             = '$para16', 
-					  para17             = '$para17',
-					  para18             = '$para18', 
-					  para19             = '$para19', 
-					  para20             = '$para20',
-					  para21             = '$para21', 
-					  para22             = '$para22',
-					  para23             = '$para23', 
-					  para24             = '$para24', 
-					  para25             = '$para25',
-					  para26             = '$para26',
-					  para27             = '$para27' ";
-			
+					  lang               = '$lang'";		
          $db->query($query);
+$later_fd=$db->get_one("select * from $met_feedback where lang='$lang' order by addtime desc");
+$id=$later_fd[id];
+foreach($fd_para  as $key=>$val){
+    if($val[type]!=4){
+	  $para=$$val[para];
+	}else{
+	  $para="";
+	  for($i=1;$i<=$$val[para];$i++){
+	  $para1="para".$val[id]."_".$i;
+	  $para2=$$para1;
+	  $para=($para2<>"")?$para.$para2."-":$para;
+	  }
+	  $para=substr($para, 0, -1);
+	}
+	$para=htmlspecialchars($para);
+    $query = "INSERT INTO $met_flist SET
+                      listid   ='$id',
+					  paraid   ='$val[id]',
+					  info     ='$para',
+					  module   ='8',
+					  lang     ='$lang'";
+         $db->query($query);
+ }
 }
-if($met_webhtm){
-$returnurl=($lang=="en")?'index'.$met_e_htmtype:(($lang=="other")?'index'.$met_o_htmtype:'index'.$met_c_htmtype);
-}else{
-$returnurl=($lang=="en")?'index.php?lang=en':(($lang=="other")?'index.php?lang=other':'index.php');
-}
+$returnurl=$met_webhtm?'index'.$met_htmtype:'index.php?lang='.$lang;
 okinfo($returnurl,"{$lang_Feedback4}");
 }
 else{
-$query = "SELECT * FROM $met_fdlist order by no_order";
-$result = $db->query($query);
-while($list= $db->fetch_array($result)){
-$fdlist[]=$list;
-}
 
-$query = "SELECT * FROM $met_fdparameter where use_ok='1' order by no_order";
+
+$query = "SELECT * FROM $met_parameter where lang='$lang' and  module=8 order by no_order";
+if($met_member_use)$query = "SELECT * FROM $met_parameter where lang='$lang' and  module=8  and access<=$metinfo_member_type order by no_order";
 $result = $db->query($query);
 while($list= $db->fetch_array($result)){
+ if($list[type]==2 or $list[type]==4 or $list[type]==6){
+    $listinfo=$db->get_one("select * from $met_list where bigid='$list[id]' and no_order=99999");
+	$listinfoid=intval(trim($listinfo[info]));
+	if($listinfo){
+	$listmarknow='metinfo';
+	$classtype=($listinfo[info]=='metinfoall')?$listinfoid:($met_class[$listinfoid][releclass]?'class1':'class'.$class_list[$listinfoid][classtype]);
+    $query1 = "select * from $met_product where lang='$lang' and $classtype='$listinfoid' order by updatetime desc";
+   $result1 = $db->query($query1);
+   $i=0;
+   while($list1 = $db->fetch_array($result1)){
+   	 $list1[info]=$list1[title];
+	 $i++;
+	 $list1[no_order]=$i;
+   $paravalue[$list[id]][]=$list1;
+   }
+    }else{
+   $query1 = "select * from $met_list where lang='$lang' and bigid='".$list[id]."' order by no_order";
+   $result1 = $db->query($query1);
+   while($list1 = $db->fetch_array($result1)){
+   $paravalue[$list[id]][]=$list1;
+   }
+   }}
 if($list[wr_ok]=='1')$list[wr_must]="*";
 switch($list[type]){
-case '1';
-$list[c_input]="<input name='para$list[id]' type='text' size='30' />";
-$list[e_input]="<input name='para$list[id]' type='text' size='30' />";
-$list[o_input]="<input name='para$list[id]' type='text' size='30' />";
+case 1:
+$list[input]="<input name='para$list[id]' type='text' size='30' />";
 break;
-case '2';
-$list[c_input]="<select name='para$list[id]'><option selected='selected' value=''>{$lang_Choice}</option>";
-$list[e_input]="<select name='para$list[id]'><option selected='selected' value=''>{$lang_Choice}</option>";
-$list[o_input]="<select name='para$list[id]'><option selected='selected' value=''>{$lang_Choice}</option>";
-foreach($fdlist as $key=>$val){
-if($val[bigid]==$list[id]){
-$list[c_input]=$list[c_input]."<option value='$val[c_list]'>$val[c_list]</option>";
-$list[e_input]=$list[e_input]."<option value='$val[e_list]'>$val[e_list]</option>";
-$list[o_input]=$list[o_input]."<option value='$val[o_list]'>$val[o_list]</option>";
+case 2:
+$list[input]="<select name='para$list[id]'><option selected='selected' value=''>{$lang_Choice}</option>";
+foreach($paravalue[$list[id]] as $key=>$val){
+$list[input]=$list[input]."<option value='$val[info]'>$val[info]</option>";
 }
-}
-$list[input]=$list[e_input]."</select>";
+$list[input]=$list[input]."</select>";
 break;
-case '3';
-$list[c_input]="<textarea name='para$list[id]' cols='50' rows='5'></textarea>";
-$list[e_input]="<textarea name='para$list[id]' cols='50' rows='5'></textarea>";
-$list[o_input]="<textarea name='para$list[id]' cols='50' rows='5'></textarea>";
+case 3:
+$list[input]="<textarea name='para$list[id]' cols='50' rows='5'></textarea>";
 break;
-case '4';
+case 4:
 $i=0;
-foreach($fdlist as $key=>$val){
-if($val[bigid]==$list[id]){
+foreach($paravalue[$list[id]] as $key=>$val){
 $i++;
-$list[c_input]=$list[c_input]."<input name='para$list[id]_$i' class='checboxcss' type='checkbox' value='$val[c_list]' />$val[c_list]&nbsp;&nbsp;";
-$list[e_input]=$list[e_input]."<input name='para$list[id]_$i' class='checboxcss' type='checkbox' value='$val[e_list]' />$val[e_list]&nbsp;&nbsp;";
-$list[o_input]=$list[o_input]."<input name='para$list[id]_$i' class='checboxcss' type='checkbox' value='$val[o_list]' />$val[o_list]&nbsp;&nbsp;";
+$list[input]=$list[input]."<input name='para$list[id]_$i' class='checboxcss' type='checkbox' value='$val[info]' />$val[info]&nbsp;&nbsp;";
 }
-}
-$list[c_input]=$list[c_input]."<input name='para$list[id]' type='hidden' value='$i' />";
-$list[e_input]=$list[e_input]."<input name='para$list[id]' type='hidden' value='$i' />";
-$list[o_input]=$list[o_input]."<input name='para$list[id]' type='hidden' value='$i' />";
+$list[input]=$list[input]."<input name='para$list[id]' type='hidden' value='$i' />";
 $lagernum[$list[id]]=$i;
 break;
-case '5';
-$list[c_input]="<input name='para$list[id]' type='file' class='input' size='20' maxlength='200' >";
-$list[e_input]="<input name='para$list[id]' type='file' class='input' size='20' maxlength='200' >";
-$list[o_input]="<input name='para$list[id]' type='file' class='input' size='20' maxlength='200' >";
+case 5:
+$list[input]="<input name='para$list[id]' type='file' class='input' size='20' >";
+break;
+case 6:
+$i=0;
+foreach($paravalue[$list[id]] as $key=>$val){
+$checked='';
+$i++;
+if($i==1)$checked="checked='checked'";
+$list[input]=$list[input]."<input name='para$list[id]' type='radio' value='$val[info]' $checked>$val[info]  ";
+ }
 break;
 }
 $fd_para[]=$list;
@@ -238,51 +218,39 @@ if($list[wr_ok])$fdwr_list[]=$list;
 $fdjs="<script language='javascript'>";
 $fdjs=$fdjs."function Checkfeedback(){ ";
 foreach($fdwr_list as $key=>$val){
-if($val[type]!=4){
-$fdjs=$fdjs."if (document.myform.para$val[id].value.length == 0) {";
- if($_GET[lang]=="en"){
- $fdjs=$fdjs."alert('$val[e_name] {$lang_Empty}');";
-  }else if($_GET[lang]=="en"){
- $fdjs=$fdjs."alert('$val[o_name] {$lang_Empty}');";
-  }else{
-  $fdjs=$fdjs."alert('$val[c_name]{$lang_Empty}');";
-  }
- $fdjs=$fdjs."document.myform.para$val[id].focus();";
- $fdjs=$fdjs."return false;}";
-}else{
+if($val[type]==1 or $val[type]==2 or $val[type]==3 or $val[type]==5){
+$fdjs=$fdjs."if (document.myform.para$val[id].value.length == 0) {\n";
+$fdjs=$fdjs."alert('$val[name] {$lang_Empty}');\n";
+$fdjs=$fdjs."document.myform.para$val[id].focus();\n";
+$fdjs=$fdjs."return false;}\n";
+}elseif($val[type]==4){
  $lagerinput="";
- for($j=1;$j<=$lagernum[$val[id]];$j++){
- $lagerinput=$lagerinput."document.myform.para$val[id]_$j.checked||";
+ for($j=1;$j<=count($paravalue[$val[id]]);$j++){
+ $lagerinput=$lagerinput."document.myform.para$val[id]_$j.checked ||";
  }
- $lagerinput=$lagerinput."false";
- $fdjs=$fdjs."if(!($lagerinput)){";
- if($_GET[lang]=="en"){
- $fdjs=$fdjs."alert('$val[e_name] {$lang_Empty}');";
- }else if($_GET[lang]=="other"){
- $fdjs=$fdjs."alert('$val[o_name] {$lang_Empty}');";
- }else{
- $fdjs=$fdjs."alert('$val[c_name]{$lang_Empty}');";
- }
- $fdjs=$fdjs."document.myform.para$val[id]_1.focus();";
- $fdjs=$fdjs."return false;}";
+ $lagerinput=$lagerinput."false\n";
+ $fdjs=$fdjs."if(!($lagerinput)){\n";
+ $fdjs=$fdjs."alert('$val[name] {$lang_Empty}');\n";
+ $fdjs=$fdjs."document.myform.para$val[id]_1.focus();\n";
+ $fdjs=$fdjs."return false;}\n";
 }
 }
 $fdjs=$fdjs."}</script>";
 
-foreach($fd_para as $key=>$val){
-$fd_para[$key][name]=($lang=="en")?$val[e_name]:(($lang=="other")?$val[o_name]:$val[c_name]);
-$fd_para[$key][input]=($lang=="en")?$val[e_input]:(($lang=="other")?$val[o_input]:$val[c_input]);
+$class2=$class_list[$class1][releclass]?$class1:$class2;
+$class1=$class_list[$class1][releclass]?$class_list[$class1][releclass]:$class1;
+$class_info=$class2?$class2_info:$class1_info;
+if($class2!=""){
+$class_info[name]=$class2_info[name]."--".$class1_info[name];
 }
 
-$class_info[e_name]=$class1_info[e_name];
-$class_info[c_name]=$class1_info[c_name];
-$class_info[o_name]=$class1_info[o_name];
-
-$class_info[name]=($lang=="en")?$class_info[e_name]:(($lang=="other")?$class_info[o_name]:$class_info[c_name]);
      $show[description]=$class_info[description]?$class_info[description]:$met_keywords;
      $show[keywords]=$class_info[keywords]?$class_info[keywords]:$met_keywords;
 	 $met_title=$navtitle."--".$met_title;
-
+if(count($nav_list2[$classaccess[id]])){
+$k=count($nav_list2[$class1]);
+$nav_list2[$class1][$k]=$class1_info;
+}
 require_once '../public/php/methtml.inc.php';
 
      $methtml_feedback.=$fdjs;
@@ -290,7 +258,7 @@ require_once '../public/php/methtml.inc.php';
      $methtml_feedback.="<table cellpadding='2' cellspacing='1'  bgcolor='#F2F2F2' align='center' class='feedback_table' >\n";
     foreach($fd_para as $key=>$val){
      $methtml_feedback.="<tr class=feedback_tr bgcolor='#FFFFFF'    height='25'  >\n";
-     $methtml_feedback.="<td class=feedback_td1 align='right' width='20%'>".$val[name].":</td>\n";
+     $methtml_feedback.="<td class=feedback_td1 align='right' width='20%'>".$val[name]."&nbsp;</td>\n";
      $methtml_feedback.="<td class=feedback_input width='70%'>".$val[input]."</td>\n";
      $methtml_feedback.="<td class=feedback_info style='color:#990000'>".$val[wr_must]."</td>\n";
      $methtml_feedback.="</tr>\n";
@@ -300,27 +268,14 @@ require_once '../public/php/methtml.inc.php';
      $methtml_feedback.="<input type='hidden' name='fromurl' value='".$fromurl."' />\n";
      $methtml_feedback.="<input type='hidden' name='lang' value='".$lang."' />\n";
      $methtml_feedback.="<input type='hidden' name='ip' value='".$ip."' />\n";
+	 $methtml_feedback.="<input type='hidden' name='totnum' value='".count($fd_para)."' />\n";
      $methtml_feedback.="<input type='submit' name='Submit' value='".$lang_Submit."' class='tj'>\n";
      $methtml_feedback.="<input type='reset' name='Submit' value='".$lang_Reset."' class='tj'></td></tr>\n";
      $methtml_feedback.="</table>\n";
      $methtml_feedback.="</form>\n";
 
-if(file_exists("templates/".$met_skin_user."/e_feedback.html")){
-   if($lang=="en"){
-     $show[e_description]=$class_info[e_description]?$class_info[e_description]:$met_e_keywords;
-     $show[e_keywords]=$class_info[e_keywords]?$class_info[e_keywords]:$met_e_keywords;
-     $e_title_keywords=$navtitle."--".$met_e_webname;
-     include template('e_feedback');
-	}else{
-	 $show[c_description]=$class_info[c_description]?$class_info[c_description]:$met_c_keywords;
-     $show[c_keywords]=$class_info[c_keywords]?$class_info[c_keywords]:$met_c_keywords;
-     $c_title_keywords=$navtitle."--".$met_c_webname;
-	 include template('feedback');
-	 }
-}else{
 include template('feedback');
-}
 footer();
-# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

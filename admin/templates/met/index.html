@@ -1,7 +1,6 @@
 <!--<?php
-# 文件名称:index.html 2009-08-05 09:21:57
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 echo <<<EOT
 -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -18,6 +17,41 @@ body {
 </style>
 </head>
 <body>
+<div class="toplang">
+<!--
+EOT;
+if(count($met_langok)>1 and (count($adminlang)>3 or $langadminok=="metinfo")){
+echo <<<EOT
+-->
+&nbsp;&nbsp;<b>{$lang_langcontent}</b>
+<select name="loginlang" onchange=javascript:window.location.href=this.options[this.selectedIndex].value >
+<!--
+EOT;
+$met_langtype_select[$lang]="selected='selected'" ;
+foreach($met_langok as $key=>$val){
+if($langadminok=="metinfo" or (strstr($langadminok,"-".$val[mark]."-"))){
+echo <<<EOT
+-->
+<option value="index.php?lang=$val[mark]" {$met_langtype_select[$val[mark]]}>$val[name]</option>
+<!--
+EOT;
+}}
+echo <<<EOT
+-->
+</select>
+<!--
+EOT;
+if($langadminok=="metinfo"){
+echo <<<EOT
+-->
+ <a target="main" onfocus="if(this.blur)this.blur();" id="list0_$k" href="set/lang.php?langaction=add"   onclick="san(0),san1(1,2)">{$lang_langadd}</a>
+ 
+<!--
+EOT;
+}}
+echo <<<EOT
+-->
+</div>
 <div class="top">
 <div style="width:100%;">
 <iframe allowtransparency="true" style="padding-top:0px; margin-top:0px; position:absolute; height:30px; width:50%; line-height:30px; right:20px; top:0px; z-index:100; background-color=transparent " src="http://www.metinfo.cn/metnewslist.php?fromurl=$met_weburl&softtype=1" frameborder=0 scrolling=no ></iframe>
@@ -28,13 +62,13 @@ body {
 <div class="top_right_top"></div>
 <div class="top_list">
    <ul id="top_ul">
-       <li><a href="#" onfocus="if(this.blur)this.blur();" onclick="san(0)"  class="li_ok" style="color:#FFFFFF;">{$lang_indexbasic}</a></li>
-	   <li><a href="#" onfocus="if(this.blur)this.blur();" onclick="san(1)">{$lang_indexskin}</a></li>
-	   <li><a href="#" onfocus="if(this.blur)this.blur();" onclick="san(2)">{$lang_indexcolumn}</a></li>
-	   <li><a href="#" onfocus="if(this.blur)this.blur();" onclick="san(3)" >{$lang_indexcontent}</a></li>
-	   <li><a href="#" onfocus="if(this.blur)this.blur();" onclick="san(4)">{$lang_indexseo}</a></li>
-	   <li><a href="#" onfocus="if(this.blur)this.blur();" onclick="san(5)">{$lang_indexfeedback}</a></li>
-	   <li><a href="#" onfocus="if(this.blur)this.blur();" onclick="san(6)">{$lang_indexuser}</a></li>
+       <li><a href="#" onfocus="if(this.blur)this.blur();" onclick="san(0,'$lang')"  class="li_ok" style="color:#FFFFFF;">{$lang_indexbasic}</a></li>
+	   <li><a href="#" onfocus="if(this.blur)this.blur();" onclick="san(1,'$lang')">{$lang_indexskin}</a></li>
+	   <li><a href="#" onfocus="if(this.blur)this.blur();" onclick="san(2,'$lang')">{$lang_indexcolumn}</a></li>
+	   <li><a href="#" onfocus="if(this.blur)this.blur();" onclick="san(3,'$lang')" >{$lang_indexcontent}</a></li>
+	   <li><a href="#" onfocus="if(this.blur)this.blur();" onclick="san(4,'$lang')">{$lang_indexseo}</a></li>
+	   <li><a href="#" onfocus="if(this.blur)this.blur();" onclick="san(5,'$lang')">{$lang_indexfeedback}</a></li>
+	   <li><a href="#" onfocus="if(this.blur)this.blur();" onclick="san(6,'$lang')">{$lang_indexuser}</a></li>
 	   <div style="clear:both;"></div>
    </ul>
    <div class="top_admin"><span>MetInfo{$lang_indexmanager}&nbsp;</span>{$lang_indexwelcom}: $metinfo_admin_name</div>
@@ -53,9 +87,9 @@ body {
 <td  valign="top" style="width:170px; *width:172px; _width:174px; z-index:2;">
 <div class="left" id="leftheight" >
      <div class="left_top">
-	      <a target="_blank" href="../">{$lang_indexhome}</a>&nbsp;&nbsp;<a href="site/sysadmin.php" target="main">{$lang_indexadmin}</a>&nbsp;&nbsp;<a target="_top" href="login/login_out.php">{$lang_indexloginout}</a>	 </div>
+	      <a target="_blank" href="../">{$lang_indexhome}</a>&nbsp;&nbsp;<a href="site/sysadmin.php?lang=$lang" target="main">{$lang_indexadmin}</a>&nbsp;&nbsp;<a target="_top" href="login/login_out.php">{$lang_indexloginout}</a>	 </div>
 	 <div class="left_content">
-<!--——————————————————————栏目一开始————————————————————————————-->
+<!--——————————————————————category 1 start————————————————————————————-->
 	 <div id="list0" class="left_u">
 	    <ul id="left_ul1" class="pt">
 <!--
@@ -63,16 +97,14 @@ EOT;
 $k=0;
 echo <<<EOT
 -->
-<li><a target="main" onfocus="if(this.blur)this.blur();" id="list0_$k" href="site/sysadmin.php" onclick="san1(1,$k)" class="left_clicka" style=" border:1px solid  #c5edf9; color:#1788c2;">{$lang_sysadminSystemInfo}</a></li>
+<li><a target="main" onfocus="if(this.blur)this.blur();" id="list0_$k" href="site/sysadmin.php?lang=$lang" onclick="san1(1,$k)" class="left_clicka" style=" border:1px solid  #c5edf9; color:#1788c2;">{$lang_indexsysteminfo}</a></li>
 <!--
 EOT;
 $k++;
-$p0weredby or ob_end_clean();
-ob_pcontent();
 if($metinfo_admin_pop=="metinfo" || $admin_pop1001=="metinfo"){
 echo <<<EOT
 -->
-<li><a target="main" onfocus="if(this.blur)this.blur();" id="list0_$k" href="set/basic.php" onclick="san1(1,$k)" >{$lang_indexbasicinfo}</a></li>
+<li><a target="main" onfocus="if(this.blur)this.blur();" id="list0_$k" href="set/basic.php?lang=$lang" onclick="san1(1,$k)" >{$lang_indexbasicinfo}</a></li>
 <!--
 EOT;
 $k++;
@@ -80,7 +112,7 @@ $k++;
 if($metinfo_admin_pop=="metinfo" || $admin_pop1002=="metinfo"){
 echo <<<EOT
 -->
-<li><a target="main" onfocus="if(this.blur)this.blur();" id="list0_$k" href="set/lang.php" onclick="san1(1,$k)">{$lang_indexlang}</a></li> 
+<li><a target="main" onfocus="if(this.blur)this.blur();" id="list0_$k" href="set/lang.php?lang=$lang" onclick="san1(1,$k)">{$lang_indexlang}</a></li> 
 <!--
 EOT;
 $k++;
@@ -88,7 +120,7 @@ $k++;
 if($metinfo_admin_pop=="metinfo" || $admin_pop1003=="metinfo"){
 echo <<<EOT
 --> 
-<li><a target="main" onfocus="if(this.blur)this.blur();" id="list0_$k" href="set/foot.php" onclick="san1(1,$k)">{$lang_indexfoot}</a></li>
+<li><a target="main" onfocus="if(this.blur)this.blur();" id="list0_$k" href="set/foot.php?lang=$lang" onclick="san1(1,$k)">{$lang_indexfoot}</a></li>
 <!--
 EOT;
 $k++;
@@ -96,7 +128,7 @@ $k++;
 if($metinfo_admin_pop=="metinfo" || $admin_pop1004=="metinfo"){
 echo <<<EOT
 -->
-<li><a target="main" onfocus="if(this.blur)this.blur();" id="list0_$k" href="set/other_info.php" onclick="san1(1,$k)">{$lang_indexotherinfo}</a></li> 
+<li><a target="main" onfocus="if(this.blur)this.blur();" id="list0_$k" href="set/other_info.php?lang=$lang" onclick="san1(1,$k)">{$lang_indexotherinfo}</a></li> 
 <!--
 EOT;
 $k++;
@@ -104,7 +136,7 @@ $k++;
 if($metinfo_admin_pop=="metinfo" || $admin_pop1005=="metinfo"){
 echo <<<EOT
 --> 
-<li><a target="main" onfocus="if(this.blur)this.blur();" id="list0_$k" href="set/database.php" onclick="san1(1,$k)">{$lang_indexdataback}</a></li> 
+<li><a target="main" onfocus="if(this.blur)this.blur();" id="list0_$k" href="set/database.php?lang=$lang" onclick="san1(1,$k)">{$lang_indexdataback}</a></li> 
 <!--
 EOT;
 $k++;
@@ -112,7 +144,7 @@ $k++;
 if($metinfo_admin_pop=="metinfo" || $admin_pop1006=="metinfo"){
 echo <<<EOT
 --> 
-<li><a target="main" onfocus="if(this.blur)this.blur();" id="list0_$k" href="set/safe.php" onclick="san1(1,$k)">{$lang_indexsafe}</a></li> 
+<li><a target="main" onfocus="if(this.blur)this.blur();" id="list0_$k" href="set/safe.php?lang=$lang" onclick="san1(1,$k)">{$lang_indexsafe}</a></li> 
 <!--
 EOT;
 $k++;
@@ -120,7 +152,7 @@ $k++;
 if($metinfo_admin_pop=="metinfo" || $admin_pop1007=="metinfo"){
 echo <<<EOT
 --> 
-<li><a target="main" onfocus="if(this.blur)this.blur();" id="list0_$k" href="set/uploadfile.php" onclick="san1(1,$k)">{$lang_indexupload}</a></li> 
+<li><a target="main" onfocus="if(this.blur)this.blur();" id="list0_$k" href="set/uploadfile.php?lang=$lang" onclick="san1(1,$k)">{$lang_indexupload}</a></li> 
 <!--
 EOT;
 $k++;
@@ -129,17 +161,17 @@ $k1=$k+1;
 
 echo <<<EOT
 --> 
-		   <li><a target="main" onfocus="if(this.blur)this.blur();"  id="list0_$k2" href="set/authcode.php" onclick="san1(1,$k)">{$lang_indexcode}</a></li>
+		   <li><a target="main" onfocus="if(this.blur)this.blur();"  id="list0_$k2" href="set/authcode.php?lang=$lang" onclick="san1(1,$k)">{$lang_indexcode}</a></li>
 		   <li><a  target="_blank" onfocus="if(this.blur)this.blur();" id="list0_$k3" href="http://www.metinfo.cn/ebook" onclick="san1(1,$k1)">{$lang_indexebook}</a></li>
 		   <li><a  target="_blank" onfocus="if(this.blur)this.blur();" id="list0_$k4" href="http://bbs.metinfo.cn/" onclick="san1(1,$k1)">{$lang_indexbbs}</a></li>
 		</ul>	
 	</div>
-<!--***************************************栏目一结束***************************************-->
+<!--***************************************category 1 end***************************************-->
 
 
 
 
-<!--——————————————————————栏目二开始————————————————————————————-->
+<!--——————————————————————category 2 start————————————————————————————-->
 	<div id="list1" class="left_u" style="display:none;">
 	    <ul id="left_ul2" class="pt">
 
@@ -150,8 +182,8 @@ if($metinfo_admin_pop=="metinfo" || $admin_pop1101=="metinfo"){
 $k++;
 echo <<<EOT
 -->
-<li><a target="main" id="list1_0" onfocus="if(this.blur)this.blur();" href="set/skin.php" onclick="san1(2,0)" class="li_left_ok" style=" border:1px solid  #c5edf9; color:#1788c2;">{$lang_indexskin}</a></li>
-<li><a target="main" id="list2_$k" onfocus="if(this.blur)this.blur();" href="set/skin_manager.php" onclick="san1(2,$k)">{$lang_indexskinmanager}</a></li>
+<li><a target="main" id="list1_0" onfocus="if(this.blur)this.blur();" href="set/skin.php?lang=$lang" onclick="san1(2,0)" class="li_left_ok" style=" border:1px solid  #c5edf9; color:#1788c2;">{$lang_indexskin}</a></li>
+<li><a target="main" id="list2_$k" onfocus="if(this.blur)this.blur();" href="set/skin_manager.php?lang=$lang" onclick="san1(2,$k)">{$lang_indexskinmanager}</a></li>
 <!--
 EOT;
 $k++;
@@ -159,7 +191,7 @@ $k++;
 if($metinfo_admin_pop=="metinfo" || $admin_pop1102=="metinfo"){
 echo <<<EOT
 -->
-<li><a target="main" id="list1_$k" onfocus="if(this.blur)this.blur();" href="set/img.php" onclick="san1(2,$k)">{$lang_indexpic}</a></li>
+<li><a target="main" id="list1_$k" onfocus="if(this.blur)this.blur();" href="set/img.php?lang=$lang" onclick="san1(2,$k)">{$lang_indexpic}</a></li>
 <!--
 EOT;
 $k++;
@@ -167,7 +199,7 @@ $k++;
 if($metinfo_admin_pop=="metinfo" || $admin_pop1103=="metinfo"){
 echo <<<EOT
 --> 
-<li><a target="main" id="list1_$k" onfocus="if(this.blur)this.blur();" href="set/index_set.php" onclick="san1(2,$k)">{$lang_indexhomeset}</a></li>
+<li><a target="main" id="list1_$k" onfocus="if(this.blur)this.blur();" href="set/index_set.php?lang=$lang" onclick="san1(2,$k)">{$lang_indexhomeset}</a></li>
  <!--
 EOT;
 $k++;
@@ -176,8 +208,8 @@ if($metinfo_admin_pop=="metinfo" || $admin_pop1104=="metinfo"){
 $flashk=$k+1;
 echo <<<EOT
 --> 
-<li><a target="main" id="list1_$k" onfocus="if(this.blur)this.blur();" href="flash/setflash.php" onclick="san1(2,$k)">{$lang_indexflashset}</a></li>
-<li><a target="main" id="list1_$flashk" onfocus="if(this.blur)this.blur();" href="flash/flash.php" onclick="san1(2,$flashk)">{$lang_indexflash}</a></li>
+<li><a target="main" id="list1_$k" onfocus="if(this.blur)this.blur();" href="flash/setflash.php?lang=$lang" onclick="san1(2,$k)">{$lang_indexflashset}</a></li>
+<li><a target="main" id="list1_$flashk" onfocus="if(this.blur)this.blur();" href="flash/flash.php?lang=$lang" onclick="san1(2,$flashk)">{$lang_indexflash}</a></li>
  <!--
 EOT;
 $k++;
@@ -187,8 +219,8 @@ if($metinfo_admin_pop=="metinfo" || $admin_pop1105=="metinfo"){
 $onlinek=$k+1;
 echo <<<EOT
 --> 
-<li><a target="main" id="list1_$k" onfocus="if(this.blur)this.blur();" href="set/online.php" onclick="san1(2,$k)">{$lang_indexonlineset}</a></li>
-<li><a target="main" id="list1_$k" onfocus="if(this.blur)this.blur();" href="online/" onclick="san1(2,$onlinek)">{$lang_indexonline}</a></li>
+<li><a target="main" id="list1_$k" onfocus="if(this.blur)this.blur();" href="set/online.php?lang=$lang" onclick="san1(2,$k)">{$lang_indexonlineset}</a></li>
+<li><a target="main" id="list1_$k" onfocus="if(this.blur)this.blur();" href="online/index.php?lang=$lang" onclick="san1(2,$onlinek)">{$lang_indexonline}</a></li>
 <!--
 EOT;
 $k++;
@@ -196,16 +228,16 @@ $k++;
 }
 echo <<<EOT
 -->
-		   <li><a target="main" onfocus="if(this.blur)this.blur();" id="list0_$k1" href="set/info.php" onclick="san1(2,$k)">{$lang_indexskinset}</a></li>
+		   <li><a target="main" onfocus="if(this.blur)this.blur();" id="list0_$k1" href="set/info.php?lang=$lang" onclick="san1(2,$k)">{$lang_indexskinset}</a></li>
 		</ul>
 	</div>
-<!--***************************************栏目二结束***************************************-->
+<!--***************************************category 2 end***************************************-->
 
 
 
 
 
-<!--——————————————————————栏目三开始————————————————————————————-->
+<!--—————————————————————category 3 start————————————————————————————-->
 <div id="list2" class="left_u" style="display:none;">
 <ul id="left_ul3" class="pt">	
 <!--
@@ -214,7 +246,7 @@ $k=0;
 if($metinfo_admin_pop=="metinfo" || $admin_pop1201=="metinfo"){
 echo <<<EOT
 -->         	
-		   <li><a target="main" id="list2_$k" onfocus="if(this.blur)this.blur();" href="column/" onclick="san1(3,$k)" class="li_left_ok" style=" border:1px solid  #c5edf9; color:#1788c2;">{$lang_indexcolumn}</a></li>
+		   <li><a target="main" id="list2_$k" onfocus="if(this.blur)this.blur();" href="column/index.php?lang=$lang" onclick="san1(3,$k)" class="li_left_ok" style=" border:1px solid  #c5edf9; color:#1788c2;">{$lang_indexcolumn}</a></li>
 <!--
 EOT;
 $k++;
@@ -222,7 +254,7 @@ $k++;
 if($metinfo_admin_pop=="metinfo" || $admin_pop1202=="metinfo"){
 echo <<<EOT
 -->      
-<li><a target="main" id="list2_$k" onfocus="if(this.blur)this.blur();" href="parameter/parameter.php?type=3" onclick="san1(3,$k)">{$lang_mod3}{$lang_mod}{$lang_parameter}</a></li>
+<li><a target="main" id="list2_$k" onfocus="if(this.blur)this.blur();" href="parameter/parameter.php?module=3&lang=$lang" onclick="san1(3,$k)">{$lang_mod3}{$lang_parameter}</a></li>
  <!--
 EOT;
 $k++;
@@ -230,7 +262,7 @@ $k++;
 if($metinfo_admin_pop=="metinfo" || $admin_pop1203=="metinfo"){
 echo <<<EOT
 --> 
-<li><a target="main" id="list2_$k" onfocus="if(this.blur)this.blur();" href="parameter/parameter.php?type=4" onclick="san1(3,$k)">{$lang_mod4}{$lang_mod}{$lang_parameter}</a></li>
+<li><a target="main" id="list2_$k" onfocus="if(this.blur)this.blur();" href="parameter/parameter.php?module=4&lang=$lang" onclick="san1(3,$k)">{$lang_mod4}{$lang_parameter}</a></li>
  <!--
 EOT;
 $k++;
@@ -238,7 +270,7 @@ $k++;
 if($metinfo_admin_pop=="metinfo" || $admin_pop1204=="metinfo"){
 echo <<<EOT
 --> 
-<li><a target="main" id="list2_$k" onfocus="if(this.blur)this.blur();" href="parameter/parameter.php?type=5" onclick="san1(3,$k)">{$lang_mod5}{$lang_mod}{$lang_parameter}</a></li>
+<li><a target="main" id="list2_$k" onfocus="if(this.blur)this.blur();" href="parameter/parameter.php?module=5&lang=$lang" onclick="san1(3,$k)">{$lang_mod5}{$lang_parameter}</a></li>
  <!--
 EOT;
 $k++;
@@ -246,7 +278,7 @@ $k++;
 if($metinfo_admin_pop=="metinfo" || $admin_pop1205=="metinfo"){
 echo <<<EOT
 --> 
-<li><a target="main" id="list2_$k" onfocus="if(this.blur)this.blur();" href="parameter/parameter.php?type=10000" onclick="san1(3,$k)">{$lang_indexcv}</a></li>
+<li><a target="main" id="list2_$k" onfocus="if(this.blur)this.blur();" href="parameter/parameter.php?module=6&lang=$lang" onclick="san1(3,$k)">{$lang_indexcv}</a></li>
  <!--
 EOT;
 }
@@ -254,36 +286,37 @@ echo <<<EOT
 --> 
 		</ul>
 	</div>
-<!--***************************************栏目三结束***************************************-->
+<!--***************************************category 3 end***************************************-->
 
 
 
 
-<!--——————————————————————栏目四开始————————————————————————————-->	
+<!--——————————————————————category 4 start————————————————————————————-->	
 	<div id="list3" class="left_u" style="display:none;">
 	   <ul id="left_ul4" class="lmgl">
-<!--首页内容开始-->
+<!--home content start-->
 <!--
 EOT;
 $i=0;
+if($metadmin[homecontent]){
 if($metinfo_admin_pop=="metinfo" || $admin_pop1301=="metinfo"){
 echo <<<EOT
 --> 
 <li onclick="san4($i)"><a onfocus="if(this.blur)this.blur();" target="_self" href="#">{$lang_indexsetcontent}</a></li>
 		   <span style="display:none;">
-           <li><a target="main" onfocus="if(this.blur)this.blur();" href="set/index_content.php" >{$lang_indexsetcontent}</a></li>
+           <li><a target="main" onfocus="if(this.blur)this.blur();" href="set/index_content.php?lang=$lang" >{$lang_indexsetcontent}</a></li>
 		   </span>
 <!--
 EOT;
 $i++;
-}
+}}
 echo <<<EOT
 -->	
-<!--首页内容结束--> 
-<!--简介模型开始-->
+<!--home content end--> 
+<!--page module start-->
 <!--
 EOT;
-foreach($class1_list[1] as $key=>$val)
+foreach($met_classindex[1] as $key=>$val)
 {
 $admin_pop="admin_pop".$val[id];
 if($metinfo_admin_pop=="metinfo" || $$admin_pop=="metinfo"){
@@ -296,23 +329,23 @@ EOT;
 if($val[isshow]==1){
 echo <<<EOT
 --> 
-		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="about/about.php?id=$val[id]">$val[name]</a></li>
+		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="about/about.php?id=$val[id]&lang=$lang">$val[name]</a></li>
 <!--
 EOT;
 }
-foreach($class2_list[1] as $key=>$val1)
+foreach($met_class22[$val[id]] as $key=>$val1)
 {
-if($val1[bigclass]==$val[id]){
+if($val1[releclass]==0){
 echo <<<EOT
 --> 
-			     <li><a target="main" onfocus="if(this.blur)this.blur();" href="about/about.php?id=$val1[id]">$val1[name]</a></li>
+			     <li><a target="main" onfocus="if(this.blur)this.blur();" href="about/about.php?id=$val1[id]&lang=$lang">$val1[name]</a></li>
 <!--
 EOT;
-foreach($class2_list[1] as $key=>$val2){
-if($val2[bigclass]==$val1[id]){
+foreach($met_class3[$val1[id]] as $key=>$val2){
+if($val2[releclass]==0){
 echo <<<EOT
 -->
-                <li><a target="main" onfocus="if(this.blur)this.blur();" href="about/about.php?id=$val2[id]">--$val2[name]</a></li>
+                <li><a target="main" onfocus="if(this.blur)this.blur();" href="about/about.php?id=$val2[id]&lang=$lang">--$val2[name]</a></li>
 <!--
 EOT;
 }}		
@@ -327,12 +360,12 @@ $i++;
 }}
 echo <<<EOT
 -->	
-<!--简介模型结束-->
+<!--page module end-->
 
-<!--文章模型开始-->
+<!--news module end-->
 <!--
 EOT;
-foreach($class1_list[2] as $key=>$val)
+foreach($met_classindex[2] as $key=>$val)
 {
 $admin_pop="admin_pop".$val[id];
 if($metinfo_admin_pop=="metinfo" || $$admin_pop=="metinfo"){
@@ -340,8 +373,8 @@ echo <<<EOT
 -->
           <li onclick="san4($i)"><a onfocus="if(this.blur)this.blur();" target="_self" href="#">$val[name]</a></li>
 		   <span style="display:none;">	
-		   <li><a target="main"  onfocus="if(this.blur)this.blur();" href="article/add.php?class1=$val[id]">{$lang_add}$val[name]</a></li>
-		   <li><a target="main" onfocus="if(this.blur)this.blur();"  href="article/index.php?class1=$val[id]">{$lang_manager}$val[name]</a></li>
+		   <li><a target="main"  onfocus="if(this.blur)this.blur();" href="article/content.php?lang=$lang&action=add&class1=$val[id]">{$lang_addinfo}</a></li>
+		   <li><a target="main" onfocus="if(this.blur)this.blur();"  href="article/index.php?class1=$val[id]&lang=$lang">{$lang_manager}</a></li>
 		   </span>
 <!--
 EOT;
@@ -349,11 +382,11 @@ $i++;
 }}
 echo <<<EOT
 -->	
-<!--文章模型结束-->
-<!--产品模型开始-->
+<!--news module end-->
+<!--product module start-->
 <!--
 EOT;
-foreach($class1_list[3] as $key=>$val)
+foreach($met_classindex[3] as $key=>$val)
 {
 $admin_pop="admin_pop".$val[id];
 if($metinfo_admin_pop=="metinfo" || $$admin_pop=="metinfo"){
@@ -361,8 +394,8 @@ echo <<<EOT
 -->	
              <li onclick="san4($i)"><a onfocus="if(this.blur)this.blur();" target="_self" href="#">$val[name]</a></li>
 		   <span style="display:none;">	
-		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="product/add.php?class1=$val[id]">{$lang_add}$val[name]</a></li>
-		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="product/index.php?class1=$val[id]">{$lang_manager}$val[name]</a></li>
+		   <li><a target="main"  onfocus="if(this.blur)this.blur();" href="product/content.php?lang=$lang&action=add&class1=$val[id]">{$lang_addinfo}</a></li>
+		   <li><a target="main" onfocus="if(this.blur)this.blur();"  href="product/index.php?class1=$val[id]&lang=$lang">{$lang_manager}</a></li>
 		   </span>
 <!--
 EOT;
@@ -370,11 +403,11 @@ $i++;
 }}
 echo <<<EOT
 -->	
-<!--产品模型结束-->
-<!--下载模型开始-->
+<!--product module end-->
+<!--download module start-->
 <!--
 EOT;
-foreach($class1_list[4] as $key=>$val)
+foreach($met_classindex[4] as $key=>$val)
 {
 $admin_pop="admin_pop".$val[id];
 if($metinfo_admin_pop=="metinfo" || $$admin_pop=="metinfo"){
@@ -382,8 +415,8 @@ echo <<<EOT
 -->	
             <li onclick="san4($i)"><a onfocus="if(this.blur)this.blur();" target="_self" href="#">$val[name]</a></li>
 		   <span style="display:none;">	
-		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="download/add.php?class1=$val[id]">{$lang_add}$val[name]</a></li>
-		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="download/index.php?class1=$val[id]">{$lang_manager}$val[name]</a></li>
+		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="download/content.php?class1=$val[id]&lang=$lang&action=add">{$lang_addinfo}</a></li>
+		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="download/index.php?class1=$val[id]&lang=$lang">{$lang_manager}</a></li>
 		   </span>
 <!--
 EOT;
@@ -391,11 +424,11 @@ $i++;
 }}
 echo <<<EOT
 -->	
-<!--下载模型结束-->
-<!--图片模型开始-->
+<!--download module start-->
+<!--image module start-->
 <!--
 EOT;
-foreach($class1_list[5] as $key=>$val)
+foreach($met_classindex[5] as $key=>$val)
 {
 $admin_pop="admin_pop".$val[id];
 if($metinfo_admin_pop=="metinfo" || $$admin_pop=="metinfo"){
@@ -403,8 +436,8 @@ echo <<<EOT
 -->	
             <li onclick="san4($i)"><a onfocus="if(this.blur)this.blur();" target="_self" href="#">$val[name]</a></li>
 		   <span style="display:none;">	
-		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="img/add.php?class1=$val[id]">{$lang_add}$val[name]</a></li>
-		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="img/index.php?class1=$val[id]">{$lang_manager}$val[name]</a></li>
+		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="img/content.php?class1=$val[id]&lang=$lang&action=add">{$lang_addinfo}</a></li>
+		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="img/index.php?class1=$val[id]&lang=$lang">{$lang_manager}</a></li>
 		   </span>
 <!--
 EOT;
@@ -412,11 +445,11 @@ $i++;
 }}
 echo <<<EOT
 -->	
-<!--图片模型结束-->
-<!--招聘模型开始-->
+<!--image module end-->
+<!--job module start-->
 <!--
 EOT;
-foreach($class1_list[6] as $key=>$val)
+foreach($met_classindex[6] as $key=>$val)
 {
 $admin_pop="admin_pop".$val[id];
 if($metinfo_admin_pop=="metinfo" || $$admin_pop=="metinfo"){
@@ -424,9 +457,9 @@ echo <<<EOT
 -->	
            <li onclick="san4($i)"><a onfocus="if(this.blur)this.blur();" target="_self" href="#">$val[name]</a></li>
 		   <span style="display:none;">	
-		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="job/add.php?class1=$val[id]">{$lang_add}$val[name]</a></li>
-		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="job/index.php?class1=$val[id]">{$lang_manager}$val[name]</a></li>
-		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="job/cv.php?class1=$val[id]">{$lang_indexCv}</a></li>
+		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="job/content.php?class1=$val[id]&lang=$lang&action=add">{$lang_addinfo}</a></li>
+		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="job/index.php?class1=$val[id]&lang=$lang">{$lang_manager}</a></li>
+		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="job/cv.php?class1=$val[id]&lang=$lang">{$lang_indexCv}</a></li>
 		   </span>
 <!--
 EOT;
@@ -434,17 +467,17 @@ $i++;
 }}
 echo <<<EOT
 -->	
-<!--招聘模型结束-->
+<!--job module end-->
 		  
 		</ul>
 	    
 	</div>
-<!--***************************************栏目四结束***************************************-->
+<!--***************************************category 4 end***************************************-->
 
 
 
 
-<!--——————————————————————栏目五开始————————————————————————————-->		
+<!--——————————————————————category 5 start————————————————————————————-->		
 	<div id="list4" class="left_u" style="display:none;">
 	    <ul id="left_ul5" class="pt">
 <!--
@@ -455,33 +488,35 @@ $k1=$k+1;
 if($met_webhtm){
 echo <<<EOT
 --> 
- <li><a target="main" id="list4_$k" onfocus="if(this.blur)this.blur();" href="set/htm.php" onclick="san1(5,$k)" class="li_left_ok" style=" border:1px solid  #c5edf9; color:#1788c2;">{$lang_indexhtm}</a></li>		
- <li><a target="main" id="list4_$k" onfocus="if(this.blur)this.blur();" href="set/sethtm.php" onclick="san1(5,$k1)">{$lang_indexhtmset}</a></li>
+ <li><a target="main" id="list4_$k" onfocus="if(this.blur)this.blur();" href="set/htm.php?lang=$lang" onclick="san1(5,$k)" class="li_left_ok" style=" border:1px solid  #c5edf9; color:#1788c2;">{$lang_indexhtm}</a></li>		
+ <li><a target="main" id="list4_$k" onfocus="if(this.blur)this.blur();" href="set/sethtm.php?lang=$lang" onclick="san1(5,$k1)">{$lang_indexhtmset}</a></li>
 <!--
 EOT;
 }else{
 echo <<<EOT
 --> 
- <li><a target="main" id="list4_$k" onfocus="if(this.blur)this.blur();" href="set/sethtm.php" onclick="san1(5,$k)" class="li_left_ok" style=" border:1px solid  #c5edf9; color:#1788c2;">{$lang_indexhtmset}</a></li>		
- <li><a target="main" id="list4_$k" onfocus="if(this.blur)this.blur();" href="set/htm.php" onclick="san1(5,$k1)">{$lang_indexhtm}</a></li>
+ <li><a target="main" id="list4_$k" onfocus="if(this.blur)this.blur();" href="set/sethtm.php?lang=$lang" onclick="san1(5,$k)" class="li_left_ok" style=" border:1px solid  #c5edf9; color:#1788c2;">{$lang_indexhtmset}</a></li>		
+ <li><a target="main" id="list4_$k" onfocus="if(this.blur)this.blur();" href="set/htm.php?lang=$lang" onclick="san1(5,$k1)">{$lang_indexhtm}</a></li>
 <!--
 EOT;
 }
 $k++;
+ob_pcontent();
 $k++;
 }
 if($metinfo_admin_pop=="metinfo" || $admin_pop1402=="metinfo"){
 echo <<<EOT
 --> 
- <li><a target="main"  id="list4_$k" onfocus="if(this.blur)this.blur();" href="set/seo.php" onclick="san1(5,$k)" >{$lang_indexseoset}</a></li>
+ <li><a target="main"  id="list4_$k" onfocus="if(this.blur)this.blur();" href="set/seo.php?lang=$lang" onclick="san1(5,$k)" >{$lang_indexseoset}</a></li>
 <!--
 EOT;
 $k++;
 }
+jmali_start();
 if($metinfo_admin_pop=="metinfo" || $admin_pop1403=="metinfo"){
 echo <<<EOT
 --> 
-<li><a target="main" id="list4_$k" onfocus="if(this.blur)this.blur();" href="set/strcontent.php"  onclick="san1(5,$k)">{$lang_indexhot}</a></li>
+<li><a target="main" id="list4_$k" onfocus="if(this.blur)this.blur();" href="set/strcontent.php?lang=$lang"  onclick="san1(5,$k)">{$lang_indexhot}</a></li>
 <!--
 EOT;
 $k++;
@@ -489,37 +524,37 @@ $k++;
 echo <<<EOT
 --> 
 
-<!--友情链接开始-->
+<!--friendly link start-->
 <!--
 EOT;
 if($metinfo_admin_pop=="metinfo" || $admin_pop1404=="metinfo"){
 $k1=$k+1;
 echo <<<EOT
 -->	
-<li><a target="main" id="list4_$k" onfocus="if(this.blur)this.blur();" href="link/index.php" onclick="san1(5,$k)">{$lang_indexlink}{$lang_manager}</a></li>
-<li><a target="main" id="list4_$k1" onfocus="if(this.blur)this.blur();" href="link/add.php" onclick="san1(5,$k1)">{$lang_add}{$lang_indexlink}</a></li>
+<li><a target="main" id="list4_$k" onfocus="if(this.blur)this.blur();" href="link/index.php?lang=$lang" onclick="san1(5,$k)">{$lang_indexlink}</a></li>
+<li><a target="main" id="list4_$k1" onfocus="if(this.blur)this.blur();" href="link/content.php?action=add&lang=$lang" onclick="san1(5,$k1)">{$lang_add}{$lang_indexlink}</a></li>
 <!--
 EOT;
 }
 echo <<<EOT
 -->	
-<!--友情链接结束-->
+<!--friendly link end -->
 
 
 		</ul>
 	</div>
-<!--***************************************栏目五结束***************************************-->
+<!--***************************************category 5 end***************************************-->
 
 
 
-<!--——————————————————————栏目六开始————————————————————————————-->		
+<!--——————————————————————category 6 start————————————————————————————-->		
 	<div id="list5" class="left_u" style="display:none;">
 	    <ul id="left_ul6" class="lmgl">
-<!--反馈系统开始-->
+<!--feedback start-->
 <!--
 EOT;
 $i=0;
-foreach($class1_list[8] as $key=>$val)
+foreach($met_module[8] as $key=>$val)
 {
 $admin_pop="admin_pop".$val[id];
 if($metinfo_admin_pop=="metinfo" || $$admin_pop=="metinfo"){
@@ -527,9 +562,9 @@ echo <<<EOT
 -->	
            <li onclick="san6($i)"><a onfocus="if(this.blur)this.blur();" target="_self" href="#">$val[name]</a></li>
 		   <span style="display:none;">	
-		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="feedback/inc.php">$val[name]{$lang_set}</a></li>
-		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="feedback/parameter.php">{$lang_indexfeedbackp}</a></li>
-		   <li><a target="main" id="list5_$j" onfocus="if(this.blur)this.blur();" href="feedback/index.php">{$lang_indexfeedbackm}</a></li>
+		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="feedback/inc.php?lang=$lang">{$lang_set}</a></li>
+		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="feedback/parameter.php?lang=$lang">{$lang_indexfeedbackp}</a></li>
+		   <li><a target="main" id="list5_$j" onfocus="if(this.blur)this.blur();" href="feedback/index.php?lang=$lang">{$lang_indexfeedbackm}</a></li>
 		   </span>
 <!--
 EOT;
@@ -537,11 +572,11 @@ $i++;
 }}
 echo <<<EOT
 -->	
-<!--反馈系统结束-->
-<!--留言系统开始-->
+<!--feedback end-->
+<!--message start-->
 <!--
 EOT;
-foreach($class1_list[7] as $key=>$val)
+foreach($met_module[7] as $key=>$val)
 {
 $admin_pop="admin_pop".$val[id];
 if($metinfo_admin_pop=="metinfo" || $$admin_pop=="metinfo"){
@@ -549,22 +584,22 @@ echo <<<EOT
 -->	
            <li onclick="san6($i)"><a onfocus="if(this.blur)this.blur();" target="_self" href="#">$val[name]</a></li>
 		   <span style="display:none;">	
-		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="message/inc.php">$val[name]{$lang_set}</a></li>
-		   <li><a target="main" onfocus="if(this.blur)this.blur();" id="list5_$j" href="message/index.php">{$lang_indexmessage}</a></li>
+		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="message/inc.php?lang=$lang">{$lang_set}</a></li>
+		   <li><a target="main" onfocus="if(this.blur)this.blur();" id="list5_$j" href="message/index.php?lang=$lang">{$lang_indexmessage}</a></li>
 		   </span>
 <!--
 EOT;
 }}
 echo <<<EOT
 -->	
-<!--留言系统结束-->
+<!--message end-->
 
 		</ul>
 	</div>
-<!--***************************************栏目六结束***************************************-->
+<!--***************************************category 6 end***************************************-->
 
 
-<!--——————————————————————栏目七开始————————————————————————————-->		
+<!--——————————————————————category 7 start————————————————————————————-->		
 	<div id="list6" class="left_u" style="display:none;">
 	<ul id="left_ul7" class="pt">
 <!--
@@ -573,7 +608,7 @@ $k=0;
 if($metinfo_admin_pop=="metinfo" || $admin_pop1603=="metinfo"){
 echo <<<EOT
 --> 
-<li><a target="main" id="list6_$k"  onfocus="if(this.blur)this.blur();" href="member/" onclick="san1(7,$k)" class="li_left_ok" style=" border:1px solid  #c5edf9; color:#1788c2;">{$lang_memberManage}</a></li>
+<li><a target="main" id="list6_$k"  onfocus="if(this.blur)this.blur();" href="member/index.php?lang=$lang" onclick="san1(7,$k)" class="li_left_ok" style=" border:1px solid  #c5edf9; color:#1788c2;">{$lang_memberManage}</a></li>
 <!--
 EOT;
 $k++;
@@ -581,7 +616,7 @@ $k++;
 if($metinfo_admin_pop=="metinfo" || $admin_pop1602=="metinfo"){
 echo <<<EOT
 --> 
-<li><a target="main" id="list6_$k"  onfocus="if(this.blur)this.blur();" href="set/member.php" onclick="san1(7,$k)">{$lang_memberset}</a></li>
+<li><a target="main" id="list6_$k"  onfocus="if(this.blur)this.blur();" href="set/member.php?lang=$lang" onclick="san1(7,$k)">{$lang_memberset}</a></li>
 <!--
 EOT;
 $k++;
@@ -589,7 +624,7 @@ $k++;
 if($metinfo_admin_pop=="metinfo" || $admin_pop1601=="metinfo"){
 echo <<<EOT
 -->
-<li><a target="main" onfocus="if(this.blur)this.blur();" href="admin/" onclick="san1(7,$k)" id="list6_$k" >{$lang_indexadminname}</a></li>
+<li><a target="main" onfocus="if(this.blur)this.blur();" href="admin/index.php?lang=$lang" onclick="san1(7,$k)" id="list6_$k" >{$lang_indexadminname}</a></li>
 <!--
 EOT;
 $k++;
@@ -597,7 +632,7 @@ $k++;
 else{
 echo <<<EOT
 -->
-<li><a target="main" onfocus="if(this.blur)this.blur();" href="admin/editor_pass.php?id=$admin_list[id]" id="list6_$k" onclick="san1(7,$k)" >{$lang_indexperson}</a></li>
+<li><a target="main"  onfocus="if(this.blur)this.blur();" href="admin/editor_pass.php?id=$admin_list[id]&lang=$lang" id="list6_$k" onclick="san1(7,$k)" >{$lang_indexperson}</a></li>
 <!--
 EOT;
 $k++;
@@ -608,26 +643,30 @@ echo <<<EOT
 
 		</ul>
 	</div>
-<!--***************************************栏目七结束***************************************-->
+<!--***************************************category 6 end***************************************-->
 
 
 
-<!--——————————————————————底部信息开始——————————————————————-->
+<!--——————————————————————foot start——————————————————————-->
      <div class="left_footer">
 	    $foot	 </div>
-<!--——————————————————————底部信息结束——————————————————————-->
+<!--——————————————————————foot end——————————————————————-->
 
 	 </div><script src="$img_url/metinfo.js" type="text/javascript"></script>
 </div></td>
-<td class="right" valign="top" bgcolor="#FFFFFF"><iframe frameborder="0" id="main" name="main" src="site/sysadmin.php" scrolling="yes" class="iframe_main" ></iframe>&nbsp;</td>
+<td class="right" valign="top" bgcolor="#FFFFFF"><iframe frameborder="0" id="main" name="main" src="site/sysadmin.php?lang=$lang" scrolling="yes" class="iframe_main" ></iframe>&nbsp;</td>
 </tr>
 </table>
 </div>
 <script type='text/javascript'>
 var colunmnow=getCookie ('colunmid');
-var okinfo='$lang_loginUserAdmin';
+var okinfo='$lang_jsok';
 if(colunmnow=='metinfo'){
 san(2);
+alert(okinfo);
+}else if(colunmnow=='metinfolang'){
+san1(1,2);
+document.getElementById("main").src='set/lang.php?lang=$lang';
 alert(okinfo);
 }
 delCookie ('colunmid');
@@ -645,6 +684,6 @@ location.href='../'+adminfile+'/';
 
 <!--
 EOT;
-# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>-->

@@ -1,7 +1,6 @@
 <?php
-# 文件名称:getpassword.php 2009-08-17 20:49:13
-# MetInfo企业网站管理系统
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 require_once '../include/common.inc.php';
 if($action=="getpassword"){
 $admin_list = $db->get_one("SELECT * FROM $met_admin_table WHERE admin_id='$admin_name'");
@@ -38,6 +37,6 @@ okinfo('login_member.php?lang='.$lang,$lang_NewPassJS);
 echo "<br>{$lang_getTip4}：<form method='post' action='getpassword.php?action=getpassword&lang=$lang'><input type='text' name='admin_name' size='20'/><input   type='submit' name='Submit' value=' $lang_getTip5 '> <form>";
 }
 
-# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
-# Copyright (C) 长沙米拓信息技术有限公司 ( http://www.metinfo.cn). All rights reserved.
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

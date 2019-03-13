@@ -1,29 +1,20 @@
 <?php
-# 文件名称:langeditor.php 2009-08-01 21:01:57
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn)). All rights reserved.
-
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+$langeditor=isset($langeditor)?$langeditor:$_GET['langeditor'];
+$settings = parse_ini_file("../../config/config_".$langeditor.".inc.php");
+@extract($settings);
+$met_skin_user1=$met_skin_user;
 require_once '../login/login_check.php';
+require_once '../../config/lang.inc.php';
 
-switch($langeditor){
-case "cn";
-if(file_exists("../../templates/".$met_skin_user."/lang/language_cn.ini")){
- $file_nameupdate="../../templates/".$met_skin_user."/lang/language_cn.ini";
- }else{
- $file_nameupdate="../../templates/".$met_skin_user."/lang/language_china.ini";
- }
-$met_lang=$met_c_lang;
-break;
-case "en";
-$file_nameupdate="../../templates/".$met_skin_user."/lang/language_en.ini";
-$met_lang=$met_e_lang;
-break;
-case "other";
-$file_nameupdate="../../templates/".$met_skin_user."/lang/language_other.ini";
-$met_lang=$met_o_lang;
-break;
+$file_nameupdate="../../templates/".$met_skin_user1."/lang/language_".$langeditor.".ini";
+$file_nameupdate1=$file_nameupdate;
+if(!file_exists($file_nameupdate)){
+$file_nameupdate1="../../templates/".$met_skin_user1."/lang/language_en.ini";
 }
-$fp = @fopen($file_nameupdate, "r") or die("Cannot open $file_nameupdate");
+
+$fp = @fopen($file_nameupdate1, "r") or die("Cannot open $file_nameupdate, $file_nameupdate not exist or cannot been write");
 $i=0;
 $j=0;
 
@@ -79,12 +70,13 @@ $config_save="";
     }
    $config_save=$config_save.$config_list."\n";
    }
-   $reurl="langeditorskin.php?langeditor=".$langeditor."&langnowok=metinfo&langid=".$metinfolangid;
+   $reurl="langeditorskin.php?langeditor=".$langeditor."&langnowok=metinfo&langid=".$metinfolangid.'&lang='.$lang;
 $config_save=$linetop."\n".$config_save;
+if(!is_writable($file_nameupdate))@chmod($file_nameupdate,0777);
 $fp = fopen($file_nameupdate,w);
     fputs($fp, $config_save);
     fclose($fp);
-okinfo($reurl,$lang_loginUserAdmin);
+okinfo($reurl,$lang_jsok);
 }else{
 $css_url="../templates/".$met_skin."/css";
 $img_url="../templates/".$met_skin."/images";
@@ -92,6 +84,6 @@ include template('langeditorskin');
 footer();
 }
 
-# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

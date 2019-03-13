@@ -1,27 +1,25 @@
 <!--<?php
-# 文件名称:adminsetup.htm 2009-08-18 08:53:03
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
-require_once template('header'); 
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+require_once template('head'); 
 echo <<<EOT
 -->
+<script language="javascript">
+parent.document.getElementById("license").className='stepnowno';
+parent.document.getElementById("inspect").className='stepnowno';
+parent.document.getElementById("databasesetup").className='stepnowno';
+parent.document.getElementById("db_setup").className='stepnowno';
+parent.document.getElementById("adminsetup").className='stepnow';
+</script>
 <body>
-
-<div class="top">
-<div class="headright">第五步：管理员帐号设置</div>
-</div>
-
-<div class="head">
-<div class="logo"><img src="images/logosmall.gif" width="40" /></div>
-<div class="headtext"><font style="font-family:Arial, Helvetica, sans-serif">MetInfo</font>企业网站管理系统安装<font style="font-family:Arial, Helvetica, sans-serif; font-size:16px;"> V2.0 build</font></div>
-</div>
-
-<div class="content">
-<div class="content4">
-<p>为了管理MetInfo企业网站管理系统的设置，您需要一个管理员帐号.请选择管理员名字、密码，输入信息并仔细检查后，选择 <b>保存管理设置</b> 。 </p>
-
+<div class="contenttext">
+<br>
+<p>请设置网站后台管理员帐号，确定后选择<b>保存管理设置</b>。 </p>
+<br>
     <form method="post" action="" name="adminsetup" onSubmit="return chkreg();">
      <input name="setup" type="hidden" value="1">
+	 <input name="cndata" type="hidden" value="$cndata" />
+	 <input name="endata" type="hidden" value="$endata" />
 	  <fieldset>
 	  <legend><strong>管理员信息</strong></legend>
 		<div class="section">
@@ -30,12 +28,12 @@ echo <<<EOT
 		  <p>输入系统管理员帐号的用户名</p>
 		</div>
 		<div class="section">
-		  <input type="password" class="inp" id="regpwd" name="regpwd" tabindex="2" onBlur="chkpassword();"/>
+		  <input type="password" class="inpp" id="regpwd" name="regpwd" tabindex="2" onBlur="chkpassword();"/>
 		  <label for="admin_pass">管理员密码  <span id="div_pwd"></span></label>
 		  <p>输入系统管理员帐号的密码</p>
 		</div>
 		<div class="section">
-		  <input type="password" class="inp" id="aginpwd" name="aginpwd" tabindex="3" onBlur="comfirmpassword()"/>
+		  <input type="password" class="inpp" id="aginpwd" name="aginpwd" tabindex="3" onBlur="comfirmpassword()"/>
 		  <label for="admin_pass_confirm">确认管理员密码  <span id="div_aginpwd"></span></label>
 		  <p>确认系统管理员帐号的密码</p>
 		</div>
@@ -50,11 +48,10 @@ echo <<<EOT
     </form>
 
 </div>
-
+</body></html>
 
 <!--
 EOT;
-require_once template('footer'); 
-# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>-->

@@ -70,7 +70,7 @@ html,body{ font-size:12px;background-color:#FBFBFB; }
 .main_deng form label{ font-size:12px; color:#888888; height:25px; line-height:25px; }
 .main_deng p{ margin:5px 5px 5px 5px;}
 .main_deng form label input.input_text{
-    width:150px; font-size:16px; color:#666666; border:1px solid #D7D6D4;
+    width:150px; font-size:12px; color:#666666; border:1px solid #D7D6D4; height:18px;
 }
 .forgetmenot{ margin:5px 0px; }
 .forgetmenot input{ position:relative; top:2px; }
@@ -90,6 +90,7 @@ html,body{ font-size:12px;background-color:#FBFBFB; }
 .table_member{ width:100%; margin:0px auto;}
 .table_member td.member_text{ text-align:right; font-size:12px; width:20%; background:#F3F3F3; color:#333333; height:25px; line-height:25px; padding-right:3px;}
 .table_member td.member_input{ padding-left:3px; background:#FAFAFA; color:#333333;}
+.table_member td.member_input a{ text-decoration:none;}
 .table_member td.member_input span{color:#FF6600; font-weight:600;}
 .table_member td.member_input input{ border:1px solid #E2E0E0;}
 .table_member td.member_input textarea{ background:#FFFFFF; border:1px solid #E2E0E0;}

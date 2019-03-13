@@ -1,21 +1,32 @@
 <?php
-# 文件名称:flashdelete.php 2009-08-05 11:21:57
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn)). All rights reserved.
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 require_once '../login/login_check.php';
 if($action=="del"){
 $allidlist=explode(',',$allid);
 foreach($allidlist as $key=>$val){
+$flashrec=$db->get_one("SELECT * FROM $met_flash where id='$val'");
+if($met_deleteimg){
+file_unlink("../".$flashrec[img_path]);
+file_unlink("../".$flashrec[flash_path]);
+file_unlink("../".$flashrec[flash_back]);
+}
 $query = "delete from $met_flash where id='$val'";
 $db->query($query);
 }
-okinfo('flash.php',$lang_loginUserAdmin);
+okinfo('flash.php?lang='.$lang.'&flashmode='.$flashmode,$lang_jsok);
 }
 else{
+$flashrec=$db->get_one("SELECT * FROM $met_flash where id='$id'");
+if($met_deleteimg){
+file_unlink("../".$flashrec[img_path]);
+file_unlink("../".$flashrec[flash_path]);
+file_unlink("../".$flashrec[flash_back]);
+}
 $query = "delete from $met_flash where id='$id'";
 $db->query($query);
-okinfo('flash.php',$lang_loginUserAdmin);
+okinfo('flash.php?lang='.$lang.'&flashmode='.$flashmode,$lang_jsok);
 }
-# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

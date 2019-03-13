@@ -1,0 +1,216 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. ed.
+require_once template('head');
+echo <<<EOT
+-->
+<title>{$lang_editinfo}</title>
+</head>
+<body>
+<form  method="POST" name="myform" onSubmit="return CheckFormarticle();" action="save.php?action=$action" target="_self">
+		<input name="class1" type="hidden" value="$class1">
+		<input name="id" type="hidden" value="$id">
+		<input name="lang" type="hidden"   value="$lang">
+		<input name="filenameold" type="hidden"  value="$news_list[filename]">
+		<input name="updatetimeold" type="hidden"  value="$news_list[updatetime]">
+<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
+          <tr> 
+            <td colspan="3" align="center" class="list1_title">{$lang_editinfo}</td>
+          </tr>		  
+		  <tr> 
+            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_columnname}</b></td>
+            <td colspan="2" class="list1_input">
+<!--
+EOT;
+if(count($met_class22[$class1])){
+echo <<<EOT
+-->	
+<select name="class2" onChange="changelocation(document.myform.class2.options[document.myform.class2.selectedIndex].value)" size="1">
+<option value=0 $class2[0]>{$lang_modClass2}</option>
+<!--
+EOT;
+foreach($met_class22[$class1] as $key=>$val2){
+$k=$val2[id];
+echo <<<EOT
+-->			
+<option  value="$val2[id]" $class2[$k]>$val2[name]</option>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+              </select>
+			<select name="class3" onChange="changelocation2(document.myform.class3.options[document.myform.class3.selectedIndex].value)"> 
+			<option value=0 $class3[0]>{$lang_modClass3}</option>
+<!--
+EOT;
+foreach($met_class3[$news_list[class2]] as $key=>$val3){
+$k=$val3[id];
+echo <<<EOT
+-->			
+<option  value="$val3[id]" $class3[$k]>$val3[name]</option>
+<!--
+EOT;
+}
+echo <<<EOT
+-->			
+             </select>
+<!--
+EOT;
+}else{
+echo <<<EOT
+-->		 
+		 <font color="#FF0000">{$met_class[$class1][name]}</font>
+<!--
+EOT;
+}
+if($met_autothumb_ok!=1)
+$styletip="style='display:none;'";
+echo <<<EOT
+-->
+		 </td>
+          </tr>
+<!--
+EOT;
+if($met_member_use){
+echo <<<EOT
+-->		  
+
+		  <tr> 
+            <td class="list1_text"><b>{$lang_webaccess}</b></td>
+            <td class="list1_input" colspan="2" ><select name="access" id="access" >
+             $level
+            </select></td>
+          </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->	
+		  <tr> 
+            <td class="list1_text"><b>{$lang_top}</b></td>
+            <td colspan="2" class="list1_input"><input name="top_ok" type="checkbox" value="1" $top_ok>{$lang_modtopinfo}</td>
+          </tr> 
+<!--
+EOT;
+if($metadmin[newsimage]){
+echo <<<EOT
+-->
+		  <tr> 
+            <td class="list1_text"><b>{$lang_images}</b></td>
+            <td colspan="2" class="list1_input"><input name="img_ok" type="checkbox" value="1" onMouseDown="displayall('imgurl','imgurls')" $img_ok>{$lang_modcontentimage}</td>
+          </tr> 
+		  <tr id="imgurl" style="display:none"> 
+            <td class="list1_text"><b>{$lang_modimgurl}</b><br><font color='red' $styletip>{$lang_modimgauto}</span></td>
+            <td colspan="2" class="list1_input"> <input name="imgurl" type="text" class="input" size="30"  value="$news_list[imgurl]"> 
+			<iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_photo.php?returnid=big&create_samll=$met_autothumb_ok&lang=$lang" frameborder=0 scrolling=no width="320" height="25"></iframe></td>
+          </tr> 
+		  <tr id="imgurls" style="display:none"> 
+            <td class="list1_text"><b>{$lang_modimgurls}</b></td>
+            <td colspan="2" class="list1_input"> <input name="imgurls" type="text" class="input" size="30"  value="$news_list[imgurls]"><iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_photo.php?returnid=small&lang=$lang" frameborder=0 scrolling=no width="320" height="25"></iframe></td>
+          </tr> 
+<!--
+EOT;
+}
+if($metadmin[newscom]){
+echo <<<EOT
+-->	
+		 <tr> 
+            <td class="list1_text"><b>{$lang_recom}</b></td>
+            <td colspan="2" class="list1_input"><input name="com_ok" type="checkbox" value="1" $com_ok>{$lang_modcontentcom}</td>
+          </tr> 
+<!--
+EOT;
+}
+echo <<<EOT
+-->	
+		  <tr> 
+            <td class="list1_text"><b>{$lang_modpublish}</b></td>
+            <td colspan="2" class="list1_input"><input name="issue" type="text" class="input" size="10"  value="$news_list[issue]"></td>
+          </tr>
+		  <tr> 
+            <td class="list1_text"><b>{$lang_hits}</b></td>
+            <td colspan="2" class="list1_input"><input name="hits" type="text" class="input" size="10"  value="$news_list[hits]"> {$lang_modhits}</td>
+          </tr>
+		  <tr> 
+            <td class="list1_text"><b>{$lang_addtime}</b></td>
+            <td colspan="2" class="list1_input"><input name="addtime" type="text" class="input" size="20"  value="$news_list[addtime]">{$lang_modtimenow}$m_now_date {$lang_modtimenow1}</td>
+          </tr>
+		  <tr> 
+            <td class="list1_text"><b>{$lang_updatetime}</b></td>
+            <td colspan="2" class="list1_input"><input name="updatetime" type="text" class="input" size="20"  value="$m_now_date">{$lang_modtimenow}$m_now_date {$lang_modtimenow1}</td>
+          </tr>
+		   <tr> 
+            <td class="list1_text"><b>{$lang_hits}</b></td>
+            <td colspan="2" class="list1_input">{$lang_modorderinfo}</td>
+          </tr>
+		  <tr> 
+				<td colspan="3" align="center" class="list1_title"><b>{$lang_content}</b></td>
+		  </tr>
+		  <tr> 
+            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_title}</b></td>
+            <td colspan="2" class="list1_input"> <input name="title" type="text" class="input" size="50"  value="$news_list[title]"></td>
+          </tr>
+<!--
+EOT;
+if($metadmin[pagename]){
+echo <<<EOT
+-->	
+		  <tr> 
+            <td class="list1_text"><b>{$lang_columnhtmlname}</b></td>
+            <td colspan="2" class="list1_input"><input name="filename" type="text" class="input" size="40"  value="$news_list[filename]">{$lang_contenthtml}</td>
+          </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->	
+		  <tr> 
+            <td class="list1_text"><b>{$lang_keywords}</b></td>
+            <td colspan="2" class="list1_input"><input name="keywords" type="text" class="input" size="40"  value="$news_list[keywords]">{$lang_descriptioninfo},{$lang_keywordsinfo}</td>
+          </tr>
+		  <tr> 
+            <td class="list1_text"><b>{$lang_description}</b><br>{$lang_descriptioninfo}
+			</td>
+            <td class="list1_input" colspan="2"><textarea name="description" cols="60" rows="5" >$news_list[description]</textarea></td>
+			</tr> 
+			 <tr> 
+            <td class="list1_text"><b>{$lang_contentdetail}</b></td>
+            <td class="list1_input" colspan="2">
+<!--
+EOT;
+echo "-->";
+$oFCKeditor = new FCKeditor('content'); 
+$oFCKeditor->BasePath = '../../fckeditor/';
+$oFCKeditor->Config['AutoDetectLanguage']	= false ;
+$oFCKeditor->Config['DefaultLanguage']		= $langusenow ;
+$oFCKeditor->Value = $news_list[content];
+$oFCKeditor->Width = '100%';   
+$oFCKeditor->Height = '300';
+$oFCKeditor->Create();
+echo <<<EOT
+</td></tr>
+		   
+
+		  <tr> 
+            <td class="list1_text"></td>
+	      <td class="list1_submit"><input type="submit" name="Submit" value="{$lang_Submit}" class="tj" style="*padding-top:2px; *height:22px;"><input type="reset" name="Submit" value="{$lang_Reset}" class="tj" style="*padding-top:2px; *height:22px;"> </td>
+          </tr>
+        </form>
+		<tr>
+		  <td class="list1_footer" colspan="2" align="center">$foot</td>
+	  </tr>
+</table>
+<script type='text/javascript'>
+if(document.myform.img_ok.checked==true){
+ document.getElementById('imgurl').style.display="";
+ document.getElementById('imgurls').style.display="";
+}
+</script>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>-->

@@ -1,15 +1,14 @@
 <?php
-# 文件名称:pager.class.php 2009-08-18 08:53:03
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
     class Pager
     {
-      var   $_total;                          //记录总数
-      var  $pagesize;                       //每一页显示的记录数
-      var     $pages;                         //总页数
-      var   $_cur_page;                    //当前页码
-      var  $offset;                      //记录偏移量
-      var  $pernum = 10;                //页码偏移量，这里可随意更改
+      var   $_total;                          //total
+      var  $pagesize;                       //
+      var     $pages;                         //pages number
+      var   $_cur_page;                    //now page
+      var  $offset;                      //
+      var  $pernum = 10;                //
     
       function Pager($total,$pagesize,$_cur_page)
         {   
@@ -20,13 +19,13 @@
         $this->cur_page($_cur_page);
     }
     
-    function _pager()//计算总页数
+    function _pager()//total
     { 
     return $this->pages = ceil($this->_total/$this->pagesize);
     }
    
    
-     function cur_page($_cur_page) //设置页数
+     function cur_page($_cur_page) //
     {     
    	    if (isset($_cur_page)&&$_cur_page!=0)
            {
@@ -34,17 +33,17 @@
            }
            else
            {
-            $this->_cur_page=1; //设置为第一页
+            $this->_cur_page=1; //first page
            }
         return  $this->_cur_page;
    }
    
- //数据库记录偏移量
+ //
   function _offset()
    {
    return $this->offset=$this->pagesize*($this->_cur_page-1);
    }
-      //html数字连接的标签
+      //html
  function num_link($tex='?',$url='')
   {
        $setpage  = $this->_cur_page ? ceil($this->_cur_page/$this->pernum) : 1;
@@ -82,7 +81,7 @@
          }
             return $text;
          }
- //html连接的标签 
+ //html
 function link($url, $exc='')
   {
       global $lang_PageTotal,$lang_Page,$lang_PageLocation,$lang_PageHome,$lang_PageEnd,$lang_PagePre,$lang_PageNext,$lang_PageGo,$met_pageskin,$total_count;
@@ -93,17 +92,17 @@ case 1:
             $text= "$lang_PageTotal<span>$this->pages</span>$lang_Page $lang_PageLocation<span style='color:#990000'>$this->_cur_page</span>$lang_Page ";
       if ($this->_cur_page == 1 && $this->pages>1) 
         {
-            //第一页
+            //first page
             $text.= "$lang_PageHome $lang_PagePre <a href=".$url.($this->_cur_page+1).$exc.">$lang_PageNext</a>  <a href=".$url.$this->pages.$exc.">$lang_PageEnd</a>";
         } 
         elseif($this->_cur_page == $this->pages && $this->pages>1) 
         {
-            //最后一页
+            //last page
              $text.= "<a href=".$url.'1'.$exc.">$lang_PageHome</a> <a href=".$url.($this->_cur_page-1).$exc.">$lang_PagePre</a> $lang_PageNext $lang_PageEnd";
         } 
         elseif ($this->_cur_page > 1 && $this->_cur_page <= $this->pages) 
         {
-            //中间
+            //middle
              $text.= "<a href=".$url.'1'.$exc.">$lang_PageHome</a> <a href=".$url.($this->_cur_page-1).$exc.">$lang_PagePre</a> <a href=".$url.($this->_cur_page+1).$exc.">$lang_PageNext</a>  <a href=".$url.$this->pages.$exc.">$lang_PageEnd</a>";
         }
             $text.=" $lang_PageGo <select onchange='javascript:window.location.href=this.options[this.selectedIndex].value'>";
@@ -122,17 +121,15 @@ case 1:
  
       if ($this->_cur_page == 1 && $this->pages>1) 
         {
-            //第一页
+
             $text= "$lang_PageHome $lang_PagePre <a href=".$url.($this->_cur_page+1).$exc.">$lang_PageNext</a>  <a href=".$url.$this->pages.$exc.">$lang_PageEnd</a>";
         } 
         elseif($this->_cur_page == $this->pages && $this->pages>1) 
         {
-            //最后一页
              $text.= "<a href=".$url.'1'.$exc.">$lang_PageHome</a> <a href=".$url.($this->_cur_page-1).$exc.">$lang_PagePre</a> $lang_PageNext $lang_PageEnd";
         } 
         elseif ($this->_cur_page > 1 && $this->_cur_page <= $this->pages) 
         {
-            //中间
              $text.= "<a href=".$url.'1'.$exc.">$lang_PageHome</a> <a href=".$url.($this->_cur_page-1).$exc.">$lang_PagePre</a> <a href=".$url.($this->_cur_page+1).$exc.">$lang_PageNext</a>  <a href=".$url.$this->pages.$exc.">$lang_PageEnd</a>";
         }
 		
@@ -299,7 +296,7 @@ case 1:
   
   
  }
-# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>
    

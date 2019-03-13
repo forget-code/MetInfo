@@ -1,0 +1,34 @@
+<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.  
+$met_flasharray=array();
+$met_flasharray[10000]=array(type=>'1',x=>'1001',y=>'200',imgtype=>'2');
+$met_flasharray[10001]=array(type=>'1',x=>'1001',y=>'200',imgtype=>'2');
+$met_flasharray[28]=array(type=>'1',x=>'1001',y=>'200',imgtype=>'2');
+$met_flasharray[41]=array(type=>'1',x=>'1001',y=>'200',imgtype=>'2');
+$met_flasharray[43]=array(type=>'1',x=>'1001',y=>'200',imgtype=>'2');
+$met_flasharray[45]=array(type=>'1',x=>'1001',y=>'200',imgtype=>'2');
+$met_flasharray[50]=array(type=>'1',x=>'1001',y=>'200',imgtype=>'2');
+$met_flasharray[54]=array(type=>'1',x=>'1001',y=>'200',imgtype=>'2');
+$met_flasharray[29]=array(type=>'1',x=>'1001',y=>'200',imgtype=>'2');
+$met_flasharray[44]=array(type=>'1',x=>'1001',y=>'200',imgtype=>'2');
+$met_flasharray[46]=array(type=>'1',x=>'1001',y=>'200',imgtype=>'2');
+$met_flasharray[51]=array(type=>'1',x=>'1001',y=>'200',imgtype=>'2');
+$met_flasharray[55]=array(type=>'1',x=>'1001',y=>'200',imgtype=>'2');
+$met_flasharray[30]=array(type=>'1',x=>'1001',y=>'200',imgtype=>'2');
+$met_flasharray[47]=array(type=>'1',x=>'1001',y=>'200',imgtype=>'2');
+$met_flasharray[52]=array(type=>'1',x=>'1001',y=>'200',imgtype=>'2');
+$met_flasharray[31]=array(type=>'1',x=>'1001',y=>'200',imgtype=>'2');
+$met_flasharray[48]=array(type=>'1',x=>'1001',y=>'200',imgtype=>'2');
+$met_flasharray[53]=array(type=>'1',x=>'1001',y=>'200',imgtype=>'2');
+$met_flasharray[32]=array(type=>'1',x=>'1001',y=>'200',imgtype=>'2');
+$met_flasharray[49]=array(type=>'1',x=>'1001',y=>'200',imgtype=>'2');
+$met_flasharray[33]=array(type=>'1',x=>'1001',y=>'200',imgtype=>'2');
+$met_flasharray[34]=array(type=>'1',x=>'1001',y=>'200',imgtype=>'2');
+$met_flasharray[35]=array(type=>'1',x=>'1001',y=>'200',imgtype=>'2');
+$met_flasharray[36]=array(type=>'1',x=>'1001',y=>'200',imgtype=>'2');
+$met_flasharray[37]=array(type=>'1',x=>'1001',y=>'200',imgtype=>'2');
+$met_flasharray[42]=array(type=>'1',x=>'1001',y=>'200',imgtype=>'2');
+$met_flasharray[38]=array(type=>'1',x=>'1001',y=>'200',imgtype=>'2');
+$met_flasharray[39]=array(type=>'1',x=>'1001',y=>'200',imgtype=>'2');
+?>

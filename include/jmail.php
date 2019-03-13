@@ -14,34 +14,34 @@ if ( ! function_exists('jmailsend'))
 
 		$mail->IsSMTP(); // telling the class to use SMTP
 
-		//邮件系统配置
+		//system
 		$mail->SMTPAuth   = true;
 		$mail->Host       = $smtp; // SMTP server
 		$mail->Username   = $usename; // SMTP account username
 		$mail->Password   = $usepassword;        // SMTP account password
 
-		$mail->From       = $from;//必填，发件人Email 
-		$mail->FromName   = $fromname; //必填，发件人昵称或姓名 
+		$mail->From       = $from;//send email
+		$mail->FromName   = $fromname; //name of send
 
-		//回复
+		//repet
 		if($repto!=""){
 			$name = isset($repname)?$repname:$repto;
 			$mail->AddReplyTo($repto, $name);
 		}
-		$mail->WordWrap   = 50; // 自动换行的字数
+		$mail->WordWrap   = 50; // line 
 		
-		//主题
-		$mail->Subject		= (isset($title)) ? $title : '';//必填，邮件标题（主题）
+		//title
+		$mail->Subject		= (isset($title)) ? $title : '';//title
 
 		
-		//$mail->AltBody    = "To view the message, please use an HTML compatible email viewer!"; // 可选，纯文本形势下用户看到的内容
+		//$mail->AltBody    = "To view the message, please use an HTML compatible email viewer!"; //
 
-		//邮件主体
+		//body
 		$body             = eregi_replace("[\]",'',$body);
 		$mail->MsgHTML($body);
         
 		
-		//发送地址
+		//to
 		if($to)
 		{
 			$address = explode("|",$to);
@@ -50,13 +50,13 @@ if ( ! function_exists('jmailsend'))
 				$mail->AddAddress($val, "");
 			}
 		}
-		//发送附件
+		//send attech
 		//if(isset($data['attach']))
 		//{
 			//$attach = explode("|",$data['attach']);
 			//foreach($attach AS $key => $val)
 			//{
-				//$mail->AddAttachment($val,"");             // 附件
+				//$mail->AddAttachment($val,"");             // attech
 			//}			
 		//}
 		if(!$mail->Send()) {

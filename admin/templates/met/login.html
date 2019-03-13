@@ -1,21 +1,20 @@
 <!--<?php
-# 文件名称:login.html 2009-08-15 14:34:57
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. .
 $lang_fontfamily=str_replace("'","\"",$lang_fontfamily);
 $lang_fontfamily=str_replace("&quot;","\"",$lang_fontfamily);
 echo <<<EOT
 -->
 <html xmlns="http://www.w3.org/1999/xhtml" lang="zh-cn">
 <head>
-<title>MetInfo{$lang_metinfo}{$lang_loginTitle}</title>
+<title>MetInfo{$lang_metinfo}{$lang_logintitle}</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <meta http-equiv="Content-Language" content="zh-cn"/>
 <meta name="author" content="www.metinfo.cn"/>
 <meta name="copyright" content="www.metinfo.cn"/>
-<meta name="keywords" content="MetInfo{$lang_metinfo}{$lang_loginTitle}"/>
-<meta name="description" content="MetInfo{$lang_metinfo}{$lang_loginTitle}"/>
-<meta content="MetInfo{$lang_metinfo}{$lang_loginTitle}"/>
+<meta name="keywords" content="MetInfo{$lang_metinfo}{$lang_logintitle}"/>
+<meta name="description" content="MetInfo{$lang_metinfo}{$lang_logintitle}"/>
+<meta content="MetInfo{$lang_metinfo}{$lang_logintitle}"/>
 <link rel="stylesheet" type="text/css" href="$img_url/metinfo.css">
 <style type="text/css">
 body {
@@ -31,47 +30,35 @@ function check_main_login()
 	var m=document.main_login;
 	if(m.login_name.value.length=="")
 	{
-		alert("{$lang_loginID}");
+		alert("{$lang_loginid}");
 		m.login_name.focus();
 		return false;
 	}
 	if(m.login_pass.value.length=="")
 	{
-		alert("{$lang_loginPS}");
+		alert("{$lang_loginps}");
 		m.login_pass.focus();
 		return false;
 	}
 }
-function pressCaptcha(obj)//字母变大写
+function pressCaptcha(obj)
   {
     obj.value = obj.value.toUpperCase();
   }
 </script>
 <body>
 <div class="loginlang" style="display:$met_admin_type_display;">
-&nbsp;&nbsp;<b>MetInfo Enterprise Web Management System</b> Administrator Language
+&nbsp;&nbsp;<b>MetInfo Enterprise Content Management System</b> Administrator Language
 <select name="loginlang" onchange=javascript:window.location.href=this.options[this.selectedIndex].value >
 <!--
 EOT;
 ob_pcontent();
-if($met_c_lang_ok==1){
+$langset=$langset==""?$met_admin_type:$langset;
+$met_langtype_select[$langset]="selected='selected'" ;
+foreach($met_langadmin as $key=>$val){
 echo <<<EOT
 -->
-<option value="login.php?langset=cn" $met_admin_type_select[cn]>$met_c_lang</option>
-<!--
-EOT;
-}
-if($met_e_lang_ok==1){
-echo <<<EOT
--->
-<option value="login.php?langset=en" $met_admin_type_select[en]>$met_e_lang</option>
-<!--
-EOT;
-}
-if($met_o_lang_ok==1){
-echo <<<EOT
--->
-<option value="login.php?langset=other" $met_admin_type_select[other]>$met_o_lang</option>
+<option value="login.php?langset=$val[mark]" {$met_langtype_select[$val[mark]]}>$val[name]</option>
 <!--
 EOT;
 }
@@ -79,31 +66,31 @@ echo <<<EOT
 -->
 </select></div>
 <div class="login">
-<div class="login_title"><font style="font-family:Arial, Helvetica, sans-serif">MetInfo</font>{$lang_metinfo} V{$metcms_v}</div>
+<div class="login_title"><font style="font-family:Arial, Helvetica, sans-serif">MetInfo</font>{$lang_metinfo} V{$metcms_v} </div>
 <div class="login_img">
 <a href="http://www.metinfo.cn"  target="_blank" ><img  alt="MetInfo{$lang_metinfo}" src="$img_url/logosmall.gif"></a><br><br>
 <span><a href="http://www.metinfo.cn"  target="_blank" title="MetInfo{$lang_metinfo}" style="font-family:Arial, Helvetica, sans-serif">MetInfo Co.,Ltd</a> </span>
 </div>
 <div class="login_right">
-<div class="login_log">{$lang_loginTip3}</div>
+<div class="login_log">{$lang_loginadmin}</div>
 <form method="post" action="login_check.php?langset=$langset" name="main_login" onSubmit="javascript: return check_main_login()">
 <input type="hidden" name="action" value="login"/>
-<div class="login_text">{$lang_loginTip4} <input type="text" name="login_name" value="$check_name" $disabled size="20"/></div>
-<div class="login_text">{$lang_loginTip5} <input type="password" name="login_pass"  size="21"/></div>
+<div class="login_text"><span>{$lang_loginusename} </span><input type="text" name="login_name" value="$check_name" $disabled size="20"/></div>
+<div class="login_text"><span>{$lang_loginpassword}</span><input type="password" name="login_pass"  size="21"/></div>
 <!--
 EOT;
 if($met_login_code==1){
 echo <<<EOT
 -->
-<div class="login_text">{$lang_loginTip6} <input name="code" onKeyUp="pressCaptcha(this)" type="text" class="inp" id="code" size="6" maxlength="8" style="width:50px" />
-<img align="absbottom" src="../include/ajax.php?action=code"  onclick=this.src="../include/ajax.php?action=code&"+Math.random() style="cursor: pointer;" title="{$lang_loginTip7}"/></div>
+<div class="login_text"><span>{$lang_logincode} </span><input name="code" onKeyUp="pressCaptcha(this)" type="text" class="inp" id="code" size="6" maxlength="8" style="width:50px" />
+<img align="absbottom" src="../include/ajax.php?action=code"  onclick=this.src="../include/ajax.php?action=code&"+Math.random() style="cursor: pointer;" title="{$lang_logincodechange}"/></div>
 <!--
 EOT;
 }
 echo <<<EOT
 -->
 <div class="login_text text_input" style="text-align:center;">
-<a href="../admin/getpassword.php" style="color:#E5FFAE;">{$lang_loginForget}</a><input   type="submit" name="Submit" value=" {$lang_loginConfirm} "  style="width:45px;">&nbsp;<input name="reset" type="reset"  id="reset" value=" {$lang_loginReset} "  style="width:45px;"></div>
+<a href="../admin/getpassword.php" style="color:#E5FFAE;">{$lang_loginforget}</a><input   type="submit" name="Submit" value=" {$lang_loginconfirm} "  style="width:45px;">&nbsp;<input name="reset" type="reset"  id="reset" value=" {$lang_loginreset} "  style="width:45px;"></div>
 </div>
 </form>
 <div style="clear:both;"></div>
@@ -115,6 +102,6 @@ echo <<<EOT
 </html>
 <!--
 EOT;
-# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>-->

@@ -1,7 +1,6 @@
 <!--<?php
-# 文件名称:authcode.html 2009-08-03 15:54:57
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 
 require_once template('head'); 
 echo <<<EOT
@@ -42,7 +41,7 @@ echo <<<EOT
            <td colspan="3" class="au1"><b style="color:#ffffff;">{$lang_authImport}</b></td>
           </tr>
 		  
-		  <form method="POST" name="myform"  action="authcode.php?action=modify" target="_self">
+		  <form method="POST" name="myform"  action="authcode.php?action=modify&lang=$lang" target="_self">
 		  <input name="id" type="hidden" value="$authinfo[id]">
 			<tr> 
             <td class="list1_text"><b>{$lang_authDomain}</b></td>
@@ -66,6 +65,6 @@ echo <<<EOT
 </html>
 <!--
 EOT;
-# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>-->

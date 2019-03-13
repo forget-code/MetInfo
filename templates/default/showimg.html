@@ -1,29 +1,29 @@
 <!--<?php
-$navdown="nav_".$class1_info[id];
-if($class_list[$classnow][nav]==1||$class_list[$classnow][nav]==3)$navdown="nav_".$class_list[$classnow][id];
 require_once template('head'); 
 $met_img=methtml_showimg('all');
 $methits=methtml_hits('img');
 $met_imgnext=methtml_prenextinfo();
 echo <<<EOT
 -->
-<div class="web">
+<div id="web">
+<div class="right">
+   <h3 class="title"><span>{$class_list[$classnow][name]}</span></h3>
+<div class="webcontent">
+<h1 class="title">$img[title]</h1>
+  <div class="product_list">
+{$met_img}
+</div>
+<div class="pcontent">$img[content]</div>
+<div class="page">$met_imgnext</div>
+<div class="hits">$methits</div>
+
+</div>
+</div>
 <!--
 EOT;
 require_once template('webleft'); 
 echo <<<EOT
 -->
-<div class="webcontent">
-<h1>$img[title]</h1>
-  <div class="imgcontent">
-{$met_img}
-</div>
-<div class="pcontent">$img[content]</div>
-<br />$met_imgnext
-<div class="hits">$methits</div>
-
-</div>
-</div>
 <div style="clear:both;"></div>
 
 

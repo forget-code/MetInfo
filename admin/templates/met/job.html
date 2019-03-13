@@ -1,7 +1,6 @@
 <!--<?php
-# 文件名称:job.html 2009-08-12 08:28:57
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 require_once template('head');
 echo <<<EOT
 -->
@@ -10,22 +9,18 @@ echo <<<EOT
 <body>
 <table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
           <tr> 
-            <td colspan="10" align="center" class="list1_title">$class1_info[name]{$lang_manager}</td>
+            <td colspan="10" align="center" class="list1_title">{$lang_manager} [$class1_info[name]]</td>
           </tr>  
 			<tr align="right">
 			<form method="POST" name="filterform"  action="index.php?search=detail_search" target="_self">
-			<input name="class1" type="hidden" size="30" value="$class1">
+			<input name="class1" type="hidden" value="$class1">
+			<input name="lang" type="hidden"  value="$lang">
 			<td colspan="10">				
-				<b>{$lang_top}{$lang_mod6}</b>	
+				<b>{$lang_top}</b>	
 				<select name="top" id="top" onChange="autosubmit()">
 					<option value="all" $top0>{$lang_selectnow}</option>
-					<option value="1" $top1>{$lang_YES}</option>
-					<option value="0" $top2>{$lang_NO}</option>
-				</select>
-				<b>{$lang_langbelong}</b>
-				<select name="langtype" id="langtype" onChange="autosubmit()">
-					<option value="all" $langtype0>{$lang_selectnow}</option>
-					$selectlang
+					<option value="1" $top1>{$lang_yes}</option>
+					<option value="0" $top2>{$lang_no}</option>
 				</select>
 			</td>	
 			</form>
@@ -39,37 +34,46 @@ echo <<<EOT
                 <td width="8%" class="list1_top" align="center" >{$lang_joblife}</td>
 				<td width="4%"  class="list1_top" align="center" >{$lang_top}</td>
                 <td width="13%" class="list1_top" align="center" >{$lang_jobpublish}</td>
+<!--
+EOT;
+if($met_member_use){
+echo <<<EOT
+-->	
 				<td width="14%"  class="list1_top" align="center" >{$lang_webaccess}</td>
+<!--
+EOT;
+}
+echo <<<EOT
+-->	
 				<td width="18%" class="list1_top" align="center" >{$lang_operate}</td>
               </tr>
-			  <form name="del" method="Post" action="delete.php?class1=$class1" onSubmit="return ConfirmDelall();">
+			  <form name="del" method="Post" action="delete.php?lang=$lang&class1=$class1" onSubmit="return ConfirmDelall();">
 <!--
 EOT;
 foreach ($job_list as $key=>$val){
-$val['position']=$langusenow=="en"?$val['e_position']:($langusenow=="other"?$val['o_position']:$val['c_position']);
-if($langusenow=="en" && $met_e_lang_ok!=1) $val['position']=$met_c_lang_ok==1?$val['c_position']:$val['o_position'];
-if($langusenow=="cn" && $met_c_lang_ok!=1) $val['position']=$met_e_lang_ok==1?$val['e_position']:$val['o_position'];
-if($langusenow=="other" && $met_o_lang_ok!=1) $val['position']=$met_c_lang_ok==1?$val['c_position']:$val['e_position'];
-if($val['position']=='') $val['position']=$val['e_position']!=''?$val['e_position']:($val['o_position']!=''?$val['o_position']:$val['c_position']);
-if(isset($langtype) && $langtype!='all') 
-{
-	$item = $langtype."_position";
-	if($val[$item]=='') continue;
-	$val['position'] = $val[$item];
-}
 echo <<<EOT
 -->          
               <tr>
               <td align="center"class="list1_content_titile"><input name='id' type='checkbox' onClick="unselectall()" id="id" value='$val[id]' class="xz"></td>
                 <td  align="center" class="list1_content">$val[id]</td>
-			    <td align="left" class="list1_content"><a href="../../job/showjob.php?lang=$urllang&id=$val[id]" title="{$lang_preview}" target="_blank">$val[position]</a></td>
+			    <td align="left" class="list1_content"><a href="../../job/showjob.php?lang=$lang&id=$val[id]" title="{$lang_preview}" target="_blank">$val[position]</a></td>
                 <td class="list1_content" align="center">$val[count]</td>
 				<td   class="list1_content" align="center">$val[place]</td>
                 <td   class="list1_content" align="center">$val[useful_life]</td>
-				<td   class="list1_content" align="center"><a href="changeState.php?top_ok=$val[top_ok]&id=$val[id]&class1=$class1" onClick="return ConfirmChange();">$val[top_ok1]</a></td>
+				<td   class="list1_content" align="center"><a href="changeState.php?lang=$lang&top_ok=$val[top_ok]&id=$val[id]&class1=$class1" onClick="return ConfirmChange();">$val[top_ok1]</a></td>
                 <td   class="list1_content" align="center">$val[addtime]</td>
+<!--
+EOT;
+if($met_member_use){
+echo <<<EOT
+-->	
 				<td   class="list1_content" align="center">$val[access]</td>
-				<td align="center"  class="list1_content" style="color:#0066FF;"></a> <a href="editor.php?id=$val[id]&class1=$class1" >{$lang_editor}</a> | <a href="cv.php?search=detail_search&jobid=$val[id]" >{$lang_jobCV}</a> | <a href="delete.php?id=$val[id]&class1=$class1" onClick="return ConfirmDel();" >{$lang_delete}</a></td>
+<!--
+EOT;
+}
+echo <<<EOT
+-->	
+				<td align="center"  class="list1_content" style="color:#0066FF;"></a> <a href="content.php?lang=$lang&id=$val[id]&class1=$class1&action=editor" >{$lang_editor}</a> | <a href="cv.php?lang=$lang&search=detail_search&jobid=$val[id]" >{$lang_jobCV}</a> | <a href="delete.php?lang=$lang&id=$val[id]&class1=$class1" onClick="return ConfirmDel();" >{$lang_delete}</a></td>
               </tr>
 <!--
 EOT;
@@ -84,12 +88,12 @@ echo <<<EOT
           </tr>
 		  <tr>
             <td align="left" colspan="10"  class="input_search">
-			<form method="POST" name="search"  action="index.php?search=detail_search" target="_self">
-			       <span><b>{$lang_mod6}{$lang_search}</b></span> 
+			<form method="POST" name="search"  action="index.php?search=detail_search&lang=$lang" target="_self">
+			       <span><b>{$lang_search}</b></span> 
 				  <input name="class1" type="hidden" size="30" value="$class1">
 			    <input name="position" type="text" size="30">
   <input type="submit" name="Submit2" value="{$lang_search}" class="tj">  
-	        {$lang_modsearch}</form></td>
+	        {$lang_cvTip3}</form></td>
           </tr>
    	   <tr>
    	     <td height="0" align="center" colspan="10" class="list1_input">$page_list</td>
@@ -108,6 +112,6 @@ echo <<<EOT
 </html>
 <!--
 EOT;
-# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>-->

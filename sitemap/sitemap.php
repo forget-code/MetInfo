@@ -1,13 +1,14 @@
 <?php
-# 文件名称:news.php 2009-08-18 08:53:03
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 require_once '../include/common.inc.php';
-$member_column=$db->get_one("select * from $met_column where module='12'");
-$metaccess=$member_column[access];
-$classnow=$member_column[id];
+$sitemap_column=$db->get_one("select * from $met_column where module='12' and lang='$lang'");
+$metaccess=$sitemap_column[access];
+$class1=$sitemap_column[id];
 require_once '../include/head.php';
-
+$class1_info=$class_list[$class1][releclass]?$class_list[$class_list[$class1][releclass]]:$class_list[$class1];
+$class2_info=$class_list[$class1][releclass]?$class_list[$class1]:$class_list[$class2];
+    $navtitle=$sitemap_column[name];
 foreach($listall[news] as $key=>$val){
 $sitemaplist[]=$val;
 }
@@ -21,11 +22,10 @@ foreach($listall[img] as $key=>$val){
 $sitemaplist[]=$val;
 }
 
-$query = "SELECT * FROM $met_job  order by addtime desc";
+$query = "SELECT * FROM $met_job  where lang='$lang' order by addtime desc";
 $result = $db->query($query);
 while($list= $db->fetch_array($result)){
-$list[title]=($lang=="en")?$list[e_position]:(($lang=="other")?$list[o_position]:$list[c_position]);
-if($list[title]<>""){
+$list[title]=$list[position];
 $list[updatetime]= date($met_listtime,strtotime($list[addtime]));
 	switch($met_htmpagename){
      case 0:
@@ -41,14 +41,8 @@ $list[updatetime]= date($met_listtime,strtotime($list[addtime]));
 	 $phpname="job/showjob.php?id=".$list[id];	
 	 break;
 	 }
-
-	 $list[c_url]=$met_webhtm?$navurl.$htmname.$met_c_htmtype:$navurl.$phpname;
-	 $list[e_url]=$met_webhtm?$navurl.$htmname.$met_e_htmtype:$navurl.$phpname."&lang=en";
-	 $list[o_url]=$met_webhtm?$navurl.$htmname.$met_o_htmtype:$navurl.$phpname."&lang=other";
-	 $list[url]=($lang=="en")?$list[e_url]:(($lang=="other")?$list[o_url]:$list[c_url]);
-
+	 $list[url]=$met_webhtm?$navurl.$htmname.$met_htmtype:$navurl.$phpname."&lang=".$lang;
 	$sitemaplist[]=$list;
-	}
 }
 
 function cmp ($a, $b) {
@@ -82,17 +76,25 @@ $config_save="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
 $config_save.="<urlset xmlns=\"http://www.google.com/schemas/sitemap/0.84\">\n";
 $config_save.=$sitemaptext;
 $config_save.="</urlset>";
-$sitemapname=($lang=="en")?"sitemap_en.xml":(($lang=="other")?"sitemap_other.xml":"sitemap.xml");
+$sitemapname=($lang==$met_index_type)?"sitemap.xml":"sitemap_".$lang.".xml";
     $fp = fopen($sitemapname,w);
     fputs($fp, $config_save);
     fclose($fp);
 }
 }
-$class_info=$class1_info=$class_list[$classnow];
-$class_info[name]=($lang=="en")?$class_info[e_name]:(($lang=="other")?$class_info[o_name]:$class_info[c_name]);
+$class2=$class_list[$class1][releclass]?$class1:$class2;
+$class1=$class_list[$class1][releclass]?$class_list[$class1][releclass]:$class1;
+$class_info=$class2?$class2_info:$class1_info;
+if($class2!=""){
+$class_info[name]=$class2_info[name]."--".$class1_info[name];
+}
      $show[description]=$class_info[description]?$class_info[description]:$met_keywords;
      $show[keywords]=$class_info[keywords]?$class_info[keywords]:$met_keywords;
 	 $met_title=$class_info[name]."--".$met_title;
+if(count($nav_list2[$classaccess[id]])){
+$k=count($nav_list2[$class1]);
+$nav_list2[$class1][$k]=$class1_info;
+}
 require_once '../public/php/methtml.inc.php';
 
 
@@ -105,30 +107,29 @@ $methtml_sitemap.="<li class='sitemaplist'><a href='".$val[url]."' title='".$val
 if($i>=$met_sitemap_max)break;
 }
 }else{
-$methtml_sitemap.="<ul>\n";
 foreach($nav_list_1 as $key=>$val){
 if($val[nav]){
-$methtml_sitemap.="<li class='sitemapclass'>\n";
-$methtml_sitemap.="<span class='sitemapclass1' ><a href='".$val[url]."' title='".$val[name]."'>".$val[name]."</a></span>\n";
+$methtml_sitemap.="<dl class='sitemapclass'>\n";
+$methtml_sitemap.="<dd class='sitemapclass1' ><h2 style='font-size:13px;'><a href='".$val[url]."' title='".$val[name]."' >".$val[name]."</a></h2></dd>\n";
 foreach($nav_list2[$val[id]] as $key=>$val2){
-$methtml_sitemap.="<span class='sitemapclass2' ><a href='".$val2[url]."'  title='".$val2[name]."' >".$val2[name]."</a>\n";
+$methtml_sitemap.="<dd class='sitemapclass2' ><h3 style='font-weight:normal; font-size:12px;'><a href='".$val2[url]."'  title='".$val2[name]."' >".$val2[name]."</a></h3>\n";
+$methtml_sitemap.="<div>";
 foreach($nav_list3[$val2[id]] as $key=>$val3){
-$methtml_sitemap.="<br /><span class='sitemapclass3><a href='".$val3[url]."' class='sitemapclass3' title='".$val3[name]."'>".$val3[name]."</a></span>\n";
+$methtml_sitemap.="<h4 class='sitemapclass3' style='font-weight:normal; font-size:12px;'><a href='".$val3[url]."' title='".$val3[name]."' >".$val3[name]."</a></h4>\n";
 }
-$methtml_sitemap.="</span>\n";
+$methtml_sitemap.="</div></dd>\n";
 }
-$methtml_sitemap.="</li>\n";
+$methtml_sitemap.="</dl>\n";
 }}
-$methtml_sitemap.="<ul>\n";
+
 }
 
-if(file_exists("../templates/".$met_skin_user."/sitemap.html")){
+if(file_exists("../templates/".$met_skin_user."/sitemap.".$dataoptimize_html)){
     include template('sitemap');
 }else{
  include 'templates/met/sitemap.html';
  }
 footer();
-footer();
-# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

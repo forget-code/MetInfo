@@ -11,24 +11,6 @@ echo <<<EOT
 <div class="selist">
 $metsearchadv
 </div>
-        		<div class="aq" style="margin-top:8px;">
-<div class="web_left_title"><span>{$lang_Column2}</span></div>
-	<div>
-<ul>
-<!--
-EOT;
-foreach(methtml_getarray('','com','time','product') as $key=>$val){
-echo <<<EOT
--->
-<li><a href="$val[url]" target="_blank" title="$val[title]">$val[title]</a></li>
-<!--
-EOT;
-}
-echo <<<EOT
--->
-</ul>
-	</div>
-        </div>
      $met_online
      </div>
 <div class="b"><div></div></div>

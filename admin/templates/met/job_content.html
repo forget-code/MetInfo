@@ -1,0 +1,113 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
+require_once template('head');
+echo <<<EOT
+-->
+<title>{$lang_editinfo}</title>
+</head>
+<body>
+        <form  method="POST" name="myform" onSubmit="return CheckFormjob();" action="save.php?action=$action" target="_self">
+		<input name="id" type="hidden" value="$id">
+		<input name="class1" type="hidden" value="$class1">
+		<input name="lang" type="hidden" value="$lang">
+		<input name="filenameold" type="hidden"  value="$job_list[filename]">
+		<input name="updatetimeold" type="hidden"  value="$job_list[updatetime]">
+<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
+          <tr> 
+            <td colspan="10" align="center" class="list1_title">{$lang_editinfo}</td>
+          </tr>
+<!--
+EOT;
+if($met_member_use){
+echo <<<EOT
+-->	
+		  <tr> 
+            <td class="list1_text"><b>{$lang_webaccess}</b></td>
+            <td class="list1_input" colspan="2"><select name="access" id="access" >
+             $level
+            </select></td>
+          </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->	
+		  <tr> 
+            <td class="list1_text"><b>{$lang_top}</b></td>
+            <td colspan="2" class="list1_input"><input name="top_ok" type="checkbox" value="1" $top_ok>{$lang_modtopinfo}</td>
+          </tr>
+		  <tr > 
+            <td class="list1_text"><b>{$lang_jobnum}</b></td>
+            <td colspan="2" class="list1_input"><input name="count" type="text" class="input" size="5"  value="$job_list[count]">{$lang_jobtip1}</td>
+          </tr>
+		  <tr > 
+            <td class="list1_text"><b>{$lang_jobpublish}</b></td>
+            <td colspan="2" class="list1_input"><input name="addtime" type="text" class="input" size="10"  value="$job_list[addtime]">{$lang_jobnow}$m_now_counter {$lang_jobtip2}</td>
+          </tr>
+		   <tr > 
+            <td class="list1_text"><b>{$lang_joblife}</b></td>
+            <td colspan="2" class="list1_input"><input name="useful_life" type="text" class="input" size="5"  value="$job_list[useful_life]">{$lang_jobtip3}</td>
+          </tr>
+		   <tr > 
+            <td class="list1_text"><b>{$lang_sort}</b></td>
+            <td colspan="2" class="list1_input">{$lang_jobtip4}</td>
+          </tr>
+			<tr> <td colspan="3" align="center" class="list1_title"><b>{$lang_content}</b></td></tr>
+          <tr > 
+            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_jobposition}</b></td>
+            <td colspan="2" class="list1_input"> <input name="position" type="text" class="input" size="40"  value="$job_list[position]"></td>
+          </tr> 		  
+		  <tr > 
+            <td class="list1_text"><b>{$lang_jobaddress}</b></td>
+            <td colspan="2" class="list1_input"><input name="place" type="text" class="input" size="40"  value="$job_list[place]"></td>
+          </tr>
+		   <tr > 
+            <td class="list1_text"><b>{$lang_jobdeal}</b></td>
+            <td colspan="2" class="list1_input"><input name="deal" type="text" class="input" size="40"  value="$job_list[deal]"></td>
+          </tr>	
+<!--
+EOT;
+if($metadmin[pagename]){
+echo <<<EOT
+-->	
+		  <tr> 
+            <td class="list1_text"><b>{$lang_columnhtmlname}</b></td>
+            <td colspan="2" class="list1_input"><input name="filename" type="text" class="input" size="40"  value="$job_list[filename]">{$lang_contenthtml}</td>
+          </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->		   
+			 <tr > 
+            <td class="list1_text"><b>{$lang_contentdetail}</b></td>
+            <td class="list1_input">
+<!--
+EOT;
+echo "-->";
+$oFCKeditor = new FCKeditor('content'); 
+$oFCKeditor->BasePath = '../../fckeditor/';
+$oFCKeditor->Config['AutoDetectLanguage']	= false ;
+$oFCKeditor->Config['DefaultLanguage']		= $langusenow ;
+$oFCKeditor->Value = $job_list[content];
+$oFCKeditor->Width = '100%';   
+$oFCKeditor->Height = '300';
+$oFCKeditor->Create();
+echo <<<EOT
+</td></tr> 
+		  <tr><td class="list1_text"></td>
+	      <td class="list1_submit"><input type="submit" name="Submit" value="{$lang_Submit}" class="tj" style="*padding-top:2px; *height:22px;"><input type="reset" name="Submit" value="{$lang_Reset}" class="tj" style="*padding-top:2px; *height:22px;"> </td>
+          </tr>
+        </form>
+		<tr>
+		  <td class="list1_footer" colspan="2" align="center">$foot</td>
+	  </tr>
+</table>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>-->

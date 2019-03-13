@@ -1,7 +1,6 @@
 <?php
-# 文件名称:index.php 2009-08-18 08:53:03
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 header("Content-type: text/html;charset=utf-8");
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
 @set_time_limit(0);
@@ -24,7 +23,7 @@ foreach(array('_COOKIE', '_POST', '_GET') as $_request) {
 }
 $m_now_time     = time();
 $m_now_date     = date('Y-m-d H:i:s',$m_now_time);
-
+$nowyear    = date('Y',$m_now_time);
 $localurl="http://";
 $localurl.=$_SERVER['HTTP_HOST'].$_SERVER["PHP_SELF"];
 $install_url=$localurl;
@@ -65,21 +64,12 @@ switch ($action)
 		'../member',
 		'../upload',
 		'../config',
-		'../config/config.inc.php',
 		'../config/config_db.php',
-		'../config/flash.inc.php',
-		'../config/str.inc.php',
-		'../config/strcontent.inc.php',
 		'../upload/file',
 		'../upload/image',
 		'../message',
-		'../message/config.inc.php',
 		'../feedback',
-		'../feedback/config.inc.php',
 		'../admin/databack',
-		'../lang/language_cn.ini',
-		'../lang/language_en.ini',
-		'../lang/language_other.ini',
 		);
 		$class_chcek=array();
 		$check_msg = array();
@@ -135,7 +125,9 @@ switch ($action)
 			  echo "<SCRIPT language=JavaScript>alert('您的mysql版本过低，请确保你的数据库编码为utf-8,官方建议您升级到mysql4.1.0以上');</SCRIPT>";
 			  $content=readover("install4.sql");  
 			}
-			$content=preg_replace("/{#(.+?)}/eis",'$lang[\\1]',$content);
+			if($cndata=="yes")$content.=readover("cn.sql");
+            if($endata=="yes")$content.=readover("en.sql"); 			
+			$content=preg_replace("/{#(.+?)}/eis",'$lang[\\1]',$content);		
 			include template('db_setup');
 			exit();
 		}else {
@@ -172,34 +164,82 @@ switch ($action)
 					  admin_ok           = '1'";
 			mysql_query($query) or die('写入数据库失败: ' . mysql_error());
 			@chmod('../config/config_db.php',0554);
-			$fp  = fopen('../config/install.lock', 'w');
-			fwrite($fp,$config);
-			fclose($fp);
 			$spt = '<script type="text/javascript" src="http://www.metinfo.cn/record.php?';
 			$spt .= "url=" .$install_url;
 			$spt .= "&email=".$email."&installtime=".$m_now_date."&softtype=1";
 			$spt .= "&version=".VERSION."&php_ver=" .PHP_VERSION. "&mysql_ver=" .mysql_get_server_info();
 			$spt .= '"></script>';
-			echo $spt;
-			@chmod('../config/install.lock',0554);
-			
-			define('ROOTPATH', substr(dirname(__FILE__), 0, -7));
-			$settings = parse_ini_file(ROOTPATH.'config/config.inc.php');
-			@extract($settings);			
+			echo $spt;			
+			define('ROOTPATH', substr(dirname(__FILE__), 0, -7));		
 			$localurl="http://";
 			$localurl.=$_SERVER['HTTP_HOST'].$_SERVER["PHP_SELF"];
 			$localurl_a=explode("/",$localurl);
 			unset($localurl_a[count($localurl_a)-1]);
 			unset($localurl_a[count($localurl_a)-1]);
+		    if($cndata=="yes" or ($cndata<>"yes" and $endata<>"yes")){
+		    $settings = parse_ini_file(ROOTPATH.'config/config_cn.inc.php');
+			@extract($settings);
 			$met_weburl=implode($localurl_a,"/")."/";
-			include 'configsave.php';			
-						
+			include 'configsave_cn.php';
+            }			
+		    if($endata=="yes" or ($cndata<>"yes" and $endata<>"yes")){
+		    $settings = parse_ini_file(ROOTPATH.'config/config_en.inc.php');
+			@extract($settings);
+			$met_weburl=implode($localurl_a,"/")."/";
+			include 'configsave_en.php';
+            }			
+			$fp  = fopen('../config/install.lock', 'w');
+			fwrite($fp," ");
+			fclose($fp);
+			@chmod('../config/install.lock',0554);
+			
+//lang inc
+if($cndata=="yes" or $endata=="yes"){
+$config_save =  "<?php\n";
+$config_save .=  "# MetInfo Enterprise Content Management System \n";
+$config_save .=  "# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. \n";
+if($cndata=="yes")$config_save .=  "$"."met_ch_lang='1';\n";
+if($cndata=="yes")$config_save .=  "$"."met_ch_mark='cn';\n";
+$met_index_type1=($cndata=="yes")?'cn':'en';
+$config_save .=  "$"."met_index_type='$met_index_type1';\n";
+$met_admin_type1=$met_admin_type?($met_admin_type==1?'en':'other'):'cn';
+$config_save .=  "$"."met_admin_type='cn';\n";
+$config_save .=  "$"."met_admin_type_ok='1';\n";
+$config_save .=  "$"."met_url_type='0';\n";
+$config_save .=  "$"."met_lang_mark='1';\n";
+$config_save .=  "$"."met_langok=array();\n";
+if($cndata=="yes")$config_save .="$"."met_langok[cn]=array(name=>'简体中文',useok=>'1',order=>'1',mark=>'cn',flag=>'',link=>'',newwindows=>'');\n";
+if($endata=="yes")$config_save .="$"."met_langok[en]=array(name=>'English',useok=>'1',order=>'2',mark=>'en',flag=>'',link=>'',newwindows=>'');\n";
+$config_save .="$"."met_langadmin=array();\n";
+$config_save .="$"."met_langadmin[cn]=array(name=>'简体中文',useok=>'1',order=>'1',mark=>'cn');\n";
+$config_save .="$"."met_langadmin[en]=array(name=>'English',useok=>'1',order=>'1',mark=>'en');\n";
+if($cndata=="yes"){
+$config_save .="$"."met_langok[cn][met_webhtm]=0;\n";
+$config_save .="$"."met_langok[cn][met_htmtype]='html';\n";
+$config_save .="$"."met_langok[cn][met_weburl]='$met_weburl';\n";
+}
+if($endata=="yes"){
+$config_save .="$"."met_langok[en][met_webhtm]=0;\n";
+$config_save .="$"."met_langok[en][met_htmtype]='html';\n";
+$config_save .="$"."met_langok[en][met_weburl]='$met_weburl';\n";
+}
+$config_save       .="# This program is an open source system, commercial use, please consciously to purchase commercial license.\n";
+$config_save       .="# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.\n";
+$config_save       .="?>";
+if(!is_writable("../config/lang.inc.php"))@chmod('../config/lang.inc.php',0777);
+ $fp = fopen("../config/lang.inc.php",w);
+ fputs($fp, $config_save);
+ fclose($fp);
+ }
 			include template('finished');
 		}else {
 		include template('adminsetup');
 		}
 		break;
 	}
+   case 'license':
+   include template('license');
+   break;
 	default:
 	{
 		include template('index');
@@ -269,6 +309,6 @@ function template($template,$EXT="htm"){
 	$path = "templates/$template.$EXT";
 	return  $path;
 }
-# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

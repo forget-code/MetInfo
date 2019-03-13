@@ -1,7 +1,6 @@
 <!--<?php
-# 文件名称:set_member.html 2009-08-01 21:01:57
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 require_once template('head'); 
 echo <<<EOT
 -->
@@ -30,70 +29,14 @@ echo <<<EOT
 		 <input name="met_member_login" type="radio" $met_member_login1[2] value="2">{$lang_memberloginok3}  
 		 <input name="met_member_login" type="radio" $met_member_login1[3] value="3">{$lang_memberloginok4}</td>
    </tr> 
-<!--
-EOT;
-if($met_c_lang_ok==1){
-echo <<<EOT
--->
    <tr> 
-         <td class="list1_text">{$lang_memberregisteremail}[<b>{$met_c_lang}</b>]</td>
-         <td class="list1_input"><textarea name="met_c_memberemail" cols="50" rows="3">$met_c_memberemail</textarea>$lang_setfootTip1</td>
+         <td class="list1_text">{$lang_memberregisteremail}</td>
+         <td class="list1_input"><textarea name="met_memberemail" cols="50" rows="3">$met_memberemail</textarea>$lang_setfootTip1</td>
    </tr> 
-<!--
-EOT;
-}
-if($met_e_lang_ok==1){
-echo <<<EOT
--->
-		  <tr> 
-            <td class="list1_text">{$lang_memberregisteremail}[<b>{$met_e_lang}</b>]</td>
-            <td class="list1_input"> <textarea name="met_e_memberemail" cols="50" rows="3">$met_e_memberemail</textarea>$lang_setfootTip1</td>
-          </tr>
-<!--
-EOT;
-}
-if($met_o_lang_ok==1){
-echo <<<EOT
--->
-		  <tr> 
-            <td class="list1_text">{$lang_memberregisteremail}[<b>{$met_o_lang}</b>]</td>
-            <td class="list1_input"><textarea name="met_o_memberemail" cols="50" rows="3">$met_o_memberemail</textarea>$lang_setfootTip1</td>
-          </tr>
-<!--
-EOT;
-}
-if($met_c_lang_ok==1){
-echo <<<EOT
--->
    <tr> 
-         <td class="list1_text">{$lang_membercontrol}[<b>{$met_c_lang}</b>]</td>
-         <td class="list1_input"><textarea name="met_c_membercontrol" cols="50" rows="5">$met_c_membercontrol</textarea>$lang_setfootTip1</td>
+         <td class="list1_text">{$lang_membercontrol}</td>
+         <td class="list1_input"><textarea name="met_membercontrol" cols="50" rows="5">$met_membercontrol</textarea>$lang_setfootTip1</td>
    </tr> 
-<!--
-EOT;
-}
-if($met_e_lang_ok==1){
-echo <<<EOT
--->
-		  <tr> 
-            <td class="list1_text">{$lang_membercontrol}[<b>{$met_e_lang}</b>]</td>
-            <td class="list1_input"> <textarea name="met_e_membercontrol" cols="50" rows="5">$met_e_membercontrol</textarea>$lang_setfootTip1</td>
-          </tr>
-<!--
-EOT;
-}
-if($met_o_lang_ok==1){
-echo <<<EOT
--->
-		  <tr> 
-            <td class="list1_text">{$lang_membercontrol}[<b>{$met_o_lang}</b>]</td>
-            <td class="list1_input"><textarea name="met_o_membercontrol" cols="50" rows="5">$met_o_membercontrol</textarea>$lang_setfootTip1</td>
-          </tr>
-<!--
-EOT;
-}
-echo <<<EOT
--->
     <tr> 
          <td class="list1_text"><font color="#FF0000" size="2" style="padding-right:5px;">*</font>{$lang_memberforce}</td>
          <td class="list1_input">
@@ -114,6 +57,6 @@ echo <<<EOT
 </html>
 <!--
 EOT;
-# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved..
 ?>-->

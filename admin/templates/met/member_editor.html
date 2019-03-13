@@ -1,14 +1,13 @@
 <!--<?php
-# 文件名称:member_editor.html 2009-08-15 10:09:13
-# MetInfo企业网站管理系统
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 require_once template('head');
 echo <<<EOT
 -->
 <title>{$lang_membereditorTitle}</title>
 </head>
 <body>
-<form method="POST" name="myform" onSubmit="return CheckForm_e();" action="save.php?action=editor&id=$id" target="_self">
+<form method="POST" name="myform" onSubmit="return CheckForm_e();" action="save.php?action=editor&id=$id&lang=$lang" target="_self">
 		<input name="useid" type="hidden"size="20" maxlength="20" value="$admin_list[admin_id]">
 <table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
           <tr> 
@@ -126,6 +125,6 @@ EOT;
 </html>
 <!--
 EOT;
-# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
-# Copyright (C) 长沙米拓信息技术有限公司 ( http://www.metinfo.cn). All rights reserved.
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>-->

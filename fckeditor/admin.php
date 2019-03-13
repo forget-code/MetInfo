@@ -1,7 +1,6 @@
 <?php
-# 文件名称:login_check.php 2009-08-15 14:34:57
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
 require_once '../include/common.inc.php';
 		  session_start();
@@ -13,8 +12,8 @@ require_once '../include/common.inc.php';
 		session_unset();
         $met_js_ac="<script type='text/javascript'> alert('".$lang_access."'); location.href='../../../../../'; </script>";
         }
-# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>
 
 $met_js="<?php echo $met_js_ac;?>";

@@ -1,24 +1,27 @@
 <!--<?php
-# 文件名称:database.html 2009-08-03 15:44:31
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
-if($action==""){
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 require_once template('head'); 
 echo <<<EOT
 -->
 <title>{$lang_setdbBackup}</title>
 </head>
 <body>
-<form method="POST" name="myform" action="database.php?action=export" target="_self">
+<!--
+EOT;
+if($action=='datadisplay'){
+echo <<<EOT
+-->
 <table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
    <tr> 
-            <td colspan="4" align="center" class="list1_title">{$lang_setdbBackup}</td>
+    <td colspan="4" align="center" class="list1_title">{$lang_setdbBackup}</td>
    </tr>
 	<tr>
-	<td colspan="4" class="list1_text_title">&nbsp;&nbsp;<a href="database.php?action=import"><b>{$lang_setdbImport}</b></a></td>
+	<td colspan="4" class="list1_text_title" style="text-align:right;">&nbsp;&nbsp;<a href="database.php?lang=$lang"><b>{$lang_setdbBackto}</b></a></td>
 	</tr>
+	<form method="POST" name="myform" action="database.php?action=export&lang=$lang" target="_self">
 		   <tr bgcolor="#ECF5FF" align="center"> 
-            <td width="15%" height="25" class="list1_lm"><input name='chkAll' type='checkbox' id='chkAll' onclick='CheckAll(this.form)' value='check' checked><span>{$lang_setdbCheckAll}</span></td>
+            <td width="15%" height="25" class="list1_lm"><input name='chkAll' type='checkbox' id='chkAll' onclick='CheckAll(this.form)' value='check' checked><span>{$lang_selected}</span></td>
             <td width="50%" class="list1_lm">{$lang_setdbTable}</td>
 			<td width="15%" class="list1_lm">{$lang_setdbItems}</td>
 			<td width="20%" class="list1_lm">{$lang_setdbSize} [{$lang_setdbAll} $totalsize M]</td></tr>
@@ -45,37 +48,32 @@ echo <<<EOT
 		  <td class="list1_footer" colspan="4" align="center">$foot</td>
 	  </tr>
 </table>
-</body>
-</html>
 <!--
 EOT;
 }
 elseif($action=="import"){
-require_once template('head'); 
 echo <<<EOT
 -->
-<title>{$lang_setdbExport}</title>
-</head>
-<body>
 
 <table cellpadding="2" cellspacing="2" border="0" width="95%" class="table_list1">
  </tr>
           <tr> 
-            <td colspan="6" align="center" class="list1_title">{$lang_setdbExport}</td>
+            <td colspan="6" align="center" class="list1_title">{$lang_setdbImport}</td>
           </tr>
-		  <tr><td colspan="6" class="list1_text_title">&nbsp;&nbsp;&nbsp;<a href="database.php"><b>{$lang_setdbBackup}</b></a></td></tr>
+		  <tr><td colspan="6" class="list1_text_title" style="text-align:right;">&nbsp;&nbsp;&nbsp;<a href="database.php?lang=$lang"><b>{$lang_setdbBackto}</b></a></td></tr>
 		   <tr bgcolor="#ECF5FF" align="center"> 
             <td width="8%" class="list1_lm">ID</td>
             <td width="30%" class="list1_lm">{$lang_setdbFilename}</td>
-            <td width="10%" class="list1_lm">{$lang_setdbFilesize}</td>
+            <td width="10%" class="list1_lm">{$lang_setdbFilesize}[MB]</td>
             <td width="20%" class="list1_lm">{$lang_setdbTime}</td>
             <td width="8%"  class="list1_lm">{$lang_setdbNumber}</td>
-            <td width="24%" class="list1_lm">{$lang_setdbOperate}</td>
+            <td width="24%" class="list1_lm">{$lang_operate}</td>
 			</tr>
 
 <!--
 EOT;
 foreach($infos as $id => $info){
+$filenamearray=explode(".sql",$info[filename]);
 $id++;
 echo <<<EOT
 -->
@@ -86,9 +84,9 @@ echo <<<EOT
             <td width="20%" height="20px">$info[maketime]</td>
             <td width="8%" height="20px">$info[number]</td>
             <td width="24%" height="20px">
-			<a href="?action=import&pre=$info[pre]&dosubmit=1">{$lang_setdbImportData}</a> | 
-	<a href="?action=delete&filenames=$info[filename]">{$lang_setdbDelete}</a> | 
-	<a href="../databack/$info[filename]">{$lang_setdbDownload}</a></td>
+			<a href="?action=import&pre=$info[pre]&dosubmit=1&lang=$lang">{$lang_setdbImportData}</a> | 
+	<a href="?action=delete&filenames=$info[filename]&lang=$lang">{$lang_delete}</a> | 
+	<a href="../databack/sql/metinfo_{$filenamearray[0]}.zip" target="_blank">{$lang_setdbDownload}</a></td>
 			</tr>
 <!--
 EOT;
@@ -96,9 +94,9 @@ EOT;
 echo <<<EOT
 -->
 <tr bgcolor="#ECF5FF" >
-<form enctype="multipart/form-data" method="POST" name="myform" action="database.php?action=uploadsql" target="_self">
-            <td  height="25" colspan="2" align="center" class="sjk"><b>{$lang_setdbUploadDB}</b> &nbsp; {$lang_setdbFilesize}<input name="met_sqlname" type="text" class="input" size="16" maxlength="200" ></td>
-            <td colspan="4" class="sjk"><input name="met_upsql" type="file" class="input" size="30" maxlength="200" ><input type="submit" name="Submit" value="{$lang_Submit}" class="tj"></td>
+<form enctype="multipart/form-data" method="POST" name="myform" action="database.php?action=uploadsql&lang=$lang" target="_self">
+            <td  height="25" colspan="2" align="center" class="sjk"><b>{$lang_setdbUploadDB}</b> &nbsp; {$lang_setdbFilesize}[MB]<input name="met_sqlname" type="text" class="input" size="10" ></td>
+            <td colspan="4" class="sjk"><input name="met_upsql" type="file" class="input" size="30" ><input type="submit" name="Submit" value="{$lang_Submit}" class="tj"></td>
 			</form>
           </tr> 
 <tr bgcolor="#ECF5FF" ><td colspan="6"  class="list1_text_title" align="center">{$lang_setdbTip1}"</td></tr>
@@ -106,11 +104,175 @@ echo <<<EOT
 <td class="list1_footer" colspan="6" align="center">$foot</td>
 </tr>
 </table>
+<!--
+EOT;
+}
+elseif($action=="filedown"){
+echo <<<EOT
+-->
+
+<table cellpadding="2" cellspacing="2" border="0" width="95%" class="table_list1">
+ </tr>
+          <tr> 
+            <td colspan="6" align="center" class="list1_title">{$lang_setdbDownloadfile}</td>
+          </tr>
+<tr><td colspan="6" class="list1_text_title" style="text-align:right;">&nbsp;&nbsp;&nbsp;<a href="database.php?lang=$lang"><b>{$lang_setdbBackto}</b></a></td></tr>
+<tr><td colspan="6" align="left">&nbsp;&nbsp;&nbsp;<b>1.{$lang_setdbDBFile}</b></td></tr>
+		   <tr bgcolor="#ECF5FF" align="center"> 
+            <td width="8%" class="list1_lm">ID</td>
+            <td width="30%" class="list1_lm">{$lang_setdbFilename}</td>
+            <td width="10%" class="list1_lm">{$lang_setdbFilesize}[MB]</td>
+            <td width="20%" class="list1_lm">{$lang_setdbTime}</td>
+            <td width="24%" class="list1_lm">{$lang_operate}</td>
+			</tr>
+
+<!--
+EOT;
+foreach($infosql as $id => $info){
+$id++;
+echo <<<EOT
+-->
+            <tr bgcolor="#ECF5FF" align="center"> 
+            <td width="8%" height="20px">$id</td>
+            <td width="30%" height="20px">$info[filename]</td>
+            <td width="10%" height="20px">$info[filesize]</td>
+            <td width="20%" height="20px">$info[maketime]</td>
+            <td width="24%" height="20px">
+	<a href="?action=delete&filenames=$info[filename]&fileon=sql&lang=$lang" onClick="return ConfirmDel();">{$lang_delete}</a> | 
+	<a href="../databack/sql/$info[filename]" target="_blank">{$lang_setdbDownload}</a></td>
+			</tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<tr><td colspan="6" align="left">&nbsp;&nbsp;&nbsp;</td></tr>
+<tr><td colspan="6" align="left">&nbsp;&nbsp;&nbsp;<b>2.{$lang_setdbProfileFile}</b></td></tr>
+		   <tr bgcolor="#ECF5FF" align="center"> 
+            <td width="8%" class="list1_lm">ID</td>
+            <td width="30%" class="list1_lm">{$lang_setdbFilename}</td>
+            <td width="10%" class="list1_lm">{$lang_setdbFilesize}[MB]</td>
+            <td width="20%" class="list1_lm">{$lang_setdbTime}</td>
+            <td width="32%" class="list1_lm">{$lang_operate}</td>
+			</tr>
+
+<!--
+EOT;
+foreach($infoconfig as $id => $info){
+$id++;
+echo <<<EOT
+-->
+            <tr bgcolor="#ECF5FF" align="center"> 
+            <td  height="20px">$id</td>
+            <td  height="20px">$info[filename]</td>
+            <td  height="20px">$info[filesize]</td>
+            <td height="20px">$info[maketime]</td>
+            <td height="20px">
+<!--<a href="?action=extract&filenames=$info[filename]&fileon=config&lang=$lang">{$lang_setdbRecoveryfile}</a> |-->
+	<a href="?action=delete&filenames=$info[filename]&fileon=config&lang=$lang" onClick="return ConfirmDel();">{$lang_delete}</a> | 
+	<a href="../databack/config/$info[filename]" target="_blank">{$lang_setdbDownload}</a></td>
+			</tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<tr><td colspan="6" align="left">&nbsp;&nbsp;&nbsp;</td></tr>
+<tr><td colspan="6" align="left">&nbsp;&nbsp;&nbsp;<b>3.{$lang_setdbuploadFile}</b></td></tr>
+		   <tr bgcolor="#ECF5FF" align="center"> 
+            <td width="8%" class="list1_lm">ID</td>
+            <td width="30%" class="list1_lm">{$lang_setdbFilename}</td>
+            <td width="10%" class="list1_lm">{$lang_setdbFilesize}[MB]</td>
+            <td width="20%" class="list1_lm">{$lang_setdbTime}</td>
+            <td width="32%" class="list1_lm">{$lang_operate}</td>
+			</tr>
+
+<!--
+EOT;
+foreach($infoupload as $id => $info){
+$id++;
+echo <<<EOT
+-->
+            <tr bgcolor="#ECF5FF" align="center"> 
+            <td  height="20px">$id</td>
+            <td  height="20px">$info[filename]</td>
+            <td  height="20px">$info[filesize]</td>
+            <td height="20px">$info[maketime]</td>
+            <td height="20px">
+<!--<a href="?action=extract&filenames=$info[filename]&fileon=upload&lang=$lang">{$lang_setdbRecoveryfile}</a> |-->
+	<a href="?action=delete&filenames=$info[filename]&fileon=upload&lang=$lang" onClick="return ConfirmDel();">{$lang_delete}</a> | 
+	<a href="../databack/upload/$info[filename]" target="_blank">{$lang_setdbDownload}</a></td>
+			</tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<tr><td colspan="6" align="left">&nbsp;&nbsp;&nbsp;</td></tr>
+<tr><td colspan="6" align="left">&nbsp;&nbsp;&nbsp;<b>4.{$lang_setdballFile}</b></td></tr>
+		   <tr bgcolor="#ECF5FF" align="center"> 
+            <td width="8%" class="list1_lm">ID</td>
+            <td width="30%" class="list1_lm">{$lang_setdbFilename}</td>
+            <td width="10%" class="list1_lm">{$lang_setdbFilesize}[MB]</td>
+            <td width="20%" class="list1_lm">{$lang_setdbTime}</td>
+            <td width="32%" class="list1_lm">{$lang_operate}</td>
+			</tr>
+
+<!--
+EOT;
+foreach($infoweb as $id => $info){
+$id++;
+echo <<<EOT
+-->
+            <tr bgcolor="#ECF5FF" align="center"> 
+            <td  height="20px">$id</td>
+            <td  height="20px">$info[filename]</td>
+            <td  height="20px">$info[filesize]</td>
+            <td height="20px">$info[maketime]</td>
+            <td height="20px">
+<!--<a href="?action=extract&filenames=$info[filename]&fileon=web&lang=$lang">{$lang_setdbRecoveryfile}</a> |-->
+	<a href="?action=delete&filenames=$info[filename]&fileon=web&lang=$lang" onClick="return ConfirmDel();">{$lang_delete}</a> | 
+	<a href="../databack/web/$info[filename]" target="_blank">{$lang_setdbDownload}</a></td>
+			</tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<tr>
+<td class="list1_footer" colspan="6" align="center">$foot</td>
+</tr>
+</table>
+<!--
+EOT;
+}else{
+echo <<<EOT
+-->
+<table cellpadding="1" cellspacing="1" border="0" width="95%" class="table_list1">
+<tr><td colspan="6" align="center" class="list1_title">{$lang_setdbBackup}</td> </tr>
+<tr><td colspan="6" class="list1_text_title">
+<ul>
+<li>1.&nbsp;&nbsp;&nbsp;<a href="database.php?lang=$lang&action=datadisplay"><b>{$lang_setdbExport}</b></a></li>
+<li>2.&nbsp;&nbsp;&nbsp;<a href="database.php?lang=$lang&action=import"><b>{$lang_setdbImport}</b></a></li>
+<li>3.&nbsp;&nbsp;&nbsp;<a href="database.php?lang=$lang&action=config" onClick="return Confirmarchive('$lang_setdbfileconfig?');"><b>{$lang_setdbfileconfig}</b></a></li>
+<li>4.&nbsp;&nbsp;&nbsp;<a href="database.php?lang=$lang&action=uploadimg" onClick="return Confirmarchive('$lang_setdbfileuploadimg?');"><b>{$lang_setdbfileuploadimg}</b></a></li>
+<li>5.&nbsp;&nbsp;&nbsp;<a href="database.php?lang=$lang&action=allfile" onClick="return Confirmarchive('$lang_setdbfileall?');"><b>{$lang_setdbfileall}</b></a></li>
+<li>6.&nbsp;&nbsp;&nbsp;<a href="database.php?lang=$lang&action=filedown"><b>{$lang_setdbDownloadfile}</b></a></li>
+</ul>
+</td></tr>		   
+<tr>
+<td class="list1_footer" colspan="6" align="center">$foot</td>
+</tr>
+</table>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
 </body>
 </html>
 <!--
 EOT;
-}
-# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>-->

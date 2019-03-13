@@ -1,28 +1,27 @@
 <!--<?php
-# 文件名称:product.html 2009-08-11 13:24:17
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn)). All rights reserved.
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 require_once template('head');
 echo <<<EOT
 -->
-<title>$class1_info[name]{$lang_manager}</title>
+<title>$class1_info[name]</title>
 </head>
 <body>
    <div class="div_top">
-	              <div class="div_title">$class1_info[name]{$lang_manager}</div>      
+	              <div class="div_title">{$lang_manager} [{$class1_info[name]}]</div>     
 <!--
 EOT;
-if($class2_listok==1){
+if(count($met_class22[$class1])){
 echo <<<EOT
--->	
-<div class="div_content" align="left"><span>{$lang_modClass2}</span>
+-->		  
+<div class="div_content" align="left"><span>{$lang_modClass2}: </span>
 <!--
 EOT;
-foreach($class2_list as $key=>$val){
+foreach($met_class22[$class1] as $key=>$val){
 if($val[id]==$class2)$style="style='color:#FF0000'";
 echo <<<EOT
 -->
-<a href="index.php?class1=$class1&class2=$val[id]" $style>$val[name]</a>&nbsp;&nbsp;|&nbsp;
+<a href="index.php?lang=$lang&class1=$class1&class2=$val[id]" $style>$val[name]</a>&nbsp;&nbsp;|&nbsp;
 <!--
 EOT;
 $style="";
@@ -31,17 +30,17 @@ echo <<<EOT
 -->	</div>
 <!--
 EOT;
-if($class3_listok==1){
+if(count($met_class3[$class2])){
 echo <<<EOT
--->	
-<div class="div_content1" align="left"><span>{$lang_modClass3}</span>
+-->		   
+<div class="div_content1" align="left"><span>{$lang_modClass3}: </span>
 <!--
 EOT;
-foreach($class3_list as $key=>$val){
+foreach($met_class3[$class2] as $key=>$val){
 if($val[id]==$class3)$style="style='color:#FF0000'";
 echo <<<EOT
 -->
-<a href="index.php?class1=$class1&class2=$val[bigclass]&class3=$val[id]" $style>$val[name]</a>&nbsp;&nbsp;|&nbsp;
+<a href="index.php?lang=$lang&class1=$class1&class2=$val[bigclass]&class3=$val[id]" $style>$val[name]</a>&nbsp;&nbsp;|&nbsp;
 <!--
 EOT;
 $style="";
@@ -53,106 +52,168 @@ EOT;
 }
 echo <<<EOT
 -->	
-</div>
-			<div style="width:95%;margin-top:10px;" align="right">
-				<form method="POST" name="filterform"  action="index.php?search=detail_search" target="_self">
+	   </div>
+	   <div style="width:95%;margin-top:10px;" align="right">
+				<form method="POST" name="filterform"  action="index.php?lang=$lang&search=detail_search" target="_self">
 				<input name="class1" type="hidden" size="30" value="$class1">
 				<input name="class2" type="hidden" size="30" value="$class2">
 				<input name="class3" type="hidden" size="30" value="$class3">
-				<span><b>{$lang_new}{$lang_mod3}</b></span>
+<!--
+EOT;
+if($metadmin[productnew]){
+echo <<<EOT
+-->	
+				<span><b>{$lang_newest}</b></span>
 			    <select name="new" id="new" onChange="autosubmit()">
 					<option value="all" $new0>{$lang_selectnow}</option>
-					<option value="1" $new1>{$lang_YES}</option>
-					<option value="0" $new2>{$lang_NO}</option>
+					<option value="1" $new1>{$lang_yes}</option>
+					<option value="0" $new2>{$lang_no}</option>
 				</select>
-				<span><b>{$lang_recom}{$lang_mod3}</b></span>
+<!--
+EOT;
+}
+if($metadmin[productcom]){
+echo <<<EOT
+-->	
+				<span><b> {$lang_recom}</b></span>
 				<select name="recommend" id="recommend" onChange="autosubmit()">
 					<option value="all" $recommend0>{$lang_selectnow}</option>
-					<option value="1" $recommend1>{$lang_YES}</option>
-					<option value="0" $recommend2>{$lang_NO}</option>
+					<option value="1" $recommend1>{$lang_yes}</option>
+					<option value="0" $recommend2>{$lang_no}</option>
 				</select>
-				<span><b>{$lang_top}{$lang_mod3}</b></span>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+				<span><b> {$lang_top}</b></span>
 				<select name="top" id="top" onChange="autosubmit()">
 					<option value="all" $top0>{$lang_selectnow}</option>
-					<option value="1" $top1>{$lang_YES}</option>
-					<option value="0" $top2>{$lang_NO}</option>
-				</select>
-				<span><b>{$lang_langbelong}</b></span>
-				<select name="langtype" id="langtype" onChange="autosubmit()">
-					<option value="all" $langtype0>{$lang_selectnow}</option>
-					$selectlang
+					<option value="1" $top1>{$lang_yes}</option>
+					<option value="0" $top2>{$lang_no}</option>
 				</select>
 				</form>
 		</div>
-			<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
+<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
               <tr>
                 <td width="5%" class="list1_top" align="center">{$lang_selected}</td>
 				<td width="5%" class="list1_top" align="center">ID</td>
-                <td width="40%" class="list1_top" align="center">{$lang_mod3}{$lang_title}</td>
-                <td width="5%" class="list1_top" align="center" >{$lang_new}</td>
-                <td width="5%" class="list1_top" align="center" >{$lang_recom}</td>
-				<td width="6%"  class="list1_top" align="center" >{$lang_top}</td>				
-                <td width="10%" class="list1_top" align="center" >{$lang_updatetime}</td>
+                <td width="40%" class="list1_top" align="center">{$lang_title}</td>
+<!--
+EOT;
+if($metadmin[productnew]){
+echo <<<EOT
+-->	
+                <td width="5%"  class="list1_top" align="center" >{$lang_newest}</td>
+<!--
+EOT;
+}
+if($metadmin[productcom]){
+echo <<<EOT
+-->	
+                <td width="5%"  class="list1_top" align="center" >{$lang_recom}</td>
+<!--
+EOT;
+}
+echo <<<EOT
+-->	
+				<td width="6%"  class="list1_top" align="center" >{$lang_top}</td>
+                <td width="10%"  class="list1_top" align="center" >{$lang_updatetime}</td>	
+<!--
+EOT;
+if($met_member_use){
+echo <<<EOT
+-->				
 				<td width="14%"  class="list1_top" align="center" >{$lang_webaccess}</td>
-				<td width="10%" class="list1_top" align="center" >{$lang_operate}</td>
+<!--
+EOT;
+}
+echo <<<EOT
+-->					
+	           <td width="10%"  class="list1_top" align="center" >{$lang_operate}</td>
               </tr>
-			  <form name="del" method="Post" action="delete.php?class1=$class1&class2=$class2&class3=$class3" onSubmit="return ConfirmDelall();">
+			  <form name="del" method="Post" action="delete.php?lang=$lang&class1=$class1&class2=$class2&class3=$class3" onSubmit="return ConfirmDelall();">
 <!--
 EOT;
 foreach ($product_list as $key=>$val){
-$val['title']=$langusenow=="en"?$val['e_title']:($langusenow=="other"?$val['o_title']:$val['c_title']);
-if($langusenow=="en" && $met_e_lang_ok!=1) $val['title']=$met_c_lang_ok==1?$val['c_title']:$val['o_title'];
-if($langusenow=="cn" && $met_c_lang_ok!=1) $val['title']=$met_e_lang_ok==1?$val['e_title']:$val['o_title'];
-if($langusenow=="other" && $met_o_lang_ok!=1) $val['title']=$met_c_lang_ok==1?$val['c_title']:$val['e_title'];
-if($val['title']=='') $val['title']=$val['e_title']!=''?$val['e_title']:($val['o_title']!=''?$val['o_title']:$val['c_title']);
 if(isset($langtype) && $langtype!='all') 
 {
 	$item = $langtype."_title";
 	if($val[$item]=='') continue;
 	$val['title'] = $val[$item];
 }
+
 echo <<<EOT
 -->          
               <tr>
               <td class="list1_content_titile" align="center"><input name='id' type='checkbox' onClick="unselectall()" id="id" value='$val[id]' class="xz"></td>
                 <td class="list1_content" align="center">$val[id]</td>
-			    <td align="left" class="list1_content"><a href="../../$class1_info[foldername]/showproduct.php?lang=$urllang&id=$val[id]" title="{$lang_preview}" target="_blank">$val[title]</a></td>
-                <td class="list1_content" align="center"><a href="changeState.php?new_ok=$val[new_ok]&id=$val[id]&class1=$class1&class2=$class2&class3=$class3" onClick="return ConfirmChange();">$val[new_ok1]</a></td>
-                <td class="list1_content" align="center"><a href="changeState.php?com_ok=$val[com_ok]&id=$val[id]&class1=$class1&class2=$class2&class3=$class3" onClick="return ConfirmChange();">$val[com_ok1]</a></td>
-				<td class="list1_content" align="center"><a href="changeState.php?top_ok=$val[top_ok]&id=$val[id]&class1=$class1&class2=$class2&class3=$class3" onClick="return ConfirmChange();">$val[top_ok1]</a></td>
-                <td  class="list1_content" align="center">$val[updatetime]</td>
+			    <td class="list1_content" align="left"><a href="../../$class1_info[foldername]/showproduct.php?lang=$lang&id=$val[id]" title="{$lang_preview}" target="_blank">$val[title]</a></td>
+<!--
+EOT;
+if($metadmin[productnew]){
+echo <<<EOT
+-->	
+                <td class="list1_content" align="center"><a href="changeState.php?lang=$lang&new_ok=$val[new_ok]&id=$val[id]&class1=$class1&class2=$class2&class3=$class3" onClick="return ConfirmChange();">$val[new_ok1]</a></td>
+<!--
+EOT;
+}
+if($metadmin[productcom]){
+echo <<<EOT
+-->	
+                <td class="list1_content" align="center"><a href="changeState.php?lang=$lang&com_ok=$val[com_ok]&id=$val[id]&class1=$class1&class2=$class2&class3=$class3" onClick="return ConfirmChange();">$val[com_ok1]</a></td>
+<!--
+EOT;
+}
+echo <<<EOT
+-->					
+				<td class="list1_content" align="center"><a href="changeState.php?lang=$lang&top_ok=$val[top_ok]&id=$val[id]&class1=$class1&class2=$class2&class3=$class3" onClick="return ConfirmChange();">$val[top_ok1]</a></td>
+                <td class="list1_content" align="center">$val[updatetime]</td>
+<!--
+EOT;
+if($met_member_use){
+echo <<<EOT
+-->	
 				<td class="list1_content" align="center">$val[access]</td>
-				<td align="center" class="list1_content" style="color:#0066FF;"></a> <a href="editor.php?id=$val[id]" >{$lang_editor}</a> | <a href="delete.php?id=$val[id]&class1=$class1&class2=$class2&class3=$class3" onClick="return ConfirmDel();" >{$lang_delete}</a></td>
+<!--
+EOT;
+}
+echo <<<EOT
+-->	
+				<td align="center" class="list1_content" style="color:#0066FF;"></a> <a href="content.php?action=editor&class1=$class1&lang=$lang&id=$val[id]" >{$lang_editor}</a> | <a href="delete.php?lang=$lang&id=$val[id]&class1=$class1&class2=$class2&class3=$class3" onClick="return ConfirmDel();" >{$lang_delete}</a></td>
               </tr>
 <!--
 EOT;
 }
 echo <<<EOT
 -->
-		   
+       
+
    	   <tr> 
             <td class="input_bottom" align="center"><input name="chkAll" class="xz" type="checkbox" id="chkAll" onclick=CheckAll(this.form) value="checkbox"></td>
-            <td class="input_bottom" align="center">{$lang_selectall}</td>
-			<td class="input_bottom" align="left" colspan="7"><input name="submit" type='submit' value='{$lang_deleteselected}'> 
+             <td class="input_bottom" align="center">{$lang_selectall}</td>
+			 <td class="input_bottom" align="left" colspan="8"><input name="submit" type='submit' value='{$lang_deleteselected}'> 
               <input name="action" type="hidden" id="action" value="del">
 			  <input name="allid" type="hidden" id="allid" value=""></form></td>
           </tr>
 		  <tr>
-            <td align="left" colspan="9"  class="input_search">
-			<form method="POST" name="search"  action="index.php?search=detail_search" target="_self">
-			<input name="class1" type="hidden" size="30" value="$class1">
-				  <input name="class2" type="hidden" size="30" value="$class2">
-				  <input name="class3" type="hidden" size="30" value="$class3">
-			       <span><b>{$lang_mod3}{$lang_search}</b></span> 				  
-			    <input name="title" type="text" size="30">
-				<input type="submit" name="Submit2" value="{$lang_search}" class="tj">  
-	        {$lang_modsearch}</form></td>
+            <td align="left" colspan="8"  class="input_search">
+			<form method="POST" name="search"  action="index.php?lang=$lang&search=detail_search" target="_self">
+			    <input name="class1" type="hidden" size="30" value="$class1">
+				<input name="class2" type="hidden" size="30" value="$class2">
+				<input name="class3" type="hidden" size="30" value="$class3">
+				<span><b>{$lang_titlekey}</b></span>				  
+			    <input name="title" type="text" size="30">				
+				<input type="submit" name="Submit2" value="{$lang_search}" class="tj">
+				{$lang_modsearch}
+				<br />
+	        </form></td>
           </tr>
-	   <tr>
+		  <tr>
 				<td align="left" colspan="8"  class="input_search">
-			   <form method="POST" name="myform"  action="changeState.php?action=moveto" target="_self" onSubmit="return Confirmall();">
+			   <form method="POST" name="myform"  action="changeState.php?lang=$lang&action=moveto" target="_self" onSubmit="return Confirmall();">
 			   <input name="allid" type="hidden" id="allid" value="">
-				<span><b>{$lang_mod3}{$lang_move}</b></span>				  
+				<span><b>{$lang_movebatch}</b></span>				  
 <!--
 EOT;
 echo <<<EOT
@@ -161,7 +222,7 @@ echo <<<EOT
 <option value=0 >{$lang_modClass1}</option>
 <!--
 EOT;
-foreach($classlev1 as $key=>$val2){
+foreach($met_classindex[3] as $key=>$val2){
 $k=$val2[id];
 echo <<<EOT
 -->			
@@ -195,12 +256,12 @@ echo <<<EOT
 	        </form>
 		  
 				
-		  </tr>	  
+		  </tr>
    	   <tr>
-   	     <td height="0" align="center" colspan="9" class="list1_input">$page_list</td>
+   	     <td height="0" align="center" colspan="8" class="list1_input" >$page_list</td>
         </tr>
 		<tr>
-		  <td class="list1_footer" colspan="10" align="center">$foot</td>
+		  <td class="list1_footer" colspan="8" align="center">$foot</td>
 	  </tr>
 </table>
 <script type='text/javascript'>
@@ -213,6 +274,6 @@ echo <<<EOT
 </html>
 <!--
 EOT;
-# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.ed.
 ?>-->

@@ -1,11 +1,10 @@
 <?php
-# 文件名称:flashadd.php 2009-08-05 11:21:57
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 require_once '../login/login_check.php';
-require_once '../../config/flash.inc.php';
+require_once '../../config/flash_'.$lang.'.inc.php';
 
-$query="select * from $met_column where if_in='0' order by no_order";
+$query="select * from $met_column where if_in='0' and lang='$lang' order by no_order";
 	$result= $db->query($query);
 	$mod1[0]=$mod[10000]=array(
 				id=>10000,
@@ -19,7 +18,6 @@ $query="select * from $met_column where if_in='0' order by no_order";
 			);
 	$i=2;
 	while($list = $db->fetch_array($result)){
-	$list['name']=$langusenow=="en"?$list['e_name']:($langusenow=="other"?$list['o_name']:$list['c_name']);	
 	if($list[classtype]==1){
 	                        $mod1[$i]=$list;
 							$i++;
@@ -38,6 +36,7 @@ $style2="style='display:none;'";
 $style1="style='display:none;'";
 }elseif($met_flasharray[10000][type]==3){
 $style3="style='display:none;'";
+$style2="style='display:none;'";
 }else{
 $style2="style='display:none;'";
 $style1="style='display:block;'";

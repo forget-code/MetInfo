@@ -230,7 +230,7 @@ A:hover { COLOR:#FF6600}
 .index_link_img li{float:left; width:88px; height:31px; margin:5px;  overflow:hidden;}
 .index_link_img li img{width:88px; height:31px; overflow:hidden;}
 .index_link_text{ width:100%; height:auto; overflow:auto; margin-top:5px;}
-.index_link_text li{ float:left; width:auto; margin:0px 5px 0px 5px;}
+.index_link_text li{ display:inline; width:auto; padding:0px 8px 0px 0px;}
 /*首页结束*/
 
 /*搜索开始*/

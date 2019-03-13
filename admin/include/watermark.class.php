@@ -1,11 +1,11 @@
 <?php
 
 Class Watermark{
-var $src_image_name = "";      //输入图片的文件名(必须包含路径名)
-var $jpeg_quality = 90;        //jpeg图片质量
-var $save_file = "";          //输出文件名
-var $met_image_name = "";            //水印图片的文件名(必须包含路径名.)
-var $met_image_pos = 3;             //水印图片放置的位置
+var $src_image_name = "";      //Enter image file name (must contain the path name)
+var $jpeg_quality = 90;        //jpeg picture quality
+var $save_file = "";          //Output file name
+var $met_image_name = "";            //Watermark image file name (must contain the path name.)
+var $met_image_pos = 3;             //The location of the watermark image placement
 // 0 = middle
 // 1 = top left
 // 2 = top right
@@ -16,14 +16,14 @@ var $met_image_pos = 3;             //水印图片放置的位置
 // 7 = bottom middle
 // 8 = middle left
 //other = 3
-var $met_image_transition = 80;            //水印图片与原图片的融合度 (1=100)
+var $met_image_transition = 80;            //Watermark image and the original image fusion degree (1 = 100)
 
-var $met_text = "";                        //水印文字(支持中英文以及带有\r\n的跨行文字)
-var $met_text_size = 20;                   //水印文字大小
-var $met_text_angle = 5;                   //水印文字角度,这个值尽量不要更改
-var $met_text_pos = 3;                     //水印文字放置位置
-var $met_text_font = "";                   //水印文字的字体
-var $met_text_color = "#cccccc";           //水印字体的颜色值
+var $met_text = "";                        //Watermark text (in English and Chinese, as well as support with the \ r \ n of the cross-bank text)
+var $met_text_size = 20;                   //Watermark Text Size
+var $met_text_angle = 5;                   //Watermark text point of view, this value is try not to change the
+var $met_text_pos = 3;                     //Text watermark placement
+var $met_text_font = "";                   //Watermark text font
+var $met_text_color = "#cccccc";           //Watermark font color value
 
 
 function create($filename="")
@@ -52,7 +52,7 @@ if ($this->met_image_name){
 }
 
 if ($this->met_text){
-	   $this->met_text = mb_convert_encoding($this->met_text, "UTF-8", 'gb2312'); 
+	   //$this->met_text = mb_convert_encoding($this->met_text, "UTF-8", 'gb2312'); 
        //$this->met_text = iconv("gb2312", "UTF-8", $this->met_text);
        $temp_met_text = $this->getPos($src_image_w,$src_image_h,$this->met_text_pos);
        $met_text_x = $temp_met_text["dest_x"];
@@ -95,11 +95,11 @@ imagedestroy($src_image);
 
 /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 /*
-createImage     根据文件名和类型创建图片
-内部函数
+createImage     According to the file name and type to create pictures
+Internal function
 
-$type:                图片的类型，包括gif,jpg,png
-$img_name:  图片文件名，包括路径名，例如 " ./mouse.jpg"
+$type:               Image types, including gif, jpg, png
+$img_name:  Image file name, including path names, such as ". / Mouse.jpg"
 */
 function createImage($type,$img_name){
          if (!$type){
@@ -125,12 +125,12 @@ function createImage($type,$img_name){
 }
 
 /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-getPos               根据源图像的长、宽，位置代码，水印图片id来生成把水印放置到源图像中的位置
-内部函数
+getPos               According to the source image of the length, width, location code, a watermark image id to generate the watermark placed in the location of the source image
+Internal function
 
-$sourcefile_width:        源图像的宽
-$sourcefile_height: 原图像的高
-$pos:               位置代码
+$sourcefile_width:        Source image width
+$sourcefile_height: The original image of the high 
+$pos:               Location Code
 // 0 = middle
 // 1 = top left
 // 2 = top right
@@ -140,7 +140,7 @@ $pos:               位置代码
 // 6 = middle right
 // 7 = bottom middle
 // 8 = middle left
-$met_image:           水印图片ID
+$met_image:           Watermark Photo ID
 */
 function getPos($sourcefile_width,$sourcefile_height,$pos,$met_image=""){
          if  ($met_image){
@@ -219,12 +219,12 @@ function getPos($sourcefile_width,$sourcefile_height,$pos,$met_image=""){
         return array("dest_x"=>$dest_x,"dest_y"=>$dest_y);
 }
 /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-get_type                获得图片的格式，包括jpg,png,gif
-内部函数
+get_type              Get the picture formats, including jpg, png, gif
+Internal function
 
-$img_name：        图片文件名，可以包括路径名
+$img_name：        Image file name, path name may include
 */
-function get_type($img_name)//获取图像文件类型
+function get_type($img_name)//Obtain the image file type
 {
 $name_array = explode(".",$img_name);
 if (preg_match("/\.(jpg|jpeg|gif|png)$/i", $img_name, $matches))

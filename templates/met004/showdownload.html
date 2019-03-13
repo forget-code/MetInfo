@@ -1,6 +1,7 @@
 <!--<?php
 require_once template('head'); 
 $methits=methtml_hits('download'); 
+$methtml_prenextinfo=methtml_prenextinfo();
 echo <<<EOT
 -->
 <div class="web">
@@ -32,16 +33,10 @@ echo <<<EOT
 <div class="content">$download[content]</div>
 
 <div class="hits">$methits</div>
-
+<div class="prenext">$methtml_prenextinfo</div>
 </div>
 </div>
 
-<div class="webright">
-<div class="nav_x">&nbsp;<img src="$img_url/right.gif" />&nbsp;$class1_info[name]</div>
-<div class="navright">$navlist_y1</div>
-$met_online
-</div>
-</div>
 <!--
 EOT;
 require_once template('foot'); 

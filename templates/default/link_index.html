@@ -4,30 +4,27 @@ $metlinkimg=methtm_link('img','all','0','100','1');
 $metlinktext=methtm_link('text','all','0','100','1');
 echo <<<EOT
 -->
-<div class="web">
+<div id="web">
+<div class="right">
+   <h3 class="title"><span>{$class_list[$classnow][name]}</span></h3>
+<div class="webcontent">   
+<div class="message_line"><a href="$addlink_url">{$lang_ApplyLink}&gt;&gt;</a></div>
+     <dl class="link_main">
+        <dt>{$lang_PictureLink}:</dt>
+        <dd>$metlinkimg</dd>
+     </dl>
+     <dl class="link_main">
+         <dt>{$lang_TextLink}:</dt>
+         <dd>$metlinktext</dd>
+     </dl>
+</div>
+</div>
 <!--
 EOT;
 require_once template('webleft'); 
 echo <<<EOT
 -->
-<div class="webcontent">
-      
-<div class="message_line"><a href="$addlink_url">{$lang_ApplyLink}&gt;&gt;</a></div>
-</div>
-<div class="pcontent">
-<div class="index_link_img">
-<b>{$lang_PictureLink}：</b><br />
-$metlinkimg
-</div>
-<br />
-<div class="index_link_text">
-<b>{$lang_TextLink}：</b><br />
-$metlinktext
-</div>
-</div>
-</div>
 <div style="clear:both;"></div>
-	
 </div>
 <!--
 EOT;

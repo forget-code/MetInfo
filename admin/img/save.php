@@ -1,28 +1,26 @@
 <?php
-# 文件名称:save.php 2009-08-11 18:12:13
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 require_once '../login/login_check.php';
-if($action=="add"){
-
-$query = "SELECT * FROM $met_parameter where type=5 order by no_order";
+$module=$met_class[$class1][module];
+$query = "select * from $met_parameter where lang='$lang' and module='".$met_class[$class1][module]."' and (class1=$class1 or class1=0) order by no_order";
 $result = $db->query($query);
-while($list = $db->fetch_array($result)) {
-if($list[use_ok]==1)$list_p[]=$list;
+while($list = $db->fetch_array($result)){
+ if($list[type]==4){
+  $query1 = " where lang='$lang' and bigid='".$list[id]."'";
+  $total_list[$list[id]] = $db->counter($met_list, "$query1", "*");
+  }
+$para_list[]=$list;
 }
+$filename=preg_replace("/\s/","_",trim($filename)); 
+$filenameold=preg_replace("/\s/","_",trim($filenameold));  
+if($action=="add"){
+$access=$access<>""?$access:0;
 $query = "INSERT INTO $met_img SET
-                      c_title            = '$c_title',
-                      e_title            = '$e_title',
-					  o_title            = '$o_title',
-					  c_keywords         = '$c_keywords',
-					  e_keywords         = '$e_keywords',
-					  o_keywords         = '$o_keywords',
-					  c_description      = '$c_description',
-					  e_description      = '$e_description',
-					  o_description      = '$o_description',
-					  c_content          = '$c_content',
-					  e_content          = '$e_content',
-					  o_content          = '$o_content',
+                      title              = '$title',
+					  keywords           = '$keywords',
+					  description        = '$description',
+					  content            = '$content',
 					  class1             = '$class1',
 					  class2             = '$class2',
 					  class3             = '$class3',
@@ -30,112 +28,149 @@ $query = "INSERT INTO $met_img SET
 					  imgurl             = '$imgurl',
 					  imgurls            = '$imgurls',
 				      com_ok             = '$com_ok',
+					  issue              = '$issue',
 					  hits               = '$hits', 
-					  issue              = '$metinfo_admin_name',
 					  addtime            = '$addtime', 
-					  updatetime         = '$updatetime', 
-					  access         	 = '$access',";
-foreach($list_p as $key=>$val)
-{		  
-$tmp="c_$val[name]";
-$query = $query."
-				  $tmp            	= '{$$tmp}', 
-				  ";
-$tmp="e_$val[name]";
-$query = $query."
-				  $tmp            	= '{$$tmp}', 
-				  ";
-$tmp="o_$val[name]";
-$query = $query."
-				  $tmp            	= '{$$tmp}', 
-				  ";
-}
-$query = $query." top_ok         	 = '$top_ok'";
-         $db->query($query);                
-//静态页面生成
-$later_img=$db->get_one("select * from $met_img where updatetime='$updatetime'");
+					  updatetime         = '$updatetime',
+					  access          	 = '$access',
+					  filename           = '$filename',
+					  lang          	 = '$lang',";
+if($metadmin[imgother])$query .="
+                      contentinfo         = '$contentinfo',
+					  contentinfo1        = '$contentinfo1',
+					  contentinfo2        = '$contentinfo2',
+					  contentinfo3        = '$contentinfo3',
+					  contentinfo4        = '$contentinfo4',
+                      content1            = '$content1',
+					  content2            = '$content2',
+					  content3            = '$content3',
+					  content4            = '$content4',
+					  ";
+			 $query .="top_ok             = '$top_ok'";
+         $db->query($query);
+
+$later_img=$db->get_one("select * from $met_img where updatetime='$updatetime' and lang='$lang'");
 $id=$later_img[id];
-contenthtm($class1,$id,'showimg');
+foreach($para_list as $key=>$val){
+    if($val[type]!=4){
+      $para="para".$val[id];
+	  $para=$$para;
+	   if($val[type]==5){
+	     $paraname="para".$val[id]."name";
+		 $paraname=$$paraname;
+		 }
+	}else{
+	  $para="";
+	  for($i=1;$i<=$total_list[$val[id]];$i++){
+	  $para1="para".$val[id]."_".$i;
+	  $para2=$$para1;
+	  $para=($para2<>"")?$para.$para2."-":$para;
+	  }
+	  $para=substr($para, 0, -1);
+	}
+	
+    $query = "INSERT INTO $met_plist SET
+                      listid   ='$id',
+					  paraid   ='$val[id]',
+					  info     ='$para',
+					  imgname  ='$paraname',
+					  module   ='$module',
+					  lang     ='$lang'";
+         $db->query($query);
+   $paraname="";
+ }
+//html
+contenthtm($class1,$id,'showimg',$filename);
 indexhtm();
 classhtm($class1,$class2,$class3);
-okinfo('index.php?class1='.$class1,$lang_loginUserAdmin);
+
+okinfo('index.php?lang='.$lang.'&class1='.$class1,$lang_jsok);
 }
 
 if($action=="editor"){
-$query = "SELECT * FROM $met_parameter where type=5 order by no_order";
-$result = $db->query($query);
-while($list = $db->fetch_array($result)) {
-if($list[use_ok]==1)$list_p[]=$list;
-}
-$query = "update $met_img SET ";
-if($met_c_lang_ok==1){
-$query = $query."
-                      c_title            = '$c_title',
-					  c_keywords         = '$c_keywords',
-					  c_description      = '$c_description',
-					  c_content          = '$c_content',"
-					  ;
-	foreach($list_p as $key=>$val)
-	{		  
-	$tmp="c_$val[name]";
-	$query = $query."
-					  $tmp            	= '{$$tmp}', 
-					  ";			
-	}					  
-}
-if($met_e_lang_ok==1){
-$query = $query."
-                      e_title            = '$e_title',
-					  e_keywords         = '$e_keywords',
-					  e_description      = '$e_description',
-					  e_content          = '$e_content',"
-					  ;
-	foreach($list_p as $key=>$val)
-	{		  
-	$tmp="e_$val[name]";
-	$query = $query."
-					  $tmp            	= '{$$tmp}', 
-					  ";			
-	}				  
-}
-if($met_o_lang_ok==1){
-$query = $query."
-                      o_title            = '$o_title',
-					  o_keywords         = '$o_keywords',
-					  o_description      = '$o_description',
-					  o_content          = '$o_content',"
-					  ;
-					  
-	foreach($list_p as $key=>$val)
-	{		  
-	$tmp="o_$val[name]";
-	$query = $query."
-					  $tmp            	= '{$$tmp}', 
-					  ";			
-	}
-}
-$query = $query."
-					  class1             = '$class1',
+$query = "update $met_img SET 
+                      title              = '$title',
+					  keywords           = '$keywords',
+					  description        = '$description',
+					  content            = '$content',
+                      class1             = '$class1',
 					  class2             = '$class2',
 					  class3             = '$class3',
-					  new_ok             = '$new_ok',
 					  imgurl             = '$imgurl',
-					  imgurls            = '$imgurls',
-				      com_ok             = '$com_ok',
+					  imgurls            = '$imgurls',";
+if($metadmin[imgnew])$query .= "					  
+					  new_ok             = '$new_ok',";
+if($metadmin[imgcom])$query .= "	
+				      com_ok             = '$com_ok',";
+					  $query .= "
+					  issue              = '$issue',
 					  hits               = '$hits', 
 					  addtime            = '$addtime', 
-					  updatetime         = '$updatetime', 
-					  access         	 = '$access',
-					  top_ok         	 = '$top_ok'
+					  updatetime         = '$updatetime',";
+if($met_member_use)  $query .= "
+					  access			 = '$access',";
+if($metadmin[pagename])$query .= "
+					  filename       	 = '$filename',";
+if($metadmin[imgother])$query .="
+                      contentinfo         = '$contentinfo',
+					  contentinfo1        = '$contentinfo1',
+					  contentinfo2        = '$contentinfo2',
+					  contentinfo3        = '$contentinfo3',
+					  contentinfo4        = '$contentinfo4',
+                      content1            = '$content1',
+					  content2            = '$content2',
+					  content3            = '$content3',
+					  content4            = '$content4',
+					  ";
+					  $query .= "
+					  top_ok             = '$top_ok',
+					  lang               = '$lang'
 					  where id='$id'";
-
 $db->query($query);
-//静态页面生成
-contenthtm($class1,$id,'showimg');
+
+foreach($para_list as $key=>$val){
+    if($val[type]!=4){
+      $para="para".$val[id];
+	  $para=$$para;
+	   if($val[type]==5){
+	     $paraname="para".$val[id]."name";
+		 $paraname=$$paraname;
+		 }
+	}else{
+	  $para="";
+	  for($i=1;$i<=$total_list[$val[id]];$i++){
+	  $para1="para".$val[id]."_".$i;
+	  $para2=$$para1;
+	  $para=($para2<>"")?$para.$para2."-":$para;
+	  }
+	  $para=substr($para, 0, -1);
+	}
+    $now_list=$db->get_one("select * from $met_plist where listid='$id' and  paraid='$val[id]'");
+	if($now_list){
+    $query = "update $met_plist SET
+					  info     ='$para',
+					  imgname  ='$paraname',
+					  lang     ='$lang'
+					  where listid='$id' and  paraid='$val[id]'";
+	}else{
+    $query = "INSERT INTO $met_plist SET
+                      listid   ='$id',
+					  paraid   ='$val[id]',
+					  info     ='$para',
+					  imgname  ='$paraname',
+					  module   ='$module',
+					  lang     ='$lang'";	
+	 }
+         $db->query($query);
+   $paraname="";
+ }
+//html
+contenthtm($class1,$id,'showimg',$filename);
 indexhtm();
 classhtm($class1,$class2,$class3);
-okinfo('index.php?class1='.$class1,$lang_loginUserAdmin);
+if($filenameold<>$filename and $metadmin[pagename])deletepage($met_class[$class1][foldername],$id,'showimg',$updatetimeold,$filenameold);
+okinfo('index.php?lang='.$lang.'&class1='.$class1,$lang_jsok);
 }
-# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

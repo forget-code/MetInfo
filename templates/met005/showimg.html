@@ -2,6 +2,7 @@
 require_once template('head'); 
 $met_img=methtml_showimg('all');
 $methits=methtml_hits('img');
+$met_imgnext=methtml_prenextinfo();
 echo <<<EOT
 -->
 <div class="web">
@@ -15,7 +16,7 @@ echo <<<EOT
 {$met_img}
 </div>
 <div class="pcontent">$img[content]</div>
-
+<div class="web_page">$met_imgnext</div>
 <div class="hits">$methits</div>
 
 </div>

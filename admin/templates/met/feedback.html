@@ -1,7 +1,6 @@
 <!--<?php
-# 文件名称:feedback.html 2009-08-12 14:21:03
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.  
 require_once template('head');
 if($readok=="" && $langnow==""){
    $style1="style='color:#FF0000'";
@@ -30,59 +29,32 @@ echo <<<EOT
           </tr>
       <tr>
      <td class="list1_input list9" colspan="6" align="left">{$lang_feedbackClass}:
-	 <a href="index.php?search=$search&useinfo=$useinfo"  $style1>{$lang_feedbackClass1}</a> |
-	 <a href="index.php?search=$search&readok=0&useinfo=$useinfo" $style2 >{$lang_feedbackClass2}</a> |
-	 <a href="index.php?search=$search&readok=1&useinfo=$useinfo" $style3 >{$lang_feedbackClass3}</a>
-<!--
-EOT;
-if($met_c_lang_ok){
-echo <<<EOT
---> 
-| <a href="index.php?search=$search&useinfo=$useinfo&langnow=cn" $style4>[$met_c_lang]{$lang_messageClass1}</a>
-<!--
-EOT;
-}
-if($met_e_lang_ok){
-echo <<<EOT
---> 
-| <a href="index.php?search=$search&useinfo=$useinfo&langnow=en" $style5>[$met_e_lang]{$lang_messageClass1}</a>
-<!--
-EOT;
-}
-if($met_o_lang_ok){
-echo <<<EOT
---> 
-| <a href="index.php?search=$search&useinfo=$useinfo&langnow=other" $style6>[$met_o_lang]{$lang_messageClass1}</a>
-<!--
-EOT;
-}
-echo <<<EOT
---> 
+	 <a href="index.php?search=$search&useinfo=$useinfo&lang=$lang"  $style1>{$lang_feedbackClass1}</a> |
+	 <a href="index.php?search=$search&readok=0&useinfo=$useinfo&lang=$lang" $style2 >{$lang_feedbackClass2}</a> |
+	 <a href="index.php?search=$search&readok=1&useinfo=$useinfo&lang=$lang" $style3 >{$lang_feedbackClass3}</a>
 </td> 
      <td align="left" class="list1_input">
          <script language="JavaScript">
-          <!--
             function MM_jumpMenu(selObj){ 
 			var url=selObj.options[selObj.selectedIndex].value; 
             location.href=url;
             }
-          //-->
           </script>
 <select name="met_fd_class" style="float:right;" onChange="MM_jumpMenu(this)">
-<option value="index.php?search=$search&readok=$readok&useinfo=$useinfo&met_fd_classname=">{$lang_feedbackShowAll}</option>
+<option value="index.php?lang=$lang&search=$search&readok=$readok&useinfo=$useinfo&met_fd_classname=">{$lang_feedbackShowAll}</option>
 <!--
 EOT;
 foreach ($selectlist as $key=>$val){
-if($met_fd_classname==$val['list']){
+if($met_fd_classname==$val['info']){
 echo <<<EOT
 -->
-<option value="index.php?search=$search&readok=$readok&useinfo=$useinfo&met_fd_classname=$val[list]" selected="selected">$val[list]</option>
+<option value="index.php?lang=$lang&search=$search&readok=$readok&useinfo=$useinfo&met_fd_classname=$val[info]" selected="selected">$val[info]</option>
 <!--
 EOT;
 }else{
 echo <<<EOT
 -->
-<option value="index.php?search=$search&readok=$readok&useinfo=$useinfo&met_fd_classname=$val[list]">$val[list]</option>
+<option value="index.php?lang=$lang&search=$search&readok=$readok&useinfo=$useinfo&met_fd_classname=$val[info]">$val[info]</option>
 <!--
 EOT;
 }}
@@ -93,13 +65,13 @@ echo <<<EOT
               <tr>
                 <td width="5%" class="list1_top" align="center">{$lang_selected}</td>
 				<td width="5%" class="list1_top" align="center">ID</td>
-                <td width="40%" class="list1_top" align="center">{$lang_feedbackName}</td>
+                <td width="40%" class="list1_top" align="center">{$lang_title}</td>
 				<td width="5%" class="list1_top" align="center" >{$lang_read}</td>
                 <td width="15%" class="list1_top" align="center" >{$lang_feedbackID}</td>
                 <td width="20%" class="list1_top" align="center" >{$lang_feedbackTime}</td>
 				<td width="10%" class="list1_top" align="center" >{$lang_operate}</td>
               </tr>
-			  <form name="del" method="Post" action="delete.php" onSubmit="return ConfirmDelall();">
+			  <form name="del" method="Post" action="delete.php?lang=$lang" onSubmit="return ConfirmDelall();">
 <!--
 EOT;
 foreach ($feedback_list as $key=>$val){
@@ -108,11 +80,11 @@ echo <<<EOT
               <tr>
               <td class="list1_content_titile" align="center"><input name='id' type='checkbox' onClick="unselectall()" id="id" value='$val[id]' class="xz"></td>
                 <td class="list1_content" align="center">$val[id]</td>
-			    <td align="left" class="list1_content"><a href="editor.php?id=$val[id]" title="{$lang_detail}">$val[fdtitle]</a></td>
+			    <td align="left" class="list1_content"><a href="editor.php?id=$val[id]&lang=$lang" title="{$lang_detail}">$val[fdtitle]</a></td>
                 <td class="list1_content" align="center">$val[readok]</td>
 				<td class="list1_content" align="center">$val[customerid]</td>
                 <td class="list1_content" align="center">$val[addtime]</td>
-				<td align="center" class="list1_content" style="color:#0066FF;"></a> <a href="editor.php?id=$val[id]" >{$lang_editor}</a> | <a href="delete.php?id=$val[id]" onClick="return ConfirmDel();" >{$lang_delete}</a></td>
+				<td align="center" class="list1_content" style="color:#0066FF;"></a> <a href="editor.php?id=$val[id]&lang=$lang" >{$lang_editor}</a> | <a href="delete.php?id=$val[id]&lang=$lang" onClick="return ConfirmDel();" >{$lang_delete}</a></td>
               </tr>
 <!--
 EOT;
@@ -128,15 +100,15 @@ echo <<<EOT
           </tr>
 		  <tr>
             <td colspan="7" align="left" class="input_search">
-			<form method="POST" name="myform"  action="index.php?search=detail_search" target="_self">
-			       <span><b>{$lang_feedbackSearch}：</b></span>
+			<form method="POST" name="myform"  action="index.php?search=detail_search&lang=$lang" target="_self">
+			       <span><b>{$lang_search}</b></span>
 			    <input name="useinfo" type="text" size="30">
   <input type="submit" name="Submit2" value="{$lang_search}" class="tj">  
 	        {$lang_feedbackTip1}</form></td>
           </tr>
 	   <tr >
             <td  colspan="7" align="left" class="input_search">
-			<form method="POST" name="exportform"  action="export.php" target="_self">
+			<form method="POST" name="exportform"  action="export.php?lang=$lang" target="_self">
 			       <span><b>{$lang_feedbackTip2}</b> </span>
 				   {$lang_feedbackTip3}
 				   <select name="met_fd_export" >
@@ -148,7 +120,7 @@ foreach ($selectlist as $key=>$val){
 echo <<<EOT
 -->
 				   
-					<option value="$val[list]">$val[list]</option>
+					<option value="$val[info]">$val[info]</option>
 <!--
 EOT;
 }
@@ -170,6 +142,6 @@ echo <<<EOT
 </html>
 <!--
 EOT;
-# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>-->

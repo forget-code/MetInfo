@@ -1,7 +1,6 @@
 <!--<?php
-# 文件名称:set_skin.html 2009-08-03 16:12:57
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 require_once template('head');
 echo <<<EOT
 -->
@@ -9,7 +8,7 @@ echo <<<EOT
 </head>
 <script language="javascript" type="text/javascript">
 function viewonline(onlinetype,color){
-document.getElementById('online').href="view.php?type=online&onlinetype="+onlinetype+"&color="+color;
+document.getElementById('online').href="view.php?type=online&lang=$lang&onlinetype="+onlinetype+"&color="+color;
 }
 function onlineposition(onlineid){
    document.getElementById('onlineleft').style.display="none";
@@ -87,13 +86,14 @@ EOT;
 echo <<<EOT
 -->	
 		</select>
-<a href='view.php?type=online&onlinetype=$met_online_skin&color=$met_online_color' id="online" target='_blank'>{$lang_onlineqq2}</a>
+<a href='view.php?type=online&onlinetype=$met_online_skin&color=$met_online_color&lang=$lang' id="online" target='_blank'>{$lang_onlineqq2}</a>
 </td>
           </tr> 			  
           <tr> 
             <td class="list1_text"><font color="#FF0000">*</font>QQ{$lang_onlineimg}</td>
             <td class="list1_input">
 		<select name="met_qq_type">
+		<option value="0"  {$met_qq_type1[$i]} >{$lang_default}</option>
 <!--
 EOT;
 for($i=1;$i<=13;$i++){
@@ -106,7 +106,7 @@ EOT;
 echo <<<EOT
 -->
 		</select>
-		{$lang_onlineqq1} <a href='http://imis.qq.com/webpresence/code.shtml' target='_blank'>{$lang_onlineqq2}</a></td>
+		{$lang_onlineqq1}</td>
           </tr> 
           <tr> 
             <td class="list1_text"><font color="#FF0000">*</font>MSN{$lang_onlineimg}</td>
@@ -124,7 +124,7 @@ EOT;
 echo <<<EOT
 -->
 		</select>
-		 <a href='view.php?type=msn&max=13' target='_blank'>{$lang_onlineqq2}</a></td>
+		 <a href='view.php?type=msn&max=13&lang=$lang' target='_blank'>{$lang_onlineqq2}</a></td>
           </tr>
           <tr> 
             <td class="list1_text"><font color="#FF0000">*</font>{$lang_onlinetaobao}{$lang_onlineimg}</td>
@@ -160,7 +160,7 @@ EOT;
 echo <<<EOT
 -->
 		</select>
-		 <a href='view.php?type=skype&max=24' target='_blank'>{$lang_onlineqq2}</a></td>
+		 <a href='view.php?type=skype&max=24&lang=$lang' target='_blank'>{$lang_onlineqq2}</a></td>
           </tr>		  
           <tr> 
             <td class="list1_text"><font color="#FF0000">*</font>{$lang_onlinealibaba}{$lang_onlineimg}</td>
@@ -173,40 +173,14 @@ echo <<<EOT
 		</select>
 		{$lang_onlinealibaba1} <a href='http://club.china.alibaba.com/club/block/alitalk/alitalkfire.html' target='_blank'>{$lang_onlineqq2}</a></td>
           </tr>
-<!--
-EOT;
-if($met_c_lang_ok==1){
-echo <<<EOT
--->	
+		 	<tr> 
+            <td class="list1_text">{$lang_close}{$lang_onlineName}</td>
+            <td class="list1_input"><input name="met_onlinenameok2" type="checkbox" value="1" $met_onlinenameok1>{$lang_close}</td>
+			</tr>
            <tr> 
-          <td class="list1_text" valign="middle">[{$met_c_lang}]<br>{$lang_onlinetel}</td>
-          <td  class="list1_input" valign="top"> <textarea name="met_c_onlinetel" cols="45" rows="5" >$met_c_onlinetel</textarea>{$lang_onlinetel1}</td>
+          <td class="list1_text" valign="middle">{$lang_onlinetel}</td>
+          <td  class="list1_input" valign="top"> <textarea name="met_onlinetel" cols="45" rows="5" >$met_onlinetel</textarea>{$lang_onlinetel1}</td>
           </tr>
-<!--
-EOT;
-}
-if($met_e_lang_ok==1){
-echo <<<EOT
--->
-           <tr> 
-          <td class="list1_text" valign="middle">[{$met_e_lang}]<br>{$lang_onlinetel}</td>
-          <td  class="list1_input" valign="top"> <textarea name="met_e_onlinetel" cols="45" rows="5" >$met_e_onlinetel</textarea>{$lang_onlinetel1}</td>
-          </tr>
-<!--
-EOT;
-}
-if($met_o_lang_ok==1){
-echo <<<EOT
--->
-           <tr> 
-          <td class="list1_text" valign="middle">[{$met_o_lang}]<br>{$lang_onlinetel}</td>
-          <td  class="list1_input" valign="top"> <textarea name="met_o_onlinetel" cols="45" rows="5" >$met_o_onlinetel</textarea>{$lang_onlinetel1}</td>
-          </tr>
-<!--
-EOT;
-}
-echo <<<EOT
--->
 	      <tr>
             <td class="list1_text"></td>
 	      <td class="list1_submit"><input type="submit" name="Submit" value="{$lang_Submit}" class="tj" style="*padding-top:2px; *height:22px;"><input type="reset" name="Submit" value="{$lang_Reset}" class="tj" style="*padding-top:2px; *height:22px;"> </td>
@@ -220,6 +194,6 @@ echo <<<EOT
 </html>
 <!--
 EOT;
-# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>-->

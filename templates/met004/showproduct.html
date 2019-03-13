@@ -10,9 +10,11 @@ echo <<<EOT
  {$lang_YouPosition}：<a href='$index_url'>{$lang_home}</a> > $nav_x[name]</div>
 <div class="webleft">
 <div class="content" style="margin-bottom:10px; ">
+<h1>$product[title]</h1>
 <div class="product_list2">
 $met_product
 </div>
+<div class="content">$product[content]</div>
 </div>
 <div class="content" >
 <div class="pcontent">$met_productnext</div>
@@ -22,12 +24,6 @@ $met_product
 </div>
 </div>
 
-<div class="webright">
-<div class="nav_x">&nbsp;<img src="$img_url/right.gif" />&nbsp;$class1_info[name]</div>
-<div class="navright">$navlist_y1</div>
-$met_online
-</div>
-</div>
 <!--
 EOT;
 require_once template('foot'); 

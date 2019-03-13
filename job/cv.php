@@ -1,125 +1,191 @@
 <?php
-# 文件名称:cv.php 2009-08-18 09:56:13
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 $admin_index=FALSE;
 require_once '../include/common.inc.php';
-$classaccess= $db->get_one("SELECT * FROM $met_column WHERE module='6'");
+$classaccess= $db->get_one("SELECT * FROM $met_column WHERE module='6' and lang='$lang' ");
 $metaccess=$classaccess[access];
 $class1=$classaccess[id];
-$cv[c_url]=$met_webhtm?"cv".$met_c_htmtype:"cv.php";
-$cv[e_url]=$met_webhtm?"cv".$met_e_htmtype:"cv.php?lang=en";
-$cv[o_url]=$met_webhtm?"cv".$met_o_htmtype:"cv.php?lang=other";
-if($met_submit_type==1){
-   $cv[url]=($lang=="en")?"cv.php?lang=en&selectedjob=":(($lang=="other")?"cv.php?lang=other&selectedjob=":"cv.php?selectedjob=");
-   }else{
-   $cv[url]=($lang=="en")?$cv[e_url]:(($lang=="other")?$cv[o_url]:$cv[c_url]);
-   }
-require_once '../include/head.php';
 
-$query = "SELECT * FROM $met_parameter where use_ok='1' and type=10000 order by no_order";
+ 	if($met_submit_type==1){
+	   $job[cv]=$cv[url].$job[id];
+	   }else{
+	   $job[cv]=$cv[url];
+	   }
+require_once '../include/head.php';
+    $class1_info=$class_list[$class1][releclass]?$class_list[$class_list[$class1][releclass]]:$class_list[$class1];
+	$class2_info=$class_list[$class1][releclass]?$class_list[$class1]:$class_list[$class2];	
+	
+$query = "SELECT * FROM $met_parameter where lang='$lang' and module=6  order by no_order";
+if($met_member_use)$query = "SELECT * FROM $met_parameter where lang='$lang' and  module=6  and access<=$metinfo_member_type order by no_order";
 $result = $db->query($query);
 while($list= $db->fetch_array($result)){
+ if($list[type]==2 or $list[type]==4 or $list[type]==6){
+  $query1 = "select * from $met_list where lang='$lang' and bigid='".$list[id]."' order by no_order";
+  $result1 = $db->query($query1);
+  while($list1 = $db->fetch_array($result1)){
+  $paravalue[$list[id]][]=$list1;
+  }}
+  
+$list[mark]=$list[name];
+$list[para]="para".$list[id];
 if($list[wr_ok]=='1')
 {
 	$list[wr_must]="*";
 	$fdwr_list[]=$list;
 }
-$list[mark]=$lang=="en"?$list['e_mark']:($lang=="other"?$list['o_mark']:$list['c_mark']);
 $cv_para[]=$list;
 }
 $fdjs="<script language='javascript'>";
 $fdjs=$fdjs."function Checkcv(){ ";
 foreach($fdwr_list as $key=>$val){
-$fdjs=$fdjs."if (document.myform.$val[name].value.length == 0) {";
- if($lang=="en"){
- $fdjs=$fdjs."alert('$val[e_mark] is Null');";
-  }else if($lang=="other"){
-  $fdjs=$fdjs."alert('$val[o_mark]$lang_Empty');";
-  }else
-  {
-  $fdjs=$fdjs."alert('$val[c_mark]$lang_Empty');";
-  }
- $fdjs=$fdjs."document.myform.$val[name].focus();";
- $fdjs=$fdjs."return false;}";
+if($val[type]==1 or $val[type]==2 or $val[type]==3 or $val[type]==5){
+$fdjs=$fdjs."if (document.myform.para$val[id].value.length == 0) {\n";
+$fdjs=$fdjs."alert('$val[name] {$lang_Empty}');\n";
+$fdjs=$fdjs."document.myform.para$val[id].focus();\n";
+$fdjs=$fdjs."return false;}\n";
+}elseif($val[type]==4){
+ $lagerinput="";
+ for($j=1;$j<=count($paravalue[$val[id]]);$j++){
+ $lagerinput=$lagerinput."document.myform.para$val[id]_$j.checked ||";
+ }
+ $lagerinput=$lagerinput."false\n";
+ $fdjs=$fdjs."if(!($lagerinput)){\n";
+ $fdjs=$fdjs."alert('$val[name] {$lang_Empty}');\n";
+ $fdjs=$fdjs."document.myform.para$val[id]_1.focus();\n";
+ $fdjs=$fdjs."return false;}\n";
+}
 }
 $fdjs=$fdjs."}</script>";
 
 
 	$selectjob = "";
-	$serch_sql=" where 1=1 ";
-	$item=($lang=="en")?"e_position":($lang=="other"?"o_position":"c_position");
-	$serch_sql .=" and $item<>'' ";
+	$serch_sql=" where lang='$lang' ";
 	$metinfo_member_type=intval($metinfo_member_type);
-	$query = "SELECT id,$item FROM $met_job $serch_sql and  access <= $metinfo_member_type and ((TO_DAYS(NOW())-TO_DAYS(`addtime`)< useful_life) OR useful_life=0)";
+	$query = "SELECT id,position FROM $met_job $serch_sql and  access <= $metinfo_member_type and ((TO_DAYS(NOW())-TO_DAYS(`addtime`)< useful_life) OR useful_life=0)";
     
 	$result = $db->query($query);
 	 while($list= $db->fetch_array($result)){
 	 $selectok=$selectedjob==$list[id]?"selected='selected'":"";	 
-	 $selectjob.="<option value='$list[id]' $selectok>{$list[$item]}</option>";
+	 $selectjob.="<option value='$list[id]' $selectok>{$list[position]}</option>";
 	 }
-	 
+
+$class2=$class_list[$class1][releclass]?$class1:$class2;
+$class1=$class_list[$class1][releclass]?$class_list[$class1][releclass]:$class1;
+$class_info=$class2?$class2_info:$class1_info;
+if($class2!=""){
+$class_info[name]=$class2_info[name]."--".$class1_info[name];
+}	 
      $show[description]=$met_keywords;
      $show[keywords]=$met_keywords;
 	 $met_title=$lang_cvtitle."--".$met_title;
-     $nav_list2[$class1][0]=$class1_info=$class_list[$class1];
-     $nav_list2[$class1][1]=array('id'=>10004,'url'=>$cv[url],'name'=>$lang_cvtitle,'c_url'=>$cv[c_url],'e_url'=>$cv[e_url],'o_url'=>$cv[o_url],'c_name'=>$lang_cvtitle,'e_name'=>$lang_cvtitle,'o_name'=>$lang_cvtitle);
+     if(count($nav_list2)){
+       $nav_list2[$class1][0]=$class1_info;
+       $nav_list2[$class1][1]=array('id'=>10004,'url'=>$cv[url],'name'=>$lang_cvtitle);
+      }else{
+        $k=count($nav_list2);
+        $nav_list2[$class1][$k]=array('id'=>10004,'url'=>$cv[url],'name'=>$lang_cvtitle);
+     }
      require_once '../public/php/methtml.inc.php';
 	 $nav_x[name]=$lang_cvtitle;
-	 
-	 
+		 
      $methtml_cv.="<script type='text/javascript'>function pressCaptcha(obj){obj.value = obj.value.toUpperCase();}</script>\n";
      $methtml_cv.=$fdjs;
      $methtml_cv.="<form  enctype='multipart/form-data' method='POST' onSubmit='return Checkcv();' name='myform' action='save.php?action=add' target='_self'>\n";
      $methtml_cv.="<input type='hidden' name='lang' value='".$lang."' />\n";
      $methtml_cv.="<table cellpadding='2' cellspacing='1' border='0' class='cv_table'>\n";
      $methtml_cv.="<tr class='cv_tr'>\n"; 
-     $methtml_cv.="<td class='cv_td1'>".$lang_memberPosition.":</td>\n";
-     $methtml_cv.="<td class='cv_select'><select name='jobid' id='jobid'>".$selectjob."</select></td>\n";
-     $methtml_cv.="<td class='cv_info'>*</td>\n";
+     $methtml_cv.="<td class='cv_td1' align='right' width='20%'>".$lang_memberPosition."&nbsp;</td>\n";
+     $methtml_cv.="<td class='cv_select' align='left' width='70%'><select name='jobid' id='jobid'>".$selectjob."</select></td>\n";
+     $methtml_cv.="<td class='cv_info' align='left' style='color:#990000'>*</td>\n";
      $methtml_cv.="</tr>\n";
     foreach($cv_para as $key=>$val){
-     if($val[maxsize]==200 ){
+     switch($val[type]){
+	 case 1:
      $methtml_cv.="<tr class='cv_tr'> \n";
-     $methtml_cv.="<td class='cv_td1'>".$val[mark].":</td>\n";
-     $methtml_cv.="<td class='cv_input'><input name='".$val[name]."' type='text' class='input' size='40' maxlength='250'></td>\n";
-     $methtml_cv.="<td class='cv_info'>".$val[wr_must]."</td>\n";
+     $methtml_cv.="<td class='cv_td1' align='right'>".$val[name]."&nbsp;</td>\n";
+     $methtml_cv.="<td class='cv_input' align='left'><input name='".$val[para]."' type='text' class='input' size='40'></td>\n";
+     $methtml_cv.="<td class='cv_info' align='left' style='color:#990000'>".$val[wr_must]."</td>\n";
      $methtml_cv.="</tr>\n";
-     }else if($val[maxsize]==255){
+	 break;
+	 case 2:
+	 $tmp="<select name='para$val[id]'>";
+     $tmp=$tmp."<option value=''>$lang_Nolimit</option>";
+     foreach($paravalue[$val[id]] as $key=>$val1){
+      $tmp=$tmp."<option value='$val1[info]' $selected >$val1[info]</option>";
+      }
+     $tmp=$tmp."</select>";
      $methtml_cv.="<tr class='cv_tr'> \n";
-     $methtml_cv.="<td class='cv_td1'>".$val[mark].":</td>\n";
-     $methtml_cv.="<td class='cv_input'><input name='".$val[name]."' type='file' class='input' size='20' maxlength='200'></td>\n";
-     $methtml_cv.="<td class='cv_info'>".$val[wr_must]."</td>\n";
+     $methtml_cv.="<td class='cv_td1' align='right'>".$val[name]."&nbsp;</td>\n";
+     $methtml_cv.="<td class='cv_input' align='left'>".$tmp."</td>\n";
+     $methtml_cv.="<td class='cv_info' align='left' style='color:#990000'>".$val[wr_must]."</td>\n";
      $methtml_cv.="</tr>\n";
-    }else{
+	 break;
+	 case 3:
+	 $methtml_cv.="<tr class='cv_tr'> \n";
+     $methtml_cv.="<td class='cv_td1' align='right'>".$val[name]."&nbsp;</td>\n";
+     $methtml_cv.="<td class='cv_input' align='left'><textarea name='".$val[para]."' cols='60' rows='5'></textarea></td>\n";
+     $methtml_cv.="<td class='cv_info' align='left' style='color:#990000'>".$val[wr_must]."</td>\n";
+     $methtml_cv.="</tr>\n";
+     break;
+	 case 4:
+	 $tmp1="";
+     $i=0;
+     foreach($paravalue[$val[id]] as $key=>$val1){
+     $i++;
+     $tmp1=$tmp1."<input name='para$val[id]_$i' type='checkbox' value='$val1[info]' >$val1[info]  ";
+     }
+	 $methtml_cv.="<tr class='cv_tr'> \n";
+     $methtml_cv.="<td class='cv_td1' align='right'>".$val[name]."&nbsp;</td>\n";
+     $methtml_cv.="<td class='cv_input' align='left'>".$tmp1."</td>\n";
+     $methtml_cv.="<td class='cv_info' align='left' style='color:#990000'>".$val[wr_must]."</td>\n";
+     $methtml_cv.="</tr>\n";
+     break;
+	 case 5:
      $methtml_cv.="<tr class='cv_tr'> \n";
-     $methtml_cv.="<td class='cv_td1'>".$val[mark].":</td>\n";
-     $methtml_cv.="<td class='cv_input'><textarea name='".$val[name]."' cols='60' rows='5'></textarea></td>\n";
-     $methtml_cv.="<td class='cv_info'>".$val[wr_must]."</td>\n";
+     $methtml_cv.="<td class='cv_td1' align='right'>".$val[name]."&nbsp;</td>\n";
+     $methtml_cv.="<td class='cv_input' align='left'><input name='".$val[para]."' type='file' class='input' size='20' ></td>\n";
+     $methtml_cv.="<td class='cv_info' align='left' style='color:#990000'>".$val[wr_must]."</td>\n";
      $methtml_cv.="</tr>\n";
+	 break;
+	 case 6:
+	 $tmp2="";
+     $i=0;
+     foreach($paravalue[$val[id]] as $key=>$val2){
+     $checked='';
+     $i++;
+     if($i==1)$checked="checked='checked'";
+     $tmp2=$tmp2."<input name='para$val[id]' type='radio' value='$val2[info]' $checked>$val2[info]  ";
+     }
+     $methtml_cv.="<tr class='cv_tr'> \n";
+     $methtml_cv.="<td class='cv_td1' align='right'>".$val[name]."&nbsp;</td>\n";
+     $methtml_cv.="<td class='cv_input' align='left'>".$tmp2."</td>\n";
+     $methtml_cv.="<td class='cv_info' align='left' style='color:#990000'>".$val[wr_must]."</td>\n";
+     $methtml_cv.="</tr>\n";
+	 break;
     }
    }
 if($met_memberlogin_code==1){
      $methtml_cv.="<tr class='cv_tr'> \n";   
-     $methtml_cv.="<td class='cv_td1'>".$lang_memberImgCode.":</b></td>\n";
-     $methtml_cv.="<td class='cv_code' colspan='2'><input name='code' onKeyUp='pressCaptcha(this)' type='text' class='code' id='code' size='6' maxlength='8' style='width:50px' />";
+     $methtml_cv.="<td class='cv_td1' align='right'>".$lang_memberImgCode.":</b></td>\n";
+     $methtml_cv.="<td class='cv_code' colspan='2' align='left'><input name='code' onKeyUp='pressCaptcha(this)' type='text' class='code' id='code' size='6' maxlength='8' style='width:50px' />";
      $methtml_cv.="<img align='absbottom' src='ajax.php?action=code'  onclick=this.src='ajax.php?action=code&'+Math.random() style='cursor: pointer;' title='".$lang_memberTip1."'/>";
      $methtml_cv.="</td>\n";
      $methtml_cv.="</tr>\n";
 }	 
-     $methtml_cv.="<tr class='cv_tr'>\n"; 
+     $methtml_cv.="<tr class='cv_tr' >\n"; 
      $methtml_cv.="<td class='cv_td1'></td>\n";
-     $methtml_cv.="<td class='cv_submit' colspan='2'><input type='submit' name='Submit' value='".$lang_Submit."' class='tj'><input type='reset' name='Submit' value='".$lang_Reset."' class='tj'> </td>\n";
+     $methtml_cv.="<td class='cv_submit' colspan='2' align='left'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type='submit' name='Submit' value='".$lang_Submit."' class='tj'>&nbsp;&nbsp;<input type='reset' name='Submit' value='".$lang_Reset."' class='tj'> </td>\n";
      $methtml_cv.="</tr>";		
      $methtml_cv.="</table>";
      $methtml_cv.="</form>";
-if(file_exists("../templates/".$met_skin_user."/cv.html")){
+if(file_exists("../templates/".$met_skin_user."/cv.".$dataoptimize_html)){
     include template('cv');
 }else{
  include 'templates/met/cv.html';
  }
 footer();
 
-# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

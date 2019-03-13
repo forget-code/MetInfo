@@ -7,7 +7,7 @@ echo <<<EOT
  {$lang_YouPosition}：<a href='$index_url'>{$lang_home}</a> > $navtitle</div>
 <div class="webleft">
 <div class="content">
-<div class="message_line"><a href="message.php">{$lang_SubmitInfo}>></a></div>
+<div class="message_line"><a href="$addmessage_url">{$lang_SubmitInfo}>></a></div>
 </div>
 <div class="content">
 <!--
@@ -30,10 +30,6 @@ echo <<<EOT
 $page_list
 </div>
 
-<div class="webright">
-$met_online
-</div>
-</div>
 <!--
 EOT;
 require_once template('foot'); 

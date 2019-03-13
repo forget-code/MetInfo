@@ -1,5 +1,5 @@
-// 栏目
-/*___________________导航____________________________________________________*/
+// category
+/*___________________nav____________________________________________________*/
          var h = document.getElementById("top_ul").getElementsByTagName("a");
 		 var dl = new Array(6);
 		     dl[0] = document.getElementById("list0");
@@ -17,7 +17,7 @@
 			 }
 		 }
 		 
-      function san(ao){ 
+      function san(ao,lang){ 
 	    //if(ao==3) {
         //setCookie ('colunmid', 'metinfo')
 		//window.location.reload();
@@ -32,7 +32,7 @@
 		  if(document.getElementById(srcshow)){
 		  document.getElementById("main").src=document.getElementById(srcshow).href;
 		  }else{
-		  document.getElementById("main").src='site/sysadmin.php';
+		  document.getElementById("main").src='site/sysadmin.php?lang='+lang;
 			}
 		} 
 		  else{
@@ -46,7 +46,7 @@
 		}
 	  }
 
-/*___________________栏目一____________________________________________________*/
+/*__________________category 1____________________________________________________*/
 
       function san1(ao,nowao){
 	    var h= document.getElementById("left_ul"+ao).getElementsByTagName("a");
@@ -65,7 +65,7 @@
 	  }
 
 
-/*___________________栏目4____________________________________________________*/
+/*___________________category 4____________________________________________________*/
 
       function san4(ao){
 	 var h4 = document.getElementById("left_ul4").getElementsByTagName("span");

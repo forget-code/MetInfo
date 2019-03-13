@@ -1,30 +1,20 @@
 <!--<?php
-$navdown="nav_".$class1_info[id];
-if($class_list[$classnow][nav]==1||$class_list[$classnow][nav]==3)$navdown="nav_".$class_list[$classnow][id];
 require_once template('head'); 
 echo <<<EOT
 -->
-<div class="web">
-<!--
-EOT;
-require_once template('webleft'); 
-echo <<<EOT
--->
+<div id="web">
+<div class="right">
+   <h3 class="title"><span>{$class_list[$classnow][name]}</span></h3>
 <div class="webcontent">
 <!--
 EOT;
 foreach($download_list as $key=>$val){
 echo <<<EOT
 -->
-<div class="download_list">
-<div class="download_list_title"><a href="$val[url]" target="_blank">$val[title]</a></div>
-<div class="download_list_detail">
-<div class="download_list_detail2"><a href="$val[downloadurl]" onFocus="if(this.blur)this.blur();" target="_blank">{$lang_Download}</a> <a href="$val[url]" target="_blank" onFocus="if(this.blur)this.blur();">{$lang_Detail}</a></div>
-<div class="download_list_detail1"><b>{$lang_FileSize}</b>：$val[filesize]KB&nbsp;&nbsp;&nbsp;&nbsp;<b>{$lang_Hits}</b>：$val[hits]&nbsp;&nbsp;&nbsp;&nbsp;<b>{$lang_UpdateTime}</b>：$val[updatetime] </div>
-
-
-</div>
-</div>
+             <dl class="download_list">
+                 <dt><a href="$val[url]" target="_blank" title="$val[title]">$val[title]</a></dt>
+                 <dd><span><a href="$val[downloadurl]" target="_blank" title="{$lang_Download}">{$lang_Download}</a> | <a href="$val[url]" target="_blank" title="{$lang_Detail}">{$lang_Detail}</a></span><b>{$lang_FileSize}</b>：$val[filesize]KB&nbsp;&nbsp;&nbsp;&nbsp;<b>{$lang_Hits}</b>：$val[hits]&nbsp;&nbsp;&nbsp;&nbsp;<b>{$lang_UpdateTime}</b>：$val[updatetime]</dd>
+             </dl>
 <!--
 EOT;
 }
@@ -33,6 +23,11 @@ echo <<<EOT
 </div>
 <div class="web_bottom">$page_list</div>
 </div>
+<!--
+EOT;
+require_once template('webleft'); 
+echo <<<EOT
+-->
 <div style=" clear:both;"></div>
 
 </div>

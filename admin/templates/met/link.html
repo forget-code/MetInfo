@@ -1,7 +1,6 @@
 <!--<?php
-# 文件名称:link.html 2009-08-15 14:34:57
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 require_once template('head');
 if($show_ok==0 && $show_ok<>""){
    $style1="style='color:#FF0000'";
@@ -12,14 +11,6 @@ if($show_ok==0 && $show_ok<>""){
  }
  elseif($link_type==1 && $link_type<>""){
    $style5="style='color:#FF0000'";
- }elseif($langnow=="cn"){
-   $style6="style='color:#FF0000'";
- }
- elseif($langnow=="en"){
-   $style7="style='color:#FF0000'";
- }
- elseif($langnow=="other"){
-   $style8="style='color:#FF0000'";
  }else{
    $style3="style='color:#FF0000'";
  }
@@ -31,40 +22,15 @@ echo <<<EOT
 <br>
 <table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
           <tr> 
-            <td colspan="9" align="center" class="list1_title">{$lang_indexlink}{$lang_manager}</td>
+            <td colspan="9" align="center" class="list1_title">{$lang_indexlink}</td>
           </tr>
        <tr>
-	        <td align="left" class="list1_input list9" colspan="9">{$lang_linkType}
-			<a href="index.php?show_ok=0" $style1>{$lang_linkType1}</a>&nbsp;|&nbsp;
-			<a href="index.php?com_ok=1" $style2>{$lang_linkType2}</a>&nbsp;|&nbsp;
-			<a href="index.php" $style3>{$lang_linkType3}</a>&nbsp;|&nbsp;
-			<a href="index.php?link_type=0" $style4>{$lang_linkType4}</a>&nbsp;|&nbsp;
-			<a href="index.php?link_type=1" $style5>{$lang_linkType5}</a>
-<!--
-EOT;
-if($met_c_lang_ok){
-echo <<<EOT
---> 
-          &nbsp;|&nbsp; <a href="index.php?langnow=cn" $style6>[$met_c_lang]{$lang_linkType3}</a>
-<!--
-EOT;
-}
-if($met_e_lang_ok){
-echo <<<EOT
---> 
- &nbsp;|&nbsp;<a href="index.php?langnow=en" $style7>[$met_e_lang]{$lang_linkType3}</a>
-<!--
-EOT;
-}
-if($met_o_lang_ok){
-echo <<<EOT
---> 
- &nbsp;|&nbsp;<a href="index.php?langnow=other" $style8>[$met_o_lang]{$lang_linkType3}</a>
-<!--
-EOT;
-}
-echo <<<EOT
---> 
+	        <td align="left" class="list1_input list9" colspan="9">{$lang_linkType}: 
+			<a href="index.php?lang=$lang&show_ok=0" $style1>{$lang_linkType1}</a>&nbsp;|&nbsp;
+			<a href="index.php?lang=$lang&com_ok=1" $style2>{$lang_linkType2}</a>&nbsp;|&nbsp;
+			<a href="index.php?lang=$lang" $style3>{$lang_linkType3}</a>&nbsp;|&nbsp;
+			<a href="index.php?lang=$lang&link_type=0" $style4>{$lang_linkType4}</a>&nbsp;|&nbsp;
+			<a href="index.php?lang=$lang&link_type=1" $style5>{$lang_linkType5}</a> 
 
 </td> </tr>
               <tr>
@@ -73,12 +39,12 @@ echo <<<EOT
                 <td width="8%" class="list1_top" align="center">{$lang_linkType}</td>
                 <td width="18%" class="list1_top" align="center" >{$lang_linkName}</td>
                 <td width="26%" class="list1_top" align="center" >{$lang_linkKeys}</td>
-                <td width="6%" class="list1_top" align="center" >{$lang_ordernum}</td>
+                <td width="6%" class="list1_top" align="center" >{$lang_sort}</td>
 				<td width="6%" class="list1_top" align="center" >{$lang_linkCheck}</td>
 				<td width="6%" class="list1_top" align="center" >{$lang_recom}</td>
 				<td width="10%" class="list1_top" align="center" >{$lang_operate}</td>
               </tr>
-			  <form name="del" method="Post" action="delete.php" onSubmit="return ConfirmDelall();">
+			  <form name="del" method="Post" action="delete.php?lang=$lang" onSubmit="return ConfirmDelall();">
 <!--
 EOT;
 foreach ($link_list as $key=>$val){
@@ -93,7 +59,7 @@ echo <<<EOT
 				<td class="list1_content" align="center">$val[orderno]</td>
                 <td class="list1_content" align="center">$val[show_ok]</td>
                 <td class="list1_content" align="center">$val[com_ok]</td>          
-				<td align="center" class="list1_content" style="color:#0066FF;"></a> <a href="editor.php?id=$val[id]" >{$lang_editor}</a> | <a href="delete.php?id=$val[id]" onClick="return ConfirmDel();" >{$lang_delete}</a></td>
+				<td align="center" class="list1_content" style="color:#0066FF;"></a> <a href="content.php?action=editor&lang=$lang&id=$val[id]" >{$lang_editor}</a> | <a href="delete.php?lang=$lang&id=$val[id]" onClick="return ConfirmDel();" >{$lang_delete}</a></td>
               </tr>
 <!--
 EOT;
@@ -110,7 +76,7 @@ echo <<<EOT
           </tr>
 		  <tr>
             <td class="input_search" colspan="9" align="left">
-			<form method="POST" name="myform"  action="index.php?search=detail_search" target="_self">
+			<form method="POST" name="myform"  action="index.php?search=detail_search&lang=$lang" target="_self">
 			       <span><b>{$lang_indexlink}{$lang_search}</b></span>
 			    <input name="webname" type="text" size="30">
   <input type="submit" name="Submit2" value="{$lang_search}" class="tj" style="*padding-top:2px; *height:22px;">  
@@ -127,6 +93,6 @@ echo <<<EOT
 </html>
 <!--
 EOT;
-# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>-->

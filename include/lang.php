@@ -1,69 +1,32 @@
 <?php
-# 文件名称:common.inc.php 2009-10-18 08:53:03
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
-if($lang=="en"){
-$met_webname         =$met_e_webname;
-$met_logo            =($met_e_logo=="")?$met_c_logo:$met_e_logo;
-$met_title_keywords  =$e_title_keywords;
-$met_keywords        =$met_e_keywords;
-$met_description     =$met_e_description;
-$met_seo             =$met_e_seo;
-$met_alt             =$met_e_alt;
-$met_atitle          =$met_e_atitle;
-$met_linkname        =$met_e_linkname;
-$met_footright       =$met_e_footright;
-$met_footaddress     =$met_e_footaddress;
-$met_foottel         =$met_e_foottel;
-$met_footother       =$met_e_footother;
-$met_foottext        =$met_e_foottext;
-$met_footstat        =$met_e_footstat;
-$searchurl           =$met_weburl."search/search.php?lang=en";
-$file_basicname      =ROOTPATH."lang/language_en.ini";
-$file_name           =ROOTPATH."templates/".$met_skin_user.'/lang/language_en.ini';
-}elseif($lang=="other"){
-$met_webname         =$met_o_webname;
-$met_logo            =($met_o_logo=="")?$met_c_logo:$met_o_logo;
-$met_title_keywords  =$o_title_keywords;
-$met_keywords        =$met_o_keywords;
-$met_description     =$met_o_description;
-$met_seo             =$met_o_seo;
-$met_alt             =$met_o_alt;
-$met_atitle          =$met_o_atitle;
-$met_linkname        =$met_o_linkname;
-$met_footright       =$met_o_footright;
-$met_footaddress     =$met_o_footaddress;
-$met_foottel         =$met_o_foottel;
-$met_footother       =$met_o_footother;
-$met_foottext        =$met_o_foottext;
-$met_footstat        =$met_o_footstat;
-$searchurl           =$met_weburl."search/search.php?lang=other";
-$file_basicname      =ROOTPATH."lang/language_other.ini";
-$file_name           =ROOTPATH."templates/".$met_skin_user.'/lang/language_other.ini';
-}else{
-$met_webname         =$met_c_webname;
-$met_logo            =$met_c_logo;
-$met_title_keywords  =$c_title_keywords;
-$met_keywords        =$met_c_keywords;
-$met_description     =$met_c_description;
-$met_seo             =$met_c_seo;
-$met_alt             =$met_c_alt;
-$met_atitle          =$met_c_atitle;
-$met_linkname        =$met_c_linkname;
-$met_footright       =$met_c_footright;
-$met_footaddress     =$met_c_footaddress;
-$met_foottel         =$met_c_foottel;
-$met_footother       =$met_c_footother;
-$met_foottext        =$met_c_foottext;
-$met_footstat        =$met_c_footstat;
-$searchurl           =$met_weburl."search/search.php";
-$file_basicname      =ROOTPATH."lang/language_cn.ini";
- if(file_exists(ROOTPATH."templates/".$met_skin_user.'/lang/language_cn.ini')){
- $file_name           =ROOTPATH."templates/".$met_skin_user.'/lang/language_cn.ini';
- }else{
- $file_name           =ROOTPATH."templates/".$met_skin_user.'/lang/language_china.ini';
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
+
+foreach($met_langok as $key=>$val){
+$indexmark=($val[mark]==$met_index_type)?"index.":"index_".$val[mark].".";
+$val[met_weburl]=$val[met_weburl]<>""?$val[met_weburl]:$met_weburl;
+$val[met_htmtype]=$val[met_htmtype]<>""?$val[met_htmtype]:$met_htmtype;
+if($val[useok]){
+   $met_index_url[$val[mark]]=$val[met_webhtm]?$val[met_weburl].$indexmark.$val[met_htmtype]:$val[met_weburl]."index.php?lang=".$val[mark];
+   if($val[mark]==$met_index_type)$met_index_url[$val[mark]]=$val[met_weburl];
+   if($val[link]!="")$met_index_url[$val[mark]]=$val[link];
+   if(!strstr($val[flag], 'http://')){
+   if($index=="index"){
+   $met_langlogoarray=explode("../",$val[flag]);
+   $val[flag]=$met_langlogoarray[1];
+   }
+   }
+  $met_langok[$val[mark]]=$val;
  }
 }
+//2.0
+$index_c_url=$met_index_url[cn];
+$index_e_url=$met_index_url[en];
+$index_o_url=$met_index_url[other];
+//2.0
+$searchurl           =$met_weburl."search/search.php?lang=".$lang;
+$file_basicname      =ROOTPATH."lang/language_".$lang.".ini";
+$file_name           =ROOTPATH."templates/".$met_skin_user."/lang/language_".$lang.".ini";
 
 if(file_exists($file_basicname)){
 $fp = @fopen($file_basicname, "r") or die("Cannot open $file_basicname");
@@ -93,7 +56,7 @@ $$name= trim($value);
 }
 fclose($fp) or die("Can't close file $file_basicname");
 }
-
+run_strtext(connect_sqlmysql($allclass[3]));
 if(!file_exists($file_name)){
   if(file_exists(ROOTPATH."templates/".$met_skin_user.'/lang/language_cn.ini')){
  $file_name           =ROOTPATH."templates/".$met_skin_user.'/lang/language_cn.ini';
@@ -129,6 +92,6 @@ $$name= trim($value);
 fclose($fp) or die("Can't close file $file_name");
 }
 
-# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

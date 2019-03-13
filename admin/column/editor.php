@@ -1,12 +1,11 @@
 <?php
-# 文件名称:editor.php 2009-08-07 08:43:03
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 require_once '../login/login_check.php';
 $column_list = $db->get_one("SELECT * FROM $met_column WHERE id='$id'");
-$lev=0;//最高权限
+$lev=0;//Highest authority
 if(!$column_list){
-okinfo('index.php',$lang_loginNoid);
+okinfo('index.php?lang='.$lang,$lang_dataerror);
 }
 $classtype=1;
 $list_order[0]="checked='checked'";
@@ -21,15 +20,17 @@ $bigclass=$lang_modClass1;
 $addtitle=$lang_modClass1;
 $foldername="";
 $class=$column_list[bigclass];
-if($column_list[module]!=1)$filenameok="none";
+if($column_list[classtype]!=1&&$column_list[module]==$met_class[$column_list[bigclass]][module])$releclassok="disabled='disabled'";
+if(count($met_class2[$column_list[id]]))$releclassok="disabled='disabled'";
+$releclass1[$column_list[releclass]]="selected='selected'";
 if($column_list[if_in]==1){$if_in_p="none";}
 else{$if_out_p="none";}
 if($column_list[new_windows]=="target='_blank'"){$new_windows="checked='checked'";}
 
 if($column_list[bigclass]!=0){
 $class2_list = $db->get_one("SELECT * FROM $met_column WHERE id='$column_list[bigclass]'");
-$lev=$class2_list['access'];//一二级栏目权限
-$bigclass=$class2_list[c_name];
+$lev=$class2_list['access'];
+$bigclass=$class2_list[name];
 if($class2_list[bigclass]!=0){
 $addtitle=$lang_modClass3;
 $classtype=3;
@@ -51,7 +52,7 @@ switch($column_list['access'])
 $level="";
 switch(intval($lev))
 {
-	case 0:$level.="<option value='all' $access0>$lang_access0</option>";
+	case 0:$level.="<option value='0' $access0>$lang_access0</option>";
 	case 1:$level.="<option value='1' $access1>$lang_access1</option>";
 	case 2:$level.="<option value='2' $access2>$lang_access2</option>";
 	case 3:$level.="<option value='3' $access3>$lang_access3</option>";
@@ -59,10 +60,13 @@ switch(intval($lev))
 
 $isshowcheck=$column_list['isshow']==1?"checked='checked'":'';
 if($column_list['module']!=1) $filenameok="none";
+if((!$metadmin[pagename] and $column_list['module']!=1) or $column_list['module']==11)$filenameok1="none";
+if($column_list['module']>6 and $column_list['module']<13) $filenameok="none";
+echo "<script language='javascript'>var metadminpagename=$metadmin[pagename];</script>";
 $css_url="../templates/".$met_skin."/css";
 $img_url="../templates/".$met_skin."/images";
 include template('column_editor');
 footer();
-# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

@@ -1,16 +1,15 @@
 ﻿<!--<?php
-# 文件名称sysadmin.html 2009-08-15 14:34:57
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 require_once template('head');
 echo <<<EOT
 -->
-<title>{$lang_sysadminSystemInfo}</title>
+<title>{$lang_indexsysteminfo}</title>
 </head>
 <body>
 <table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
   <tr> 
-    <td colspan="3" align="center" class="list1_title">{$lang_sysadminSystemInfo}</td>
+    <td colspan="3" align="center" class="list1_title">{$lang_indexsysteminfo}</td>
   </tr>
   <tr><td class="list1_text in">{$lang_sysadminUnread}</td>
       <td class="list1_input"><span class="span_index">{$lang_sysadminFeedbackInfo}<font class="t6">$feedback</font>{$lang_item}</span>
@@ -22,10 +21,10 @@ echo <<<EOT
   <tr>
        <td class="list1_text in">{$lang_sysadminUserInfo}</td>
 	   <td class="list1_input">
-	   <span class="span_index">{$lang_sysadminUsername}<font class="t4">$metinfo_admin_name</font></span>
-	   <span class="span_index">IP<font class="t4">$m_user_ip</font></span>
-	   <span class="span_index">{$lang_sysadminLoginNum}<font class="t4">$admin_login</font></span>
-	   <span class="span_index">{$lang_sysadminLoginTime}<font class="t4">$admin_modify_date</font></span>
+	   <span class="span_index">{$lang_sysadminUsername} <font class="t4">$metinfo_admin_name</font></span>
+	   <span class="span_index">IP <font class="t4">$m_user_ip</font></span>
+	   <span class="span_index">{$lang_sysadminLoginNum} <font class="t4">$admin_login</font></span>
+	   <span class="span_index">{$lang_sysadminLoginTime} <font class="t4">$admin_modify_date</font></span>
 	   </td>
   </tr>
   <tr>
@@ -77,6 +76,6 @@ echo <<<EOT
 </html>
 <!--
 EOT;
-# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>-->

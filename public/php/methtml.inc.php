@@ -1,7 +1,6 @@
 <?php
-# 文件名称:methtml.inc.php 2009-08-18 08:53:03
-# MetInfo企业网站管理系统 
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 //head
 $methtml_head="";
 $methtml_head.="<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n";
@@ -22,22 +21,32 @@ $methtml_head.="<style type=\"text/css\">\n";
 $methtml_head.="<!--\n";
 $methtml_head.="body {\n";
 $lang_fontfamily=str_replace("&quot;","\"",$lang_fontfamily);
-$methtml_head.="    font-family:".$lang_fontfamily.";\n";
-$methtml_head.="	font-size:".$lang_fontsize.";\n"; 
+if($lang_fontfamily<>'')$methtml_head.=" font-family:".$lang_fontfamily.";\n";
+if($lang_fontsize<>'')$methtml_head.="	font-size:".$lang_fontsize.";\n"; 
 if($lang_backgroundcolor<>'')$methtml_head.="	background:".$lang_backgroundcolor."; \n";
-$methtml_head.="	color:".$lang_fontcolor.";\n";
+if($lang_fontcolor<>'')$methtml_head.="	color:".$lang_fontcolor.";\n";
 $methtml_head.="}\n";
-$methtml_head.="table td{font-family:".$lang_fontfamily."; color:".$lang_fontcolor.";}\n";
-$methtml_head.="table th{font-family:".$lang_fontfamily."; color:".$lang_fontcolor.";}\n";
-$methtml_head.="a{color:".$lang_urlcolor.";}\n";
-$methtml_head.="a:hover{color:".$lang_hovercolor.";}\n";
+if($lang_fontcolor<>'' or $lang_fontfamily<>''){
+   $methtml_head.="table td{";
+   if($lang_fontfamily<>'')$methtml_head.="font-family:".$lang_fontfamily.";"; 
+   if($lang_fontcolor<>'')$methtml_head.="color:".$lang_fontcolor.";";
+   $methtml_head.="}\n";
+}
+if($lang_fontcolor<>'' or $lang_fontfamily<>''){
+   $methtml_head.="table th{";
+   if($lang_fontfamily<>'')$methtml_head.="font-family:".$lang_fontfamily.";"; 
+   if($lang_fontcolor<>'')$methtml_head.="color:".$lang_fontcolor.";";
+   $methtml_head.="}\n";
+}
+if($lang_urlcolor<>'')$methtml_head.="a{color:".$lang_urlcolor.";}\n";
+if($lang_hovercolor<>'')$methtml_head.="a:hover{color:".$lang_hovercolor.";}\n";
 $methtml_head.="-->\n";
 $methtml_head.="</style>\n";
 $methtml_head.="<TITLE>".$met_title."</TITLE>\n";
 $methtml_head.="</head>\n";
 $methtml_head.="<script type='text/javascript' src='".$navurl."public/js/public.js'></script>\n";
 
-//时间函数
+//time
 $methtml_now="";
 $methtml_now.=$lang_now."\n";
 $methtml_now.="<script language='JavaScript'>\n";
@@ -63,31 +72,46 @@ $methtml_now.="d[today.getDay()+1],\n";
 $methtml_now.="''); \n";
 $methtml_now.="</script>\n";
 
-//设为首页
+//set home page
 $methtml_sethome="<a href='#' onclick='SetHome(this,window.location);' style='cursor:pointer;' title='".$lang_sethomepage."'  >".$lang_sethomepage."</a>";
 
-//加为收藏
+//bookmark
 $methtml_addfavorite="<a href='#' onclick='addFavorite();' style='cursor:pointer;' title='".$lang_bookmark."'  >".$lang_bookmark."</a>";
 
 
-//语言切换
-function methtml_lang($label){
-global $met_c_lang_ok,$met_e_lang_ok,$met_o_lang_ok,$met_c_lang,$met_e_lang,$met_o_lang,$met_c_lang,$met_ch_lang,$lang,$lang_chchinese,$met_url;
-global $index_c_url,$index_e_url,$index_o_url;
-$lang=($lang=="")?"cn":$lang;
-$metinfo=($met_c_lang_ok==1&&$lang!="cn")?"<a href='".$index_c_url."' ".$met_lang_gourl.">".$met_c_lang."</a>".$label:"";
-if($met_c_lang_ok==1&&$lang=="cn"&&$met_ch_lang==1){
-$metinfo.="<a class=fontswitch id=StranLink href=\"javascript:StranBody()\">";
-$metinfo.=$lang_chchinese."</a><script src=\"".$met_url."js/ch.js\" type=\"text/javascript\"></script>".$label;
+//language switch
+function methtml_lang($label,$type=1){
+global $lang,$lang_chchinese,$met_ch_mark,$met_ch_lang,$met_langok,$met_url,$index_url,$met_index_url,$met_lang_mark;
+if($met_lang_mark){
+switch($type){
+case 1:
+$metinfo='';
+foreach($met_langok as $key=>$val){
+$urlnew=$val[newwindows]?"target='_blank'":"";
+if($val[useok] and $val[mark]!=$lang)$metinfo.="<a href='".$met_index_url[$val[mark]]."' title='$val[name]' $urlnew >".$val[name]."</a>".$label;
 }
-$metinfo.=($met_e_lang_ok==1&&$lang!="en")?"<a href='".$index_e_url."' ".$met_lang_gourl.">".$met_e_lang."</a>".$label:"";
-$metinfo.=($met_o_lang_ok==1&&$lang!="other")?"<a href='".$index_o_url."' ".$met_lang_gourl.">".$met_o_lang."</a>".$label:"";
+if($met_ch_lang and $lang==$met_ch_mark){
+$metinfo="<a class=fontswitch id=StranLink href=\"javascript:StranBody()\">".$lang_chchinese."</a><script src=\"".$met_url."js/ch.js\" type=\"text/javascript\"></script>".$label.$metinfo;
+}
+break;
+case 2:
+$metinfo='';
+foreach($met_langok as $key=>$val){
+$urlnew=$val[newwindows]?"target='_blank'":"";
+if($val[useok] and $val[mark]!=$lang)$metinfo.="<a href='".$met_index_url[$val[mark]]."' title='$val[name]' $urlnew ><img src='$val[flag]' border='0' /></a>".$label;
+}
+if($met_ch_lang and $lang==$met_ch_mark){
+$metinfo="<a class=fontswitch id=StranLink href=\"javascript:StranBody()\"><img src='".$met_langok[$met_ch_mark][flag]."' border='0' /></a><script src=\"".$met_url."js/ch.js\" type=\"text/javascript\"></script>".$label.$metinfo;
+}
+break;
+}
 $labellen=strlen($label);
 $metinfo=$labellen?substr($metinfo, 0, -$labellen):$metinfo;
 return $metinfo;
 }
+}
 
-//头部导航
+//top nav
 function methtml_topnav($type,$label,$max=100,$maxclass2=100,$classtitlemax=100,$homeclass=1,$homeok=1){
 global $index_url,$lang_home,$nav_list,$lang,$classnow,$class1,$class_list,$class_index,$nav_list2;
 switch($type){
@@ -244,7 +268,7 @@ break;
 
 }
 
-//尾部导航
+//foot nav
 function methtml_footnav($label){
 global $index_url,$lang_home,$navfoot_list,$lang;
 $metinfo="";
@@ -256,59 +280,34 @@ $metinfo=$labellen?substr($metinfo, 0, -$labellen):$metinfo;
 return $metinfo;
 }
 
-//横向导航
-$nav_x[c_name]="<a href=".$class1_info[c_url]." >".$class1_info[c_name]."</a>";
-$nav_x[e_name]="<a href=".$class1_info[e_url]." >".$class1_info[e_name]."</a>";
-$nav_x[o_name]="<a href=".$class1_info[o_url]." >".$class1_info[o_name]."</a>";
+//x nav
+$nav_x[name]="<a href=".$class1_info[url]." >".$class1_info[name]."</a>";
 if($class2<>0){
-$nav_x[c_name]=$nav_x[c_name]." > "."<a href=".$class2_info[c_url]." >".$class2_info[c_name]."</a>";
-$nav_x[e_name]=$nav_x[e_name]." > "."<a href=".$class2_info[e_url]." >".$class2_info[e_name]."</a>";
-$nav_x[o_name]=$nav_x[o_name]." > "."<a href=".$class2_info[o_url]." >".$class2_info[o_name]."</a>";
+$nav_x[name]=$nav_x[name]." > "."<a href=".$class2_info[url]." >".$class2_info[name]."</a>";
 }
 if($class3<>0){
-$nav_x[c_name]=$nav_x[c_name]." > "."<a href=".$class3_info[c_url]." >".$class3_info[c_name]."</a>";
-$nav_x[e_name]=$nav_x[e_name]." > "."<a href=".$class3_info[e_url]." >".$class3_info[e_name]."</a>";
-$nav_x[o_name]=$nav_x[o_name]." > "."<a href=".$class3_info[o_url]." >".$class3_info[o_name]."</a>";
+$nav_x[name]=$nav_x[name]." > "."<a href=".$class3_info[url]." >".$class3_info[name]."</a>";
 }
-$nav_x[name]=($lang=="en")?$nav_x[e_name]:(($lang=="other")?$nav_x[o_name]:$nav_x[c_name]);
 $nav_x[1]=$nav_x[name];
 $nav_x[2]="<a href=".$class_list[$classnow][url]." >".$class_list[$classnow][name]."</a>";
 
-//竖向导航（简单）
+//y nav
 if($class_list[$class1][module]==100){
 foreach($module_list1[3] as $key=>$val){
-$nav_c_list.="<li><a href='$val[url]' $val[new_windows] title='$val[name]'>$val[name]</a></li>";
+$navlist_y1.="<li><a href='$val[url]' $val[new_windows] title='$val[name]'>$val[name]</a></li>";
 $class_2=$val[id];
 foreach($nav_list2[$class_2] as $key=>$val2){
-$nav_c_list.="<br />&nbsp;&nbsp;&nbsp;<font style='font-size:12px'><a href='$val2[url]' $val2[new_windows] title='$val2[name]' >-$val2[name]</a></font>";
+$navlist_y1.="<br />&nbsp;&nbsp;&nbsp;<font style='font-size:12px'><a href='$val2[url]' $val2[new_windows] title='$val2[name]' >-$val2[name]</a></font>";
 }
 }
-$navlist_y1=$nav_list;
 }else{
 foreach($nav_list2[$class1] as $key=>$val){
-$nav_c_list.="<li><a href='$val[c_url]' $val[new_windows] title='$val[c_name]'>$val[c_name]</a></li>";
+$navlist_y1.="<li><a href='$val[url]' $val[new_windows] title='$val[name]'>$val[name]</a></li>";
 $class_2=$val[id];
 foreach($nav_list3[$class_2] as $key=>$val2){
-$nav_c_list.="<br />&nbsp;&nbsp;&nbsp;<font style='font-size:12px'><a href='$val2[c_url]' $val2[new_windows] title='$val2[c_name]' >-$val2[c_name]</a></font>";
+$navlist_y1.="<br />&nbsp;&nbsp;&nbsp;<font style='font-size:12px'><a href='$val2[url]' $val2[new_windows] title='$val2[name]' >-$val2[name]</a></font>";
 }
 }
-
-foreach($nav_list2[$class1] as $key=>$val){
-$nav_e_list.="<li><a href='$val[e_url]' $val[new_windows] title='$val[e_name]'>$val[e_name]</a></li>";
-$class_2=$val[id];
-foreach($nav_list3[$class_2] as $key=>$val2){
-$nav_e_list.="<br />&nbsp;&nbsp;&nbsp;<font style='font-size:12px'><a href='$val2[e_url]' $val2[new_windows] title='$val2[e_name]' >-$val2[e_name]</a></font>";
-}
-}
-
-foreach($nav_list2[$class1] as $key=>$val){
-$nav_o_list.="<li><a href='$val[o_url]' $val[new_windows] title='$val[o_name]'>$val[o_name]</a></li>";
-$class_2=$val[id];
-foreach($nav_list3[$class_2] as $key=>$val2){
-$nav_o_list.="<br />&nbsp;&nbsp;&nbsp;<font style='font-size:12px'><a href='$val2[o_url]' $val2[new_windows] title='$val2[o_name]' >-$val2[o_name]</a></font>";
-}
-}
-$navlist_y1=($lang=="en")?$nav_e_list:(($lang=="other")?$nav_o_list:$nav_c_list);
 }
 
 function methtml_classlist($type,$namelen,$mark,$class3ok=1,$class3now=1,$class2char=1,$class3char=0){
@@ -744,7 +743,7 @@ $methtml_flash.="</div>";
 break;
 }
 
-//循环数组选择
+//loop array 
 function methtml_getarray($mark,$type,$order,$module){
 global $listall,$listcom,$listnew,$listimg,$classlistall,$classlistcom,$classlistnew,$classlistimg,$hitslistall,$hitslistcom,$hitslistnew,$hitslistimg,$hitsclasslistall,$hitsclasslistcom,$hitsclasslistnew,$hitsclasslistimg,$class_index;
 if(intval($mark)<>0){
@@ -819,7 +818,7 @@ $listnowmodule=methtml_module($class_index[$mark][module]);
 return $listnow;
 }
 
-//数组模块转化
+//array info
 function methtml_module($module){
   switch($module){
   case 2:
@@ -840,7 +839,7 @@ function methtml_module($module){
   }
 }
 
-//信息列表输出函数
+//list display
 function methtml_list($listtype,$mark,$type,$order,$module,$titlenum,$color,$max,$newwindow=1,$classname=1,$time=1,$news=1,$hot=1,$top=1,$hits=0,$description,$deslen){
 global $listall,$listcom,$listnew,$listimg,$classlistall,$classlistcom,$classlistnew,$classlistimg,$hitslistall,$hitslistcom,$hitslistnew,$hitslistimg,$hitsclasslistall,$hitsclasslistcom,$hitsclasslistnew,$hitsclasslistimg,$class_index,$index;
 global $met_img_x,$met_img_y;
@@ -855,9 +854,9 @@ $listarray=methtml_getarray($mark,$type,$order,$module);
 if($listtype=='img'){
  $listtext.="<span class='info_img'><a href='".$val[url]."'";
  if($newwindow==1)$listtext.=" target='_blank' ";
- $listtext.=" ><img src=".$val[imgurls]." alt=".$val[title]." width=".$met_img_x." height=".$met_img_y." /></a></span>";
+ $listtext.=" ><img src=".$val[imgurls]." alt='".$val[title]."' width=".$met_img_x." height=".$met_img_y." /></a></span>";
  if($classname==2)$listtext.="<span class='info_class'>[<a href='".$val[class3_url]."' title='".$val[class3_name]."' >".$val[class3_name]."</a>]</span>";
- $listtext.="<span class='info_title'><a href=".$val[url];
+ $listtext.="<span class='info_title'><a href='".$val[url]."'";
  if($newwindow==1)$listtext.=" target='_blank' ";
  if($i==1)$listtext.="style='color:".$firsttitle.";'";
  $listtext.="  title='".$val[title]."' >".$val[title]."</a></span>";
@@ -924,7 +923,7 @@ if($index[link_ok]==1 || $linkpage){
 return $linktext;
 }
 
-//尾部信息
+//foot info
 $methtml_foot="<ul>\n";
 if($met_footright<>"" or $met_footstat<>"")$methtml_foot.="<li>".$met_footright." ".$met_footstat."</li>\n";
 if($met_footaddress<>"")$methtml_foot.="<li>".$met_footaddress."</li>\n";
@@ -933,11 +932,12 @@ if($met_footother<>"")$methtml_foot.="<li>".$met_footother."</li>\n";
 if($met_foottext<>"")$methtml_foot.="<li>".$met_foottext."</li>\n";
 $methtml_foot.="</ul>\n";
 
-//在线交流
+//online
 function methtml_online(){
 global $met_online_type,$online_list,$qq_list,$msn_list,$taobao_list,$alibaba_list,$skype_list,$met_url,$lang_Close;
 global $met_qq_type,$met_msn_typ,$met_taobao_type,$met_msn_type,$met_alibaba_type,$met_skype_type,$lang_Online,$met_onlinetel,$met_online_skin,$met_online_color;
-global $met_onlineleft_left,$met_onlineleft_top,$met_onlineright_right,$met_onlineright_top;
+global $met_onlineleft_left,$met_onlineleft_top,$met_onlineright_right,$met_onlineright_top,$met_onlinenameok;
+$cssonlinealign=$met_onlinenameok?"center":"left";
 if($met_online_type==1 or $met_online_type==2){
  switch($met_online_skin){
   case 1:
@@ -954,10 +954,10 @@ if($met_online_type==1 or $met_online_type==2){
   $metinfocss.=".scroll_title_1{ position:relative;}\n";
   $metinfocss.=".scroll_title_1 a{ display:block; position:absolute; right:10px; top:10px; height:15px; width:20px;}\n";
   $metinfocss.=".scroll_title_1 a:hover{ text-decoration:none !important; cursor:pointer;}\n";
-  $metinfocss.=".scroll_qq_1{padding:5px 10px 0px 10px; text-align:left; font-weight:bold; color:#333333; }\n";
+  $metinfocss.=".scroll_qq_1{padding:5px 10px 0px 10px; text-align:".$cssonlinealign."; font-weight:bold; color:#333333; }\n";
   $metinfocss.=".scroll_qq_1 img{padding:5px 0px 0px 0px;}\n";
-  $metinfocss.=".scroll_skype_1{ padding:5px;}\n";
-  $metinfocss.=".scroll_alibaba_1{ padding:5px;}\n";
+  $metinfocss.=".scroll_skype_1{ padding:5px 0px 5px 0px; text-align:center;}\n";
+  $metinfocss.=".scroll_alibaba_1{ padding:5px 0px 5px 0px; text-align:center;}\n";
   $metinfocss.=".online_left_1{ background:url(".$met_url."images/qq/online".$met_online_skin."_3_".$met_online_color.".gif) no-repeat 0px 0px; width:".$qqwidth."px;}\n";
   $metinfocss.=".online_right_1{ background: #FFFFFF url(".$met_url."images/qq/online".$met_online_skin."_5_".$met_online_color.".gif) no-repeat  right top;}\n";
   $metinfocss.=".scroll_foot1_1{ height:14px; font-size:0px; background:url(".$met_url."images/qq/online".$met_online_skin."_4_".$met_online_color.".gif) no-repeat 0px 0px;}\n";
@@ -969,9 +969,23 @@ if($met_online_type==1 or $met_online_type==2){
   $metinfofloat.="<div class='online_right_1'>\n";
   $metinfofloat.="<div class='online_left_1'>\n";
  foreach($online_list as $key=>$val){
-  $metinfofloat.="<div class='scroll_qq_1'>".$val[name]."\n";
-  if($val[qq]!="")$metinfofloat.="<a href='tencent://message/?uin=".$val[qq]."&Site=&Menu=yes'  title='QQ".$val[name]."' style='text-decoration:none;'>
+  $metinfofloat.="<div class='scroll_qq_1'>";
+  if(!$met_onlinenameok)$metinfofloat.=$val[name];
+  $metinfofloat.="\n";
+  if($val[qq]!=""){
+  if(strlen($val[qq])<30){
+  $metinfofloat.="<a href='tencent://message/?uin=".$val[qq]."&Site=&Menu=yes'  title='QQ".$val[name]."' style='text-decoration:none;'>
 <img border='0' SRC='http://wpa.qq.com/pa?p=1:".$val[qq].":".$met_qq_type."'></a>\n";
+}else{
+   if($met_qq_type){
+        $qq1a=explode('http://wpa.qq.com/pa',$val[qq]);
+		$qq2a=explode(':',$qq1a[1]);
+		$qq3a=explode('\'',$qq2a[2]);
+		$val[qq]=str_replace($qq3a[0],$met_qq_type,$val[qq]);
+   }
+$metinfofloat.=$val[qq]."\n";
+}
+}
  if($val[msn]!="")$metinfofloat.="<a href='msnim:chat?contact=".$val[msn]."'><img border='0'  alt='MSN".$val[name]."' src='".$met_url."images/msn/msn".$met_msn_type.".gif'/></a>\n";
  if($val[taobao]!="")$metinfofloat.="<a target='_blank' href='http://amos.im.alisoft.com/msg.aw?v=".$met_taobao_type."&uid=".$val[taobao]."&site=cntaobao&s=2&charset=utf-8' ><img border='0' src='http://amos.im.alisoft.com/online.aw?v=2&uid=".$val[taobao]."&site=cntaobao&s=".$met_taobao_type."&charset=utf-8' alt='".$val[name]."' /></a>\n";
  $metinfofloat.="</div>\n"; 
@@ -1004,10 +1018,10 @@ if($met_online_type==1 or $met_online_type==2){
   $metinfocss.=".scroll_title_2 a{ display:block; position:absolute; right:8px; top:6px; line-height:15px;  width:11px; height:11px; background:url(".$met_url."images/qq/close2_".$met_online_color.".gif) no-repeat 0px 0px;}\n";
   $metinfocss.=".scroll_main2{ padding:4px; background:".$qqcolor[$met_online_color][1]."; border:1px solid ".$qqcolor[$met_online_color][2].";}\n";
   $metinfocss.=".scroll_text2{ background:#FFFFFF; border:1px solid ".$qqcolor[$met_online_color][3]."; padding:3px;}\n";
-  $metinfocss.=".scroll_qq_1{padding:2px 2px 0px 2px; text-align:left; font-weight:bold; color:#333333; }\n";
+  $metinfocss.=".scroll_qq_1{padding:2px 2px 0px 2px; text-align:".$cssonlinealign."; font-weight:bold; color:#333333; }\n";
   $metinfocss.=".scroll_qq_1 img{padding:5px 0px 0px 0px;}\n";
-  $metinfocss.=".scroll_skype_1{ padding:5px;}\n";
-  $metinfocss.=".scroll_alibaba_1{ padding:5px;}\n";
+  $metinfocss.=".scroll_skype_1{padding:5px 0px 5px 0px; text-align:center;}\n";
+  $metinfocss.=".scroll_alibaba_1{padding:5px 0px 5px 0px; text-align:center;}\n";
   $metinfocss.=".scroll_foot_2{ background:#FFFFFF; border:1px solid ".$qqcolor[$met_online_color][3]."; text-align:center; padding:3px; line-height:18px; margin-top:5px;}}\n";
   $metinfocss.="</style>\n";
     
@@ -1015,9 +1029,23 @@ if($met_online_type==1 or $met_online_type==2){
   $metinfofloat.="<div class='scroll_main2'>\n";
   $metinfofloat.="<div class='scroll_text2'>\n";
  foreach($online_list as $key=>$val){
-  $metinfofloat.="<div class='scroll_qq_1'>".$val[name]."\n";
-  if($val[qq]!="")$metinfofloat.="<a href='tencent://message/?uin=".$val[qq]."&Site=&Menu=yes'  title='QQ".$val[name]."' style='text-decoration:none;'>
+  $metinfofloat.="<div class='scroll_qq_1'>";
+  if(!$met_onlinenameok)$metinfofloat.=$val[name];
+  $metinfofloat.="\n";
+  if($val[qq]!=""){
+  if(strlen($val[qq])<30){
+  $metinfofloat.="<a href='tencent://message/?uin=".$val[qq]."&Site=&Menu=yes'  title='QQ".$val[name]."' style='text-decoration:none;'>
 <img border='0' SRC='http://wpa.qq.com/pa?p=1:".$val[qq].":".$met_qq_type."'></a>\n";
+}else{
+   if($met_qq_type){
+        $qq1a=explode('http://wpa.qq.com/pa',$val[qq]);
+		$qq2a=explode(':',$qq1a[1]);
+		$qq3a=explode('\'',$qq2a[2]);
+		$val[qq]=str_replace($qq3a[0],$met_qq_type,$val[qq]);
+   }
+$metinfofloat.=$val[qq]."\n";
+}
+}
  if($val[msn]!="")$metinfofloat.="<a href='msnim:chat?contact=".$val[msn]."'><img border='0'  alt='MSN".$val[name]."' src='".$met_url."images/msn/msn".$met_msn_type.".gif'/></a>\n";
  if($val[taobao]!="")$metinfofloat.="<a target='_blank' href='http://amos.im.alisoft.com/msg.aw?v=".$met_taobao_type."&uid=".$val[taobao]."&site=cntaobao&s=2&charset=utf-8' ><img border='0' src='http://amos.im.alisoft.com/online.aw?v=2&uid=".$val[taobao]."&site=cntaobao&s=".$met_taobao_type."&charset=utf-8' alt='".$val[name]."' /></a>\n";
  $metinfofloat.="</div>\n"; 
@@ -1040,9 +1068,23 @@ switch($met_online_type){
  case 0:
   $metinfo.="<div class='met_online'>{$lang_Online}</div>\n";
 foreach($online_list as $key=>$val){
-  $metinfo.="<div class='met_onlinelist'><span class='met_onlinename'>".$val[name]."</span>\n";
-  if($val[qq]!="")$metinfo.="<span class='met_qq'><a href='tencent://message/?uin=".$val[qq]."&Site=&Menu=yes'  title='QQ".$val[name]."' style='text-decoration:none;'>
-<img border='0' SRC='http://wpa.qq.com/pa?p=1:".$val[qq].":".$met_qq_type."'></a><span>\n";
+   $metinfofloat.="<div class='met_onlinelist'>";
+  if(!$met_onlinenameok)$metinfofloat.="<span class='met_onlinename'>".$val[name]."</span>";
+  $metinfofloat.="\n";
+  if($val[qq]!=""){
+  if(strlen($val[qq])<30){
+  $metinfofloat.="<a href='tencent://message/?uin=".$val[qq]."&Site=&Menu=yes'  title='QQ".$val[name]."' style='text-decoration:none;'>
+<img border='0' SRC='http://wpa.qq.com/pa?p=1:".$val[qq].":".$met_qq_type."'></a>\n";
+}else{
+   if($met_qq_type){
+        $qq1a=explode('http://wpa.qq.com/pa',$val[qq]);
+		$qq2a=explode(':',$qq1a[1]);
+		$qq3a=explode('\'',$qq2a[2]);
+		$val[qq]=str_replace($qq3a[0],$met_qq_type,$val[qq]);
+   }
+$metinfofloat.=$val[qq]."\n";
+}
+}
  if($val[msn]!="")$metinfo.="<span class='met_msn'><a href='msnim:chat?contact=".$val[msn]."'><img border='0'  alt='MSN".$val[name]."' src='".$met_url."images/msn/msn".$met_msn_type.".gif'/></a></span>\n";
  if($val[taobao]!="")$metinfo.="<span class='met_taobao'><a target='_blank' href='http://amos.im.alisoft.com/msg.aw?v=".$met_taobao_type."&uid=".$val[taobao]."&site=cntaobao&s=2&charset=utf-8' ><img border='0' src='http://amos.im.alisoft.com/online.aw?v=2&uid=".$val[taobao]."&site=cntaobao&s=".$met_taobao_type."&charset=utf-8' alt='".$val[name]."' /></a></span>\n";
  $metinfo.="</div>\n"; 
@@ -1175,6 +1217,6 @@ if($type){
   return $metinfo;
 }
 require_once 'searchhtml.inc.php';
-# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
-# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

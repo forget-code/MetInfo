@@ -31,32 +31,34 @@ foreach($nav_list_1 as $key=>$val){
 if($val[nav]){
 echo <<<EOT
 -->
-<div class="sitemapclass">
-<div class="sitemapclass1" ><a href="$val[url]" title="$val[name]">$val[name]</a></div>
+<dl class="sitemapclass" >
+<dd class="sitemapclass1"><h2 style="font-size:13px;"><a href="$val[url]" title="$val[name]">$val[name]</a></h2></dd>
 <!--
 EOT;
 foreach($nav_list2[$val[id]] as $key=>$val2){
 echo <<<EOT
 -->
-<div class="sitemapclass2" ><a href="$val2[url]"  title="$val2[name]" >$val2[name]</a>
+<dd class="sitemapclass2" ><h3 style="font-weight:normal; font-size:12px;"><a href="$val2[url]"  title="$val2[name]" >$val2[name]</a></h3>
+<div>
 <!--
 EOT;
 foreach($nav_list3[$val2[id]] as $key=>$val3){
 echo <<<EOT
 -->
-<br /><a href="$val3[url]" class="sitemapclass3" title="$val3[name]">$val3[name]</a>
+<h4 style="font-weight:normal; font-size:12px;"><a href="$val3[url]" class="sitemapclass3" title="$val3[name]">$val3[name]</a></h4>
 <!--
 EOT;
 }
 echo <<<EOT
 -->
 </div>
+</dd>
 <!--
 EOT;
 }
 echo <<<EOT
 -->
-</div>
+</dl>
 <!--
 EOT;
 }}}

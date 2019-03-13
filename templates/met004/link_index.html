@@ -17,7 +17,7 @@ EOT;
 foreach($link_img as $key=>$val){
 echo <<<EOT
 -->
-<a href="$val[weburl]" target="_blank"><img src="$val[weblogo]" alt="$val[c_webname]" /></a>
+<a href="$val[weburl]" target="_blank"><img src="$val[weblogo]" alt="$val[webname]" /></a>
 <!--
 EOT;
 }
@@ -32,7 +32,7 @@ EOT;
 foreach($link_text as $key=>$val){
 echo <<<EOT
 -->
-<a href="$val[weburl]" target="_blank" title="$val[c_info]">$val[c_webname]</a>
+<a href="$val[weburl]" target="_blank" title="$val[c_info]">$val[webname]</a>
 <!--
 EOT;
 }
@@ -42,10 +42,6 @@ echo <<<EOT
 </div>
 </div>
 
-<div class="webright">
-$met_online
-</div>
-</div>
 <!--
 EOT;
 require_once template('foot'); 
