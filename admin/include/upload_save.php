@@ -53,9 +53,9 @@
                 }
                 $img->save_file =$imgurls;
                 $img->create($imgurls);
+            }
 				$imgurls_a=explode("../",$imgurls);
 				$imgurls="../".$imgurls_a[2];
-            }
         }
 echo "<SCRIPT language=javascript>\n";
 echo "parent.document.myform.imgurl.value='".$imgurl."';\n";

@@ -3,7 +3,7 @@ require_once template('e_head');
 require_once template('e_flash'); 
 echo <<<EOT
 -->
-$fdjs;
+$fdjs
 <div class="web">
 <!--左边开始-->
 <div class="web_left">
@@ -18,9 +18,11 @@ echo <<<EOT
 </div>
 <!--左边结束-->
 <div class="rightcontent">
-<div class="nav_left"><font>q</font>$navtitle</div>
+<div class="nav_left"><img src="$img_url/list1.gif" />$navtitle</div>
 <div class="content">
-<a href="index.php?en=en" style="color: #CC0000; float:right; width:150px; font-weight:bold; line-height:25px;s">Read Leave Word>></a>
+<div class="message_line"  style="width:150px;"><a href="index.php?en=en" >Read Leave Word>></a></div>
+</div>
+<div class="content">
 <form method="POST" name="myform" onSubmit="return Checkmessage();" action="message.php?action=add&en=en" target="_self">
 <table width="90%" cellpadding="2" cellspacing="1" bgcolor="#CCCCCC" align="center">
 <tr>

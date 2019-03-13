@@ -49,6 +49,12 @@ switch ($action)
 			$check=1;
 		}
 		$w_check=array(
+		'../',
+		'../about',
+		'../download',
+		'../product',
+		'../news',
+		'../img',
 		'../upload',
 		'../config',
 		'../config/config.inc.php',
@@ -179,6 +185,7 @@ function creat_table($content) {
 	global $installinfo,$db_prefix,$db_setup;
 	$sql=explode("\n",$content);
 	$query='';
+	$j=0;
 	foreach($sql as $key => $value){
 		$value=trim($value);
 		if(!$value || $value[0]=='#') continue;
@@ -192,8 +199,11 @@ function creat_table($content) {
 			$query = str_replace('met_',$db_prefix,$query);
 			if(!mysql_query($query)){
 				$db_setup=0;
+				if($j!='0'){
 				echo '<li class="WARN">出错：'.mysql_error().'<br/>sql:'.$query.'</li>';
+				}
 			}else {
+			     
 				if(eregi("^CREATE",$query)){
 					$installinfo='<li class="OK"><font color="#0000EE">建立数据表'.$i.'</font>'.$c_name.' ... <font color="#0000EE">完成</font></li>';
 					echo $installinfo;
@@ -204,6 +214,7 @@ function creat_table($content) {
 		} else{
 			$query.=$value;
 		}
+		$j++;
 	}
 }
 function readover($filename,$method="rb"){

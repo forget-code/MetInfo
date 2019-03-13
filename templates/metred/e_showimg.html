@@ -24,7 +24,7 @@ echo <<<EOT
 </div>
 <!--左边结束-->
 <div class="rightcontent">
-<div class="nav_left"><font>q</font>$nav_x[e_name]</div>
+<div class="nav_left"><img src="$img_url/list1.gif" />$nav_x[e_name]</div>
 <h1>$img[e_title]</h1>
 <div class="content">
 <div class="img_list"><a href="$img[imgurl]" target="_blank"><img src="$img[imgurls]" alt="Big Picture" /></a></div>
@@ -42,14 +42,15 @@ EOT;
 echo <<<EOT
 -->
 </div>
-
+</div>
+<div class="content">
 <div class="content">$img[e_content]</div>
 
 <div class="hits">Hits：<span><script language="javascript" src="../include/hits.php?type=img&id=$img[id]"></script></span>&nbsp; Update Time:$img[updatetime]&nbsp;【<a href='javascript:window.print()'>Print</a>】&nbsp;【<a href="javascript:self.close()">Close</a>】</div>
 
 </div>
 </div>
-
+</div>
 <!--
 EOT;
 require_once template('e_foot'); 

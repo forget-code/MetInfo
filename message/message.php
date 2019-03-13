@@ -6,7 +6,7 @@ $rooturl="..";
 $css_url="../templates/".$met_skin_user."/css/";
 $img_url="../templates/".$met_skin_user."/images";
 $navurl=($rooturl=="..")?$rooturl."/":"";
-$ip=getenv('REMOTE_ADDR');
+$ip=$m_user_ip;
 $message_column=$db->get_one("select * from $met_column where module='7'");
 $navtitle=($en=="en")?$message_column[e_name]:$message_column[c_name];
 if($action=="add"){

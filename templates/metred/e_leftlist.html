@@ -1,6 +1,7 @@
 <!--<?php
 echo <<<EOT
 -->
+
 <div class="nav_right">$class1_info[e_name]</div>
 <div class="product_list1">
 <div id="button">
@@ -11,22 +12,48 @@ $i=$class1_info[id];
 foreach($nav_list2[$i] as $key=>$val){
 echo <<<EOT
 -->
-<li><a href="$val[e_url]">$val[e_name]</a></li>
+
+<li onmousedown="showhide($val[id])" ><a href="$val[e_url]">$val[e_name]</a></li>
+<span id="$val[id]" style="padding-left:20px;display:none">
 <!--
 EOT;
 $j=$val[id];
 foreach($nav_list3[$j] as $key=>$val1){
 echo <<<EOT
 -->
-<li style="padding-left:20px;"><a href="$val1[e_url]">--$val1[e_name]</a></li>
+
+<li><a href="$val1[e_url]">--$val1[e_name]</a></li>
 <!--
 EOT;
-}}
+}
+echo <<<EOT
+-->
+
+</span>
+<!--
+EOT;
+}
 echo <<<EOT
 -->
 
 </ul>
 </div> 
+<script type="text/javascript">
+document.getElementById($class2).style.display="block";
+function showhide(d)
+{       
+        var d1=document.getElementById(d);
+        if(d1.style.display=="none")
+        {
+         d1.style.display="block";
+        }
+        else
+        {
+		d1.style.display="none";
+        }
+}
+
+</script>
 <!--
 EOT;
 ?>

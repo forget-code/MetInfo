@@ -7,6 +7,10 @@ $css_url="templates/".$met_skin_user."/css/";
 $img_url="templates/".$met_skin_user."/images";
 $navurl=($rooturl=="..")?$rooturl."/":"";
 $index="index";
+
+if($met_index_type)$en="en";
+if($ch=="ch")$en="";
+
 require_once 'include/head.php';
 
     foreach($nav_list_1 as $key=>$val){
@@ -293,8 +297,7 @@ $index = $db->get_one("SELECT * FROM $met_index order by id desc");
 if($index[online_type]=="1" and $met_online_type=="0" )$met_online_type=2;
 if($index[online_type]=="0" )$met_online_type=3;
 	
-if($met_index_type)$en="en";
-if($ch=="ch")$en="";
+
     
 	if($en=="en"){
     $query = "SELECT * FROM $met_link where link_lang!='ch' and show_ok='1' order by orderno desc";

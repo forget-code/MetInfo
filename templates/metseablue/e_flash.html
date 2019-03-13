@@ -5,6 +5,7 @@ echo <<<EOT
 
 <div class="web">
 <div class="flash">
+
 <script type="text/javascript">
 var swf_width=1000;
 var swf_height=150;
@@ -22,6 +23,7 @@ document.write('<embed src='+swfpath+' wmode="opaque" FlashVars="bcastr_file='+f
 
 </script>
 </div>
+</div>
 <!--
 EOT;
 }
@@ -34,7 +36,7 @@ echo <<<EOT
             <param name="movie" value="$met_e_flash_url">
             <param name="quality" value="high">
             <param name="wmode" value="transparent" />
-		 <embed src="$met_e_flash_url" width="$met_flash_x" height="$met_flash_y" quality="high" wmode="transparent" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" wmode="transparent"></embed>
+		 <embed src="$met_e_flash_url" width="1000" height="150" quality="high" wmode="transparent" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" wmode="transparent"></embed>
  </object>
  </div>
  </div>

@@ -1,4 +1,4 @@
-﻿'提示安装出错属于正常现象，不影响网站运行，请继续下一步';
+﻿treat SQL syntax error;
 DROP TABLE IF EXISTS `met_admin_table`;
 CREATE TABLE `met_admin_table` (
   `id` int(11) unsigned NOT NULL auto_increment,
@@ -578,3 +578,4 @@ INSERT INTO `met_skin_table` VALUES (5,'草绿双语','metcaolv','草绿双语')
 INSERT INTO `met_skin_table` VALUES (6,'橘红双语','metjacinth','橘红双语');
 INSERT INTO `met_skin_table` VALUES (7,'紫色双语','metpurple','紫色双语');
 INSERT INTO `met_skin_table` VALUES (8,'浅蓝双语','metseablue','浅蓝双语');
+INSERT INTO `met_skin_table` VALUES (9,'暗红双语','met009','适合文章模块较多的企业网站');

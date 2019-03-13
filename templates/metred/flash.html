@@ -5,23 +5,23 @@ echo <<<EOT
 
 <div class="web">
 <div class="flash">
-
 <script type="text/javascript">
-<!--
-var pic_width=1000
-var pic_height=150
-var text_height=0
-var swfpath = '$img_url'+'/focus.swf'
-var pics='$met_flash_img'
-var links='$met_flashurl'
-var texts=''
-document.write('<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0" width="'+ pic_width +'" height="'+ pic_height +'">');
-document.write('<param name="allowScriptAccess" value="sameDomain"><param name="movie" value="'+swfpath+'"><param name="quality" value="high"><param name="bgcolor" value="#ffffff">');
+var swf_width=1000;
+var swf_height=150;
+var files='$met_flash_img'; //图片
+var links='$met_flashurl';
+var texts='';
+var swfpath = '$img_url'+'/bcastr.swf'
+var AutoPlayTime=6; //间隔时间：单位是秒
+
+document.write('<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0" width="'+ swf_width +'" height="'+ swf_height +'">');
+document.write('<param name="movie" value='+swfpath+'><param name="quality" value="high">');
 document.write('<param name="menu" value="false"><param name=wmode value="opaque">');
-document.write('<param name="FlashVars" value="pics='+pics+'&links='+links+'&texts='+texts+'&borderwidth='+pic_width+'&borderheight='+pic_height+'&textheight='+text_height+'">');
-document.write('<embed src="'+swfpath+'" wmode="opaque" FlashVars="pics='+pics+'&links='+links+'&texts='+texts+'&borderwidth='+pic_width+'&borderheight='+pic_height+'&textheight='+text_height+'" menu="false" bgcolor="#ffffff" quality="high" width="'+ pic_width +'" height="'+ pic_height +'" allowScriptAccess="sameDomain" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />');document.write('</object>');
-//-->
+document.write('<param name="FlashVars" value="bcastr_file='+files+'&bcastr_link='+links+'&bcastr_title='+texts+'&AutoPlayTime='+AutoPlayTime+'">');
+document.write('<embed src='+swfpath+' wmode="opaque" FlashVars="bcastr_file='+files+'&bcastr_link='+links+'&bcastr_title='+texts+'&AutoPlayTime='+AutoPlayTime+'" menu="false" quality="high" width="'+ swf_width +'" height="'+ swf_height +'" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />'); document.write('</object>'); 
+
 </script>
+</div>
 </div>
 <!--
 EOT;
@@ -35,7 +35,7 @@ echo <<<EOT
             <param name="movie" value="$met_flash_url">
             <param name="quality" value="high">
             <param name="wmode" value="transparent" />
-		 <embed src="$met_flash_url" width="$met_flash_x" height="$met_flash_y" quality="high" wmode="transparent" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" wmode="transparent"></embed>
+		 <embed src="$met_flash_url" width="1000" height="150" quality="high" wmode="transparent" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" wmode="transparent"></embed>
  </object>
  </div>
  </div>

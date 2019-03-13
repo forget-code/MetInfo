@@ -1,0 +1,147 @@
+<!--<?php
+echo <<<EOT
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="description" content="$show[c_description]">
+<meta name="keywords" content="$show[c_keywords]">
+<meta name="language" content="zh-CN">
+<meta name="robots" content="all">
+<meta name="GOOGLEBOT" content="all">
+<meta name="author" content="$met_c_webname">
+<meta name="copyright" content="Copyright 2008 -MetInfo">
+<LINK href="$rooturl/favicon.ico" rel="shortcut icon">
+<link rel="stylesheet" type="text/css" href="$css_url/metinfo.css">
+<TITLE>$c_title_keywords--$met_c_webname</TITLE>
+
+<!--[if lte IE 6]>
+<style type="text/css">
+.menu ul li a.hide, .menu ul li a:visited.hide {display:none; }
+.menu ul li a:hover ul li a.hide {display:none;}
+.menu ul li a:hover {color: #ff0000; background:none;}
+.menu ul li a:hover ul {display:block; position:absolute; top:20px; left:0; width:82px; padding:0px;}
+.menu ul li a:hover ul li a.sub {background:#6a3; color: #FFFFFF;}
+.menu ul li a:hover ul li a {display:block; color: #FFFFFF;}
+.menu ul li a:hover ul li a ul {visibility:hidden;}
+.menu ul li a:hover ul li a:hover { color: #ff0000;width:82px; background-color:#000;  }
+.menu ul li a:hover ul li a:hover ul {visibility:visible; position:absolute; left:95px; top:0; color: #ffffff;}
+.menu ul li a:hover ul li a:hover ul.left {left:-95px;}
+
+</style>
+<![endif]-->
+</head>
+
+<body>
+<div class="head">
+<div class="logo" style="background-image:url($img_url/logoback.gif);"><A href="$index_c_url"><IMG alt="$met_c_alt" src="$met_logo" border="0"></A></div>
+<div class="headright" style="background-image:url($img_url/logoright.gif);">
+<div class="headright1">
+ &nbsp;&nbsp;
+<A onClick="var strHref=window.location.href;this.style.behavior='url(#default#homepage)';this.setHomePage('$met_weburl');"  href="javascript:;">设为首页</A> |
+<A href="javascript:window.external.addFavorite('$met_weburl','$met_c_webname');">加入收藏</A>
+<!--
+EOT;
+if($met_ch_lang==1){
+echo <<<EOT
+-->
+ | <A class=fontswitch id=StranLink href="javascript:StranBody()">繁体中文</A>
+<script src="$img_url/ch.js" type="text/javascript"></script>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<!--
+EOT;
+if($met_en_lang==1){
+echo <<<EOT
+-->
+| <a href="$index_e_url">English</a>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</div>
+
+<div class="headright2"><b>$met_c_seo</b></div>
+<div class="headright2">
+<form method="POST" name="myform1" action="$searchurl"  target="_self">
+<input type="text" name="c_title" size="20"/>
+<select name="class1">
+<!--
+EOT;
+foreach($nav_search as $key=>$val)
+{
+echo <<<EOT
+-->
+<option value="$val[id]">$val[c_name]</option>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</select>
+<input style="border:0px;" type="image" src="$img_url/search.gif" width="56" height="19" />
+</form>
+</div>
+<div class="headnav">
+<div class="menu">
+		<ul>
+		<li><a class="hide" href="$navurl?ch=ch">首页</a>
+		<!--[if lte IE 6]>
+		<a  href="$navurl?ch=ch">首页
+		<table><tr><td>
+		<![endif]-->		
+		<!--[if lte IE 6]>
+		</td></tr></table>
+		</a>
+		<![endif]-->
+		</li>
+<!--
+EOT;
+foreach($nav_list as $key=>$val){
+echo <<<EOT
+-->
+<li><a href="$val[c_url]" $val[new_windows] title="$val[c_name]" class="hide">$val[c_name]</a>
+        <!--[if lte IE 6]>
+		<a href="$val[c_url]" $val[new_windows] title="$val[c_name]">$val[c_name]
+		<table><tr><td>
+		<![endif]-->
+        <ul>
+<!--
+EOT;
+$class=$val[id];
+foreach($nav_list2[$class] as $key=>$val2){
+echo <<<EOT
+-->	 
+		<li><a href="$val2[c_url]" $val2[new_windows] title="$val2[c_name]">$val2[c_name]</a></li>
+<!--
+EOT;
+}
+echo <<<EOT
+-->			 
+		</ul>
+		
+		<!--[if lte IE 6]>
+		</td></tr></table>
+		</a>
+		<![endif]-->
+		</li>	
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+		</ul>
+
+</div>
+</div>
+</div>
+</div>
+
+<!--
+EOT;
+?>

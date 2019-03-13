@@ -7,7 +7,7 @@ $css_url="../templates/".$met_skin_user."/css/";
 $img_url="../templates/".$met_skin_user."/images";
 $navurl=($rooturl=="..")?$rooturl."/":"";
 $fromurl=$_SERVER['HTTP_REFERER'];
-$ip=getenv('REMOTE_ADDR');
+$ip=$m_user_ip;
 if($title==""){
 $navtitle=($en=="en")?"FeedBack":"咨询反馈";
 $title=$navtitle;

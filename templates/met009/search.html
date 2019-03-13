@@ -1,0 +1,38 @@
+<!--<?php
+require_once template('head'); 
+echo <<<EOT
+-->
+<div class="web">
+<div class="nav">&nbsp;<img height=17 src="$img_url/main.gif" width=18 />
+ 您现在的位置：<a href='$index_c_url'>首页</a> > $nav_x[c_name]</div>
+<div class="webleft">
+<div class="content">
+<!--
+EOT;
+foreach($search_list as $key=>$val){
+echo <<<EOT
+-->
+<div class="newslist">
+<img src="$img_url/list1.gif" />&nbsp;<a href="$val[c_url]" target="_blank">$val[c_title]</a>($val[updatetime])<阅读<font>$val[hits]</font>次>
+</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</div>
+$c_page_list
+</div>
+
+<div class="webright">
+<!--
+EOT;
+require_once template('online'); 
+echo <<<EOT
+-->
+</div>
+</div>
+<!--
+EOT;
+require_once template('foot'); 
+?>

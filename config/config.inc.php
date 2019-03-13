@@ -6,6 +6,7 @@ met_weburl        = "http://localhost/";
 met_logo          = "../upload/200903/1237295542.gif";
 met_skin_user     = "red";
 met_en_lang       = "1";
+met_ch_lang       = "1";
 met_index_type    = "0";
 met_webhtm        = "0";
 met_img_type      = "gif,jpg,png,jpeg,bmp";

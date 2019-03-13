@@ -24,7 +24,7 @@ echo <<<EOT
 </div>
 <!--左边结束-->
 <div class="rightcontent">
-<div class="nav_left"><font>q</font>$nav_x[c_name]</div>
+<div class="nav_left"><img src="$img_url/list1.gif" />$nav_x[c_name]</div>
 <h1>$product[c_title]</h1>
 <div class="content">
 <div class="product_list2">
@@ -45,13 +45,15 @@ echo <<<EOT
 </div>
 <div class="product_list_detail"><a href="../feedback/index.php?title=$product[c_title]" target="_blank">购买反馈>></a></div>
 </div>
+</div>
+<div class="content">
 <div class="content">$product[c_content]</div>
 
 <div class="hits">点击数：<span><script language="javascript" src="../include/hits.php?type=product&id=$product[id]"></script></span>&nbsp; 更新时间:$product[updatetime]&nbsp;【<a href='javascript:window.print()'>打印此页</a>】&nbsp;【<a href="javascript:self.close()">关闭</a>】</div>
 
 </div>
 </div>
-
+</div>
 <!--
 EOT;
 require_once template('foot'); 

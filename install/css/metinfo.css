@@ -1,5 +1,5 @@
 body {
-	font-family: "宋体" ; font-size:12px; margin:0px auto; padding:0px; background-color:#F0FFFF; text-align:center; color: #333333;
+	font-family: "宋体" ; font-size:12px; margin:0px auto; padding:0px; padding-top:30px; background-color:#F0FFFF; text-align:center; color: #333333;
 }
 
 td {
@@ -19,13 +19,13 @@ h3{display:inline; font-size:12px; font-weight:bold;}
 .tj{ background-color:#EDEDED; color: #990000;border:0px; }
 .bq{ background-color:#FFFFFA; color:#000033; font-weight:bold; border:0px;}
 A:hover { COLOR:#FF6600}
-.body{ width:900px; height:auto !important; height:520px; overflow:auto; margin-top:30px; background-color:#1E90FF !important; filter:progid:DXImageTransform.Microsoft.Gradient 
+.body{ width:900px; height:auto !important; height:520px; overflow:auto; margin:auto; background-color:#1E90FF !important; filter:progid:DXImageTransform.Microsoft.Gradient 
 (startColorStr='#1E90FF', endColorStr='#87CEFA', gradientType='0'); overflow:auto !important; overflow:visible;}
-.head{ width:90%; height:50px; border-bottom:1px solid #CCCCCC;}
+.head{ width:90%; height:50px; border-bottom:1px solid #CCCCCC; margin:auto;}
 .logo{ width:80px; height:40px; margin-top:10px; float:left;}
 .headtext{ width:500px; height:40px; margin-top:10px; float:left; text-align:left; line-height:50px; font-size:24px; font-weight:bold; color:#FFFFFF; }
 .headright{ width:230px; height:20px; margin-top:30px; float:left; line-height:20px; color:#FF6600;}
-.content{ width:90%; height:auto; line-height:18px; text-align:left; overflow:auto;}
+.content{ width:90%; height:auto; margin:auto; line-height:18px; text-align:left; overflow:auto;}
 .center{ width:100%; height:30px; line-height:30px; margin-top:30px; font-size:14px; font-weight:bold;}
 .center a{ color:#FF6600;}
 fieldset { margin: 0; padding: 15px; border: 1px solid #c4e6af; }
