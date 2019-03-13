@@ -1,0 +1,48 @@
+<!--<?php
+require_once template('e_head'); 
+echo <<<EOT
+-->
+<div class="web">
+<div class="webleft">
+<div class="nav_x">&nbsp;<a href='$index_c_url'>Home</a> > $nav_x[e_name]</div>
+<div class="content">
+<h1>$download[e_title]</h1>
+<div class="download_list">
+<div class="download_list_para">
+<b>File Size</b>:$download[filesize]<br />
+<!--
+EOT;
+foreach($download_para200 as $key=>$val1){
+$para_no="e_".$val1[name];
+echo <<<EOT
+-->
+<b>$val1[e_mark]</b>:$download[$para_no]<br />
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</div>
+<div class="download_url"><a href="$download[downloadurl]" target="_blank">Download</a></div>
+</div>
+<div class="content">$download[e_content]</div>
+
+<div class="hits">Hits：<span><script language="javascript" src="../include/hits.php?type=download&id=$download[id]"></script></span>&nbsp; Update Time:$download[updatetime]&nbsp;【<a href='javascript:window.print()'>Print</a>】&nbsp;【<a href="javascript:self.close()">Close</a>】</div>
+
+</div>
+</div>
+
+<div class="webright">
+<div class="nav_x">&nbsp;>>$class1_info[e_name]</div>
+<div class="navright">$nav_e_list</div>
+<!--
+EOT;
+require_once template('e_online'); 
+echo <<<EOT
+-->
+</div>
+</div>
+<!--
+EOT;
+require_once template('e_foot'); 
+?>

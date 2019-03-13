@@ -1,0 +1,49 @@
+<?php require_once('templates/header.htm');?>
+<div class="body">
+<div class="head">
+<div class="logo"><img src="images/logosmall.gif" width="40" /></div>
+<div class="headtext">MetInfo企业网站管理系统安装</div>
+<div class="headright">第三步：数据库设置</div>
+</div>
+<div class="content">
+<br>
+<p>检查您的数据库设置情况，请在相应栏目仔细输入配置内容，点击 <b>保存数据库设置</b> 继续。</p>
+
+    <form method="post" action="">
+    <input name="setup" type="hidden" value="1">
+	 <input name="db_type" type="hidden" value="mysql">
+	  <fieldset>
+	  <legend><strong>数据库信息</strong></legend>
+
+		<div class="section">
+		  <input type="text" id="db_prefix" class="inp" name="db_prefix" tabindex="2" value="met_" size="18" />
+		  <label for="db_prefix">数据表前缀</label>
+		  <p>例如：met_  如果不要表前缀，就留空。<br />
+		  </p>
+		</div>
+
+                <div class="section">
+		  <input type="text" id="db_host" class="inp" name="db_host" tabindex="3" value="localhost" size="18" />
+		  <label for="db_host">数据库主机</label>
+		  <p>数据库主机的格式可以是主机名字，例如 'db.myserver.com', 或者是IP地址，例如 '192.168.0.1',一般不需要更改。</p>
+		</div>
+		<div class="section">
+		  <input type="text" id="db_username" class="inp" name="db_username" tabindex="4" value="root" size="18" />
+		  <label for="db_username">数据库用户名</label>
+		</div>
+		<div class="section">
+		  <input type="password" id="db_pass" class="inp" name="db_pass" tabindex="5" />
+		  <label for="db_pass">数据库密码</label>
+		</div>
+		<div class="section">
+		 <input type="text" id="db_name" name="db_name" class="inp" tabindex="6"  size="18" />
+		  <label for="db_name">数据库名 </label>
+		  <p>例如'met'或'my_met'</p>
+		</div>
+      </fieldset>
+	 <p align="right" ><input type="submit" name="submit" class="btn2" tabindex="15" value="保存数据库设置并继续" /></p>
+
+    </form>
+  </div>
+  </div>
+ <?php require_once('templates/footer.htm');?>

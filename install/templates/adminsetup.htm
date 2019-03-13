@@ -1,0 +1,42 @@
+<?php require_once('templates/header.htm');?>
+<div class="body">
+<div class="head">
+<div class="logo"><img src="images/logosmall.gif" width="40" /></div>
+<div class="headtext">MetInfo企业网站管理系统安装</div>
+<div class="headright">第五步：管理员帐号设置</div>
+</div>
+<div class="content">
+<br>
+<p>为了管理MetInfo企业网站管理系统的设置，您需要一个管理员帐号.请选择管理员名字、密码，输入信息并仔细检查后，选择 <b>保存管理设置</b> 。 </p>
+
+    <form method="post" action="" name="adminsetup" onSubmit="return chkreg();">
+     <input name="setup" type="hidden" value="1">
+	  <fieldset>
+	  <legend><strong>管理员信息</strong></legend>
+		<div class="section">
+		  <input type="text" class="inp" id="regname" name="regname" tabindex="1" onBlur="chkname();" />
+		  <label for="admin_username">管理员用户名 <span id="div_regname"></span></label>
+		  <p>输入系统管理员帐号的用户名</p>
+		</div>
+		<div class="section">
+		  <input type="password" class="inp" id="regpwd" name="regpwd" tabindex="2" onBlur="chkpassword();"/>
+		  <label for="admin_pass">管理员密码  <span id="div_pwd"></span></label>
+		  <p>输入系统管理员帐号的密码</p>
+		</div>
+		<div class="section">
+		  <input type="password" class="inp" id="aginpwd" name="aginpwd" tabindex="3" onBlur="comfirmpassword()"/>
+		  <label for="admin_pass_confirm">确认管理员密码  <span id="div_aginpwd"></span></label>
+		  <p>确认系统管理员帐号的密码</p>
+		</div>
+		<div class="section">
+		  <input type="text" class="inp" id="email" name="email" tabindex="4" onBlur="checke_mail();" />
+		  <label for="admin_email">管理员电子邮件  <span id="div_email"></span></label>
+		  <p>输入系统管理员帐号的电子邮件地址</p>
+		  		  
+		</div>
+	  </fieldset>
+	 <p align="right"> <input type="submit" name="submit" class="btn2" tabindex="20" value="保存管理设置" /></p>
+    </form>
+</div>
+</div>
+<?php require_once('templates/footer.htm');?>

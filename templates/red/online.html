@@ -1,0 +1,222 @@
+<!--<?php
+if($met_online_type!=3){
+if($met_online_type==0){
+echo <<<EOT
+-->
+
+<div class="nav_x">&nbsp;>>在线交流</div>
+<!--
+EOT;
+foreach($online_list as $key=>$val){
+echo <<<EOT
+-->
+<div class="qq">
+$val[c_name]&nbsp;
+<!--
+EOT;
+if($val[qq]!=""){
+echo <<<EOT
+-->
+<A href="tencent://message/?uin=$val[qq]&amp;Site=$met_c_webname&amp;Menu=yes" title='在线交流'><img src='$img_url/qq.gif' border=0 /></a>&nbsp;
+<!--
+EOT;
+}
+if($val[msn]!=""){
+echo <<<EOT
+-->
+<a href="msnim:chat?contact=$val[msn]" target="blank" ><img src="$img_url/msn.gif" border="0" ></a>&nbsp;
+<!--
+EOT;
+}
+if($val[taobao]!=""){
+echo <<<EOT
+-->
+<a target="_blank" href="http://amos.im.alisoft.com/msg.aw?v=2&uid=navylin&site=cntaobao&s=2&charset=utf-8" ><img border="0" src="http://amos.im.alisoft.com/online.aw?v=2&uid=$val[taobao]&site=cntaobao&s=2&charset=utf-8" alt="旺旺交流" /></a>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</div>
+<!--
+EOT;
+}
+foreach($alibaba_list as $key=>$val){
+echo <<<EOT
+-->
+<div class="alibaba">
+<a target=_blank href=http://amos1.sh1.china.alibaba.com/msg.atc?v=1&uid=$val[alibaba]><img border=0 src=http://amos1.sh1.china.alibaba.com/online.atc?v=1&uid=$val[alibaba]&s=1 alt='$val[c_name]'></a>
+</div>
+<!--
+EOT;
+}
+foreach($skype_list as $key=>$val){
+echo <<<EOT
+-->
+<div class="alibaba">
+<a href="callto://$val[skype]"><img src="http://goodies.skype.com/graphics/skypeme_btn_brownish.gif" border="0"></a></div>
+<!--
+EOT;
+}}
+if($met_online_type==1){
+echo <<<EOT
+-->
+
+<DIV id=online style="BORDER-RIGHT: medium none; 
+BORDER-TOP: medium none; 
+FILTER: progid:DXImageTransform.Microsoftpadding:8px;  
+LEFT: expression(eval(document.documentElement.scrollLeft)); 
+BORDER-LEFT: medium none;
+BORDER-BOTTOM: medium none; 
+POSITION: absolute; 
+TOP: expression(eval(document.documentElement.scrollTop)+eval(document.documentElement.clientHeight)-482); 
+TEXT-ALIGN: center;display:">
+<div class="scroll_title">在线交流</div>
+<!--
+EOT;
+foreach($online_list as $key=>$val){
+echo <<<EOT
+-->
+<div class="scroll_qq">
+$val[c_name]
+<!--
+EOT;
+if($val[qq]!=""){
+echo <<<EOT
+-->
+<A href="tencent://message/?uin=$val[qq]&amp;Site=$met_c_webname&amp;Menu=yes" title='在线交流'><img src='$img_url/qq.gif' border=0 /></a>
+<!--
+EOT;
+}
+if($val[msn]!=""){
+echo <<<EOT
+-->
+<a href="msnim:chat?contact=$val[msn]" target="blank" ><img src="$img_url/msn.gif" border="0" ></a>
+<!--
+EOT;
+}
+if($val[taobao]!=""){
+echo <<<EOT
+-->
+<a target="_blank" href="http://amos.im.alisoft.com/msg.aw?v=2&uid=navylin&site=cntaobao&s=2&charset=utf-8" ><img border="0" src="http://amos.im.alisoft.com/online.aw?v=2&uid=$val[taobao]&site=cntaobao&s=2&charset=utf-8" alt="旺旺交流" /></a>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</div>
+<!--
+EOT;
+}
+foreach($skype_list as $key=>$val){
+echo <<<EOT
+-->
+<div class="scroll_skype">
+<a href="callto://$val[skype]"><img src="http://goodies.skype.com/graphics/skypeme_btn_small_brownish.gif" border="0"></a></div>
+<!--
+EOT;
+}
+foreach($alibaba_list as $key=>$val){
+echo <<<EOT
+-->
+<div class="scroll_alibaba">
+<a target=_blank href=http://amos1.sh1.china.alibaba.com/msg.atc?v=1&uid=$val[alibaba]><img border=0 src=http://amos1.sh1.china.alibaba.com/online.atc?v=1&uid=$val[alibaba]&s=1 alt='$val[c_name]'></a>
+</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<div class="scroll_close"><a onmousedown="Mouseclose()">点击关闭</a></div>
+<SCRIPT language=JavaScript type=text/JavaScript>
+
+function Mouseclose(){ 
+document.getElementById('online').style.display="none";
+}
+</SCRIPT>
+</DIV>
+<!--
+EOT;
+}
+if($met_online_type==2){
+echo <<<EOT
+-->
+
+<DIV id=online style="BORDER-RIGHT: medium none; 
+BORDER-TOP: medium none; 
+FILTER: progid:DXImageTransform.Microsoftpadding:8px;  
+LEFT: expression(eval(document.documentElement.scrollLeft)+eval(document.documentElement.clientWidth)-130); 
+BORDER-LEFT: medium none;
+BORDER-BOTTOM: medium none; 
+POSITION: absolute; 
+TOP: expression(eval(document.documentElement.scrollTop)+eval(document.documentElement.clientHeight)-482); 
+TEXT-ALIGN: center;display:">
+<div class="scroll_title">在线交流</div>
+<!--
+EOT;
+foreach($online_list as $key=>$val){
+echo <<<EOT
+-->
+<div class="scroll_qq">
+$val[c_name]
+<!--
+EOT;
+if($val[qq]!=""){
+echo <<<EOT
+-->
+<A href="tencent://message/?uin=$val[qq]&amp;Site=$met_c_webname&amp;Menu=yes" title='在线交流'><img src='$img_url/qq.gif' border=0 /></a>
+<!--
+EOT;
+}
+if($val[msn]!=""){
+echo <<<EOT
+-->
+<a href="msnim:chat?contact=$val[msn]" target="blank" ><img src="$img_url/msn.gif" border="0" ></a>
+<!--
+EOT;
+}
+if($val[taobao]!=""){
+echo <<<EOT
+-->
+<a target="_blank" href="http://amos.im.alisoft.com/msg.aw?v=2&uid=navylin&site=cntaobao&s=2&charset=utf-8" ><img border="0" src="http://amos.im.alisoft.com/online.aw?v=2&uid=$val[taobao]&site=cntaobao&s=2&charset=utf-8" alt="旺旺交流" /></a>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</div>
+<!--
+EOT;
+}
+foreach($skype_list as $key=>$val){
+echo <<<EOT
+-->
+<div class="scroll_skype">
+<a href="callto://$val[skype]"><img src="http://goodies.skype.com/graphics/skypeme_btn_small_brownish.gif" border="0"></a></div>
+<!--
+EOT;
+}
+foreach($alibaba_list as $key=>$val){
+echo <<<EOT
+-->
+<div class="scroll_alibaba">
+<a target=_blank href=http://amos1.sh1.china.alibaba.com/msg.atc?v=1&uid=$val[alibaba]><img border=0 src=http://amos1.sh1.china.alibaba.com/online.atc?v=1&uid=$val[alibaba]&s=1 alt='$val[c_name]'></a>
+</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<div class="scroll_close"><a onmousedown="Mouseclose()">点击关闭</a></div>
+<SCRIPT language=JavaScript type=text/JavaScript>
+
+function Mouseclose(){ 
+document.getElementById('online').style.display="none";
+}
+</SCRIPT>
+</DIV>
+
+<!--
+EOT;
+}}
+?>

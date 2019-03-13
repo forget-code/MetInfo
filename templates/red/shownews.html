@@ -1,0 +1,46 @@
+<!--<?php
+require_once template('head'); 
+echo <<<EOT
+-->
+<div class="web">
+<div class="webleft">
+<div class="nav_x">&nbsp;<a href='$index_c_url'>首页</a> > $nav_x[c_name]</div>
+<div class="content">
+<h1>$news[c_title]</h1>
+<div class="content">$news[c_content]</div>
+
+<div class="hits">点击数：<span><script language="javascript" src="../include/hits.php?type=news&id=$news[id]"></script></span>&nbsp; 更新时间:$news[updatetime]&nbsp;【<a href='javascript:window.print()'>打印此页</a>】&nbsp;【<a href="javascript:self.close()">关闭</a>】</div>
+<div class="news_other">相关文章</div>
+<!--
+EOT;
+$i=0;
+foreach($news_list as $key=>$val){
+$i=$i+1;
+echo <<<EOT
+-->
+<div class="news_list">
+<div class="news_list_img"><img src="$img_url/list.gif" /></div><div class="news_list_title"><a href="$val[c_url]" target="_blank">$val[c_title]</a>($val[updatetime])<阅读<font>$val[hits]</font>次></div>
+</div>
+<!--
+EOT;
+if($i>=8)break;
+}
+echo <<<EOT
+-->
+</div>
+</div>
+
+<div class="webright">
+<div class="nav_x">&nbsp;>>$class1_info[c_name]</div>
+<div class="navright">$nav_c_list</div>
+<!--
+EOT;
+require_once template('online'); 
+echo <<<EOT
+-->
+</div>
+</div>
+<!--
+EOT;
+require_once template('foot'); 
+?>

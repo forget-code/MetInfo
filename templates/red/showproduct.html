@@ -1,0 +1,48 @@
+<!--<?php
+require_once template('head'); 
+echo <<<EOT
+-->
+<div class="web">
+<div class="webleft">
+<div class="nav_x">&nbsp;<a href='$index_c_url'>首页</a> > $nav_x[c_name]</div>
+<div class="content">
+<h1>$product[c_title]</h1>
+<div class="product_list">
+<div class="product_list_img"><a href="$product[imgurl]" target="_blank"><img src="$product[imgurls]" alt="查看大图" /></a></div>
+<div class="product_list_para">
+<!--
+EOT;
+foreach($product_para200 as $key=>$val1){
+$para_no="c_".$val1[name];
+echo <<<EOT
+-->
+$val1[c_mark]:$product[$para_no]<br />
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</div>
+<div class="product_list_detail"><a href="../feedback/index.php?title=$product[c_title]" target="_blank">购买反馈>></a></div>
+</div>
+<div class="content">$product[c_content]</div>
+
+<div class="hits">点击数：<span><script language="javascript" src="../include/hits.php?type=product&id=$product[id]"></script></span>&nbsp; 更新时间:$product[updatetime]&nbsp;【<a href='javascript:window.print()'>打印此页</a>】&nbsp;【<a href="javascript:self.close()">关闭</a>】</div>
+
+</div>
+</div>
+
+<div class="webright">
+<div class="nav_x">&nbsp;>>$class1_info[c_name]</div>
+<div class="navright">$nav_c_list</div>
+<!--
+EOT;
+require_once template('online'); 
+echo <<<EOT
+-->
+</div>
+</div>
+<!--
+EOT;
+require_once template('foot'); 
+?>

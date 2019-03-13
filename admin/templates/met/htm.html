@@ -1,0 +1,174 @@
+﻿<!--<?php
+echo <<<EOT
+-->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="$css_url/metinfo_admin.css">
+<title>静态页面生成</title>
+</head>
+<body>
+
+<table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr> 
+    <td align="center" valign="top">
+	<table width="95%" border="0" cellpadding="2" cellspacing="1" class="table_southidc">
+    <tr>
+	<td class="back_southidc" height="30" colspan="2" align="center">静态页面生成</td>
+    </tr>
+	 <tr bgcolor="#ECF5FF"> 
+            <td width="140" height="25"><b>&nbsp;网站首页：</b></td>
+            <td ><a href="htm.php?index=index"><b>点击生成网站首页</b></a></td></tr>
+<!--
+EOT;
+foreach($class_list as $key=>$val){
+if($val[module]==1){
+echo <<<EOT
+-->
+          <tr bgcolor="#ECF5FF"> 
+            <td width="140" height="25"><b>&nbsp;$val[c_name]栏目：</b></td>
+            <td ><a href="htm.php?class1=$val[id]&module=$val[module]"><b>点击生成全部<font color="#FF0000">中文</font>页面</b></a>
+<!--
+EOT;
+if($met_en_lang==1){
+echo <<<EOT
+-->
+ |  <a href="htm.php?class1=$val[id]&module=$val[module]&en=en"><b>点击生成全部<font color="#FF0000">英文</font>页面</b></a>
+<!--
+EOT;
+}
+}
+echo <<<EOT
+--> 
+</td>
+          </tr> 
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+
+<!--
+EOT;
+foreach($class_list as $key=>$val){
+if($val[module]==2){
+echo <<<EOT
+-->
+          <tr bgcolor="#ECF5FF"> 
+            <td width="140" height="25"><b>&nbsp;$val[c_name]栏目：</b></td>
+            <td ><a href="htm.php?class1=$val[id]&module=$val[module]"><b>点击生成全部<font color="#FF0000">中文</font>页面</b></a>
+<!--
+EOT;
+if($met_en_lang==1){
+echo <<<EOT
+-->
+ |  <a href="htm.php?class1=$val[id]&module=$val[module]&en=en"><b>点击生成全部<font color="#FF0000">英文</font>页面</b></a>
+<!--
+EOT;
+}
+}
+echo <<<EOT
+--> 
+</td>
+          </tr> 
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+
+<!--
+EOT;
+foreach($class_list as $key=>$val){
+if($val[module]==3){
+echo <<<EOT
+-->
+          <tr bgcolor="#ECF5FF"> 
+            <td width="140" height="25"><b>&nbsp;$val[c_name]栏目：</b></td>
+            <td ><a href="htm.php?class1=$val[id]&module=$val[module]"><b>点击生成全部<font color="#FF0000">中文</font>页面</b></a>
+<!--
+EOT;
+if($met_en_lang==1){
+echo <<<EOT
+-->
+ |  <a href="htm.php?class1=$val[id]&module=$val[module]&en=en"><b>点击生成全部<font color="#FF0000">英文</font>页面</b></a>
+<!--
+EOT;
+}
+}
+echo <<<EOT
+--> 
+</td>
+          </tr> 
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+
+<!--
+EOT;
+foreach($class_list as $key=>$val){
+if($val[module]==4){
+echo <<<EOT
+-->
+          <tr bgcolor="#ECF5FF"> 
+            <td width="140" height="25"><b>&nbsp;$val[c_name]栏目：</b></td>
+            <td ><a href="htm.php?class1=$val[id]&module=$val[module]"><b>点击生成全部<font color="#FF0000">中文</font>页面</b></a>
+<!--
+EOT;
+if($met_en_lang==1){
+echo <<<EOT
+-->
+ |  <a href="htm.php?class1=$val[id]&module=$val[module]&en=en"><b>点击生成全部<font color="#FF0000">英文</font>页面</b></a>
+<!--
+EOT;
+}
+}
+echo <<<EOT
+--> 
+</td>
+          </tr> 
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+
+<!--
+EOT;
+foreach($class_list as $key=>$val){
+if($val[module]==5){
+echo <<<EOT
+-->
+          <tr bgcolor="#ECF5FF"> 
+            <td width="140" height="25"><b>&nbsp;$val[c_name]栏目：</b></td>
+            <td ><a href="htm.php?class1=$val[id]&module=$val[module]"><b>点击生成全部<font color="#FF0000">中文</font>页面</b></a>
+<!--
+EOT;
+if($met_en_lang==1){
+echo <<<EOT
+-->
+ |  <a href="htm.php?class1=$val[id]&module=$val[module]&en=en"><b>点击生成全部<font color="#FF0000">英文</font>页面</b></a>
+<!--
+EOT;
+}
+}
+echo <<<EOT
+--> 
+</td>
+          </tr> 
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+
+    </table></td>
+  </tr>
+</table>
+</body>
+</html>
+<!--
+EOT;
+?>-->

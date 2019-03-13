@@ -1,0 +1,111 @@
+﻿<!--<?php
+echo <<<EOT
+-->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="$css_url/metinfo_admin.css">
+<title>添加招聘信息</title>
+<script type="text/javascript" src="../language/zh_cn.js"></script>
+<script type="text/javascript" src="../include/metinfo.js"></script>
+</head>
+<body>
+
+<table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr> 
+    <td align="center" valign="top"><table width="95%" border="0" cellpadding="2" cellspacing="1" class="table_southidc">
+        <form  method="POST" name="myform" onSubmit="return CheckFormjob();" action="save.php?action=editor" target="_self">
+		<input name="id" type="hidden" value="$id">
+          <tr> 
+            <td class="back_southidc" height="30" colspan="3" align="center">添加招聘信息</td>
+          </tr>
+          <tr bgcolor="#ECF5FF"> 
+            <td width="120" height="25"><font color="#FF0000">*</font><b>招聘职位：</b></td>
+            <td colspan="2"> <input name="c_position" type="text" class="input" size="40" maxlength="200" value="$job_list[c_position]"></td>
+          </tr> 
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="119" height="25"><b>招聘人数：</b></td>
+            <td colspan="2"><input name="count" type="text" class="input" size="5" maxlength="200" value="$job_list[count]">人 （留空为不限）</td>
+          </tr>
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="119" height="25"><b>工作地点：</b></td>
+            <td colspan="2"><input name="c_place" type="text" class="input" size="40" maxlength="200" value="$job_list[c_place]"></td>
+          </tr>
+		   <tr bgcolor="#ECF5FF"> 
+            <td width="119" height="25"><b>工资待遇：</b></td>
+            <td colspan="2"><input name="c_deal" type="text" class="input" size="40" maxlength="200" value="$job_list[c_deal]"></td>
+          </tr>
+		   <tr bgcolor="#ECF5FF"> 
+            <td width="119" height="25"><b>发布日期：</b></td>
+            <td colspan="2"><input name="addtime" type="text" class="input" size="10" maxlength="200" value="$job_list[addtime]">今天是$m_now_counter 注意不要改变格式。</td>
+          </tr>
+		   <tr bgcolor="#ECF5FF"> 
+            <td width="119" height="25"><b>有效期限：</b></td>
+            <td colspan="2"><input name="useful_life" type="text" class="input" size="5" maxlength="200" value="$job_list[useful_life]">天 （留空为不限）</td>
+          </tr>
+			 <tr bgcolor="#ECF5FF"> 
+            <td width="20%" height="25"><b>职位描述：</b></td>
+            <td width="80%" >
+<!--
+EOT;
+echo "-->";
+$oFCKeditor = new FCKeditor('c_content'); 
+$oFCKeditor->BasePath = '../../fckeditor/';
+$oFCKeditor->Value = $job_list[c_content];
+$oFCKeditor->Width = '100%';   
+$oFCKeditor->Height = '300';
+$oFCKeditor->Create();
+echo <<<EOT
+</td></tr>
+		  
+		   <tr bgcolor="#ECF5FF"> 
+            <td width="119" height="25"><b>招聘信息排序：</b></td>
+            <td colspan="2">一般按发布时间的先后顺序排，因此可以修改“发布日期”来达到排序的目的。</td>
+          </tr>
+<!--
+EOT;
+if($met_en_lang==1){
+echo <<<EOT
+-->         <tr bgcolor="#999999"> <td  height="25" colspan="2"><b>英文内容</b></td></tr>
+          <tr bgcolor="#ECF5FF"> 
+            <td width="120" height="25"><font color="#FF0000">*</font><b>招聘职位：</b></td>
+            <td colspan="2"> <input name="e_position" type="text" class="input" size="40" maxlength="200" value="$job_list[e_position]"></td>
+          </tr> 
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="119" height="25"><b>工作地点：</b></td>
+            <td colspan="2"><input name="e_place" type="text" class="input" size="40" maxlength="200" value="$job_list[e_place]"></td>
+          </tr>
+		   <tr bgcolor="#ECF5FF"> 
+            <td width="119" height="25"><b>工资待遇：</b></td>
+            <td colspan="2"><input name="e_deal" type="text" class="input" size="40" maxlength="200" value="$job_list[e_deal]"></td>
+          </tr>
+			 <tr bgcolor="#ECF5FF"> 
+            <td width="20%" height="25"><b>职位描述：</b></td>
+            <td width="80%" >
+<!--
+EOT;
+echo "-->";
+$oFCKeditor = new FCKeditor('e_content'); 
+$oFCKeditor->BasePath = '../../fckeditor/';
+$oFCKeditor->Value = $job_list[c_content];
+$oFCKeditor->Width = '100%';   
+$oFCKeditor->Height = '300';
+$oFCKeditor->Create();
+echo "</td></tr>";
+}
+echo <<<EOT
+
+		  <tr> 
+            <td height="30" colspan="3" align="center" bgcolor="#ECF5FF"> <input type="submit" name="Submit" value="提交" class="tj">
+              　 
+              <input type="reset" name="Submit" value="重置" class="tj"> </td>
+          </tr>
+        </form>
+    </table></td>
+  </tr>
+</table>
+</body>
+</html>
+<!--
+EOT;
+?>-->

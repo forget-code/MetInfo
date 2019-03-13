@@ -1,0 +1,48 @@
+<!--<?php
+require_once template('head'); 
+echo <<<EOT
+-->
+<div class="web">
+<div class="webleft">
+<div class="nav_x"><img src="$img_url/home.gif" />&nbsp;<a href='$index_c_url'>首页</a> > $nav_x[c_name]</div>
+<div class="content">
+<h1>$download[c_title]</h1>
+<div class="download_list">
+<div class="download_list_para">
+<b>文件大小</b>:$download[filesize]<br />
+<!--
+EOT;
+foreach($download_para200 as $key=>$val1){
+$para_no="c_".$val1[name];
+echo <<<EOT
+-->
+<b>$val1[c_mark]</b>:$download[$para_no]<br />
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</div>
+<div class="download_url"><a href="$download[downloadurl]" target="_blank">点击下载</a></div>
+</div>
+<div class="content">$download[c_content]</div>
+
+<div class="hits">点击数：<span><script language="javascript" src="../include/hits.php?type=download&id=$download[id]"></script></span>&nbsp; 更新时间:$download[updatetime]&nbsp;【<a href='javascript:window.print()'>打印此页</a>】&nbsp;【<a href="javascript:self.close()">关闭</a>】</div>
+
+</div>
+</div>
+
+<div class="webright">
+<div class="nav_x">&nbsp;<img src="$img_url/nav1.gif" />&nbsp;$class1_info[c_name]</div>
+<div class="navright">$nav_c_list</div>
+<!--
+EOT;
+require_once template('online'); 
+echo <<<EOT
+-->
+</div>
+</div>
+<!--
+EOT;
+require_once template('foot'); 
+?>

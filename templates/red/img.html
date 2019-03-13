@@ -1,0 +1,40 @@
+<!--<?php
+require_once template('head'); 
+echo <<<EOT
+-->
+<div class="web">
+<div class="webleft">
+<div class="nav_x">&nbsp;<a href='$index_c_url'>首页</a> > $nav_x[c_name]</div>
+<div class="content">
+<!--
+EOT;
+foreach($img_list as $key=>$val){
+echo <<<EOT
+-->
+<div class="img_list">
+<div class="img_list_img"><a href="$val[c_url]" target="_blank"><img src="$val[imgurls]" /></a></div>
+<div class="img_list_title"><a href="$val[c_url]" target="_blank">$val[c_title]</a></div>
+</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</div>
+$c_page_list
+</div>
+
+<div class="webright">
+<div class="nav_x">&nbsp;>>$class1_info[c_name]</div>
+<div class="navright">$nav_c_list</div>
+<!--
+EOT;
+require_once template('online'); 
+echo <<<EOT
+-->
+</div>
+</div>
+<!--
+EOT;
+require_once template('foot'); 
+?>

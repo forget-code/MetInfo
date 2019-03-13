@@ -1,0 +1,37 @@
+<!--<?php
+require_once template('e_head'); 
+echo <<<EOT
+-->
+<div class="web">
+<div class="webleft">
+<div class="nav_x">&nbsp;<a href='$index_c_url'>Home</a> > $nav_x[e_name]</div>
+<div class="content">
+<!--
+EOT;
+foreach($search_list as $key=>$val){
+echo <<<EOT
+-->
+<div class="news_list">
+<div class="news_list_img"><img src="$img_url/list.gif" /></div><div class="news_list_title"><a href="$val[e_url]" target="_blank">$val[e_title]</a>($val[updatetime])< Hits:<font>$val[hits]</font> ></div>
+</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</div>
+$c_page_list
+</div>
+
+<div class="webright">
+<!--
+EOT;
+require_once template('e_online'); 
+echo <<<EOT
+-->
+</div>
+</div>
+<!--
+EOT;
+require_once template('e_foot'); 
+?>

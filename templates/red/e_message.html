@@ -1,0 +1,58 @@
+<!--<?php
+require_once template('e_head'); 
+echo <<<EOT
+-->
+$fdjs;
+<div class="web">
+<div class="webleft">
+<div class="nav_x">&nbsp;<a href='$index_c_url'>Home</a> > $navtitle</div>
+<div class="content">
+<a href="index.php?en=en" style="color: #CC0000; float:right; width:150px; font-weight:bold; line-height:25px;s">Read Leave Word >></a>
+<form method="POST" name="myform" onSubmit="return Checkmessage();" action="message.php?action=add&en=en" target="_self">
+<table width="90%" cellpadding="2" cellspacing="1" bgcolor="#CCCCCC" align="center">
+<tr>
+<td width="20%" height="25" align="right" bgcolor="#FFFFFF">Name</td>
+<td width="70%" bgcolor="#FFFFFF"><input name="name" type="text" size="30" /></td>
+<td bgcolor="#FFFFFF" style="color:#990000">*</td>
+</tr>
+<tr>
+<td width="20%" height="25" align="right" bgcolor="#FFFFFF">Tel</td>
+<td width="70%" bgcolor="#FFFFFF"><input name="tel" type="text" size="30" /></td>
+<td bgcolor="#FFFFFF" style="color:#990000"></td>
+</tr>
+<tr>
+<td width="20%" height="25" align="right" bgcolor="#FFFFFF">Email</td>
+<td width="70%" bgcolor="#FFFFFF"><input name="email" type="text" size="30" /></td>
+<td bgcolor="#FFFFFF" style="color:#990000"></td>
+</tr>
+<tr>
+<td width="20%" height="25" align="right" bgcolor="#FFFFFF">Other Contact way</td>
+<td width="70%" bgcolor="#FFFFFF"><input name="contact" type="text" size="30" />(Such as QQ,MSN)</td>
+<td bgcolor="#FFFFFF" style="color:#990000"></td>
+</tr>
+<tr>
+<td width="20%" height="25" align="right" bgcolor="#FFFFFF">Information</td>
+<td width="70%" bgcolor="#FFFFFF"><textarea name="info" cols="50" rows="6"></textarea></td>
+<td bgcolor="#FFFFFF" style="color:#990000">*</td>
+</tr>
+<tr><td colspan="3" bgcolor="#FFFFFF" align="center">
+<input type="hidden" name="fromurl" value="$fromurl" />
+<input type="hidden" name="ip" value="$ip" />
+<input type="submit" name="Submit" value="Referring" class="tj">
+<input type="reset" name="Submit" value="Rewrite" class="tj"></td></tr>
+</table>
+</form>
+</div>
+</div>
+<div class="webright">
+<!--
+EOT;
+require_once template('e_online'); 
+echo <<<EOT
+-->
+</div>
+</div>
+<!--
+EOT;
+require_once template('e_foot'); 
+?>

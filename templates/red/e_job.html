@@ -1,0 +1,45 @@
+<!--<?php
+require_once template('e_head'); 
+echo <<<EOT
+-->
+<div class="web">
+<div class="webleft">
+<div class="nav_x">&nbsp;<a href='$index_e_url'>Home</a> > $nav_x[e_name]</div>
+<div class="content">
+<!--
+EOT;
+foreach($job_list as $key=>$val){
+echo <<<EOT
+-->
+<div class="job_list">
+<div class="job_list_img"><img src="$img_url/list.gif" /></div>
+<div class="job_list_title">
+Position：<a href="$val[e_url]" target="_blank"><b>$val[e_position]</b></a>&nbsp;&nbsp;&nbsp;&nbsp;
+Person Number：$val[count]&nbsp;&nbsp;&nbsp;&nbsp;
+Work Place：$val[e_place]&nbsp;&nbsp;&nbsp;&nbsp;
+Add Date：$val[addtime]&nbsp;&nbsp;&nbsp;&nbsp;
+</div>
+<div class="job_list_right"><a href="$val[e_url]" target="_blank">Detail>></a></div>
+
+</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</div>
+$e_page_list
+</div>
+
+<div class="webright">
+<!--
+EOT;
+require_once template('e_online'); 
+echo <<<EOT
+-->
+</div>
+</div>
+<!--
+EOT;
+require_once template('e_foot'); 
+?>

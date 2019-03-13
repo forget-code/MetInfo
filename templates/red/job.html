@@ -1,0 +1,45 @@
+<!--<?php
+require_once template('head'); 
+echo <<<EOT
+-->
+<div class="web">
+<div class="webleft">
+<div class="nav_x">&nbsp;<a href='$index_c_url'>首页</a> > $nav_x[c_name]</div>
+<div class="content">
+<!--
+EOT;
+foreach($job_list as $key=>$val){
+echo <<<EOT
+-->
+<div class="job_list">
+<div class="job_list_img"><img src="$img_url/list.gif" /></div>
+<div class="job_list_title">
+招聘职位：<a href="$val[c_url]" target="_blank"><b>$val[c_position]</b></a>&nbsp;&nbsp;&nbsp;&nbsp;
+招聘人数：$val[count]&nbsp;&nbsp;&nbsp;&nbsp;
+工作地点：$val[c_place]&nbsp;&nbsp;&nbsp;&nbsp;
+发布日期：$val[addtime]&nbsp;&nbsp;&nbsp;&nbsp;
+</div>
+<div class="job_list_right"><a href="$val[c_url]" target="_blank">查看详细>></a></div>
+
+</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</div>
+$c_page_list
+</div>
+
+<div class="webright">
+<!--
+EOT;
+require_once template('online'); 
+echo <<<EOT
+-->
+</div>
+</div>
+<!--
+EOT;
+require_once template('foot'); 
+?>

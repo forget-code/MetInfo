@@ -1,0 +1,53 @@
+<!--<?php
+require_once template('head'); 
+echo <<<EOT
+-->
+<div class="web">
+<div class="webleft">
+<div class="nav_x"><img src="$img_url/home.gif" />&nbsp;<a href='$index_c_url'>首页</a> > $navtitle</div>
+<div class="content">
+<div class="message_line"><a href="addlink.php">申请友情链接>></a></div>
+<div class="index_link_img">
+<b>图片链接：</b><br />
+<!--
+EOT;
+foreach($link_img as $key=>$val){
+echo <<<EOT
+-->
+<a href="$val[weburl]" target="_blank"><img src="$val[weblogo]" alt="$val[c_webname]" /></a>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</div>
+<br />
+<div class="index_link_text">
+<b>文字链接：</b><br />
+<!--
+EOT;
+foreach($link_text as $key=>$val){
+echo <<<EOT
+-->
+<a href="$val[weburl]" target="_blank" title="$val[c_info]">$val[c_webname]</a>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</div>
+</div>
+</div>
+
+<div class="webright">
+<!--
+EOT;
+require_once template('online'); 
+echo <<<EOT
+-->
+</div>
+</div>
+<!--
+EOT;
+require_once template('foot'); 
+?>

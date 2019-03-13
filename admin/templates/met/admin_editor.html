@@ -1,0 +1,137 @@
+﻿<!--<?php
+echo <<<EOT
+-->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="$css_url/metinfo_admin.css">
+<title>添加管理员</title>
+<script type="text/javascript" src="../language/zh_cn.js"></script>
+<script type="text/javascript" src="../include/metinfo.js"></script>
+</head>
+<body>
+
+<table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr> 
+    <td align="center" valign="top"><table width="95%" border="0" cellpadding="2" cellspacing="1" class="table_southidc">
+        <form method="POST" name="myform" onSubmit="return CheckForm_e();" action="save.php?action=editor&id=$id" target="_self">
+		<input name="useid" type="hidden"size="20" maxlength="20" value="$admin_list[admin_id]">
+          <tr> 
+            <td class="back_southidc" height="30" colspan="3" align="center">修改管理员信息</td>
+          </tr>
+          <tr bgcolor="#ECF5FF"> 
+            <td width="120" height="25"><font color="#FF0000">*</font>用户名：</td>
+            <td colspan="2"> <input name="useid" type="text" class="input" size="20" maxlength="20" value="$admin_list[admin_id]" disabled="disabled"></td>
+          </tr> 
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="119" height="25"><font color="#FF0000">*</font>登陆密码：</td>
+            <td colspan="2"> <input name="pass1" type="password" class="input" size="20" maxlength="20">不修改请留空</td>
+          </tr> 
+		   <tr bgcolor="#ECF5FF"> 
+            <td width="119" height="25"><font color="#FF0000">*</font>密码确认：</td>
+            <td colspan="2"> <input name="pass2" type="password" class="input" size="20" maxlength="20">不修改请留空</td>
+          </tr> 
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="119" height="25">姓名：</td>
+            <td colspan="2"> <input name="name" type="text" class="input" size="20" maxlength="20" value="$admin_list[admin_name]"></td>
+          </tr> 
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="119" height="25">性别：</td>
+            <td colspan="2">
+<!--
+EOT;
+if($admin_list[admin_sex]==0){
+echo <<<EOT
+-->	
+		<input name="sex" type="radio" value="0" checked="checked">男 &nbsp;<input name="sex" type="radio" value="1">女
+<!--
+EOT;
+}else{
+echo <<<EOT
+-->	
+		<input name="sex" type="radio" value="0" >男 &nbsp;<input name="sex" type="radio" value="1" checked="checked">女
+<!--
+EOT;
+}echo <<<EOT
+-->
+			</td>
+          </tr> 
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="119" height="25">联系电话：</td>
+            <td colspan="2"> <input name="tel" type="text" class="input" size="20" maxlength="20" value="$admin_list[admin_tel]"></td>
+          </tr> 
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="119" height="25">手机：</td>
+            <td colspan="2"> <input name="mobile" type="text" class="input" size="20" maxlength="20" value="$admin_list[admin_mobile]"></td>
+          </tr> 
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="119" height="25"><font color="#FF0000">*</font>email：</td>
+            <td colspan="2"> <input name="email" type="text" class="input" size="20" maxlength="50" value="$admin_list[admin_email]">用于取回账号密码</td>
+          </tr> 
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="119" height="25">QQ：</td>
+            <td colspan="2"> <input name="qq" type="text" class="input" size="20" maxlength="20" value="$admin_list[admin_qq]"></td>
+          </tr> 
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="119" height="25">MSN：</td>
+            <td colspan="2"> <input name="msn" type="text" class="input" size="20" maxlength="50" value="$admin_list[admin_msn]"></td>
+          </tr> 
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="119" height="25">淘宝：</td>
+            <td colspan="2"> <input name="taobao" type="text" class="input" size="20" maxlength="30" value="$admin_list[admin_taobao]"></td>
+          </tr> 
+          <tr bgcolor="#ECF5FF"> 
+          <td width="120" height="25" valign="middle">管理员简介:</td>
+          <td colspan="2" valign="top"> <textarea name="admin_introduction" cols="60" rows="5" >$admin_list[admin_introduction]</textarea></td>
+          </tr>
+		   <tr bgcolor="#ECF5FF"> 
+          <td width="120" height="25" valign="middle"><font color="#FF0000">*</font>管理员权限:</td>
+          <td colspan="2" valign="top"><font color="#FF0000">
+<input name="admin_pop" type="checkbox" value="yes" $admin_pop>全部选择</font><br>
+<input name="admin_pop1001" type="checkbox" value="1001" $admin_pop1001 >管理员管理&nbsp;&nbsp;
+<input name="admin_pop1002" type="checkbox" value="1002" $admin_pop1002>基本信息&nbsp;&nbsp;
+<input name="admin_pop1003" type="checkbox" value="1003" $admin_pop1003>界面风格&nbsp;&nbsp;
+<input name="admin_pop1004" type="checkbox" value="1004" $admin_pop1004>图片配置&nbsp;&nbsp;
+<input name="admin_pop1005" type="checkbox" value="1005" $admin_pop1005>栏目配置&nbsp;&nbsp;
+<input name="admin_pop1006" type="checkbox" value="1006" $admin_pop1006>首页配置&nbsp;&nbsp;
+<input name="admin_pop1007" type="checkbox" value="1007" $admin_pop1007>优化推广&nbsp;&nbsp;
+<input name="admin_pop1008" type="checkbox" value="1008" $admin_pop1008>底部信息&nbsp;&nbsp;
+<input name="admin_pop1009" type="checkbox" value="1009" $admin_pop1009>flash管理&nbsp;&nbsp;
+<input name="admin_pop1010" type="checkbox" value="1010" $admin_pop1010>热门标签&nbsp;&nbsp;
+<input name="admin_pop1011" type="checkbox" value="1011" $admin_pop1011>在线交流&nbsp;&nbsp;
+<input name="admin_pop1012" type="checkbox" value="1012" $admin_pop1012>静态页面生成&nbsp;&nbsp;
+<input name="admin_pop1013" type="checkbox" value="1013" $admin_pop1013>产品模块参数&nbsp;&nbsp;
+<input name="admin_pop1014" type="checkbox" value="1014" $admin_pop1014>下载模块参数&nbsp;&nbsp;
+<input name="admin_pop1015" type="checkbox" value="1015" $admin_pop1015>图片模块参数&nbsp;&nbsp;
+<input name="admin_pop1016" type="checkbox" value="1016" $admin_pop1016>数据库备份&nbsp;&nbsp;
+<input name="admin_pop1017" type="checkbox" value="1017" $admin_pop1017>反馈系统&nbsp;&nbsp;
+<input name="admin_pop1018" type="checkbox" value="1018" $admin_pop1018>友情链接&nbsp;&nbsp;
+<!--
+EOT;
+foreach($column_list as $key=>$val){
+$column_c="admin_pop".$val[id];
+$column_c=$$column_c;
+echo <<<EOT
+-->
+       <input name="admin_pop$val[id]" type="checkbox" value="$val[id]" $column_c>$val[c_name]管理&nbsp;&nbsp;
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+		  </td>
+          </tr>
+		  <tr> 
+            <td height="30" colspan="3" align="center" bgcolor="#ECF5FF"> <input type="submit" name="Submit" value="提交" class="tj">
+              　 
+              <input type="reset" name="Submit" value="重置" class="tj"> </td>
+          </tr>
+        </form>
+    </table></td>
+  </tr>
+</table>
+</body>
+</html>
+<!--
+EOT;
+?>-->

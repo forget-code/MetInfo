@@ -1,0 +1,41 @@
+<!--<?php
+require_once template('head'); 
+echo <<<EOT
+-->
+<div class="web">
+<div class="webleft">
+<div class="nav_x"><img src="$img_url/home.gif" />&nbsp;<a href='$index_c_url'>首页</a> > $navtitle</div>
+<div class="content">
+<div class="message_line"><a href="message.php">提交留言>></a></div>
+<!--
+EOT;
+foreach($message_list as $key=>$val){
+echo <<<EOT
+-->
+<div class="message_list">
+<div class="message_list_line">[NO$val[id]]：<b>$val[name]</b>发表于$val[addtime]</div>
+<div class="message_list_info"><b>留言内容</b>:$val[info]</div>
+<div class="message_list_reinfo"><b>管理员回复</b>:$val[useinfo]</div>
+</div>
+
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</div>
+$c_page_list
+</div>
+
+<div class="webright">
+<!--
+EOT;
+require_once template('online'); 
+echo <<<EOT
+-->
+</div>
+</div>
+<!--
+EOT;
+require_once template('foot'); 
+?>

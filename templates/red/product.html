@@ -1,0 +1,55 @@
+<!--<?php
+require_once template('head'); 
+echo <<<EOT
+-->
+<div class="web">
+<div class="webleft">
+<div class="nav_x">&nbsp;<a href='$index_c_url'>首页</a> > $nav_x[c_name]</div>
+<div class="content">
+<!--
+EOT;
+foreach($product_list as $key=>$val){
+echo <<<EOT
+-->
+<div class="product_list">
+<div class="product_list_img"><a href="$val[c_url]" target="_blank"><img src="$val[imgurls]" /></a></div>
+<div class="product_list_title"><a href="$val[c_url]" target="_blank">$val[c_title]</a></div>
+<div class="product_list_para">
+<!--
+EOT;
+foreach($product_para200 as $key=>$val1){
+$para_no="c_".$val1[name];
+echo <<<EOT
+-->
+$val1[c_mark]:$val[$para_no]<br />
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</div>
+<div class="product_list_detail"><a href="$val[c_url]" target="_blank">查看详细>></a></div>
+</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</div>
+$c_page_list
+</div>
+
+<div class="webright">
+<div class="nav_x">&nbsp;>>$class1_info[c_name]</div>
+<div class="navright">$nav_c_list</div>
+<!--
+EOT;
+require_once template('online'); 
+echo <<<EOT
+-->
+</div>
+</div>
+<!--
+EOT;
+require_once template('foot'); 
+?>

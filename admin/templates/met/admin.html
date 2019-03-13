@@ -1,0 +1,86 @@
+<!--<?php
+echo <<<EOT
+-->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="$css_url/metinfo_admin.css">
+<title>管理员管理</title>
+<script type="text/javascript" src="../language/zh_cn.js"></script>
+<script type="text/javascript" src="../include/metinfo.js"></script>
+</head>
+<body>
+<br>
+<table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr> 
+    <td align="center" valign="top"><table width="95%" border="0" cellpadding="2" cellspacing="1" class="table_southidc">
+          <tr> 
+            <td class="back_southidc" height="30" colspan="4" align="center">管理员管理</td>
+          </tr>
+          <tr>
+            <td class="title_add" height="20" colspan="2" align="left"><a href="add.php">添加管理员</a></td>
+            <td width="20%" height="20" align="center" >&nbsp;</td>
+            <td width="60%" align="right" >
+			<form method="POST" name="myform"  action="index.php?search=detail_search" target="_self">
+			用户名:
+              <input name="admin_id" type="text" size="16">
+管理员姓名:
+<input name="admin_name" type="text" size="16">
+<input type="submit" name="Submit2" value="查询" class="tj">  </form></td>
+          </tr>
+          <tr> 
+            <td colspan="4" valign="top"><table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#003366" class="border" style="word-break:break-all">
+              <tr class="back_southidc2">
+                <td width="5%" height="25" align="center">选中</td>
+                <td width="6%" height="25" align="center">用户名</td>
+                <td width="6%" align="center" >姓名</td>
+                <td width="10%" align="center" >电话</td>
+                <td width="10%" align="center" >手机</td>
+                <td width="7%" align="center" >登陆次数</td>
+				<td width="15%" align="center" >最后登陆时间</td>
+                <td width="12%" align="center" >最后登陆IP</td>
+				<td width="15%" align="center" >操作</td>
+              </tr>
+			  <form name="del" method="Post" action="delete.php" onSubmit="return ConfirmDelall();">
+<!--
+EOT;
+foreach ($admin_list as $key=>$val){
+echo <<<EOT
+-->          
+              <tr class="tdbg">
+              <td height="22" align="center" class="left1"><input name='id' type='checkbox' onClick="unselectall()" id="id" value='$val[id]' class="xz"></td>
+                <td align="center" bgcolor="#ECF5FF"><a href="detail.php?id=$val[id]" title="查看详细">$val[admin_id]</a></td>
+                <td  bgcolor="#ECF5FF" align="center"><a href="detail.php?id=$val[id]"  title="查看详细">$val[admin_name]</a></td>
+                <td  bgcolor="#ECF5FF" align="center">$val[admin_tel]</td>
+                <td  bgcolor="#ECF5FF" align="center">$val[admin_mobile]</td>
+                <td align="center" bgcolor="#ECF5FF">$val[admin_login]</td>
+				<td bgcolor="#ECF5FF" align="center" >$val[admin_modify_date] </td>
+                <td align="center" bgcolor="#ECF5FF">$val[admin_modify_ip]</td>
+				<td align="center" bgcolor="#ECF5FF" ><a href="detail.php?id=$val[id]" >详细 |</a> <a href="editor.php?id=$val[id]" >编辑</a> | <a href="delete.php?id=$val[id]" onClick="return ConfirmDel();" >删除</a></td>
+              </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+       
+            </table></td>
+          </tr> 
+		   
+   	   <tr> 
+            <td height="20" colspan="4" align="left" bgcolor="#ECF5FF"><input name="chkAll" class="xz" type="checkbox" id="chkAll" onclick=CheckAll(this.form) value="checkbox">
+              选中本页显示的所有管理员 <input name="submit" type='submit' value='删除选定的条目'> 
+              <input name="action" type="hidden" id="action" value="del">
+			  <input name="allid" type="hidden" id="allid" value=""></form></td>
+          </tr>
+   	   <tr>
+   	     <td height="0" colspan="4" align="center" bgcolor="#ECF5FF">$page_list</td>
+        </tr>
+    </table></td>
+  </tr>
+</table>
+</body>
+</html>
+<!--
+EOT;
+?>-->

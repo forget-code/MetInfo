@@ -1,0 +1,84 @@
+<!--<?php
+require_once template('head'); 
+echo <<<EOT
+-->
+$fdjs;
+<div class="web">
+<div class="webleft">
+<div class="nav_x">&nbsp;<a href='$index_c_url'>首页</a> > $navtitle </div>
+<div class="content">
+<table width="90%" cellpadding="2" cellspacing="1" bgcolor="#CCCCCC" align="center">
+<tr><td width="20%" height="25" align="left" bgcolor="#FFFFFF" colspan="3"><b>请先做好本站链接再申请，谢谢合作！</b></td></tr>
+<tr>
+<td width="20%" height="25" align="right" bgcolor="#FFFFFF">本站名称</td>
+<td width="70%" bgcolor="#FFFFFF">$met_c_linkname</td>
+<td bgcolor="#FFFFFF" style="color:#990000"></td>
+</tr>
+<tr>
+<td width="20%" height="25" align="right" bgcolor="#FFFFFF">本站地址</td>
+<td width="70%" bgcolor="#FFFFFF">$met_weburl</td>
+<td bgcolor="#FFFFFF" style="color:#990000"></td>
+</tr>
+<tr>
+<td width="20%" height="25" align="right" bgcolor="#FFFFFF">本站LOGO</td>
+<td width="70%" bgcolor="#FFFFFF"><img src="$met_logo" /></td>
+<td bgcolor="#FFFFFF" style="color:#990000"></td>
+</tr>
+<tr>
+<td width="20%" height="25" align="right" bgcolor="#FFFFFF">本站关键词</td>
+<td width="70%" bgcolor="#FFFFFF">$title_keywords</td>
+<td bgcolor="#FFFFFF" style="color:#990000"></td>
+</tr>
+</table>
+
+<form method="POST" name="myform" onSubmit="return Checklink();" action="addlink.php?action=add" target="_self">
+<table width="90%" cellpadding="2" cellspacing="1" bgcolor="#CCCCCC" align="center">
+<tr>
+<td width="20%" height="25" align="right" bgcolor="#FFFFFF">网站名称</td>
+<td width="70%" bgcolor="#FFFFFF"><input name="c_webname" type="text" size="30" /></td>
+<td bgcolor="#FFFFFF" style="color:#990000">*</td>
+</tr>
+<tr>
+<td width="20%" height="25" align="right" bgcolor="#FFFFFF">网站地址</td>
+<td width="70%" bgcolor="#FFFFFF"><input name="weburl" type="text" size="30" value="http://" /></td>
+<td bgcolor="#FFFFFF" style="color:#990000">*</td>
+</tr>
+<tr>
+<td width="20%" height="25" align="right" bgcolor="#FFFFFF">链接类型</td>
+<td width="70%" bgcolor="#FFFFFF"><input name="link_type" type="radio" value="0"  checked="checked"/>文字链接  <input name="link_type" type="radio" value="1" />图片链接</td>
+<td bgcolor="#FFFFFF" style="color:#990000">*</td>
+</tr>
+<tr>
+<td width="20%" height="25" align="right" bgcolor="#FFFFFF">网站LOGO</td>
+<td width="70%" bgcolor="#FFFFFF"><input name="weblogo" type="text" size="30" value="http://"/></td>
+<td bgcolor="#FFFFFF" style="color:#990000"></td>
+</tr>
+<tr>
+<td width="20%" height="25" align="right" bgcolor="#FFFFFF">网站关键词</td>
+<td width="70%" bgcolor="#FFFFFF"><input name="c_info" type="text" size="30" /></td>
+<td bgcolor="#FFFFFF" style="color:#990000"></td>
+</tr>
+<tr>
+<td width="20%" height="25" align="right" bgcolor="#FFFFFF">联系方式</td>
+<td width="70%" bgcolor="#FFFFFF"><textarea name="contact" cols="50" rows="6"></textarea></td>
+<td bgcolor="#FFFFFF" style="color:#990000"></td>
+</tr>
+<tr><td colspan="3" bgcolor="#FFFFFF" align="center">
+<input type="submit" name="Submit" value="提交申请" class="tj">
+<input type="reset" name="Submit" value="重新填写" class="tj"></td></tr>
+</table>
+</form>
+</div>
+</div>
+<div class="webright">
+<!--
+EOT;
+require_once template('online'); 
+echo <<<EOT
+-->
+</div>
+</div>
+<!--
+EOT;
+require_once template('foot'); 
+?>

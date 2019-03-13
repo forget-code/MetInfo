@@ -1,0 +1,128 @@
+<!--<?php
+echo <<<EOT
+-->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="$css_url/metinfo_admin.css">
+<title>文件管理</title>
+<script type="text/javascript" src="../language/zh_cn.js"></script>
+<script type="text/javascript" src="../include/metinfo.js"></script>
+</head>
+<body>
+<br>
+<table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr> 
+    <td align="center" valign="top"><table width="95%" border="0" cellpadding="2" cellspacing="1" class="table_southidc">
+          <tr> 
+            <td class="back_southidc" height="30" align="center">$class1_info[c_name]管理</td>
+          </tr>
+          
+<!--
+EOT;
+if($class2_listok==1){
+echo <<<EOT
+-->		   <tr>
+            <td height="25" align="left" class="class2">二级栏目：
+<!--
+EOT;
+foreach($class2_list as $key=>$val){
+if($val[id]==$class2)$style="style='color:#FF0000'";
+echo <<<EOT
+-->
+<a href="index.php?class1=$class1&class2=$val[id]" $style>$val[c_name]</a>&nbsp;&nbsp;|&nbsp;
+<!--
+EOT;
+$style="";
+}
+echo <<<EOT
+-->	</td> </tr>
+<!--
+EOT;
+if($class3_listok==1){
+echo <<<EOT
+-->		   <tr>
+            <td height="25" align="left" class="class3"><b>三级栏目：</b>
+<!--
+EOT;
+foreach($class3_list as $key=>$val){
+if($val[id]==$class3)$style="style='color:#FF0000'";
+echo <<<EOT
+-->
+<a href="index.php?class1=$class1&class2=$val[bigclass]&class3=$val[id]" $style>$val[c_name]</a>&nbsp;&nbsp;|&nbsp;
+<!--
+EOT;
+$style="";
+}}
+echo <<<EOT
+-->	</td>
+     </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->	
+
+          <tr> 
+            <td valign="top"><table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#003366" class="border" style="word-break:break-all">
+              <tr class="back_southidc2">
+                <td width="5%" height="25" align="center">选中</td>
+				<td width="5%" height="25" align="center">ID</td>
+                <td width="50%" height="25" align="center">文件标题</td>
+                <td width="8%" align="center" >最新文件</td>
+                <td width="8%" align="center" >推荐文件</td>
+                <td width="14%" align="center" >更新日期</td>
+				<td width="10%" align="center" >操作</td>
+              </tr>
+			  <form name="del" method="Post" action="delete.php?class1=$class1&class2=$class2&class3=$class3" onSubmit="return ConfirmDelall();">
+<!--
+EOT;
+foreach ($download_list as $key=>$val){
+echo <<<EOT
+-->          
+              <tr class="tdbg">
+              <td height="22" align="center" class="left1"><input name='id' type='checkbox' onClick="unselectall()" id="id" value='$val[id]' class="xz"></td>
+                <td  bgcolor="#ECF5FF" align="center">$val[id]</td>
+			    <td align="left" bgcolor="#ECF5FF"><a href="../../$class1_info[foldername]/showdownload.php?id=$val[id]" title="查看详细" target="_blank">$val[c_title]</a></td>
+                <td  bgcolor="#ECF5FF" align="center">$val[new_ok]</td>
+                <td  bgcolor="#ECF5FF" align="center">$val[com_ok]</td>
+                <td  bgcolor="#ECF5FF" align="center">$val[updatetime]</td>
+				<td align="center" bgcolor="#ECF5FF" ></a> <a href="editor.php?id=$val[id]" >编辑</a> | <a href="delete.php?id=$val[id]&class1=$class1&class2=$class2&class3=$class3" onClick="return ConfirmDel();" >删除</a></td>
+              </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+       
+            </table></td>
+          </tr> 
+		   
+   	   <tr> 
+            <td height="20" align="left" bgcolor="#ECF5FF"><input name="chkAll" class="xz" type="checkbox" id="chkAll" onclick=CheckAll(this.form) value="checkbox">
+              选中本页显示的所有文件 <input name="submit" type='submit' value='删除选定的条目'> 
+              <input name="action" type="hidden" id="action" value="del">
+			  <input name="allid" type="hidden" id="allid" value=""></form></td>
+          </tr>
+		  <tr  bgcolor="#ECF5FF">
+            <td  height="20" align="left">
+			<form method="POST" name="myform"  action="index.php?search=detail_search" target="_self">
+			       <b>当前栏目文件查找：</b> 
+				  <input name="class1" type="hidden" size="30" value="$class1">
+				  <input name="class2" type="hidden" size="30" value="$class2">
+				  <input name="class3" type="hidden" size="30" value="$class3">
+			    <input name="c_title" type="text" size="30">
+  <input type="submit" name="Submit2" value="查询" class="tj">  
+	        请输入文件标题关键字。如果为空，则查找所有文件。</form></td>
+          </tr>
+   	   <tr>
+   	     <td height="0" align="center" bgcolor="#ECF5FF">$page_list</td>
+        </tr>
+    </table></td>
+  </tr>
+</table>
+</body>
+</html>
+<!--
+EOT;
+?>-->

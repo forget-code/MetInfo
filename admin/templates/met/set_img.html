@@ -1,0 +1,133 @@
+﻿<!--<?php
+echo <<<EOT
+-->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="$css_url/metinfo_admin.css">
+<title>图片设置</title>
+</head>
+<body>
+
+<table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr> 
+    <td align="center" valign="top"><table width="95%" border="0" cellpadding="2" cellspacing="1" class="table_southidc">
+        <form enctype="multipart/form-data" method="POST" name="myform" action="" target="_self">
+		<input name="action" type="hidden" value="modify">	
+		<input name="met_big_wate" type="hidden" value=0>	
+		<input name="met_thumb_wate" type="hidden" value=0>	
+          <tr> 
+            <td class="back_southidc" height="30" colspan="3" align="center">网站图片设置</td>
+          </tr>
+          <tr bgcolor="#ECF5FF"> 
+            <td width="140" height="25"><font color="#FF0000">*</font><b>允许上传的图片格式：</b></td>
+            <td colspan="2"> <input name="met_img_type" type="text" class="input" size="30" maxlength="200" value="$met_img_type">多种图片请用","隔开</td>
+          </tr> 
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="140" height="25"><font color="#FF0000">*</font><b>允许上传的最大尺寸：</b></td>
+            <td colspan="2"> <input name="met_img_maxsize" type="text" class="input" size="15" maxlength="200" value="$met_img_maxsize">字节</td>
+          </tr>
+		   <tr bgcolor="#ECF5FF"> 
+            <td width="140" height="25"><font color="#FF0000">*</font><b>缩略图大小：</b></td>
+            <td colspan="2">宽：<input name="met_img_x" type="text" class="input" size="5" maxlength="200" value="$met_img_x">像素&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 高：<input name="met_img_y" type="text" class="input" size="5" maxlength="200" value="$met_img_y">像素 </td>
+          </tr>  
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="140" height="25"><b>图片添加水印：</b></td>
+            <td colspan="2"><input name="met_big_wate" type="checkbox" value=1 $met_big_wate1>详细大图片添加  <input name="met_thumb_wate" type="checkbox" value=1 $met_thumb_wate1>缩略片添加</td>
+          </tr> 
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="140" height="25"><b>水印类型：</b></td>
+            <td colspan="2"><input name="met_wate_class" type="radio" value="1" $met_wate_class1>文字水印  <input name="met_wate_class" type="radio" value="2" $met_wate_class2>图片水印</td>
+          </tr> 
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="119" height="25"><b>水印图片：</b></td>
+            <td colspan="2"><input name="met_wate_img" type="file" class="input" size="30" maxlength="200" >
+			<a href="$met_wate_img" target="_blank" title="浏览图片" ><img src="../images/picflag.gif" border="0"/></a>上传.gif .png 如不改变请不要上传
+			</td>
+          </tr>
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="140" height="25"><b>水印文字：</b></td>
+            <td colspan="2"><textarea name="met_text_wate" rows="2" cols="30" class="text" id="fontZoom" style="" >$met_text_wate</textarea> 支持带有"\ n" 的跨行文字，不支持同时含有中英文</td>
+          </tr> 
+		   <tr bgcolor="#ECF5FF"> 
+            <td width="140" height="25"><b>水印文字大小：</b></td>
+            <td colspan="2"> <input name="met_text_size" type="text" class="input" size="10" maxlength="200" value="$met_text_size"></td>
+          </tr> 
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="140" height="25"><b>水印文字字体：</b></td>
+            <td colspan="2"> <input name="met_text_fonts" type="text" class="input" size="30" maxlength="200" value="$met_text_fonts">请将字体文件放到后台管理目录include/fonts/下</td>
+          </tr>
+		    <tr bgcolor="#ECF5FF"> 
+            <td width="140" height="25"><b>水印文字角度：</b></td>
+            <td colspan="2"> <input name="met_text_angle" type="text" class="input" size="3" maxlength="200" value="$met_text_angle">水平为0</td>
+          </tr> 
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="140" height="25"><b>水印文字颜色：</b></td>
+            <td colspan="2"> <input name="met_text_color" id="met_text_color" type="text" class="input" size="30" maxlength="200" value="$met_text_color">
+			<SCRIPT language=javascript> 
+<!-- 
+function do_color(vobject,vvar) 
+{ document.getElementById(vobject).style.color=vvar; 
+  document.getElementById('met_text_color').value=vvar;
+}
+--> 
+</SCRIPT>
+<select name='select_color' size=1 onChange="if(this.options[this.selectedIndex].value!='') 
+{do_color('fontZoom',this.options[this.selectedIndex].value);}"> 
+<option>选择颜色</option>
+<option style="background-color: #FFFFFF;color:#FFFFFF" value="#FFFFFF">白  色</option> 
+<option style="background-color:Black;color:Black" value="#000000">黑  色</option> 
+<option style="background-color:Red;color:Red" value="#FF0000">红  色</option> 
+<option style="background-color:Yellow;color:Yellow" value="#FFFF00">黄  色</option> 
+<option style="background-color:Green;color:Green" value="#008000">绿  色</option> 
+<option style="background-color:Orange;color:Orange" value="#FF8000">橙  色</option> 
+<option style="background-color:Purple;color:Purple" value="#800080">紫  色</option> 
+<option style="background-color:Blue;color:Blue" value="#0000FF">蓝  色</option> 
+<option style="background-color:Brown;color:Brown" value="#800000">褐  色</option> 
+<option style="background-color:#00FFFF;color: #00FFFF" value="#00FFFF">粉 绿</option> 
+<option style="background-color:#7FFFD4;color: #7FFFD4" value="#7FFFD4">淡 绿</option> 
+<option style="background-color:#FFE4C4;color: #FFE4C4" value="#FFE4C4">黄 灰</option> 
+<option style="background-color:#7FFF00;color: #7FFF00" value="#7FFF00">翠 绿</option> 
+<option style="background-color:#D2691E;color: #D2691E" value="#D2691E">综 红</option> 
+<option style="background-color:#FF7F50;color: #FF7F50" value="#FF7F50">砖 红</option> 
+<option style="background-color:#6495ED;color: #6495ED" value="#6495ED">淡 蓝</option> 
+<option style="background-color:#DC143C;color: #DC143C" value="#DC143C">暗 红</option> 
+<option style="background-color:#FF1493;color: #FF1493" value="#FF1493">玫瑰红</option> 
+<option style="background-color:#FF00FF;color: #FF00FF" value="#FF00FF">紫 红</option> 
+<option style="background-color:#FFD700;color: #FFD700" value="#FFD700">桔 黄</option> 
+<option style="background-color:#DAA520;color: #DAA520" value="#DAA520">军 黄</option> 
+<option style="background-color:#808080;color: #808080" value="#808080">烟 灰</option> 
+<option style="background-color:#778899;color: #778899" value="#778899">深 灰</option> 
+<option style="background-color:#B0C4DE;color: #B0C4DE" value="#B0C4DE">灰 蓝</option> 
+ </select> 
+			</td>
+          </tr>
+		   <tr bgcolor="#ECF5FF"> 
+            <td width="140" height="25"><b>水印位置：</b></td>
+            <td colspan="2"> 
+<input type="radio" value="0" name="met_watermark" $met_watermark0/>中 部　
+<input type="radio" value="1" name="met_watermark" $met_watermark1/>左上角　
+<input type="radio" value="2" name="met_watermark" $met_watermark2/>右上角
+<input type="radio" value="3" name="met_watermark" $met_watermark3/>右下角
+<input type="radio" value="4" name="met_watermark" $met_watermark4/>左下角
+<br/>
+<input type="radio" value="5" name="met_watermark" $met_watermark5/>顶中部
+<input type="radio" value="6" name="met_watermark" $met_watermark6/>右中部
+<input type="radio" value="7" name="met_watermark" $met_watermark7/>底中部
+<input type="radio" value="8" name="met_watermark" $met_watermark8/>左中部
+</td>
+          </tr>  
+	      <tr> 
+            <td height="30" colspan="3" align="center" bgcolor="#ECF5FF"> <input type="submit" name="Submit" value="提交" class="tj">
+              　 
+              <input type="reset" name="Submit" value="重置" class="tj"> </td>
+          </tr>
+        </form>
+    </table></td>
+  </tr>
+</table>
+</body>
+</html>
+<!--
+EOT;
+?>-->

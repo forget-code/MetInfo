@@ -1,0 +1,72 @@
+<!--<?php
+echo <<<EOT
+-->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="$css_url/metinfo_admin.css">
+<title>编辑反馈信息</title>
+<script type="text/javascript" src="../language/zh_cn.js"></script>
+<script type="text/javascript" src="../include/metinfo.js"></script>
+</head>
+<body>
+
+<table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr> 
+    <td align="center" valign="top"><table width="95%" border="0" cellpadding="2" cellspacing="1" class="table_southidc">
+        <form  method="POST" name="myform"  action="editor.php?action=editor" target="_self">
+		<input name="id" type="hidden" value="$id">
+          <tr> 
+            <td class="back_southidc" height="30" colspan="3" align="center">反馈信息编辑</td>
+          </tr>
+          <tr bgcolor="#ECF5FF"> 
+            <td width="120" height="25"><b>姓名:</b></td>
+            <td colspan="2">$message_list[name]</td>
+          </tr> 
+		   <tr bgcolor="#ECF5FF"> 
+            <td width="120" height="25"><b>电话:</b></td>
+            <td colspan="2">$message_list[tel]</td>
+          </tr> 
+		   <tr bgcolor="#ECF5FF"> 
+            <td width="120" height="25"><b>email:</b></td>
+            <td colspan="2">$message_list[email]</td>
+          </tr> 
+		   <tr bgcolor="#ECF5FF"> 
+            <td width="120" height="25"><b>其他联系方式:</b></td>
+            <td colspan="2">$message_list[contact]</td>
+          </tr> 
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="20%" height="25"><b>留言内容：</b>
+			</td>
+            <td width="80%" ><textarea name="info" cols="50" rows="5">$message_list[info]</textarea></td>
+			</tr> 
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="119" height="25"><b>反馈提交时间：</b></td>
+            <td colspan="2">$message_list[addtime]</td>
+          </tr>
+			 <tr bgcolor="#ECF5FF"> 
+            <td width="20%" height="25"><b>来源IP地址：</b>
+			</td>
+            <td width="80%" >$message_list[ip]</td>
+			</tr> 
+			 <tr bgcolor="#ECF5FF"> 
+            <td width="20%" height="25"><b>回复留言：</b></td>
+            <td width="80%" ><textarea name="useinfo" cols="50" rows="5">$message_list[useinfo]</textarea></td></tr>
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="20%" height="25"><b style="color:#990000">回复审核：</b></td>
+            <td width="80%"><input name="readok" type="checkbox" value="1" $met_readok>审核通过并在前台显示</td>
+          </tr>
+		  <tr> 
+            <td height="30" colspan="3" align="center" bgcolor="#ECF5FF"> <input type="submit" name="Submit" value="提交" class="tj">
+              　 
+              <input type="reset" name="Submit" value="重置" class="tj"> </td>
+          </tr>
+        </form>
+    </table></td>
+  </tr>
+</table>
+</body>
+</html>
+<!--
+EOT;
+?>-->

@@ -1,0 +1,118 @@
+<!--<?php
+echo <<<EOT
+-->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="$css_url/metinfo_admin.css">
+<title>模板管理</title>
+<script type="text/javascript" src="../language/zh_cn.js"></script>
+<script type="text/javascript" src="../include/metinfo.js"></script>
+</head>
+<body>
+<br>
+<!--
+EOT;
+if($action=="modify"){
+echo <<<EOT
+-->
+<table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr> 
+    <td align="center" valign="top"><table width="95%" border="0" cellpadding="2" cellspacing="1" class="table_southidc">
+          <tr> 
+            <td class="back_southidc" height="30" align="center">$bigid_info[c_name]下拉菜单修改</td>
+          </tr>
+          <tr>
+            <td height="20" align="left" >
+			  <form method="POST" name="myform"  action="list.php?action=editor&id=$id&bigid=$bigid" onSubmit="return CheckForm_skin();" target="_self">
+			  <b>修改下拉菜单列表：</b>
+			   中文名称:
+			    <input name="c_list" type="text" size="20" value="$fdlist_m[c_list]">
+			     英文名称:
+<input name="e_list" type="text" size="20" value="$fdlist_m[e_list]">
+  排序:
+  <input name="no_order" type="text" size="3" value="$fdlist_m[no_order]">
+  <input type="submit" name="Submit2" value="添加" class="tj">  
+	        </form>
+			    </td>
+          </tr>
+		   
+    </table></td>
+  </tr>
+</table>
+</body>
+</html>
+<!--
+EOT;
+}
+else{
+echo <<<EOT
+-->
+<table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr> 
+    <td align="center" valign="top"><table width="95%" border="0" cellpadding="2" cellspacing="1" class="table_southidc">
+          <tr> 
+            <td class="back_southidc" height="30" align="center">$bigid_info[c_name]下拉菜单管理</td>
+          </tr>
+          <tr>
+            <td height="20" align="left" >
+			  <form method="POST" name="myform"  action="list.php?bigid=$bigid&action=add" onSubmit="return CheckForm_skin();" target="_self">
+			  <b>添加下拉菜单列表：</b>
+			    中文名称:
+			    <input name="c_list" type="text" size="20">
+			     英文名称:
+  <input name="e_list" type="text" size="20">
+  排序:
+  <input name="no_order" type="text" size="3">
+  <input type="submit" name="Submit2" value="添加" class="tj">  
+	        </form></td>
+          </tr>
+          <tr> 
+            <td valign="top"><table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#003366" class="border" style="word-break:break-all">
+              <tr class="back_southidc2">
+                <td width="5%" height="25" align="center">选中</td>
+                <td width="5%" height="25" align="center">排序</td>
+                <td width="20%" align="center" >中文名称</td>
+                <td width="10%" align="center" >英文名称</td>
+				<td width="10%" align="center" >操作</td>
+              </tr>
+			  <form name="del" method="Post" action="list.php?action=delete" onSubmit="return ConfirmDelall();">
+<!--
+EOT;
+foreach ($fd_list as $key=>$val){
+echo <<<EOT
+-->          
+              <tr class="tdbg">
+              <td height="22" align="center" class="left1"><input name='id' type='checkbox' onClick="unselectall()" id="id" value='$val[id]' class="xz"></td>
+                <td align="center" bgcolor="#ECF5FF">$val[no_order]</td>
+                <td  bgcolor="#ECF5FF" align="center">$val[c_list]</a></td>
+                <td  bgcolor="#ECF5FF" align="center">$val[e_list]</td>
+				<td align="center" bgcolor="#ECF5FF" ><a href="list.php?bigid=$val[bigid]&id=$val[id]&action=modify" >编辑</a> | <a href="list.php?bigid=$val[bigid]&id=$val[id]&action=delete" onClick="return ConfirmDel();" >删除</a></td>
+              </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+       
+            </table></td>
+          </tr> 
+		   
+   	   <tr> 
+            <td height="20" align="left" bgcolor="#ECF5FF"><input name="chkAll" class="xz" type="checkbox" id="chkAll" onclick=CheckAll(this.form) value="checkbox">
+              选中本页显示的所有模板 <input name="submit" type='submit' value='删除选定的条目'> 
+              <input name="action_type" type="hidden" id="action_type" value="del">
+			  <input name="allid" type="hidden" id="allid" value=""></form></td>
+          </tr>
+   	   <tr>
+   	     <td height="0" align="center" bgcolor="#ECF5FF">$page_list</td>
+        </tr>
+    </table></td>
+  </tr>
+</table>
+</body>
+</html>
+<!--
+EOT;
+}
+?>-->

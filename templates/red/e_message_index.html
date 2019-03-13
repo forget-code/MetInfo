@@ -1,0 +1,41 @@
+<!--<?php
+require_once template('e_head'); 
+echo <<<EOT
+-->
+<div class="web">
+<div class="webleft">
+<div class="nav_x">&nbsp;<a href='$index_c_url'>Home</a> > $navtitle</div>
+<div class="content">
+<div class="message_line"><a href="message.php?en=en">Refer Leave Word >></a></div>
+<!--
+EOT;
+foreach($message_list as $key=>$val){
+echo <<<EOT
+-->
+<div class="message_list">
+<div class="message_list_line">[NO$val[id]]：<b>$val[name]</b>Refered at $val[addtime]</div>
+<div class="message_list_info"><b>Content</b>:$val[info]</div>
+<div class="message_list_reinfo"><b>Administrators Reversion</b>:$val[useinfo]</div>
+</div>
+
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</div>
+$e_page_list
+</div>
+
+<div class="webright">
+<!--
+EOT;
+require_once template('e_online'); 
+echo <<<EOT
+-->
+</div>
+</div>
+<!--
+EOT;
+require_once template('e_foot'); 
+?>

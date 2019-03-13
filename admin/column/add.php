@@ -1,0 +1,52 @@
+<?php
+require_once '../login/login_check.php';
+$bigclass=$lang[class1];
+$addtitle=$lang[class1];
+$class=0;
+$foldername="";
+$filenameok="";
+$list_orderok="none";
+$list_order[0]="checked='checked'";
+$classtype=1;
+if($class1!=""){
+$class1_list = $db->get_one("SELECT * FROM $met_column WHERE id='$class1'");
+if(!$class1_list){
+okinfo('index.php',$lang[noid]);
+}
+$list_order[$class1_list[list_order]]="checked='checked'";
+if($class1_list[list_order]!=0)$list_orderok="";
+$bigclass=$class1_list[c_name];
+$addtitle=$lang[class2];
+$class=$class1;
+$class_list[module]=$class1_list[module];
+$foldername=$class1_list[foldername];
+$module[$class1_list[module]]="selected='selected'";
+$foldername1="disabled='disabled'";
+$module1="disabled='disabled'";
+if($class1_list[module]!=1)$filenameok="none";
+$classtype=2;
+}
+if($class2!=""){
+$class2_list = $db->get_one("SELECT * FROM $met_column WHERE id='$class2'");
+if(!$class2_list){
+okinfo('index.php',$lang[noid]);
+}
+$list_order[$class2_list[list_order]]="checked='checked'";
+if($class2_list[list_order]!=0)$list_orderok="";
+$bigclass=$class2_list[c_name];
+$addtitle=$lang[class3];
+$class=$class2;
+$class_list[module]=$class2_list[module];
+$foldername=$class2_list[foldername];
+$module[$class2_list[module]]="selected='selected'";
+$foldername1="disabled='disabled'";
+$module1="disabled='disabled'";
+if($class2_list[module]!=1)$filenameok="none";
+$classtype=3;
+}
+if($foldername=="")$foldername="about";
+$css_url="../templates/".$met_skin."/css";
+$img_url="../templates/".$met_skin."/images";
+include template('column_add');
+footer();
+?>

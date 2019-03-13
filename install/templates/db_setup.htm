@@ -1,0 +1,30 @@
+<?php require_once('templates/header.htm');?>
+<body>
+<div class="body">
+<div class="head">
+<div class="logo"><img src="images/logosmall.gif" width="40" /></div>
+<div class="headtext">MetInfo企业网站管理系统安装</div>
+<div class="headright">第四步：创建数据库</div>
+</div>
+<div class="content">
+
+<fieldset>
+<legend><strong>系统安装</strong></legend>
+<div class='section'>
+<ul class="inspect-list">
+<?php creat_table($content);?>  
+</ul>
+</div>
+</fieldset>
+
+<br />
+<div class="center">
+<?php if($db_setup==1){?>
+<form name="myform" method="post" action="index.php?action=adminsetup" style="text-align:center;"><input type="submit" name="submit" class="btn2" value="点击进入管理设置" /></form>
+<?}else{?>
+<p>系统安装失败，请联系仔细检查您的mysql版本，和php版本，以及运行环境。</p>
+<?}?>
+</div>
+</div>
+</div>
+ <?php require_once('templates/footer.htm');?>

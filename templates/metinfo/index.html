@@ -1,0 +1,105 @@
+<!--<?php
+require_once template('head'); 
+echo <<<EOT
+-->
+<div class="web">
+<div class="index_webleft">
+<div class="nav_x"><img src="$img_url/nav1.gif" />&nbsp;公司简介</div>
+<div class="index_content">
+$index[c_content]
+</div>
+</div>
+<div class="index_webright">
+<div class="nav_x"><img src="$img_url/nav1.gif" />&nbsp;最新动态</div>
+<!--
+EOT;
+$i=0;
+foreach($news_list as $key=>$val){
+$val[c_title]=utf8substr($val[c_title], 0, 19); 
+$i++;
+echo <<<EOT
+-->
+<div class="index_news_list"><img src="$img_url/list.gif" /><a href="$val[c_url]" target="_blank">$val[c_title]</a> [$val[updatetime]] </div>
+<!--
+EOT;
+if($i>=$index[news_no])break;
+}
+echo <<<EOT
+-->
+</div>
+<div class="index_product">
+<div class="nav_x"><img src="$img_url/nav1.gif" />&nbsp;推荐产品</div>
+
+<div class="index_content">
+<!--
+EOT;
+$i=0;
+foreach($product_listhits_com as $key=>$val){
+$val[c_title]=utf8substr($val[c_title], 0, 12); 
+$i++;
+echo <<<EOT
+-->
+<div class="index_product_list"><a href="$val[c_url]" target="_blank"><img src="$val[imgurls]" /></a><br /><a href="$val[c_url]" target="_blank">$val[c_title]</a> </div>
+<!--
+EOT;
+if($i>=$index[product_no])break;
+}
+echo <<<EOT
+-->
+</div>
+</div>
+<!--
+EOT;
+if($index[link_ok]){
+echo <<<EOT
+-->
+<div class="index_product">
+<div class="nav_x"><img src="$img_url/nav1.gif" />&nbsp;友情链接</div>
+<div class="index_link">
+<div class="index_link_img">
+<!--
+EOT;
+$i=0;
+foreach($link_img_com as $key=>$val){
+$i++;
+echo <<<EOT
+-->
+<a href="$val[weburl]" target="_blank"><img src="$val[weblogo]" alt="$val[c_webname]" /></a>
+<!--
+EOT;
+if($i>=$index[link_img])break;
+}
+echo <<<EOT
+-->
+</div>
+<div class="index_link_text">
+<!--
+EOT;
+$i=0;
+foreach($link_text_com as $key=>$val){
+$i++;
+echo <<<EOT
+-->
+<a href="$val[weburl]" target="_blank" title="$val[c_info]">$val[c_webname]</a>
+<!--
+EOT;
+if($i>=$index[link_text])break;
+}
+echo <<<EOT
+-->
+</div>
+</div>
+</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+
+</div>
+<!--
+EOT;
+require_once template('online'); 
+require_once template('foot'); 
+
+?>

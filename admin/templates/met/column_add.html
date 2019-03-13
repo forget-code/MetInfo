@@ -1,0 +1,147 @@
+﻿<!--<?php
+echo <<<EOT
+-->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="$css_url/metinfo_admin.css">
+<title>添加栏目</title>
+<script type="text/javascript" src="../language/zh_cn.js"></script>
+<script type="text/javascript" src="../include/metinfo.js"></script>
+</head>
+<body>
+
+<table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr> 
+    <td align="center" valign="top"><table width="95%" border="0" cellpadding="2" cellspacing="1" class="table_southidc">
+        <form method="POST" name="myform" onSubmit="return CheckForm_moudle();" action="save.php?action=add" target="_self">
+		<input name="module1" type="hidden" value="$class_list[module]">
+        <input name="foldername1" type="hidden" value="$foldername">
+		<input name="classtype" type="hidden" value="$classtype">
+          <tr> 
+            <td class="back_southidc" height="30" colspan="3" align="center">添加$addtitle</td>
+          </tr>
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="20%" height="25"><font color="#FF0000">*</font>上级栏目名称：</td>
+            <td width="80%" > <input name="bigclass1" type="text" class="input" size="20" maxlength="50" value="$bigclass" disabled="disabled"></td>
+			<input name="bigclass" type="hidden" class="input" size="20" maxlength="50" value="$class">
+          </tr> 
+          <tr bgcolor="#ECF5FF"> 
+            <td width="20%" height="25"><font color="#FF0000">*</font>栏目中文名称：</td>
+            <td width="80%" ><input name="c_name" type="text" class="input" size="20" maxlength="50"></td>
+          </tr> 
+<!--
+EOT;
+if($met_en_lang==1){
+echo <<<EOT
+-->
+		  <tr bgcolor="#ECF5FF"> 
+            <td height="25">栏目英文名称：</td>
+            <td > <input name="e_name" type="text" class="input" size="20" maxlength="50"></td>
+          </tr> 
+<!--
+EOT;
+}
+echo <<<EOT
+-->			  <tr bgcolor="#ECF5FF"> 
+            <td height="25">同级栏目排序：</td>
+            <td > <input name="no_order" type="text" class="input" size="2" maxlength="20"></td>
+          </tr>
+		  <tr bgcolor="#ECF5FF"> 
+            <td height="25">主导航条显示：</td>
+            <td ><input name="nav" type="radio" value="0" checked="checked">不显示 &nbsp;<input name="nav" type="radio" value="1">头部主导航条<input name="nav" type="radio" value="2">尾部导航条<input name="nav" type="radio" value="3">都显示</td>
+          </tr> 
+		   <tr bgcolor="#ECF5FF"> 
+            <td height="25">是否在新窗口打开：</td>
+            <td ><input name="new_windows" type="checkbox" value="target='_blank'">是</td>
+          </tr>
+		  <tr bgcolor="#ECF5FF"> 
+            <td height="25">栏目属性：</td>
+            <td ><input name="if_in" type="radio" id="if_in1" value="0" onMouseDown="displayid('columnin','columnout')" checked="checked">系统模型 &nbsp;<input name="if_in" type="radio" value="1" onMouseDown="displayid('columnout','columnin')">外部链接或单独页面链接</td>
+          </tr>
+		  <tr bgcolor="#ECF5FF"><td colspan="3" style="border:0px;">
+		  <div id="columnin" style=" width:100%; display:">
+		  <table width="100%" height="100%" border="0" cellpadding="1" cellspacing="1" class="table_southidc"> 
+		   <tr bgcolor="#ECF5FF"> 
+            <td height="25"><font color="#FF0000">*</font>所属模块：</td>
+            <td ><select name="module" id="module" onChange="changefile(document.myform.module.options[document.myform.module.selectedIndex].value)" $module1>
+              <option value="1" $module[1]>简介模块</option>
+              <option value="2" $module[2]>文章模块</option>
+              <option value="3" $module[3]>产品模块</option>
+              <option value="4" $module[4]>下载模块</option>
+              <option value="5" $module[5]>图片模块</option>
+              <option value="6" $module[6]>招聘模块</option>
+              <option value="7" $module[7] >留言模块</option>
+            </select></td>
+          </tr> 
+		  <tr bgcolor="#ECF5FF" > 
+            <td width="20%" height="25"><font color="#FF0000">*</font>栏目文件夹名称：</td>
+            <td > <input name="foldername" id="foldername" type="text" class="input" size="20" maxlength="20" value="$foldername" $foldername1>用于存放静态页面，<b>建议采用默认值</b>，二三级栏目不可以修改。</td>
+          </tr>
+		  <tr bgcolor="#ECF5FF" id="list_order" style="display:$list_orderok"> 
+            <td width="20%" height="25"><font color="#FF0000">*</font>内容列表排序：</td>
+            <td ><input name="list_order" type="radio" value="0" $list_order[0] >默认 &nbsp;<input name="list_order" type="radio" value="1" $list_order[1] >更新时间 &nbsp; <input name="list_order" type="radio" value="2" $list_order[2]>发布时间 &nbsp;<input name="list_order" type="radio" value="3" $list_order[3]>点击次数 &nbsp; <input name="list_order" type="radio" value="4" $list_order[4]>ID倒序 &nbsp; <input name="list_order" type="radio" value="5" $list_order[5]>ID顺序</td>
+          </tr>
+		  <tr bgcolor="#ECF5FF" id="filename" style="display:$filenameok"> 
+            <td width="20%" height="25"><font color="#FF0000">*</font>静态页面名称：</td>
+            <td > <input name="filename" type="text" class="input" size="20" maxlength="20" >用于生成静态页面，不能重名。</td>
+          </tr>
+		  <tr bgcolor="#ECF5FF"> 
+            <td height="25" colspan="3"><b>搜索引擎优化设置</b> </td> 
+          </tr>
+		  <tr bgcolor="#ECF5FF"> 
+            <td height="25">中文关键词：</td>
+            <td > <input name="c_keywords" type="text" class="input" size="20" maxlength="200">多个关键词请用","隔开</td>
+          </tr>
+		  <tr bgcolor="#ECF5FF"> 
+            <td height="25">中文简短描述：</td>
+            <td ><textarea name="c_description" cols="50" rows="4" ></textarea></td>
+          </tr>
+<!--
+EOT;
+if($met_en_lang==1){
+echo <<<EOT
+-->
+		  <tr bgcolor="#ECF5FF"> 
+            <td height="25">英文关键词：</td>
+            <td > <input name="e_keywords" type="text" class="input" size="20" maxlength="200">多个关键词请用","隔开</td>
+          </tr>
+		  <tr bgcolor="#ECF5FF"> 
+            <td height="25">英文简短描述：</td>
+            <td ><textarea name="e_description" cols="50" rows="4" ></textarea></td>
+          </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+		  </table> 
+		  </div>
+		  <div id="columnout" style="width:100%; display:none">
+		  <table width="100%" height="100%" border="0" cellpadding="1" cellspacing="1" class="table_southidc">
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="20%" height="25"><font color="#FF0000">*</font>中文链接地址：</td>
+            <td > <input name="c_out_url" type="text" class="input" size="20" maxlength="200">外部网址请用“http://www.xxx.com"的形式</td>
+          </tr> 
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="20%" height="25"><font color="#FF0000">*</font>英文链接地址：</td>
+            <td > <input name="e_out_url" type="text" class="input" size="20" maxlength="200">外部网址请用“http://www.xxx.com"的形式</td>
+          </tr> 
+		   
+		  </table> 
+		  </div>
+		  </td></tr>
+		  
+<tr> <td height="30" colspan="2" align="center" bgcolor="#ECF5FF"> <input type="submit" name="Submit" value="提交" class="tj">
+              　 
+              <input type="reset" name="Submit" value="重置" class="tj"> </td>
+          </tr>
+        </form>
+    </table></td>
+  </tr>
+</table>
+</body>
+</html>
+<!--
+EOT;
+?>-->

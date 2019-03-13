@@ -1,0 +1,24 @@
+<!--<?php
+require_once template('e_head'); 
+echo <<<EOT
+-->
+<div class="web">
+<div class="webleft">
+<div class="nav_x">&nbsp;<a href='$index_c_url'>Home</a> > $show[e_name]</div>
+<div class="content">$show[e_content]</div>
+</div>
+<div class="webright">
+<div class="nav_x">&nbsp;>>$class1_list[e_name]</div>
+<div class="navright">$nav_e_list</div>
+<!--
+EOT;
+require_once template('e_online'); 
+echo <<<EOT
+-->
+</div>
+</div>
+
+<!--
+EOT;
+require_once template('e_foot'); 
+?>

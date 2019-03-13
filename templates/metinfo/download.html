@@ -1,0 +1,44 @@
+<!--<?php
+require_once template('head'); 
+echo <<<EOT
+-->
+<div class="web">
+<div class="webleft">
+<div class="nav_x"><img src="$img_url/home.gif" />&nbsp;<a href='$index_c_url'>首页</a> > $nav_x[c_name]</div>
+<div class="content">
+<!--
+EOT;
+foreach($download_list as $key=>$val){
+echo <<<EOT
+-->
+<div class="download_list">
+<div class="download_list_title"><a href="$val[c_url]" target="_blank">$val[c_title]</a></div>
+<div class="download_list_detail">
+<div class="download_list_detail1"><b>文件大小</b>：$val[filesize]KB&nbsp;&nbsp;&nbsp;&nbsp;<b>点击次数</b>：$val[hits]&nbsp;&nbsp;&nbsp;&nbsp;<b>更新时间</b>：$val[updatetime] </div>
+<div class="download_list_detail2"><a href="$val[downloadurl]" target="_blank">点击下载</a> | <a href="$val[c_url]" target="_blank">查看详细</a></div>
+
+</div>
+</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</div>
+$c_page_list
+</div>
+
+<div class="webright">
+<div class="nav_x">&nbsp;<img src="$img_url/nav1.gif" />&nbsp;$class1_info[c_name]</div>
+<div class="navright">$nav_c_list</div>
+<!--
+EOT;
+require_once template('online'); 
+echo <<<EOT
+-->
+</div>
+</div>
+<!--
+EOT;
+require_once template('foot'); 
+?>

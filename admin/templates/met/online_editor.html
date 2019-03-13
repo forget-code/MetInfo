@@ -1,0 +1,76 @@
+﻿<!--<?php
+echo <<<EOT
+-->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="$css_url/metinfo_admin.css">
+<title>修改客服信息</title>
+<script type="text/javascript" src="../language/zh_cn.js"></script>
+<script type="text/javascript" src="../include/metinfo.js"></script>
+</head>
+<body>
+
+<table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr> 
+    <td align="center" valign="top"><table width="95%" border="0" cellpadding="2" cellspacing="1" class="table_southidc">
+        <form  method="POST" name="myform" action="save.php?action=editor" target="_self">
+          <tr> 
+            <td class="back_southidc" height="30" colspan="3" align="center">修改客服信息</td>
+          </tr>
+          <tr bgcolor="#ECF5FF"> 
+            <td width="120" height="25"><b>客服名称：</b></td>
+            <td colspan="2"> <input name="c_name" type="text" class="input" size="20" maxlength="200" value="$online_list[c_name]">如“在线销售”、“张三”等。</td>
+          </tr>
+<!--
+EOT;
+if($met_en_lang==1){
+echo <<<EOT
+--> 
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="120" height="25"><b>英文名称：</b></td>
+            <td colspan="2"> <input name="e_name" type="text" class="input" size="20" maxlength="200" value="$online_list[e_name]"></td>
+          </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+--> 
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="119" height="25"><b>显示排序：</b></td>
+            <td colspan="2"><input name="no_order" type="text" class="input" size="5" maxlength="20" value="$online_list[no_order]">数字越小排序越靠前</td>
+          </tr>
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="119" height="25"><b>QQ：</b></td>
+            <td colspan="2"><input name="qq" type="text" class="input" size="20" maxlength="200" value="$online_list[qq]">请输入QQ号码，为空则不显示，需要前台模板支持</td>
+          </tr>
+		   <tr bgcolor="#ECF5FF"> 
+            <td width="119" height="25"><b>MSN：</b></td>
+            <td colspan="2"><input name="msn" type="text" class="input" size="20" maxlength="200" value="$online_list[msn]">请输入MSN账号，为空则不显示，需要前台模板支持</td>
+          </tr>
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="119" height="25"><b>淘宝旺旺：</b></td>
+            <td colspan="2"><input name="taobao" type="text" class="input" size="20" maxlength="200" value="$online_list[taobao]">请输入淘宝旺旺账号，为空则不显示，需要前台模板支持</td>
+          </tr>
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="119" height="25"><b>阿里旺旺：</b></td>
+            <td colspan="2"><input name="alibaba" type="text" class="input" size="20" maxlength="200" value="$online_list[alibaba]">请输入阿里旺旺账号，为空则不显示，需要前台模板支持</td>
+          </tr>
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="119" height="25"><b>SKYPE：</b></td>
+            <td colspan="2"><input name="skype" type="text" class="input" size="20" maxlength="200" value="$online_list[skype]">请输入SKYPE账号，为空则不显示，需要前台模板支持</td>
+          </tr>
+		  <tr> 
+            <td height="30" colspan="3" align="center" bgcolor="#ECF5FF"> <input type="submit" name="Submit" value="提交" class="tj">
+              　<input name="id" type="hidden" value="$id">
+              <input type="reset" name="Submit" value="重置" class="tj"> </td>
+          </tr>
+        </form>
+    </table></td>
+  </tr>
+</table>
+</body>
+</html>
+<!--
+EOT;
+?>-->

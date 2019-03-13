@@ -1,0 +1,33 @@
+<!--<?php
+require_once template('head'); 
+echo <<<EOT
+-->
+<div class="web">
+<div class="webleft">
+<div class="nav_x">&nbsp;<a href='$index_c_url'>首页</a> > $nav_x[c_name]</div>
+<div class="content">
+<h1>招聘职位：$job[c_position]</h1>
+<div class="job_list_detail">
+<b>招聘人数</b>:$job[count]<br />
+<b>工作地点</b>:$job[c_place]<br />
+<b>工资待遇</b>:$job[c_deal]<br />
+<b>发布日期</b>:$job[addtime]<br />
+<b>有效期</b>:$job[useful_life]<br />
+</div>
+<div class="content"><b>职位描述</b>：<br />$job[c_content]</div>
+
+</div>
+</div>
+
+<div class="webright">
+<!--
+EOT;
+require_once template('online'); 
+echo <<<EOT
+-->
+</div>
+</div>
+<!--
+EOT;
+require_once template('foot'); 
+?>

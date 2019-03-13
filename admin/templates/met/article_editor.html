@@ -1,0 +1,186 @@
+﻿<!--<?php
+echo <<<EOT
+-->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="$css_url/metinfo_admin.css">
+<title>修改文章</title>
+<script type="text/javascript" src="../language/zh_cn.js"></script>
+<script type="text/javascript" src="../include/metinfo.js"></script>
+</head>
+<body>
+
+<table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr> 
+    <td align="center" valign="top"><table width="95%" border="0" cellpadding="2" cellspacing="1" class="table_southidc">
+        <form  method="POST" name="myform" onSubmit="return CheckFormarticle();" action="save.php?action=editor" target="_self">
+		<input name="class1" type="hidden" value="$class1">
+		<input name="id" type="hidden" value="$id">
+          <tr> 
+            <td class="back_southidc" height="30" colspan="3" align="center">修改文章</td>
+          </tr>
+          <tr bgcolor="#ECF5FF"> 
+            <td width="120" height="25"><font color="#FF0000">*</font><b>文章标题：</b></td>
+            <td colspan="2"> <input name="c_title" type="text" class="input" size="50" maxlength="200" value="$news_list[c_title]"></td>
+          </tr> 
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="120" height="25"><font color="#FF0000">*</font><b>所属栏目：</b></td>
+            <td colspan="2">
+<!--
+EOT;
+if($class2_ok==TRUE){
+echo <<<EOT
+-->	
+<select name="class2" onChange="changelocation(document.myform.class2.options[document.myform.class2.selectedIndex].value)" size="1">
+<option value=0 $class2[0]>二级栏目</option>
+<!--
+EOT;
+foreach($column_list2 as $key=>$val2){
+$k=$val2[id];
+echo <<<EOT
+-->			
+<option  value="$val2[id]" $class2[$k]>$val2[c_name]</option>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+              </select>
+			<select name="class3"> 
+			<option value=0 $class3[0]>三级栏目</option>
+<!--
+EOT;
+foreach($class3_list as $key=>$val3){
+$k=$val3[id];
+echo <<<EOT
+-->			
+<option  value="$val3[id]" $class3[$k]>$val3[c_name]</option>
+<!--
+EOT;
+}
+echo <<<EOT
+-->			
+             </select>
+<!--
+EOT;
+}else{
+echo <<<EOT
+-->		 
+		 <font color="#FF0000">$class1_name</font>
+<!--
+EOT;
+}
+echo <<<EOT
+--
+		 </td>
+          </tr>
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="119" height="25"><b>内容关键词：</b></td>
+            <td colspan="2"><input name="c_keywords" type="text" class="input" size="40" maxlength="200" value="$news_list[c_keywords]">用于搜索引擎优化，多个关键词请用","隔开</td>
+          </tr>
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="20%" height="25"><b>内容简短描述：</b><br>用于搜索引擎优化
+			</td>
+            <td width="80%" ><textarea name="c_description" cols="60" rows="5">$news_list[c_description]</textarea></td>
+			</tr> 
+			 <tr bgcolor="#ECF5FF"> 
+            <td width="20%" height="25"><b>详细内容：</b></td>
+            <td width="80%" >
+<!--
+EOT;
+echo "-->";
+$oFCKeditor = new FCKeditor('c_content'); 
+$oFCKeditor->BasePath = '../../fckeditor/';
+$oFCKeditor->Value = $news_list[c_content];
+$oFCKeditor->Width = '100%';   
+$oFCKeditor->Height = '300';
+$oFCKeditor->Create();
+echo <<<EOT
+</td></tr>
+		   <tr bgcolor="#ECF5FF"> 
+            <td width="119" height="25"><b>图片文章：</b></td>
+            <td colspan="2"><input name="img_ok" type="checkbox" value="1" onMouseDown="displayall('imgurl','imgurls')" $img_ok>选择将在首页图片新闻中显示（需要网站模板支持）</td>
+          </tr> 
+		  <tr bgcolor="#ECF5FF" id="imgurl" style="display:$img_ok_display"> 
+            <td width="119" height="25"><b>图片地址：</b><br>自动生成缩略图</td>
+            <td colspan="2"> <input name="imgurl" type="text" class="input" size="30" maxlength="200" value="$news_list[imgurl]" > 
+			<iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_Photo.php?returnid=big&create_samll=1" frameborder=0 scrolling=no width="280" height="25"></iframe></td>
+          </tr> 
+		  <tr bgcolor="#ECF5FF" id="imgurls" style="display:$img_ok_display"> 
+            <td width="119" height="25"><b>缩略图：</b></td>
+            <td colspan="2"> <input name="imgurls" type="text" class="input" size="30" maxlength="200" value="$news_list[imgurls]"><iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_Photo.php?returnid=small" frameborder=0 scrolling=no width="280" height="25"></iframe></td>
+          </tr> 
+		 <tr bgcolor="#ECF5FF"> 
+            <td width="119" height="25"><b>推荐文章：</b></td>
+            <td colspan="2"><input name="com_ok" type="checkbox" value="1" $com_ok>选择将在推荐文章中显示（需要网站模板支持）</td>
+          </tr> 
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="119" height="25"><b>发布人：</b></td>
+            <td colspan="2"><input name="issue" type="text" class="input" size="10" maxlength="200" value="$news_list[issue]"></td>
+          </tr>
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="119" height="25"><b>点击次数：</b></td>
+            <td colspan="2"><input name="hits" type="text" class="input" size="10" maxlength="200" value="$news_list[hits]"> （点击次数越多，热门信息中排名越靠前）</td>
+          </tr>
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="119" height="25"><b>发布时间：</b></td>
+            <td colspan="2"><input name="addtime" type="text" class="input" size="20" maxlength="200" value="$news_list[addtime]">当前时间为：$m_now_date 注意不要改变格式。</td>
+          </tr>
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="119" height="25"><b>更新时间：</b></td>
+            <td colspan="2"><input name="updatetime" type="text" class="input" size="20" maxlength="200" value="$m_now_date">当前时间为：$m_now_date 注意不要改变格式。</td>
+          </tr>
+		   <tr bgcolor="#ECF5FF"> 
+            <td width="119" height="25"><b>文章排序：</b></td>
+            <td colspan="2">一般按更新时间的先后顺序排序，热门文章按点击次数排序，因此可以修改“发布时间”或“点击次数”来达到排序的目的。</td>
+          </tr>
+<!--
+EOT;
+if($met_en_lang==1){
+echo <<<EOT
+-->
+          <tr bgcolor="#999999"> <td  height="25" colspan="2"><b>英文内容</b></td></tr>
+           <tr bgcolor="#ECF5FF"> 
+            <td width="120" height="25"><font color="#FF0000">*</font><b>英文标题：</b></td>
+            <td colspan="2"> <input name="e_title" type="text" class="input" size="50" maxlength="200" value="$news_list[e_title]"></td>
+          </tr> 
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="119" height="25"><b>英文关键词：</b></td>
+            <td colspan="2"><input name="e_keywords" type="text" class="input" size="40" maxlength="200" value="$news_list[e_keywords]">用于搜索引擎优化，多个关键词请用","隔开</td>
+          </tr>
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="20%" height="25"><b>英文简短描述：</b><br>用于搜索引擎优化
+			</td>
+            <td width="80%" ><textarea name="e_description" cols="60" rows="5">$news_list[e_description]</textarea></td>
+			</tr> 
+			 <tr bgcolor="#ECF5FF"> 
+            <td width="20%" height="25"><b>英文详细内容：</b></td>
+            <td width="80%" >
+<!--
+EOT;
+echo "-->";
+$oFCKeditor = new FCKeditor('e_content'); 
+$oFCKeditor->BasePath = '../../fckeditor/';
+$oFCKeditor->Value = $news_list[e_content];
+$oFCKeditor->Width = '100%';   
+$oFCKeditor->Height = '300';
+$oFCKeditor->Create();
+echo "</td></tr>";
+}
+echo <<<EOT
+
+		  <tr> 
+            <td height="30" colspan="3" align="center" bgcolor="#ECF5FF"> <input type="submit" name="Submit" value="提交" class="tj">
+              　 
+              <input type="reset" name="Submit" value="重置" class="tj"> </td>
+          </tr>
+        </form>
+    </table></td>
+  </tr>
+</table>
+</body>
+</html>
+<!--
+EOT;
+?>-->

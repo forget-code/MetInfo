@@ -1,0 +1,83 @@
+<!--<?php
+echo <<<EOT
+-->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="$css_url/metinfo_admin.css">
+<title>反馈信息管理</title>
+<script type="text/javascript" src="../language/zh_cn.js"></script>
+<script type="text/javascript" src="../include/metinfo.js"></script>
+</head>
+<body>
+<br>
+<table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr> 
+    <td align="center" valign="top"><table width="95%" border="0" cellpadding="2" cellspacing="1" class="table_southidc">
+          <tr> 
+            <td class="back_southidc" height="30" align="center">反馈信息管理</td>
+          </tr>
+      <tr>
+     <td height="25" align="left" class="class2">反馈信息分类：&nbsp;&nbsp; <a href="index.php?search=$search&useinfo=$useinfo" >所有信息</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+<a href="index.php?search=$search&readok=0&useinfo=$useinfo" >未阅读信息</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="index.php?search=$search&readok=1&useinfo=$useinfo" >已阅读信息</a>
+</td> </tr>
+          <tr> 
+            <td valign="top"><table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#003366" class="border" style="word-break:break-all">
+              <tr class="back_southidc2">
+                <td width="5%" height="25" align="center">选中</td>
+				<td width="5%" height="25" align="center">ID</td>
+                <td width="40%" height="25" align="center">反馈信息标题</td>
+				<td width="5%" align="center" >阅读</td>
+                <td width="15%" align="center" >来源IP</td>
+                <td width="20%" align="center" >提交时间</td>
+				<td width="10%" align="center" >操作</td>
+              </tr>
+			  <form name="del" method="Post" action="delete.php" onSubmit="return ConfirmDelall();">
+<!--
+EOT;
+foreach ($feedback_list as $key=>$val){
+echo <<<EOT
+-->          
+              <tr class="tdbg">
+              <td height="22" align="center" class="left1"><input name='id' type='checkbox' onClick="unselectall()" id="id" value='$val[id]' class="xz"></td>
+                <td  bgcolor="#ECF5FF" align="center">$val[id]</td>
+			    <td align="left" bgcolor="#ECF5FF"><a href="editor.php?id=$val[id]" title="查看详细">$val[fdtitle]</a></td>
+                <td  bgcolor="#ECF5FF" align="center">$val[readok]</td>
+				<td  bgcolor="#ECF5FF" align="center">$val[ip]</td>
+                <td  bgcolor="#ECF5FF" align="center">$val[addtime]</td>
+				<td align="center" bgcolor="#ECF5FF" ></a> <a href="editor.php?id=$val[id]" >编辑</a> | <a href="delete.php?id=$val[id]" onClick="return ConfirmDel();" >删除</a></td>
+              </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+       
+            </table></td>
+          </tr> 
+		   
+   	   <tr> 
+            <td height="20" align="left" bgcolor="#ECF5FF"><input name="chkAll" class="xz" type="checkbox" id="chkAll" onclick=CheckAll(this.form) value="checkbox">
+              选中本页显示的所有反馈信息 <input name="submit" type='submit' value='删除选定的条目'> 
+              <input name="action" type="hidden" id="action" value="del">
+			  <input name="allid" type="hidden" id="allid" value=""></form></td>
+          </tr>
+		  <tr  bgcolor="#ECF5FF">
+            <td  height="20" align="left">
+			<form method="POST" name="myform"  action="index.php?search=detail_search" target="_self">
+			       <b>反馈信息查找：</b> 
+			    <input name="useinfo" type="text" size="30">
+  <input type="submit" name="Submit2" value="查询" class="tj">  
+	        请输入反馈信息用户编辑关键词。如果为空，则查找所有反馈信息。</form></td>
+          </tr>
+   	   <tr>
+   	     <td height="0" align="center" bgcolor="#ECF5FF">$page_list</td>
+        </tr>
+    </table></td>
+  </tr>
+</table>
+</body>
+</html>
+<!--
+EOT;
+?>-->

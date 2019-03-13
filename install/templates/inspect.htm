@@ -1,0 +1,54 @@
+<?php require_once('templates/header.htm');?>
+<body >
+<div class="body">
+<div class="head">
+<div class="logo"><img src="images/logosmall.gif" width="40" /></div>
+<div class="headtext">MetInfo企业网站管理系统安装</div>
+<div class="headright">第二步：系统检测</div>
+</div>
+<div class="content">
+<br>
+<p>请花些时间检查您的服务器是否支持安装MetInfo企业网站管理系统所需要的功能，请在继续安装前消除错误或警告信息，然后点击<b>安装</b>继续。</p>
+<form method="post" action="index.php?action=db_setup">
+<fieldset>
+<legend><strong>系统检测结果</strong></legend>
+<div class="section"><ul class="inspect-list">
+   <li class='NA'><strong>服务器 </strong> = <?php echo $_SERVER['SERVER_SIGNATURE']?></li>
+   <li class='NA'><strong>HTTP主机</strong> = <?php echo $_SERVER['SERVER_NAME']?></li>
+   <li class='NA'><strong>PHP页面最大执行时间</strong> = <?php echo ini_get("max_execution_time")?></li>
+   <li class='<?php echo $mysql_ver_class?>'><strong>MySQL支持</strong> = <?php echo $mysql_support?></li>
+   <li class='<?php echo $ver_class?>'><strong>PHP版本</strong> = <?php echo PHP_VERSION?> <?php echo $errormsg['version']?></li>
+
+</ul>
+<br /><a href="javascript:popupWindowLrg('phpinfo.php')">查看服务器的PHPINFO</a>
+</div>
+</fieldset>
+
+<fieldset>
+<legend><strong>文件和目录权限</strong></legend>
+<div class='section'>
+要能正常使用MetInfo企业网站管理系统，
+需要将几个文件/目录设置为 "可写".  下面是需要设置为 "可写" 的目录清单, 
+以及建议的 CHMOD 设置。在继续安装前，请做修改。
+在浏览器中刷新本页面以重新检测设置。<br />
+<br />某些主机不允许您设置 CHMOD 777, 要用666。先试最高的值，不行的话，再逐步降低该值。
+<ul class="inspect-list">
+<?php for($i=0; $i<$count; $i++){?>
+   <li class='<?php echo $class_chcek[$i]?>'>
+   <strong><?php echo $w_check[$i]?></strong> = <?php echo $check_msg[$i]?>   
+   </li>
+<?}?>
+</ul>
+</div>
+</fieldset><br />
+
+<fieldset>
+<legend><strong>开始安装?  (将删除已有数据，不是升级模式!!!)</strong></legend>
+<strong></strong>
+<p align="right"><input type="submit" name="submit" class="btn2" tabindex="8" value=" 安装 "  <?php echo $disabled?> />
+<input type="button" name="refresh" class="btn2" tabindex="11" value="重新检查" onClick="history.go(0)" /></p>
+</fieldset>
+</form>
+</div>
+</div>
+<?php require_once('templates/footer.htm');?>

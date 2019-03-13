@@ -1,0 +1,59 @@
+﻿<!--<?php
+echo <<<EOT
+-->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="$css_url/metinfo_admin.css">
+<title>添加参数</title>
+<script type="text/javascript" src="../language/zh_cn.js"></script>
+<script type="text/javascript" src="../include/metinfo.js"></script>
+</head>
+<body>
+<table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr> 
+    <td align="center" valign="top"><table width="98%" border="0" cellpadding="2" cellspacing="1" class="table_southidc">
+        <form method="POST" name="myform"  action="parameter.php?action=Modify&type=$type" target="_self">
+          <tr> 
+            <td class="back_southidc" height="25" colspan="6" align="center">反馈表单字段设置</td>
+          <tr bgcolor="#ECF5FF"> 
+            <td width="10%" height="25" align="center">字段排序</td>
+            <td width="25%">字段名称</td>
+			<td width="25%" >英文名称</td>
+			<td width="10%" align="center">是否启用</td>
+			<td width="10%" align="center">是否必填</td>
+			<td width="20%" align="center">字段类型</td>
+		  </tr>
+<!--
+EOT;
+foreach($list as $key=>$val){
+echo <<<EOT
+-->		   
+			<tr bgcolor="#ECF5FF"> 
+			<td  height="25" align="center"><input name='no_order$val[id]' type="text" class="input" size="3" maxlength="10" value="$val[no_order]"></td>
+            <td ><input name='c_name$val[id]' type="text" class="input" size="25" maxlength="255" value="$val[c_name]"></td>
+			<td ><input name='e_name$val[id]' type="hidden" class="input" size="25" maxlength="255" value="$val[e_name]"><input name='e_name$val[id]' type="text" class="input" size="25" maxlength="255" value="$val[e_name1]" $e_markok></td>
+			<td align="center"><input type="checkbox" name=use_ok$val[id] value=1 class="xz" $val[use_ok]/></td>
+			<td align="center"><input type="checkbox" name=wr_ok$val[id] value=1 class="xz" $val[wr_ok]/></td>
+			<td align="center">$val[type]</td>
+		  </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->		   
+        
+          <tr> 
+            <td height="30" colspan="6" align="center" bgcolor="#ECF5FF"> <input type="submit" name="Submit" value="提交" class="tj">
+              　 
+              <input type="reset" name="Submit" value="重置" class="tj"> </td>
+          </tr>
+        </form>
+    </table></td>
+  </tr>
+</table>
+</body>
+</html>
+<!--
+EOT;
+?>-->

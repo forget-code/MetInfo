@@ -1,0 +1,53 @@
+<!--<?php
+require_once template('e_head'); 
+echo <<<EOT
+-->
+<div class="web">
+<div class="webleft">
+<div class="nav_x">&nbsp;<a href='$index_e_url'>Home</a> > $navtitle</div>
+<div class="content">
+<div class="message_line"><a href="addlink.php?en=en">Apply Friendly Link>></a></div>
+<div class="index_link_img">
+<b>Picture Link：</b><br />
+<!--
+EOT;
+foreach($link_img as $key=>$val){
+echo <<<EOT
+-->
+<a href="$val[weburl]" target="_blank"><img src="$val[weblogo]" alt="$val[e_webname]" /></a>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</div>
+<br />
+<div class="index_link_text">
+<b>Text Link：</b><br />
+<!--
+EOT;
+foreach($link_text as $key=>$val){
+echo <<<EOT
+-->
+<a href="$val[weburl]" target="_blank" title="$val[e_info]">$val[e_webname]</a>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</div>
+</div>
+</div>
+
+<div class="webright">
+<!--
+EOT;
+require_once template('e_online'); 
+echo <<<EOT
+-->
+</div>
+</div>
+<!--
+EOT;
+require_once template('e_foot'); 
+?>

@@ -1,0 +1,46 @@
+<!--<?php
+require_once template('e_head'); 
+echo <<<EOT
+-->
+<div class="web">
+<div class="webleft">
+<div class="nav_x">&nbsp;<a href='$index_e_url'>Home</a> > $nav_x[e_name]</div>
+<div class="content">
+<h1>$img[e_title]</h1>
+<div class="img_list"><a href="$img[imgurl]" target="_blank"><img src="$img[imgurls]" alt="Big Picture" /></a></div>
+<div class="img_list_para">
+<!--
+EOT;
+foreach($img_para200 as $key=>$val1){
+$para_no="e_".$val1[name];
+echo <<<EOT
+-->
+<b>$val1[e_mark]</b>:$img[$para_no]<br />
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</div>
+
+<div class="content">$img[e_content]</div>
+
+<div class="hits">Hits：<span><script language="javascript" src="../include/hits.php?type=img&id=$img[id]"></script></span>&nbsp; Update Time:$img[updatetime]&nbsp;【<a href='javascript:window.print()'>Print</a>】&nbsp;【<a href="javascript:self.close()">Close</a>】</div>
+
+</div>
+</div>
+
+<div class="webright">
+<div class="nav_x">&nbsp;>>$class1_info[e_name]</div>
+<div class="navright">$nav_e_list</div>
+<!--
+EOT;
+require_once template('e_online'); 
+echo <<<EOT
+-->
+</div>
+</div>
+<!--
+EOT;
+require_once template('e_foot'); 
+?>

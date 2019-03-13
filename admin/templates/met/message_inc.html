@@ -1,0 +1,69 @@
+﻿<!--<?php
+echo <<<EOT
+-->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="$css_url/metinfo_admin.css">
+<title>留言系统设置</title>
+</head>
+<body>
+
+<table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr> 
+    <td align="center" valign="top"><table width="95%" border="0" cellpadding="2" cellspacing="1" class="table_southidc">
+        <form method="POST" name="myform" action="" target="_self">
+		<input name="action" type="hidden" value="modify">
+          <tr> 
+            <td class="back_southidc" height="30" colspan="2" align="center">留言系统设置</td>
+          </tr>
+		   <tr bgcolor="#ECF5FF"> 
+            <td width="120" height="25">防刷新时间：</td>
+            <td><input name="met_fd_time" type="text" class="input" size="3" maxlength="20" value="$met_fd_time">秒，同一IP2次提交的最小间接时间</td>
+          </tr> 
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="120" height="25">敏感字符过滤：</td>
+            <td><textarea name="met_fd_word" cols="50" rows="3" >$met_fd_word</textarea>多个字符请用"|"隔开</td>
+          </tr>
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="120" height="25">显示方式：</td>
+            <td><input name="met_fd_type" type="checkbox" value="1" $met_fd_type1>客户留言后需要在后台回复审核才显示</td>
+          </tr>
+		   <tr bgcolor="#ECF5FF"> 
+            <td width="120" height="25">每页显示留言条数：</td>
+            <td><input name="met_fd_no" type="text" class="input" size="3" maxlength="3" value="$met_fd_no">条</td>
+          </tr> 
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="120" height="25">是否发送邮件：</td>
+            <td><input name="met_fd_email" type="checkbox" value="1" $met_fd_email1>是否将客户留言自动发生到指定邮箱</td>
+          </tr> 
+		   <tr bgcolor="#ECF5FF"> 
+            <td width="120" height="25">反馈邮件接收邮箱：</td>
+            <td><input name="met_fd_to" type="text" class="input" size="30" maxlength="200" value="$met_fd_to">多个邮箱请用"|"隔开</td>
+          </tr> 
+		 <tr bgcolor="#ECF5FF"> 
+            <td width="120" height="25">自动回复:</td>
+            <td><input name="met_fd_back" type="checkbox" value="1" $met_fd_back1>是否自动向提交反馈的客户回复邮件</td>
+          </tr>
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="120" height="25">回复邮件标题:</td>
+            <td><input name="met_fd_title" type="text" class="input" size="30" maxlength="200" value="$met_fd_title">自动回复邮件的标题</td>
+          </tr>
+		   <tr bgcolor="#ECF5FF"> 
+            <td width="120" height="25">回复邮件内容:</td>
+            <td><textarea name="met_fd_content" cols="50" rows="3" >$met_fd_content</textarea>支持HTML语言</td>
+          </tr>
+	      <tr> 
+            <td height="30" colspan="2" align="center" bgcolor="#ECF5FF"> <input type="submit" name="Submit" value="提交" class="tj">
+              　 
+              <input type="reset" name="Submit" value="重置" class="tj"> </td>
+          </tr>
+        </form>
+    </table></td>
+  </tr>
+</table>
+</body>
+</html>
+<!--
+EOT;
+?>-->

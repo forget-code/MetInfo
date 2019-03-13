@@ -1,0 +1,142 @@
+<!--<?php
+echo <<<EOT
+-->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="$css_url/metinfo_admin.css">
+<title>栏目管理</title>
+<script type="text/javascript" src="../language/zh_cn.js"></script>
+<script type="text/javascript" src="../include/metinfo.js"></script>
+</head>
+<body>
+<br>
+<table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr> 
+    <td align="center" valign="top"><table width="95%" border="0" cellpadding="2" cellspacing="1" class="table_southidc">
+          <tr> 
+            <td class="back_southidc" height="30" colspan="4" align="center">栏目管理</td>
+          </tr>
+          <tr>
+            <td class="title_add" height="20" colspan="2" align="left"><a href="add.php">添加一级栏目</a></td>
+            <td width="20%" height="20" align="center" >&nbsp;</td>
+            <td width="60%" align="right" >
+			</td>
+          </tr>
+          <tr> 
+            <td colspan="4" valign="top"><table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#003366" class="border" style="word-break:break-all">
+              <tr class="back_southidc2"> 
+                <td width="15%" align="center" height="25" >栏目名称[排序]</td>
+				<td width="3%" align="center">ID</td>
+                <td width="8%" align="center" >导航栏显示</td>
+                <td width="8%" align="center" >栏目属性</td>
+                <td width="8%" align="center" >栏目模型</td>
+				<td width="8%" align="center" >栏目文件夹</td>
+                <td width="16%" align="center" >中文链接地址</td>
+				<td width="4%" height="25" align="center">选中</td>
+				<td width="20%" align="center" >操作</td>
+              </tr>
+			   <form name="del" method="Post" action="delete.php" onSubmit="return ConfirmDelall();">
+<!--
+EOT;
+foreach ($column_big as $key=>$val){
+$val[nav]=navdisplay($val[nav]);
+$val[if_in]=if_in($val[if_in]);
+$val[module1]=$val[module];
+$val[module]=module($val[module]);
+echo <<<EOT
+-->         
+              <tr class="tdbg">
+                <td  bgcolor="#DCDCDC" ><img src="../images/tree_big.gif">$val[c_name][<font color="#FF6600">$val[no_order]</font>]</td>
+				<td align="center" bgcolor="#DCDCDC">$val[id]</td>
+                <td  bgcolor="#DCDCDC" align="center">$val[nav]</td>
+                <td  bgcolor="#DCDCDC" align="center">$val[if_in]</td>
+                <td align="center" bgcolor="#DCDCDC">$val[module]</td>
+				<td bgcolor="#DCDCDC" align="center" >$val[foldername] </td>
+                <td align="center" bgcolor="#DCDCDC">$val[c_out_url]</td>
+				<td height="22" align="center" bgcolor="#DCDCDC"><input name='id' type='checkbox' onClick="unselectall()" id="id" value='$val[id]' class="xz"></td>
+<!--
+EOT;
+if($val[module1]>5){			
+echo <<<EOT
+-->  				
+				
+				<td align="center" bgcolor="#DCDCDC" > <a href="editor.php?id=$val[id]" >编辑</a> | <a href="delete.php?id=$val[id]" onClick="return ConfirmDel();" >删除</a></td>
+              </tr>
+<!--
+EOT;
+}else{			
+echo <<<EOT
+-->  				
+				
+				<td align="center" bgcolor="#DCDCDC" ><a href="add.php?class1=$val[id]" style="color:#003399" >添加二级栏目</a> | <a href="editor.php?id=$val[id]" >编辑</a> | <a href="delete.php?id=$val[id]" onClick="return ConfirmDel();" >删除</a></td>
+              </tr>			  
+			  
+<!--
+EOT;
+}
+foreach ($column_small as $key=>$val2){
+if($val2[bigclass]==$val[id]){
+$val2[nav]=navdisplay($val2[nav]);
+$val2[if_in]=if_in($val2[if_in]);
+$val2[module]=module($val2[module]);
+echo <<<EOT
+-->
+              <tr class="tdbg">
+                <td  bgcolor="#FFCCCC" >&nbsp;&nbsp;<img src="../images/tree_small.gif">$val2[c_name][<font color="#FF6600">$val2[no_order]</font>]</td>
+				 <td align="center" bgcolor="#FFCCCC">$val2[id]</td>
+                <td  bgcolor="#FFCCCC" align="center">$val2[nav]</td>
+                <td  bgcolor="#FFCCCC" align="center">$val2[if_in]</td>
+                <td align="center" bgcolor="#FFCCCC">$val2[module]</td>
+				<td bgcolor="#FFCCCC" align="center" >$val2[foldername] </td>
+                <td align="center" bgcolor="#FFCCCC">$val2[out_url]</td>
+				<td height="22" align="center" bgcolor="#FFCCCC"><input name='id' type='checkbox' onClick="unselectall()" id="id" value='$val2[id]' class="xz"></td>
+				<td align="center" bgcolor="#FFCCCC" ><a href="add.php?class2=$val2[id]"  style="color:#FF6600">添加三级栏目</a> | <a href="editor.php?id=$val2[id]" >编辑</a> | <a href="delete.php?id=$val[id]" onClick="return ConfirmDel();" >删除</a></td>
+              </tr>
+<!--
+EOT;
+foreach ($column_small as $key=>$val3){
+if($val3[bigclass]==$val2[id]){
+$val3[nav]=navdisplay($val3[nav]);
+$val3[if_in]=if_in($val3[if_in]);
+$val3[module]=module($val3[module]);
+echo <<<EOT
+-->
+              <tr class="tdbg">
+                <td  bgcolor="#ffffff" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="../images/tree_small.gif">$val3[c_name][<font color="#FF6600">$val3[no_order]</font>]</td>
+				<td align="center" bgcolor="#ffffff">$val3[id]</td>
+                <td  bgcolor="#ffffff" align="center">$val3[nav]</td>
+                <td  bgcolor="#ffffff" align="center">$val3[if_in]</td>
+                <td align="center" bgcolor="#ffffff">$val3[module]</td>
+				<td bgcolor="#ffffff" align="center" >$val3[foldername] </td>
+                <td align="center" bgcolor="#ffffff">$val3[out_url]</td>
+				<td height="22" align="center" bgcolor="#ffffff"><input name='id' type='checkbox' onClick="unselectall()" id="id" value='$val3[id]' class="xz"></td>
+				<td align="center" bgcolor="#ffffff" > <a href="editor.php?id=$val3[id]" >编辑</a> | <a href="delete.php?id=$val[id]" onClick="return ConfirmDel();" >删除</a></td>
+              </tr>
+
+<!--
+EOT;
+}}}}}
+echo <<<EOT
+-->
+       
+            </table></td>
+          </tr> 
+		   
+   	   <tr> 
+            <td height="20" colspan="4" align="left" bgcolor="#FFCCCC"><input name="chkAll" class="xz" type="checkbox" id="chkAll" onclick=CheckAll(this.form) value="checkbox">
+              选中本页显示的所有栏目<input name="submit" type='submit' value='删除选定的条目'> 
+              <input name="action" type="hidden" id="action" value="del">
+			  <input name="allid" type="hidden" id="allid" value=""></form></td>
+          </tr>
+   	   <tr>
+   	     <td height="0" colspan="4" align="center" bgcolor="#FFCCCC">$page_list</td>
+        </tr>
+    </table></td>
+  </tr>
+</table>
+</body>
+</html>
+<!--
+EOT;
+?>-->

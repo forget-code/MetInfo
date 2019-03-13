@@ -1,0 +1,202 @@
+﻿<!--<?php
+echo <<<EOT
+-->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="$css_url/metinfo_admin.css">
+<title>FLASH设置</title>
+</head>
+<body>
+
+<table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr> 
+    <td align="center" valign="top"><table width="95%" border="0" cellpadding="2" cellspacing="1" class="table_southidc">
+        <form method="POST" name="myform" action="" target="_self">
+		<input name="action" type="hidden" value="modify">
+		<input name="met_flash_ok" type="hidden" value="0">
+          <tr> 
+            <td class="back_southidc" height="30" colspan="4" align="center">Flash设置</td>
+          </tr>
+          <tr bgcolor="#ECF5FF"> 
+            <td width="150" height="25" colspan="2">是否开启Flash动画：</td>
+            <td colspan="2"> <input name="met_flash_ok" type="checkbox" value="1" $met_flash_ok1>开启</td>
+          </tr> 
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="150" height="25" colspan="2">Flash模式：</td>
+            <td colspan="2"><input type="radio" name="met_flash_type" value="0" $met_flash_type0>图片轮播  <input type="radio" name="met_flash_type" value="1" $met_flash_type1>flash动画</td>
+          </tr> 
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="150" height="25" colspan="2">Flash尺寸：</td>
+            <td colspan="2">宽度：<input name="met_flash_x" type="text" class="input" size="3" maxlength="200" value="$met_flash_x">像素&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;高度：<input name="met_flash_y" type="text" class="input" size="3" maxlength="200" value="$met_flash_y">像素</td>
+          </tr>
+<!--
+EOT;
+if($met_en_lang==1){
+echo <<<EOT
+-->
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="60" rowspan="3"><b>图片1</b></td>
+            <td width="90" height="25">图片地址：</td>
+            <td colspan="2"><input name="met_flash_1" type="text" class="input" size="30" maxlength="200" value="$met_flash_1"><iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_Photo.php?returnid=met_flash_1&flash=flash" frameborder=0 scrolling=no width="280" height="25"></iframe>			</td>
+          </tr>
+		  <tr bgcolor="#ECF5FF">
+		    <td height="25">英文图片：</td>
+	        <td colspan="2"><input name="met_e_flash_1" type="text" class="input" size="30" maxlength="200" value="$met_e_flash_1"><iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_Photo.php?returnid=met_e_flash_1&flash=flash" frameborder=0 scrolling=no width="280" height="25"></iframe>			</td>
+		  </tr>
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="75" height="25">链接地址：</td>
+            <td colspan="2"><input name="met_flashurl_1" type="text" class="input" size="30" maxlength="200" value="$met_flashurl_1"></td>
+          </tr> 
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="60" rowspan="3"><b>图片2</b></td>
+            <td width="90" height="25">图片地址：</td>
+            <td colspan="2"><input name="met_flash_2" type="text" class="input" size="30" maxlength="200" value="$met_flash_2"><iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_Photo.php?returnid=met_flash_2&flash=flash" frameborder=0 scrolling=no width="280" height="25"></iframe>			</td>
+          </tr>
+		   <tr bgcolor="#ECF5FF">
+		    <td height="25">英文图片：</td>
+	        <td colspan="2"><input name="met_e_flash_2" type="text" class="input" size="30" maxlength="200" value="$met_e_flash_2"><iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_Photo.php?returnid=met_e_flash_2&flash=flash" frameborder=0 scrolling=no width="280" height="25"></iframe>			</td>
+		  </tr>
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="75" height="25">链接地址：</td>
+            <td colspan="2"><input name="met_flashurl_2" type="text" class="input" size="30" maxlength="200" value="$met_flashurl_2"></td>
+          </tr>
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="60" rowspan="3"><b>图片3</b></td>
+            <td width="90" height="25">图片地址：</td>
+            <td colspan="2"><input name="met_flash_3" type="text" class="input" size="30" maxlength="200" value="$met_flash_3"><iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_Photo.php?returnid=met_flash_3&flash=flash" frameborder=0 scrolling=no width="280" height="25"></iframe>			</td>
+          </tr>
+		   <tr bgcolor="#ECF5FF">
+		    <td height="25">英文图片：</td>
+	        <td colspan="2"><input name="met_e_flash_3" type="text" class="input" size="30" maxlength="200" value="$met_e_flash_3"><iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_Photo.php?returnid=met_e_flash_3&flash=flash" frameborder=0 scrolling=no width="280" height="25"></iframe>			</td>
+		  </tr>
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="75" height="25">链接地址：</td>
+            <td colspan="2"><input name="met_flashurl_3" type="text" class="input" size="30" maxlength="200" value="$met_flashurl_3"></td>
+          </tr>
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="60" rowspan="3"><b>图片4</b></td>
+            <td width="90" height="25">图片地址：</td>
+            <td colspan="2"><input name="met_flash_4" type="text" class="input" size="30" maxlength="200" value="$met_flash_4"><iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_Photo.php?returnid=met_flash_4&flash=flash" frameborder=0 scrolling=no width="280" height="25"></iframe>			</td>
+          </tr>
+		   <tr bgcolor="#ECF5FF">
+		    <td height="25">英文图片：</td>
+	        <td colspan="2"><input name="met_e_flash_4" type="text" class="input" size="30" maxlength="200" value="$met_e_flash_4"><iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_Photo.php?returnid=met_e_flash_4&flash=flash" frameborder=0 scrolling=no width="280" height="25"></iframe>			</td>
+		  </tr>
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="75" height="25">链接地址：</td>
+            <td colspan="2"><input name="met_flashurl_4" type="text" class="input" size="30" maxlength="200" value="$met_flashurl_4"></td>
+          </tr>
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="60" rowspan="3"><b>图片5</b></td>
+            <td width="90" height="25">图片地址：</td>
+            <td colspan="2"><input name="met_flash_5" type="text" class="input" size="30" maxlength="200" value="$met_flash_5"><iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_Photo.php?returnid=met_flash_5&flash=flash" frameborder=0 scrolling=no width="280" height="25"></iframe>			</td>
+          </tr>
+		   <tr bgcolor="#ECF5FF">
+		    <td height="25">英文图片：</td>
+	        <td colspan="2"><input name="met_e_flash_5" type="text" class="input" size="30" maxlength="200" value="$met_e_flash_5"><iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_Photo.php?returnid=met_e_flash_5&flash=flash" frameborder=0 scrolling=no width="280" height="25"></iframe>			</td>
+		  </tr>
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="75" height="25">链接地址：</td>
+            <td colspan="2"><input name="met_flashurl_5" type="text" class="input" size="30" maxlength="200" value="$met_flashurl_5"></td>
+          </tr>
+		  
+		  <tr bgcolor="#ECF5FF" > 
+            <td width="119" height="25" colspan="2">Flash地址：</td>
+            <td colspan="2"> <input name="met_flash_url" type="text" class="input" size="30" maxlength="200" value="$met_flash_url"> 
+			<iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_file.php?uploadtype=flash&returnid=met_flash_url" frameborder=0 scrolling=no width="280" height="25"></iframe></td>
+          </tr>
+		   <tr bgcolor="#ECF5FF" > 
+            <td width="119" height="25" colspan="2">英文Flash地址：</td>
+            <td colspan="2"> <input name="met_e_flash_url" type="text" class="input" size="30" maxlength="200" value="$met_e_flash_url"> 
+			<iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_file.php?uploadtype=flash&returnid=met_e_flash_url" frameborder=0 scrolling=no width="280" height="25"></iframe></td>
+          </tr>
+		  <tr bgcolor="#ECF5FF"> 
+            <td idth="119" height="25" colspan="2">Flash背景：</td>
+            <td colspan="2"><input name="met_flash_back" type="text" class="input" size="30" maxlength="200" value="$met_flash_back"><iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_Photo.php?returnid=met_flash_back&flash=flash" frameborder=0 scrolling=no width="280" height="25"></iframe>			</td>
+          </tr>
+		  <tr bgcolor="#ECF5FF"> 
+            <td idth="119" height="25" colspan="2">英文Flash背景：</td>
+            <td colspan="2"><input name="met_e_flash_back" type="text" class="input" size="30" maxlength="200" value="$met_e_flash_back"><iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_Photo.php?returnid=met_e_flash_back&flash=flash" frameborder=0 scrolling=no width="280" height="25"></iframe>			</td>
+          </tr>
+		  
+<!--
+EOT;
+}
+else{
+echo <<<EOT
+-->
+  <tr bgcolor="#ECF5FF"> 
+            <td width="60" rowspan="2"><b>图片1</b></td>
+            <td width="90" height="25">图片地址：</td>
+            <td colspan="2"><input name="met_flash_1" type="text" class="input" size="30" maxlength="200" value="$met_flash_1"><iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_Photo.php?returnid=met_flash_1&flash=flash" frameborder=0 scrolling=no width="280" height="25"></iframe>			</td>
+          </tr>
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="75" height="25">链接地址：</td>
+            <td colspan="2"><input name="met_flashurl_1" type="text" class="input" size="30" maxlength="200" value="$met_flashurl_1"></td>
+          </tr> 
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="60" rowspan="2"><b>图片2</b></td>
+            <td width="90" height="25">图片地址：</td>
+            <td colspan="2"><input name="met_flash_2" type="text" class="input" size="30" maxlength="200" value="$met_flash_2"><iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_Photo.php?returnid=met_flash_2&flash=flash" frameborder=0 scrolling=no width="280" height="25"></iframe>			</td>
+          </tr>
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="75" height="25">链接地址：</td>
+            <td colspan="2"><input name="met_flashurl_2" type="text" class="input" size="30" maxlength="200" value="$met_flashurl_2"></td>
+          </tr>
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="60" rowspan="2"><b>图片3</b></td>
+            <td width="90" height="25">图片地址：</td>
+            <td colspan="2"><input name="met_flash_3" type="text" class="input" size="30" maxlength="200" value="$met_flash_3"><iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_Photo.php?returnid=met_flash_3&flash=flash" frameborder=0 scrolling=no width="280" height="25"></iframe>			</td>
+          </tr>
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="75" height="25">链接地址：</td>
+            <td colspan="2"><input name="met_flashurl_3" type="text" class="input" size="30" maxlength="200" value="$met_flashurl_3"></td>
+          </tr>
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="60" rowspan="2"><b>图片4</b></td>
+            <td width="90" height="25">图片地址：</td>
+            <td colspan="2"><input name="met_flash_4" type="text" class="input" size="30" maxlength="200" value="$met_flash_4"><iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_Photo.php?returnid=met_flash_4&flash=flash" frameborder=0 scrolling=no width="280" height="25"></iframe>			</td>
+          </tr>
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="75" height="25">链接地址：</td>
+            <td colspan="2"><input name="met_flashurl_4" type="text" class="input" size="30" maxlength="200" value="$met_flashurl_4"></td>
+          </tr>
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="60" rowspan="2"><b>图片5</b></td>
+            <td width="90" height="25">图片地址：</td>
+            <td colspan="2"><input name="met_flash_5" type="text" class="input" size="30" maxlength="200" value="$met_flash_5"><iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_Photo.php?returnid=met_flash_5&flash=flash" frameborder=0 scrolling=no width="280" height="25"></iframe>			</td>
+          </tr>
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="75" height="25">链接地址：</td>
+            <td colspan="2"><input name="met_flashurl_5" type="text" class="input" size="30" maxlength="200" value="$met_flashurl_5"></td>
+          </tr>
+		  
+		  <tr bgcolor="#ECF5FF" > 
+            <td width="119" height="25" colspan="2">Flash地址：</td>
+            <td colspan="2"> <input name="downloadurl" type="text" class="input" size="30" maxlength="200" value="$met_flash_url"> 
+			<iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_file.php" frameborder=0 scrolling=no width="280" height="25"></iframe></td>
+          </tr>
+		  <tr bgcolor="#ECF5FF"> 
+            <td idth="119" height="25" colspan="2">Flash背景：</td>
+            <td colspan="2"><input name="met_flash_back" type="text" class="input" size="30" maxlength="200" value="$met_flash_back"><iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_Photo.php?returnid=met_flash_back&flash=flash" frameborder=0 scrolling=no width="280" height="25"></iframe>			</td>
+          </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+	      <tr> 
+            <td height="30" colspan="4" align="center" bgcolor="#ECF5FF"> <input type="submit" name="Submit" value="提交" class="tj">
+              　 
+              <input type="reset" name="Submit" value="重置" class="tj"> </td>
+          </tr>
+        </form>
+    </table></td>
+  </tr>
+</table>
+</body>
+</html>
+<!--
+EOT;
+?>-->

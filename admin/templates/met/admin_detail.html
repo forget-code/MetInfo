@@ -1,0 +1,141 @@
+﻿<!--<?php
+echo <<<EOT
+-->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="$css_url/metinfo_admin.css">
+<title>查看管理员</title>
+<script type="text/javascript" src="../language/zh_cn.js"></script>
+<script type="text/javascript" src="../include/metinfo.js"></script>
+</head>
+<body>
+
+<table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr> 
+    <td align="center" valign="top"><table width="95%" border="0" cellpadding="2" cellspacing="1" class="table_southidc">
+		<input name="useid" type="hidden"size="20" maxlength="20" value="$admin_list[admin_id]">
+          <tr> 
+            <td class="back_southidc" height="30" colspan="3" align="center">查看管理员详情</td>
+          </tr>
+          <tr bgcolor="#ECF5FF"> 
+            <td width="120" height="25"><font color="#FF0000">*</font>用户名：</td>
+            <td colspan="2"> $admin_list[admin_id]</td>
+          </tr>  
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="119" height="25">姓名：</td>
+            <td colspan="2">$admin_list[admin_name]</td>
+          </tr> 
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="119" height="25">性别：</td>
+            <td colspan="2">
+<!--
+EOT;
+if($admin_list[admin_sex]==0){
+echo <<<EOT
+-->	
+男 
+<!--
+EOT;
+}else{
+echo <<<EOT
+-->	
+女
+<!--
+EOT;
+}echo <<<EOT
+-->
+			</td>
+          </tr> 
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="119" height="25">联系电话：</td>
+            <td colspan="2"> $admin_list[admin_tel]</td>
+          </tr> 
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="119" height="25">手机：</td>
+            <td colspan="2">$admin_list[admin_mobile]</td>
+          </tr> 
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="119" height="25">email：</td>
+            <td colspan="2">$admin_list[admin_email]</td>
+          </tr> 
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="119" height="25">QQ：</td>
+            <td colspan="2">$admin_list[admin_qq]</td>
+          </tr> 
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="119" height="25">MSN：</td>
+            <td colspan="2">$admin_list[admin_msn]</td>
+          </tr> 
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="119" height="25">淘宝：</td>
+            <td colspan="2">$admin_list[admin_taobao]</td>
+          </tr> 
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="119" height="25">登陆次数：</td>
+            <td colspan="2">$admin_list[admin_login]</td>
+          </tr> 
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="119" height="25">最后登陆时间：</td>
+            <td colspan="2">$admin_list[admin_modify_date]</td>
+          </tr> 
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="119" height="25">最后登陆IP：</td>
+            <td colspan="2">$admin_list[admin_modify_ip]</td>
+          </tr> 
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="119" height="25">帐号批准时间：</td>
+            <td colspan="2">$admin_list[admin_approval_date]</td>
+          </tr>
+          <tr bgcolor="#ECF5FF"> 
+          <td width="120" height="25" valign="middle">管理员简介:</td>
+          <td colspan="2" valign="top"> $admin_list[admin_introduction]</td>
+          </tr>
+		   <tr bgcolor="#ECF5FF"> 
+          <td width="120" height="25" valign="middle"><font color="#FF0000">*</font>管理员权限:</td>
+          <td colspan="2" valign="top"><font color="#FF0000">
+<input name="admin_pop" type="checkbox" value="yes" disabled="disabled" $admin_pop>全部</font><br>
+<input name="admin_pop1001" type="checkbox" value="1001" $admin_pop1001 disabled="disabled">管理员管理&nbsp;&nbsp;
+<input name="admin_pop1002" type="checkbox" value="1002" $admin_pop1002 disabled="disabled">基本信息&nbsp;&nbsp;
+<input name="admin_pop1003" type="checkbox" value="1003" $admin_pop1003 disabled="disabled">界面风格&nbsp;&nbsp;
+<input name="admin_pop1004" type="checkbox" value="1004" $admin_pop1004 disabled="disabled">图片配置&nbsp;&nbsp;
+<input name="admin_pop1005" type="checkbox" value="1005" $admin_pop1005 disabled="disabled">栏目配置&nbsp;&nbsp;
+<input name="admin_pop1006" type="checkbox" value="1006" $admin_pop1006 disabled="disabled">首页配置&nbsp;&nbsp;
+<input name="admin_pop1007" type="checkbox" value="1007" $admin_pop1007 disabled="disabled">优化推广&nbsp;&nbsp;
+<input name="admin_pop1008" type="checkbox" value="1008" $admin_pop1008 disabled="disabled">底部信息&nbsp;&nbsp;
+<input name="admin_pop1009" type="checkbox" value="1009" $admin_pop1009 disabled="disabled">flash管理&nbsp;&nbsp;
+<input name="admin_pop1010" type="checkbox" value="1010" $admin_pop1010 disabled="disabled">热门标签&nbsp;&nbsp;
+<input name="admin_pop1011" type="checkbox" value="1011" $admin_pop1011 disabled="disabled">在线交流&nbsp;&nbsp;
+<input name="admin_pop1012" type="checkbox" value="1012" $admin_pop1012 disabled="disabled">静态页面生成&nbsp;&nbsp;
+<input name="admin_pop1013" type="checkbox" value="1013" $admin_pop1013 disabled="disabled">产品模块参数&nbsp;&nbsp;
+<input name="admin_pop1014" type="checkbox" value="1014" $admin_pop1014 disabled="disabled">下载模块参数&nbsp;&nbsp;
+<input name="admin_pop1015" type="checkbox" value="1015" $admin_pop1015 disabled="disabled">图片模块参数&nbsp;&nbsp;
+<input name="admin_pop1016" type="checkbox" value="1016" $admin_pop1016 disabled="disabled">数据库备份&nbsp;&nbsp;
+<input name="admin_pop1017" type="checkbox" value="1017" $admin_pop1017 disabled="disabled">反馈系统&nbsp;&nbsp;
+<input name="admin_pop1018" type="checkbox" value="1018" $admin_pop1018 disabled="disabled">友情链接&nbsp;&nbsp;
+<!--
+EOT;
+foreach($column_list as $key=>$val){
+$column_c="admin_pop".$val[id];
+$column_c=$$column_c;
+echo <<<EOT
+-->
+       <input name="admin_pop$val[id]" type="checkbox" value="$val[id]" $column_c disabled="disabled">$val[c_name]管理&nbsp;&nbsp;
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+ </td>
+          </tr
+          ><tr> 
+            <td height="30" colspan="3" align="center" bgcolor="#ECF5FF"><a href="editor.php?id=$id" class="editormenu" >修改</a> &nbsp;&nbsp; <a href="index.php" class="editormenu" >返回</a></td>
+          </tr>
+    </table></td>
+  </tr>
+</table>
+</body>
+</html>
+<!--
+EOT;
+?>-->

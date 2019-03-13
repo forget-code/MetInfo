@@ -1,0 +1,48 @@
+<!--<?php
+require_once template('head'); 
+echo <<<EOT
+-->
+$fdjs;
+<div class="web">
+<div class="webleft">
+<div class="nav_x">&nbsp;<a href='$index_c_url'>首页</a> > $navtitle</div>
+<div class="content">
+<form method="POST" name="myform" onSubmit="return Checkfeedback();" action="index.php?action=add" target="_self">
+<table width="90%" cellpadding="2" cellspacing="1" bgcolor="#CCCCCC" align="center">
+<!--
+EOT;
+foreach($fd_para as $key=>$val){
+echo <<<EOT
+-->
+<tr>
+<td width="20%" height="25" align="right" bgcolor="#FFFFFF">$val[c_name]</td>
+<td width="70%" bgcolor="#FFFFFF">$val[c_input]</td>
+<td bgcolor="#FFFFFF" style="color:#990000">$val[wr_must]</td>
+</tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<tr><td colspan="3" bgcolor="#FFFFFF" align="center">
+<input type="hidden" name="fdtitle" value="$title" />
+<input type="hidden" name="fromurl" value="$fromurl" />
+<input type="hidden" name="ip" value="$ip" />
+<input type="submit" name="Submit" value="提交信息" class="tj">
+<input type="reset" name="Submit" value="重新填写" class="tj"></td></tr>
+</table>
+</form>
+</div>
+</div>
+<div class="webright">
+<!--
+EOT;
+require_once template('online'); 
+echo <<<EOT
+-->
+</div>
+</div>
+<!--
+EOT;
+require_once template('foot'); 
+?>

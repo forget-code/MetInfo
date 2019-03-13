@@ -1,0 +1,33 @@
+<!--<?php
+require_once template('e_head'); 
+echo <<<EOT
+-->
+<div class="web">
+<div class="webleft">
+<div class="nav_x">&nbsp;<a href='$index_e_url'>Home</a> > $nav_x[e_name]</div>
+<div class="content">
+<h1>Position：$job[e_position]</h1>
+<div class="job_list_detail">
+<b>Person Number</b>:$job[count]<br />
+<b>Work Place</b>:$job[e_place]<br />
+<b>Deal</b>:$job[e_deal]<br />
+<b>Add Date</b>:$job[addtime]<br />
+<b>Period of Validity</b>:$job[useful_life]<br />
+</div>
+<div class="content"><b>Job Description</b>：<br />$job[e_content]</div>
+
+</div>
+</div>
+
+<div class="webright">
+<!--
+EOT;
+require_once template('e_online'); 
+echo <<<EOT
+-->
+</div>
+</div>
+<!--
+EOT;
+require_once template('e_foot'); 
+?>
