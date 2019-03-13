@@ -1,0 +1,42 @@
+<!--<?php
+$ContentsPage=1;
+require_once template('head'); 
+require_once template('sidebar');
+$fromarray=metlabel_cv(1);
+echo <<<EOT
+-->
+<script src="{$img_url}js/met_Verification.js"></script>
+        <div class="active metinfo_mobile_form" id="cvlist">
+            <form enctype='multipart/form-data' method='POST' class="signupForm" name='myform' action='save.php?action=add'>
+				<input type='hidden' name='lang' value='{$lang}' />
+				<ul>
+				<li class="select">
+					<div class="xbox">
+						<span class='name'>{$lang_memberPosition}</span>
+						<select name='jobid'>{$selectjob}</select>
+					</div>
+				</li>
+<!--
+EOT;
+foreach($fromarray as $key=>$val){
+$wr_ok = $val[wr_ok]?'required':'';
+echo <<<EOT
+-->
+				<li class="{$val[type_class]} {$wr_ok}">
+					<span class='info'>{$val[description]}</span>
+					<div class="xbox">{$val[type_html]}</div>
+				</li>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+				</ul>
+				<div class="input-submit"><input type='submit' name='Submit' value='{$lang_Submit}' /></div>
+			</form>
+        </div>
+<!--
+EOT;
+require_once template('gap');
+require_once template('foot'); 
+?>

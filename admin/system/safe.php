@@ -4,6 +4,7 @@
 require_once '../login/login_check.php';
 $adminfile=$url_array[count($url_array)-2];
 if($action=="delete"){
+	$filename=$filename=='update'?$filename:'install';
 	if($filename=='update')@chmod('../../update/install.lock',0777);
 	function deldirs($dir){
 	  $dh=opendir($dir);
@@ -34,9 +35,16 @@ if($action=="delete"){
 if($action=="modify"){
 	if($met_adminfile!=""&&$met_adminfile!=$adminfile){
 		$met_adminfile_temp=$met_adminfile;
+		$newname='../../'.$met_adminfile;
 		$met_adminfile_code=authcode($met_adminfile,'ENCODE', $met_webkeys);
 		require_once $depth.'../include/config.php';
-		Header("Location: ../index.php?lang=".$lang."&action=renameadmin&adminmodify=1&met_adminfile=".$met_adminfile_temp);
+		if(rename("../../{$adminfile}","../../{$met_adminfile_temp}")){
+			echo "<script type='text/javascript'> alert('{$lang_authTip11}'); document.write('{$lang_authTip12}'); top.location.href='{$newname}'; </script>";
+			die();
+		}else{
+			echo "<script type='text/javascript'> alert('{$lang_adminwenjian}'); top.location.reload(); </script>";
+			die();
+		}
 	}else{
 		require_once $depth.'../include/config.php';
 		metsave('../system/safe.php?anyid='.$anyid.'&lang='.$lang);
@@ -55,7 +63,7 @@ if(!is_dir('../../update'))$updatestyle="display:none;";
 $met_login_code1[$met_login_code]="checked='checked'";
 $met_memberlogin_code1[$met_memberlogin_code]="checked='checked'";
 $met_automatic_upgrade1[$met_automatic_upgrade]="checked";
-
+if($met_img_rename==1)$met_img_rename1="checked='checked'";
 
 $css_url="../templates/".$met_skin."/css";
 $img_url="../templates/".$met_skin."/images";

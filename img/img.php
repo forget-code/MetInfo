@@ -8,6 +8,7 @@ $dbname = $met_img;
 $dbname_list = $met_img_list;
 $mdmendy = 1;
 $imgproduct = 'img';
+$class1re = '';
 require_once '../include/global/listmod.php';
 $img_listnow = $modlistnow;
 $img_list_new  = $md_list_new;

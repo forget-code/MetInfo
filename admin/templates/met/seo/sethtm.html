@@ -37,20 +37,30 @@ echo <<<EOT
 		<dl>
 			<dt>{$lang_sethtmok}{$lang_marks}</dt>
 			<dd>
-				<label><input name="met_webhtm" type="radio" value="0" {$met_webhtm1[0]} />{$lang_close}</label>
-				<label><input name="met_webhtm" type="radio" value="1" {$met_webhtm1[1]} />{$lang_setbasicTip3}</label>
-				<label><input name="met_webhtm"  type="radio" value="2" {$met_webhtm1[2]} />{$lang_sethtmall}</label>
+				<label><input name="met_webhtm" type="radio" value="0" {$met_webhtm1[0]} onclick="return htmluurset($(this))"/>{$lang_close}</label>
+				<label><input name="met_webhtm" type="radio" value="1" {$met_webhtm1[1]} onclick="return htmluurset($(this))"/>{$lang_setbasicTip3}</label>
+				<label><input name="met_webhtm"  type="radio" value="2" {$met_webhtm1[2]} onclick="return htmluurset($(this))"/>{$lang_sethtmall}</label>
 				<span class="tips">{$lang_setbasicTip4}</span>
 			</dd>
 		</dl>
 		</div>
-		<div class="v52fmbx_dlbox">
+		<div class="v52fmbx_dlbox div_met_htmway" {$display_htmway}>
 		<dl>
 			<dt>{$lang_sethtmway}{$lang_marks}</dt>
 			<dd>
 				<label><input name="met_htmway" type="radio" id="label4" value="0" {$met_htmway1[0]} />{$lang_sethtmway1}</label>
 				<label><input name="met_htmway" type="radio" id="label5" value="1" {$met_htmway1[1]} />{$lang_sethtmway2}</label>
 				<span class="tips">{$lang_sethtmway3}</span>
+			</dd>
+		</dl>
+		</div>		
+		<div class="v52fmbx_dlbox div_met_htmlurl" {$display_htmlurl}>
+		<dl>
+			<dt>{$lang_htmltopseudo}{$lang_marks}</dt>
+			<dd>
+				<label><input name="met_htmlurl" type="radio" id="label4" value="1" {$met_htmlurl1[1]} onclick="return htmwayset($(this))"/>{$lang_open}</label>
+				<label><input name="met_htmlurl" type="radio" id="label5" value="0" {$met_htmlurl1[0]} onclick="return htmwayset($(this))"/>{$lang_close}</label>
+				<span class="tips">{$lang_htmltopseudotips}</span>
 			</dd>
 		</dl>
 		</div>
@@ -170,6 +180,8 @@ function sethtmsub(){
 	}else{
 		var d1 = $("input[name='met_webhtming']").val();
 		var d2 = $("input[name='met_webhtm']:checked").val();
+		var d3 = $("input[name='met_htmlurl']:checked").val();
+		if(d3 == 1)return true;
 		if(d1!=0 && d2==0){
 			if(confirm('{$lang_seotips11}')){
 				$("input[name='dehtm']").val('deleteall');
@@ -195,6 +207,22 @@ function sethtmsub(){
 			return true;
 		}
 	}
+}
+function htmluurset (my){
+	if(my.val() == 0){
+		$(".div_met_htmlurl").hide();
+	}else{
+		$(".div_met_htmlurl").show();
+	}
+	ifreme_methei();
+}
+function htmwayset(my){
+	if(my.val() == 1){
+		$(".div_met_htmway").hide();
+	}else{
+		$(".div_met_htmway").show();
+	}
+	ifreme_methei();
 }
 </script>
 <div class="footer">$foot</div>

@@ -3,6 +3,7 @@
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.  
 $depth='../';
 require_once $depth.'../login/login_check.php';
+require_once ROOTPATH.'public/php/searchhtml.inc.php';
 $backurl="../content/job/inc.php?anyid={$anyid}&lang=$lang";
 if($action=="modify"){
 	require_once $depth.'../include/config.php';

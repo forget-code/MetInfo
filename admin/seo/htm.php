@@ -3,6 +3,40 @@
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 @set_time_limit(0);
 require_once '../login/login_check.php';
+function traversal($jkdir,$suffix='[A-Za-z]*',$jump=null)
+{
+	global $filenamearray;
+	//$hand=@dir($jkdir);
+	$hand=opendir($jkdir);
+	//while ($file=$hand->read())
+	while ($file=readdir($hand))
+	{	
+		$filename=$jkdir.'/'.$file;
+		if(@is_dir($filename) && $file != '.' && $file!= '..'&& $file!='./..'){ 
+			if($jump!=null){
+					$filefrist=str_replace('../','',$filename);
+					$filefrist=explode('/',$filefrist);
+					if(preg_match_all ("/^($jump)$/",$filefrist[0],$out))continue;
+			}
+			traversal($filename,$suffix,$jump);
+		}
+		else{
+			if($file != '.' && $file!= '..'&& $file!='./..'&&preg_match_all ("/\.($suffix)/i",$filename,$out)){
+				$str=file_get_contents($filename);
+				$str=str_replace(array("\n","\r","\t"," "),'',$str);
+				$filesize= strlen($str);
+				//$filename=str_replace('../','',$filename);	
+				$info=pathinfo($filename);
+				if(stristr(PHP_OS,"WIN")){
+					$filename=iconv("gbk","utf-8",$filename);		
+				}
+				$filenamearray[$filename]['source']=1;
+				$filenamearray[$filename]['filesize']=$filesize; 
+			}
+		}	
+
+	}
+}
 if($action=="all"){
 	/*全站静态打包*/
 	if($htmpack){
@@ -19,8 +53,8 @@ if($action=="all"){
 		$dira=$met_htmpack_url.'upload/';
 		$dirb="../../upload/";
 		xCopy($dirb,$dira,1);
-		$dira=$met_htmpack_url.'public/flash/';
-		$dirb="../../public/flash/";
+		$dira=$met_htmpack_url.'public/banner/';
+		$dirb="../../public/banner/";
 		xCopy($dirb,$dira,1);
 		$dira=$met_htmpack_url.'public/images/';
 		$dirb="../../public/images/";
@@ -192,6 +226,20 @@ if($action=="all"){
 	echo json_encode($methtm);
 	die();
 }elseif($action=='htmzip'){
+	$source="../databack/htmpack";
+	$filenamearray=array();	
+	traversal($source);	
+	foreach($filenamearray as $key=>$val){
+	$path = $key;
+    $fp=fopen($path,"r");
+	$str=fread($fp,filesize($path));
+	//$str=str_replace("job/cv.php?lang=cn&selectedjob=","job/cv.html",$str);
+	$str=preg_replace(@"<job\/cv\.php\?lang\=[^\']*\'>","job/cv.html'",$str);
+	fclose($fp);
+	$handle=fopen($path,"w");
+	fwrite($handle,$str);
+	fclose($handle);
+	}
 	include "../include/pclzip.lib.php";
 	if(!file_exists('../databack/'))@mkdir ('../databack/', 0777);  
 	$sqlzip='../databack/metinfo_htmpack_'.date('YmdHis',time()).'.zip';
@@ -306,7 +354,7 @@ if($action=="all"){
 	}
 
 	if($class1=='login'&&$met_member_use!=0){
-		$methtm[]=onepagehtm('member','index',1);
+		//$methtm[]=onepagehtm('member','index',1);
 		$methtm[]=onepagehtm('member','login',1);
 		$methtm[]=onepagehtm('member','register',1);
 	}

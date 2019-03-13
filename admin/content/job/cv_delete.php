@@ -12,11 +12,9 @@ $para_list[]=$list;
 if($action=="del"){
 	$allidlist=explode(',',$allid);
 	foreach($allidlist as $key=>$val){
-		if($met_deleteimg){
-			foreach($para_list as $key=>$val1){
-				$imagelist=$db->get_one("select * from $met_plist where lang='$lang' and  paraid='$val1[id]' and listid='$val'");
-				file_unlink($depth."../".$imagelist[info]);
-			}
+		foreach($para_list as $key=>$val1){
+			$imagelist=$db->get_one("select * from $met_plist where lang='$lang' and  paraid='$val1[id]' and listid='$val'");
+			file_unlink($depth."../".$imagelist[info]);
 		}
 		$query = "delete from $met_plist where listid='$val' and module='6'";
 		$db->query($query);
@@ -25,11 +23,9 @@ if($action=="del"){
 	}
 	metsave($backurl,'',$depth);
 }else{
-	if($met_deleteimg){
-		foreach($para_list as $key=>$val){
-			$imagelist=$db->get_one("select * from $met_plist where lang='$lang' and  paraid='$val[id]' and listid='$id'");
-			file_unlink($depth."../".$imagelist[info]);
-		}
+	foreach($para_list as $key=>$val){
+		$imagelist=$db->get_one("select * from $met_plist where lang='$lang' and  paraid='$val[id]' and listid='$id'");
+		file_unlink($depth."../".$imagelist[info]);
 	}
 	$query = "delete from $met_plist where listid='$id' and module='6'";
 	$db->query($query);

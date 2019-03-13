@@ -1,0 +1,65 @@
+<!--<?php
+if($ajaxlist){
+require_once template('/ajax/download');
+}else{
+require_once template('head'); 
+require_once template('sidebar');
+echo <<<EOT
+-->
+        <div class="active ajaxlist" id="downloadlist">
+			<ul>
+<!--
+EOT;
+$i=0;
+foreach($download_list as $key=>$val){
+$i++;
+$fiz=sprintf("%.2f",$val['filesize']/1024);
+$val['filesize']=$fiz>1?$fiz:$val['filesize'];
+$bd=$fiz>1?'Mb':'Kb';
+if($val[news])$val[drx]="[{$lang_drxnew}]";
+if($val[hot])$val[drx]="[{$lang_drxhot}]";
+if($val[top])$val[drx]="[{$lang_drxtop}]";
+echo <<<EOT
+-->
+		<li>
+			<dl>
+				<dt>
+					<a href='{$val[url]}' title='{$val[title]}'>
+					<h3 class="title"><span class="hot">{$val[drx]}</span>{$val[title]}</h3>
+					<div class="desc">
+						<span>{$val[updatetime]}</span>
+						<span>{$val[filesize]}{$bd}</span>
+						<span>{$val[hits]}{$lang_downloadtext2}</span>
+					</div>
+					</a>
+				</dt>
+				<dd>
+					<a href='{$val[downloadurl]}'><span></span><p>{$lang_downloadtext1}</p></a>
+				</dd>
+			</dl>
+		</li>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+			</ul>
+<!--
+EOT;
+if($pageall>$page){
+echo <<<EOT
+-->
+<!-加载更多信息->
+			<div id="flip" class1="{$class1}" class2="{$class2}" class3="{$class3}" page="{$page}" pageall="{$pageall}">{$lang_fliptext1}</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+		</div>
+<!--
+EOT;
+require_once template('gap');
+require_once template('foot'); 
+}
+?>

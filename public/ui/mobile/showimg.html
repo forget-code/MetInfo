@@ -1,0 +1,70 @@
+<!--<?php
+$ContentsPage=1;
+require_once template('head'); 
+require_once template('sidebar');
+$met_imgnext=methtml_prenextinfo(2);
+$methits=methtml_hits('img',1);
+if($displaylist)$ititle="<p>{$img[title]}</p>";
+echo <<<EOT
+-->
+        <div class="active" id="showimg">
+<div class="pshow">
+  <ul class="showimg_slides">
+	<li><img src="{$img[imgurl]}" /><p>{$ititle}</p></li>
+<!--
+EOT;
+foreach($displaylist as $key=>$val){
+$val[title_html]=$val[title]?"<p>{$val[title]}</p>":"";
+echo <<<EOT
+-->
+    <li>
+		<img src="{$val[imgurl]}" height="{$lang_imgmaximgY}" />
+		{$val[title_html]}
+    </li>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+  </ul>
+</div>
+                
+			<h1 class='title'>{$img[title]}</h1>
+			<div class="paralist">
+				<ul class="list-none">
+<!--
+EOT;
+foreach($img_paralist as $key=>$val2){
+echo <<<EOT
+-->
+					<li><div class="pn">{$val2[name]}：</div><div class="pv">{$img[$val2[para]]}</div></li>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+				</ul>
+			</div>
+<!--
+EOT;
+if($img[description]){
+echo <<<EOT
+-->
+			<div class="desc">{$img[description]}</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+			<h3 class="Tabtitle">
+			    <div class="l">{$lang_detailtxt}</div>
+			</h3>
+			<div class="editor">{$img[content]}<div class="clear"></div></div>
+			<div class="none">{$methits}</div>
+			<div class="met_page">{$met_imgnext}</div>
+	    </div>
+<!--
+EOT;
+require_once template('gap');
+require_once template('foot'); 
+?>

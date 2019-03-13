@@ -9,6 +9,8 @@ echo <<<EOT
 <!--
 EOT;
 $title="<a href='index.php?anyid={$anyid}&lang={$lang}&class1={$class1}'>{$met_class[$class1][name]}</a>";
+$class1=$class1?$class1:($id?$id:0);
+$title=title($class1,$anyid,$lang)?title($class1,$anyid,$lang):$title;
 require_once template('content/job/top');
 echo <<<EOT
 -->
@@ -91,15 +93,6 @@ echo <<<EOT
 		</div>
 	<h3 class="v52fmbx_hr metsliding" sliding="1">{$lang_feedbackauto}</h3>
 	<div class="metsliding_box metsliding_box_1">
-		<div class="v52fmbx_dlbox">
-		<dl>
-			<dt>{$lang_cvincAcceptMail}{$lang_marks}</dt>
-			<dd>
-			    <input name="met_cv_to" type="text" class="text" value="{$met_cv_to}" />
-				<span class="tips">{$lang_fdincTip9}</span>
-			</dd>
-		</dl>
-		</div>
 		<div class="v52fmbx_dlbox">
 		<dl>
 			<dt>{$lang_fdincAuto}{$lang_marks}</dt>

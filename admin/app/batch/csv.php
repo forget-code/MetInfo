@@ -17,12 +17,21 @@ $title.=$class3?"_$class3title[name]":"";
 $title.="_$class1title[id]";
 $title.=$class2?"-$class2title[id]":"";
 $title.=$class3?"-$class3title[id]":"";
+$title=str_replace('/','',$title);
+$title=str_replace('\\','',$title);
+$title=str_replace('<','',$title);
+$title=str_replace('>','',$title);
+$title=str_replace('?','',$title);
+$title=str_replace('|','',$title);
+$title=str_replace('*','',$title);
+$title=str_replace(':','',$title);
+$title=str_replace('"','',$title);
 $title=iconv($codeold,$codenew,$title);
 $fp = fopen("$title.csv", 'w');
 $classcsv=$class3?$class3title:($class2?$class2title:$class1title);
 $csvarray[]=iconv($codeold,$codenew,$lang_title);
 if($classcsv['module']!=2){
-	$query = "select * from $met_parameter where lang='$lang' and module='$classcsv[module]' and (class1='$classcsv[id]' or class1=0) order by no_order";
+	$query = "select * from $met_parameter where lang='$lang' and module='$classcsv[module]' and (class1='0' or (class1='$class1' and class2='$class2' and class3=0) or (class1='$class1' and class2='$class2' and class3='$class3') or (class1='$class1' and class2=0 and class3=0)) order by no_order";
 	$csvpara=$db->get_all($query);
 	foreach($csvpara as $key=>$val){
 		if($val['type']!=5){$csvarray[]=iconv($codeold,$codenew,$val['name']);}

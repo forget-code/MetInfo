@@ -16,6 +16,8 @@ echo <<<EOT
 <!--
 EOT;
 $title=$class1?"<a href='index.php?anyid={$anyid}&lang={$lang}&class1={$class1}'>{$class1_info[name]}</a>":"<a href='index.php?anyid={$anyid}&lang={$lang}'>{$lang_modulemanagement4}</a>";
+$class1=$class1?$class1:($id?$id:0);
+$title=title($class1,$anyid,$lang)?title($class1,$anyid,$lang):$title;
 $rurl="../content.php?anyid={$anyid}&lang={$lang}";
 require_once template('metlangs');
 echo <<<EOT
@@ -111,6 +113,7 @@ echo <<<EOT
 <!--
 EOT;
 }}
+$colspan=$colspan+1;
 echo <<<EOT
 -->	
 <script type="text/javascript">
@@ -140,6 +143,12 @@ metHeight($('.classlist3'));
 				<input name="class2" type="hidden" value="$class2">
 				<input name="class3" type="hidden" value="$class3">
 				<input name="cengci" type="hidden" value="$cengci">
+				&nbsp;{$lang_displaytype}
+				<select name="displaytype" id="displaytype" onChange="handle_form('filterform')">
+					<option value="all" {$displaytype0}>{$lang_selectnow}</option>
+					<option value="1" {$displaytype1}>{$lang_yes}</option>
+					<option value="0" {$displaytype2}>{$lang_no}</option>
+				</select>
 <!--
 EOT;
 if($metadmin[downloadcom]){
@@ -176,6 +185,7 @@ echo <<<EOT
                 <td width="30" class="list">{$lang_selected}</td>
 				<td width="30" class="list">{$lang_sort}</td>
                 <td class="list list_left">{$lang_title}</td>
+				<td width="60" class="list" >{$lang_displaytype}</td>
 <!--
 EOT;
 if($metadmin[downloadnew]){
@@ -224,12 +234,19 @@ echo <<<EOT
 <!--
 EOT;
 foreach ($download_list as $key=>$val){
+$timereleasetips="";
+$timereleasetipsstyle="";
+if(strtotime($val['addtime']) > $m_now_time) {
+	$timereleasetips = "{$lang_timelisttips1}{$val['addtime']}{$lang_timelisttips2}";
+	$timereleasetipsstyle = "style=\"color:grey\"";
+}
 echo <<<EOT
 -->          
               <tr class="mouse click">
               <td class="list-text"><input name='id' type='checkbox' id="id" value='$val[id]' /></td>
-                <td class="list-text"><input type="text" name="no_order_$val[id]" class="text no_order" value="$val[no_order]" /></td>
-			    <td class="list-text list_left"><a href="../../../{$met_class[$val[class1]][foldername]}/showdownload.php?lang=$lang&id=$val[id]" title="{$lang_preview}：{$val[title]}" target="_blank">$val[titles]</a></td>
+              <td class="list-text"><input type="text" name="no_order_$val[id]" class="text no_order" value="$val[no_order]" /></td>
+			  <td class="list-text list_left"><a href="../../../{$met_class[$val[class1]][foldername]}/showdownload.php?lang=$lang&id=$val[id]" title="{$lang_preview}：{$val[title]}" target="_blank" {$timereleasetipsstyle}>{$timereleasetips}$val[titles]</a></td>
+			  <td class="list-text"><a href="changeState.php?anyid={$anyid}&lang=$lang&displaytype=$val[displaytype]&id=$val[id]&class1=$class1&class2=$class2&class3=$class3&page=$page" onClick="return linkSmit($(this));" displaytype="$val[id]" com_ok_val="$val[displaytype]">$val[displaytype1]</a></td>
 <!--
 EOT;
 if($metadmin[downloadnew]){
@@ -277,6 +294,7 @@ echo <<<EOT
 <!--
 EOT;
 }
+$colspanj=$colspanj+1;
 echo <<<EOT
 -->
 <input name="action" type="hidden" id="action" value="del"><input name="allid" type="hidden" id="allid" value=""> 
@@ -303,6 +321,11 @@ EOT;
 }
 echo <<<EOT
 -->
+	<select name="lisdisplaytype" ltype="displaytype">
+		<option value="">{$lang_displaytype}</option>
+		<option value="1">{$lang_yes}</option>
+		<option value="0">{$lang_no}</option>
+	</select>
 <!--
 EOT;
 if($metadmin[downloadcom]){
@@ -412,6 +435,7 @@ echo <<<EOT
 <!--
 EOT;
 }
+$colspan=$colspan+1;
 echo <<<EOT
 -->
 			  </td>

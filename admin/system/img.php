@@ -3,28 +3,69 @@
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 require_once '../login/login_check.php';
 if($action=="modify"){
-	if($cs==2){
-		$dltimg=explode('../',$met_wate_img);
-		if(count($dltimg)==2){
-				$met_wate_img   = "../".$met_wate_img;
+	if($Submit){
+		if($cs==2){
+			$dltimg=explode('../',$met_wate_img);
+			if(count($dltimg)==2){
+					$met_wate_img   = "../".$met_wate_img;
+			}
+			$dltimg1=explode('../',$met_wate_bigimg);
+			if(count($dltimg1)==2){
+				$met_wate_bigimg   = "../".$met_wate_bigimg;
+			}
 		}
-		$dltimg1=explode('../',$met_wate_bigimg);
-		if(count($dltimg1)==2){
-			$met_wate_bigimg   = "../".$met_wate_bigimg;
+		require_once $depth.'../include/config.php';
+		$txt='';
+		if($cs==1){
+			if($met_productimg_x!=$moren_productimg_x || $met_productimg_y!=$moren_productimg_y){
+				$txt=$lang_metadmintext1;
+			}
+			if($met_imgs_x!=$moren_imgs_x || $met_imgs_y!=$moren_imgs_y){
+				$txt=$lang_metadmintext1;
+			}
+			if($met_newsimg_x!=$moren_newsimg_x || $met_newsimg_y!=$moren_newsimg_y){
+				$txt=$lang_metadmintext1;
+			}
 		}
+		metsave('../system/img.php?anyid='.$anyid.'&lang='.$lang.'&cs='.$cs,$lang_jsok.$txt);
+	}else if($delsubmit){
+		if(file_exists('../../upload/thumb_src/')){
+			$resource = opendir('../../upload/thumb_src/');
+			@clearstatcache();
+			while(($file = readdir($resource))!== false){
+				if($file == '.' || $file == '..'){
+					continue;
+				}
+				if(!is_dir('../../upload/thumb_src/'.$file)){
+					@clearstatcache();
+					if(file_exists('../../upload/thumb_src/'.$file)){
+						unlink('../../upload/thumb_src/'.$file);
+					}
+					@clearstatcache();
+				}else if(file_exists('../../upload/thumb_src/'.$file.'/')){			
+					$resource1 = opendir('../../upload/thumb_src/'.$file.'/');
+					@clearstatcache();
+					while(($file1 = readdir($resource1))!== false){
+						if($file1 == '.' || $file1 == '..'){
+							continue;
+						}
+						if(!is_dir('../../upload/thumb_src/'.$file.'/'.$file1)){
+							@clearstatcache();
+							if(file_exists('../../upload/thumb_src/'.$file.'/'.$file1)){
+								unlink('../../upload/thumb_src/'.$file.'/'.$file1);
+							}
+							@clearstatcache();
+						}
+					}
+					rmdir('../../upload/thumb_src/'.$file.'/');
+				}
+			}
+			closedir($resource1);
+			closedir($resource);
+			@clearstatcache();
+		}
+		metsave('../system/img.php?anyid='.$anyid.'&lang='.$lang.'&cs='.$cs,$lang_jsok.$txt);
 	}
-	require_once $depth.'../include/config.php';
-	$txt='';
-	if($met_productimg_x!=$moren_productimg_x || $met_productimg_y!=$moren_productimg_y){
-		$txt=$lang_metadmintext1;
-	}
-	if($met_imgs_x!=$moren_imgs_x || $met_imgs_y!=$moren_imgs_y){
-		$txt=$lang_metadmintext1;
-	}
-	if($met_newsimg_x!=$moren_newsimg_x || $met_newsimg_y!=$moren_newsimg_y){
-		$txt=$lang_metadmintext1;
-	}
-	metsave('../system/img.php?anyid='.$anyid.'&lang='.$lang.'&cs='.$cs,$lang_jsok.$txt);
 }else{
 if($met_img_style==0)$met_img_style0="checked='checked'";
 if($met_img_style==1)$met_img_style1="checked='checked'";

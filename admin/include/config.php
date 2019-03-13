@@ -1,6 +1,7 @@
 <?php
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+if($depth!=''&&$depth!='../'&&$depth!='../../'){die();}
 require_once $depth.'../login/login_check.php';
 $columnid=$columnid?$columnid:0;
 !defined('MAGIC_QUOTES_GPC') && define('MAGIC_QUOTES_GPC', get_magic_quotes_gpc());

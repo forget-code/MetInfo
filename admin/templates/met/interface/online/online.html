@@ -20,6 +20,11 @@ echo <<<EOT
 <form name="del" method="Post" action="delete.php?anyid={$anyid}&lang=$lang&class1=$class1">
 <input name="allid" type="hidden" id="allid" value=""><input name="action" type="hidden" id="allid" value="del">
 <table cellpadding="0" cellspacing="1" class="table neitable">
+		<tr>
+			<td colspan="9" class="centle" style="font-weight:normal;">
+				<span style="color:red">{$lang_onlinehelp1}</span>
+			</td>
+		</tr>
               <tr id="list-top">
                 <td class="list" width="30">{$lang_selected}</td>
 				<td class="list" width="30">{$lang_sort}</td>

@@ -5,28 +5,20 @@ $depth='../';
 require_once $depth.'../login/login_check.php';
 $cs=isset($cs)?$cs:0;
 $listclass[$cs]='class="now"';
-if(!$metinfolangid)$metinfolangid=0;
-if(!$langid)$langid=$metinfolangid;
-$query="select * from $met_language where array='0' and site='0' and app='0' and lang='$langeditor' ORDER BY no_order";
-$result=$db->query($query);
-while($list= $db->fetch_array($result)){
-	$langarray[]=$list['value'];
-	$idarray[]=$list['id'];
-}
-$j=count($langarray);
-$array=$langid+1;
-$query="select * from $met_language where array='$array' and site='0' and app='0' and lang='$langeditor' ORDER BY no_order";
+$query="select * from $met_language where site='0' and app='0' and lang='$langeditor' ORDER BY no_order";
 $result=$db->query($query);
 while($list= $db->fetch_array($result)){
 	$list['value']=str_replace('"', '&#34;', str_replace("'", '&#39;',$list['value']));
-	$langtext[$langid][]=$list;
+	$langtext_b[]=$list;
+	$langtext[$list['array']][]=$list;
+	$langtext_a[$list['name']]=$list;
 }
 if($action=="modify"){
 	!defined('MAGIC_QUOTES_GPC') && define('MAGIC_QUOTES_GPC', get_magic_quotes_gpc());
-	foreach($langtext[$metinfolangid] as $key=>$val){
+	foreach($langtext_b as $key=>$val){
 		$name=$val['name'].'_metinfo';
 		$metino_name=$$name;
-		if($val['value']!=$metino_name){
+		if(isset($metino_name)&&$val['value']!=$metino_name){
 			$metino_name = stripslashes($metino_name);
 			$metino_name = str_replace("'","''",$metino_name);
 			$metino_name = str_replace("\\","\\\\",$metino_name);
@@ -43,9 +35,10 @@ if($action=="modify"){
 		metsave('../system/lang/langeditor.php?anyid='.$anyid.'&langeditor='.$langeditor."&langid=".$metinfolangid.'&lang='.$lang.'&cs='.$cs,$lang_otherinfocache2,$depth);
 	}
 }else{
-$css_url=$depth."../templates/".$met_skin."/css";
-$img_url=$depth."../templates/".$met_skin."/images";
-include template('system/lang/langeditor');footer();
+	$css_url=$depth."../templates/".$met_skin."/css";
+	$img_url=$depth."../templates/".$met_skin."/images";
+	include template('system/lang/langeditor');
+	footer();
 }
 
 # This program is an open source system, commercial use, please consciously to purchase commercial license.

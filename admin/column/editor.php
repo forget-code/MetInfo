@@ -41,6 +41,14 @@ $addtitle=$lang_modClass2;
 $classtype=2;
 }
 }
+$displays= $db->get_one("SELECT * FROM $met_column WHERE id='$id'");
+if($displays[display]==0){
+	$displays1[0]='checked';
+	$displays1[1]='';
+}else{
+	$displays1[0]='';
+	$displays1[1]='checked';
+}
 $list_access['access']=$column_list['access'];
 require '../content/access.php';
 $column_list['name']=str_replace('"', '&#34;', str_replace("'", '&#39;',$column_list['name']));

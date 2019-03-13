@@ -1,7 +1,7 @@
 <?php
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
-	require_once 'common.inc.php';
+	if(!defined('IN_MET'))require_once 'common.inc.php';//应用修改带代码
 	require_once ROOTPATH.'include/global/pseudo.php';
 	$class1    = $index=='index'?10001:($class1==''?0:$class1);
 	$class2    = $index=='index'?0:($class2==''?0:$class2);
@@ -26,7 +26,10 @@
 			$otherinfo['imgurl2']=$otherinfo['imgurl2'][1];
 		}
 	}
+
 /*Flash*/
+	$bannernid = $met_bannerpagetype?10001:$classnow;
+	if($met_bannerpagetype&&$classnow!=10001)$met_flasharray[$classnow] = $met_flasharray[10001];
 	if($metview_flash==$met_member_force){
 		$met_flasharray[$classnow]['type']=$metview_flash_type;
 		$met_flasharray[$classnow]['imgtype']=$metview_flash_imgtype;
@@ -37,15 +40,15 @@
 	if($met_flasharray[$classnow]['type']){
 		$query_x=$met_flasharray[$classnow]['type']==2?"and flash_path!=''":"and img_path!=''";
 		$qsql=$met_mobileok?"and wap_ok='1'":"and wap_ok='0'";//mobile
-		$query="select * from $met_flash where lang='$lang' {$qsql} and (module like '%,{$classnow},%' or module='metinfo') {$query_x} order by no_order";
+		$query="select * from $met_flash where lang='$lang' {$qsql} and (module like '%,{$bannernid},%' or module='metinfo') {$query_x} order by no_order";
 		$result= $db->query($query);
-		if(mysql_affected_rows()==0){
+		if($db->affected_rows()==0){
 			$superior=$class_list[$classnow]['bigclass'];
 			$query_x=$met_flasharray[$superior]['type']==2?"and flash_path!=''":"and img_path!=''";
 			$query="select * from $met_flash where lang='$lang' {$qsql} and (module like '%,{$superior},%' or module='metinfo') {$query_x} order by no_order";
 			$result= $db->query($query);			
 		}
-		if(mysql_affected_rows()==0){
+		if($db->affected_rows()==0){
 			$superior=$class_list[$superior]['bigclass'];
 			$query_x=$met_flasharray[$superior]['type']==2?"and flash_path!=''":"and img_path!=''";
 			$query="select * from $met_flash where lang='$lang' {$qsql} and (module like '%,{$superior},%' or module='metinfo') {$query_x} order by no_order";
@@ -83,7 +86,6 @@
 				}
 			}
 		}
-		
 		if($met_flasharray[$classnow]['type']==3){
 			foreach($met_flashall as $key=>$val){
 				$val['nowmod']=','.$classnow.',';
@@ -182,6 +184,36 @@
 		$met_flash_xpx=$met_flash_x."px";
 		$met_flash_ypx=$met_flash_y."px";
 	}
+/*模板设置预览*/
+if($theme_preview&&$met_theme_preview){
+	$met_flashimg = $classnow == 10001 ?$php_json['banner']['index']:($met_bannerpagetype?$php_json['banner']['index']:$met_flashimg);
+	
+	if($classnow != 10001 && $met_bannerpagetype){
+		$met_flashimg_theme_preview = array();
+		foreach($met_flashimg as $key=>$val){
+			$val['img_path']='../'.$val['img_path'];
+			$met_flashimg_theme_preview[$key] = $val;
+		}
+		$met_flashimg = $met_flashimg_theme_preview;
+	}
+	$met_flash_img='';
+	$met_flash_imglink='';
+	$met_flash_imgtitle='';
+	foreach($met_flashimg as $key=>$val){
+		if($val['img_path']!=""){
+			$met_flash_img=$met_flash_img.$val['img_path']."|";
+			$met_flash_imglink=$met_flash_imglink.$val['img_link']."|";
+			$met_flash_imgtitle=$met_flash_imgtitle.$val['img_title']."|";
+		}
+	}
+	$met_flashall = $met_flashimg;
+	$met_flash_img=substr($met_flash_img, 0, -1);
+	$met_flash_imglink=substr($met_flash_imglink, 0, -1);
+	$met_flash_imgtitle=substr($met_flash_imgtitle, 0, -1);
+	//wap_y
+	$otherinfo = $php_json['otherinfo'];
+}
+	//$met_flashimg
 /*parameter*/
 	if(!isset($dataoptimize[$pagemark]['parameter']))$dataoptimize[$pagemark]['parameter']=$dataoptimize[10000]['parameter'];
 	if($dataoptimize[$pagemark]['parameter']||$search=='search'){
@@ -191,7 +223,7 @@
 			$list['para']="para".$list['id'];
 			$list['paraname']="para".$list['id']."name";
 			$metpara[$list['id']]=$list;
-			if($list['class1']==0 or $list['class1']==$class1){
+			if(($list['class1']==0) or ($list['class1']==$class1 and $list['class2']==0 and $list['class3']==0) or ($list['class1']==$class1 and $list['class2']==$class2 and $list['class3']==0) or ($list['class1']==$class1 and $list['class2']==$class2 and $list['class3']==$class3) or $index=='index'){	
 				switch($list['module']){
 					case 3:
 						$product_para[]=$list;
@@ -257,7 +289,7 @@
 $met_js_access="<script type='text/javascript' id='metccde'>
 var jsFile = document.createElement('script');
 jsFile.setAttribute('type','text/javascript');
-jsFile.setAttribute('src','../include/access.php?metuser={$metuser}&lang={$lang}&metaccess={$metaccess}&random='+Math.random());
+jsFile.setAttribute('src','../include/access.php?&metmemberforce={$metmemberforce}&metuser={$metuser}&lang={$lang}&metaccess={$metaccess}&random='+Math.random());
 document.getElementsByTagName('head').item(0).appendChild(jsFile);
 </script>";
 			$query="select * from $met_admin_array where id='$metaccess'";
@@ -298,6 +330,9 @@ document.getElementsByTagName('head').item(0).appendChild(jsFile);
 		}
 	}
 	$navdown=$class1;
+	$sidedwon2=$class2;
+	$sidedwon3=$class3;
+	if($class_list[$classnow]['nav'] == 1 || $class_list[$classnow]['nav'] == 2)$sidedwon2=$classnow;
 	if($class1 == 0 || $class_list[$class1]['na'] == 2 || $class_list[$class1][nav] == 0)$navdown="10001";
 	if($class_list[$classnow]['nav'] == 1 || $class_list[$classnow]['nav'] == 3)$navdown=$classnow;
 	if($class_list[$classnow]['nav'] == 0 || $class_list[$classnow]['nav'] == 2){
@@ -307,6 +342,8 @@ document.getElementsByTagName('head').item(0).appendChild(jsFile);
 		if($class_list[$higher]['nav']==1||$class_list[$higher]['nav']==3)$navdown=$higher;
 	}
 	if(!$navdown)$navdown=10001;
+	if(!$sidedwon2)$sidedwon2=10001;
+	if(!$sidedwon3)$sidedwon3=10001;
 	$metblank=$met_urlblank?"target='_blank'":"target='_self'";
 	$onlinex=$met_online_type<2?$met_onlineleft_left:$met_onlineright_right;
 	$onliney=$met_online_type<2?$met_onlineleft_top:$met_onlineright_top;
@@ -318,6 +355,10 @@ document.getElementsByTagName('head').item(0).appendChild(jsFile);
 		$met_stat_js='<script src="'.$navurl.'include/stat/stat.php?type=para&u='.$navurl.'&d='.$stat_d.'" type="text/javascript"></script>';
 	}
 	$class_index=imgxytype($class_index,'index_num');
+	
+	$product_para=$db->get_all("select * from $met_parameter where module='3' and type!='3' and type!='5' and lang='$lang'");
+	$navigation = $db->get_all("SELECT * FROM $met_ifmember_left ");
+	$thumb_src = $navurl.'include/thumb.php?';
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

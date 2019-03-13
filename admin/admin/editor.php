@@ -39,6 +39,10 @@ if($admin_listed[admin_group]==0){
 		if($admin_op[3]=="del")$admin_op_3="checked='checked'";
 	}
 }
+
+if($admin_listed['admin_type'] == 'metinfo' || strstr($admin_listed['admin_type'], '1801')) {
+	$isonline_upgrade = "checked='checked'";
+}
 $sexx[$admin_listed[admin_sex]]="checked='checked'";
 $admin_groupx[$admin_listed[admin_group]]="checked='checked'";
 $metmanager=1;

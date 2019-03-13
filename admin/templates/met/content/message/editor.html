@@ -14,54 +14,59 @@ $title.="{$lang_messageeditor}";
 }else{
 $title="{$lang_messageeditor}";
 }
+$class1=$class1?$class1:($id?$id:0);
+$title=title($class1,$anyid,$lang)?title($class1,$anyid,$lang):$title;
 require_once template('metlangs');
+$langname=$db->get_one("select * from $met_language where name='Name' and lang='$lang'");
+$lang_Name=$langname[value];
 echo <<<EOT
 -->
+<script type="text/javascript">
+</script>
 <form  method="POST" name="myform"  action="editor.php?anyid={$anyid}&action=editor&lang=$lang&class1=$class1&customerid={$customerid}" target="_self">
 		<input name="id" type="hidden" value="$id">
 <div class="v52fmbx_tbmax">
 <div class="v52fmbx_tbbox">
 <div class="v52fmbx">
+<!--
+EOT;
+foreach($para_list as $key=>$val){
+echo <<<EOT
+-->		
 		<div class="v52fmbx_dlbox">
 		<dl>
-			<dt>{$lang_name}{$lang_marks}</dt>
+			<dt>{$val[imgname]}{$lang_marks}</dt>
 			<dd>
-				$message_list[name]
+				$val[info]
 			</dd>
 		</dl>
 		</div>
-		<div class="v52fmbx_dlbox">
+		
+<!--
+EOT;
+}
+echo <<<EOT
+-->	
+<!--
+EOT;
+if($message_content1){
+$paras_name="para".$message_content1[paraid];
+echo <<<EOT
+-->		
+		<div class='v52fmbx_dlbox'>
 		<dl>
-			<dt>{$lang_messageTel}{$lang_marks}</dt>
+			<dt><font color='#FF0000'>*</font>{$message_content1[imgname]}{$lang_marks}</dt>
 			<dd>
-				$message_list[tel]
+				<textarea name='$paras_name' class='textarea gen nonull'>$message_content1[info]</textarea>
 			</dd>
 		</dl>
 		</div>
-		<div class="v52fmbx_dlbox">
-		<dl>
-			<dt>Email{$lang_marks}</dt>
-			<dd>
-				$message_list[email]
-			</dd>
-		</dl>
-		</div>
-		<div class="v52fmbx_dlbox">
-		<dl>
-			<dt>{$lang_messageeditorContact}{$lang_marks}</dt>
-			<dd>
-				$message_list[contact]
-			</dd>
-		</dl>
-		</div>
-		<div class="v52fmbx_dlbox">
-		<dl>
-			<dt>{$lang_messageeditorContent}{$lang_marks}</dt>
-			<dd>
-				<textarea name="info" class="textarea gen" cols="50" rows="5">$message_list[info]</textarea>
-			</dd>
-		</dl>
-		</div>
+		
+<!--
+EOT;
+}
+echo <<<EOT
+-->	
 		<div class="v52fmbx_dlbox">
 		<dl>
 			<dt>{$lang_messageTime}{$lang_marks}</dt>

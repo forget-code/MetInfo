@@ -3,7 +3,8 @@
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 $depth='../';
 require_once $depth.'../login/login_check.php';
-$backurl="../content/feedback/editor.php?anyid={$anyid}&lang={$lang}&class1={$class1}&id={$id}&customerid={$customerid}";
+require_once ROOTPATH.'public/php/searchhtml.inc.php';
+$backurl="../content/feedback/editor.php?anyid={$anyid}&lang={$lang}&class1={$class1}&id={$id}&customerid={$customerid}&classall={$classall}";
 if($action=="editor"){
 	$query = "update $met_feedback SET
 						  useinfo            = '$useinfo',

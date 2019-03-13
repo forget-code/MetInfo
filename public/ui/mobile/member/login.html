@@ -1,0 +1,34 @@
+<!--<?php
+echo <<<EOT
+-->
+<script src="{$img_url}js/met_Verification.js"></script>
+        <div class="active metinfo_mobile_form" id="memberbox">
+				<form method="post" class="signupForm" action="login_check.php?lang=$lang" name="main_login">
+				<input type="hidden" name="action" value="login"/>
+				<input type="hidden" name="lang" value="$lang"/>
+				<input type="hidden" name="refererok" value="{$referer}"/>
+					<ul>
+						<li class="radio">
+							<span class="name">{$lang_memberLogin}</span>
+						</li>
+						<li class="input required">
+							<div class="xbox">
+								<input name='login_name' type='text' class='input-text' placeholder="{$lang_memberName}" />
+							</div>
+						</li>
+						<li class="input required">
+							<div class="xbox">
+								<input name='login_pass' type='password' class='input-text' placeholder="{$lang_memberPs}" />
+							</div>
+						</li>
+					</ul>
+					<div class="input-submit"><input type='submit' name='Submit' value='{$lang_memberGo}' /></div>
+					<div class="member_login_more">
+						<a href="getpassword.php?lang=$lang">{$lang_memberForget}</a>
+						<a href="register_include.php?lang=$lang">{$lang_memberRegister}</a>
+					</div>
+				</form>
+        </div>
+<!--
+EOT;
+?>

@@ -66,7 +66,19 @@ if($imgnum>0){
 } 
 $displayimg = $displayimglist;
 $classother=$classothers?'|'.implode('|',$classothers).'|':'';
+if($metinfover)$metadmin[productother] = $met_productTabok-1;
 if($action=="add"){
+	if(!$description){
+		$description=strip_tags($content);
+		$description=str_replace("\n",'',$description); 
+		$description=str_replace("\r",'',$description); 
+		$description=str_replace("\t",'',$description);
+		$description=mb_substr($description,0,200,'utf-8');
+	}
+	if($links){
+		$links=str_replace("http://",'',$links); 
+		$links="http://".$links;
+	}
 	$access=$access<>""?$access:0;
 	$query = "INSERT INTO $met_product SET
 						  title              = '$title',
@@ -91,7 +103,10 @@ if($action=="add"){
 						  access          	 = '$access',
 						  filename           = '$filename',
 						  no_order       	 = '$no_order',
-						  lang          	 = '$lang',";
+						  lang          	 = '$lang',
+						  displaytype        = '$displaytype',
+						  tag                = '$tag',
+						  links              = '$links',";
 	if($metadmin[productother])$query .="
 						  contentinfo         = '$contentinfo',
 						  contentinfo1        = '$contentinfo1',
@@ -118,9 +133,9 @@ if($action=="add"){
 		}else{
 			$para="";
 			for($i=1;$i<=$total_list[$val[id]];$i++){
-				$para1="para".$val[id]."_".$i;
-				$para2=$$para1;
-				$para=($para2<>"")?$para.$para2."-":$para;
+				$paraa="para".$val[id]."_".$i;
+				$parab=$$paraa;
+				$para=($parab<>"")?$para.$parab."-":$para;
 			}
 			$para=substr($para, 0, -1);
 		}
@@ -141,20 +156,45 @@ if($action=="add"){
 	$gent='../../sitemap/index.php?lang='.$lang.'&htmsitemap='.$met_member_force;
 	metsave($turl,'',$depth,$htmjs,$gent);
 }
+if($description){
+	$description_type=$db->get_one("select * from $met_product where id='$id'");
+	$description1=strip_tags($description_type[content]);
+	$description1=str_replace("\n", '', $description1); 
+	$description1=str_replace("\r", '', $description1); 
+	$description1=str_replace("\t", '', $description1);
+	$description1=mb_substr($description1,0,200,'utf-8');
+	if($description1==$description){
+		$description=strip_tags($content);
+		$description=str_replace("\n", '',$description); 
+		$description=str_replace("\r", '', $description); 
+		$description=str_replace("\t", '', $description);
+		$description=mb_substr($description,0,200,'utf-8');
+	}
+}
 if($action=="editor"){
+	if($class_other != 1){
+		$classother = '';
+	}
+	if($links){
+		$links=str_replace("http://",'',$links); 
+		$links="http://".$links;
+	}
 	$query = "update $met_product SET 
 						  title              = '$title',
 						  ctitle             = '$ctitle',
 						  keywords           = '$keywords',
 						  description        = '$description',
 						  content            = '$content',
+					      tag                = '$tag',
 						  class1             = '$class1',
 						  class2             = '$class2',
 						  class3             = '$class3',
 						  classother         = '$classother',
 						  imgurl             = '$imgurl',
 						  imgurls            = '$imgurls',
-						  displayimg         = '$displayimg',";
+						  displayimg         = '$displayimg',
+						  displaytype        = '$displaytype',
+						  links              = '$links',";
 	if($metadmin[productnew])$query .= "					  
 						  new_ok             = '$new_ok',";
 	if($metadmin[productcom])$query .= "	
@@ -186,11 +226,10 @@ if($action=="editor"){
 						  lang               = '$lang'
 						  where id='$id'";
 	$db->query($query);
-
 	foreach($para_list as $key=>$val){
 		if($val[type]!=4){
-		  $para="para".$val[id];
-		  $para=$$para;
+		  $paras="para".$val[id];
+		  $para=$$paras;
 		   if($val[type]==5){
 			 $paraname="para".$val[id]."name";
 			 $paraname=$$paraname;
@@ -198,9 +237,9 @@ if($action=="editor"){
 		}else{
 		  $para="";
 		  for($i=1;$i<=$total_list[$val[id]];$i++){
-		  $para1="para".$val[id]."_".$i;
-		  $para2=$$para1;
-		  $para=($para2<>"")?$para.$para2."-":$para;
+		  $paraa="para".$val[id]."_".$i;
+		  $parab=$$paraa;
+		  $para=($parab<>"")?$para.$parab."-":$para;
 		  }
 		  $para=substr($para, 0, -1);
 		}

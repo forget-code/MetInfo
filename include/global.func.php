@@ -116,15 +116,23 @@ global $met_sqlinsert,$id,$class1,$class2,$class3;
 }
 /*载入模板*/
 function template($template,$EXT="html"){
-	global $met_skin_user,$skin,$dataoptimize_html,$met_mobileok;
+	global $met_skin_user,$skin,$dataoptimize_html,$met_mobileok,$metinfover;
 	$EXT=($dataoptimize_html=="")?$EXT:$dataoptimize_html;
+	if($metinfover=='v1')$EXT = 'php';
 	if(empty($skin)){
 	    $skin = $met_skin_user;
 	}
 	unset($GLOBALS[con_db_id],$GLOBALS[con_db_pass],$GLOBALS[con_db_name]);
 	$path = ROOTPATH."templates/{$skin}/{$template}.$EXT";
 	$utype = $met_mobileok?'mobile':'met';
-	!file_exists($path) && $path=ROOTPATH."public/ui/{$utype}/{$template}.html";
+	if($metinfover=='v1'){
+		if($met_mobileok){
+			!file_exists($path) && $path=ROOTPATH."public/ui/v1/mobile/{$template}.php";
+		}
+		!file_exists($path) && $path=ROOTPATH."public/ui/v1/{$template}.php";
+	}else{
+		!file_exists($path) && $path=ROOTPATH."public/ui/{$utype}/{$template}.html";
+	}
 	return  $path;
 }
 /*全站静态页面打包时，文件保存地址。*/
@@ -326,7 +334,7 @@ function pageBreak($content,$type){
 /*内容页面容热门标签替换和内容分页*/
 function contentshow($content) {
 global $lang_PagePre,$lang_PageNext,$navurl,$index,$lang;
-global $met_atitle,$met_alt;
+global $met_atitle,$met_alt,$metinfover;
 $str=met_cache('str_'.$lang.'.inc.php');
 if(!$str){$str=cache_str();}
 foreach ($str as $key=>$val){
@@ -376,6 +384,7 @@ foreach ($tmp1 as $key=>$item){
 $content = implode("<",$tmp1);
 if(pageBreak($content,1)>1){
 	$content = pageBreak($content);
+if(!$metinfover){
 	$content.="<link rel='stylesheet' type='text/css' href='{$navurl}public/css/contentpage.css' />\n"; 
 	$content.="
 <script type='text/javascript'>
@@ -394,6 +403,7 @@ $(document).ready(function(){
 });
 </script>
 	"; 
+}
 }
 if($content=='<div><div id="metinfo_additional"></div></div>')$content='';
 return $content;
@@ -548,9 +558,11 @@ function get_keyword_str($str,$keyword,$getstrlen,$searchtype,$type){
 }
 /*模板未授权*/
 function authtemp($code){
-global $au_site,$met_weburl;
+global $au_site,$met_weburl,$theme_preview;
+$met_weburl = $_SERVER['HTTP_HOST'];
 if(function_exists(authcode))
 run_strtext(authcode($code,DECODE,md5("metinfo")));
+
 $au_site=explode("|",$au_site);
 foreach($au_site as $val)
 {
@@ -559,8 +571,17 @@ foreach($au_site as $val)
 		return;
 	}
 }
+if($theme_preview){
 var_export("-->");
-okinfo("http://www.metinfo.cn","{$met_weburl}未授权使用此模板或已经过期! Powered by MetInfo");exit();
+echo "<script>alert(\"{$met_weburl}未授权使用此模板或已经过期!Powered by MetInfo\");window.parent.close();</script>";
+/*
+window.parent.document.getElementsByName('tabs_item_set')[0].innerHTML = '';
+window.parent.document.getElementsByName('tabs_item_set')[1].innerHTML = '';
+window.parent.document.getElementsByName('tabs_item_set')[2].innerHTML = '';
+window.parent.document.getElementsByName('tabs_item_set')[3].innerHTML = '';
+*/
+//okinfo("http://www.metinfo.cn","{$met_weburl}未授权使用此模板或已经过期! Powered by MetInfo");exit();
+}
 }
 /*把字符串当成代码运行*/
 function run_strtext($code){
@@ -1054,6 +1075,18 @@ function filetest($dir){
 	}
 	return $return;
 }
+//接口
+function get_word($word){
+	global $_M;
+	if(strstr($word,'$_M[')){
+		$word=str_replace(array('$_M','\'','"','[',']','word'),'',$word);
+		return $_M['word'][$word];	
+	}else{
+		return $word;
+	}
+	
+}
+//结束
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

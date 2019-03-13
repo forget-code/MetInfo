@@ -163,6 +163,10 @@ function daddslashes($string, $force = 0 ,$sql_injection =0,$url =0){
 			$string = str_ireplace("'","/",$string);
 			$string = str_ireplace("*","/",$string);
 			$string = str_ireplace("~","/",$string);
+			$url = str_ireplace("\"","/",$url);
+			$url = str_ireplace("'","/",$url);
+			$url = str_ireplace("*","/",$url);
+			$url = str_ireplace("~","/",$url);
 			$string = str_ireplace("select", "\sel\ect", $string);
 			$string = str_ireplace("insert", "\ins\ert", $string);
 			$string = str_ireplace("update", "\up\date", $string);
@@ -172,6 +176,7 @@ function daddslashes($string, $force = 0 ,$sql_injection =0,$url =0){
 			$string = str_ireplace("load_file", "\load\_\file", $string);
 			$string = str_ireplace("outfile", "\out\file", $string);
 			$string = str_ireplace("sleep", "\sle\ep", $string);
+			$string = str_ireplace("where", "\where", $string);
 			$string_html=$string;
 			$string = strip_tags($string);
 			if($string_html!=$string){
@@ -224,7 +229,11 @@ function delnull($htm){
 }
 /*页面跳转*/
 function metsave($url,$text,$depth,$htm,$gent,$prent){
-global $db,$met_config,$lang,$met_sitemap_auto,$adminmodify;
+global $db,$met_config,$lang,$met_sitemap_auto,$adminmodify,$met_weburl,$met_adminfile,$lang_physicaldelok;
+	if(strstr($url, 'app/dlapp/')){
+		header('location:'.$met_weburl.$met_adminfile.'/index.php?anyid=44&n=myapp&c=myapp&a=doindex&lang='.$lang.'&turnovertext='.$lang_physicaldelok);
+		die();
+	}
 	$htm=$htm!=''?delnull($htm):'';
 	$url=$url=='-1'?$url:urlencode($url);
 	$text=urlencode($text);
@@ -352,6 +361,43 @@ function unescape($str){
     } 
     return $ret; 
 }
+
+/*删除文件夹下所有文件*/
+function is_empty_dir($pathdir)
+{
+//判断目录是否为空，我的方法不是很好吧？只是看除了.和..之外有其他东西不是为空
+$d=opendir($pathdir);
+$i=0;
+      while($a=readdir($d))
+      {
+      $i++;
+      }
+closedir($d);
+if($i>2){return false;}
+else return true;
+}
+function deltree($pathdir)
+{
+
+          $d=dir($pathdir);
+          while($a=$d->read())
+          {
+          if(is_file($pathdir.'/'.$a) && ($a!='.') && ($a!='..')){unlink($pathdir.'/'.$a);}
+          //如果是文件就直接删除
+          if(is_dir($pathdir.'/'.$a) && ($a!='.') && ($a!='..'))
+          {//如果是目录
+              if(!is_empty_dir($pathdir.'/'.$a))//是否为空
+              {//如果不是，调用自身，不过是原来的路径+他下级的目录名
+              deltree($pathdir.'/'.$a);
+              }
+              if(is_empty_dir($pathdir.'/'.$a))
+              {//如果是空就直接删除
+              rmdir($pathdir.'/'.$a);
+              }
+          }
+          }
+          $d->close();
+      }
 /*静态页面生成*/
 function createhtm($fromurl,$filename,$htmpack,$indexy=0){
 	global $lang_funFile,$lang_funTip1,$lang_funCreate,$lang_funFail,$lang_funOK,$met_member_force,$met_member_use,$met_sitemap_xml,$met_weburl,$adminfile;
@@ -526,6 +572,7 @@ function classhtm($class1,$class2,$class3,$htmway=0,$classtype=0,$htmpack=0){
 	global $lang,$met_webhtm,$met_listhtmltype,$met_htmlistname,$m_now_time,$db,$met_class,$met_module,$metadmin,$met_index_type;
 	global $met_config,$met_column,$met_news,$met_product,$met_download,$met_img,$met_job,$met_message,$met_feedback,$met_htmway;
 	global $met_news_list,$met_product_list,$met_download_list,$met_img_list,$met_job_list,$met_message_list,$met_feedback_list,$met_product_page;
+	global $met_classindex2;
 	$met_htmway=$htmway?0:$met_htmway;
 	if($met_webhtm==2 && $met_htmway==0){
 		$class1_info=$met_class[$class1];
@@ -576,10 +623,21 @@ function classhtm($class1,$class2,$class3,$htmway=0,$classtype=0,$htmpack=0){
 				break;
 		}
 		if($class1_info[module]<6){
+			$class1sql=" class1='$class1' ";
+			if($class1_info[module]>=2&&$class1_info[module]<=5){
+				foreach($met_classindex2[$class1_info[module]] as $key=>$val){
+				if($val['releclass']==$class1_info[id]&&$val['releclass']>0){
+						$class1re.=" or class1='$val[id]' ";
+					}
+				}
+				if($class1re){
+					$class1sql='('.$class1sql.$class1re.')';
+				}
+			}
 			if($class1_info[module]==3){
-				$total_count = $db->counter($tablename, " where lang='".$lang."' and (class1=".$class1." or classother REGEXP '/|-{$class1}-[0-9]*-[0-9]*-|/') and (recycle='0' or recycle='-1')", "*");
+				$total_count = $db->counter($tablename, " where lang='".$lang."' and (".$class1sql." or classother REGEXP '/|-{$class1}-[0-9]*-[0-9]*-|/') and (recycle='0' or recycle='-1')", "*");
 			}else{
-				$total_count = $db->counter($tablename, " where lang='".$lang."' and class1=".$class1." and (recycle='0' or recycle='-1')", "*");
+				$total_count = $db->counter($tablename, " where lang='".$lang."' and ".$class1sql." and (recycle='0' or recycle='-1')", "*");
 			}
 		}elseif($class1_info[module]==7){
 			$query="select * from $met_config where name='met_fd_type' and columnid=$class1_info[id]";
@@ -594,7 +652,7 @@ function classhtm($class1,$class2,$class3,$htmway=0,$classtype=0,$htmpack=0){
 		$indexname=0;
 		if($class1_info['classtype']==1||$class1_info['releclass']){
 			$dbtxt=$class1_info['releclass']?2:1;
-			$folderone=$db->get_one("SELECT * FROM $met_column WHERE foldername='$class1_info[foldername]' and id !='$class1_info[id]' and classtype='$dbtxt' and lang='$lang'");
+			$folderone=$db->get_one("SELECT * FROM $met_column WHERE foldername='$class1_info[foldername]' and id !='$class1_info[id]' and classtype='$dbtxt' and lang='$lang' and (module!=100 or module!=101)");
 			if(!$folderone){
 				$indexname='index';
 				if($class1_info['lang']!=$met_index_type)$indexname=0;
@@ -939,8 +997,8 @@ function moduledb($module){
 }
 /*删除栏目*/
 function delcolumn($column){
-global $lang,$db,$met_deleteimg,$depth;
-global $met_admin_table,$met_column,$met_cv,$met_download,$met_feedback,$met_flist,$met_img,$met_job,$met_link,$met_list,$met_message,$met_news,$met_parameter,$met_plist,$met_product,$met_config;
+global $lang,$db,$depth;
+global $met_admin_table,$met_column,$met_cv,$met_download,$met_feedback,$met_flist,$met_img,$met_job,$met_link,$met_list,$met_message,$met_news,$met_parameter,$met_plist,$met_product,$met_config,$met_mlist;
 if($column['releclass']){
 $classtype="class1";
 }else{
@@ -952,11 +1010,9 @@ switch ($column['module']){
      $db->query($query);
     break;
 	case 2:
-	 if($met_deleteimg){
-	 	 $query = "select * from $met_news where $classtype='$column[id]'";
-		 $del = $db->get_all($query);
-		 delimg($del,2,2);
-	 }
+	 $query = "select * from $met_news where $classtype='$column[id]'";
+	 $del = $db->get_all($query);
+	 delimg($del,2,2);
 	 $query = "delete from $met_news where $classtype='$column[id]'";
 	 $db->query($query);
 	 $query = "delete from $met_column where id='$column[id]'";
@@ -1002,11 +1058,9 @@ switch ($column['module']){
      $db->query($query);
 	break;
 	case 6:
-	if($met_deleteimg){
-		$query = "select * from $met_cv where lang='$lang'";
-		$del = $db->get_all($query);
-		delimg($del,2,6);
-	 }		
+	$query = "select * from $met_cv where lang='$lang'";
+	$del = $db->get_all($query);
+	delimg($del,2,6);	
 	 $query = "delete from $met_plist where lang='$lang' and module='$column[module]'";
 	 $db->query($query);
 	 $query = "delete from $met_cv where lang='$lang'";
@@ -1022,6 +1076,10 @@ switch ($column['module']){
 	 $query = "delete from $met_column where id='$column[id]'";
      $db->query($query);
 	 $query="delete from $met_config where columnid='$column[id]' and lang='$lang'";
+	 $db->query($query);
+	 $query="delete from $met_parameter where lang='$lang' and module=7";
+	 $db->query($query);
+	 $query="delete from $met_mlist where lang='$lang' and module=7";
 	 $db->query($query);
 	break;
 	case 8:
@@ -1065,17 +1123,15 @@ if(!$admin_lists['id'] && ($column['classtype'] == 1 || $column['releclass'])){
 	}
 }
 /*删除栏目图片*/
-if($met_deleteimg){
 file_unlink($depth."../".$column[indeximg]);
 file_unlink($depth."../".$column[columnimg]);
-}
+
 }
 /*删除图片*/
 /*type1 删除1行，type2 为多行删除，$para_list为空时必须指定模块*/
 function delimg($del,$type,$module=0,$para_list=NULL){
-global $lang,$db,$met_deleteimg,$depth;
+global $lang,$db,$depth;
 global $met_admin_table,$met_column,$met_cv,$met_download,$met_feedback,$met_flist,$met_img,$met_job,$met_link,$met_list,$met_message,$met_news,$met_parameter,$met_plist,$met_product;
-if($met_deleteimg){
 	$table=$module==8?$met_feedback:$met_plist;
 	if($para_list==NULL&&$module!=2){
 		$query = "select * from $met_parameter where lang='$lang' and module='$module' and (class1='$del[class1]' or class1=0) and type='5'";
@@ -1154,7 +1210,6 @@ if($met_deleteimg){
 		}
 	}
 
-}
 }
 
 /*文件权限检测*/
@@ -1375,6 +1430,10 @@ function met_cooike_unset($userid){
 	met_setcookie("met_auth",'',time()-3600);
 	met_setcookie("met_key",'',time()-3600);
 	met_setcookie("appsynchronous",0,time()-3600,'');
+	
+	met_setcookie("upgraderemind",'',time()-3600);
+	met_setcookie("langset",'',time()-3600);
+	met_setcookie("appupdate",'',time()-3600);
 	unset($met_cookie);
 }
 function change_met_cookie($key,$val){
@@ -1432,6 +1491,109 @@ function namefilter($filename){
 	$filename=unescape($filename);
 	return $filename;
 }
+
+/*应用的添加*/
+function increase_app($no,$filename,$attribute,$type){
+	global $db,$lang,$met_ifcolumn,$met_ifcolumn_addfile,$met_ifmember_left;
+	if($type==1){
+		if(!$db->get_one("select * from $met_ifcolumn where no='$no'")){
+			$allidlist=explode('|',$attribute);
+			$query="INSERT INTO $met_ifcolumn SET no='$no', name='$allidlist[0]',appname='$allidlist[1]',addfile='$allidlist[2]',memberleft='$allidlist[3]'";
+			$db->query($query);
+		}
+	}else{
+		if($type==2){
+			$allidlist=explode('|',$attribute);
+			$query="INSERT INTO $met_ifcolumn_addfile SET no='$no', filename='$filename',m_name='$allidlist[0]',m_module='$allidlist[1]',m_class='$allidlist[2]',m_action='$allidlist[3]'";
+			$db->query($query);
+		}else{
+			$allidlist=explode('|',$attribute);
+			$query="INSERT INTO $met_ifmember_left SET no='$no', columnid='$allidlist[0]',title='$allidlist[1]',foldername='$allidlist[2]',filename='$allidlist[3]'";
+			$db->query($query);
+		
+		}
+	}
+
+}
+
+/*应用模块创建时生成相应文件*/
+function establish_appmodule($foldername,$no){
+	global $db,$lang,$met_appmodule,$met_ifcolumn,$met_ifcolumn_addfile;
+	$addfile_type=$db->get_one("select * from $met_ifcolumn where no='$no'");
+	if($addfile_type[addfile]==1){
+		$path='../../'.$foldername;
+		mkdir($path, 0777);
+		$structure=$db->get_all("select distinct filename from $met_ifcolumn_addfile where no='$no'");
+		foreach($structure as $key=>$val){
+			$path='../../'.$foldername.'/'.$val[filename];
+			$fp=fopen($path,"w+");
+		$str="<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+"."\n";
+			fputs($fp,$str);
+			fclose($fp);
+		}
+		$structure1=$db->get_all("select * from $met_ifcolumn_addfile where no='$no'");
+		foreach($structure1 as $key=>$val){
+			$straction[$val[filename]].="define('M_NAME', '".$val['m_name']."');\ndefine('M_MODULE', '".$val['m_module']."');\ndefine('M_CLASS', '".$val['m_class']."');\n";
+			if(substr($val['m_action'], 0, 1) == '$'){
+				$straction[$val[filename]].="define('M_ACTION', ".$val['m_action'].");\n";
+			}else{
+				$straction[$val[filename]].="define('M_ACTION', '".$val['m_action']."');\n";
+			}
+			$straction[$val[filename]].="require_once '../app/app/entrance.php';\n";
+		}
+		foreach($structure as $key=>$val){
+			$path='../../'.$foldername.'/'.$val[filename];
+			$fp = fopen($path, "r");
+			$read = fread($fp, filesize($path));
+			fclose($fp);
+			$fp=fopen($path,"w");
+			$str=$read.$straction[$val[filename]]."# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>";
+			fputs($fp,$str);
+			fclose($fp);
+		}
+	}
+}
+
+/*添加后台侧导航*/
+function lateral_navigation($name,$value,$bigclass,$order,$url){
+	global $db,$met_language,$met_admin_column;
+	$allidlist=explode('|',$value);
+	if(!$db->get_one("select * from $met_language where name='$name' and lang='cn'")){
+		$query="INSERT INTO $met_language SET name='$name',value='$allidlist[0]',site='1',no_order='0',array='8',app='0',lang='cn'";
+		$db->query($query);
+	}
+	if(!$db->get_one("select * from $met_language where name='$name' and lang='en'")){
+		$query="INSERT INTO $met_language SET name='$name',value='$allidlist[1]',site='1',no_order='0',array='8',app='0',lang='en'";
+		$db->query($query);
+	}
+	if(!$db->get_one("select * from $met_language where name='$name' and lang='tc'")){
+		$query="INSERT INTO $met_language SET name='$name',value='$allidlist[2]',site='1',no_order='0',array='8',app='0',lang='tc'";
+		$db->query($query);
+	}
+	$name1='lang_'.$name;
+	if(!$db->get_one("select * from $met_admin_column where name='$name1' and type='2'")){
+		$query="INSERT INTO $met_admin_column SET name='$name1',url='$url',bigclass='$bigclass',type='2',list_order='$order'";
+		$db->query($query);
+	}
+}
+//接口
+function get_word($word){
+	global $_M;
+	if(strstr($word,'$_M[')){
+		$word=str_replace(array('$_M','\'','"','[',']','word'),'',$word);
+		return $_M['word'][$word];	
+	}else{
+		return $word;
+	}
+	
+}
+//结束
+
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

@@ -10,6 +10,7 @@ Header("Location: ../index.php");
 if($met_admin_type_ok==0)$met_admin_type_display="none";
 $css_url="../templates/".$met_skin."/css";
 $img_url="../templates/".$met_skin."/images";
+$metinfo_mobile=false;
 if($metinfo_mobile){
 include template('mobile/login');
 }else{

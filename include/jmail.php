@@ -5,19 +5,24 @@ if ( ! function_exists('jmailsend'))
 {
 	function jmailsend($from,$fromname,$to,$title,$body,$usename,$usepassword,$smtp,$repto,$repname)
 	{
+		global $met_fd_port,$met_fd_way;
 		$mail             = new PHPMailer();
 		//$mail->SMTPDebug  = 3;
 		
 		$mail->CharSet    = "UTF-8"; // charset
 		$mail->Encoding   = "base64";
-
+		$mail->Timeout    = 15; 
 		$mail->IsSMTP(); // telling the class to use SMTP
 		
 		//system
 		if(stripos($smtp,'.gmail.com')===false){
 			$mail->Port       = $met_fd_port;
 			$mail->Host       = $smtp; // SMTP server
-			$mail->SMTPSecure = "{$met_fd_way}";
+			if($met_fd_way=='ssl'){
+				$mail->SMTPSecure = "ssl";
+			}else{
+				$mail->SMTPSecure = "";
+			}
 		}
 		else{
 			$mail->Port       = 465;
@@ -25,7 +30,6 @@ if ( ! function_exists('jmailsend'))
 			$mail->SMTPSecure = "ssl";
 			//$mail->Host       = 'ssl://'.$smtp; // SMTP server
 		}
-
 		$mail->SMTPAuth   = true;
 		$mail->Username   = $usename; // SMTP account username
 		$mail->Password   = $usepassword;        // SMTP account password
@@ -71,7 +75,7 @@ if ( ! function_exists('jmailsend'))
 		if(!$mail->Send()) {
 			$mail->SmtpClose();
 		  //return "Mailer Error: " . $mail->ErrorInfo;
-		  return false;
+		 return false;
 		} else {
 			$mail->SmtpClose();
 		  //return "Message sent!";

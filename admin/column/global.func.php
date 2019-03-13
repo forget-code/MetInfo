@@ -68,6 +68,20 @@ function column_copyconfig($foldername,$module,$id){
 			$array[8][1]='';
 			$array[9][0]='met_fd_ok';
 			$array[9][1]='1';
+			$array[10][0]='met_fd_sms_back';
+			$array[10][1]='';
+			$array[11][0]='met_fd_sms_content';
+			$array[11][1]='';
+			$array[12][0]='met_fd_sms_dell';
+			$array[12][1]='';
+			$array[13][0]='met_message_fd_class';
+			$array[13][1]='';
+			$array[14][0]='met_message_fd_content';
+			$array[14][1]='';
+			$array[15][0]='met_message_fd_email';
+			$array[15][1]='';
+			$array[16][0]='met_message_fd_sms';
+			$array[16][1]='';
 			verbconfig($array,$id);
 		break;
 		case 8:  
@@ -98,6 +112,12 @@ function column_copyconfig($foldername,$module,$id){
 			$array[10][1]='1';
 			$array[11][0]='met_fd_ok';
 			$array[11][1]='1';
+			$array[12][0]='met_fd_sms_back';
+			$array[12][1]='';
+			$array[13][0]='met_fd_sms_content';
+			$array[13][1]='';
+			$array[14][0]='met_fd_sms_dell';
+			$array[14][1]='';
 			verbconfig($array,$id);
 		break;
 	}

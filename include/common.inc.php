@@ -24,9 +24,12 @@ require_once ROOTPATH.'include/global.func.php';
 foreach(array('_COOKIE', '_POST', '_GET') as $_request) {
 	foreach($$_request as $_key => $_value) {
 		$_key{0} != '_' && $$_key = daddslashes($_value,0,0,1);
+		$_M['form'][$_key] = daddslashes($_value,0,0,1);
 	}
 }
 $met_cookie=array();
+$settings=array();
+$db_settings=array();
 $db_settings = parse_ini_file(ROOTPATH.'config/config_db.php');
 @extract($db_settings);
 $db = new dbmysql();
@@ -37,6 +40,7 @@ $mettables=explode('|',$mettable[value]);
 foreach($mettables as $key=>$val){
 	$tablename='met_'.$val;	
 	$$tablename=$tablepre.$val;
+	$_M['table'][$val] = $tablepre.$val;
 }
 require_once ROOTPATH.'include/cache.func.php';
 require_once ROOTPATH.'config/config.inc.php';
@@ -48,6 +52,7 @@ if($metmemberforce==$met_member_force){
 	change_met_cookie('metinfo_member_type',"256");
 	save_met_cookie();
 }
+$_M['user']['cookie'] = $met_cookie;
 if($met_member_use!=0){
 	$metinfo_member_id     =(get_met_cookie('metinfo_admin_id')=="")?get_met_cookie('metinfo_member_id'):get_met_cookie('metinfo_admin_id');
 	$metinfo_member_name     =(get_met_cookie('metinfo_admin_name')=="")?get_met_cookie('metinfo_member_name'):get_met_cookie('metinfo_admin_name');
@@ -71,9 +76,17 @@ $m_now_counter  = date('Ymd',$m_now_time);
 $m_now_month    = date('Ym',$m_now_time);
 $m_now_year     = date('Y',$m_now_time);
 $m_user_agent   =  $_SERVER['HTTP_USER_AGENT'];
-$m_user_ip = $_SERVER['REMOTE_ADDR'];
+if($_SERVER['HTTP_X_FORWARDED_FOR']){
+	$m_user_ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+} elseif($_SERVER['HTTP_CLIENT_IP']){
+	$m_user_ip = $_SERVER['HTTP_CLIENT_IP'];
+} else{
+	$m_user_ip = $_SERVER['REMOTE_ADDR'];
+}
+$m_user_ip  = preg_match('/^([0-9]{1,3}\.){3}[0-9]{1,3}$/',$m_user_ip) ? $m_user_ip : $_SERVER['REMOTE_ADDR'];
 $m_user_ip  = preg_match('/^([0-9]{1,3}\.){3}[0-9]{1,3}$/',$m_user_ip) ? $m_user_ip : 'Unknown';
 $PHP_SELF = $_SERVER['PHP_SELF'] ? $_SERVER['PHP_SELF'] : $_SERVER['SCRIPT_NAME'];
+$mobilesql="";
 if(file_exists(ROOTPATH.'include/mobile.php')&&$met_wap&&trim(file_get_contents(ROOTPATH.'include/mobile.php'))!='metinfo'){
 require_once ROOTPATH.'include/mobile.php';
 }else{
@@ -85,7 +98,11 @@ if($met_mobileok&&$met_wap_url){
 $index_url=$met_wap_url;
 }
 $met_chtmtype=".".$met_htmtype;
-$met_htmtype=($lang==$met_index_type)?".".$met_htmtype:"_".$lang.".".$met_htmtype;
+if($met_webhtm != 0){//判断是否开启静态
+	$met_htmtype=($lang==$met_index_type)?".".$met_htmtype:"_".$lang.".".$met_htmtype;
+}else{
+	$met_htmtype = ".".$met_htmtype;
+}
 $langmark='lang='.$lang;
 switch($met_title_type){
     case 0:
@@ -108,14 +125,43 @@ $met_title=$met_hometitle!=''?$met_hometitle:$met_title;
 
 $member_index_url="index.php?lang=".$lang;
 $member_register_url="register.php?lang=".$lang;
-
+//接口
+if($_M['plugin']['doweb']){
+	define('IN_MET', true);
+	if(file_exists(ROOTPATH.'app/system/include/class/mysql.class.php')){
+		require_once ROOTPATH.'app/system/include/class/mysql.class.php';
+		$db_settings = array();
+		$db_settings = parse_ini_file(ROOTPATH.'config/config_db.php');
+		@extract($db_settings);
+		DB::dbconn($con_db_host, $con_db_id, $con_db_pass, $con_db_name);
+		foreach($_M['plugin']['doweb'] as $key => $val){
+				$applistfile=ROOTPATH.'app/app/'.$val.'/plugin/'.'plugin_'.$val.'.class.php';
+				$_M['url']['own'] = $_M['url']['site'].'app/app/'.$val.'/';
+				if(file_exists($applistfile)&&!is_dir($applistfile)&&((file_get_contents($applistfile))!='metinfo')){
+					require_once $applistfile;
+					$app_plugin_name=str_replace('.class.php', '', 'plugin_'.$val);
+					if (class_exists($app_plugin_name)) {
+						$newclass=new $app_plugin_name;
+						if(method_exists($newclass, 'doweb')){
+							call_user_func(array($newclass,  'doweb'));
+						}
+					}
+					
+				}
+		}
+		$_M['url']['own'] = '';
+		DB::close();
+	}
+}
+//结束
 if($met_oline!=1){
 	$file_site = explode('|',$app_file[1]);
 	foreach($file_site as $keyfile=>$valflie){
-		if(file_exists(ROOTPATH."$met_adminfile".$valflie)&&!is_dir(ROOTPATH."$met_adminfile".$valflie)){require_once ROOTPATH."$met_adminfile".$valflie;}
+		if(file_exists(ROOTPATH."$met_adminfile".$valflie)&&!is_dir(ROOTPATH."$met_adminfile".$valflie)&&((file_get_contents(ROOTPATH."$met_adminfile".$valflie))!='metinfo')){require_once ROOTPATH."$met_adminfile".$valflie;}
 	}
 }
-jump_pseudo();
+include_once ROOTPATH.$met_adminfile.'/app/wap/wapjs.php';
+if (!$search && !$action){jump_pseudo();}
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

@@ -1,6 +1,7 @@
 <?php
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+
 $depth='../';
 require_once $depth.'../login/login_check.php';
 $css_url=$depth."../templates/".$met_skin."/css";
@@ -56,7 +57,7 @@ $info=$met_app_info;
 							</span>
 						";
 					}else{
-						$valapps['xtype']="<a href='http://$met_host/dl/app.php' onclick=\"return olupdate('$valapps[1]','$valapps[ver_now]','testc');\">{$lang_appupgrade}</a>";
+						$valapps['xtype']="<a href='http://$met_host/dl/app.php' onclick=\"return olupdate('$valapps[1]','$valapps[ver_now]','testc');\" style=\"display:none\"><img src='{$img_url}/up.png' /><p>"."{$lang_appupgrade}</p></a><a href=\"javascript:void(0)\" onclick=\"$('#update_content_control', parent.document).html('{$valapps[1]},{$valapps[ver_now]}');$('#update_content_control', parent.document).click();\"><img src='{$img_url}/up.png' /><p>"."{$lang_appupgrade}</p></a>";
 					}
 				}
 			}else{

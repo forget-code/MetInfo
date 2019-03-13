@@ -2,6 +2,7 @@
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
+if($depth!=''&&$depth!='../'&&$depth!='../../'){die();}
 if(!isset($depth))$depth='';
 $commonpath=$depth.'include/common.inc.php';
 $commonpath=$admin_index?$commonpath:'../'.$commonpath;
@@ -50,6 +51,7 @@ if($action=="login"){
 		if($_GET[langset]!=''){
 			$_GET[langset]=daddslashes($_GET[langset],0,1);
 			change_met_cookie('languser',$_GET[langset]);
+			met_setcookie("langset", $_GET[langset], 0, '/', false);
 			save_met_cookie();
 		}
 		save_met_cookie();
@@ -64,6 +66,7 @@ if($action=="login"){
 	if($admincp_list[langok]<>'metinfo' and (!strstr($admincp_list[langok],"-".$met_index_type."-")))$lang=$adminlang[1];
 	$filejs = ROOTPATH_ADMIN.'include/metvar.js';
 	$strlen = file_put_contents($filejs, $js);
+	$metinfo_mobile=false;
 	if($metinfo_mobile){
 		Header("Location: ../index.php");
 	}else{
@@ -80,18 +83,18 @@ if($action=="login"){
 		}
 		if($re_url&&file_exists('../..'.$filedir)&&$filedir){
 			Header("Location: $re_url");
-			met_setcookie("re_url",$re_url,time()-3600);
+			met_setcookie("re_url",$re_url,time()-21600);
 			exit;
 		}else{
-			if($re_url)met_setcookie("re_url",$re_url,time()-3600);
-			echo "<script type='text/javascript'> var nowurl=parent.location.href; var metlogin=(nowurl.split('login')).length-1; if(metlogin==0)location.href='../system/sysadmin.php?anyid=8&lang=$lang'; if(metlogin!=0)location.href='../index.php?lang=$lang';</script>";
+			if($re_url)met_setcookie("re_url",$re_url,time()-21600);
+			echo "<script type='text/javascript'> var nowurl=parent.location.href; var metlogin=(nowurl.split('login')).length-1; if(metlogin==0)window.parent.frames.location.href='../index.php?lang=$lang'; if(metlogin!=0)location.href='../index.php?lang=$lang';</script>";
 		}	
 	}
 }else{
 	if(!$metinfo_admin_name||!$metinfo_admin_pass){
 		if($admin_index){
 			met_cooike_unset();
-			met_setcookie("re_url",$re_url,time()-3600);
+			met_setcookie("re_url",$re_url,time()-21600);
 			Header("Location: login/login.php");
 		}else{
 			if(!$re_url){
@@ -103,7 +106,7 @@ if($action=="login"){
 					$re_url="http://$_SERVER[SERVER_NAME]$_SERVER[REQUEST_URI]";
 				}
 			}
-			if(!$_COOKIE[re_url])met_setcookie("re_url",$re_url,time()+3600);
+			if(!$_COOKIE[re_url]&&!strstr($re_url, "return.php"))met_setcookie("re_url",$re_url,time()+21600);
 			met_cooike_unset();
 			Header("Location: ".$depth."../login/login.php");
 		}
@@ -113,7 +116,7 @@ if($action=="login"){
 		if(!$admincp_ok){
 			if($admin_index){
 				met_cooike_unset();
-				met_setcookie("re_url",$re_url,time()-3600);
+				met_setcookie("re_url",$re_url,time()-21600);
 				Header("Location: login/login.php");
 			}else{
 				if(!$re_url){
@@ -125,7 +128,9 @@ if($action=="login"){
 						$re_url="http://$_SERVER[SERVER_NAME]$_SERVER[REQUEST_URI]";
 					}
 				}
-				if(!$_COOKIE[re_url])met_setcookie("re_url",$re_url,time()+3600);
+				if(!strstr($re_url, "return.php")){
+				if(!$_COOKIE[re_url])met_setcookie("re_url",$re_url,time()+21600);
+				}
 				met_cooike_unset();
 				Header("Location: ".$depth."../login/login.php");
 			}
@@ -167,12 +172,26 @@ if($action=="login"){
 						if(!strstr($admincp_ok[admin_op], "del"))okinfo('javascript:window.history.back();',$lang_logindelete);
 						break;
 				}
-				if(($admincp_ok[admin_op]=='---' or $admincp_ok[admin_op]=='') and $action<>'' and $action<>'list' and !$action_ajax and (!strstr($_SERVER['REQUEST_URI'], "/content.php")) )okinfo('javascript:window.history.back();',$lang_loginall);
+				if(!strstr($_SERVER['REQUEST_URI'], "olupdate.php")){					
+					if(($admincp_ok[admin_op]=='---' or $admincp_ok[admin_op]=='') and $action<>'' and $action<>'list' and !$action_ajax and (!strstr($_SERVER['REQUEST_URI'], "/content.php")) )okinfo('javascript:window.history.back();',$lang_loginall);
+			    	}			    	
+			}
+			if(strstr($_SERVER['REQUEST_URI'], "olupdate.php")&&strpos($met_host, 'api.metinfo.cn')){
+				$first=strpos($met_host, '/');
+				$first=$first?$first+1:0;
+				$met_host=substr($met_host,$first);
 			}
 		}
 		$adminlang=explode('-',$admincp_ok[langok]);
-		if($admincp_ok[langok]<>'metinfo' and (!strstr($admincp_ok[langok],$lang)))okinfo('javascript:window.history.back();',$lang_loginalllang);
-		/*power end*/
+		if($depth){
+			$depth1='../'.$depth;
+		}
+		$jurisdiction_url = $depth1.'index.php?lang='.$adminlang[1];
+		if(!strstr($_SERVER['REQUEST_URI'], "include/turnover.php")){
+			if(!strstr($_SERVER['REQUEST_URI'], "login_out.php")){
+				if($admincp_ok[langok]<>'metinfo' and (!strstr($admincp_ok[langok],$lang)))okinfo($jurisdiction_url,$lang_loginalllang);
+			}
+		}		/*power end*/
 	}
 }
 # This program is an open source system, commercial use, please consciously to purchase commercial license.

@@ -13,7 +13,7 @@ $class2=$class_list[$class1][releclass]?$class1:$class2;
 $class1=$class_list[$class1][releclass]?$class_list[$class1][releclass]:$class1;
 $class_info=$class2?$class2_info:$class1_info;
 if($class2!="")$class_info[name]=$class2_info[name]."--".$class1_info[name];
-$show[description]=$class_info[description]?$class_info[description]:$met_keywords;
+$show[description]=$class_info[description]?$class_info[description]:$met_description;
 $show[keywords]=$class_info[keywords]?$class_info[keywords]:$met_keywords;
 $met_title=$met_title?$class_info['name'].'-'.$met_title:$class_info['name'];
 if($class_info['ctitle']!='')$met_title=$class_info['ctitle'];

@@ -78,8 +78,11 @@ if($type=='submit' && $met_stat){
 		$lurl=delete($lurl);
 		$browser=delete($browser);
 		$d=delete($d);
-		if(checkadd(1,$ip) && checkadd(2,$url) && $browser!=''){
-			if(!$lurl || checkadd(2,$lurl)){
+		if(stristr($lurl,'www.google')||stristr($lurl,'soso.')||stristr($lurl,'yahoo.')){
+			$google_type="ok";
+		}
+		if((checkadd(1,$ip) && checkadd(2,$url) && $browser!='')){
+			if(!$lurl || checkadd(2,$lurl)||$google_type=="ok"){
 				$stime =strtotime(date("Y-m-d H:i:s"));
 				/*访问的页面*/
 				$d=explode('-',$d);
@@ -143,7 +146,13 @@ if($type=='submit' && $met_stat){
 					$lurlkey=keytype($lurl);
 					$lurlkey[0]=daddslashes($lurlkey[0]);
 					$lurlkey[1]=daddslashes($lurlkey[1]);
-					if($lurlkey && delete($lurlkey[0])!=''){
+					$lurlkeyk='';
+					if(stristr($lurl,'www.google')||stristr($lurl,'yahoo.')){
+						$lurlkeyk='无法获取';
+						$lurlkey[0]=null;
+					}
+					if(($lurlkey && delete($lurlkey[0])!='') || $lurlkeyk=='无法获取'){
+						
 						$keyok=$db->get_one("SELECT * FROM {$met_visit_detail} WHERE name='{$lurlkey[0]}' and stattime = '{$dtime}' and type='1'");
 						if($keyok){
 							$keyok_remark=explode('|',$keyok['remark']);
@@ -174,17 +183,18 @@ if($type=='submit' && $met_stat){
 										where id = '{$keyok['id']}'";
 							$db->query($query);
 						}else{
-							if($lurlkey[0]!=''){
-								$lurlkey[1]=$lurlkey[1].'-1|';
-								$query = "INSERT INTO {$met_visit_detail} SET
-									name     = '{$lurlkey[0]}',
-									pv       = '1',
-									ip       = '1',
-									alone    = '1',
-									remark   = '{$lurlkey[1]}',
-									type     = '1',
-									stattime = '{$dtime}'";
-								$db->query($query);
+							if($lurlkey[0]!='' || $lurlkeyk=='无法获取'){						
+									$lurlkey[1]=$lurlkey[1].'-1|';
+									$query = "INSERT INTO {$met_visit_detail} SET
+										name     = '{$lurlkey[0]}',
+										pv       = '1',
+										ip       = '1',
+										alone    = '1',
+										remark   = '{$lurlkey[1]}',
+										type     = '1',
+										stattime = '{$dtime}'";
+									$db->query($query);
+								
 							}
 						}
 					}
@@ -243,6 +253,7 @@ if($type=='submit' && $met_stat){
 					}
 					$db->query($dayquery);
 				}
+				
 			}
 		}
 }

@@ -2,6 +2,9 @@
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.d.
 require_once template('metlangs');
+$query = "select content_type from {$met_admin_table} where admin_id='{$metinfo_admin_name}'";
+$met_content_type1 = $db->get_one($query);
+$met_content_type = $met_content_type1['content_type'];
 if($met_content_type==2){
 echo <<<EOT
 -->

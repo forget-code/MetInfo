@@ -205,6 +205,10 @@ if($type=="contentup"){
 /*模板文件*/
 	$filetype=explode('.',$_FILES['Filedata']['name']);
 	if($filetype[count($filetype)-1]=='zip'){
+		if(stristr($met_file_format,'zip') === false){
+			echo $lang_jsx36;
+			die();
+		}
 		//if(!is_writable('../../templates/'))@chmod('../../templates/',0777);
 		$filenamearray=explode('.zip',$_FILES['Filedata']['name']);
 	    $skin_if=$db->get_one("SELECT * FROM {$met_skin_table} WHERE skin_file='{$filenamearray[0]}'");
@@ -263,6 +267,10 @@ if($type=="contentup"){
 /*数据库文件*/
 }elseif($type=='sql'){
 	if(strstr($_FILES['Filedata']['name'],'.sql')){
+		if(stristr($met_file_format,'sql') === false){
+			echo $lang_jsx37;
+			die();
+		}
 		$filenamearray=explode('.sql',$_FILES['Filedata']['name']);
 		$f = new upfile('sql,zip','../databack/','','');
 		if($f->get_error()){
@@ -280,6 +288,10 @@ if($type=="contentup"){
 	}else{
 		$filetype=explode('.',$_FILES['Filedata']['name']);
 		if($filetype[count($filetype)-1]=='zip'){
+			if(stristr($met_file_format,'zip') === false){
+				echo $lang_jsx36;
+				die();
+			}
 			$filenamearray=explode('.zip',$_FILES['Filedata']['name']);
 			$f = new upfile('sql,zip','../databack/sql/','','');
 			if($f->get_error()){

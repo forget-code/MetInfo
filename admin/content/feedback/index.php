@@ -3,6 +3,7 @@
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.  
 $depth='../';
 require_once $depth.'../login/login_check.php';
+require_once ROOTPATH.'public/php/searchhtml.inc.php';
 if($class1){
 	foreach($settings_arr as $key=>$val){
 		if($val['columnid']==$class1){
@@ -41,7 +42,7 @@ while($list= $db->fetch_array($result)){
 	$list[readok] = $list[readok] ? $lang_yes : $lang_no;
 	$feedback_list[]=$list;
 }
-$page_list = $rowset->link("index.php?lang=$lang&class1=$class1&search=$search&readok=$readok&useinfo=$useinfo&met_fd_classname=$met_fd_classname&customerid={$customerid}&page=");
+$page_list = $rowset->link("index.php?anyid=$anyid&lang=$lang&class1=$class1&search=$search&readok=$readok&useinfo=$useinfo&met_fd_classname=$met_fd_classname&customerid={$customerid}&page=");
 	$cs=3;
 	$listclass='';
 	$listclass[$cs]='class="now"';

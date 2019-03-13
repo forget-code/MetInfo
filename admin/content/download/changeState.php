@@ -42,7 +42,7 @@ if($action=='copy'){
 	}
 	foreach($original as $key=>$val){
 		$val[content]=str_replace('\'','\'\'',$val[content]);
-		$query = "insert into {$met_download} set title='$val[title]',ctitle='$val[ctitle]',keywords='$val[keywords]',description='$val[description]',content='$val[content]',class1='{$copyclass1}',class2='{$copyclass2}',class3='{$copyclass3}',no_order='$val[no_order]',new_ok='$val[new_ok]',wap_ok='$val[wap_ok]',downloadurl='$val[downloadurl]',filesize='$val[filesize]',com_ok='$val[com_ok]',hits='$val[hits]',updatetime='$val[updatetime]',addtime='$val[addtime]',issue='$val[issue]',access='$val[access]',top_ok='$val[top_ok]',downloadaccess='$val[downloadaccess]',lang='{$copylang}',recycle='$val[recycle]'";
+		$query = "insert into {$met_download} set title='$val[title]',ctitle='$val[ctitle]',keywords='$val[keywords]',description='$val[description]',content='$val[content]',class1='{$copyclass1}',class2='{$copyclass2}',class3='{$copyclass3}',no_order='$val[no_order]',new_ok='$val[new_ok]',wap_ok='$val[wap_ok]',downloadurl='$val[downloadurl]',filesize='$val[filesize]',com_ok='$val[com_ok]',hits='$val[hits]',updatetime='$val[updatetime]',addtime='$val[addtime]',issue='$val[issue]',access='$val[access]',top_ok='$val[top_ok]',downloadaccess='$val[downloadaccess]',lang='{$copylang}',recycle='$val[recycle]',displaytype='$val[displaytype]',tag='$val[tag]'";
 		$db->query($query);
 		$insert_id=$db->insert_id();
 		$query="select * from {$met_plist} where listid='{$val[id]}'";
@@ -117,6 +117,10 @@ if($action=='copy'){
 	if(isset($com_ok)){
 		$com_ok=$com_ok==1?0:1;
 		$query = $query."com_ok             = '$com_ok',";
+	}
+	if(isset($displaytype)){
+		$displaytype=$displaytype==1?0:1;
+		$query = $query."displaytype             = '$displaytype',";
 	}
 	if(isset($top_ok)){
 		$top_ok=$top_ok==1?0:1;

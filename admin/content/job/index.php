@@ -3,6 +3,7 @@
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 $depth='../';
 require_once $depth.'../login/login_check.php';
+require_once ROOTPATH.'public/php/searchhtml.inc.php';
 $query="select * from $met_admin_array where array_type='1' and lang='$lang'";
 $menber_array_temp=$db->get_all($query);
 foreach($menber_array_temp as $key=>$val){
@@ -15,7 +16,8 @@ if(!$class1_info)metsave('-1',$lang_dataerror,$depth);
 $serch_sql=" where lang='$lang' ";
 if($search == "detail_search"){     
 if($admincp_ok[admin_issueok]==1)$serch_sql .= " and issue='$metinfo_admin_name' ";   
-	if($position) { $serch_sql .= " and position like '%$position%' "; }		
+	if($position) { $serch_sql .= " and position like '%$position%' "; }
+	if(isset($displaytype) && $displaytype!="all" && $displaytype!="") { $serch_sql .= " and displaytype ='$displaytype' "; }	
 	if(isset($top) && $top!="all" && $top!="") { $serch_sql .= " and top_ok ='$top' "; }
 	$total_count = $db->counter($met_job, "$serch_sql", "*");
 }else{
@@ -38,6 +40,7 @@ foreach($job_listo as $key=>$list){
 	}
 	$list[top_ok1] = $list[top_ok] ? $lang_yes : $lang_no;
 	$list[wap_ok1] = $list[wap_ok] ? $lang_yes : $lang_no;
+	$list[displaytype1] = $list[displaytype] ? $lang_yes : $lang_no;
 	if($list[count]==0)$list[count]=$lang_josAlways;
 	if($list[useful_life]==0)$list[useful_life]=$lang_josAlways;
 	$job_list[]=$list;
@@ -47,6 +50,11 @@ switch($top){
 	case '1':$top1="selected='selected'";break;
 	case '0':$top2="selected='selected'";break;
 	default:$top0="selected='selected'";break;
+}
+switch($displaytype){
+	case '1':$displaytype1="selected='selected'";break;
+	case '0':$displaytype2="selected='selected'";break;
+	default:$displaytype0="selected='selected'";break;
 }
 $css_url=$depth."../templates/".$met_skin."/css";
 $img_url=$depth."../templates/".$met_skin."/images";

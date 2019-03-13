@@ -23,7 +23,10 @@ $title="<a href='index.php?anyid={$anyid}&lang={$lang}&class1={$class1}'>{$met_c
 }else{
 $title="{$lang_eidtmsg}";
 }
+$class1=$class1?$class1:($id?$id:0);
+$title=title($class1,$anyid,$lang)?title($class1,$anyid,$lang):$title;
 require_once template('content/message/top');
+$messagesName=$db->get_one("select * from $met_language where name='Name' and lang='$lang'");
 echo <<<EOT
 -->
 <div class="v52fmbx_tbmax v52fmbx_tbmaxmt">
@@ -54,7 +57,7 @@ echo <<<EOT
 	  	<tr>
                 <td width="40" class="list">{$lang_selected}</td>
 				<td width="100" class="list">{$lang_messageID}</td>
-                <td class="list">{$lang_name}</td>
+                <td class="list">{$messagesName[value]}</td>
 				<td class="list">{$lang_messageTel}</td>
 				<td class="list">Email</td>
 				<td width="50" class="list">{$lang_messageReply}</td>             
@@ -76,16 +79,22 @@ echo <<<EOT
 <!--
 EOT;
 foreach($message_list as $key=>$val){
+$query="select * from $met_mlist where paraid='$messagesName1[value]' and listid='$val[id]' and lang='$lang'";
+$message_name=$db->get_one($query);
+$query="select * from $met_mlist where paraid='$messagesName2[value]' and listid='$val[id]' and lang='$lang'";
+$message_sms=$db->get_one($query);
+$query="select * from $met_mlist where paraid='$messagesName3[value]' and listid='$val[id]' and lang='$lang'";
+$message_email=$db->get_one($query);
 echo <<<EOT
 -->          
               <tr class="mouse click">
               <td  class="list-text"><input name='id' type='checkbox' onClick="unselectall()" id="id" value='$val[id]' /></td>
-				<td  class="list-text">$val[customerid]</td>
-			    <td  class="list-text">$val[name]</td>
-				<td  class="list-text color999">$val[tel]</td>
-				<td  class="list-text color999">$val[email]</td>
-                <td  class="list-text color999">$val[readok]</td>				
-                <td  class="list-text color999">$val[addtime]</td>
+	<td  class="list-text">$val[customerid]</td>
+             <td  class="list-text">{$message_name[info]}</td>
+	<td  class="list-text color999">{$message_sms[info]}</td>
+	<td  class="list-text color999">{$message_email[info]}</td>
+             <td  class="list-text color999">$val[readok]</td>				
+             <td  class="list-text color999">$val[addtime]</td>
 <!--
 EOT;
 if($met_member_use){
@@ -97,7 +106,7 @@ EOT;
 }
 echo <<<EOT
 --> 
-				<td class="list-text"><a href="editor.php?anyid={$anyid}&id=$val[id]&lang=$lang&class1={$class1}&customerid={$customerid}" >{$lang_View}</a>&nbsp;&nbsp;<a href="delete.php?anyid={$anyid}&id=$val[id]&lang=$lang&class1={$class1}&customerid={$customerid}" onClick="return linkSmit($(this),1);" >{$lang_delete}</a></td>
+				<td class="list-text"><a href="editor.php?anyid={$anyid}&id={$val[id]}&lang=$lang&class1={$class1}&customerid={$customerid}" >{$lang_View}</a>&nbsp;&nbsp;<a href="delete.php?anyid={$anyid}&id={$val[id]}&lang=$lang&class1={$class1}&customerid={$customerid}" onClick="return linkSmit($(this),1);" >{$lang_delete}</a></td>
               </tr>
 <!--
 EOT;

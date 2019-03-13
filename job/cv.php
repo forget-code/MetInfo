@@ -57,11 +57,14 @@ $fdjs=$fdjs."return false;}\n";
  $fdjs=$fdjs."return false;}\n";
 }
 }
-$fdjs=$fdjs."}</script>";
+$fdjs=$fdjs."}";
+$fdjs=$fdjs."function verification(){ ";
+$fdjs=$fdjs."document.getElementById('new_code').click();}\n";
+$fdjs=$fdjs."</script>";
 
 
 	$selectjob = "";
-	$serch_sql=" where lang='$lang' ";
+	$serch_sql=" where lang='$lang' and displaytype=1 ";
 	$metinfo_member_type=intval($metinfo_member_type);
 	$query = "SELECT id,position FROM $met_job $serch_sql and  access <= '$metinfo_member_type' and ((TO_DAYS(NOW())-TO_DAYS(`addtime`)< useful_life) OR useful_life=0)";
     
@@ -77,7 +80,7 @@ $class_info=$class2?$class2_info:$class1_info;
 if($class2!=""){
 $class_info[name]=$class2_info[name]."--".$class1_info[name];
 }	 
-     $show[description]=$met_keywords;
+     $show[description]=$met_description;
      $show[keywords]=$met_keywords;
 	 $met_title=$met_title?$lang_cvtitle.'-'.$met_title:$lang_cvtitle;
 if(!$guanlian){
@@ -171,8 +174,8 @@ $cvidnow=10004;
 if($met_memberlogin_code==1){
      $methtml_cv.="<tr class='cv_tr'> \n";   
      $methtml_cv.="<td class='cv_td1' align='right'>".$lang_memberImgCode.":</b></td>\n";
-     $methtml_cv.="<td class='cv_code' colspan='2' align='left'><input name='code' onKeyUp='pressCaptcha(this)' type='text' class='code' id='code' size='6' maxlength='8' style='width:50px' />";
-     $methtml_cv.="<img align='absbottom' src='../member/ajax.php?action=code'  onclick=this.src='../member/ajax.php?action=code&'+Math.random() style='cursor: pointer;' title='".$lang_memberTip1."'/>";
+     $methtml_cv.="<td class='cv_code' colspan='2' align='left'><input name='code' onKeyUp='pressCaptcha(this)' type='text' class='code' id='code' size='6' maxlength='8' style='width:50px' onclick=verification() >";
+     $methtml_cv.="<img align='absbottom' id='new_code' src='../member/ajax.php?action=code'  onclick=this.src='../member/ajax.php?action=code&'+Math.random() style='cursor: pointer;' title='".$lang_memberTip1."'/>";
      $methtml_cv.="</td>\n";
      $methtml_cv.="</tr>\n";
 }	 

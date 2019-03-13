@@ -1,39 +1,15 @@
-/*
-Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.html or http://ckeditor.com/license
-*/
+html,body{ font:14px/2 'Microsoft YaHei',Tahoma,Verdana,'Simsun';}
+body{ padding:10px; margin:0px; }
+h1,h2,h3,h4,h5,h6,dl,dt,li,ol,ul,dd,th,td,p,pre,form,input,button,textarea,hr{margin:0;padding:0}h1,h2,h3,h4,h5,h6{font-size:100%}img{border:0}button,input,select,textarea{font-size:100%}
+ul,ol{padding:0 0 0 25px;margin:0}
+a{color:#1c57c4;text-decoration:underline}
+img{max-width:100%}
+blockquote{padding-top:5px;padding-bottom:5px;padding-left:15px;border-left:4px solid #ddd}
+hr{display:block;padding:0;border:0;height:0;border-top:1px solid #ddd;margin:20px 0;-webkit-box-sizing:content-box;box-sizing:content-box}
+table{width:100%!important;margin-bottom:1.6rem;border-spacing:0!important;border-collapse:collapse!important;padding:0!important;border:0}
+table td{border:1px solid #ddd!important}
+table>thead>tr>th,table>tbody>tr>th,table>tfoot>tr>th,table>thead>tr>td,table>tbody>tr>td,table>tfoot>tr>td{padding:.7rem;line-height:1.6;vertical-align:top;border-top:1px solid #ddd}
+table>thead>tr>th{vertical-align:bottom;border-bottom:1px solid #ddd}
 
-body
-{
-	/* Font */
-	font-family: Arial, Verdana, sans-serif;
-	font-size: 12px;
 
-	/* Text color */
-	color: #222;
-
-	/* Remove the background color to make it transparent */
-	background-color: #fff;
-}
-
-ol,ul,dl
-{
-	/* IE7: reset rtl list margin. (#7334) */
-	*margin-right:0px;
-	/* preserved spaces for list items with text direction other than the list. (#6249,#8049)*/
-    padding:0 40px;
-}
-html,body{ font:12px/2 'Microsoft YaHei',Tahoma,Verdana,'Simsun';}
-p{ margin:0px; padding:0px;}
-blockquote{ background:#f9f9f9; padding:5px 8px; border-color:#f9f9f9;}
-blockquote{
-	-webkit-border-radius: 3px;
-	border-radius: 3px;
-	border-width: 1px;
-	border-style: solid;
-}
-blockquote{
-	-moz-box-shadow: rgba(200,200,200,0.7) 0 4px 10px -1px;
-	-webkit-box-shadow: rgba(200,200,200,0.7) 0 4px 10px -1px;
-	box-shadow: rgba(200,200,200,0.7) 0 4px 10px -1px;
-}
+.metvideobox{ text-align:center; background:#000; margin:10px auto!important; cursor:pointer; border:0!important; }

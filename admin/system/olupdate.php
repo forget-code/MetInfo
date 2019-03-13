@@ -25,19 +25,26 @@ global $checksum,$met_host,$met_file,$db,$url_array,$lang_retested,$lang_redownl
 			$conok="olflie('$olid','$ver','dl','$num');";
 		}else{
 			$conok="olupdate('$olid','$ver','$action');";
+		}			
+		if($action=='dirpower'){
+			echo "{$lang_updaterr21} &nbsp; <a href=\"javascript:void(0)\" onclick=\"olupdate('{$olid}','{$ver}','{$action}');\">{$lang_retested}</a><script type=\"text/javascript\">
+			xian('{$alert}');</script>";
+			die();
+		}else{	
+			echo "{$lang_updaterr21}<script type=\"text/javascript\">
+			alert('{$alert}');";		
 		}
-		echo "{$lang_updaterr21}<script type=\"text/javascript\">
-		var con;
-		alert('{$alert}');";
 		if($action=='check'){
 			echo "olupdate('{$olid}','{$ver}','error');";
 		}else{
-			echo "con=confirm('{$lang_updaterr22}');
+			echo "var con;		
+			con=confirm('{$lang_updaterr22}');
 			if(con){
 				$conok
 			}else{
 				olupdate('$olid','$ver','error');
-			}";
+			}
+			";
 		}
 		echo "</script>";
 		die();
@@ -96,7 +103,9 @@ if($action=="check"){
 		if($results[2]=='ok'){
 			$query="select * from $met_app where no='$olid' and download=1";
 			$appdownload=$db->get_one($query);
-			$results[1]="<span id=\"del_{$appdownload[id]}\"><a href=\"delapp.php?action=del&lang=cn&id={$appdownload[id]}&anyid=61\" onclick=\"return appdel($(this),'{$appdownload[id]}');\"><img src=\"../../templates/met/images/del.png\"><p>{$lang_dlapptips6}</p></a></span><script type=\"text/javascript\">alert('{$lang_appdl1}')</script>";
+			if(file_exists("../app/{$appdownload[file]}/delapp.php")){ $del_url="../{$appdownload[file]}/delapp.php?action=del&lang={$lang}&anyid=61"; }
+			else{ $del_url="delapp.php?action=del&lang={$lang}&anyid=61"; }
+			$results[1]="<span id=\"del_{$appdownload[id]}\"><a href=\"{$del_url}\" onclick=\"return appdel($(this),'{$appdownload[id]}');\"><img src=\"../../templates/met/images/del.png\"><p>{$lang_dlapptips6}</p></a></span><script type=\"text/javascript\">alert('{$lang_appdl1}')</script>";
 			$result="$results[0]|$results[1]|$results[2]|$results[3]";
 		}
 		echo $result;
@@ -126,17 +135,22 @@ else if($action=='dateback'){
 		require_once '../system/database/global.func.php';
 		$adminfile=$url_array[count($url_array)-2];
 		$num=1;
-		$random = mt_rand(1000,9999);
+		$random = met_rand(6);
 		$date=date('Ymd',time());
 		do{
 			$sqldump = '';
 			$startrow = '';
 			$tables=tableprearray($tablepre);
+			$sum=count($tables);
+			$statistics1=$tablepre.'visit_day';
+			$statistics2=$tablepre.'visit_detail';
+			$statistics3=$tablepre.'visit_summary';
 			$sizelimit=2048;
 			$tableid = isset($tableid) ? $tableid - 1 : 0;
 			$startfrom = isset($startfrom) ? intval($startfrom) : 0;
 			$tablenumber = count($tables);
 			for($i = $tableid; $i < $tablenumber && strlen($sqldump) < $sizelimit * 1000; $i++){
+				if($tables[$i]==$statistics1||$tables[$i]==$statistics2||$tables[$i]==$statistics3)continue;
 				$sqldump .= sql_dumptable($tables[$i], $startfrom, strlen($sqldump));
 				$startfrom = 0;
 			}
@@ -180,6 +194,7 @@ else if($action=='dateback'){
 			}
 		}
 	}
+	$date_back=1;
 	if($date_back){
 		echo "{$lang_updaterr5}<script type=\"text/javascript\">setTimeout(function (){olupdate('$olid','$ver','dirpower');},500);</script>";
 	}
@@ -216,14 +231,29 @@ else if($action=='dirpower'){/*目录权限检测*/
 	array_push($strs,"$addr/dlfilelist.txt");
 	array_push($strs,"$addr/check.php");
 	array_push($strs,"$addr/dladd.php");
+	$aet="<span style=color:red>$lang_updaterr6</span><ol>";
 	foreach($strs as $addrskey=>$strsval){
 		$strsvalto=readmin($strsval,$adminfile,2);
+		
 		if(!filetest('../../'.$strsvalto)){
-			dl_error("{$strsvalto}{$lang_updaterr6}",$type,$olid,$ver,$addr,$action); 
-		}
+			$alert.='<li>'.$strsvalto.'</li>';
+		}	
 		if(!filetest("../update/$addr/$strsval")){
-			dl_error("{$adminfile}/update/{$addr}/{$strsval}{$lang_updaterr6}",$type,$olid,$ver,$addr,$action);
-		}
+			$a = $adminfile.'/update/'.$addr.'/'.$strsval;
+			$alen=strlen($a);
+			if($alen>30){
+				$b=strrchr($a, "/");
+				$c=explode($b,$a);					
+				$alert.='<li>'.$c[0].'\n'.$b.'</li>';
+			}else{
+				$alert.='<li>'.$a.'</li>';
+			}
+		}		
+	}
+	
+	if($alert!=''){
+		$alet=$aet.$alert.'</ol>';
+		dl_error($alet,$type,$olid,$ver,$addr,$action); 
 	}
 	unlink("../../$addr/update.php");
 	unlink("../../$addr/sql.sql");
@@ -294,7 +324,7 @@ else if($action=='sql'){/*数据库更新，注：如建立新表，升级SQL文
 		if(file_exists("../update/$addr/sqlist.php"))include "../update/$addr/sqlist.php";
 		if(!is_array($sqlfile)){
 			$num=1;
-			$random = mt_rand(1000,9999);
+			$random = met_rand(6);
 			$date=date('Ymd',time());
 			require_once '../system/database/global.func.php';
 			do{
@@ -388,18 +418,22 @@ else if($action=='update'){/*文件更新 注升级包中admin文件不需要改
 		curl_post($post_data,10);
 		
 		$num=1;
-		$random = mt_rand(1000,9999);
+		$random = met_rand(6);
 		$date=date('Ymd',time());
 		require_once '../system/database/global.func.php';
 		do{
 			$sqldump = '';
 			$startrow = '';
+			$statistics1=$tablepre.'visit_day';
+			$statistics2=$tablepre.'visit_detail';
+			$statistics3=$tablepre.'visit_summary';
 			$tables=tableprearray($tablepre);
 			$sizelimit=2048;
 			$tableid = isset($tableid) ? $tableid - 1 : 0;
 			$startfrom = isset($startfrom) ? intval($startfrom) : 0;
 			$tablenumber = count($tables);
 			for($i = $tableid; $i < $tablenumber && strlen($sqldump) < $sizelimit * 1000; $i++){
+				if($tables[$i]==$statistics1||$tables[$i]==$statistics2||$tables[$i]==$statistics3)continue;
 				$sqldump .= sql_dumptable($tables[$i], $startfrom, strlen($sqldump));
 				$startfrom = 0;
 			}

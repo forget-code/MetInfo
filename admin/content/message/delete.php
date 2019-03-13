@@ -9,6 +9,8 @@ if($action=="del"){
 	foreach($allidlist as $key=>$val){
 		$query = "delete from $met_message where id='$val'";
 		$db->query($query);
+		$query = "delete from $met_mlist where listid='$val' and module='7' and lang='$lang'";
+		$db->query($query);
 	}
 	$htmjs = classhtm('message',0,0);
 	metsave($backurl,'',$depth,$htmjs);
@@ -19,12 +21,21 @@ if($action=="del"){
 	$mesql=$action=="delreply"?"and useinfo is not null":$mesql;
 	$query = "delete from $met_message where lang='$lang' $mesql";
 	$db->query($query);
+	$result = mysql_query("SELECT distinct listid FROM $met_mlist where lang='$lang'");
+    while($row = mysql_fetch_array($result)){
+		if(!$db->get_one("SELECT * FROM $met_message where id='$row[listid]' and lang='$lang'")){
+			$query = "delete from $met_mlist where listid='$row[listid]' and module='7' and lang='$lang'";
+			$db->query($query);
+		}
+	}
 	$htmjs = classhtm('message',0,0);
 	metsave($backurl,'',$depth,$htmjs);
 }else{
 	$admin_list = $db->get_one("SELECT * FROM $met_message WHERE id='$id'");
 	if(!$admin_list)metsave('-1',$lang_dataerror,$depth);
 	$query = "delete from $met_message where id='$id'";
+	$db->query($query);
+	$query = "delete from $met_mlist where listid='$id' and module='7' and lang='$lang'";
 	$db->query($query);
 	$htmjs = classhtm('message',0,0);
 	metsave($backurl,'',$depth,$htmjs);

@@ -27,7 +27,7 @@ foreach($met_class1 as $key=>$val){
 			$val['openclass']="
 			<img src='$img_url/colum1nx.gif' class='columnimg' id='img_$val[id]' onclick=\"oncolumn($(this),'$val[id]');\" />";
 		}
-		if($val['if_in'])$val['foldername']=$val['out_url'];
+		if($val['if_in']&&$val['module']<1000)$val['foldername']=$val['out_url'];
 		$val['navpotion']='';
 		for($u=0;$u<4;$u++){
 			$navtypes = navdisplay($u);
@@ -60,7 +60,7 @@ foreach($met_class1 as $key=>$val){
 					$val2['navpotion'].= "<option value='{$u}' {$navselect}>{$navtypes}</option>";
 				}
 				$val2['imgxurl'] = $classnow2?'bg_columnx.gif':'bg_column.gif';
-				if($val2['if_in'])$val2['foldername']=$val2['out_url'];
+				if($val2['if_in']&&$val2['module']<1000)$val2['foldername']=$val2['out_url'];
 				$met_class2x[$val['id']][] = $val2;
 				if($val2['releclass'])$val['moveno']=1;
 				/*三级栏目处理*/
@@ -73,7 +73,7 @@ foreach($met_class1 as $key=>$val){
 						$navselect = $u == $val3['nav']?"selected='selected'":'';
 						$val3['navpotion'].= "<option value='{$u}' {$navselect}>{$navtypes}</option>";
 					}
-					if($val3['if_in'])$val3['foldername']=$val3['out_url'];
+					if($val3['if_in']&&$val3['module']<1000)$val3['foldername']=$val3['out_url'];
 					$val['moveno']=1;
 					$met_class3x[$val2['id']][] = $val3;
 				}

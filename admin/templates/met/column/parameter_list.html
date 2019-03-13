@@ -8,17 +8,25 @@ echo <<<EOT
 <body>
 <!--
 EOT;
+if($bigid_info[module]==10){
+$title=$class1?"":"{$lang_memberInformation}";
+}else{
 $title="{$lang_indexcv} > {$lang_listTitle}({$bigid_info[name]})";
+}
 if($bigid_info[module]==8)$title="{$lang_fdincTitle}({$met_class[$class1][name]}) > {$lang_listTitle}({$bigid_info[name]})";
 $rurl='parameter.php?anyid='.$anyid.'&lang='.$lang.'&module='.$bigid_info[module].'&class1='.$class1;
 if($bigid_info[module]==6){
 $title="<a href='../../content/job/index.php?anyid={$anyid}&lang={$lang}&class1={$class1}'>{$met_class[$class1][name]}</a>";
+$class1=$class1?$class1:($id?$id:0);
+$title=title($class1,$anyid,$lang)?title($class1,$anyid,$lang):$title;
 $listclass='';
 $listclass[3]='class="now"';
 require_once template('content/job/top');
 }
 if($bigid_info[module]==8){
 $title="<a href='../../content/feedback/index.php?anyid={$anyid}&lang={$lang}&class1={$class1}'>{$met_class[$class1][name]}</a>";
+$class1=$class1?$class1:($id?$id:0);
+$title=title($class1,$anyid,$lang)?title($class1,$anyid,$lang):$title;
 $listclass='';
 $listclass[2]='class="now"';
 require_once template('content/feedback/top');
@@ -26,22 +34,42 @@ require_once template('content/feedback/top');
 
 if($bigid_info[module]==3){
 $title=$class1?"<a href='../../content/product/index.php?anyid={$anyid}&lang={$lang}&class1={$class1}'>{$met_class[$class1][name]}</a>":"<a href='../../content/product/index.php?anyid={$anyid}&lang={$lang}'>{$lang_modulemanagement3}</a>";$listclass='';
+$class1=$class1?$class1:($id?$id:0);
+$title=title($class1,$anyid,$lang)?title($class1,$anyid,$lang):$title;
 $listclass[2]='class="now"';
 require_once template('content/product/top');
 }
 if($bigid_info[module]==4){
 $title=$class1?"<a href='../../content/download/index.php?anyid={$anyid}&lang={$lang}&class1={$class1}'>{$met_class[$class1][name]}</a>":"<a href='../../content/download/index.php?anyid={$anyid}&lang={$lang}'>{$lang_modulemanagement4}</a>";
+$class1=$class1?$class1:($id?$id:0);
+$title=title($class1,$anyid,$lang)?title($class1,$anyid,$lang):$title;
 $listclass='';
 $listclass[2]='class="now"';
 require_once template('content/download/top');
 }
 if($bigid_info[module]==5){
 $title=$class1?"<a href='../../content/img/index.php?anyid={$anyid}&lang={$lang}&class1={$class1}'>{$met_class[$class1][name]}</a>":"<a href='../../content/img/index.php?anyid={$anyid}&lang={$lang}'>{$lang_modulemanagement4}</a>";
+$class1=$class1?$class1:($id?$id:0);
+$title=title($class1,$anyid,$lang)?title($class1,$anyid,$lang):$title;
 $listclass='';
 $listclass[2]='class="now"';
 require_once template('content/img/top');
 }
+if($bigid_info[module]==10){
+$listclass='';
+$listclass[3]='class="now"';
+require_once template('member/top');
+}
+if($bigid_info[module]==7){
+$class1=$class1?$class1:($id?$id:0);
+$title=title($class1,$anyid,$lang)?title($class1,$anyid,$lang):$title;
+$listclass='';
+$listclass[2]='class="now"';
+require_once template('content/message/top');
+}
 if($bigid_info[module]!=6&&$bigid_info[module]!=8){
+$class1=$class1?$class1:($id?$id:0);
+$title=title($class1,$anyid,$lang)?title($class1,$anyid,$lang):$title;
 require_once template('metlangs');
 }
 echo <<<EOT
@@ -139,7 +167,7 @@ echo <<<EOT
 			  </td>
                 <td class="list-text"><input type="text" value="$val[no_order]" name="no_order_$val[id]" class="text no_order" /></td>
                 <td class="list-text" style="text-align:left; padding-left:15px;"><input type="text" value="$val[info]" name="info_$val[id]" class="text nonull" /></td>
-				<td class="list-text"><a href="list.php?bigid=$val[bigid]&id=$val[id]&action=delete&anyid={$anyid}&lang=$lang&class1={$class1}" onClick="return linkSmit($(this),1);" >{$lang_delete}</a></td>
+				<td class="list-text"><a href="list.php?bigid=$val[bigid]&id=$val[id]&action=delete&anyid={$anyid}&lang=$lang&class1={$class1}&cs={$cs}" onClick="return linkSmit($(this),1);" >{$lang_delete}</a></td>
               </tr>
 <!--
 EOT;

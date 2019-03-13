@@ -2,7 +2,7 @@
 require_once template('head'); 
 require_once template('sidebar');
 $methits=methtml_hits('news');
-$met_newsnext=methtml_prenextinfo(1);
+$met_newsnext=methtml_prenextinfo(1,1);
 $weblist=metlabel_news(0);
 echo <<<EOT
 -->

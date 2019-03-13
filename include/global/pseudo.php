@@ -1,7 +1,7 @@
 <?php
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
-require_once substr(dirname(__FILE__), 0, -6).'common.inc.php';
+if(!defined('IN_MET'))require_once substr(dirname(__FILE__), 0, -6).'common.inc.php';//åº”ç”¨ä¿®æ”¹å¸¦ä»£ç 
 $modulename[1] = array(0=>'show',1=>'show');
 $modulename[2] = array(0=>'news',1=>'shownews');
 $modulename[3] = array(0=>'product',1=>'showproduct');
@@ -20,7 +20,9 @@ $modulename[101]= array(0=>'img',1=>'showimg');
 $navurl    = $index=='index'?'':'../';
 $met_logox = explode('../',$met_logo);
 $weburly   = $index=='index'?'':'../';
-$met_logo  = $met_pseudo?$weburly.$met_logox[1]:($index=='index'?$met_logox[1]:$met_logo);
+if(!strstr($met_logo, "http://")){
+	$met_logo  = $met_pseudo?$weburly.$met_logox[1]:($index=='index'?$met_logox[1]:$met_logo);
+}
 $skinurl   = 'templates/'.$met_skin_user;
 $css_url   = $weburly.$skinurl.'/css/';
 $img_url   = $weburly.$skinurl.'/images/';
@@ -32,6 +34,7 @@ $weburly   = $index=='index'?'':'../';
 
 $countlang = count($met_langok);
 if($met_index_type==$lang)$countlang=1;
+$dataoptimize_html='';
 require_once file_exists($navurl.$skinurl.'/metinfo.inc.php')?$navurl.$skinurl.'/metinfo.inc.php':ROOTPATH.'config/metinfo.inc.php';
 $metadmin[pagename]=1;
 $cache_column=met_cache(ROOTPATH.'cache/'."column_".$lang.".inc.php");
@@ -39,10 +42,11 @@ if(!$cache_column){
 	$cache_column=cache_column();
 }
 reset($cache_column);
+$about_isshow=array();
 while($columnid=current($cache_column)){
 	$langnums=$countlang;
 	$listc=&$cache_column[$columnid['id']];
-/*urlµØÖ·*/
+/*urlåœ°å€*/
 	$listc['foldername'] = ereg_replace(" ","",$listc['foldername']);
 	$listc['filename'] = ereg_replace(" ","",$listc['filename']);
 	if($listc['filename'] && $listc['filename']!=''){
@@ -62,7 +66,7 @@ while($columnid=current($cache_column)){
 		$langnums=2;
 	}
 	$urltop = $weburly.$listc['foldername'].'/';
-	if($langnums==1&&($listc['classtype']==1||$listc['releclass'])){
+	if(($langnums==1&&($listc['classtype']==1||$listc['releclass']))||$listc['url']=='isshow'){
 		if($listc['url']==NULL||$listc['url']=='isshow'){
 			if($listc['module']==0){$listc['url'] = (strstr($listc['out_url'],"http://"))?$listc['out_url']:$navurl.$listc['out_url'];}
 			else{$listc['url']=$urltop;}
@@ -205,64 +209,93 @@ while($columnid=current($cache_column)){
 			$listc['url']=$urltop.$productimg.'.php?'.$langmark;
 		}
 	}
+	//æŽ¥å£ä»£ç 
+	if($listc['module'] >= 1000){
+		if($langnums==1){
+			$listc['url']=$urltop;
+		}else{
+			$listc['url']=$urltop.'index.php?lang='.$lang;
+		}
+		$listc['out_url']=$listc['url'];
+	}
+	//ç»“æŸ
 	if($listc['if_in'])$listc['url'] = $listc['out_url'];
-	//===============================¼ò½éÀ¸Ä¿Ö»×öÀ¸Ä¿*/
-	//µ±Ö»×öÀ¸Ä¿µÄÊ±ºò£¬È¡ÏÂ¼¶À¸Ä¿µØÖ·
-	if($cache_column[$listc['bigclass']]['isshow']==0&&$cache_column[$listc['bigclass']]['url']==NULL&&$listc['classtype']!=1){
+	//===============================ç®€ä»‹æ ç›®åªåšæ ç›®*/
+	//å½“åªåšæ ç›®çš„æ—¶å€™ï¼Œå–ä¸‹çº§æ ç›®åœ°å€
+	
+	if($listc['display']==0&&$cache_column[$listc['bigclass']]['isshow']==0&&$cache_column[$listc['bigclass']]['url']==NULL&&$listc['classtype']!=1){
 		$cache_column[$listc['bigclass']]['url']=$listc['url'];
-		if($langnums==1&&$cache_column[$listc['bigclass']][foldername]==$listc[foldername]){
-			$cache_column[$listc['bigclass']]['url']='isshow';
+		if($langnums==1&&$cache_column[$listc['bigclass']][foldername]==$listc[foldername]&&$listc['module']!=0){
+			if($listc['isshow_out']!=1&&$about_isshow[$listc['classtype']][$urltop]!=1){
+				$cache_column[$listc['bigclass']]['url']='isshow';
+				$listc['url']=$urltop;
+				$about_isshow[$listc['classtype']][$urltop]=1;
+			}
+		}
+		
+		if($listc['module']==0){
+			$cache_column[$listc['bigclass']]['isshow_out']=1;			
 		}
 	}
 	next($cache_column);	
 }
-
 foreach($cache_column as $key=>$val){
 	$column_no_order[$key]=$val['no_order'];
 }
-array_multisort($column_no_order,SORT_ASC,SORT_NUMERIC,$cache_column);
-foreach($cache_column as $key=>$list){
-	$column_moblie_ok=1;
-	if($met_mobileok&&$met_wap&&$met_wapshowtype){
-		if($list[wap_ok]){
-			$column_moblie_ok=1;
-			$list['nav'] = $list[wap_nav_ok]?1:0;
-		}else{
-			$column_moblie_ok=0;
-		}
-	}
-	if($column_moblie_ok){
-		$nav_listall[]=$list;
-		$class_list[$list['id']]=$list;
-		$module_listall[$list['module']][]=$list;
-		if($list['classtype']==1){
-			$nav_list_1[]=$list;
-			$module_list1[$list['module']][]=$list;
-			$class1_list[$list['id']]=$list;
-			if($list['module']==2 or $list['module']==3 or $list['module']==4 or $list['module']==5)$nav_search[]=$list; 
-		} 
-		if($list['classtype']==2){
-			$nav_list_2[]=$list;
-			$module_list2[$list['module']][]=$list;
-			$nav_list2[$list['bigclass']][]=$list;
-			$class2_list[$list['id']]=$list;
-		}
-		if($list['classtype']==3){
-			$nav_list_3[]=$list;
-			$module_list3[$list['module']][]=$list;
-			$nav_list3[$list['bigclass']][]=$list;
-			$class3_list[$list['id']]=$list;
-		}
-		if($list['nav']==1 or $list['nav']==3)$nav_list[]=$list;
-		if($list['nav']==2 or $list['nav']==3)$navfoot_list[]=$list;
-		if($list['classtype']==1&&$list['module']==1&&$list['isshow']==1){$nav_listabout[]=$list;}
-		if($list['index_num']!="" and $list['index_num']!=0){
-			$list['classtype']=$list['releclass']?"class1":"class".$list['classtype'];
-			$class_index[$list['index_num']]=$list;
-		}
+
+if($index=='index'){
+	foreach($cache_column as $key=>$val){
+		$cache_column[$key][columnimg]=str_replace('../','',$val[columnimg]);
 	}
 }
+array_multisort($column_no_order,SORT_ASC,SORT_NUMERIC,$cache_column);
+foreach($cache_column as $key=>$list){
+	//if($list['display']==0){	
+		$column_moblie_ok=1;
+		if($met_mobileok&&$met_wap&&$met_wapshowtype){
+			if($list[wap_ok]){
+				$column_moblie_ok=1;
+				$list['nav'] = $list[wap_nav_ok]?1:0;
+			}else{
+				$column_moblie_ok=0;
+			}
+		}
+		if($column_moblie_ok){
+			$nav_listall[]=$list;
+			$class_list[$list['id']]=$list;
+			$module_listall[$list['module']][]=$list;
+			if($list['classtype']==1){
+				$nav_list_1[]=$list;
+				$module_list1[$list['module']][]=$list;
+				$class1_list[$list['id']]=$list;
+				if($list['module']==2 or $list['module']==3 or $list['module']==4 or $list['module']==5)$nav_search[]=$list; 
+			} 
+			if($list['classtype']==2){
+				$nav_list_2[]=$list;
+				$module_list2[$list['module']][]=$list;
+				$nav_list2[$list['bigclass']][]=$list;
+				$class2_list[$list['id']]=$list;
+			}
+			if($list['classtype']==3){
+				$nav_list_3[]=$list;
+				$module_list3[$list['module']][]=$list;
+				$nav_list3[$list['bigclass']][]=$list;
+				$class3_list[$list['id']]=$list;
+			}
+					
+			if($list['nav']==1 or $list['nav']==3)$nav_list[]=$list;
+			if($list['nav']==2 or $list['nav']==3)$navfoot_list[]=$list;		
+			
+			if($list['classtype']==1&&$list['module']==1&&$list['isshow']==1){$nav_listabout[]=$list;}
+			if($list['index_num']!="" and $list['index_num']!=0){
+				$list['classtype']=$list['releclass']?"class1":"class".$list['classtype'];
+				$class_index[$list['index_num']]=$list;
+			}
+		}
+	//}
+}
 
+		
 $addmessage_url=$met_pseudo?$navurl.'message/message-'.$lang.'.html':($met_webhtm?$navurl.'message/message'.$met_htmtype:$navurl.'message/message.php?'.$langmark);
 $cv['url']=$met_pseudo?'jobcv-0-'.$lang.'.html':($met_webhtm?$navurl."job/cv".$met_htmtype:$navurl."job/cv.php?".$langmark);
 $addfeedback_url=$met_pseudo?$navurl.'feedback/index-'.$lang.'.html':($met_webhtm?$navurl.'feedback/'.$addfeedback_url.$met_htmtype:$navurl.'feedback/index.php?'.$langmark);

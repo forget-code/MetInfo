@@ -1,0 +1,20 @@
+<!--<?php
+$ContentsPage=1;
+if($ajaxlist){
+require_once template("/ajax/member/{$ktype}");
+}else{
+require_once template('head'); 
+require_once template('sidebar'); 
+echo <<<EOT
+-->
+<!--
+EOT;
+require_once template('member/'.$mfname); 
+echo <<<EOT
+-->
+<!--
+EOT;
+require_once template('gap');
+require_once template('foot');
+}
+?>

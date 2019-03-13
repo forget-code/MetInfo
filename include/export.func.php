@@ -201,13 +201,15 @@ function delcodeb($varcode){
     curl_post($post,30);
 }
 function sedsmstype($type){
-	global $lang_smstips1,$lang_smstips58,$lang_smstips59,$lang_smstips60,$lang_smstips61;
+	global $lang_smstips1,$lang_smstips58,$lang_smstips59,$lang_smstips60,$lang_smstips61,$lang_smstips97,$lang_smstips96;
 	switch($type){
 		case 1:$metinfo=$lang_smstips1;break;
 		case 2:$metinfo=$lang_smstips58;break;
 		case 3:$metinfo=$lang_smstips59;break;
 		case 4:$metinfo=$lang_smstips60;break;
 		case 5:$metinfo=$lang_smstips61;break;
+		case 6:$metinfo=$lang_smstips97;break;
+		default:$metinfo=$lang_smstips96;break;
 	}
 	return $metinfo;
 }

@@ -17,7 +17,7 @@ if($action=='copy'){
 		$query="select * from {$met_news} where id='{$allidlist[$i]}'";
 		$copy=$db->get_one($query);
 		$copy[content]=str_replace('\'','\'\'',$copy[content]);
-		$query = "insert into {$met_news} set title='$copy[title]',ctitle='$copy[ctitle]',keywords='$copy[keywords]',description='$copy[description]',content='$copy[content]',class1='{$copyclass1}',class2='{$copyclass2}',class3='{$copyclass3}',no_order='$copy[no_order]',wap_ok='$copy[wap_ok]',img_ok='$copy[img_ok]',imgurl='$copy[imgurl]',imgurls='$copy[imgurls]',com_ok='$copy[com_ok]',issue='$copy[issue]',hits='$copy[hits]',updatetime='$copy[updatetime]',addtime='$copy[addtime]',access='{$access}',top_ok='$copy[top_ok]',lang='{$copylang}',recycle='$copy[recycle]'";
+		$query = "insert into {$met_news} set title='$copy[title]',ctitle='$copy[ctitle]',keywords='$copy[keywords]',description='$copy[description]',content='$copy[content]',class1='{$copyclass1}',class2='{$copyclass2}',class3='{$copyclass3}',no_order='$copy[no_order]',wap_ok='$copy[wap_ok]',img_ok='$copy[img_ok]',imgurl='$copy[imgurl]',imgurls='$copy[imgurls]',com_ok='$copy[com_ok]',issue='$copy[issue]',hits='$copy[hits]',updatetime='$copy[updatetime]',addtime='$copy[addtime]',access='{$access}',top_ok='$copy[top_ok]',lang='{$copylang}',recycle='$copy[recycle]',displaytype='$copy[displaytype]',tag='$copy[tag]'";
 		$db->query($query);
 	}
 	metsave($backurl,'',$depth);
@@ -52,6 +52,10 @@ if($action=='copy'){
 	if(isset($com_ok)){
 		$com_ok=$com_ok==1?0:1;
 		$query = $query."com_ok             = '$com_ok'";
+	}
+	if(isset($displaytype)){
+		$displaytype=$displaytype==1?0:1;
+		$query = $query."displaytype             = '$displaytype'";
 	}
 	if(isset($top_ok)){
 		$top_ok=$top_ok==1?0:1;

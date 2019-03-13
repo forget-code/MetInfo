@@ -1,0 +1,134 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+require_once template('head'); 
+echo <<<EOT
+-->
+<title>{$lang_setflashset}</title>
+</head>
+<body>
+<!--
+EOT;
+$title='Banner设置';
+require_once template('app/wap/flash_top');
+echo <<<EOT
+-->
+        <form method="POST" name="myform" action="setflash.php?anyid={$anyid}&lang=$lang&cs={$cs}" target="_self">
+		<input name="action" type="hidden" value="modify">
+<div class="v52fmbx_tbmax">
+<div class="v52fmbx_tbbox">
+<span class="xtips">{$lang_indexflashexplain1}</span>
+<table cellpadding="2" cellspacing="1" class="table">
+	<tr> 
+		<td width="100" class="list">{$lang_setflashcolumn}</td>
+		<td width="60" class="list">{$lang_smstips64}</td>
+		<td width="70" class="list">{$lang_setflashHeight}({$lang_setflashPixel})</td>
+		<td class="list list_left">{$lang_unitytxt_2}</td>
+	</tr>
+<!--
+EOT;
+$i=0;
+foreach($mod1 as $key=>$val){
+$i++;
+$checked="";
+if($met_flasharray[$val[id]][wap_y]==$met_flasharray[10000][wap_y]&&$met_flasharray[$val[id]][wap_type]==$met_flasharray[10000][wap_type]) 
+$checked="checked=checked";
+$met_flash_type='';
+$met_flash_type[$met_flasharray[$val[id]][wap_type]]="selected";
+$classnow[id]=count($met_class2[$val[id]]);
+if($i!=1)$nowimg[$val[id]]="";
+$nowimg[$val[id]]="<div style='width:22px; height:10px; overflow:hidden; float:left;'></div>";
+if($classnow[id])$nowimg[$val[id]]="<img src='$img_url/colum1nx.gif' class='columnimg' onclick='showclass({$val[id]})' style=' margin-bottom:2px;' />";
+$diyi='';
+if($i==1)$diyi="onclick=\"CheckAllx($(this),'myform')\"";
+echo <<<EOT
+-->	
+<tr class="mouse"> 
+	<td class="list-text list_left">{$nowimg[$val[id]]}<b>$val[name]</b></td>
+	<td class="list-text">
+		<select name="wap_flash_{$val[id]}_type">
+		<option value="0" {$met_flash_type[0]}>{$lang_close}</option>
+		<option value="1" {$met_flash_type[1]}>{$lang_open}</option>
+		</select>
+	</td>
+	<td class="list-text">
+		<input name="wap_flash_$val[id]_y" type="text" class="text mid" value="{$met_flasharray[$val[id]][wap_y]}">
+	</td>
+	<td class="list-text list_left">
+		<input name="met_flash_{$val[id]}_all" type="checkbox" {$met_flash_all[$val[id]]} value="1" $checked id="select_{$val[id]}" {$diyi}>
+	</td>
+</tr>
+<!--
+EOT;
+foreach($mod2[$val[id]] as $key=>$val2){
+$checked="";
+if($met_flasharray[$val2[id]][wap_y]==$met_flasharray[10000][wap_y]&&$met_flasharray[$val2[id]][wap_type]==$met_flasharray[10000][wap_type]) 
+$checked="checked";
+$met_flash_type[$met_flasharray[$val2[id]][wap_type]]="selected";
+$classnow2[id]=count($met_class3[$val2[id]]);
+$nowimg[$val2[id]]="<img src='$img_url/bg_column.gif' style='position:relative; top:6px;'> ";
+if($classnow2[id])$nowimg[$val2[id]]="<img src='$img_url/bg_columnx.gif' style='position:relative; top:6px;'><img src='$img_url/colum1nx.gif' class='columnimg' onclick='showclass({$val2[id]})' style='margin:0px 4px; margin-bottom:2px;' />";
+echo <<<EOT
+-->	  
+                <tr id="class_{$val[id]}_{$val2[id]}" class="mouse" style="display:none;"> 
+                <td class="list-text  list_left">{$nowimg[$val2[id]]}{$val2[name]}</td>
+                <td class="list-text">
+				<select name="wap_flash_$val2[id]_type">
+					<option value="0" {$met_flash_type[0]}>{$lang_close}</option>
+					<option value="1" {$met_flash_type[1]}>{$lang_open}</option>
+				</select>
+				</td>
+				<td  class="list-text">
+				<input name="wap_flash_$val2[id]_y" type="text" class="text mid" value="{$met_flasharray[$val2[id]][wap_y]}" />
+				</td>
+				<td  class="list-text list_left"><input name="met_flash_$val2[id]_all" type="checkbox" {$met_flash_all[$val[id]]} value="1" $checked id="select_{$val2[id]}"></td>
+              </tr>
+<!--
+EOT;
+foreach($mod3[$val2[id]] as $key=>$val3){
+$checked="";
+if($met_flasharray[$val3[id]][wap_y]==$met_flasharray[10000][wap_y]&&$met_flasharray[$val3[id]][wap_type]==$met_flasharray[10000][wap_type]) 
+$checked="checked=checked";
+$met_flash_type[$met_flasharray[$val3[id]][wap_type]]="selected";
+echo <<<EOT
+-->	
+    			  
+                <tr id="class_{$val2[id]}_{$val3[id]}" class="mouse" style="display:none;"> 
+                <td class="list-text list_left">
+				<img src="$img_url/bg_column1.gif" style="float:left; margin-right:3px;">
+				{$val3[name]}</td>
+                <td class="list-text">
+				<select name="wap_flash_$val3[id]_type">
+					<option value="0" {$met_flash_type[0]}>{$lang_close}</option>
+					<option value="1" {$met_flash_type[1]}>{$lang_open}</option>
+				</select>
+				</td>
+				<td  class="list-text">
+				<input name="wap_flash_$val3[id]_y" type="text" class="text mid" value="{$met_flasharray[$val3[id]][wap_y]}" />
+				</td>
+				<td class="list-text list_left"><input name="met_flash_$val3[id]_all" type="checkbox" {$met_flash_all[$val[id]]} value="1" $checked id="select_{$val3[id]}"></td>
+              </tr>
+
+
+<!--
+EOT;
+}}}
+echo <<<EOT
+-->		
+	      <tr> 
+	    <td class="list list_left" colspan="5">
+			<input type="submit" name="Submit" value="{$lang_Submit}" class="submit" onclick="return Smit($(this),'myform')"></td>
+        </tr>
+</table>
+</div>
+</div>
+<input type="hidden" name="nofocu" value="1" />
+        </form>
+	<div class="footer">$foot</div>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>-->

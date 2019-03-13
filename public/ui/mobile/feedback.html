@@ -1,0 +1,35 @@
+<!--<?php
+$ContentsPage=1;
+require_once template('head'); 
+require_once template('sidebar');
+$feedbacktabel=metlabel_feedback('',1);
+echo <<<EOT
+-->
+<script src="{$img_url}js/met_Verification.js"></script>
+        <div class="active metinfo_mobile_form" id="feedback">
+			<form enctype='multipart/form-data' method='POST' name='myform' class='signupForm' action='{$lujin}index.php?action=add&lang={$lang}'>
+				<ul>
+<!--
+EOT;
+foreach($feedbacktabel as $key=>$val){
+$wr_ok = $val[wr_ok]?'required':'';
+echo <<<EOT
+-->
+				<li class="{$val[type_class]} {$wr_ok}">
+					<span class='info'>{$val[description]}</span>
+					<div class="xbox">{$val[type_html]}</div>
+				</li>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+				</ul>
+				<div class="input-submit"><input type='submit' name='Submit' value='{$lang_Submit}' /></div>
+			</form>
+        </div>
+<!--
+EOT;
+require_once template('gap');
+require_once template('foot'); 
+?>

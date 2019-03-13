@@ -4,11 +4,8 @@
 $depth='../';
 require_once $depth.'../login/login_check.php';
 if($action=="del"){
-	if($met_deleteimg){
-		$query = "select * from $met_parameter where lang='$lang' and (module='2' or module='3' or module='4' or module='5') and type='5'";
-		$para_list=$db->get_all($query);
-	}
-
+	$query = "select * from $met_parameter where lang='$lang' and (module='2' or module='3' or module='4' or module='5') and type='5'";
+	$para_list=$db->get_all($query);
 	$allidlist=explode(',',$allid);
 	foreach($allidlist as $key=>$val){
 	$rid=explode('|',$val);
@@ -26,11 +23,8 @@ if($action=="del"){
 			$recycle=$met_img;
 		break;
 	}
-	if($met_deleteimg){
 	$admin_list = $db->get_one("SELECT * FROM $recycle WHERE id='$rid[0]'");
 	delimg($admin_list,1,0,$para_list);
-	}
-
 	if($rid[1]!=2){
 		$query = "delete from $met_plist where listid='$rid[0]' and module='$rid[1]'";
 		$db->query($query);
@@ -54,10 +48,8 @@ else if($action=="delall"){
 	$query = "select id,imgurl,imgurls,displayimg,recycle from $met_img where recycle=5";	
 	$result = $db->query($query);
 	while($list = $db->fetch_array($result)) {$del_list[]=$list;}
-	if($met_deleteimg){
-		$query = "select * from $met_parameter where lang='$lang' and (module='2' or module='3' or module='4' or module='5') and type='5'";
-		$para_list=$db->get_all($query);
-	}
+	$query = "select * from $met_parameter where lang='$lang' and (module='2' or module='3' or module='4' or module='5') and type='5'";
+	$para_list=$db->get_all($query);
 	foreach($del_list as $key=>$val){
 		if($val['recycle']!=2){
 			$query = "delete from $met_plist where listid='$val[id]' and module='$val[recycle]'";

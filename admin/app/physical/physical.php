@@ -120,6 +120,25 @@ if($action=="do"){
 	/*网站扫描*/
 	$physical_file="";
 	if($physicaldo[11]==1){
+		require_once $depth.'../../include/export.func.php';
+		$met_file='/dl/standard.php';
+		/*
+		$query="select * from $met_app where download=1";
+		$app=$db->get_all($query);
+		$applist='';
+		foreach($app as $key=>$val){
+			$applist.="{$val[no]},{$val[ver]}|";
+		}
+		$applist=trim($applist,'|');
+		*/
+		$post=array('ver'=>$metcms_v,'app'=>$applist);
+		$result=curl_post($post,60);
+		if(link_error($result)==1){
+			$results=explode('<Met>',$result);
+			file_put_contents('dlappfile.php',$results[1]);
+			file_put_contents('standard.php',$results[0].$results[1]);
+		}
+		
 		if(file_exists('standard.php')){filescan('../../..','standard.php');}
 		else{$physical_file="0";}
 	}
@@ -183,10 +202,20 @@ elseif($action=="op"){
 			}
 		break;
 		case 2:
-			$met_file='/dl/olupdate_curl.php';
 			$adminfile=$url_array[count($url_array)-2];
 			$strsvalto=readmin($val[1],$adminfile,1);
-			$stringfile=dlfile("v$metcms_v/$strsvalto","../../../$val[1]");
+			filetest('../../../'.$val[1]);
+			deldir('../../../'.$val[1]);
+			$dlappfile=parse_ini_file('dlappfile.php',true);
+			if($dlappfile[$strsvalto]['dlfile']){
+				$return=varcodeb('app');
+				$checksum=$return['md5'];
+				$met_file='/dl/app_curl.php';
+				$stringfile=dlfile($dlappfile[$strsvalto]['dlfile'],"../../../$val[1]");
+			}else{
+				$met_file='/dl/olupdate_curl.php';
+				$stringfile=dlfile("v$metcms_v/$strsvalto","../../../$val[1]");
+			}
 			if($stringfile==1){
 				echo $lang_physicalupdatesuc;
 			}

@@ -40,15 +40,13 @@ function metinfo_mobile_prefix(){
 var hrefValue = window.location.href;
 if(window.browser.mobile&&met_wap_tpa==1){
 	if(met_wap_tpb==1&&met_wap_url!=''&&String(hrefValue).indexOf(met_wap_url)==-1){
-		window.location.href = met_wap_url;
+		window.location.href = mobile_prefix;
 	}else{
-		//window.location.href = mobile_prefix+'?met_mobileok=1&lang='+mobile_lang;
 		window.location.href = metinfo_mobile_prefix();
 	}
 }
 if(met_wap_tpb==1){
-	if(String(hrefValue).indexOf(met_wap_url)!=-1){
-		//window.location.href = 'index.php?met_mobileok=1&lang='+mobile_lang;
+	if(met_wap_url!=''&&String(hrefValue).indexOf(met_wap_url)!=-1){
 		window.location.href = metinfo_mobile_prefix();
 	}
 }

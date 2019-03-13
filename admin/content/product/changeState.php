@@ -46,7 +46,7 @@ if($action=='copy'){
 		$val[content2]=str_replace('\'','\'\'',$val[content2]);
 		$val[content3]=str_replace('\'','\'\'',$val[content3]);
 		$val[content4]=str_replace('\'','\'\'',$val[content4]);
-		$query = "insert into {$met_product} set title='$val[title]',ctitle='$val[ctitle]',keywords='$val[keywords]',description='$val[description]',content='$val[content]',class1='{$copyclass1}',class2='{$copyclass2}',class3='{$copyclass3}',no_order='$val[no_order]',wap_ok='$val[wap_ok]',new_ok='$val[new_ok]',imgurl='$val[imgurl]',imgurls='$val[imgurls]',displayimg='$val[displayimg]',com_ok='$val[com_ok]',hits='$val[hits]',updatetime='$val[updatetime]',addtime='$val[addtime]',issue='$val[issue]',access='$val[access]',top_ok='$val[top_ok]',lang='{$copylang}',content1='$val[content1]',content2='$val[content2]',content3='$val[content3]',content4='$val[content4]',contentinfo='$val[contentinfo]',contentinfo1='$val[contentinfo1]',contentinfo2='$val[contentinfo2]',contentinfo3='$val[contentinfo3]',contentinfo4='$val[contentinfo4]',recycle='$val[recycle]'";
+		$query = "insert into {$met_product} set title='$val[title]',ctitle='$val[ctitle]',keywords='$val[keywords]',description='$val[description]',content='$val[content]',class1='{$copyclass1}',class2='{$copyclass2}',class3='{$copyclass3}',no_order='$val[no_order]',wap_ok='$val[wap_ok]',new_ok='$val[new_ok]',imgurl='$val[imgurl]',imgurls='$val[imgurls]',displayimg='$val[displayimg]',com_ok='$val[com_ok]',hits='$val[hits]',updatetime='$val[updatetime]',addtime='$val[addtime]',issue='$val[issue]',access='$val[access]',top_ok='$val[top_ok]',lang='{$copylang}',content1='$val[content1]',content2='$val[content2]',content3='$val[content3]',content4='$val[content4]',contentinfo='$val[contentinfo]',contentinfo1='$val[contentinfo1]',contentinfo2='$val[contentinfo2]',contentinfo3='$val[contentinfo3]',contentinfo4='$val[contentinfo4]',recycle='$val[recycle]',displaytype='$val[displaytype]',tag='$val[tag]'";
 		$db->query($query);
 		$insert_id=$db->insert_id();
 		$query="select * from {$met_plist} where listid='{$val[id]}'";
@@ -121,6 +121,10 @@ if($action=='copy'){
 	if(isset($com_ok)){
 		$com_ok=$com_ok==1?0:1;
 		$query = $query."com_ok             = '$com_ok',";
+	}
+	if(isset($displaytype)){
+		$displaytype=$displaytype==1?0:1;
+		$query = $query."displaytype             = '$displaytype',";
 	}
 	if(isset($top_ok)){
 		$top_ok=$top_ok==1?0:1;

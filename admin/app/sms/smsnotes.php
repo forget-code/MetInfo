@@ -33,7 +33,8 @@ if($total_pass&&$action=="getdate"){
 }
 
 $serch_sql=" where time!='' ";
-if($notes_type){
+if($notes_type == NULL)$notes_type = -1;
+if($notes_type!=-1){
 $serch_sql=" where time!='' and type='$notes_type' ";
 $selec_notes_type[$notes_type]='selected';
 }

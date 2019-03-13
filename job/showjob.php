@@ -94,7 +94,7 @@ $class_info=$class2?$class2_info:$class1_info;
 if($class2!=""){
 $class_info[name]=$class2_info[name]."--".$class1_info[name];
 }
-     $show[description]=$job[description]?$job[description]:$met_keywords;
+     $show[description]=$job[description]?$job[description]:$met_description;
      $show[keywords]=$job[keywords]?$job[keywords]:$met_keywords;
 	 $met_title=$met_title?$job['position'].'-'.$met_title:$job['position'];
 if(!$guanlian){

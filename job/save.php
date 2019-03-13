@@ -66,6 +66,19 @@ if(!is_numeric($jobid))okinfo('javascript:history.back();',$lang_js1);
 if($met_cv_type==1 or $met_cv_type==2){
 $query = "INSERT INTO $met_cv SET addtime = '$m_now_date', customerid = '$customerid',jobid='$jobid',lang='$lang',ip='$ip' ";
 $db->query($query);
+$news_id=$db->insert_id();
+$news_type = "job";
+$new_time = time();
+$news_info = $db->get_one("select * from $met_job where id='{$jobid}'");
+$info = $_M['word']['memberPosition'].":".$news_info['position'];
+$query = "INSERT INTO $met_infoprompt SET
+				  news_id           = '$news_id',
+				  newstitle         = '$info',
+				  member            = '$customerid',
+				  type              = '$news_type',
+				  time              = '$new_time',
+				  lang              = '$lang'";					  
+$db->query($query);
 $later_cv=$db->get_one("select * from $met_cv where lang='$lang' order by addtime desc");
 $id=$later_cv[id];
 foreach($cv_para as $key=>$val){
@@ -81,6 +94,12 @@ foreach($cv_para as $key=>$val){
 	  $para=substr($para, 0, -1);
 	}
 	$para=strip_tags($para);
+	if($val['wr_ok'] == 1){
+		if($para == ''){
+			$last_page=$_SERVER[HTTP_REFERER];
+			okinfo($last_page,$val['name'].$lang_Empty);
+		}
+	}
     $query = "INSERT INTO $met_plist SET
                       listid   ='$id',
 					  paraid   ='$val[id]',

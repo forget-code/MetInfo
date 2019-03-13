@@ -15,6 +15,8 @@ $title.=$action=='editor'?" > {$lang_editor}{$lang_content}":" > {$lang_add}{$la
 $rurl="index.php?anyid={$anyid}&lang={$lang}&class1={$class1}";
 if($cengci==2)$rurl="index.php?anyid={$anyid}&lang={$lang}&class1={$class1}&class2={$class2}";
 if($cengci==3)$rurl="index.php?anyid={$anyid}&lang={$lang}&class1={$class1}&class2={$class2}&class3={$class3}";
+$class1=$class1?$class1:($id?$id:0);
+$title=title($class1,$anyid,$lang)?title($class1,$anyid,$lang):$title;
 require_once template('metlangs');
 echo <<<EOT
 -->
@@ -108,6 +110,7 @@ EOT;
 echo <<<EOT
 -->		
 		</select>
+		<a href="{$met_weburl}{$met_adminfile}/column/index.php?anyid=25&lang=$lang">{$lang_indexcolumn}</a>
 			</dd>
 		</dl>
 		</div>
@@ -140,6 +143,8 @@ echo <<<EOT
 		<dl>
 			<dt>{$lang_article1}{$lang_marks}</dt>
 			<dd class="labelinline">
+			
+			
 <!--
 EOT;
 if($metadmin['newscom']){
@@ -165,15 +170,17 @@ echo <<<EOT
 -->
 <!--
 EOT;
+$metadmin['newsimage'] = 1;
 if($metadmin['newsimage']){
 echo <<<EOT
 -->
-				<label><input name="img_ok" type="checkbox" value="1" class="checkbox" {$img_ok} />{$lang_article2}</label>
+				<label><input name="img_ok" type="checkbox" class="checkbox" value="1" {$img_ok}/>{$lang_article2}</label>
 <!--
 EOT;
 }
 echo <<<EOT
 -->
+				
 			</dd>
 		</dl>
 		</div>
@@ -207,6 +214,15 @@ EOT;
 }
 echo <<<EOT
 -->	
+	<div class="v52fmbx_dlbox">
+	<dl>
+		<dt>{$lang_external_links}{$lang_marks}</dt>
+		<dd>
+			<input name="links" type="text" class="text" value="$news_list[links]" />
+			<span class="tips">{$lang_specified_link}</span>
+		</dd>
+	</dl>
+	</div>
 	<h3 class="v52fmbx_hr metsliding" sliding="0">{$lang_contentdetail}</h3>
 	<div class="metsliding_box metsliding_box_0">
 		<div class="v52fmbx_dlbox_content">
@@ -261,9 +277,39 @@ echo <<<EOT
 			</dd>
 		</dl>
 		</div>
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_tag}{$lang_marks}</dt>
+			<dd>
+				<input name="tag" type="text" class="text" value="$news_list[tag]">
+				<span class="tips">{$lang_tagtips}</span>
+			</dd>
+		</dl>
+		</div>
 	</div>
 	<h3 class="v52fmbx_hr metsliding" sliding="2">{$lang_unitytxt_28}</h3>
 	<div class="metsliding_box metsliding_box_2">
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_timedrelease}{$lang_marks}</dt>
+			<dd>
+				
+				<span class="tips">把发布时间设置为未来时间，即可在指定时间发布。
+<!--
+EOT;
+if($met_htmlurl == 0 && ($met_webhtm == 2 || $met_webhtm == 1)){
+echo <<<EOT
+-->	
+				您开启了静态页面功能，必须开启“静态页面伪静态化”才可以使用定时发布功能。<a href="../../seo/sethtm.php?anyid=37&lang={$lang}&nojump=1" >{$lang_clickset}</a>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+				</span>
+			</dd>
+		</dl>
+		</div>
 		<div class="v52fmbx_dlbox">
 		<dl>
 			<dt>{$lang_addtime}{$lang_marks}</dt>
@@ -283,12 +329,13 @@ echo <<<EOT
 		</dl>
 		</div>
 	</div>
+		<h3 class="v52fmbx_hr metsliding" sliding="3">{$lang_unitytxt_33}</h3>
 <!--
 EOT;
 if($met_member_use){
 echo <<<EOT
 -->		
-	<h3 class="v52fmbx_hr metsliding" sliding="3">{$lang_unitytxt_33}</h3>
+
 	<div class="metsliding_box metsliding_box_3">  
 		<div class="v52fmbx_dlbox">
 		<dl>
@@ -303,7 +350,16 @@ echo <<<EOT
 EOT;
 }
 echo <<<EOT
--->	
+-->		
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_displaytype}{$lang_marks}</dt>
+			<dd>
+			<label><input name="displaytype" type="radio" class="radio" {$displaytypes[0]} value="1" />{$lang_yes}</label>
+			<label><input name="displaytype" type="radio" class="radio" {$displaytypes[1]} value="0" />{$lang_no}</label>
+			</dd>
+		</dl>
+		</div>
 		<div class="v52fmbx_submit">
 			<input type="submit" name="Submit" value="{$lang_Submit}" class="submit" onclick="return Smit($(this),'myform');" />
 		</div>

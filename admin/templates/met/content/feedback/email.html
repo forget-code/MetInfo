@@ -11,6 +11,8 @@ echo <<<EOT
 EOT;
 $title="<a href='index.php?anyid={$anyid}&lang={$lang}&class1={$class1}'>{$met_class[$class1][name]}</a> > ";
 $title.=$lang_editor."{$lang_sysadminFeedbackInfo}";
+$class1=$class1?$class1:($id?$id:0);
+$title=title($class1,$anyid,$lang)?title($class1,$anyid,$lang):$title;
 require_once template('metlangs');
 echo <<<EOT
 -->

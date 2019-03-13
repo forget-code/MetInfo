@@ -3,6 +3,7 @@
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 $depth='../';
 require_once $depth.'../login/login_check.php';
+require_once ROOTPATH.'public/php/searchhtml.inc.php';
 if($action=="editor"){
 	$allidlist=explode(',',$allid);
 	$adnum = count($allidlist)-1;
@@ -20,9 +21,12 @@ if($action=="editor"){
 		if($module!=8){
 			$class1   = "class1_".$allidlist[$i];
 			$class1   = $$class1;
+			list($class1,$class2,$class3)=explode('|',$class1);
 		}
 		$wr_ok    = "wr_ok_".$allidlist[$i];
 		$wr_ok    = $$wr_ok;
+		$wr_oks    = "wr_oks_".$allidlist[$i];
+		$wr_oks    = $$wr_oks;
 		$tpif = is_numeric($allidlist[$i])?1:0;
 		$sql = $tpif?"id='$allidlist[$i]'":'';
 		$uptp = $tpif?"update":"insert into";
@@ -34,12 +38,16 @@ if($action=="editor"){
 				type               = '$type',
 				access             = '$access',
 				class1             = '$class1',
+				class2             = '$class2',
+				class3             = '$class3',
 				wr_ok              = '$wr_ok',
+				wr_oks              = '$wr_oks',
 				module             = '$module'
 				$upbp";
 		$db->query($query);
 	}
-	metsave('../column/parameter/parameter.php?anyid='.$anyid.'&module='.$module.'&lang='.$lang.'&class1='.$class1,'',$depth);
+	$class1=$_GET['class1'];
+	metsave('../column/parameter/parameter.php?anyid='.$anyid.'&module='.$module.'&lang='.$lang.'&class1='.$class1.'&cs='.$cs,'',$depth);
 }elseif($action=="del"){
 	$query="delete from $met_parameter where id='$id'";
 	$db->query($query);
@@ -48,7 +56,7 @@ if($action=="editor"){
 		$db->query($query);
 	}
 	/*delete images*/
-	if($met_deleteimg && $type==5){
+	if($type==5){
 		$query="select * from $met_plist where paraid='$id'";
 		$result= $db->query($query);
 		while($list = $db->fetch_array($result)){
@@ -57,7 +65,7 @@ if($action=="editor"){
 	}
 	$query="delete from $met_plist where paraid='$id'";
 	$db->query($query);
-	metsave('../column/parameter/parameter.php?anyid='.$anyid.'&module='.$module.'&lang='.$lang.'&class1='.$class1,'',$depth);
+	metsave('../column/parameter/parameter.php?anyid='.$anyid.'&module='.$module.'&lang='.$lang.'&class1='.$class1.'&cs='.$cs,'',$depth);
 }elseif($action=="delete"){
 	$allidlist=explode(',',$allid);
 	foreach($allidlist as $key=>$val){
@@ -70,7 +78,7 @@ if($action=="editor"){
 			$db->query($query);
 		}
 		/*delete images*/
-		if($met_deleteimg && $type==5){
+		if($type==5){
 			$query="select * from $met_plist where paraid='$val'";
 			$result= $db->query($query);
 			while($list = $db->fetch_array($result)){
@@ -81,21 +89,27 @@ if($action=="editor"){
 		$db->query($query);
 		$type='';
 	}
-	metsave('../column/parameter/parameter.php?anyid='.$anyid.'&module='.$module.'&lang='.$lang.'&class1='.$class1,'',$depth);
+	metsave('../column/parameter/parameter.php?anyid='.$anyid.'&module='.$module.'&lang='.$lang.'&class1='.$class1.'&cs='.$cs,'',$depth);
 }elseif($action=="addsave"){
 	$newslit = "<tr class='mouse newlist'>\n"; 
 	$newslit.= "<td class='list-text'><input name='id' type='checkbox' value='new$lp' checked='checked' /></td>\n";
 	$newslit.= "<td class='list-text'><input name='no_order_new$lp' type='text' class='text no_order' /></td>\n";
 	$newslit.= "<td class='list-text' style='padding-left:15px; text-align:left;'><input name='name_new$lp' type='text' class='text nonull' /></td></td>\n";
-	if($module==6||$module==8){
+	if($module==6||$module==8||$module==10||$module==7){
 		$newslit.= "<td class='list-text' style='padding-left:15px; text-align:left;'><input name='description_new$lp' type='text' class='text' /></td></td>\n";
 	}
 	if($module<6){		
-	$newslit.= "<td class='list-text'>\n";
+	$newslit.= "<td class='list-text v52fmbx_skined'>\n";
 	$newslit.= "<select name='class1_new$lp' >\n";
 	$newslit.= "<option value='0' selected='selected'>$lang_allcategory</option>\n";
 		foreach($met_classindex[$module] as $key=>$val1){
-	$newslit.= "<option value='$val1[id]' >$val1[name]</option>\n";
+			$newslit.= "<option value='$val1[id]|0|0)' class='c1'>==$val1[name]==</option>\n";
+			foreach($met_class2[$val1['id']] as $key=>$val2){
+				$newslit.= "<option value='$val1[id]|$val2[id]|0' class='c2'>$val2[name]</option>\n";
+				foreach($met_class3[$val2['id']] as $key=>$val3){
+					$newslit.= "<option value='$val1[id]|$val2[id]|$val3[id]' class='c3'>*$val3[name]</option>\n";
+				}
+			}
 		}
 	$newslit.= "</select>\n";
 	}
@@ -116,17 +130,23 @@ if($action=="editor"){
 	$newslit.= "<option value='6' >{$lang_parameter6}</option>\n";
 	$newslit.= "</select></td>\n";
 	$newslit.= "<td class='list-text'><input type='checkbox' name='wr_ok_new$lp' value='1' /></td>\n";
+	if($module==10){
+	$newslit.= "<td class='list-text'><input type='checkbox' name='wr_ok_news$lp' value='1' /></td>\n";
+	}
 	$newslit.= "<td class='list-text'><a href='javascript:;' class='hovertips' style='padding:0px 5px;' onclick='delettr($(this));'>$lang_js49</a></td>\n";
 	$newslit.= "</tr>";
 	echo $newslit;
 }else{
     $query="select * from $met_parameter where module='$module' and lang='$lang'  order by no_order";
 	if($class1)$query="select * from $met_parameter where module='$module' and (class1='$class1' or class1='0') and lang='$lang'  order by no_order";
+	if($class2)$query="select * from $met_parameter where module='$module' and (class1='0' or (class1='$class1' and class2='0') or (class1='$class1' and class2='$class2')) and lang='$lang'  order by no_order";
+	if($class3)$query="select * from $met_parameter where module='$module' and (class1='0' or (class1='$class1' and class2='$class2' and class3='0') or (class1='$class1' and class2='$class2' and class3='$class3')) and lang='$lang'  order by no_order";
 	$result= $db->query($query);
 	while($list1 = $db->fetch_array($result)){
 		$typelist="type".$list1[type];
 		$list1[$typelist]="selected='selected'";
 		$list1[wr_ok]=($list1[wr_ok]==1)?"checked='checked'":"";
+		$list1[wr_oks]=($list1[wr_oks]==1)?"checked='checked'":"";
 		if($met_member_use){
 			$lev=0;
 			$list_access['access']=$list1['access'];

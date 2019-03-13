@@ -1,0 +1,26 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
+echo <<<EOT
+-->
+<div class="member_detail">
+	<ul>
+<!--
+EOT;
+foreach($cv_para as $key=>$val){
+echo <<<EOT
+-->
+		<li><div class="name">{$val[name]}</div><div class="val">{$val[content]}</div></li>
+<!--
+EOT;
+}
+echo <<<EOT
+--> 
+		<li><div class="name">{$lang_memberAddTime}</div><div class="val">{$cv_list[addtime]}</div></li>
+	</ul>
+</div>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>

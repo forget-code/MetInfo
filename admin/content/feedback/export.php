@@ -3,6 +3,7 @@
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 	ob_start();
 	$depth='../';
+	require_once $depth.'../login/login_check.php';
 	require_once $depth.'../include/common.inc.php';
 	ob_clean();
 	ob_start();

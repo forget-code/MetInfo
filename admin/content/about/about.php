@@ -3,6 +3,7 @@
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 $depth='../';
 require_once $depth.'../login/login_check.php';
+require_once ROOTPATH.'public/php/searchhtml.inc.php';
 if($action=="modify"){ 
 	$filename=preg_replace("/\s/","_",trim($filename)); 
 	$filenameold=preg_replace("/\s/","_",trim($filenameold)); 
@@ -10,6 +11,13 @@ if($action=="modify"){
 		$foldername=$met_class[$id]['foldername'];
 		$filenameok = $db->get_one("SELECT * FROM $met_column WHERE filename='$filename' and foldername='$foldername' and id!=$id");
 		if($filenameok)metsave('-1',$lang_modFilenameok,$depth);
+	}
+	if(!$description){
+		$description=strip_tags($content);
+		$description=str_replace("\n", '', $description); 
+		$description=str_replace("\r", '', $description); 
+		$description=str_replace("\t", '', $description);
+		$description=mb_substr($description,0,200,'utf-8');
 	}
 	$query = "update $met_column SET 
 						  content     = '$content',

@@ -1,0 +1,118 @@
+<!--<?php
+$ContentsPage=1;
+require_once template('head'); 
+require_once template('sidebar');
+$met_productnext=methtml_prenextinfo(2);
+$methits=methtml_hits('product',1);
+if($displaylist)$ptitle="<p>{$product[title]}</p>";
+echo <<<EOT
+-->
+        <div class="active" id="showproduct">
+<div class="pshow">
+  <ul class="showproduct_slides">
+	<li><img src="{$product[imgurl]}" height="{$lang_promaximgY}" />{$ptitle}</li>
+<!--
+EOT;
+foreach($displaylist as $key=>$val){
+$val[title_html]=$val[title]?"<p>{$val[title]}</p>":"";
+echo <<<EOT
+-->
+    <li>
+		<img src="{$val[imgurl]}" height="{$lang_promaximgY}" />
+		{$val[title_html]}
+    </li>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+  </ul>
+</div>
+                
+			<h1 class='title'>{$product[title]}</h1>
+			<div class="paralist">
+				<ul class="list-none">
+<!--
+EOT;
+foreach($product_paralist as $key=>$val2){
+echo <<<EOT
+-->
+					<li><div class="pn">{$val2[name]}：</div><div class="pv">{$product[$val2[para]]}</div></li>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+				</ul>
+			</div>
+<!--
+EOT;
+if($product[description]){
+echo <<<EOT
+-->
+			<div class="desc">{$product[description]}</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<!--
+EOT;
+$bt[0]=$lang_detailtxt;
+$bt[1]=$lang_Product_Column2;
+$bt[2]=$lang_Product_Column3;
+$bt[3]=$lang_Product_Column4;
+
+$box[0]=$product[content];
+$box[1]=$product[content1];
+$box[2]=$product[content2];
+$box[3]=$product[content3];
+$i = 0;   
+while($i <= 0){ 
+   $listarr[$i] = array(
+       'title'=>$bt[$i],
+	   'text'=>$box[$i]
+	   );
+$i++;
+}
+echo <<<EOT
+-->
+			<h3 class="Tabtitle">
+<!--
+EOT;
+$k=0;
+foreach($listarr as $key=>$val){
+$k++;$p='';if($k==1&&$i>1)$p='now';
+echo <<<EOT
+-->
+			    <div class="l {$p}">{$val[title]}</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+			</h3>
+			<div class="editor">
+<!--
+EOT;
+$k=0;
+foreach($listarr as $key=>$val){
+$p='';if($k>0)$p='none';
+echo <<<EOT
+-->
+			<div class="mb_Tabbox mb_Tabbox_{$k} {$p}">{$val[text]}<div class="clear"></div></div>
+<!--
+EOT;
+$k++;
+}
+echo <<<EOT
+-->
+			</div>
+			<div class="none">{$methits}</div>
+			<div class="met_page">{$met_productnext}</div>
+	    </div>
+<!--
+EOT;
+require_once template('gap');
+require_once template('foot'); 
+?>

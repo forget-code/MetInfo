@@ -1,6 +1,6 @@
 <?php
 # MetInfo Enterprise Content Management System 
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 1
 $filpy = basename(dirname(__FILE__));
 $fmodule=5;
 require_once '../include/module.php';

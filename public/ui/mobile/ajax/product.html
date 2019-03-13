@@ -1,0 +1,63 @@
+<!--<?php
+echo <<<EOT
+-->
+<!--
+EOT;
+if($lang_prolitype==1){
+echo <<<EOT
+-->
+<!--
+EOT;
+foreach($product_list as $key=>$val){
+echo <<<EOT
+-->
+	<li class="li_{$page}">
+	<a href="{$val[url]}">
+		<img src="{$val[imgurls]}" alt="{$met_alt}" title="{$met_alt}" />
+		<p>{$val[title]}</p>
+	</a>
+	</li>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<!--
+EOT;
+}elseif($lang_prolitype==2){
+echo <<<EOT
+-->
+<!--
+EOT;
+foreach($product_list as $key=>$val){
+$val['desc']=utf8substr($val['description'],0,$lang_descsubstr);
+if($val[news])$val[drx]="[{$lang_drxnew}]";
+if($val[hot])$val[drx]="[{$lang_drxhot}]";
+if($val[top])$val[drx]="[{$lang_drxtop}]";
+echo <<<EOT
+-->
+	<li class="li_{$page}">
+		<a href="{$val[url]}">
+			<dl class="ind">
+				<dt><img src="{$val[imgurls]}" alt="{$met_alt}" title="{$met_alt}" /></dt>
+				<dd>
+					<h4><span class="hot">{$val[drx]}</span>{$val[title]}</h4>
+					<p class="desc" title="{$val[description]}">{$val[desc]}</p>
+				</dd>
+				<dt class="more"></dt>
+			</dl>
+		</a>
+	</li>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<!--
+EOT;
+?>-->

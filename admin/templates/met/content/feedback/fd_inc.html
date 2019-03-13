@@ -9,6 +9,8 @@ echo <<<EOT
 <!--
 EOT;
 $title="<a href='index.php?anyid={$anyid}&lang={$lang}&class1={$class1}'>{$met_class[$class1][name]}</a>";
+$class1=$class1?$class1:($id?$id:0);
+$title=title($class1,$anyid,$lang)?title($class1,$anyid,$lang):$title;
 require_once template('content/feedback/top');
 echo <<<EOT
 -->
@@ -146,6 +148,51 @@ echo <<<EOT
 			<dd>
 				<textarea name="met_fd_content" class="textarea gen" cols="50" rows="3" >$met_fd_content</textarea>
 				<span class="tips">{$lang_htmlok}</span>
+			</dd>
+		</dl>
+		</div>
+	</div>
+	<h3 class="v52fmbx_hr metsliding" sliding="1">{$lang_feedbackautosms}</h3>
+	<div class="metsliding_box metsliding_box_1">
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_fdincAutosms}{$lang_marks}</dt>
+			<dd>
+				<label><input name="met_fd_sms_back" type="checkbox" class="checkbox" value="1" $met_fd_sms_back1>{$lang_fdincTipsms}</label>
+			</dd>
+		</dl>
+		</div>
+	</div>
+	<div class="metsliding_box metsliding_box_1">
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_fdinctellsms}{$lang_marks}</dt>
+			<dd>
+			<select name="met_fd_sms_dell">
+<!--
+EOT;
+foreach($fd_para[1] as $key=>$val){
+$select1='';
+if($val[id]==$met_fd_sms_dell)$select1="selected='selected'";
+echo <<<EOT
+-->				
+				<option value="$val[id]" $select1 >$val[name]</option>
+<!--
+EOT;
+}
+echo <<<EOT
+-->	
+			
+			</select>
+			<span class="tips">{$lang_fdinctells}</span>
+			</dd>
+		</dl>
+		</div>
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_fdincAutoContentsms}{$lang_marks}</dt>
+			<dd>
+				<textarea name="met_fd_sms_content" class="textarea gen" cols="50" rows="3" >$met_fd_sms_content</textarea>
 			</dd>
 		</dl>
 		</div>

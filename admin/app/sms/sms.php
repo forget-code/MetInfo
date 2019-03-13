@@ -31,12 +31,14 @@ if($action=='modify'){
 	echo $sms;
 	die;
 }elseif($action=='membertel'){
-	$query = "SELECT admin_mobile FROM $met_admin_table where usertype<3 && checkid=1";
+	$query = "SELECT plist.info FROM $met_plist plist inner join $met_admin_table atable on plist.listid=atable.id and plist.lang='$lang' and plist.module=10 and atable.checkid=1";
 	$result = $db->query($query);
 	$member_list='';
 	while($list= $db->fetch_array($result)){
-		if($list['admin_mobile']!='' && eregi("^1[0-9]{9}",$list['admin_mobile']) && strlen($list['admin_mobile'])==11){
-			$member_list.=$list['admin_mobile'].'|';
+		if(strlen($list['info']) == 11){
+			if(preg_match_all('/^1[3458]{1}\d{8}\d$/', $list['info'],$out)){
+				$member_list.=$list['info'].'|';
+			}
 		}
 	}
 	echo substr($member_list, 0, -1);

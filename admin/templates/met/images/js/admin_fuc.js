@@ -2,32 +2,35 @@ function controle(t){
 	if(t==1){
 		$("input[name='admin_pop']").attr("checked",false);
 		$(".admin_poplistdiv").find('input').attr("checked",false);
-		$("input[name='admin_pop1301']").parents('div.admin_poplistdiv').find("input").attr("checked",true);
-		$("input[name='admin_pop1201']").parents('div.admin_poplistdiv').find("input").attr("checked",true);
+		$("input[name='admin_pops1301']").parents('div.admin_poplistdiv').find("input").attr("checked",true);
+		$("input[name='admin_pops1201']").parents('div.admin_poplistdiv').find("input").attr("checked",true);
 		$("input[name='admin_op0']").attr("checked",true);
 		$("input[name='admin_op1']").attr("checked",true);
 		$("input[name='admin_op2']").attr("checked",true);
 		$("input[name='admin_op3']").attr("checked",true);
 		$("input[name='admin_issue']").attr("checked",false);
+		$("input[name='admin_pop1801']").attr("checked",false);
 		$(".tradpoplist").find("input").attr("disabled","disabled");
 	}
 	if(t==2){
 		$("input[name='admin_pop']").attr("checked",false);
 		$(".admin_poplistdiv").find('input').attr("checked",false);
-		$("input[name='admin_pop1301']").parents('div.admin_poplistdiv').find("input").attr("checked",true);
-		$("input[name='admin_pop1201']").parents('div.admin_poplistdiv').find("input").attr("checked",true);
-		$("input[name='admin_pop1401']").parents('div.admin_poplistdiv').find("input").attr("checked",true);
-		$("input[name='admin_pop1001']").attr("checked",true);
+		$("input[name='admin_pops1301']").parents('div.admin_poplistdiv').find("input").attr("checked",true);
+		$("input[name='admin_pops1201']").parents('div.admin_poplistdiv').find("input").attr("checked",true);
+		$("input[name='admin_pops1401']").parents('div.admin_poplistdiv').find("input").attr("checked",true);
+		$("input[name='admin_pops1001']").attr("checked",true);
 		$("input[name='admin_op0']").attr("checked",true);
 		$("input[name='admin_op1']").attr("checked",true);
 		$("input[name='admin_op2']").attr("checked",true);
 		$("input[name='admin_op3']").attr("checked",true);
 		$("input[name='admin_issue']").attr("checked",false);
+		$("input[name='admin_pop1801']").attr("checked",false);
 		$(".tradpoplist").find("input").attr("disabled","disabled");
 	}
 	if(t==3){
 		$("input[name='admin_pop']").attr("checked",true);
 		$(".admin_poplistdiv").find('input').attr("checked",true);
+		$("input[name='admin_pop1801']").attr("checked",true);
 		$("input[name='admin_op0']").attr("checked",true);
 		$("input[name='admin_op1']").attr("checked",true);
 		$("input[name='admin_op2']").attr("checked",true);
@@ -51,7 +54,20 @@ function controle(t){
 			}
 	}
 }
-
+$("input[name='admin_pops1102']").click(function() {
+	if (!!$("input[name='admin_pops1102']").attr("checked")) {
+		$("input[name='admin_pops1103']").attr("checked",true);
+	}else{
+		$("input[name='admin_pops1103']").removeAttr('checked');
+	}
+});
+$("input[name='admin_pops1103']").click(function() {
+	if (!!$("input[name='admin_pops1103']").attr("checked")) {
+		$("input[name='admin_pops1102']").attr("checked",true);
+	}else{
+		$("input[name='admin_pops1102']").removeAttr('checked');
+	}
+});
 var a1301=$("input[name='admin_pop1301']"),apop=$("input[name='admin_pop']");
 function adpopcnk(d,y){
 	if(d.size()>0){

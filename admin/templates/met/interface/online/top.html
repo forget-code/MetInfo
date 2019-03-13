@@ -5,17 +5,6 @@ require_once template('metlangs');
 echo <<<EOT
 -->
 <div class="stat_list">
-<!--
-EOT;
-if($met_agents_type<3){
-echo <<<EOT
--->
-	<span class="stat_list_right">{$lang_onlinehelp}<a href="http://www.metinfo.cn/course/faq/55-cn.html" target="_blank">{$lang_clickview}</a></span>
-<!--
-EOT;
-}
-echo <<<EOT
--->
 	<ul>
 		<li {$listclass[1]}><a href="index.php?anyid={$anyid}&lang={$lang}&cs=1" title="{$lang_onlineTitle}">{$lang_onlineTitle}</a></li>
 		<li {$listclass[2]}><a href="online.php?anyid={$anyid}&lang={$lang}&cs=2" title="{$lang_indexonlineset}">{$lang_indexonlineset}</a></li>

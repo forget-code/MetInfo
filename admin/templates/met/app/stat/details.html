@@ -21,14 +21,15 @@ echo <<<EOT
 <tr>
 	<td colspan='8' class="title">
 		<div class="more">
-			<a href="details.php?lang={$lang}&anyid={$anyid}&st={$dtimet}&et={$dtimew}&cs=1" {$dancs[1]} title="{$lang_statips10}">{$lang_statips10}</a>
-			<a href="details.php?lang={$lang}&anyid={$anyid}&st={$ztimea}&et={$ztimeb}&cs=2" {$dancs[2]} title="{$lang_statips11}">{$lang_statips11}</a>
-			<a href="details.php?lang={$lang}&anyid={$anyid}&st={$xtime}&et={$dtimew}&cs=3" {$dancs[3]} title="{$lang_statips12}">{$lang_statips12}</a>
-			<a href="details.php?lang={$lang}&anyid={$anyid}&st={$timeq30}&et={$dtimew}&cs=4" {$dancs[4]} title="{$lang_statips13}">{$lang_statips13}</a>
-			<a href="details.php?lang={$lang}&anyid={$anyid}&st={$timed1}&et={$dtimew}&cs=5" {$dancs[5]} title="{$lang_statips14}">{$lang_statips14}</a>&nbsp;-&nbsp;{$lang_statips15}
+			<a href="details.php?lang={$lang}&anyid={$anyid}&st={$dtimet}&et={$dtimew}&cs=1&setip={$setip}" {$dancs[1]} title="{$lang_statips10}">{$lang_statips10}</a>
+			<a href="details.php?lang={$lang}&anyid={$anyid}&st={$ztimea}&et={$ztimeb}&cs=2&setip={$setip}" {$dancs[2]} title="{$lang_statips11}">{$lang_statips11}</a>
+			<a href="details.php?lang={$lang}&anyid={$anyid}&st={$xtime}&et={$dtimew}&cs=3&setip={$setip}" {$dancs[3]} title="{$lang_statips12}">{$lang_statips12}</a>
+			<a href="details.php?lang={$lang}&anyid={$anyid}&st={$timeq30}&et={$dtimew}&cs=4&setip={$setip}" {$dancs[4]} title="{$lang_statips13}">{$lang_statips13}</a>
+			<a href="details.php?lang={$lang}&anyid={$anyid}&st={$timed1}&et={$dtimew}&cs=5&setip={$setip}" {$dancs[5]} title="{$lang_statips14}">{$lang_statips14}</a>&nbsp;-&nbsp;{$lang_statips15}
 			<form name="myform" action="details.php?lang={$lang}&anyid={$anyid}" method="POST" target="_self" class="stet">
 				<input type="text" name="stt" value="{$tmst}" class="txt Wdate" onclick="WdatePicker()" /> {$lang_columnmove2}
 				<input type="text" name="ett" value="{$tmet}" class="txt Wdate" onclick="WdatePicker()" />
+				IP:<input type="text" name="setip" value="{$setip}" class="txt" />
 				<input type="submit" name="submit" value="{$lang_Submitall}" />
 			</form>
 		</div>

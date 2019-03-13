@@ -1,0 +1,22 @@
+<!--<?php
+echo <<<EOT
+-->
+<!--
+EOT;
+foreach($feedback_list as $key=>$val){
+echo <<<EOT
+-->   
+		<li>
+			<a href="fddetail.php?lang={$lang}&id={$val[id]}">
+			<div class="title">{$val[fdtitle]}</div>
+			<div class="desc"><span>{$val[addtime]}</span></div>
+			</a>
+		</li>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<!--
+EOT;
+?>-->

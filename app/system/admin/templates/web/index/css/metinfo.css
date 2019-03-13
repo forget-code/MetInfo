@@ -1,0 +1,129 @@
+
+.index_box{  padding:0px;}
+.index_box section{ border:1px solid #ddd; background:#fff!important; margin-bottom:10px; }
+.index_box section h3{ height:38px; line-height:38px; padding-left:15px; background:#f7f7f7; border-bottom:1px solid #ddd; font-size:14px; font-weight:normal; color:#656565; position:relative;}
+.index_box section h3 a{ position:absolute;right:10px; }
+.index_box section h3 a i{ margin-left:5px; }
+
+.index_point ul{ height:105px; padding:10px; }
+.index_point ul li{ float:left; height:85px; width:20%; text-align:center; cursor:pointer; }
+.index_point ul li a{ color:#666; }
+.index_point ul li a:hover{ color:#1784bd; }
+.index_point ul li a:hover i{ color:#1784bd; }
+.index_point ul li div.d{ display:block; width:20px; height:20px; margin:30px auto 25px; background:#dfe9f2; border-radius:59px; position:relative; font-size:0px;}
+.index_point ul li i.x{ position:absolute; width:180px; height:2px; background:#dfe9f2; top:9px; left:20px; }
+.index_point ul li i.fa{ font-size:14px; margin-right:5px; position:relative; top:1px; color:#bbb; }
+.index_point ul li.speed div.d i{ top:25px; left:48px; width:210px;}
+.index_point ul li.speed div.d{ width:52px; height:52px; line-height:52px; font-size:16px; margin:10px auto 9px; background:#fff; color:#1784bd;}
+.Sector{width:52px; height:52px; border-radius:26px; position:relative; z-index:1;}
+.center{width:46px; height:46px; border-radius:23px; background:#fff; position:absolute; left:3px; top:3px; z-index:3; text-align:center; line-height:46px; }
+.Sector,.mask{background:#dfe9f2;}
+.partO,.partT,.mask{width:52px; height:26px; position:absolute; top:26px; border-bottom-left-radius:26px; border-bottom-right-radius:26px; }
+.partO,.partT{width:52px; height:26px; position:absolute; top:26px; border-bottom-left-radius:26px; border-bottom-right-radius:26px; }
+.mask{z-index:1; left:-1px; border:1px solid #fff; border-top:none; box-sizing:content-box; -moz-box-sizing:content-box; -webkit-box-sizing:content-box; }
+.partO,.partT{background:#1784bd;	
+transform:rotate(0deg); -ms-transform:rotate(0deg); -moz-transform:rotate(0deg); -webkit-transform:rotate(0deg); -o-transform:rotate(0deg); 
+transform-origin:50% 0; -ms-transform-origin:50% 0; -webkit-transform-origin:50% 0; -moz-transform-origin:50% 0; -o-transform-origin:50% 0; }
+
+
+.index_point ul li.on div{background:#1784bd;}
+.index_point ul li.on div i{background:#1784bd;}
+
+.index_stat dl{ padding:10px; }
+.index_stat_table{ float:right; width:40%;overflow:hidden; font-size:12px; }
+.index_stat_table table{ background:#ddd; width:100%; color:#666; }
+.index_stat_table table th{ background:#f7f7f7; padding:7px 10px; font-weight:normal; white-space:nowrap; text-align:left;}
+.index_stat_table table tr.met_hover td{ background:#f7f7f7!important; }
+.index_stat_table table td{ background:#fff; padding:7px 10px; white-space:nowrap; }
+
+.index_stat_chart{float:left; width:60%;overflow:hidden;}
+.index_stat_chart_tips{ color:#999; height:20px; line-height:20px; }
+.index_stat_chart_tips ul{ float:right; }
+.index_stat_chart_tips ul li{ float:right; margin-right:10px; }
+.index_stat_chart_tips ul li i{ float:left; width:9px; height:9px; background:red; margin-right:5px; position:relative; top:6px; }
+.index_stat_chart_tips i.ip{ background:#23ad44; }
+.index_stat_chart_tips i.uv{ background:#7266ba; }
+.index_stat_chart_tips i.pv{ background:#23b7e5; }
+
+.index_myapp ul{ padding:25px 0px;}
+.index_myapp ul li{ float:left; text-align:center; height:130px; }
+.index_myapp ul li img{ width:80px; height:80px; }
+.index_myapp ul li a{ font-size:0px; }
+.index_myapp ul li h4{ font-weight:normal; color:#656565; height:20px; line-height:20px; }
+
+.index_hot ul{ padding:25px 0px;}
+.index_hot ul li{ float:left; height:110px; width:25%; }
+.index_hot ul li img{ width:80px; height:80px; }
+.index_hotapp ul li dl{ height:80px;}
+.index_hotapp ul li dt{ float:left; font-size:0px;}
+.index_hotapp ul li dd{ float:left; width:110px; padding-left:10px; padding-top:5px;}
+.index_hot ul li h4{ font-weight:normal; color:#656565;height:25px; line-height:25px; overflow:hidden; font-size:14px; }
+.index_hot ul li h4 a{ color:#656565; }
+.index_hot ul li h4 a:hover{ color:#e9280c; }
+.index_hot ul li h5{ font-weight:normal; color:#E4393C; line-height:22px; }
+.index_hot ul li h5 span{ color:#aaa;  padding-left:10px; }
+.index_hot ul li h5 span.appprice{ color:#E4393C; padding-left:0px; }
+.index_hot ul li h5 span.free{ color:#E4393C; padding-left:0px; }
+.index_hot ul li h6{ font-weight:normal; color:#999; height:22px; line-height:22px; }
+.through{  text-decoration:line-through; }
+
+.index_hottem ul li{ height:auto; margin-bottom:20px; }
+.index_hottem ul li dt a{ padding:3px; font-size:0px; display:block; border:1px solid #ddd; }
+.index_hottem ul li img{ width:150px!important; height:auto!important; }
+.index_hottem dl{ margin:0px auto; width:160px; }
+
+.index_news{ margin-bottom:0px!important;}
+.index_news li{ height:40px; line-height:40px; padding:0px 15px; border-bottom:1px solid #f5f5f5; font-size:13px; position:relative;}
+.index_news li span{ float:right; color:#999; }
+.index_news li a{ color:#666!important; }
+.index_news li a:hover{ color:#1784bd!important; }
+.index_news li:last-child{ border-bottom:0; }
+
+
+@media(max-width:1100px){
+.index_hotapp ul li{ height:auto; margin-bottom:10px; }
+.index_hotapp ul li dl{ margin:0px auto; width:160px; height:auto; text-align:center; }
+.index_hotapp ul li dl dt{ float:none; }
+.index_hotapp ul li dl dd{ float:none; width:100%; padding-left:0px; }
+}
+/*手机屏幕*/
+@media screen and (max-width:700px){
+	.index_box{ padding-left:0px;}
+	.index_stat_chart{ float:none; width:100%;}
+	.index_stat_table{ float:none; width:100%;}
+	.index_point ul li.speed div i{ width:100px;}
+}
+
+@media screen and (max-width:400px){
+	.index_point ul li.speed div i{ width:50px;}
+	.index_news li{ height:auto; line-height:20px; padding:4px 15px;}
+	.index_news li span{ float:none; display:block; clear:both; color:#aaa;}
+	.index_stat_chart_tips{ height:auto; line-height:1.5;}
+	.index_stat_chart_tips ul{ float:none; clear:both; height:20px; line-height:20px; overflow:hidden;}
+	.index_stat_chart_tips ul li{ float:left; }
+	
+	.Sector{ width:40px; height:40px; margin:0px auto;}
+	.center{ width:34px; height:34px; line-height:34px; font-size:12px; }
+	.partO,.partT,.mask{ width:40px; height:20px; top:20px; border-bottom-left-radius:20px; border-bottom-right-radius:20px;}
+	.index_point ul li.speed div.d i{ display:none;}
+	.index_point ul li.speed div.d{ margin-bottom:0px;}
+	.index_point ul{ height:90px;}
+	.index_point ul li i.fa{ display:none;}
+	.index_point ul li a{ font-size:12px;}
+	
+	.index_hot ul{ padding:10px 0px;}
+	.index_hot ul li{ width:50%;}
+	
+	.index_hottem dl{ width:90%; margin:0px auto;}
+	.index_hottem ul li img{ width:100%!important;}
+	.index_hottem ul li dd{ text-align:center; }
+	.index_hottem ul li dd h5 span{ display:block;padding-left:0px; }
+}
+
+
+
+
+
+
+
+

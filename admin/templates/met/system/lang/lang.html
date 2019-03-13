@@ -156,8 +156,22 @@ if($met_langadmin[$langeditor][mark]==$met_admin_type){
 $met_admin_type11[1]='checked';
 $met_admin_type11[0]='';
 }
+$synchronous1[$met_langadmin[$langeditor][synchronous]]="selected='selected'";
 echo <<<EOT
 --> 
+	<div class="v52fmbx_dlbox">
+	<dl>
+		<dt>{$lang_unitytxt_9}{$lang_marks}</dt>
+		<dd>
+			<select name="synchronous">
+				<option value="">{$lang_langexplain9}</option>
+				<option value="cn" $synchronous1[cn]>简体中文</option>	
+				<option value="en" $synchronous1[en]>English</option>	
+				<option value="tc" $synchronous1[tc]>繁体中文</option>	
+			</select>
+		</dd>
+	</dl>
+	</div>
 	<div class="v52fmbx_dlbox">
 	<dl>
 		<dt>{$lang_langhome}{$lang_marks}</dt>
@@ -632,7 +646,9 @@ echo <<<EOT
 				<a href="lang.php?anyid={$anyid}&action=modify&langsetaction=deleteadmin&langeditor=$val[mark]&lang=$lang&cs={$cs}" onClick="return linkSmit($(this),1);" title="{$lang_delete}">{$lang_delete}</a>
 				</td>
 				<td class="list-text list_left">
-				<a href="langeditoradmin.php?anyid={$anyid}&langeditor=$val[mark]&lang=$lang&cs=0" class="text" title="{$lang_langeadminditor}">{$lang_langeadminditor}</a>
+				<a href="langeditoradmin.php?anyid={$anyid}&langeditor=$val[mark]&lang=$lang&cs=0" title="{$lang_langeadminditor}">{$lang_langeadminditor}</a>
+				&nbsp;
+				<a href="lang.php?anyid={$anyid}&lang={$lang}&cs=2&action=syn&newlangtype=admin&syn={$val[synchronous]}&nowmark={$val[mark]}" title="" onclick="return syn('$val[synchronous]');">{$lang_unitytxt_9}</a>
 				</td>
               </tr>
 <!--

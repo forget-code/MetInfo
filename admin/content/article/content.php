@@ -4,6 +4,7 @@
 $depth='../';
 require_once $depth.'../login/login_check.php';
 require_once $depth.'global.func.php';
+require_once ROOTPATH.'public/php/searchhtml.inc.php';
 $reclass1=$class1;
 $reclass2=$class2;
 $reclass2=$class2;
@@ -26,6 +27,13 @@ if($action=="editor"){
 	if($news_list[com_ok]==1)$com_ok="checked='checked'";
 	if($news_list[top_ok]==1)$top_ok="checked='checked'";
 	if($news_list[wap_ok]==1)$wap_ok="checked='checked'";
+	if($news_list[displaytype]==1){
+		$displaytypes[0]='checked';
+		$displaytypes[1]="";
+	}else{
+		$displaytypes[0]="";
+		$displaytypes[1]='checked';
+	}
 	$class1x[$news_list[class1]]='selected="selected"';
 	$class2x[$news_list[class2]]="selected='selected'";
 	$class3x[$news_list[class3]]="selected='selected'";	
@@ -36,6 +44,8 @@ if($action=="editor"){
 	$class1x[$class1]="selected='selected'";
 	$class2x[$class2]="selected='selected'";
 	$class3x[$class3]="selected='selected'";
+	$displaytypes[0]='checked';
+	$displaytypes[1]='';
 	$news_list[class2]=$class2;
 	$news_list[issue]=$metinfo_admin_name;
 	$news_list[hits]=0;

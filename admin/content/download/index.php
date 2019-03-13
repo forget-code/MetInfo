@@ -3,6 +3,7 @@
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 $depth='../';
 require_once $depth.'../login/login_check.php';
+require_once ROOTPATH.'public/php/searchhtml.inc.php';
 $query="select * from $met_admin_array where array_type='1' and lang='$lang'";
 $menber_array_temp=$db->get_all($query);
 foreach($menber_array_temp as $key=>$val){
@@ -40,6 +41,7 @@ $order_sql=list_order($met_class[$classnow][list_order]);
 if($search == "detail_search") {			
 	if($title)$serch_sql .= " and title like '%$title%' "; 
 	if(isset($new) && $new!="all" && $new!="") { $serch_sql .= " and new_ok ='$new' "; }
+	if(isset($displaytype) && $displaytype!="all" && $displaytype!="") { $serch_sql .= " and displaytype ='$displaytype' "; }
 	if(isset($recommend) && $recommend!="all" && $recommend!="") { $serch_sql .= " and com_ok ='$recommend' "; }
 	if(isset($top) && $top!="all" && $top!="") { $serch_sql .= " and top_ok ='$top' "; }
 	$total_count = $db->counter($met_download, "$serch_sql", "*");
@@ -60,6 +62,7 @@ while($list= $db->fetch_array($result)){
 	}
 	$list[new_ok1] = $list[new_ok] ? $lang_yes : $lang_no;
 	$list[com_ok1] = $list[com_ok] ? $lang_yes : $lang_no;
+	$list[displaytype1] = $list[displaytype] ? $lang_yes : $lang_no;
 	$list[top_ok1] = $list[top_ok] ? $lang_yes : $lang_no;
 	$list[wap_ok1] = $list[wap_ok] ? $lang_yes : $lang_no;
 	$list[updatetime] = date('Y-m-d',strtotime($list[updatetime]));
@@ -83,6 +86,11 @@ switch($top){
 	case '1':$top1="selected='selected'";break;
 	case '0':$top2="selected='selected'";break;
 	default:$top0="selected='selected'";break;
+}
+switch($displaytype){
+	case '1':$displaytype1="selected='selected'";break;
+	case '0':$displaytype2="selected='selected'";break;
+	default:$displaytype0="selected='selected'";break;
 }
 $cengci=$class3?3:($class2?2:1);
 $css_url=$depth."../templates/".$met_skin."/css";

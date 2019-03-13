@@ -11,6 +11,7 @@ foreach($met_langok as $key=>$val){
 	$c2 = $i%2==0?'class="c2"':'';
 	if($langadminok=="metinfo" or (strstr($langadminok,"-".$val[mark]."-"))){
 		$val[name_r]=utf8substr($val[name], 0, 4);
+		$val[flag]=$val[flag]?$val[flag]:$val[mark].'.gif';
 		$metinfo.="<li lang='{$val[mark]}' title='{$lang_langtips2}{$val[name]}' {$c2} flag='{$val[flag]}' lname='{$val[name_r]}' ldname='{$val[name]}'><span><img src='../public/images/flag/{$val[flag]}' />{$val[name]}</span></li>";
 	}
 }

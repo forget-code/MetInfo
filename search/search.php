@@ -5,6 +5,7 @@ require_once '../include/common.inc.php';
 $search_column=$db->get_one("select * from $met_column where module='11' and lang='$lang'");
 $metaccess=$search_column[access];
 $classnow=$search_column[id];
+$serch_sql='';
 require_once '../include/head.php';
 unset($search_list);
 function replaceHtmlAndJs($document)
@@ -60,7 +61,7 @@ if(($class1=="" || $class1==10000 || $class1==10001 || $class1==0) and (intval($
    if($searchword<>'')$serch_sql1=" where content like '%".trim($searchword)."%' ";
    break;
    }
-$serch_sql.= "and lang='$lang' "; 
+$serch_sql.= "and lang='$lang' and (recycle='0' or recycle='-1') and displaytype='1' "; 
 if($met_member_use==2)$serch_sql.= " and access<='$metinfo_member_type'";
 $searchitem="id,title,top_ok,com_ok,content,updatetime,addtime,filename,hits,imgurls,class1";
 $searchitem1="id,title,top_ok,com_ok,content,updatetime,addtime,filename,hits,class1";
@@ -98,7 +99,7 @@ case 0:
     $result = $db->query($query);
 	while($list= $db->fetch_array($result)){
 	$filename=$navurl.$class_list[$list[class1]][foldername];
-	$filenamenow="showdownload";
+	$filenamenow="showimg";
     require 'searchlist.php';
 	}
 break;
@@ -227,19 +228,22 @@ break;
 		$search_list[]=$val;
 	}
 	$search_list=array_slice($search_list,$from_record,$list_num);		
-    $page_list = $rowset->link("search.php?lang=$lang&class1=$class1&class2=$class2&class3=$class3&searchword=".trim($searchword)."&searchtype=$searchtype&page=");
+    $page_list = $rowset->link("../search/search.php?lang=$lang&class1=$class1&class2=$class2&class3=$class3&searchword=".trim($searchword)."&searchtype=$searchtype&page=");
 	$class_info=$class1_info=$class_list[$search_column[id]];
 }else{
 	$module=intval($module);
     if($class1)$module=0;
     if(intval($module)){
-      $serch_sql.=" where lang='$lang' ";
+      $serch_sql.=" where lang='$lang' and (recycle='0' or recycle='-1') and displaytype='1' ";
 	}else{
 	$class1_info=$class_list[$class1];
 	if(!$class1_info)okinfo('../',$pagelang[noid]);
 	$class1sql=" class1='$class1' ";
 	$class2sql=" class2='$class2' ";
 	$class3sql=" class3='$class3' ";
+	if($_GET['class1re']){
+		$class1re = '';
+	}
 	if($class1&&!$class2&&!$class3){
 		foreach($module_list2[$class_list[$class1]['module']] as $key=>$val){
 			if($val['releclass']==$class1){
@@ -255,7 +259,7 @@ break;
 		$class2sql=" class2='$class3' ";
 		$class3sql="";
 	}
-	$serch_sql=" where lang='$lang' and $class1sql ";
+	$serch_sql=" where lang='$lang' and (recycle='0' or recycle='-1') and displaytype='1' and $class1sql ";
 	if($class2&&$class2sql)$serch_sql .= " and $class2sql ";
 	if($class3&&$class3sql)$serch_sql .= " and $class3sql "; 
 	$order_sql=" order by top_ok desc,com_ok desc,no_order desc,updatetime desc,id desc";
@@ -292,7 +296,7 @@ break;
 	$filenamenow=($met_htmpagename==2)?$class_list[$list[class1]][foldername]:($met_htmpagename?date('Ymd',strtotime($list[addtime])):$modulename[$module_name][1]);
     require 'searchlist.php';
 	}
-    $page_list = $rowset->link("search.php?lang=$lang&class1=$class1&class2=$class2&class3=$class3&searchword=$searchword&searchtype=$searchtype&page=");
+    $page_list = $rowset->link("../search/search.php?lang=$lang&class1=$class1&class2=$class2&class3=$class3&searchword=$searchword&searchtype=$searchtype&page=");
 	$class1_info=$class1?$class_list[$class1]:"";
 	$class2_info=$class2?$class_list[$class2]:"";
     $class3_info=$class3?$class_list[$class3]:"";
@@ -332,7 +336,7 @@ $search_list[0][updatetime]=$m_now_date;
 $search_list[0][url]=$index_url; 
 }
 if($class_info[name]=="")$class_info=array('name'=>$lang_search,'url'=>'search.php?lang='.$lang);
-     $show[description]=$class_info[description]?$class_info[description]:$met_keywords;
+     $show[description]=$class_info[description]?$class_info[description]:$met_description;
      $show[keywords]=$class_info[keywords]?$class_info[keywords]:$met_keywords;
 	 $met_title=$met_title?$class_info['name'].'-'.$met_title:$class_info['name'];
 	 if($class_info['ctitle']!='')$met_title=$class_info['ctitle'];

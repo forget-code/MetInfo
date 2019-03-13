@@ -1,4 +1,5 @@
 <?php
+$dataoptimize_html='html';
 $metadmin[categorynamemark]=1; 
 $metadmin[categorymarkimage]=1; 
 $metadmin[categoryimage]=1; 

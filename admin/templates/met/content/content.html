@@ -7,6 +7,7 @@ echo <<<EOT
 <title>{$lang_setbasicWebInfoSet}</title>
 <style>
 img{ behavior: url({$img_url}/iepngfix.htc); }
+.Layer {float: left;position: absolute;left: 81px;top: 13px;font-weight: normal;color:#666;}
 </style>
 
 </head>
@@ -16,43 +17,86 @@ EOT;
 if(($class1 || $class2) && !$met_class[$class2][releclass])$title="<a href='?anyid={$anyid}&lang={$lang}&module=1&class1={$class1}'>{$met_class[$class1][name]}</a>";
 if(!$met_class[$class2][releclass] && $class2)$title.=" > ";
 if($class2)$title.="<a href='?anyid={$anyid}&lang={$lang}&module=1&class2={$class2}'>{$met_class[$class2][name]}</a>";
-$other_op ='<span class="contentshowtype">'.$lang_columnarrangement1;
-$awegcs[$met_content_type]="class='nowawecs'";
-$other_op.="<a href=\"content.php?anyid={$anyid}&lang={$lang}&met_content_type=2\" title=\"{$lang_columnarrangement2}{$lang_columnarrangement3}\" {$awegcs[2]}>{$lang_columnarrangement3}</a>".' - '."<a href=\"content.php?anyid={$anyid}&lang={$lang}&met_content_type=1\" title=\"{$lang_columnarrangement2}{$lang_columnarrangement4}\" {$awegcs[1]}>{$lang_columnarrangement4}</a></span>";
+//$other_op ='<span class="contentshowtype">'.$lang_columnarrangement1;
+//$awegcs[$met_content_type]="class='nowawecs'";
+if($met_content_type==2){
+	$awegcs[1]="class='column_hidden'";
+	$awegcs[2]="class='modular_display'";
+}else{
+	$awegcs[1]="class='column_display'";
+	$awegcs[2]="class='modular_hidden'";
+}
+$other_op.="<a href=\"content.php?anyid={$anyid}&lang={$lang}&met_content_type=2\" title=\"{$lang_columnarrangement2}{$lang_columnarrangement3}\" {$awegcs[2]}>{$lang_columnarrangement3}</a><a href=\"content.php?anyid={$anyid}&lang={$lang}&met_content_type=1\" title=\"{$lang_columnarrangement2}{$lang_columnarrangement4}\" {$awegcs[1]}>{$lang_columnarrangement4}</a></span>";
 require_once template('metlangs');
 echo <<<EOT
--->
-<div class="v52fmbx_tbmax v52fmbx_tbmaxmt">
-<div class="v52fmbx_tbbox">
+-->	
+	<div align="right" class="v52fmbx_dings">
+	<a href="recycle/index.php?anyid=33&amp;lang=cn" title="{$_M['word']['upfiletips25']}" style="color: #23b7e5;text-decoration: none;"><i class="fa fa-recycle"></i>{$_M['word']['upfiletips25']}</a>
+	&nbsp;&nbsp;&nbsp;&nbsp;<a href="../app/batch/contentup.php?anyid=32" style="color: #23b7e5;text-decoration: none;">{$_M['word']['bulkopr']}</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	</div>
+	<h3 class="v52fmbx_ding search" id="topsearch" >
 <!--
 EOT;
-if($met_content_type==2){
+//$met_content_type==1
+if(1){
+echo <<<EOT
+-->	
+
+	<form  method='POST' name='myform' onSubmit='return Checkmember();' action='content.php?anyid={$anyid}&search={$program}&action=search&lang={$lang}' target='_self'>
+	<div >
+	{$x}
+	</div>
+
+	<div>
+	<label class="Layer">{$lang_column_searchname}</label>
+	<input id='program' name='program' type='text' size='24'  class='input_text stxt'/>
+	</div>
+	</form>
+<!--
+EOT;
+}
+echo <<<EOT
+-->		
+	{$other_op}
+	</h3>
+	
+<!--
+EOT;
+
 echo <<<EOT
 --> 
-	<h3 class="v52fmbx_hr metsliding">{$lang_unitytxt_27}</h3>
+<div class="metv5box">
+	<ul class="columnlist" id="test">
+<!--
+EOT;
+foreach ($contentlist as $key=>$val){
+
+if(strstr($val['name'], $program)||$program==null){
+$vimgurl = 'tubiao_'.$val[module].'.png';
+echo <<<EOT
+--> 
+		<li class="contlist" >
+			<div class="box">
+				<a href='{$val[conturl]}'>
+					<img src="{$img_url}/metv5/{$vimgurl}?new" width='70' height='70' />
+<!--
+EOT;
+if($val[sum]){
+echo <<<EOT
+--> 					
+					<span class="cloumn_num">{$val[sum]}</span>
 <!--
 EOT;
 }
 echo <<<EOT
 --> 
-<div class="metv5box">
-	<ul class="columnlist">
-<!--
-EOT;
-foreach ($contentlist as $key=>$val){
-$vimgurl = 'tubiao_'.$val[module].'.png';
-echo <<<EOT
---> 
-		<li class="contlist">
-			<div class="box">
-				<a href='{$val[conturl]}'>
-					<img src="{$img_url}/metv5/{$vimgurl}" width='64' height='64' />
 					<h2>{$val['name']}</h2>
 				</a>
 			</div>
 		</li>
 <!--
 EOT;
+}
 }
 echo <<<EOT
 --> 
@@ -62,6 +106,44 @@ echo <<<EOT
 </div>
 </div>
 <script type="text/javascript">
+function searchzdx(dom,label,color1,color2){
+	if(dom.val()=='')label.show();
+	dom.focus(function(){
+		label.css("color",color2);
+	});
+	dom.keyup(function(){
+		if($(this).val()==''){
+			label.show();
+		}else{
+			label.hide();
+		}
+	});
+	dom.focusout(function(){
+		if($(this).val()==''){
+		label.show();
+		label.css("color",color1);
+		}
+	});
+}
+searchzdx($('#topsearch .stxt'),$('#topsearch label'),"#666","#ccc");
+var element = document.getElementById("program"); 
+document.getElementById("program").onfocus=function(){
+if(!+[1,]){
+element.onpropertychange = webChange; 
+}else{ 
+element.addEventListener("input",webChange,false); 
+} 
+}
+function webChange(){ 
+$.ajax({
+		url: 'originate.php?lang={$lang}&id='+escape(element.value),
+		type: 'GET',
+		cache: false,
+		success: function(data) {
+			$('#test').html(data);
+		}
+	});
+} 
 $('.contmorehver').hover(
 	function () {
 		$(this).find('div.contmore').show();
@@ -101,6 +183,20 @@ function metHeight(group,type) {
 }
 metHeight($('.box'));
 metHeight($('.contlist .text'),1);
+function Focus(obj) {
+	if(obj.value==obj.defaultValue){
+		obj.value='';
+	}
+}
+
+
+
+function Blur(obj) {
+	if(obj.value==''){
+		obj.value=obj.defaultValue;
+
+	}
+} 
 </script>
 <div class="clear"></div>
 <div class="footer">$foot</div>

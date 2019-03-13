@@ -5,7 +5,7 @@ if($action=='patch'){
 	$met_file='/dl/patch.php';
 	$post_data = array('ver'=>$metcms_v,'patch'=>$met_patch);
 	$difilelist=curl_post($post_data,10);
-	if($difilelist){
+	if($difilelist!='nohost'){
 		$difilelists=explode('*',$difilelist);
 		$met_file='/dl/olupdate_curl.php';	
 		foreach($difilelists as $key=>$val){

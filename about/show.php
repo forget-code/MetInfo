@@ -26,7 +26,7 @@ $class1_list=$class1_info;
 $class2_info=$class_list[$class2];
 $class3_info=$class_list[$class3];
 $show[content]=contentshow('<div>'.$show[content].'</div>');
-$show[description]=$show[description]?$show[description]:$met_keywords;
+$show[description]=$show[description]?$show[description]:$met_description;
 $show[keywords]=$show[keywords]?$show[keywords]:$met_keywords;
 $met_title=$met_title?$show['name'].'-'.$met_title:$show['name'];
 if($show['ctitle']!='')$met_title=$show['ctitle'];

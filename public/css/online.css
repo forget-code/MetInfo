@@ -7,8 +7,7 @@
 .onlinebox .onlinebox-center-box dl{ padding:5px 0px 8px 5px; margin-bottom:5px;}
 .onlinebox .onlinebox-center-box dt{ margin-right:3px;}
 .onlinebox .onlinebox-center-box dd img{ margin:0px 6px 0px 0px;}
-.onlinebox .onlinebox-center-box .met_alibaba{ margin:5px;}
-.onlinebox .onlinebox-center-box .met_skype{ margin:5px;}
+.onlinebox .onlinebox-center-box .met_alibaba{ color:#1266c9;vertical-align:top;}
 .onlinebox .onlinebox-bottom-box .online-tbox{ padding:5px;}
 .onlinebox .onlinebox-bottom-box{ line-height:1.6;}
 .onlinebox .onlinebox-conbox{ z-index:999;}

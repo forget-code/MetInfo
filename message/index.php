@@ -37,7 +37,6 @@ require_once '../include/head.php';
     $from_record = $rowset->_offset();
 	$page = $page?$page:1;
     $query = "SELECT * FROM $met_message $serch_sql $order_sql LIMIT $from_record, $list_num";
-
     $result = $db->query($query);
 	while($list= $db->fetch_array($result)){
 	if($met_member_use){
@@ -66,7 +65,7 @@ $class_info=$class2?$class2_info:$class1_info;
 if($class2!=""){
 $class_info[name]=$class2_info[name]."-".$class1_info[name];
 }
-     $show[description]=$class_info[description]?$class_info[description]:$met_keywords;
+     $show[description]=$class_info[description]?$class_info[description]:$met_description;
      $show[keywords]=$class_info[keywords]?$class_info[keywords]:$met_keywords;
 	 $met_title=$met_title?$class_info['name'].'-'.$met_title:$class_info['name'];
 	 if($class_info['ctitle']!='')$met_title=$class_info['ctitle'];
@@ -89,10 +88,14 @@ require_once '../public/php/methtml.inc.php';
 
 $methtml_messagelist.="<ul>\n";
 foreach($message_list as $key=>$val){
-$methtml_messagelist.="<li class='message_list_line'><span >[NO".$val[id]."]£º<b>".$val[name]."</b> ".$lang_Publish." ".$val[addtime]."</span></li>\n";
-$methtml_messagelist.="<li class='message_list_info'><span ><b>".$lang_SubmitContent."</b>:".$val[info]."</span></li>\n";
-$methtml_messagelist.="<li class='message_list_reinfo'><span ><b>".$lang_Reply."</b>:".$val[useinfo]."</span></li>\n";
-}
+	$messagesName1=$db->get_one("select value from $met_config where name='met_message_fd_class' and lang='$lang'");
+	$messagesNames1=$db->get_one("select info from $met_mlist where listid='$val[id]' and paraid='$messagesName1[value]' and lang='$lang'");
+	$messagesName2=$db->get_one("select value from $met_config where name='met_message_fd_content' and lang='$lang'");
+	$messagesNames2=$db->get_one("select info from $met_mlist where listid='$val[id]' and paraid='$messagesName2[value]' and lang='$lang'");
+	$methtml_messagelist.="<li class='message_list_line'><span >[NO".$val[id]."]ï¼š<b>".$messagesNames1[info]."</b> ".$lang_Publish." ".$val[addtime]."</span></li>\n";
+	$methtml_messagelist.="<li class='message_list_info'><span ><b>".$lang_SubmitContent."</b>:".$messagesNames2[info]."</span></li>\n";
+	$methtml_messagelist.="<li class='message_list_reinfo'><span ><b>".$lang_Reply."</b>:".$val[useinfo]."</span></li>\n";
+	}
 $methtml_messagelist.="</ul>\n";
 $pageall=$rowset->pages;
 include template('message_index');

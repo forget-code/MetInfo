@@ -48,6 +48,10 @@ echo <<<EOT
 EOT;
 foreach ($met_class1 as $key=>$val){
 $valfoldername=utf8substr($val[foldername], 0, 12);
+if($val[modulename]>1000){
+	$structure1=$db->get_one("select * from $met_ifcolumn where no='$val[modulename]'");
+	$val[modulename]=get_word($structure1[appname]);
+}
 echo <<<EOT
 --> 
         <tr class="mouse click column_1">
@@ -107,7 +111,7 @@ EOT;
 }
 echo <<<EOT
 -->
-					<div><a href="delete.php?anyid={$anyid}&lang=$lang&id=$val[id]" onClick="return linkSmit($(this),1);" >{$lang_delete}</a></div>
+					<div><a href="delete.php?anyid={$anyid}&lang=$lang&module={$val['module']}&id=$val[id]" onClick="return linkSmit($(this),1);" >{$lang_delete}</a></div>
 					</div>
 				</div>
 				</div>
@@ -117,6 +121,10 @@ echo <<<EOT
 EOT;
 foreach ($met_class2[$val[id]] as $key=>$val2){
 $val2foldername=utf8substr($val2[foldername], 0, 12);
+if($val2[modulename]>1000){
+	$structure1=$db->get_one("select * from $met_ifcolumn where no='$val2[modulename]'");
+	$val2[modulename]=$structure1[appname];
+}
 echo <<<EOT
 -->
         <tr id="class_$val2[id]" class="none mouse click columnz_$val[id] column_2">
@@ -181,6 +189,10 @@ echo <<<EOT
 EOT;
 foreach ($met_class3[$val2[id]] as $key=>$val3){
 $val3foldername=utf8substr($val3[foldername], 0, 12);
+if($val3[modulename]>1000){
+	$structure1=$db->get_one("select * from $met_ifcolumn where no='$val3[modulename]'");
+	$val3[modulename]=$structure1[appname];
+}
 echo <<<EOT
 -->
         <tr id="class_$val3[id]" class="none mouse click columnz_$val2[id] column_3">
@@ -271,6 +283,11 @@ echo <<<EOT
 <!--
 EOT;
 }
+$fixed_add=$db->get_all("select * from $met_ifcolumn where fixed_name not like ''");
+foreach($fixed_add as $key=>$val){
+	$fixed_folder.="case '".$val[no]."':fname= '".$val[fixed_name]."';break;"."\n";
+	$fixed_id.=" && my.val() != ".$val[no];
+}
 echo <<<EOT
 -->
 					</select>
@@ -290,11 +307,12 @@ echo <<<EOT
 function newmodule(my,module,type){
 	var mtd = my.parent('td').next();
 	if(type>1)mtd.find("span").hide();
+
 	if(my.val()==999){
 		mtd.find("input").hide();
 		mtd.find('font').empty();
 		mtd.find("input[name*='out_url_new_']").show();
-	}else if(my.val()>5 && my.val()!=8){
+	}else if(my.val()>5 && my.val()!=8 ){
 		mtd.find('input').hide();
 		mtd.find('font').text(addmodulefold(my.val()));
 	}else{
@@ -306,6 +324,11 @@ function newmodule(my,module,type){
 		mtd.find("input.foldernonull").show();
 		}
 	}
+	if(my.val()>1000{$fixed_id}){
+		mtd.find("input").hide();
+		mtd.find('font').empty();
+		mtd.find("input[name*='foldername_new_']").show();
+	}
 }
 function addmodulefold(module){
 	var fname='';
@@ -316,8 +339,10 @@ function addmodulefold(module){
 		case '10':fname= 'member';break;
 		case '11':fname= 'search';break;
 		case '12':fname= 'sitemap';break;
+		case '13':fname= '';break;
 		case '100':fname= 'product';break;
 		case '101':fname= 'img';break;
+		{$fixed_folder}
 	}
 	return fname;
 }
@@ -364,6 +389,10 @@ function columnFormNum(form){
 		nlist+='&'+nav+'='+encodeURIComponent($("select[name='"+nav+"']").val());
 		var index_num='index_num_'+lists[i];
 		nlist+='&'+index_num+'='+encodeURIComponent($("input[name='"+index_num+"']").val());
+		if($("select[name='"+module+"']").val()=='1000'){
+			var foldername='foldername_'+lists[i];
+			nlist+='&'+foldername+'='+encodeURIComponent($("input[name='"+foldername+"']").val());
+		}
 		if(!reg.test(lists[i])){
 			var bigclass='bigclass_'+lists[i];
 			nlist+='&'+bigclass+'='+encodeURIComponent($("input[name='"+bigclass+"']").val());
@@ -371,10 +400,10 @@ function columnFormNum(form){
 			nlist+='&'+foldername+'='+encodeURIComponent($("input[name='"+foldername+"']").val());
 			var module='module_'+lists[i];
 			nlist+='&'+module+'='+encodeURIComponent($("select[name='"+module+"']").val());	
-			if($("select[name='"+module+"']").val()=='999'){
+			if($("select[name='"+module+"']").val()=='999' || $("select[name='"+module+"']").val()=='1000'){
 				var out_url='out_url_'+lists[i];
 				nlist+='&'+out_url+'='+encodeURIComponent($("input[name='"+out_url+"']").val());	
-			}			
+			}	
 			var classtype='classtype_'+lists[i];
 			nlist+='&'+classtype+'='+encodeURIComponent($("input[name='"+classtype+"']").val());
 		}
@@ -410,15 +439,8 @@ function columneditoradd(my){
 						}else{
 							var reg=/\$/;
 							if(reg.test(data)){
-								var datt = data.split('$');
-								var atext='';
-									for(i=0;i<datt.length-1;i++){
-										datx='';datx = datt[i].split('|');
-										$("input[name='"+datx[1]+"']").addClass('focusred');
-										atext+=datx[0]+'['+datx[datx.length-1]+']\\n';
-									}
-									alert(atext);
-									setTimeout(function (){ $("input").removeClass('focusred'); },3000);
+								alert('$lang_columnerr2');
+								setTimeout(function (){ $("input").removeClass('focusred'); },3000);
 							}else{
 								alert('$lang_jsx32');
 								var reurl='index.php?anyid='+$("input[name='anyid']").val()+'&lang='+$("input[name='lang']").val();

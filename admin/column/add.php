@@ -49,10 +49,23 @@ $pk=1;
 if($type==2 && $i==$module)$pk=0;
 if($type==3 && $i!=$module)$pk=0;
 if($pk){
-if(count($met_module[$j])==0 or ($j<=5 || $j==8)){
+if((count($met_module[$j])==0 or ($j<=5 || $j==8)) && $j != 100 && $j != 101){
 		$newlist.= "<option value='$j'>{$langmod1}</option>";
 }}}
 		$newlist.= "<option value='999'>{$lang_modout}</option>";
+if($type!=3){	
+		$structure=$db->get_all("select * from $met_ifcolumn");		
+		foreach($structure as $key=>$val){
+			$structure1=$db->get_one("select * from $met_column where module='$val[no]' and lang='$lang'");
+			if(!$structure1||$val[uniqueness]==0){
+				if(!$structure1||!$val[fixed_name]){
+					$val[appname]=get_word($val[appname]);
+					$newlist.= "<option value='$val[no]'>{$val[appname]}</option>";
+				}
+			}
+		}
+}
+		//$newlist.= "<option value='1000'>{$lang_appmodule}</option>";
 		$newlist.= "</select>";
 		$newlist.= "</td>";
 		$newlist.= "<td class='list-text$typey'>";

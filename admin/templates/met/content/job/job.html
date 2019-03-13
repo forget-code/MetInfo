@@ -5,7 +5,8 @@ require_once template('head');
 $colspan=10;
 if(!$met_wap && !$met_wap_ok)$colspan=$colspan-1;
 if(!$met_member_use)$colspan=$colspan-1;
-$colspanj=$colspan-1;
+$colspanj=$colspan;
+$colspan=$colspan+1;
 echo <<<EOT
 -->
 </head>
@@ -13,6 +14,8 @@ echo <<<EOT
 <!--
 EOT;
 $title="<a href='index.php?anyid={$anyid}&lang={$lang}&class1={$class1}'>{$class1_info[name]}</a>";
+$class1=$class1?$class1:($id?$id:0);
+$title=title($class1,$anyid,$lang)?title($class1,$anyid,$lang):$title;
 require_once template('content/job/top');
 echo <<<EOT
 -->
@@ -28,6 +31,12 @@ echo <<<EOT
 				<div class="formright">
 				<form method="POST" style="position:relative; top:2px;" name="filterform" action="index.php?anyid={$anyid}&lang=$lang&search=detail_search" target="_self">
 				<input name="class1" type="hidden" value="$class1">
+				&nbsp;{$lang_displaytype}
+				<select name="displaytype" id="displaytype" onChange="handle_form('filterform')">
+					<option value="all" {$displaytype0}>{$lang_selectnow}</option>
+					<option value="1" {$displaytype1}>{$lang_yes}</option>
+					<option value="0" {$displaytype2}>{$lang_no}</option>
+				</select>				
 				&nbsp;{$lang_top}
 				<select name="top" id="shaix-top" onChange="handle_form('filterform')">
 					<option value="all" $top0>{$lang_selectnow}</option>
@@ -49,6 +58,7 @@ echo <<<EOT
             <td class="list list_left">{$lang_jobposition}</td>
             <td width="60" class="list">{$lang_jobnum}</td>
             <td width="60" class="list">{$lang_joblife}</td>
+			<td width="60" class="list" >{$lang_displaytype}</td>
 			<td width="30" class="list">{$lang_top}</td>
 <!--
 EOT;
@@ -89,6 +99,7 @@ echo <<<EOT
 			<td class="list-text list_left"><a href="../../../job/showjob.php?lang=$lang&id=$val[id]" title="{$lang_preview}" target="_blank">$val[position]</a></td>
             <td class="list-text color999">$val[count]</td>
             <td class="list-text color999">$val[useful_life]</td>
+			<td class="list-text"><a href="changeState.php?anyid={$anyid}&lang=$lang&displaytype=$val[displaytype]&id=$val[id]&class1=$class1&class2=$class2&class3=$class3&page=$page" onClick="return linkSmit($(this));" displaytype="$val[id]" com_ok_val="$val[displaytype]">$val[displaytype1]</a></td>
 			<td class="list-text">
 			    <a href="changeState.php?anyid={$anyid}&lang=$lang&top_ok=$val[top_ok]&id=$val[id]&class1=$class1&class2=$class2&class3=$class3&page=$page" onClick="return linkSmit($(this));" top_ok="$val[id]" top_ok_val="$val[top_ok]">$val[top_ok1]</a>
 			</td>
@@ -132,6 +143,11 @@ echo <<<EOT
 				<input name="submit" type='submit' value='{$lang_deleteselected}' class="submit li-submit" onclick="return met_modify($(this),'del','del');" /> 
 				<input name="saveorder" type='submit' value='{$lang_Submit}{$lang_sort}' class="submit li-submit" onclick="return met_modify($(this),'del','editor');" />
 			<div class="li-submit">
+	<select name="lisdisplaytype" ltype="displaytype">
+		<option value="">{$lang_displaytype}</option>
+		<option value="1">{$lang_yes}</option>
+		<option value="0">{$lang_no}</option>
+	</select>
 	<select name="listop" ltype="top_ok">
 		<option value="">{$lang_top}</option>
 		<option value="1">{$lang_yes}</option>

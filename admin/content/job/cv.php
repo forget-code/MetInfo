@@ -3,6 +3,7 @@
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 $depth='../';
 require_once $depth.'../login/login_check.php';
+require_once ROOTPATH.'public/php/searchhtml.inc.php';
 $serch_sql=" where lang='$lang' ";
 if($customerid&&$customerid<>'') { $serch_sql .= " and customerid='$customerid' "; }
 if($search == "detail_search"){  			

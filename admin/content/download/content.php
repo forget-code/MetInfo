@@ -4,6 +4,7 @@
 $depth='../';
 require_once $depth.'../login/login_check.php';
 require_once $depth.'global.func.php';
+require_once ROOTPATH.'public/php/searchhtml.inc.php';
 $reclass1=$class1;
 $reclass2=$class2;
 $reclass2=$class2;
@@ -26,6 +27,13 @@ if($action=="editor"){
 	$class1=$download_list[class1];
 	if($download_list[new_ok]==1)$new_ok="checked";
 	if($download_list[com_ok]==1)$com_ok="checked";
+	if($download_list[displaytype]==1){
+		$displaytypes[0]='checked';
+		$displaytypes[1]="";
+	}else{
+		$displaytypes[0]="";
+		$displaytypes[1]='checked';
+	}
 	if($download_list[top_ok]==1)$top_ok="checked";
 	if($download_list[wap_ok]==1)$wap_ok="checked";	
 	$class1x[$download_list[class1]]='selected="selected"';
@@ -38,6 +46,8 @@ if($action=="editor"){
 	$class1x[$class1]="selected='selected'";
 	$class2x[$class2]="selected";
 	$class3x[$class3]="selected";
+	$displaytypes[0]='checked';
+	$displaytypes[1]='';
 	$download_list[class2]=$class2;
 	$download_list[issue]=$metinfo_admin_name;
 	$download_list[hits]=0;

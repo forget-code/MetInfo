@@ -10,6 +10,8 @@ echo <<<EOT
 <!--
 EOT;
 $title=$class1?"<a href='index.php?anyid={$anyid}&lang={$lang}&class1={$class1}&module={$module}'>{$met_class[$class1][name]}</a>":"<a href='index.php?anyid={$anyid}&lang={$lang}&module={$module}'>{$lang_modulemanagement1}</a>";
+$class1=$class1?$class1:($id?$id:0);
+$title=title($class1,$anyid,$lang)?title($class1,$anyid,$lang):$title;
 $rurl="../content.php?anyid={$anyid}&lang={$lang}";
 require_once template('metlangs');
 if(!$class1)$style="style='color:#f00'";

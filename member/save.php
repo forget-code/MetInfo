@@ -2,6 +2,7 @@
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 require_once '../include/common.inc.php';
+
 if($action=="add"){
  if($met_memberlogin_code==1){
 	 require_once ROOTPATH.'member/captcha.class.php';
@@ -61,22 +62,73 @@ $query="select * from $met_admin_array where lang='$lang' order by user_webpower
 $usertypes=$db->get_all($query);
 if($usertypes[0][id]==3)die();
 $pass1=md5($mm);
+
  $query = "INSERT INTO $met_admin_table SET
                       admin_id           = '$yhid',
                       admin_pass         = '$pass1',
-					  admin_tel          = '$lxdh',
 					  admin_email        = '$email',
 					  admin_modify_ip    = '$m_user_ip',
 					  admin_register_date= '$m_now_date',
 					  usertype			 = '{$usertypes[0][id]}',
-					  companyname		 = '$companyname',
-					  companyaddress     = '$companyaddress',
-					  companyfax	     = '$companyfax',
-					  companycode	     = '$yzbm',
-					  companywebsite     = '$wz',
 					  lang               = '$lang',
 					  checkid            = '$checkid'";
          $db->query($query);
+$use_id=$db->get_one("SELECT * FROM $met_admin_table WHERE admin_id='$yhid'");
+$query = "select * from $met_parameter where lang='$lang' and module='10' and wr_oks='1'";
+$result = $db->query($query);
+while($list = $db->fetch_array($result)){
+	$paravalue[]=$list;
+	$fd_para[]=$list;
+}
+for($x=0;$x<count($fd_para);$x++){
+	$fd_para[$x][para]="para".$fd_para[$x][id];
+}
+require_once '../feedback/uploadfile_save.php';
+foreach($paravalue as $key=>$val){
+	if($val[type]!=4){
+	    $infos ="para".$val[id];
+		$info=$$infos;
+		if($val[type]==5){$info="../upload/file/$info";}
+		$query = "INSERT INTO $met_plist SET
+                      listid         = '$use_id[id]',
+					  info           = '$info',
+					  paraid         = '$val[id]',
+					  module         = '10',
+					  imgname        = '$val[name]',
+					  lang           = '$lang'";
+		$db->query($query);
+	}else{
+		$query1 = "select * from $met_list where lang='$lang' and bigid='$val[id]'";
+		$result1 = $db->query($query1);
+		while($list1 = $db->fetch_array($result1)){
+			$paravalue1[]=$list1;
+		}
+		$i=1;
+		$infos="";
+		foreach($paravalue1 as $key=>$val1){
+			$paras4_name="para".$val[id]."_".$i;
+			$para_name=$$paras4_name;
+			if($infos){
+			if($para_name){
+			$infos=$infos."、".$para_name;
+			}
+			}else{
+			if($para_name){
+			$infos=$para_name;
+			}
+			}
+			$i=$i+1;
+		}
+		$query = "INSERT INTO $met_plist SET
+                      listid         = '$use_id[id]',
+					  paraid         = '$val[id]',
+					  info           = '$infos',
+					  module         = '10',
+					  imgname        = '$val[name]',
+					  lang           = '$lang'";
+		$db->query($query);
+	}
+}
 if($met_member_login==2){
 	okinfo('login.php?lang='.$lang,$lang_js20);
 	exit();
@@ -94,22 +146,9 @@ if($metinfo_member_name!=$useid){
 }
 $query = "update $met_admin_table SET
                       admin_id           = '$useid',
-					  admin_name         = '$realname',
-					  admin_sex          = '$sex',
-					  admin_tel          = '$tel',
 					  admin_modify_ip    = '$m_user_ip',
 					  admin_mobile       = '$mobile',
-					  admin_email        = '$email',
-					  admin_qq           = '$qq',
-					  admin_msn          = '$msn',
-					  admin_taobao       = '$taobao',
-					  admin_introduction = '$admin_introduction',
-					  admin_modify_date  = '$m_now_date',
-					  companyname		 = '$companyname',
-					  companyaddress     = '$companyaddress',
-					  companyfax	     = '$companyfax',
-					  companycode	     = '$companycode',
-					  companywebsite     = '$companywebsite'";
+					  admin_email        = '$email'";
 
 if($pass1){
 $pass1=md5($pass1);
@@ -117,6 +156,68 @@ $query .=", admin_pass         = '$pass1'";
 }
 $query .="  where admin_id='$useid'";
 $db->query($query);
+$uses_id=$db->get_one("SELECT * FROM $met_admin_table WHERE admin_id='$useid'");
+$query = "select * from $met_parameter where lang='$lang' and module='10'";
+$result = $db->query($query);
+while($list = $db->fetch_array($result)){
+	$paravalue[]=$list;
+	$fd_para[]=$list;
+}
+for($x=0;$x<count($fd_para);$x++){
+	$fd_para[$x][para]="para".$fd_para[$x][id];
+}
+require_once '../feedback/uploadfile_save.php';
+foreach($paravalue as $key=>$val){
+	if($val[type]!=4){
+	    $info ="para".$val[id];
+		$info=$$info;
+		if($val[type]==5){
+		if($info){
+			$info="../upload/file/$info";
+		}else{
+			$attachment=$db->get_one("SELECT * FROM $met_plist WHERE listid='$uses_id[id]' and paraid='$val[id]' and module='10' and lang='$lang'");
+			$info=$attachment[info];
+		}
+		
+		}
+		if($db->get_one("SELECT * FROM $met_plist WHERE listid='$uses_id[id]' and paraid='$val[id]' and module='10' and lang='$lang'")){
+		$query = "update $met_plist SET	info='$info' where listid='$uses_id[id]' and paraid='$val[id]' and module='10' and lang='$lang'";
+		$db->query($query);
+		}else{
+		$query = "INSERT INTO $met_plist SET info='$infos',listid='$uses_id[id]',paraid='$val[id]',module='10',lang='$lang'";
+		$db->query($query);
+		}
+	}else{
+		$query1 = "select * from $met_list where lang='$lang' and bigid='$val[id]'";
+		$result1 = $db->query($query1);
+		while($list1 = $db->fetch_array($result1)){
+			$paravalues[]=$list1;
+		}
+		$i=1;
+		$infos="";
+		for($j=0;$j<count($paravalues);$j++){
+			$paras4_name="para".$val[id]."_".$i;
+			$para_name=$$paras4_name;
+			if($infos){
+			if($para_name){
+			$infos=$infos."、".$para_name;
+			}
+			}else{
+			if($para_name){
+			$infos=$para_name;
+			}
+			}
+			$i=$i+1;
+		}
+		if($db->get_one("SELECT * FROM $met_plist WHERE listid='$uses_id[id]' and paraid='$val[id]' and module='10' and lang='$lang'")){
+		$query = "update $met_plist SET	info='$infos' where listid='$uses_id[id]' and paraid='$val[id]' and module='10' and lang='$lang'";
+		$db->query($query);
+		}else{
+		$query = "INSERT INTO $met_plist SET info='$infos',listid='$uses_id[id]',paraid='$val[id],module='10',lang='$lang'";
+		$db->query($query);
+		}
+	}
+}
 okinfo('basic.php?lang='.$lang,$lang_js21);
 }
 # This program is an open source system, commercial use, please consciously to purchase commercial license.

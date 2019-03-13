@@ -9,9 +9,10 @@ if($url_now!=$met_weburls[2]){
 }
 $sidebarcolumn=$db->get_all("select * from $met_admin_column order by type desc,list_order");
 foreach($sidebarcolumn as $key=>$val){
+	$val['name'] = get_word($val['name']);
 	if((($val[name]=='lang_indexcode')||($val[name]=='lang_indexebook')||($val[name]=='lang_indexbbs')||($val[name]=='lang_indexskinset'))&&$met_agents_type>1)continue;
 	if((($val[name]=='lang_webnanny')||($val[name]=='lang_smsfuc'))&&$met_agents_sms==0)continue;
-	if((($val[name]=='lang_myapp'))&&$met_agents_app==0)continue;
+	if(($val[name]=='lang_dlapptips2')&&$met_agents_app==0)continue;
 	if(strstr($val['name'],"lang_")){
 		if(strstr($val['name'],"|lang_")){
 			$linshi = '';
@@ -33,7 +34,8 @@ foreach($sidebarcolumn as $key=>$val){
 			$purview=$val['field']==0?'metinfo':$$purview;
 			if($metinfo_admin_pop=="metinfo" || $purview=='metinfo'){
 				if(strstr($val['url'],"http://")){
-					$val['property']='target="_blank"';
+					//$val['property']='target="_blank"';
+					$val['property']='target="main"';
 				}else{
 					$val['property']="target='main' id='nav_{$val[bigclass]}_{$val[id]}'";
 					if($val['url']=='/interface/info.php'){
@@ -48,7 +50,13 @@ foreach($sidebarcolumn as $key=>$val){
 				}
 				$sidebarcolumns[]=$val;
 				$letplace[$val['id']]=$val;
-				$ad_navlist2[$val['bigclass']][]=$val;
+				if($val['name']==$lang_shortcut && $val['bigclass']=='1'){
+					$shortcut=$val;
+				}else{
+					if($val['name']!=$lang_indexbasicinfo){
+						$ad_navlist2[$val['bigclass']][]=$val;
+					}
+				}
 			}
 		break;
 		case 3:
@@ -69,14 +77,7 @@ $sidebarcolumn=$sidebarcolumns;
 foreach($metinfocolumn as $key=>$val){
 	$toplace[$val['id']]=$val;
 }
-if(count($ad_navlist2[1])==2){
-	$shortcut=$ad_navlist2[1][1];
-	unset($ad_navlist2[1][1]);
-}else if(count($ad_navlist2[1])==3){
-	$shortcut=$ad_navlist2[1][2];
-	unset($ad_navlist2[1][1]);
-	unset($ad_navlist2[1][2]);
-}
+
 foreach ($metinfo_admin_shortcut as $key=>$val){
 	$key_ok[$key]=$key;
 	foreach($val as $key1=>$val1){
@@ -117,7 +118,7 @@ foreach($shortcut_list as $key=>$val){
 	
 }
 $ad_navlist2[1][]=$shortcut;
-if($met_agents_type>=3){
+if($met_agents_type>=2){
 	foreach($ad_navlist2[1] as $key=>$val){
 		if($val[lang]=='lang_tmptips'){
 			unset($ad_navlist2[1][$key]);

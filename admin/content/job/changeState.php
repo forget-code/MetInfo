@@ -50,6 +50,10 @@ if($action=='copy'){
 		$top_ok=$top_ok==1?0:1;
 		$query = $query."top_ok             = '$top_ok',";
 	}
+	if(isset($displaytype)){
+		$displaytype=$displaytype==1?0:1;
+		$query = $query."displaytype             = '$displaytype',";
+	}
 	if(isset($wap_ok)){
 		$wap_ok=$wap_ok==1?0:1;
 		$query = $query."wap_ok             = '$wap_ok',";

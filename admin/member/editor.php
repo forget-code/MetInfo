@@ -2,12 +2,18 @@
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 require_once '../login/login_check.php';
-
+require_once '../content/global.func.php';
 
 $admin_list = $db->get_one("SELECT * FROM $met_admin_table WHERE id='$id'");
 if(!$admin_list){
 metsave('-1',$lang_dataerror);
 }
+$query1 = "SELECT * FROM $met_parameter WHERE lang='$lang' and module='10' order by no_order";
+$result1 = $db->query($query1);
+while($list1 = $db->fetch_array($result1)){
+		$para_list[]=$list1;
+}
+$para_member_list=para_list_withs($para_list,$id,10);
 $lev=0;
 $menbermanage=1;
 $met_member_use=1;

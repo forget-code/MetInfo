@@ -6,6 +6,7 @@ if($met_member_login==0){
 	okinfo('index.php?lang='.$lang,"$lang_js3");
 	exit();
 }
+
 require_once ROOTPATH.'member/index_member.php';
 $member_index_url="index.php?lang=".$lang;
 if($met_member_login==2 && isset($username) && isset($code)){

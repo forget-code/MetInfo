@@ -9,6 +9,8 @@ echo <<<EOT
 <!--
 EOT;
 $title="<a href='index.php?anyid={$anyid}&lang={$lang}&class1={$class1}'>{$met_class[$class1][name]}</a>";
+$class1=$class1?$class1:($id?$id:0);
+$title=title($class1,$anyid,$lang)?title($class1,$anyid,$lang):$title;
 require_once template('content/message/top');
 echo <<<EOT
 -->
@@ -47,6 +49,52 @@ echo <<<EOT
 		</div>
 		<div class="v52fmbx_dlbox">
 		<dl>
+			<dt>{$lang_message_name}{$lang_marks}</dt>
+			<dd>
+				<select name="met_message_fd_class">
+<!--
+EOT;
+foreach($fd_paraall as $key=>$val){
+$select1='';
+if($val[id]==$met_message_fd_class)$select1="selected='selected'";
+echo <<<EOT
+-->				<option value="$val[id]" $select1 >$val[name]</option>
+<!--
+EOT;
+}
+echo <<<EOT
+-->	
+			
+			</select>			
+			<span class="tips">{$lang_message_name1}</span>
+			</dd>
+		</dl>
+		</div>
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_message_content}{$lang_marks}</dt>
+			<dd>
+				<select name="met_message_fd_content">
+<!--
+EOT;
+foreach($fd_paraalls as $key=>$val){
+$select1='';
+if($val[id]==$met_message_fd_content)$select1="selected='selected'";
+echo <<<EOT
+-->				<option value="$val[id]" $select1 >$val[name]</option>
+<!--
+EOT;
+}
+echo <<<EOT
+-->	
+			
+			</select>			
+			<span class="tips">{$lang_message_content1}</span>
+			</dd>
+		</dl>
+		</div>
+		<div class="v52fmbx_dlbox">
+		<dl>
 			<dt>{$lang_messageincShow}{$lang_marks}</dt>
 			<dd>
 				<label><input name="met_fd_type" type="checkbox" class="checkbox" value="1" $met_fd_type1 />{$lang_messageincTip3}</label>
@@ -63,7 +111,7 @@ echo <<<EOT
 		</div>
 		<div class="v52fmbx_dlbox">
 		<dl>
-			<dt>{$lang_fdincAcceptMail}{$lang_marks}</dt>
+			<dt>{$lang_message_AcceptMail}{$lang_marks}</dt>
 			<dd>
 				<input name="met_fd_to" type="text" class="text" value="$met_fd_to" />
 				<span class="tips">{$lang_fdincTip9}</span>
@@ -76,7 +124,31 @@ echo <<<EOT
 		<dl>
 			<dt>{$lang_fdincAuto}{$lang_marks}</dt>
 			<dd>
-				<label><input name="met_fd_back" type="checkbox" class="checkbox" value="1" $met_fd_back1 />{$lang_fdincTip10}</label>
+				<label><input name="met_fd_back" type="checkbox" class="checkbox" value="1" {$met_fd_back1} />{$lang_fdincTip10}</label>
+			</dd>
+		</dl>
+		</div>
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_fdincEmailName}{$lang_marks}</dt>
+			<dd>
+			<select name="met_message_fd_email">
+<!--
+EOT;
+foreach($fd_paraall as $key=>$val){
+$select1='';
+if($val[id]==$met_message_fd_email)$select1="selected='selected'";
+echo <<<EOT
+-->				
+				<option value="$val[id]" $select1 >$val[name]</option>
+<!--
+EOT;
+}
+echo <<<EOT
+-->	
+			
+			</select>
+			<span class="tips">{$lang_fdincTip11}</span>
 			</dd>
 		</dl>
 		</div>
@@ -98,10 +170,56 @@ echo <<<EOT
 			</dd>
 		</dl>
 		</div>
+		<h3 class="v52fmbx_hr metsliding" sliding="1">{$lang_feedbackautosms}</h3>
+	<div class="metsliding_box metsliding_box_1">
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_fdincAutosms}{$lang_marks}</dt>
+			<dd>
+				<label><input type="checkbox" value=1 name="met_fd_sms_back" $met_fd_sms_back1/>{$lang_fdincTipsms}</label>
+			</dd>
+		</dl>
+		</div>
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_fdinctellsms}{$lang_marks}</dt>
+			<dd>
+			<select name="met_message_fd_sms">
+<!--
+EOT;
+foreach($fd_paraall as $key=>$val){
+$select1='';
+if($val[id]==$met_message_fd_sms)$select1="selected='selected'";
+echo <<<EOT
+-->				
+				<option value="$val[id]" $select1 >$val[name]</option>
+<!--
+EOT;
+}
+echo <<<EOT
+-->	
+			
+			</select>
+			<span class="tips">{$lang_fdinctells}</span>
+			</dd>
+		</dl>
+		</div>
+		<div class="v52fmbx_dlbox">
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_fdincAutoContentsms}{$lang_marks}</dt>
+			<dd>
+				<textarea name="met_fd_sms_content" cols="50" class="textarea gen" rows="3">$met_fd_sms_content</textarea>
+				<span class="tips"></span>
+			</dd>
+		</dl>
+		</div>
 		<div class="v52fmbx_submit">
 			<input type="submit" name="Submit" value="{$lang_Submit}" class="submit" onclick="return Smit($(this),'myform')" />
 		</div>
 	</div>
+</div>
+</div>
 </div>
 </div>
 </div>

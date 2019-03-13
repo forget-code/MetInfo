@@ -79,15 +79,16 @@ echo <<<EOT
 		<dl>
 			<dt>{$lang_columnnewwindow}{$lang_marks}</dt>
 			<dd>
-			<label><input name="new_windows" type="radio" class="radio" {$new_windows[1]} value="target='_blank'" />{$lang_yes}</label>
+			<label><input name="new_windows" type="radio" class="radio" {$new_windows[1]} value="1" />{$lang_yes}</label>
 			<label><input name="new_windows" type="radio" class="radio" {$new_windows[0]} value="0" />{$lang_no}</label>
 			<span class="tips">{$lang_columnexplain4}</span>
 			</dd>
 		</dl>
 		</div>
+		
 <!--
 EOT;
-if($column_list[if_in]==0){
+if($column_list[if_in]==0||$column_list[module]>1000){
 echo <<<EOT
 -->
 		<div class="v52fmbx_dlbox" id="list_order" style="display:{$list_orderok}">
@@ -131,22 +132,9 @@ echo <<<EOT
 <!--
 EOT;
 }	
-if($met_member_use){
 echo <<<EOT
 -->
-		<div class="v52fmbx_dlbox">
-		<dl>
-			<dt>{$lang_webaccess}{$lang_marks}</dt>
-			<dd>
-			<select name="access" id="access" >$level</select>
-			</dd>
-		</dl>
-		</div>
-<!--
-EOT;
-}	
-echo <<<EOT
--->	
+
 <!--
 EOT;
 if($met_wap && $met_wap_ok){
@@ -199,17 +187,40 @@ echo <<<EOT
 			</dd>
 		</dl>
 		</div>
+		
 <!--
 EOT;
 }
 echo <<<EOT
--->	
-		<h3 class="v52fmbx_hr metsliding">
+-->
+<h3 class="v52fmbx_hr metsliding">
 			{$lang_columnSEO}
 		</h3>
-		<div class="v52fmbx_dlbox">
+<!--
+EOT;
+}
+if($column_list[if_in]==1){
+echo <<<EOT
+-->
+		<div class="v52fmbx_dlbox" id="static1" style="display:{$filenameok1}">
 		<dl>
-			<dt>{$lang_columnctitle}{$lang_marks}</dt>
+			<dt>{$lang_columnhref}{$lang_marks}</dt>
+			<dd>
+				<input name="out_url" type="text" class="text" value="{$column_list[out_url]}" />
+				<span class="tips">{$lang_columntip7}</span>
+			</dd>
+		</dl>
+		</div>
+<!--
+EOT;
+}
+
+if($column_list[if_in]!=1){
+echo <<<EOT
+-->			
+		<div class="v52fmbx_dlbox on_dlbox">
+		<dl>
+			<dt style='width:96px;'>{$lang_columnctitle}{$lang_marks}</dt>
 			<dd>
 			<input name="ctitle" type="text" class="text" maxlength="200" value="$column_list[ctitle]" />
 			<span class="tips">{$lang_ctitleinfo}</span>
@@ -225,6 +236,11 @@ echo <<<EOT
 			</dd>
 		</dl>
 		</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->			
 		<div class="v52fmbx_dlbox">
 		<dl>
 			<dt>{$lang_description}{$lang_marks}</dt>
@@ -233,6 +249,11 @@ echo <<<EOT
 			</dd>
 		</dl>
 		</div>
+<!--
+EOT;
+if($column_list[if_in]==0){	
+echo <<<EOT
+-->			
 		<div class="v52fmbx_dlbox" id="static1" style="display:{$filenameok1}">
 		<dl>
 			<dt>{$lang_columnhtmlname}{$lang_marks}</dt>
@@ -244,23 +265,9 @@ echo <<<EOT
 		</div>
 <!--
 EOT;
-}else{
+}			
 echo <<<EOT
--->
-		<div class="v52fmbx_dlbox" id="static1" style="display:{$filenameok1}">
-		<dl>
-			<dt>{$lang_columnhref}{$lang_marks}</dt>
-			<dd>
-				<input name="out_url" type="text" class="text" value="{$column_list[out_url]}" />
-				<span class="tips">{$lang_columntip7}</span>
-			</dd>
-		</dl>
-		</div>
-<!--
-EOT;
-}
-echo <<<EOT
--->
+-->	
 		<h3 class="v52fmbx_hr metsliding">{$lang_columnnamemarkinfo}</h3>
 		<div class="v52fmbx_dlbox">
 		<dl>
@@ -287,10 +294,6 @@ echo <<<EOT
 <!--
 EOT;
 }	
-echo <<<EOT
--->
-<!--
-EOT;
 if($metadmin[categorymarkimage]){
 echo <<<EOT
 --> 
@@ -308,6 +311,7 @@ $(document).ready(function(){
 			</dd>
 		</dl>
 		</div>	
+		
 <!--
 EOT;
 }
@@ -336,7 +340,7 @@ echo <<<EOT
 -->	
 		<div class="v52fmbx_dlbox">
 		<dl>
-			<dt>{$lang_columnmappend}{$lang_marks}</dt>
+			<dt>{$lang_columnmappend}</dt>
 			<dd>
 <script type="text/javascript" src="../ckeditor/ckeditor.js"></script>
 			<textarea class="ckeditor" name="content">$column_list[content]</textarea>
@@ -351,7 +355,37 @@ met_ckeditor('ckeditor','content',1);
 EOT;
 }
 echo <<<EOT
+-->		
+		<h3 class="v52fmbx_hr metsliding">{$lang_unitytxt_33}</h3>
+<!--
+EOT;
+	
+if($met_member_use&&$column_list[if_in]!=1){
+echo <<<EOT
 -->
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_webaccess}{$lang_marks}</dt>
+			<dd>
+			<select name="access" id="access" >$level</select>
+			</dd>
+		</dl>
+		</div>
+<!--
+EOT;
+}	
+echo <<<EOT
+-->	
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_displaytype}{$lang_marks}</dt>
+			<dd>
+			<label><input name="displays" type="radio" class="radio" {$displays1[0]} value="0" />{$lang_yes}</label>
+			<label><input name="displays" type="radio" class="radio" {$displays1[1]} value="1" />{$lang_no}</label>
+			</dd>
+		</dl>
+		</div>
+
 		<div class="v52fmbx_submit">
 			<input type="submit" name="Submit" value="{$lang_Submit}" class="submit" onclick="return Smit($(this),'myform');" />
 		</div>

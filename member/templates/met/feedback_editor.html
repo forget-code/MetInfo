@@ -133,8 +133,8 @@ echo <<<EOT
 -->
 		  <tr>    
          <td class="member_text">{$lang_memberImgCode}：</td>
-         <td colspan="2" class="member_input"><input name="code" onKeyUp="pressCaptcha(this)" type="text" class="inp" id="code" size="6" maxlength="8" style="width:50px" />
-         <img align="absbottom" src="ajax.php?action=code"  onclick=this.src="ajax.php?action=code&"+Math.random() style="cursor: pointer;" title="{$lang_memberTip1}"/>
+         <td colspan="2" class="member_input"><input name="code" onKeyUp="pressCaptcha(this)" type="text" class="inp" id="code" size="6" maxlength="8" style="width:50px" onclick=verification() >
+         <img align="absbottom" id='new_code' src="ajax.php?action=code"  onclick=this.src="ajax.php?action=code&"+Math.random() style="cursor: pointer;" title="{$lang_memberTip1}"/>
 		</td>
 		</tr>
 <!--

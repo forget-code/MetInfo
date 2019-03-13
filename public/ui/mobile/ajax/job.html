@@ -1,0 +1,32 @@
+<!--<?php
+echo <<<EOT
+-->
+<!--
+EOT;
+foreach($job_list as $key=>$val){
+if($val[news])$val[drx]="[{$lang_drxnew}]";
+if($val[top])$val[drx]="[{$lang_drxtop}]";
+echo <<<EOT
+-->
+				<li>
+					<a href="{$val[url]}">
+						<h4>
+							<p class="t"><span class="hot">{$val[drx]}</span>{$val[position]}</p>
+							<p class="time">
+								<span>{$val[addtime]}</span>
+								<span>{$val[place]}</span>
+								<span>{$val[count]}{$lang_jobtext1}</span>
+								<span>{$val[deal]}</span>
+							</p>
+						</h4>
+						<span class="more"></span>
+					</a>
+				</li>
+<!--	
+EOT;
+}
+echo <<<EOT
+-->
+<!--
+EOT;
+?>-->

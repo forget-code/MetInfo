@@ -1,0 +1,47 @@
+/*=====================================================|
+|              公共样式（缩略图片滚动）                |
+|=====================================================*/
+.metZoomTab{
+	padding: 0 30px;
+	position: relative;
+	overflow: hidden;
+}
+.metZoomTab span p{display:block; float:left; font-size:0px; position:relative;}
+.metZoomTab span p i{
+	position: absolute;
+	top:0px;
+	left: 0px;
+	width:56px;
+	height:56px;
+	display: none;
+	border:2px solid #000;
+}
+.metZoomTab span{
+	display: block;
+	width: 1000%;
+}
+.metZoomTab img{
+	width: 60px;
+	height: 60px;
+	float: left;
+	overflow: hidden;
+	margin-right: 10px;
+	cursor:pointer;
+}
+.met_ButPrev,.met_ButNext{
+	position: absolute;
+	top: 0px;
+	z-index: 10;
+	cursor: pointer;
+	text-align: center;
+	width: 30px;
+	height: 60px;
+	background: #fff url(pic.gif) no-repeat;
+}
+.metZoomTab .met_ButPrev{left:0px; background-position:left -42px;}
+.metZoomTab .met_ButNext{right:0px; background-position:right -42px;}
+
+.metZoomImg{display:block; margin-bottom:10px;}
+/*=====================================================|
+|              公共结束（缩略图片滚动）                |
+|=====================================================*/

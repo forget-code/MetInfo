@@ -1,0 +1,41 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+echo <<<EOT
+-->
+<div class="member_list ajaxlist">
+	<ul>
+<!--
+EOT;
+foreach($message_list as $key=>$val){
+echo <<<EOT
+-->   
+		<li>
+			<a href="messagedetail.php?lang={$lang}&id={$val[id]}&mtitle={$lang_memberShowFD}">
+				<div class="title">{$val[info]}</div>
+				<div class="desc"><span>{$val[addtime]}</span><span>{$lang_memberReply}：{$val[readok]}</span></div>
+			</a>
+		</li>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+	</ul>
+<!--
+EOT;
+if($pageall>$page){
+echo <<<EOT
+-->
+			<div id="flip" page="{$page}" pageall="{$pageall}" wtype="message">{$lang_fliptext1}</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</div>
+<!--
+EOT;
+# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+?>

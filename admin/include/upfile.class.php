@@ -32,6 +32,9 @@ class upfile {
    */
   function upfile($format = '',$path = '',$maxsize = 0, $over = 0 ,$errno = 0,$separator =',') {
 	global $lang_upfileFail,$lang_upfileFail1,$lang_upfileFail2,$depth;
+		if(stristr($_SERVER['PHP_SELF'],'include/thumb.php') !== false){
+			$this->savepath = '../upload';
+		}
 		$this->errnotype=$errno;
 		$this->savepath=$depth.$this->savepath;
       if (empty($path)) {
@@ -83,6 +86,17 @@ class upfile {
 	  if($met_img_rename||$file){
 		$this->set_savename($file); //Save the settings file name
 	  }else{
+		$name_verification = explode('.',$filear["name"]);
+		$verification_mun = count($name_verification);
+		if($verification_mun>2){
+			$verification_mun1 = $verification_mun-1;
+			$name_verification1 = $name_verification[0];
+			for($i=0;$i<$verification_mun1;$i++){
+				$name_verification1 .= '_'.$name_verification[$i];
+			}
+			$name_verification1 .= '.'.$name_verification[$verification_mun1];
+			$filear["name"] = $name_verification1;
+		}
 		$this->savename = str_replace(array(":", "*", "?", "|", "/" , "\\" , "\"" , "<" , ">" , "¡ª¡ª" , " " ),'_',$filear["name"]);
 	  }
 	  if(stristr(PHP_OS,"WIN")){
@@ -126,7 +140,7 @@ class upfile {
         strtolower($this->format))) && $filear) {  	
        return $this->halt($this->ext." $lang_upfileTip3");
     }
-	if(strtolower($this->ext)=='php'||strtolower($this->ext)=='aspx'||strtolower($this->ext)=='asp'||strtolower($this->ext)=='jsp'||strtolower($this->ext)=='js'||strtolower($this->ext)=='asa'){
+	if(strtolower($this->ext)=='php'||strtolower($this->ext)=='aspx'||strtolower($this->ext)=='asp'||strtolower($this->ext)=='jsp'||strtolower($this->ext)=='js'||strtolower($this->ext)=='asa'||strtolower($this->ext)=='cer'){
 		return $this->halt($this->ext." $lang_upfileTip3");
 	}
 	$upfileok=0;
@@ -268,7 +282,7 @@ class upfile {
     function createthumb($img, $thumb_width = 0, $thumb_height = 0, $path = '', $bgcolor='')
     {
 	     global $met_img_x,$met_img_y,$met_productimg_x,$lang_upfileFail4,$lang_upfileFail5,$lang_upfileFail6,$met_thumb_kind,$lang_upfileFail7,$lang_upfileFail8,$lang_upfileFail9,$lang_upfileFail10,$lang_upfileFail11;
-		if(stristr(PHP_OS,"WIN")){
+	if(stristr(PHP_OS,"WIN")){
 			$img = @iconv("utf-8","GBK",$img);
 		}
 		 $thumb_width=$thumb_width?$thumb_width:$met_img_x;
@@ -288,7 +302,6 @@ class upfile {
         }
 
         $img_org = $this->img_resource($img, $org_info[2]);
-
         /* The original image and the thumbnail size ratio */
         $scale_org      = $org_info[0] / $org_info[1];
 		$scale_tumnb    = $thumb_width / $thumb_height;
@@ -311,7 +324,6 @@ class upfile {
         {
             $img_thumb  = imagecreate($thumb_width, $thumb_height);
         }
-
         /* Background Color */
         if (empty($bgcolor))$bgcolor = "#FFFFFF";
         $bgcolor = trim($bgcolor,"#");
@@ -394,18 +406,38 @@ class upfile {
         {
             imagecopyresized($img_thumb, $img_org, $dst_x, $dst_y, $scr_x, $scr_y, $lessen_width, $lessen_height, $scr_w, $scr_h);
         }
-		
+
 		$path = $path?$this->savepath.$path:$this->savepath.'thumb/';
+		/*
+		if(stristr($_SERVER['PHP_SELF'],'include/thumb.php') !== false){
+			if(stristr(PHP_OS,"WIN")){
+				$this->savename = @iconv("GBK","utf-8",$this->savename);
+			}
+			$ext1 = explode("/", $img);
+			$count = count($ext1);
+			$count1 = $ext1[$count-1];
+			$ext2 = explode(".", $count1);
+			$ext3 = $ext2[1];
+			$path1 = $ext2[0];
+			/* $last = strrpos($img,'/');
+			$path2 = substr($img,0,$last); *//*
+			$path = '../upload/thumb_src/'.$thumb_width.'_'.$thumb_height.'/';
+			$this->savename = $path1.'.'.$this->getext($img);
+			$thumbname1 = $path.$this->savename;
+			if(file_exists($thumbname1)){
+				return $thumbname1;
+			}
+		}
+		*/
         if (!file_exists($path)) {
-        if (!$this->make_dir($path)) {
-         return $this->halt($lang_upfileFail4);
-         }
+			if (!$this->make_dir($path)) {
+				return $this->halt($lang_upfileFail4);
+			}
         }
 		if(stristr(PHP_OS,"WIN")){
 			$this->savename = @iconv("utf-8","GBK",$this->savename);
 		}
         $thumbname = $path.$this->savename;
-        /* Create */
 		switch ($org_info[mime])
         {
             case 'image/gif':
@@ -440,10 +472,10 @@ class upfile {
 		if(stristr(PHP_OS,"WIN")){
 			$this->savename = @iconv("GBK","utf-8",$this->savename);
 		}
+
 		$thumbname=$path.$this->savename;
         imagedestroy($img_thumb);
         imagedestroy($img_org);
-
         return $thumbname;
     }
 

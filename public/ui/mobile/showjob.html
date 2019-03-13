@@ -1,0 +1,32 @@
+<!--<?php
+$ContentsPage=1;
+require_once template('head'); 
+require_once template('sidebar');
+$met_next=methtml_prenextinfo(2);
+if($job[useful_life_a]==0)$lang_Job2='';
+echo <<<EOT
+-->
+        <div class="active" id="showjob">
+            <h1 class="title">{$job[position]}</h1>
+            <div class="paralist">
+			    <ul class="list-none">
+                    <li><div class="pn">{$lang_AddDate}：</div><div class="pv">{$job[addtime]}</div></li>
+                    <li><div class="pn">{$lang_WorkPlace}：</div><div class="pv">{$job[place]}</div></li>
+                    <li><div class="pn">{$lang_PersonNumber}：</div><div class="pv">{$job[count]}{$lang_jobtext1}</div></li>
+                    <li><div class="pn">{$lang_Deal}：</div><div class="pv">{$job[deal]}</div></li>
+                    <li><div class="pn">{$lang_Validity}：</div><div class="pv">{$job[useful_life]} {$lang_Job2}</div></li>
+                </ul>
+				<div class="clear"></div>
+			</div>
+			<div class="info_cv"><a href="{$job[cv]}" class="button">{$lang_cvtitle}</a></div>
+			<h3 class="Tabtitle">
+			    <div class="l">{$lang_detailtxt}</div>
+			</h3>
+            <div class="editor">{$job[content]}<div class="clear"></div></div>
+            <div class="met_page">{$met_next}</div>
+        </div>
+<!--
+EOT;
+require_once template('gap');
+require_once template('foot'); 
+?>

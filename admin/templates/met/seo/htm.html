@@ -44,6 +44,20 @@ echo <<<EOT
 <!--
 EOT;
 if($met_webhtm){
+if($met_htmlurl){
+echo <<<EOT
+-->
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt></dt>
+			<dd>
+				{$lang_htmlnocreatetips}
+			</dd>
+		</dl>
+		</div>
+<!--
+EOT;
+}else{
 echo <<<EOT
 -->
 <!--
@@ -343,6 +357,7 @@ echo <<<EOT
 		</div>
 <!--
 EOT;
+}
 }else{
 echo <<<EOT
 -->

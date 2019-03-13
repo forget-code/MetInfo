@@ -20,7 +20,7 @@ require_once '../include/head.php';
     if($class2!=""){
         $class_info[name]=$class2_info[name]."--".$class1_info[name];
     }
-    $show[description]=$class_info[description]?$class_info[description]:$met_keywords;
+    $show[description]=$class_info[description]?$class_info[description]:$met_description;
     $show[keywords]=$class_info[keywords]?$class_info[keywords]:$met_keywords;
 	$met_title=$met_title?$navtitle.'-'.$met_title:$navtitle;
 	if($link_list['ctitle']!='')$met_title=$link_list['ctitle'];

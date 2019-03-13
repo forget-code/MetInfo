@@ -1,0 +1,53 @@
+<!--<?php
+$ContentsPage=1;
+if($ajaxlist){
+require_once template('/ajax/seach');
+}else{
+require_once template('head'); 
+require_once template('sidebar');
+echo <<<EOT
+-->
+		<div class="seachbox">
+			<form method="POST" name="myform" action="{$searchurl}">
+                <input type="text" name="searchword" class="text" placeholder="{$lang_saechplaceholder}" value="{$searchword}" />
+                <input type="submit" name="Submit" value="{$lang_initext1}" class="submit" />
+            </form>
+		</div>
+        <div class="active ajaxlist" id="searchlist">
+            <ul>
+<!--
+EOT;
+foreach($search_list as $key=>$val){
+echo <<<EOT
+-->
+				<li>
+					<a href='{$val[url]}'>
+					<span class='search_title'>{$val[title]}</span>
+					<span class='search_content'>{$val[content]}</span>
+					</a>
+					<span class='search_updatetime'>{$val[updatetime]}</span>
+				</li>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+			</ul>
+<!--
+EOT;
+if($pageall>$page){
+echo <<<EOT
+-->
+			<div id="flip" class1="{$class1}" class2="{$class2}" class3="{$class3}" page="{$page}" pageall="{$pageall}" wtype="search" searchword="{$searchword}">{$lang_fliptext1}</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+        </div>
+<!--
+EOT;
+require_once template('gap');
+require_once template('foot'); 
+}
+?>

@@ -1,0 +1,139 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
+echo <<<EOT
+-->
+<script src="{$img_url}js/met_Verification.js"></script>
+<div class="active metinfo_mobile_form" id="memberbox">
+	<form method="POST" name="myform" class="signupForm" action="save.php?action=editor" target="_self">
+	<input name="useid" type="hidden"size="20" maxlength="20" value="$admin_list[admin_id]">
+	<input name="lang" type="hidden" value="$lang">
+	<ul>
+		<li class="input">
+			<span class="info">{$lang_memberbasicUserName}</span>
+			<div class="xbox">
+				<input name='useid' type='text' disabled class='input-text' placeholder="{$lang_memberbasicUserName}" value="{$admin_list[admin_id]}" />
+			</div>
+		</li>
+		<li class="input">
+			<span class="info">{$lang_membereditorTip}</span>
+			<div class="xbox">
+				<input name='pass1' type='password' autocomplete='off' met_minsize="6" class='input-text' placeholder="{$lang_membereditorPs}" />
+			</div>
+		</li>
+		<li class="input">
+			<span class="info">{$lang_membereditorTip}</span>
+			<div class="xbox">
+				<input name='pass2' type='password' autocomplete='off' passfor="pass1" met_minsize="6" class='input-text' placeholder="{$lang_membereditorPs1}" />
+			</div>
+		</li>
+		<li class="input">
+			<span class="info">{$lang_memberbasicReadlName}</span>
+			<div class="xbox">
+				<input name='realname' type='text' autocomplete='off' class='input-text' placeholder="{$lang_memberbasicReadlName}" value="{$admin_list[admin_name]}" />
+			</div>
+		</li>
+		<li class="radio">
+			<div class="xbox">
+			<span class="name">{$lang_memberbasicSex}</span>
+<!--
+EOT;
+if($admin_list[admin_sex]==0){
+echo <<<EOT
+-->	
+		<label><input name="sex" type="radio" value="0" checked />{$lang_memberbasicMan}</label>
+		<label><input name="sex" type="radio" value="1" />{$lang_memberbasicWoman}</label>
+<!--
+EOT;
+}else{
+echo <<<EOT
+-->	
+		<label><input name="sex" type="radio" value="0" />{$lang_memberbasicMan}</label> 
+		<label><input name="sex" type="radio" value="1" checked />{$lang_memberbasicWoman}</label>
+<!--
+EOT;
+}echo <<<EOT
+-->
+			</div>
+		</li>
+		<li class="input">
+			<span class="info">{$lang_memberbasicTel}</span>
+			<div class="xbox">
+				<input name='tel' type='text' class='input-text' placeholder="{$lang_memberbasicTel}" value="{$admin_list[admin_tel]}" />
+			</div>
+		</li>
+		<li class="input">
+			<span class="info">{$lang_memberbasicCell}</span>
+			<div class="xbox">
+				<input name='mobile' type='text' class='input-text' placeholder="{$lang_memberbasicCell}" value="{$admin_list[admin_mobile]}" />
+			</div>
+		</li>
+		<li class="input required">
+			<span class="info">E-mail {$lang_membereditorTip1}</span>
+			<div class="xbox">
+				<input name='email' type='text' class='input-text' met_type="email" placeholder="{$lang_memberbasicCell}" value="{$admin_list[admin_email]}" />
+			</div>
+		</li>
+		<li class="input">
+			<span class="info">QQ</span>
+			<div class="xbox">
+				<input name='qq' type='text' class='input-text' placeholder="QQ" value="{$admin_list[admin_qq]}" />
+			</div>
+		</li>
+		<li class="input">
+			<span class="info">MSN</span>
+			<div class="xbox">
+				<input name='msn' type='text' class='input-text' placeholder="MSN" value="{$admin_list[admin_msn]}" />
+			</div>
+		</li>
+		<li class="input">
+			<span class="info">{$lang_memberbasicTaoBao}</span>
+			<div class="xbox">
+				<input name='taobao' type='text' class='input-text' placeholder="{$lang_memberbasicTaoBao}" value="{$admin_list[admin_taobao]}" />
+			</div>
+		</li>
+		<li class="input">
+			<span class="info">{$lang_memberbasicIntro}</span>
+			<div class="xbox">
+				<textarea name="admin_introduction" class="textarea-text">{$admin_list[admin_introduction]}</textarea>
+			</div>
+		</li>
+		<li class="input">
+			<span class="info">{$lang_memberbasicCompanyName}</span>
+			<div class="xbox">
+				<input name='companyname' type='text' class='input-text' placeholder="{$lang_memberbasicCompanyName}" value="{$admin_list[companyname]}" />
+			</div>
+		</li>
+		<li class="input">
+			<span class="info">{$lang_memberbasicCompanyFax}</span>
+			<div class="xbox">
+				<input name='companyfax' type='text' class='input-text' placeholder="{$lang_memberbasicCompanyFax}" value="{$admin_list[companyfax]}" />
+			</div>
+		</li>	
+		<li class="input">
+			<span class="info">{$lang_memberbasicCompanyCode}</span>
+			<div class="xbox">
+				<input name='companycode' type='text' class='input-text' placeholder="{$lang_memberbasicCompanyCode}" value="{$admin_list[companycode]}" />
+			</div>
+		</li>	
+		<li class="input">
+			<span class="info">{$lang_memberbasicCompanyAddress}</span>
+			<div class="xbox">
+				<input name='companyaddress' type='text' class='input-text' placeholder="{$lang_memberbasicCompanyAddress}" value="{$admin_list[companyaddress]}" />
+			</div>
+		</li>	
+		<li class="input">
+			<span class="info">{$lang_memberbasicCompanyWebsite}</span>
+			<div class="xbox">
+				<input name='companywebsite' type='text' class='input-text' placeholder="{$lang_memberbasicCompanyWebsite}" value="{$admin_list[companywebsite]}" />
+			</div>
+		</li>			
+	</ul>
+	<div class="input-submit"><input type='submit' name='Submit' value='{$lang_Submit}' /></div>
+	</form>
+</div>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>

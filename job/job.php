@@ -13,7 +13,7 @@ require_once '../include/head.php';
 	if(!class1_info){
 	okinfo('../',$lang_error);
 	}
-    $serch_sql=" where lang='$lang' {$mobilesql} and ((TO_DAYS(NOW())-TO_DAYS(`addtime`)< useful_life) OR useful_life=0) ";
+    $serch_sql=" where lang='$lang' {$mobilesql} and displaytype='1' and ((TO_DAYS(NOW())-TO_DAYS(`addtime`)< useful_life) OR useful_life=0) ";
 	if($met_member_use==2)$serch_sql .= " and access<=$metinfo_member_type";
 	$order_sql="order by no_order desc,addtime desc";
     $total_count = $db->counter($met_job, "$serch_sql", "*");
@@ -25,7 +25,7 @@ require_once '../include/head.php';
     $rowset = new Pager($total_count,$list_num,$page);
     $from_record = $rowset->_offset();
 	$page = $page?$page:1;
-	 $query = "SELECT * FROM $met_job $serch_sql and top_ok='1' $order_sql LIMIT $from_record, $list_num";
+	 $query = "SELECT * FROM $met_job $serch_sql and top_ok='1' and displaytype='1' $order_sql LIMIT $from_record, $list_num";
 	 $result = $db->query($query);
 	 while($list= $db->fetch_array($result)){
 	 $job_listnow[]=$list;
@@ -38,7 +38,7 @@ require_once '../include/head.php';
 	 $from_record=$from_record?($from_record-$totaltop_count):$from_record;
 	 }
 	 $list_num=intval($list_num)-count($job_listnow);
-	 $query = "SELECT * FROM $met_job $serch_sql and top_ok='0' $order_sql LIMIT $from_record, $list_num";
+	 $query = "SELECT * FROM $met_job $serch_sql and top_ok='0' and displaytype='1' $order_sql LIMIT $from_record, $list_num";
 	 $result = $db->query($query);
 	 while($list= $db->fetch_array($result)){
 	 $job_listnow[]=$list;
@@ -89,7 +89,7 @@ if($class2!=""){
 $class_info[name]=$class2_info[name]."-".$class1_info[name];
 }
 
-     $show[description]=$class_info[description]?$class_info[description]:$met_keywords;
+     $show[description]=$class_info[description]?$class_info[description]:$met_description;
      $show[keywords]=$class_info[keywords]?$class_info[keywords]:$met_keywords;
 	 $met_title=$met_title?$class_info['name'].'-'.$met_title:$class_info['name'];
 	 if($class_info['ctitle']!='')$met_title=$class_info['ctitle'];

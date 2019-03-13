@@ -64,7 +64,7 @@ function keytype($search_url){
 	$config = array(
 		'谷歌'=>array( "domain" => "www.google.", "kw" => "q", "charset" => "utf-8",'type' => 0 ), 
 		'百度'=>array( "domain" => "www.baidu.", "kw" => "wd", "charset" => "gbk",'type' => 1 ), 
-		'搜搜'=>array( "domain" => "soso.", "kw" => "w", "charset" => "gbk",'type' => 2 ), 
+		'搜搜'=>array( "domain" => "soso.", "kw" => "query", "charset" => "gbk",'type' => 2 ), 
 		'雅虎'=>array( "domain" => "yahoo.", "kw" => "q", "charset" => "utf-8",'type' => 3 ), 
 		'必应'=>array( "domain" => "bing.", "kw" => "q", "charset" => "utf-8",'type' => 4  ), 
 		'搜狗'=>array( "domain" => "sogou.", "kw" => "query", "charset" => "gbk",'type' => 5 ), 

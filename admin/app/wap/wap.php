@@ -2,23 +2,61 @@
 $depth='../';
 require_once $depth.'../login/login_check.php';
 //$action='dimensional';
+echo str_replace(array('http',':','/'),$met_wap_url);
 if($action == 'dimensional'){
 	require_once ROOTPATH.'include/export.func.php';
 	$met_file='/dimensional.php';
 	//$met_dimensional_logo=$met_weburl.str_replace('../','',$met_dimensional_logo);
 	$met_dimensional_logo_file=file_get_contents(ROOTPATH.str_replace('../','',$met_dimensional_logo));
 	$met_dimensional_logo_file=urlencode($met_dimensional_logo_file);
-	if(str_replace(array('http',':','/'),$met_wap_url))$met_weburl=$met_wap_url;
-	$post=array('text'=>$met_weburl,'w'=>$wap_dimensional_size,'logo'=>$met_dimensional_logo_file);
+	$met_weburl_mobile = $met_weburl;
+	if($met_wap_tpb){
+		if($met_langok[$lang][link]){
+			$met_weburl_mobile = $met_langok[$lang][link];
+		}
+		if($met_wap_url)$met_weburl_mobile=$met_wap_url;
+	}
+	$post=array('text'=>$met_weburl_mobile,'w'=>$wap_dimensional_size,'logo'=>$met_dimensional_logo_file);
 	$re=curl_post($post,30);
+	if(!file_exists('../../../upload/files/'))mkdir('../../../upload/files/');
 	file_put_contents('../../../upload/files/dimensional.png',$re);
 	require_once $depth.'../include/config.php';
-	echo '../../../upload/files/dimensional.png';
+	echo '../../../upload/files/dimensional.png?'.met_rand(4);
 	die();
 }
 if($action == 'modify'){
+	if($met_wapshowtype==0){
+		$met_wap_ok=0;
+	}else{
+		$query = "update {$met_column} SET wap_ok = '0' where lang='$lang'";
+		$db->query($query);
+		if($f_columnlist!=','){
+			$allidlist=explode(',',$f_columnlist);
+			foreach($allidlist as $key=>$val){
+				if($val){
+					$query = "update {$met_column} SET wap_ok = '1' where id = '$val' and lang='$lang'";
+					$db->query($query);
+				}
+			}
+		}
+		if($f_wap_nav_ok&&$f_wap_nav_ok!=','){
+			$query = "update {$met_column} SET wap_nav_ok = '0' where lang='$lang'";
+			$db->query($query);
+			$allidlist=explode(',',$f_wap_nav_ok);
+			foreach($allidlist as $key=>$val){
+				if($val){
+					$query = "update {$met_column} SET wap_nav_ok = '1' where id = '$val' and lang='$lang'";
+					$db->query($query);
+				}
+			}
+		}
+	}
 	if(!$met_wap_tpa)$met_wap_tpa=0;
-	if(!$met_wap_tpb)$met_wap_tpb=0;
+	if($met_wap_url){
+		$met_wap_tpb=1;
+	}else{
+		$met_wap_tpb=0;
+	}
 	$met_wap_url = ereg_replace(" ","",$met_wap_url);
 	if(substr($met_wap_url,-1,1)!="/")$met_wap_url.="/";
 	if(!strstr($met_wap_url,"http://"))$met_wap_url="http://".$met_wap_url;
@@ -31,6 +69,7 @@ if($action == 'modify'){
 	$met_wap_ok1[$met_wap_ok]="checked";
 	$met_wap_tpa1[$met_wap_tpa]="checked";
 	$met_wap_tpb1[$met_wap_tpb]="checked";
+	$met_wapshowtype1[$met_wapshowtype]="checked";
 	$webmpa = $_SERVER["PHP_SELF"];
 	$webmpa = dirname($webmpa);
 	$webmpa = explode('/',$webmpa);

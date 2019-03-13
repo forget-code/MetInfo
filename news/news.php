@@ -6,6 +6,7 @@ $mdname = 'news';
 $showname = 'shownews';
 $dbname = $met_news;
 $dbname_list = $met_news_list;
+$class1re = '';
 require_once '../include/global/listmod.php';
 $news_listnow = $modlistnow;
 $news_list_new  = $md_list_new;

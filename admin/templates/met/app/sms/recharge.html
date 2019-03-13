@@ -70,8 +70,16 @@ $(document).ready(function(){
 			langarray[6]=new Array();
 			langarray[6][0]=/lang_smstips61/g;
 			langarray[6][1]='$lang_smstips61';
+			
+			langarray[7]=new Array();
+			langarray[7][0]=/lang_smstips96/g;
+			langarray[7][1]='$lang_smstips96';
+			
+			langarray[8]=new Array();
+			langarray[8][0]=/lang_smstips97/g;
+			langarray[8][1]='$lang_smstips97';
 			var i;
-			for(i=0;i<=6;i++){
+			for(i=0;i<=8;i++){
 				data.msg=data.msg.replace(langarray[i][0],langarray[i][1]);
 			}
 			$(data.msg).insertAfter("#list-top");

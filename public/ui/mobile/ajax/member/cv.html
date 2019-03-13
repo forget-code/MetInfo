@@ -1,0 +1,22 @@
+<!--<?php
+echo <<<EOT
+-->
+<!--
+EOT;
+foreach($cv_list as $key=>$val){
+echo <<<EOT
+-->   
+		<li>
+			<a href="cv_detail.php?lang={$lang}&id={$val[id]}&mtitle={$lang_memberShowCV}">
+				<div class="title">{$val[position]}</div>
+				<div class="desc"><span>{$val[addtime]}</span></div>
+			</a>
+		</li>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<!--
+EOT;
+?>-->

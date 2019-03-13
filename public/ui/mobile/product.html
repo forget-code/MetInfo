@@ -1,0 +1,92 @@
+<!--<?php
+if($ajaxlist){
+require_once template('/ajax/product');
+}else{
+require_once template('head'); 
+require_once template('sidebar');
+echo <<<EOT
+-->
+        <div class="active ajaxlist" id="productlist">
+<!--
+EOT;
+$lang_prolitype=$lang_prolitype?$lang_prolitype:2;
+if($lang_prolitype==1){
+echo <<<EOT
+-->
+			<ul class="poroduct_list">
+<!--
+EOT;
+foreach($product_list as $key=>$val){
+echo <<<EOT
+-->
+	<li>
+	<a href="{$val[url]}">
+		<img src="{$val[imgurls]}" alt="{$met_alt}" title="{$met_alt}" />
+		<p>{$val[title]}</p>
+	</a>
+	</li>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+			</ul>	
+			<div class="clear"></div>
+<!--
+EOT;
+}elseif($lang_prolitype==2){
+echo <<<EOT
+-->
+			<ul class="poroduct_list_2">
+<!--
+EOT;
+foreach($product_list as $key=>$val){
+$val['desc']=utf8substr($val['description'],0,$lang_descsubstr);
+if($val[news])$val[drx]="[{$lang_drxnew}]";
+if($val[hot])$val[drx]="[{$lang_drxhot}]";
+if($val[top])$val[drx]="[{$lang_drxtop}]";
+echo <<<EOT
+-->
+	<li>
+		<a href="{$val[url]}">
+			<dl class="ind">
+				<dt><img src="{$val[imgurls]}" alt="{$met_alt}" title="{$met_alt}" /></dt>
+				<dd>
+					<h4><span class="hot">{$val[drx]}</span>{$val[title]}</h4>
+					<p class="desc" title="{$val[description]}">{$val[desc]}</p>
+				</dd>
+				<dt class="more"></dt>
+			</dl>
+		</a>
+	</li>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+			</ul>	
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+
+<!--
+EOT;
+if($pageall>$page){
+echo <<<EOT
+-->
+<!-加载更多信息->
+			<div id="flip" class1="{$class1}" class2="{$class2}" class3="{$class3}" page="{$page}" pageall="{$pageall}">{$lang_fliptext1}</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+		</div>
+<!--
+EOT;
+require_once template('gap');
+require_once template('foot'); 
+}
+?>

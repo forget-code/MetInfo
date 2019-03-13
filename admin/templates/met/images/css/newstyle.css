@@ -25,6 +25,7 @@
 .v52fmbx_detabes dl input.submit{ height:35px; line-height:27px; padding:0px 20px;}
 
 .v52fmbx_tbmax{ margin:0px 5px; background:#fff; }
+.v52fmbx_tbmaxother{margin:0 0px; }
 .v52fmbx_tbmaxmt{ margin-top:0px;}
 .v52fmbx_tbbox{ margin:5px; padding:5px 0px;}
 .v52fmbx_inline dl dd label{ display:inline;}
@@ -67,12 +68,12 @@ div.page_list{ text-align:center;}
 .returnover{ font-size:16px; text-align:center; padding:10px 40px; background:#1e71b1; color:#fff; border-radius:3px; box-shadow:0 1px 2px #999; }
 
 
-.skedtype{ overflow:auto; padding-bottom:10px; zoom:1; }
+.skedtype{ overflow:auto; padding-bottom:10px; zoom:1; z-index:999999; }
 .skedtype div{ float:left; margin-top:5px; }
-.skedtype span{ display:inline; float:left; padding:0px 15px; text-align:center; height:30px; line-height:30px; color:#fff; background:#999; cursor:pointer;}
+.skedtype span{ display:inline; float:left; padding:0px 15px; text-align:center; height:28px; line-height:28px; color:#fff; background:#999; cursor:pointer;}
 .skedtype div:first-child span{ border-top-left-radius:3px; border-bottom-left-radius:3px; }
 .skedtype div:last-child span{ border-top-right-radius:3px; border-bottom-right-radius:3px; }
-.skedtype span.on{ background:#666;}
+.skedtype span.on,.skedtype span.ond{ background:#666;}
 .flagselect{ 
 	height:28px;
 	line-height:28px;

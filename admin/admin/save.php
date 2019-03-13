@@ -1,7 +1,7 @@
 <?php
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
-define('ADMIN_POWER','metinfo');
+//define('ADMIN_POWER','metinfo');
 require_once '../login/login_check.php';
 $admin_ok = 1;
 $admin_issueok=0;
@@ -38,13 +38,14 @@ if($admin_pop=="yes"){
 		$admin_pop="admin_pops".$val5[field];
 		if($$admin_pop!="")$admin_type.=$$admin_pop."-";
 	}
-	$query="select * from $met_app where download=1";
+	$query="select * from $met_applist";
 	$app=$db->get_all($query);
 	foreach($app as $key=>$val6){
 		$admin_pop="admin_popa".$val6[no];
 		if($$admin_pop!="")$admin_type.=$$admin_pop."-";
 	}
 	if($admin_pop9999)$admin_type.=$admin_pop9999.'-';
+	if($admin_pop1801)$admin_type.=$admin_pop1801.'-';
 }
 if($action=="add"){
 	if(($admincp_ok['admin_group']=='10000'||($admincp_ok['admin_group']=='3'&&$admincp_ok['admin_group']>$admin_group))&&$admin_group!='10000'){

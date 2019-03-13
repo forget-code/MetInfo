@@ -3,6 +3,7 @@
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 $depth='../';
 require_once $depth.'../login/login_check.php';
+require_once ROOTPATH.'public/php/searchhtml.inc.php';
 $css_url=$depth."../templates/".$met_skin."/css";
 $img_url=$depth."../templates/".$met_skin."/images";
 $backurl='../column/parameter/list.php?anyid='.$anyid.'&bigid='.$bigid.'&lang='.$lang.'&class1='.$class1;
@@ -85,7 +86,7 @@ if($action=="add"){
 	if($listinfo){
 		$listmarknow='metinfo';
 		$classtype=($listinfo[info]=='metinfoall')?$listinfoid:($met_class[$listinfoid][releclass]?'class1':'class'.$met_class[$listinfoid][classtype]);
-		$query = "SELECT title FROM $met_product where $classtype=$listinfoid and lang='$lang' order BY updatetime desc";
+		$query = "SELECT title FROM $met_product where $classtype=$listinfoid and lang='$lang'  and recycle='0' order BY updatetime desc";
 		$result = $db->query($query);
 		$i=0;
 		while($list = $db->fetch_array($result)) {

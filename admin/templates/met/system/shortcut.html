@@ -36,7 +36,7 @@ EOT;
 foreach($shortcut_list as $key=>$val){
 $val[id]=$key;
 $val[name]=urldecode($val[name]);
-if($met_agents_type>=3&&$val[lang]=='lang_tmptips'){
+if($met_agents_type>=2&&$val[lang]=='lang_tmptips'){
 	continue;
 }
 echo <<<EOT

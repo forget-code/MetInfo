@@ -1,0 +1,55 @@
+<!--<?php
+if($ajaxlist){
+require_once template('/ajax/job');
+}else{
+require_once template('head'); 
+require_once template('sidebar'); 
+echo <<<EOT
+-->
+        <div class="active ajaxlist" id="joblist">
+			<ul>
+<!--
+EOT;
+foreach($job_list as $key=>$val){
+if($val[news])$val[drx]="[{$lang_drxnew}]";
+if($val[top])$val[drx]="[{$lang_drxtop}]";
+echo <<<EOT
+-->
+				<li>
+					<a href="{$val[url]}">
+						<h4>
+							<p class="t"><span class="hot">{$val[drx]}</span>{$val[position]}</p>
+							<p class="time">
+								<span>{$val[addtime]}</span>
+								<span>{$val[place]}</span>
+								<span>{$val[count]}{$lang_jobtext1}</span>
+								<span>{$val[deal]}</span>
+							</p>
+						</h4>
+						<span class="more"></span>
+					</a>
+				</li>
+<!--	
+EOT;
+}
+echo <<<EOT
+-->
+			</ul>
+<!--
+EOT;
+if($pageall>$page){
+echo <<<EOT
+-->
+			<div id="flip" class1="{$class1}" class2="{$class2}" class3="{$class3}" page="{$page}" pageall="{$pageall}">{$lang_fliptext1}</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+		</div>
+<!--
+EOT;
+require_once template('gap');
+require_once template('foot'); 
+}
+?>

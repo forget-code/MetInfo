@@ -1,0 +1,58 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
+$membertabel = metlabel_member('',1);
+echo <<<EOT
+-->
+<script src="{$img_url}js/met_Verification.js"></script>
+<div class="active metinfo_mobile_form" id="memberbox">
+	<form method="POST" class="signupForm" name="theform" action="save.php?action=add" >
+	<input type="hidden" name="lang" value="$lang"/>
+	<ul>
+		<li class="radio">
+			<span class="name">{$lang_memberReg}</span>
+		</li>
+		<li class="input required">
+			<div class="xbox">
+				<input name='yhid' type='text' autocomplete='off' class='input-text' placeholder="{$lang_memberName}" met_minsize="3" met_maxsize="15" />
+			</div>
+		</li>
+		<li class="input required">
+			<div class="xbox">
+				<input name='mm' type='password' class='input-text' met_minsize="6" placeholder="{$lang_membereditorPs}" autocomplete="off" />
+			</div>
+		</li>
+		<li class="input required">
+			<div class="xbox">
+				<input name='mm1' type='password' passfor="mm" class='input-text' met_minsize="6" placeholder="{$lang_membereditorPs1}" autocomplete="off" />
+			</div>
+		</li>
+		<li class="input required">
+			<div class="xbox">
+				<input name='email' type='text' class='input-text' met_type="email" placeholder="E-mail" />
+			</div>
+		</li>
+<!--
+EOT;
+foreach($membertabel as $key=>$val){
+$wr_ok = $val[wr_ok] ? 'required' : '';
+echo <<<EOT
+-->
+		<li class="{$val[type_class]} {$wr_ok}">
+			<span class='info'>{$val[description]}</span>
+			<div class="xbox">{$val[type_html]}</div>
+		</li>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+	</ul>
+	<div class="input-submit"><input type='submit' name='Submit' value='{$lang_memberRegister}' /></div>
+	</form>
+</div>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>

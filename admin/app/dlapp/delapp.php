@@ -1,6 +1,7 @@
 <?php
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+
 $depth='../';
 require_once $depth.'../login/login_check.php';
 if($action='del'){

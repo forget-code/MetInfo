@@ -1,0 +1,12 @@
+#footer{ width:100%; position:fixed; bottom:0px; left:0px; height:45px; overflow:hidden; z-index:999; text-align:center; }
+#footer .footerbox{ max-width:640px; height:45px; margin:0px auto; position:relative;}
+#footer .footerlist{max-width:640px;  height:45px; overflow:hidden;position:absolute; left:0px;  border-top:0px;}
+#footer ul{ display:-webkit-box; }
+#footer ul li{ display:-webkit-box; -webkit-box-flex:1; text-align:center; border-right:1px solid rgba(255,255,255,0.2); border-left:0px; position:relative;}
+#footer ul li i.iconfont{padding:0px;}
+#footer ul li a{ display:block; width:100%; text-align:center; color:#fff; height: 45px; }
+#footer .icon{ display:block; margin:0px auto 0px; position:relative; top:3px; width:35px; height:25px; line-height:25px; overflow:hidden; background:url(../footer.png) no-repeat; background-size:150px;background-position:-3px 0px;font-size:20px;}
+#footer .map{ background-position:-83px 0px;}
+#footer .message{ background-position:-45px 0px;}
+#footer .home{ background-position:-118px 0px;}
+#footer .txt{ height:16px; line-height:16px; font-size:12px;}

@@ -5,7 +5,8 @@
 $methtml_head="<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n";
 $methtml_head.="<html xmlns=\"http://www.w3.org/1999/xhtml\">\n";
 $methtml_head.="<head>\n";
-$methtml_head.="<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n";
+$methtml_head.="<meta name='renderer' content='webkit'>\n";
+$methtml_head.="<meta charset='utf-8' />\n";
 $methtml_head.="<title>".$met_title."</title>\n";
 $methtml_head.="<meta name=\"description\" content=\"".$show['description']."\" />\n";
 $methtml_head.="<meta name=\"keywords\" content=\"".$show['keywords']."\" />\n";
@@ -45,7 +46,19 @@ if($lang_hovercolor<>'')$methtml_head.="a:hover{color:".$lang_hovercolor.";}\n";
 $methtml_head.="</style>\n";
 }
 if($appscriptcss)$methtml_head.="{$appscriptcss}\n";
+//接口代码
+if($_M['html_plugin']['head_script'])$methtml_head.="{$_M['html_plugin']['head_script']}";
+//结束
 $methtml_head.="<script src=\"".$navurl."public/js/public.js\" type=\"text/javascript\" language=\"javascript\"></script>\n";
+$query = "SELECT * FROM met_config where lang='$lang' and name='met_headstat'";
+	$result = $db->query($query);
+	while($list = $db->fetch_array($result)) {
+		$list_array2[]=$list;	
+	}
+	foreach($list_array2 as $key=>$val){
+			$methtml_head.=$val['value'];
+		
+	}
 $methtml_head.="</head>";
 
 //time
@@ -74,17 +87,17 @@ $methtml_now.="d[today.getDay()+1],\n";
 $methtml_now.="''); \n";
 $methtml_now.="</script>\n";
 
-if($index_hadd_ok){
-//set home page
-$methtml_sethome="<a href='#' onclick='SetHome(this,window.location,\"$lang_MessageInfo5\");' style='cursor:pointer;' title='".$lang_sethomepage."'  >".$lang_sethomepage."</a>";
-//bookmark
-$methtml_addfavorite="<a href='#' onclick='addFavorite(\"$lang_MessageInfo5\");' style='cursor:pointer;' title='".$lang_bookmark."'  >".$lang_bookmark."</a>";
-$methtml_hadd=$methtml_sethome.'<span>|</span>'.$methtml_addfavorite;
+if($index_hadd_ok&&$metinfover != 'v1'){
+	//set home page
+	$methtml_sethome="<a href='#' onclick='SetHome(this,window.location,\"$lang_MessageInfo5\");' style='cursor:pointer;' title='".$lang_sethomepage."'  >".$lang_sethomepage."</a>";
+	//bookmark
+	$methtml_addfavorite="<a href='#' onclick='addFavorite(\"$lang_MessageInfo5\");' style='cursor:pointer;' title='".$lang_bookmark."'  >".$lang_bookmark."</a>";
+	$methtml_hadd=$methtml_sethome.'<span>|</span>'.$methtml_addfavorite;
 }
 
-//language switch
+//language switchs
 function methtml_lang($label,$type=1){
-global $lang,$lang_chchinese,$met_ch_mark,$met_ch_lang,$met_langok,$met_url,$index_url,$met_index_url,$met_lang_mark,$met_waplink,$lang_wap,$met_wap_tpb,$met_wap_url,$met_wap,$met_index_type,$navurl,$app_file,$met_adminfile;
+global $lang,$lang_chchinese,$met_ch_mark,$met_ch_lang,$met_langok,$met_url,$index_url,$met_index_url,$met_lang_mark,$met_waplink,$lang_wap,$met_wap_tpb,$met_wap_url,$met_wap,$met_index_type,$navurl,$app_file,$met_adminfile,$_M;
 $metinfo='';
 if($met_lang_mark){
 	switch($type){
@@ -139,6 +152,16 @@ if($met_lang_mark){
 	foreach($file_site as $keyfile=>$valflie){
 		if(file_exists(ROOTPATH."$met_adminfile".$valflie)&&!is_dir(ROOTPATH."$met_adminfile".$valflie)){require ROOTPATH."$met_adminfile".$valflie;}
 	}
+	//接口代码
+	if(!is_array($_M['html_plugin']['top_script'])){
+		$top_script[0] = $_M['html_plugin']['top_script'];
+	}else{
+		$top_script = $_M['html_plugin']['top_script'];
+	}
+	foreach($top_script as $key => $val){
+		if($val)$metinfo.=$label.$val;
+	}
+	//结束
 	return $metinfo;
 }
 
@@ -400,30 +423,173 @@ global $navlist_y1,$class1,$class2,$class3,$classnow,$nav_list2,$nav_list3,$clas
 }
 //Flashimg
 function methtml_flashimg($type,$width,$height,$imgurl,$imglink,$imgtitle){
-global $met_flasharray,$classnow,$met_url,$met_flash_img,$met_flash_imglink,$met_flash_imgtitle;
+global $met_flasharray,$classnow,$met_url,$met_flash_img,$met_flash_imglink,$met_flash_imgtitle,$met_flashimg,$metinfover;
 if($width=='')$width=$met_flasharray[$classnow][x];
 if($height=='')$height=$met_flasharray[$classnow][y];
 if($imgurl=='')$imgurl=$met_flash_img;
 if($imglink=='')$imglink=$met_flash_imglink;
 if($imgtitle=='')$imgtitle=$met_flash_imgtitle;
 $imglink=str_replace('&','%26',$imglink);
+if($metinfover=='v1'){
 switch($type){
 case 1:
-   $methtml_flash.="<script type=\"text/javascript\">\n";
-   $methtml_flash.="var pic_width=".$width.";\n";
-   $methtml_flash.="var pic_height=".$height.";\n";
-   $methtml_flash.="var text_height=0;\n";
-   $methtml_flash.="var swfpath = '".$met_url."'+'flash/flash01.swf';\n";
-   $methtml_flash.="var pics='".$imgurl."';\n";
-   $methtml_flash.="var links='".$imglink."';\n";
-   $methtml_flash.="var texts='';\n";
-   $methtml_flash.="document.write('<object classid=\"clsid:d27cdb6e-ae6d-11cf-96b8-444553540000\"";
-   $methtml_flash.="codebase=\"http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0\" width=\"'+ pic_width +'\" height=\"'+ pic_height +'\">');\n";
-   $methtml_flash.="document.write('<param name=\"allowScriptAccess\" value=\"sameDomain\"><param name=\"movie\" value=\"'+swfpath+'\"><param name=\"quality\" value=\"high\"><param name=\"bgcolor\" value=\"#ffffff\">');\n";
-   $methtml_flash.="document.write('<param name=\"menu\" value=\"false\"><param name=wmode value=\"opaque\">');\n";
-   $methtml_flash.="document.write('<param name=\"FlashVars\" value=\"pics='+pics+'&links='+links+'&texts='+texts+'&borderwidth='+pic_width+'&borderheight='+pic_height+'&textheight='+text_height+'\">');\n";
-   $methtml_flash.="document.write('<embed src=\"'+swfpath+'\" wmode=\"opaque\" FlashVars=\"pics='+pics+'&links='+links+'&texts='+texts+'&borderwidth='+pic_width+'&borderheight='+pic_height+'&textheight='+text_height+'\" menu=\"false\" bgcolor=\"#ffffff\" quality=\"high\" width=\"'+ pic_width +'\" height=\"'+ pic_height +'\" allowScriptAccess=\"sameDomain\" type=\"application/x-shockwave-flash\" pluginspage=\"http://www.macromedia.com/go/getflashplayer\" />');document.write('</object>');\n";
-   $methtml_flash.="</script>\n";
+	$methtml_flash.="
+	<div class='slider-wrapper metinfo-banner1' style='height:{$met_flasharray[$classnow][y]}px; width:{$met_flasharray[$classnow][x]}px;'>
+	    <div id='slider' class='nivoSlider'>";
+	foreach($met_flashimg as $key=>$val){
+		$val[img_link]=str_replace('%26','&',$val[img_link]);
+		if($val[img_link])$methtml_flash.="
+		<a href='".$val[img_link]."' target='_blank' title='{$val[img_title]}'>";
+		$methtml_flash.="<img src='".$val[img_path]."' alt='".$val[img_title]."' width='{$met_flasharray[$classnow][x]}' height='{$met_flasharray[$classnow][y]}' />"; 
+		if($val[img_link])$methtml_flash.="</a>";
+
+	}
+	$methtml_flash.="
+	    </div>
+	</div>
+	";
+break;
+
+case 2:
+   $methtml_flash.="		<div class='banner2' style='height:{$height}px; width:{$width}px; margin:0 auto;' data-banner2='".$width."*".$height."*".$imgurl."*".$imglink."'></div>
+	";
+break;
+
+case 3:
+	$methtml_flash.="	<div class='slider-wrapper metinfo-banner3' style='height:{$met_flasharray[$classnow][y]}px; width:{$met_flasharray[$classnow][x]}px;'>
+	<div id=\"slider\" class=\"nivoSlider\">\n";
+	foreach($met_flashimg as $key=>$val){
+		$val[img_link]=str_replace('%26','&',$val[img_link]);
+		if($val[img_link])$methtml_flash.="	    <a href='".$val[img_link]."' target='_blank' title='{$val[img_title]}'>";
+		$methtml_flash.="<img src=\"{$val[img_path]}\" alt=\"{$val[img_title]}\" width=\"{$met_flasharray[$classnow][x]}\" height=\"{$met_flasharray[$classnow][y]}\" "; 
+		if($val[img_title])$methtml_flash.=" title=\"#img_title_{$val[id]}\"";
+		$methtml_flash.="/>";
+		if($val[img_link])$methtml_flash.="</a>";
+		$methtml_flash.="\n";
+	}
+	$methtml_flash.="	</div>
+	";
+	foreach($met_flashimg as $key=>$val){
+		if($val[img_title])$methtml_flash.="<div id=\"img_title_{$val[id]}\" class=\"nivo-html-caption\">{$val[img_title]}</div>";
+	}
+	$methtml_flash.="</div>
+	";
+
+break;
+
+case 4:
+	$methtml_flash.="	<div id='metinfo_banner4' style='height:{$met_flasharray[$classnow][y]}px;'>
+	";
+	$methtml_flash.="    <ul>
+	";
+	foreach($met_flashimg as $key=>$val){
+		$methtml_flash.="    	<li>";
+		$val[img_link]=str_replace('%26','&',$val[img_link]);
+		if($val[img_link])$methtml_flash.="<a href='".$val[img_link]."' style='background-image:url({$val[img_path]}); height:".$met_flasharray[$classnow][y]."px;' target='_blank' title='{$val[img_title]}'>";
+		if($val[img_link])$methtml_flash.="</a>";
+		$methtml_flash.="</li>
+	";
+	}
+	$methtml_flash.="    </ul>
+	";
+	$methtml_flash.="</div>
+	";
+	
+break;
+
+case 5:
+	$methtml_flash.="
+		<div class='slider-wrapper metinfo-banner5' style='height:{$met_flasharray[$classnow][y]}px;'>
+			<div id='slider' class='nivoSlider'>
+	";
+	foreach($met_flashimg as $key=>$val){
+		$val[img_link]=str_replace('%26','&',$val[img_link]);
+		if($val[img_link])$methtml_flash.="
+				<a href='".$val[img_link]."' style='background-image:url(".$val[img_path].");' class='b5' target='_blank' title='{$val[img_title]}'>";
+		if($val[img_link])$methtml_flash.="
+				</a>
+		";
+
+	}
+	$methtml_flash.="
+			</div>
+		</div>
+	";
+break;
+
+case 6:
+	$img_x=$met_flasharray[$classnow][x];
+	$methtml_flash.="
+		<div id='viewport-shadow' class='trans metinfo-banner7' style='height:{$met_flasharray[$classnow][y]}px;'>";
+	$methtml_flash.="
+		    <a href='#' id='prev' class='trans'></a>
+		    <a href='#' id='next' class='trans'></a>";
+	$methtml_flash.="
+		    <div id='viewport'>
+		      <div id='box'>";
+	foreach($met_flashimg as $key=>$val){
+		$methtml_flash.="
+			<figure class='slide'>";
+		$val[img_link]=str_replace('%26','&',$val[img_link]);
+		if($val[img_link])$methtml_flash.="
+			    <a href='".$val[img_link]."' target='_blank' title='{$val[img_title]}'>";
+		$methtml_flash.="
+			        <img src='".$val[img_path]."' alt='".$val[img_title]."' width='{$img_x}' height='{$met_flasharray[$classnow][y]}' />"; 
+		if($val[img_link])$methtml_flash.="
+			    </a>";
+		$methtml_flash.="
+			</figure>";
+	}
+	$methtml_flash.="
+		      </div>
+		</div>
+	";
+	$methtml_flash.="<div class='slider-controls'>
+	";
+	$methtml_flash.="<ul id='controls'>";
+	$i=0;
+	foreach($met_flashimg as $key=>$val){
+		$d1=$i==0?'current':'';
+		$methtml_flash.="
+		<li>
+			<a class='goto-slide {$d1}' href='#' data-slideindex='{$i}'></a>
+		</li>";
+		$i++;
+	}
+	$methtml_flash.="
+	</ul>
+	";
+	$methtml_flash.="</div>
+	";
+	$methtml_flash.="</div>
+	";
+break;
+}
+}else{
+
+switch($type){
+case 1:
+	$methtml_flash.="<link rel=\"stylesheet\" href=\"{$met_url}banner/nivo-slider/nivo-slider.css\" type=\"text/css\" media=\"screen\" />
+<script type=\"text/javascript\" src=\"{$met_url}banner/nivo-slider/jquery.nivo.slider.pack.js\"></script>
+	<style type=\"text/css\">.metinfo-banner1 img{ height:{$met_flasharray[$classnow][y]}px!important;}</style>
+	";
+	$methtml_flash.="<div class=\"slider-wrapper metinfo-banner1\" style=\"height:{$met_flasharray[$classnow][y]}px;\">
+	<div id=\"slider\" class=\"nivoSlider\">\n";
+	foreach($met_flashimg as $key=>$val){
+		$val[img_link]=str_replace('%26','&',$val[img_link]);
+		if($val[img_link])$methtml_flash.="<a href='".$val[img_link]."' target='_blank' title='{$val[img_title]}'>";
+		$methtml_flash.="<img src='".$val[img_path]."' alt='".$val[img_title]."' width='{$met_flasharray[$classnow][x]}' height='{$met_flasharray[$classnow][y]}' />"; 
+		if($val[img_link])$methtml_flash.="</a>";
+		$methtml_flash.="\n";
+	}
+	$methtml_flash.="</div>\n</div>\n";
+	$methtml_flash.="
+    <script type=\"text/javascript\">
+    $(document).ready(function() {
+        $('#slider').nivoSlider({effect: 'random', pauseTime:5000,directionNav:false});
+    });
+    </script>
+	";
 break;
 
 case 2:
@@ -433,7 +599,7 @@ case 2:
    $methtml_flash.="var files='".$imgurl."';\n";
    $methtml_flash.="var links='".$imglink."';\n";
    $methtml_flash.="var texts='';\n";
-   $methtml_flash.="var swfpath = '".$met_url."'+'flash/flash02.swf';\n";
+   $methtml_flash.="var swfpath = '".$met_url."'+'banner/flash02.swf';\n";
    $methtml_flash.="var AutoPlayTime=6; //间隔时间：单位是秒\n";
    $methtml_flash.="document.write('<object classid=\"clsid:d27cdb6e-ae6d-11cf-96b8-444553540000\" codebase=\"http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0\" width=\"'+ swf_width +'\" height=\"'+ swf_height +'\">');\n";
    $methtml_flash.="document.write('<param name=\"movie\" value='+swfpath+'><param name=\"quality\" value=\"high\">');\n";
@@ -445,170 +611,134 @@ case 2:
 break;
 
 case 3:
-   $methtml_flash.="<script src='".$met_url."js/flash3.js' type='text/javascript'></script> \n"; 
-   $methtml_flash.="<SCRIPT language=javascript type=text/javascript>\n";
-   $methtml_flash.="var titles = '".$imgtitle."';\n";
-   $methtml_flash.="var imgs='".$imgurl."'; \n";
-   $methtml_flash.="var urls='".$imglink."';\n";
-   $methtml_flash.="var pw =".$width.";                //flash宽度\n";
-   $methtml_flash.="var ph =".$height.";                //flash高度\n";
-   $methtml_flash.="var sizes = 14;              //flash底部文字大小\n";
-   $methtml_flash.="var Times = 4000;            //flash图片翻转时间\n";
-   $methtml_flash.="var umcolor = 0xFFFFFF;      //flash按钮文字颜色\n";     
-   $methtml_flash.="var btnbg =0xFF7E00;         //flash按钮背景颜色（当前图片，鼠标经过）\n";
-   $methtml_flash.="var txtcolor =0xFFFFFF;      //flash图片名称 文字颜色\n";
-   $methtml_flash.="var txtoutcolor = 0xff0000;\n";
-   $methtml_flash.="var flash = new SWFObject('".$met_url."flash/flash03.swf', 'mymovie', pw, ph, '7', '');\n";
-   $methtml_flash.="flash.addParam('allowFullScreen', 'true');\n";
-   $methtml_flash.="flash.addParam('allowScriptAccess', 'always');\n";
-   $methtml_flash.="flash.addParam('quality', 'high');\n";
-   $methtml_flash.="flash.addParam('wmode', 'Transparent');\n";
-   $methtml_flash.="flash.addVariable('pw', pw);\n";
-   $methtml_flash.="flash.addVariable('ph', ph);\n";
-   $methtml_flash.="flash.addVariable('sizes', sizes);\n";
-   $methtml_flash.="flash.addVariable('umcolor', umcolor);\n";
-   $methtml_flash.="flash.addVariable('btnbg', btnbg);\n";
-   $methtml_flash.="flash.addVariable('txtcolor', txtcolor);\n";
-   $methtml_flash.="flash.addVariable('txtoutcolor', txtoutcolor);\n";
-   $methtml_flash.="flash.addVariable('urls', urls);\n";
-   $methtml_flash.="flash.addVariable('Times', Times);\n";
-   $methtml_flash.="flash.addVariable('titles', titles);\n";
-   $methtml_flash.="flash.addVariable('imgs', imgs);\n";
-   $methtml_flash.="flash.write('dplayer2');\n";
-   $methtml_flash.="</SCRIPT>\n";
+	$methtml_flash.="
+	<link rel=\"stylesheet\" href=\"{$met_url}banner/nivo-slider/nivo-slider.css\" type=\"text/css\" media=\"screen\" />
+	<script type=\"text/javascript\" src=\"{$met_url}banner/nivo-slider/jquery.nivo.slider.pack.js\"></script>
+	<style type=\"text/css\">.metinfo-banner3 img{ height:{$met_flasharray[$classnow][y]}px!important;}</style>
+	";
+	$methtml_flash.="<div class=\"slider-wrapper metinfo-banner3\" style=\"height:{$met_flasharray[$classnow][y]}px;\">
+	<div id=\"slider\" class=\"nivoSlider\">\n";
+	foreach($met_flashimg as $key=>$val){
+		$val[img_link]=str_replace('%26','&',$val[img_link]);
+		if($val[img_link])$methtml_flash.="<a href='".$val[img_link]."' target='_blank' title='{$val[img_title]}'>";
+		$methtml_flash.="<img src=\"{$val[img_path]}\" alt=\"{$val[img_title]}\" width=\"{$met_flasharray[$classnow][x]}\" height=\"{$met_flasharray[$classnow][y]}\" "; 
+		if($val[img_title])$methtml_flash.=" title=\"#img_title_{$val[id]}\"";
+		$methtml_flash.="/>";
+		if($val[img_link])$methtml_flash.="</a>";
+		$methtml_flash.="\n";
+	}
+	$methtml_flash.="</div>\n";
+	foreach($met_flashimg as $key=>$val){
+		if($val[img_title])$methtml_flash.="<div id=\"img_title_{$val[id]}\" class=\"nivo-html-caption\">{$val[img_title]}</div>";
+	}
+	$methtml_flash.="</div>\n";
+	$methtml_flash.="
+    <script type=\"text/javascript\">
+    $(document).ready(function() {
+        $('#slider').nivoSlider({effect: 'fade',slices: 30, pauseTime:5000,directionNav:false});
+    });
+    </script>
+	";
 break;
 
 case 4:
-   $methtml_flash.="<script language='javascript' src='".$met_url."js/flash4.js'></script>\n";
-   $methtml_flash.="<script language='javascript'>\n";
-   $methtml_flash.="var pics='".$imgurl."';\n";
-   $methtml_flash.="var mylinks='".$imglink."';\n";
-   $methtml_flash.="var texts='".$imgtitle."';\n";
-   $methtml_flash.="var _str='".$met_url."flash/flash04.swf';\n";
-   $methtml_flash.="var ivWidth=".$width.";\n";
-   $methtml_flash.="var ivHeight=".$height.";\n";
-   $methtml_flash.="_str+='?Width='+ivWidth;\n";
-   $methtml_flash.="_str+='&Height='+ivHeight;\n";
-   $methtml_flash.="_str+='&Titles='+encodeURI(texts);\n";
-   $methtml_flash.="_str+='&ImgUrls='+pics;\n";
-   $methtml_flash.="_str+='&LinkUrls='+mylinks;\n";
-   $methtml_flash.="creatHexunFlashObject(_str,ivWidth,ivHeight);\n";
-   $methtml_flash.="</script>\n";
+	$methtml_flash.="
+	<link rel=\"stylesheet\" href=\"{$met_url}banner/banner4/style.css\" type=\"text/css\" media=\"screen\" />
+	<script type=\"text/javascript\" src=\"{$met_url}banner/banner4/flash4.js\"></script>
+	";
+	$methtml_flash.="<div id=\"metinfo_banner4\" style=\"height:{$met_flasharray[$classnow][y]}px;\">\n";
+	$methtml_flash.="<ul>\n";
+	foreach($met_flashimg as $key=>$val){
+		$methtml_flash.="<li>";
+		$val[img_link]=str_replace('%26','&',$val[img_link]);
+		if($val[img_link])$methtml_flash.="<a href='".$val[img_link]."' target='_blank' title='{$val[img_title]}'>";
+		$methtml_flash.="<img src=\"{$val[img_path]}\" alt=\"{$val[img_title]}\" width=\"{$met_flasharray[$classnow][x]}\" height=\"{$met_flasharray[$classnow][y]}\" />"; 
+		if($val[img_link])$methtml_flash.="</a>";
+		$methtml_flash.="</li>\n";
+	}
+	$methtml_flash.="</ul>\n";
+	$methtml_flash.="</div>\n";
 break;
 
 case 5:
-   $methtml_flash.="<SCRIPT language=javascript src='".$met_url."js/flash5.js' type=text/javascript></SCRIPT>\n";
-   $methtml_flash.="<SCRIPT type=text/javascript>\n";
-   $methtml_flash.="var focus_width=".$width.";\n";
-   $methtml_flash.="var focus_height=".$height.";\n";
-   $methtml_flash.="var text_height=20;\n";
-   $methtml_flash.="var swf_height=focus_height + text_height;\n";
-   $methtml_flash.="var pics='".$imgurl."';\n";
-   $methtml_flash.="var links='".$imglink."';\n";
-   $methtml_flash.="var texts='".$imgtitle."';\n";
-   $methtml_flash.="var fo = new SWFObject('".$met_url."/flash/flash05.swf', '_FocusObj', focus_width, swf_height, '7','F6F8FA');\n";
-   $methtml_flash.="fo.addVariable('pics', pics);\n";
-   $methtml_flash.="fo.addVariable('links', links);\n";
-   $methtml_flash.="fo.addVariable('texts', texts); \n";
-   $methtml_flash.="fo.addVariable('borderwidth', focus_width);\n";
-   $methtml_flash.="fo.addVariable('borderheight', focus_height);\n";
-   $methtml_flash.="fo.addVariable('textheight', text_height);\n";
-   $methtml_flash.="fo.addVariable('border_color', '0x000000'); \n";
-   $methtml_flash.="fo.addVariable('fontsize', '14'); \n";
-   $methtml_flash.="fo.addVariable('fontcolor', '5d5d5d');\n";
-   $methtml_flash.="fo.addVariable('is_border', '');\n";
-   $methtml_flash.="fo.addVariable('is_text', '1');\n";
-   $methtml_flash.="fo.addParam('wmode', 'opaque');\n";
-   $methtml_flash.="fo.write('FocusObj');\n";
-   $methtml_flash.="</SCRIPT>\n";
+	$methtml_flash.="
+	<link rel=\"stylesheet\" href=\"{$met_url}banner/nivo-slider/nivo-slider.css\" type=\"text/css\" media=\"screen\" />
+	<script type=\"text/javascript\" src=\"{$met_url}banner/nivo-slider/jquery.nivo.slider.pack.js\"></script>
+	<style type=\"text/css\">.metinfo-banner5 img{ height:{$met_flasharray[$classnow][y]}px!important;}</style>
+	";
+	$methtml_flash.="<div class=\"slider-wrapper metinfo-banner5\" style=\"height:{$met_flasharray[$classnow][y]}px;\">
+	<div id=\"slider\" class=\"nivoSlider\">\n";
+	foreach($met_flashimg as $key=>$val){
+		$val[img_link]=str_replace('%26','&',$val[img_link]);
+		if($val[img_link])$methtml_flash.="<a href='".$val[img_link]."' target='_blank' title='{$val[img_title]}'>";
+		$methtml_flash.="<img src='".$val[img_path]."' alt='".$val[img_title]."' width='{$met_flasharray[$classnow][x]}' height='{$met_flasharray[$classnow][y]}' />"; 
+		if($val[img_link])$methtml_flash.="</a>";
+		$methtml_flash.="\n";
+	}
+	$methtml_flash.="</div>\n</div>\n";
+	$methtml_flash.="
+    <script type=\"text/javascript\">
+    $(document).ready(function() {
+        $('#slider').nivoSlider({
+			effect: 'fade',
+			animSpeed:200,
+			pauseTime:5000,
+			controlNav:false,
+			afterLoad: function(){ 
+				$(\".metinfo-banner5\").live('hover',function(tm){
+					if (tm.type == 'mouseover' || tm.type == 'mouseenter')$(this).addClass(\"metinfo-banner5-hover\");
+					if (tm.type == 'mouseout' || tm.type == 'mouseleave')$(this).removeClass(\"metinfo-banner5-hover\");
+				});
+				$(\".nivo-prevNav,.nivo-nextNav\").attr('onselectstart','return false');
+				$(\".nivo-prevNav\").live('hover',function(tm){
+					if (tm.type == 'mouseover' || tm.type == 'mouseenter')$(this).addClass(\"nivo-prevNav-hover\");
+					if (tm.type == 'mouseout' || tm.type == 'mouseleave')$(this).removeClass(\"nivo-prevNav-hover\");
+				});
+				$(\".nivo-nextNav\").live('hover',function(tm){
+					if (tm.type == 'mouseover' || tm.type == 'mouseenter')$(this).addClass(\"nivo-nextNav-hover\");
+					if (tm.type == 'mouseout' || tm.type == 'mouseleave')$(this).removeClass(\"nivo-nextNav-hover\");
+				});
+			} 
+		});
+    });
+    </script>
+	";
 break;
 
 case 6:
-   $methtml_flash.="<script src='".$met_url."js/flash7.js' type='text/javascript'></script> \n"; 
-   $methtml_flash.="<script type='text/javascript'>\n";	
-   $methtml_flash.="var speed = 4000;\n";		
-   $methtml_flash.="var pics='".$imgurl."';\n";	
-   $methtml_flash.="var mylinks='".$imglink."';\n";
-   $methtml_flash.="var texts='".$imgtitle."';\n";			
-   $methtml_flash.="var sohuFlash2 = new sohuFlash('".$met_url."flash/flash07.swf','flashcontent01','".$width."','".$height."','8','#ffffff');\n";										
-   $methtml_flash.="sohuFlash2.addParam('quality', 'medium');\n";
-   $methtml_flash.="sohuFlash2.addParam('wmode', 'opaque');\n";						
-   $methtml_flash.="sohuFlash2.addVariable('speed',speed);\n";
-   $methtml_flash.="sohuFlash2.addVariable('p',pics);\n";	
-   $methtml_flash.="sohuFlash2.addVariable('l',mylinks);\n";
-   $methtml_flash.="sohuFlash2.addVariable('icon',texts);\n";
-   $methtml_flash.="sohuFlash2.write('flashcontent01');\n";
-   $methtml_flash.="</script> \n";
-break;
-
-case 7:
-   $methtml_flash.="<script src='".$met_url."js/flash9.js' type='text/javascript'></script> \n"; 
-   $methtml_flash.="<div id=sasFlashFocus27></div>\n"; 
-   $methtml_flash.="<SCRIPT>\n"; 
-   $methtml_flash.="var sohuFlash2 = new sohuFlash(\"".$met_url."flash/flash09.swf\", \"27\", ".$width.", ".$height.", \"7\");\n"; 
-   $methtml_flash.="sohuFlash2.addParam(\"quality\", \"high\");\n"; 
-   $methtml_flash.="sohuFlash2.addParam(\"wmode\", \"opaque\");\n"; 
-   $methtml_flash.="sohuFlash2.addVariable(\"image\",\"".$imgurl."\");\n"; 
-   $methtml_flash.="sohuFlash2.addVariable(\"url\",\"".$imglink."\");\n";
-   $methtml_flash.="sohuFlash2.addVariable(\"info\", \"".$imgtitle."\");\n";
-   $methtml_flash.="sohuFlash2.addVariable(\"stopTime\",\"5000\");\n";
-   $methtml_flash.="sohuFlash2.write(\"sasFlashFocus27\");\n";
-   $methtml_flash.="</SCRIPT>\n";
-break;
-
-case 8:
-   $methtml_flash.="<SCRIPT src='".$met_url."js/flash8.js' type='text/javascript'></SCRIPT>\n";
-   $methtml_flash.="<SCRIPT type=text/javascript>\n";
-   $methtml_flash.="var pics='".$imgurl."';\n";	
-   $methtml_flash.="var mylinks='".$imglink."';\n";
-   $methtml_flash.="var texts='".$imgtitle."';\n";
-   $methtml_flash.="var sohuFlash2 = new sohuFlash('".$met_url."flash/flash08.swf','sohuFlashID01','".$width."','".$height."','5','#ffffff');\n";
-   $methtml_flash.="sohuFlash2.addParam('quality', 'high');\n";
-   $methtml_flash.="sohuFlash2.addParam('salign', 't');\n";
-   $methtml_flash.="sohuFlash2.addParam('wmode','transparent');\n";
-   $methtml_flash.="sohuFlash2.addVariable('p',pics);	\n";
-   $methtml_flash.="sohuFlash2.addVariable('l',mylinks);\n";
-   $methtml_flash.="sohuFlash2.addVariable('icon',texts);\n";
-   $methtml_flash.="sohuFlash2.write('flashcontent01');\n";
-   $methtml_flash.="</SCRIPT>\n";
-break;
-
-case 9:
-   $methtml_flash.="<div id=met3dswf align='center'></div>\n";
-   $methtml_flash.="<script language=JavaScript src='".$met_url."js/flash09.js'></script>\n";
-   $methtml_flash.="<script language='javascript'>\n";
-   $imgurlarray=explode('|',$imgurl);
-   $imglinkarray=explode('|',$imglink);
-   $imgtitlearray=explode('|',$imgtitle);
-   $totalurl=count($imgurlarray);
-   if($totalurl>4){
-   $imgurl='';
-   $imglink='';
-   $imgtitle='';
-   for($i=0;$i<$totalurl;$i++){
-    $imgurl.=$i?"|".$imgurlarray[$i]:$imgurlarray[$i];
-	if(($i==3&&$totalurl!==4) or ($i==7&&$totalurl!==8))$imgurl.="|_";
-	$imglink.=$i?"|".$imglinkarray[$i]:$imglinkarray[$i];
-	if(($i==3&&$totalurl!==4) or ($i==7&&$totalurl!==8))$imglink.="|_";
-	$imgtitle.=$i?"|".$imgtitlearray[$i]:$imgtitlearray[$i];
-	if(($i==3&&$totalurl!==4) or ($i==7&&$totalurl!==8))$imgtitle.="|_";
-    }
+	$img_x=$met_flasharray[$classnow][x];
+	$methtml_flash.="
+	<link rel=\"stylesheet\" href=\"{$met_url}banner/banner7/style.css\" type=\"text/css\" media=\"screen\" />
+	<script type=\"text/javascript\" src=\"{$met_url}banner/banner7/modernizr.min.js\"></script>
+	<script type=\"text/javascript\" src=\"{$met_url}banner/banner7/box-slider-all.jquery.min.js\"></script>
+	";
+	$methtml_flash.="<div id=\"viewport-shadow\" class=\"trans metinfo-banner7\" style=\"height:{$met_flasharray[$classnow][y]}px;\">\n";
+	$methtml_flash.="<a href=\"#\" id=\"prev\" class=\"trans\"></a>\n<a href=\"#\" id=\"next\" class=\"trans\"></a>\n";
+	$methtml_flash.="<div id=\"viewport\"><div id=\"box\">\n";
+	foreach($met_flashimg as $key=>$val){
+		$methtml_flash.="<figure class=\"slide\">";
+		$val[img_link]=str_replace('%26','&',$val[img_link]);
+		if($val[img_link])$methtml_flash.="<a href='".$val[img_link]."' target='_blank' title='{$val[img_title]}'>";
+		$methtml_flash.="<img src='".$val[img_path]."' alt='".$val[img_title]."' width='{$img_x}' height='{$met_flasharray[$classnow][y]}' />"; 
+		if($val[img_link])$methtml_flash.="</a>";
+		$methtml_flash.="</figure>\n";
 	}
-   $methtml_flash.="var pics='".$imgurl."'\n";
-   $methtml_flash.="var links='".$imglink."'\n"; 	
-   $methtml_flash.="var texts='".$imgtitle."'\n";	
-   $methtml_flash.="var sohuFlash2 = new sohuFlash('".$met_url."flash/flash9.swf','sohuFlashID01','".$width."','".$height."','6','#ffffff');\n";
-   $methtml_flash.="sohuFlash2.addParam('quality', 'high');\n";
-   $methtml_flash.="sohuFlash2.addParam('salign', 't');\n";
-   $methtml_flash.="sohuFlash2.addParam('wmode', 'opaque');\n";
-   $methtml_flash.="sohuFlash2.addVariable('pics',pics);\n";
-   $methtml_flash.="sohuFlash2.addVariable('links',links);\n";
-   $methtml_flash.="sohuFlash2.addVariable('texts',texts);\n";
-   $methtml_flash.="sohuFlash2.write('met3dswf')\n";
-   $methtml_flash.="</script>\n";
+	$methtml_flash.="</div>\n</div>\n";
+	$methtml_flash.="<div class=\"slider-controls\">\n";
+	$methtml_flash.="<ul id=\"controls\">\n";
+	$i=0;
+	foreach($met_flashimg as $key=>$val){
+		$d1=$i==0?'current':'';
+		$methtml_flash.="<li><a class=\"goto-slide {$d1}\" href=\"#\" data-slideindex=\"{$i}\"></a></li>\n";
+		$i++;
+	}
+	$methtml_flash.="</ul>\n";
+	$methtml_flash.="</div>\n";
+	$methtml_flash.="</div>\n";
 break;
 }
 
+}
 return $methtml_flash;
 }
 
@@ -726,11 +856,12 @@ switch($met_flasharray[$classnow][type]){
 	break;
 }
 //loop array 
-function methtml_getarray($mark,$type,$order,$module,$listmx=-1,$para=0,$categoryname=0,$marktype=0,$txtmax=0,$descmax=0){
+function methtml_getarray($mark,$type,$order,$module,$listmx=-1,$para=0,$categoryname=0,$marktype=0,$txtmax=0,$descmax=0,$rand=0){
 	global $met_member_use,$class_index,$met_listtime,$metinfo_member_type,$db,$met_news,$met_product,$met_download,$met_img,$met_job,$met_parameter,$met_plist,$class_list,$metpara,$module_list2;
 	global $index_news_no,$index_product_no,$index_download_no,$index_img_no,$index_job_no,$mobilesql;
 	global $index,$navurl,$weburly,$lang,$pagename,$langmark,$met_htmpagename,$met_chtmtype,$met_htmtype,$met_pseudo,$met_webhtm;
 	global $dataoptimize,$pagemark,$img_url,$met_hot,$m_now_date,$met_newsdays,$metmemberforce,$met_alt,$metblank,$met_agents_img;
+	global $product_paralist,$download_paralist,$img_paralist,$m_now_time;
 	if($mark&&strstr($mark,"-")){
 		$hngy5=explode('-',$mark);
 		if($hngy5[1]=='cm'){
@@ -745,10 +876,10 @@ function methtml_getarray($mark,$type,$order,$module,$listmx=-1,$para=0,$categor
 	$listmx=$listmx==''?-1:$listmx;
 	if($met_member_use==2)$access_sql= " and access<=$metinfo_member_type";
 	$numname = ' id,title,description,class1,class2,class3,updatetime,addtime,filename,access,top_ok,hits,issue,com_ok,no_order,';
-	$listitem['news']=array(0=>$numname.'img_ok,imgurls,imgurl',1=>$met_news,2=>'shownews');
-	$listitem['product']=array(0=>$numname.'new_ok,imgurls,imgurl,displayimg',1=>$met_product,2=>'showproduct');
-	$listitem['download']=array(0=>$numname.'downloadurl,filesize,downloadaccess',1=>$met_download,2=>'showdownload');
-	$listitem['img']=array(0=>$numname.'new_ok,imgurls,imgurl,displayimg',1=>$met_img,2=>'showimg');
+	$listitem['news']=array(0=>$numname.'img_ok,imgurls,content,imgurl,links',1=>$met_news,2=>'shownews');
+	$listitem['product']=array(0=>$numname.'new_ok,imgurls,content,imgurl,displayimg,links',1=>$met_product,2=>'showproduct');
+	$listitem['download']=array(0=>$numname.'downloadurl,filesize,content,downloadaccess',1=>$met_download,2=>'showdownload');
+	$listitem['img']=array(0=>$numname.'new_ok,imgurls,content,imgurl,displayimg,links',1=>$met_img,2=>'showimg');
 	$listitem['job']=array(0=>'*',1=>$met_job,2=>'showjob');
 	$sqlorder=$order=='hits'?' order by top_ok desc,com_ok desc,no_order desc,hits desc,id desc':' order by top_ok desc,com_ok desc,no_order desc,updatetime desc,id desc';
 	switch($type){
@@ -848,11 +979,34 @@ function methtml_getarray($mark,$type,$order,$module,$listmx=-1,$para=0,$categor
 	}
 	$select=$listitem[$module][0];
 	$table=$listitem[$module][1];
+	if($module=='news'||$module=='product'||$module=='download'||$module=='img'||$module=='job'){
+		$displaytype_sql="and displaytype='1'";
+	}else{
+		$displaytype_sql="";
+	}
 	if($modulenunm==6){
-		$query = "SELECT $select FROM $table where lang='$lang' {$mobilesql} and ((TO_DAYS(NOW())-TO_DAYS(`addtime`)< useful_life) OR useful_life=0) $access_sql order by top_ok desc,no_order desc,addtime desc limit 0, $listmx";	
+		if($rand==0){
+			$rand_query = "order by top_ok desc,no_order desc,addtime desc limit 0, $listmx";
+		}else{
+			if($rand=='-1'){
+				$rand_query = "ORDER BY RAND() LIMIT $listmx ";
+			}else{
+				$rand_query = "order by top_ok desc,no_order desc,addtime desc limit $rand, $listmx";
+			}
+		}
+		$query = "SELECT $select FROM $table where lang='$lang' {$mobilesql} and ((TO_DAYS(NOW())-TO_DAYS(`addtime`)< useful_life) OR useful_life=0) and addtime<='{$m_now_date}' $displaytype_sql $access_sql $rand_query";
 	}
 	else{
-		$query = "SELECT $select FROM $table where lang='$lang' {$mobilesql} $sqlclounm $access_sql $sqltype and (recycle='0' or recycle='-1') $sqlorder limit 0, $listmx";
+		if($rand==0){
+			$rand_query = $sqlorder." limit 0, $listmx";
+		}else{
+			if($rand=='-1'){
+				$rand_query = "ORDER BY RAND() LIMIT $listmx";
+			}else{
+				$rand_query = $sqlorder." limit $rand, $listmx";
+			}
+		}
+		$query = "SELECT $select FROM $table where lang='$lang' {$mobilesql} $sqlclounm $access_sql $sqltype and (recycle='0' or recycle='-1') and addtime<='{$m_now_date}' $displaytype_sql $rand_query";
 	}
 	$result = $db->query($query);
 	while($list= $db->fetch_array($result)){
@@ -880,21 +1034,47 @@ function methtml_getarray($mark,$type,$order,$module,$listmx=-1,$para=0,$categor
 			$list['news']=(((strtotime($m_now_date)-strtotime($list['updatetime']))/86400)<$met_newsdays)?"<img class='listnew' src='".$img_url."news.gif"."' alt='".$met_alt."' />":"";
 		}
 		$list['status']=$list['top'].$list['hot'].$list['news'];
+		$weburly="";
 		if($index[index]=="index"){		
-			$listarray[imgurls]=explode("../",$list['imgurls']);
-			$list[imgurls]=$weburly.$listarray['imgurls'][1];
-			$listarray[imgurl]=explode("../",$list['imgurl']);
-			$list[imgurl]=$weburly.$listarray['imgurl'][1];
+			if(!strstr($list['imgurls'], "http://")){
+				$listarray[imgurls]=explode("../",$list['imgurls']);
+				$list[imgurls]=$weburly.$listarray['imgurls'][1];
+			}
+			if(!strstr($list['imgurl'], "http://")){
+				$listarray[imgurl]=explode("../",$list['imgurl']);
+				$list[imgurl]=$weburly.$listarray['imgurl'][1];
+			}
 		}
-		$list['imgurls']=($list['imgurls']<>"")?$list['imgurls']:$weburly.$met_agents_img;
-		$list['imgurl']=($list['imgurl']<>"")?$list['imgurl']:$weburly.$met_agents_img;
+		if(strstr($list['imgurls'], "http://")){
+			$list['imgurls']=($list['imgurls']<>"")?$list['imgurls']:$list['imgurls'];
+		}else{	
+			$list['imgurls']=($list['imgurls']<>"")?$list['imgurls']:$weburly.$met_agents_img;
+		}
+		if(strstr($list['imgurl'], "http://")){
+			$list['imgurl']=($list['imgurl']<>"")?$list['imgurl']:$list['imgurl'];
+		}else{	
+			$list['imgurl']=($list['imgurl']<>"")?$list['imgurl']:$weburly.$met_agents_img;
+		}
 		if(($dataoptimize[$pagemark]['para'][$modulenunm] and $dataoptimize[$pagemark]['parameter'])||$para){
+			switch($modulenunm){
+				case 3:$md_paralist=$product_paralist;break;
+				case 4:$md_paralist=$download_paralist;break;
+				case 5:$md_paralist=$img_paralist;break;
+			}
 			$query1 = "select * from $met_plist where lang='$lang' and listid='$list[id]' and module='$modulenunm' order by id";
 			$result1 = $db->query($query1);
-			$i=1;
 			while($list1 = $db->fetch_array($result1)){
-				$nowpara1="para".$i;
-				$i++;
+				$i=0;$ik=0;
+				foreach($md_paralist as $key=>$val){
+					$i++;
+					if($list1['paraid']==$val['id']){
+						if(($metpara[$list1['paraid']]['class1']==0) or ($metpara[$list1['paraid']]['class1']==$list['class1'] and $metpara[$list1['paraid']]['class2']==0 and $metpara[$list1['paraid']]['class3']==0) or ($metpara[$list1['paraid']]['class1']==$list['class1'] and $metpara[$list1['paraid']]['class2']==$list['class2'] and $metpara[$list1['paraid']]['class3']==0) or ($metpara[$list1['paraid']]['class1']==$list['class1'] and $metpara[$list1['paraid']]['class2']==$list['class2'] and $metpara[$list1['paraid']]['class3']==$list['class3'])){
+							$ik=$i;
+						}
+					}
+				}
+				$nowpara1="para".$ik;
+				
 				$list[$nowpara1]=$list1['info'];
 				$metparaaccess=$metpara[$list1['paraid']]['access'];
 				if(intval($metparaaccess)>0&&$met_member_use){
@@ -904,7 +1084,7 @@ function methtml_getarray($mark,$type,$order,$module,$listmx=-1,$para=0,$categor
 				}
 				$nowparaname="";
 				$nowparaname=$nowpara1."name";
-				$list[$nowparaname]=($list1['imgname']<>"")?$list1['imgname']:$metpara[$list1['paraid']]['name'];
+				$list[$nowparaname]=$metpara[$list1['paraid']]['name'];
 				if($metpara[$list1['paraid']]['type']==5&&$index[index]=="index"){
 					$listarray['info']=explode("../",$list1['info']);
 					$list1['info']=$listarray['info'][1];
@@ -916,6 +1096,8 @@ function methtml_getarray($mark,$type,$order,$module,$listmx=-1,$para=0,$categor
 					$list[$nowpara1.'s']=$list1['info'];
 				}
 			}
+			unset($list['para0']);
+			unset($list['para0name']);
 		}
 		//URL地址
 		$filename=$modulenunm==6?$navurl.'job':$navurl.$class_list[$list['class1']]['foldername'];
@@ -924,7 +1106,11 @@ function methtml_getarray($mark,$type,$order,$module,$listmx=-1,$para=0,$categor
 		$panyid = $list['filename']!=''?$list['filename']:$list['id'];
 		$met_ahtmtype = $list['filename']<>""?$met_chtmtype:$met_htmtype;
 		$phpname=$met_pseudo?$filename."/".$panyid.'-'.$lang.'.html':$filename."/".$listitem[$module][2].".php?".$langmark."&id=".$list['id'];	
-		$list['url']=$met_pseudo?$phpname:($met_webhtm?$htmname.$met_ahtmtype:$phpname);
+		if($list['links']){
+			$list['url']=$list['links'];
+		}else{
+			$list['url']=$met_pseudo?$phpname:($met_webhtm?$htmname.$met_ahtmtype:$phpname);
+		}
 		$list['updatetime'] = date($met_listtime,strtotime($list['updatetime']));
 		$list['img_x']=met_imgxy(1,$module);
 		$list['img_y']=met_imgxy(2,$module);
@@ -1015,7 +1201,7 @@ if($index[link_ok]==1 || $linkpage){
      $i=0;
      foreach($linkarray as $key=>$val){
       $i++;
-	  if($i>$index[link_img])break;
+	  if($i>$index[link_img] && $index[link_text])break;
       $linktext.="<li><a href='".$val[weburl]."' target='_blank'><img src='".$val[weblogo]."' alt='".$val[webname]."' /></a></li>\n";
 	  }
    }else{
@@ -1023,7 +1209,7 @@ if($index[link_ok]==1 || $linkpage){
 	 $i=0;
      foreach($linkarray as $key=>$val){
       $i++;
-	  if($i>$index[link_text])break;
+	  if($i>$index[link_text] && $index[link_text])break;
 	  if($display=='select'){
 	    $linktext.="<option value='".$val[weburl]."' >".$val[webname]."</option>\n";
 	    }else{
@@ -1046,6 +1232,9 @@ if($met_foottel<>"")$methtml_foot.="<li>".$met_foottel."</li>\n";
 if($met_footother<>"")$methtml_foot.="<li>".$met_footother."</li>\n";
 if($met_foottext<>"")$methtml_foot.="<li>".$met_foottext."</li>\n";
 $methtml_foot.="</ul>\n";
+//接口代码
+if($_M['html_plugin']['foot_script'])$methtml_foot.="{$_M['html_plugin']['foot_script']}";
+//结束
 if($met_jiathis_ok)$methtml_foot.=$met_jiathis;
 
 //online
@@ -1062,23 +1251,30 @@ function methtml_online(){
 }
 
 function methtml_hits($module,$mobile){
-global $news,$product,$img,$download,$job,$lang_Hits,$lang_Printing,$lang_Printing,$lang_UpdateTime,$lang_Close,$met_tools_ok,$met_tools_code;
+global $news,$product,$img,$download,$job,$lang_Hits,$lang_Printing,$lang_Printing,$lang_UpdateTime,$lang_Close,$met_tools_ok,$met_tools_code,$metinfover;
 global $met_pageclick,$met_pagetime,$met_pageprint,$met_pageclose;
 	$listnow=$$module;
 	if($module=='job')$listnow[updatetime]=$listnow[addtime];
-	if($met_tools_ok)$metinfo.="<div class='metjiathis'>{$met_tools_code}</div>";
-	if($module!='job' && $met_pageclick)$metinfo.=$lang_Hits."：<span><script language='javascript' src='../include/hits.php?type=".$module."&id=".$listnow[id]."'></script></span>";
-	if($met_pagetime)$metinfo.='&nbsp;&nbsp;'.$lang_UpdateTime.'：'.$listnow['updatetime'];
-	if($met_pageprint)$metinfo.='&nbsp;&nbsp;【<a href="javascript:window.print()">'.$lang_Printing.'</a>】';
-	if($met_pageclose)$metinfo.='&nbsp;&nbsp;【<a href="javascript:self.close()">'.$lang_Close.'</a>】';
+	$metinfo.="<div class='metjiathis'>{$met_tools_code}</div>";
+	if($metinfover == 'v1'){
+		if($module!='job' && $met_pageclick)$metinfo.=$lang_Hits."：<span class='metClicks' data-metClicks=".$module."|".$listnow[id]."></span>";
+		if($met_pagetime)$metinfo.='　'.$lang_UpdateTime.'：'.$listnow['updatetime'];
+		if($met_pageprint)$metinfo.='　【<a href="#" class="metPrinting">'.$lang_Printing.'</a>】';
+		if($met_pageclose)$metinfo.='　【<a href="#" class="metClose">'.$lang_Close.'</a>】';
+	}else{
+		if($module!='job')$metinfo.=$lang_Hits."：<span><script language='javascript' src='../include/hits.php?type=".$module."&id=".$listnow[id]."'></script></span>";
+		$metinfo.='&nbsp;&nbsp;'.$lang_UpdateTime.'：'.$listnow['updatetime'];
+		$metinfo.='&nbsp;&nbsp;【<a href="javascript:window.print()">'.$lang_Printing.'</a>】';
+		$metinfo.='&nbsp;&nbsp;【<a href="javascript:self.close()">'.$lang_Close.'</a>】';
+	}
 	if($mobile){
 		$metinfo="{$lang_Hits}：<script language='javascript' src='../include/hits.php?type={$module}&id={$listnow[id]}'></script>";
 	}
 	return $metinfo;
 }
 
-function methtml_prenextinfo($type=0){
-	global $lang_Previous,$lang_Next,$lang_Noinfo,$preinfo,$nextinfo;
+function methtml_prenextinfo($type=0,$id){
+	global $lang_Previous,$lang_Next,$lang_Noinfo,$preinfo,$nextinfo,$lang,$lang_Previous_news,$lang_Next_news,$column,$class1;
 	switch($type){
 		case 0:
 			if($preinfo[url] !=""){
@@ -1091,13 +1287,24 @@ function methtml_prenextinfo($type=0){
 			}
 		break;
 		case 1:
-			if($preinfo[url] !=""){
-				$metinfo=$lang_Previous."：";
+			if($class1==2){
+				if($preinfo[url] !=""){
+				$metinfo=$lang_Previous_news."：";
 				$metinfo.=$preinfo?"<a href='".$preinfo[url]."' >".$preinfo[title]."</a>":$lang_Noinfo;
-			}
-			if($nextinfo[url] !=""){
-				$metinfo.="&nbsp;&nbsp;".$lang_Next."：";
-				$metinfo.=$nextinfo?"<a href='".$nextinfo[url]."' >".$nextinfo[title]."</a>":$lang_Noinfo;
+				}
+				if($nextinfo[url] !=""){
+					$metinfo.="&nbsp;&nbsp;".$lang_Next_news."：";
+					$metinfo.=$nextinfo?"<a href='".$nextinfo[url]."' >".$nextinfo[title]."</a>":$lang_Noinfo;
+				}
+			}else{
+				if($preinfo[url] !=""){
+					$metinfo=$lang_Previous."：";
+					$metinfo.=$preinfo?"<a href='".$preinfo[url]."' >".$preinfo[title]."</a>":$lang_Noinfo;
+				}
+				if($nextinfo[url] !=""){
+					$metinfo.="&nbsp;&nbsp;".$lang_Next."：";
+					$metinfo.=$nextinfo?"<a href='".$nextinfo[url]."' >".$nextinfo[title]."</a>":$lang_Noinfo;
+				}
 			}
 		break;
 		case 2:
@@ -1210,8 +1417,9 @@ function memberlist(){
 	$metinfo .= "</ul>";
 	return $metinfo;
 }
-require_once 'searchhtml.inc.php';
-require_once 'metlabel.inc.php';
+require_once ROOTPATH.'public/php/searchhtml.inc.php';//应用修改带代码
+require_once ROOTPATH.'public/php/metlabel.inc.php';//应用修改带代码
+require_once ROOTPATH.'public/php/metlabels.inc.php';
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

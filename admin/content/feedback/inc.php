@@ -3,12 +3,20 @@
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.  
 $depth='../';
 require_once $depth.'../login/login_check.php';
+require_once ROOTPATH.'public/php/searchhtml.inc.php';
 $fnam=$db->get_one("SELECT * FROM $met_column WHERE id='$class1' and lang='$lang'");
-if($action=="modify"){	
+if($action=="modify"){
 	$columnid=$fnam['id'];
+	if($met_fd_ok){
+		$query = "update $met_column SET display = '0' where id ='$columnid' ";
+		$db->query($query);
+	}else{
+		$query = "update $met_column SET display = '1' where id ='$columnid' ";
+		$db->query($query);
+	}
 	require_once $depth.'../include/config.php';
 	$htmjs = onepagehtm($foldename,'index',1,$htmpack,$fnam['filename'],$class1);
-	metsave('../content/feedback/inc.php?lang='.$lang.'&class1='.$class1.'&anyid='.$anyid,'',$depth,$htmjs );
+	metsave('../content/feedback/inc.php?lang='.$lang.'&class1='.$class1.'&anyid='.$anyid.'&classall='.$classall,'',$depth,$htmjs );
 }else{
 	foreach($settings_arr as $key=>$val){
 		if($val['columnid']==$fnam['id'])$$val['name']=$val['value'];
@@ -21,9 +29,11 @@ if($action=="modify"){
 	}
 	$cs=isset($cs)?$cs:1;
 	$listclass[$cs]='class="now"';
+	
 	$met_fd_ok1[$met_fd_ok]="checked='checked'";
 	$met_fd_type1[$met_fd_type]="checked='checked'";
 	$met_fd_back1=($met_fd_back)?"checked='checked'":"";
+	$met_fd_sms_back1=($met_fd_sms_back)?"checked='checked'":"";
 	$css_url=$depth."../templates/".$met_skin."/css";
 	$img_url=$depth."../templates/".$met_skin."/images";
 	include template('content/feedback/fd_inc');

@@ -8,8 +8,8 @@ $modulefname[5] = array(0=>'img.php',1=>'showimg.php',2=>$met_img);
 $modulefname[6] = array(0=>'job.php',1=>'showjob.php',2=>$met_job);
 $modulefname[8] = array(0=>'feedback.php',1=>'feedback.php',2=>$met_column);
 $modulefname[100] = array(0=>'product.php',1=>'showproduct.php',2=>$met_product);
-$modulefname[101] = array(0=>'product.php',1=>'showproduct.php',2=>$met_product);
-if(isset($metid) && $met_pseudo){
+$modulefname[101] = array(0=>'img.php',1=>'imgproduct.php',2=>$met_img);
+if(isset($metid) && ($met_pseudo || $met_htmlurl)){
 	/*if(is_numeric($metid)){
 		if($list){
 		}else{

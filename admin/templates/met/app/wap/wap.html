@@ -8,7 +8,14 @@ echo <<<EOT
 </head>
 <!--
 EOT;
-require_once template('metlangs');
+if($cs==4){
+	$listclass='';
+	$listclass[4]='class="now"';
+	$title="二维码";
+}else{
+	$title="WAP设置";
+}
+require_once template('app/wap/top');
 $rand=met_rand(4);
 echo <<<EOT
 -->
@@ -19,9 +26,31 @@ echo <<<EOT
 		<input name="met_wap_tpb" type="hidden" value="0" />
 <div class="v52fmbx_tbmax">
 <div class="v52fmbx_tbbox">
-<div class="v52fmbx">	
-	<h3 class="v52fmbx_hr metsliding" sliding="1"><a href="http://www.metinfo.cn/web/wap.htm" target="_blank" style="float:right; color:red;">{$lang_unitytxt_74}</a>{$lang_unitytxt_1}</h3>
+<div class="v52fmbx">
+<!--
+EOT;
+if($cs==1){
+echo <<<EOT
+-->	
+	<h3 class="v52fmbx_hr metsliding" sliding="1">{$lang_unitytxt_1}</h3>
 	<div class="metsliding_box metsliding_box_1">
+<!--
+EOT;
+if($met_webhtm){
+echo <<<EOT
+-->	
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dd>
+				<span class="red">注意：您开启了静态页面功能！修改此页面设置后，需要到【优化推广—静态页面】重新生成所有静态页面后才能生效。</span>
+			</dd>
+		</dl>
+		</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->	
 		<div class="v52fmbx_dlbox">
 		<dl>
 			<dt>{$lang_waptype}{$lang_marks}</dt>
@@ -36,16 +65,15 @@ echo <<<EOT
 			<dt>{$lang_wapfang}{$lang_marks}</dt>
 			<dd>
 				<label><input name="met_wap_tpa" type="checkbox" class="checkbox" value="1" {$met_wap_tpa1[1]} />{$lang_wapgeturl}</label>
-				<label><input name="met_wap_tpb" type="checkbox" class="checkbox" value="1" {$met_wap_tpb1[1]} />{$lang_wapinfo3}</label>
 			</dd>
 		</dl>
 		</div>
 		<div class="v52fmbx_dlbox">
 		<dl>
-			<dt>{$lang_waptips8}{$lang_marks}</dt>
+			<dt>手机网站域名{$lang_marks}</dt>
 			<dd>
-				<input type="text" name="met_wap_url" class="text" value="$met_wap_url" />
-				<span class="tips">{$lang_wapinfo4}</span>
+				<input type="text" name="met_wap_url" class="text" value="$met_wap_url" /><br/>
+				<span class="tips">设置一个域名（如 m.abcd.com ），访问该域名的时候将自动跳转到手机网站页面（先要做好解析绑定）</span>
 			</dd>
 		</dl>
 		</div>
@@ -59,7 +87,96 @@ echo <<<EOT
 			</dd>
 		</dl>
 		</div>
+	</div>
 		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>展示内容{$lang_marks}</dt>
+			<dd>
+				<label><input name="met_wapshowtype" type="radio" class="radio" value="0" {$met_wapshowtype1[0]} />与电脑版一致</label>
+				<label><input name="met_wapshowtype" type="radio" class="radio" value="1" {$met_wapshowtype1[1]} />自定义</label>
+			</dd>
+		</dl>
+		</div>
+	<h3 class="v52fmbx_hr metsliding" ctype="met_wapshowtype_1">以下为自定义需设置的选项</h3>
+	<div class="v52fmbx_dlbox" ctype="met_wapshowtype_1">
+		<dl>
+			<dd>
+			<div class="flashaddclumn flashaddclumn_bing">
+			<h3><p>
+				<label style="height:15px; line-height:20px; text-align:left; color:red;">请设置允许显示在WAP中的栏目</label>
+				</p>
+			</h3>
+			<div class="list">
+<!--
+EOT;
+foreach($met_class1 as $key=>$val){
+$val[cckk]=$val[wap_ok]?'checked':'';
+echo <<<EOT
+-->	
+	<p><label><input name="met_clumid_{$val[id]}" type="checkbox" class="checkbox" value="{$val[id]}" ctype="1" {$val[cckk]}>{$val[name]}</label></p>
+<!--
+EOT;
+foreach($met_class2[$val[id]] as $key=>$val2){
+$val2[cckk]=$val2[wap_ok]?'checked':'';
+echo <<<EOT
+-->	
+    <p class="met_bigloumn2id_{$val2[bigclass]}" style="margin-left:22px;"><label><input name="met_clumid_{$val2[id]}" type="checkbox" class="checkbox" value="{$val2[id]}" ctype="2" {$val2[cckk]} bigclass="{$val2[bigclass]}">{$val2[name]}</label></p>
+<!--
+EOT;
+foreach($met_class3[$val2[id]] as $key=>$val3){
+$val3[cckk]=$val3[wap_ok]?'checked':'';
+echo <<<EOT
+-->	
+    <p class="met_bigloumn3id_{$val3[bigclass]}" style="margin-left:42px;"><label><input name="met_clumid_{$val3[id]}" type="checkbox" class="checkbox" value="{$val3[id]}" ctype="3" {$val3[cckk]} bigclass="{$val3[bigclass]}">{$val3[name]}</label></p>		
+<!--
+EOT;
+}}}  
+echo <<<EOT
+-->	
+				</div>
+				</div>
+			<div class="flashaddclumn flashaddclumn_nav">
+			<h3><p>
+				<label style="height:15px; line-height:20px; text-align:left; color:red;">请设置主导航栏目（先勾选左边栏目）</label>
+				</p>
+			</h3>
+			<div class="list">
+<!--
+EOT;
+foreach($met_class1 as $key=>$val){
+$val[cckk]=$val[wap_nav_ok]?'checked':'';
+$val[none]=$val[wap_ok]?'':'class="none"';
+echo <<<EOT
+-->	
+	<p {$val[none]} id="isnone_id_{$val[id]}"><label><input name="met_clumid_{$val[id]}" type="checkbox" class="checkbox" value="{$val[id]}" ctype="1" {$val[cckk]}>{$val[name]}</label></p>
+<!--
+EOT;
+foreach($met_class2[$val[id]] as $key=>$val2){
+$val2[cckk]=$val2[wap_nav_ok]?'checked':'';
+$val2[none]=$val2[wap_ok]?'':'class="none"';
+echo <<<EOT
+-->	
+    <p style="margin-left:22px;" {$val2[none]} id="isnone_id_{$val2[id]}"><label><input name="met_clumid_{$val2[id]}" type="checkbox" class="checkbox" value="{$val2[id]}" ctype="2" {$val2[cckk]}>{$val2[name]}</label></p>
+<!--
+EOT;
+foreach($met_class3[$val2[id]] as $key=>$val3){
+$val3[cckk]=$val3[wap_nav_ok]?'checked':'';
+$val3[none]=$val3[wap_ok]?'':'class="none"';
+echo <<<EOT
+-->	
+    <p style="margin-left:42px;" {$val3[none]} id="isnone_id_{$val3[id]}"><label><input name="met_clumid_{$val3[id]}" type="checkbox" class="checkbox" value="{$val3[id]}" ctype="3" {$val3[cckk]}>{$val3[name]}</label></p>		
+<!--
+EOT;
+}}}  
+echo <<<EOT
+-->	
+				</div>
+				</div>
+			<div class="clear"></div>
+			</dd>
+		</dl>
+	</div>
+		<div class="v52fmbx_dlbox" ctype="met_wapshowtype_1">
 		<dl>
 			<dt>{$lang_waplistshow}{$lang_marks}</dt>
 			<dd>
@@ -69,67 +186,16 @@ echo <<<EOT
 			</dd>
 		</dl>
 		</div>
-	</div>
-	<h3 class="v52fmbx_hr metsliding" sliding="3">{$lang_pagesting}</h3>
-	<div class="metsliding_box metsliding_box_3">
+		<h3 class="v52fmbx_hr metsliding" sliding="4">基本信息设置</h3>
 		<div class="v52fmbx_dlbox">
 		<dl>
-			<dt>{$lang_mod2}{$lang_marks}</dt>
+			<dt>页面标题(title){$lang_marks}</dt>
 			<dd>
-				{$lang_setskinNumOfPage} <input type="text" name="wap_news_list" class="text mid" value="$wap_news_list" />&nbsp;{$lang_waptiao}
+				<input type="text" name="wap_title" class="text" value="$wap_title" />
+				<span class="tips">为空将显示网站首页标题，此标题一般显示在浏览器顶部</span>
 			</dd>
 		</dl>
 		</div>
-		<div class="v52fmbx_dlbox">
-		<dl>
-			<dt>{$lang_mod3}{$lang_marks}</dt>
-			<dd>
-				{$lang_setskinNumOfPage} <input type="text" name="wap_product_list" class="text mid" value="$wap_product_list" />&nbsp;{$lang_waptiao}
-			</dd>
-		</dl>
-		</div>
-		<div class="v52fmbx_dlbox">
-		<dl>
-			<dt>{$lang_mod4}{$lang_marks}</dt>
-			<dd>
-				{$lang_setskinNumOfPage} <input type="text" name="wap_download_list" class="text mid" value="$wap_download_list" />&nbsp;{$lang_waptiao}
-			</dd>
-		</dl>
-		</div>
-		<div class="v52fmbx_dlbox">
-		<dl>
-			<dt>{$lang_mod5}{$lang_marks}</dt>
-			<dd>
-				{$lang_setskinNumOfPage} <input type="text" name="wap_img_list" class="text mid" value="$wap_img_list" />&nbsp;{$lang_waptiao}
-			</dd>
-		</dl>
-		</div>
-		<div class="v52fmbx_dlbox">
-		<dl>
-			<dt>{$lang_mod6}{$lang_marks}</dt>
-			<dd>
-				{$lang_setskinNumOfPage} <input type="text" name="wap_job_list" class="text mid" value="$wap_job_list" />&nbsp;{$lang_waptiao}
-			</dd>
-		</dl>
-		</div>
-		<div class="v52fmbx_dlbox">
-		<dl>
-			<dt>{$lang_mod7}{$lang_marks}</dt>
-			<dd>
-				{$lang_setskinNumOfPage} <input type="text" name="wap_message_list" class="text mid" value="$wap_message_list" />&nbsp;{$lang_waptiao}
-			</dd>
-		</dl>
-		</div>
-		<div class="v52fmbx_dlbox">
-		<dl>
-			<dt>{$lang_mod11}{$lang_marks}</dt>
-			<dd>
-				{$lang_setskinNumOfPage} <input type="text" name="wap_search_list" class="text mid" value="$wap_search_list" />&nbsp;{$lang_waptiao}
-			</dd>
-		</dl>
-		</div>
-	</div>
-	<h3 class="v52fmbx_hr metsliding" sliding="4">{$lang_unitytxt_3}</h3>
 		<div class="v52fmbx_dlbox">
 		<dl>
 			<dt>LOGO{$lang_marks}</dt>
@@ -147,52 +213,183 @@ echo <<<EOT
 		</div>
 		<div class="v52fmbx_dlbox">
 		<dl>
-			<dt>{$lang_wapshowimg}{$lang_marks}</dt>
+			<dt>底部文字{$lang_marks}</dt>
 			<dd>
-				<input name="met_wap_img" type="text" class="text" value="{$met_wap_img}" />
-				<span class="tips" style="">{$lang_wapinfo6}</span>
-				<input name="met_upsql" type="file" id="file_upload1" />
-				<script type="text/javascript">
-					$(document).ready(function(){
-						metuploadify('#file_upload1','upimage','met_wap_img');
-					});
-				</script>
+				<textarea name="wap_footertext" class="textarea">$wap_footertext</textarea>
 			</dd>
 		</dl>
 		</div>
-	<div class="metsliding_box metsliding_box_4">
-		<div class="v52fmbx_dlbox">
-		<dl>
-			<dt>{$lang_wapdescription}{$lang_marks}</dt>
-			<dd>
-				<textarea class="textarea gen" name="wap_description">$wap_description</textarea>
-				<span class="tips">{$lang_waptips4}</span>
-			</dd>
-		</dl>
-		</div>
-		<div class="v52fmbx_dlbox">
-		<dl>
-			<dt>{$lang_mod3}{$lang_marks}</dt>
-			<dd>
-				<input name="wap_product_imgx" type="text" class="text mid" value="$wap_product_imgx" />×
-				<input name="wap_product_imgy" type="text" class="text mid" value="$wap_product_imgy" />
-				<span class="tips">({$lang_setimgWidth} × {$lang_setimgHeight})({$lang_setimgPixel})</span>&nbsp;&nbsp;
-				<span class="tips">{$lang_waptips2}</span>
-			</dd>
-		</dl>
-		</div>
-		<div class="v52fmbx_dlbox">
-		<dl>
-			<dt>{$lang_mod5}{$lang_marks}</dt>
-			<dd>
-				<input name="wap_img_imgx" type="text" class="text mid" value="$wap_img_imgx" />×
-				<input name="wap_img_imgy" type="text" class="text mid" value="$wap_img_imgy" />
-				<span class="tips">({$lang_setimgWidth} × {$lang_setimgHeight})({$lang_setimgPixel})</span>
-			</dd>
-		</dl>
-		</div>
+	<div class="v52fmbx_submit">
+		<input type="submit" name="Submit" value="{$lang_Submit}" class="submit" onclick="return flashsubm()" />
+		<input type="hidden" name="f_columnlist" value="" />
+		<input type="hidden" name="f_wap_nav_ok" value="" />
 	</div>
-	<div class="v52fmbx_submit"><input type="submit" name="Submit" value="{$lang_Submit}" class="submit" onclick="return Smit($(this),'myform')" /></div>
+<script type="text/javascript">
+	function flashsubm(){
+		var list = $('.flashaddclumn_bing').find('input');
+		var vl = ',';
+		var list_nav= $('.flashaddclumn_nav').find('input');
+		var vl_nav = ',';
+			list.each(function(){
+				if($(this).attr("checked"))vl+=$(this).val()+',';
+			});
+			list_nav.each(function(){
+				if($(this).attr("checked"))vl_nav+=$(this).val()+',';
+			});
+			$("input[name='f_columnlist']").val(vl);
+			$("input[name='f_wap_nav_ok']").val(vl_nav);
+			return true;
+	}
+	$("input[name='met_clumid_all']").change(function(){
+		if($(this).attr("checked")){
+			$('.flashaddclumn_bing').find('input').attr("checked",true);
+		}else{	
+			$('.flashaddclumn_bing').find('input').attr("checked",false);
+		}
+	});
+	$('.flashaddclumn_bing').find('input').change(function(){
+		if(!$(this).attr("checked")){
+			$("input[name='met_clumid_all']").attr("checked",false);
+			$("#isnone_id_"+$(this).val()).hide().find('input').attr("checked",false);
+		}else{
+			$("#isnone_id_"+$(this).val()).show();
+		}
+		var ctype = $(this).attr("ctype");
+		var yesno = $(this).attr("checked")?true:false;
+		var my = $(this);
+		if(ctype==1){
+			$(".met_bigloumn2id_"+my.val()).each(function(){
+				$(this).find("input").attr("checked",yesno);
+				$(".met_bigloumn3id_"+$(this).find("input").val()).find("input").attr("checked",yesno);
+				var bln2id = $(this).find("input").val();
+				if(yesno){
+					$("#isnone_id_"+$(this).find("input").val()).show();
+				}else{
+					$("#isnone_id_"+$(this).find("input").val()).hide().find('input').attr("checked",false);
+				}
+				$(".met_bigloumn3id_"+bln2id).find("input").each(function(){
+					$(this).attr("checked",yesno);
+					if(yesno){
+						$("#isnone_id_"+$(this).val()).show();
+					}else{
+						$("#isnone_id_"+$(this).val()).hide().find('input').attr("checked",false);
+					}
+				});
+			});
+		}
+		if(ctype==2){
+			var bigclass = my.attr('bigclass');
+			var bigdom =  $(".flashaddclumn_bing input[name='met_clumid_"+bigclass+"']");
+			if(!bigdom.attr("checked")){
+				bigdom.attr("checked",true);
+				$("#isnone_id_"+bigclass).show();
+			}
+			$(".met_bigloumn3id_"+my.val()).find("input").each(function(){
+				$(this).attr("checked",yesno);
+				if(yesno){
+					$("#isnone_id_"+$(this).val()).show();
+				}else{
+					$("#isnone_id_"+$(this).val()).hide().find('input').attr("checked",false);
+				}
+			});
+		}
+		if(ctype==3){
+			var bigclass = my.attr('bigclass');
+			var bigdom =  $(".flashaddclumn_bing input[name='met_clumid_"+bigclass+"']");
+			if(!bigdom.attr("checked")){
+				bigdom.attr("checked",true);
+				$("#isnone_id_"+bigclass).show();
+			}
+			var bigclass = bigdom.attr('bigclass');
+			var bigdom =  $(".flashaddclumn_bing input[name='met_clumid_"+bigclass+"']");
+			if(!bigdom.attr("checked")){
+				bigdom.attr("checked",true);
+				$("#isnone_id_"+bigclass).show();
+			}
+		}
+	});
+function checkthis_wap(dm){
+	var dms = $("input[name='"+dm+"']");
+	dms.each(function(){
+		var dms = $(this);
+		if(dms.attr('type')!='hidden'){
+			var dom = $('[ctype^='+dm+']');
+			dms.change(function(){
+				var n = $(this).val();
+				if(dms.attr('type')=='checkbox'){
+					n = dms.attr('checked')?n:0;
+				}
+				dom.hide();
+				$('[ctype^='+dm+'_'+n+']').show();
+				ifreme_methei();
+			});
+			dom.hide();
+			if(dms.attr('type')=='radio'){
+				var dms = $("input[name='"+dm+"']:checked");
+			}
+			var vl = dms.val();
+			if(dms.attr('type')=='checkbox'){
+				vl = dms.attr('checked')?vl:0;
+			}
+			$('[ctype^='+dm+'_'+vl+']').show();
+			ifreme_methei();
+		}
+	});
+}
+	checkthis_wap('met_wap_tpb');
+	checkthis_wap('met_wapshowtype');
+</script>
+<!--
+EOT;
+}elseif($cs==4){
+echo <<<EOT
+-->	
+	<h3 class="v52fmbx_hr metsliding" sliding="4">{$lang_wapdimensionaltitle}</h3>
+	<div class="v52fmbx_dlbox">
+	<dl>
+		<dt>{$lang_wapdimensionalsize}{$lang_marks}</dt>
+		<dd>
+			<input name="wap_dimensional_size" type="text" class="text mid" value="{$wap_dimensional_size}" /> {$lang_setimgPixel}
+		</dd>
+	</dl>
+	</div>
+	<div class="v52fmbx_dlbox">
+	<dl>
+		<dt>LOGO{$lang_marks}</dt>
+		<dd>
+			<input name="met_dimensional_logo" type="text" class="text" value="{$met_dimensional_logo}" />
+			<span class="tips" style="">{$lang_wapdimensionaltips}</span>
+			<input name="met_upsql" type="file" id="file_upload" />
+			<script type="text/javascript">
+				$(document).ready(function(){
+					metuploadify('#file_upload','upimage','met_dimensional_logo');
+				});
+			</script>
+		</dd>
+	</dl>
+	</div>
+	<div class="v52fmbx_dlbox">
+	<dl>
+		<dt>{$lang_unitytxt_71}{$lang_marks}</dt>
+		<dd>
+			<a href="javascript:;" onclick="return dimensional();">{$lang_wapdimensionaldo}</a><br/>
+			<div id="dimensionalimg">
+<!--
+EOT;
+$rand=met_rand(4);
+$dimensionalimghtml=file_exists('../../../upload/files/dimensional.png')?'<img src="../../../upload/files/dimensional.png?'.$rand.'" />':'';
+echo <<<EOT
+-->
+			{$dimensionalimghtml}
+			</div>
+		</dd>
+	</dl>
+	</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->	
 </div>
 </div>
 </div>
@@ -202,10 +399,9 @@ echo <<<EOT
 	function dimensional(){
 		$("#dimensionalimg").html("$lang_jsx1");
 		$.ajax({			
-			url:'wap.php?wap_dimensional_size='+$("input[name='wap_dimensional_size']").val()+'&met_dimensional_logo='+$("input[name='met_dimensional_logo']").val()+'&action=dimensional',
+			url:'wap.php?wap_dimensional_size='+$("input[name='wap_dimensional_size']").val()+'&met_dimensional_logo='+$("input[name='met_dimensional_logo']").val()+'&action=dimensional&lang={$lang}',
 			type: 'GET',
 			success: function(data) {
-				alert(data);
 				$("#dimensionalimg").html("<img src='' />");
 				$("#dimensionalimg img").attr("src","");
 				$("#dimensionalimg img").attr("src",data);

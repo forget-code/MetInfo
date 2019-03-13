@@ -1,7 +1,6 @@
 <?php
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
-
 //search banner
 function methtml_search($classok=1,$searchtype=0,$classid=0,$module,$searchimg){
 global $searchurl,$lang_searchall,$nav_search,$lang_search,$lang,$img_url,$class_index;
@@ -29,11 +28,254 @@ $metinfo.="</form>";
 return $metinfo;
 }
 
+//提取字符串中的数字
+function findNum($str=''){
+	$str=trim($str);
+	if(empty($str)){return '';}
+	$temp=array('1','2','3','4','5','6','7','8','9','0');
+	$result='';
+	for($i=0;$i<strlen($str);$i++){
+		if(in_array($str[$i],$temp)){
+			$result.=$str[$i];
+		}
+	}
+	return $result;
+}
+
+//产品模块联合查询函数
+function metlabel_conjunctive($field,$price,$region,$img){
+	global $db,$lang,$met_parameter,$met_plist,$met_weburl,$quirys,$prices,$product_para,$para_select,$class1,$lang_cvall;
+	if(!$class1){
+		$class1=10001;
+	}
+	foreach($product_para as $key12=>$val){
+		if($val[type]!=2&&$val[type]!=6&&$val[type]!=4&&$val[id]!=$price){
+			unset($product_para[$key12]);
+		}
+		if($val[id]==$price){
+			$prices="paraprice_".$val[id];
+			global $$prices;
+		}
+	}
+	foreach($product_para as $key=>$val){
+		if($val[type]==4){
+			$inquiry="para".$val[id];
+			global $$inquiry;
+		}else{
+			$inquiry="para".$val[id];
+			global $$inquiry;
+		}
+	}
+	$img_list = array();
+	if(!is_numeric($img) && $img != ''){
+		$img_list = explode('|',$img);
+	}
+	if($field){
+		$para_product_list = explode('|',$field);
+		foreach($para_product_list as $key=>$val){
+			$product_para_id=array();
+			foreach($product_para as $key=>$val6){
+				if($val6[id]==$val){
+					$product_para_id[]=$product_para[$key];
+				}
+			}
+			foreach($product_para_id as $key=>$val1){
+				if($val==$price){
+						$product_merit=array();
+						$product_merit=explode('|',$region);	
+				}else{
+					$product_merit=array();
+					foreach($para_select[$val1[id]] as $key=>$val7){
+						$product_merit[]=$val7[info];
+					}
+				}
+				$quiryx='&search=search&class1='.$class1;
+				foreach($product_para as $key=>$val5){
+					if($val5[id]==$price){
+						$quiry="paraprice_".$val5[id];
+						$quirys=$$quiry;
+					}else{
+					if($val5[type]==4){
+						$quiry="para".$val5[id];
+						$quirys=$$quiry;
+					}else{
+						$quiry="para".$val5[id];
+						$quirys=$$quiry;
+					}
+					}
+					if($val5[id]==$val1[id]){
+						$quirys='';
+					}
+					$quiryx.="&".$quiry."=".$quirys;
+				}
+				$conjunctive[$val1[name]][all][id]=$val1[id];
+				$conjunctive[$val1[name]][all][type]=$val1[type];
+				$conjunctive[$val1[name]][all][info]=$lang_cvall;
+				$conjunctive[$val1[name]][all][url]=$met_weburl."product/product.php?lang=".$lang.$quiryx;
+				foreach($product_merit as $key=>$val4){
+				$conjunctive[$val1[name]][$val4][info]=$val4;
+				$conjunctive[$val1[name]][$val4][id]=$val1[id];
+				$conjunctive[$val1[name]][$val4][type]=$val1[type];
+				$quiryx='&search=search&class1='.$class1;
+				foreach($product_para as $key=>$val5){
+					if($val5[id]==$price){
+						$quiry="paraprice_".$val5[id];
+						$quirys=$$quiry;
+					}else{
+					if($val5[type]==4){
+						$quiry="para".$val5[id];
+						$quirys=$$quiry;
+					}else{
+						$quiry="para".$val5[id];
+						$quirys=$$quiry;
+					}
+					}
+					if($val5[id]==$val1[id]){
+						$quirys=$val4;
+					}
+					$quiryx.="&".$quiry."=".$quirys;
+				}
+				$conjunctive[$val1[name]][$val4][url]=$met_weburl."product/product.php?lang=".$lang.$quiryx;
+				}
+				
+			}
+		}
+	}else{
+			foreach($product_para as $key=>$val1){
+				if($val1[id]==$price){
+						$product_merit=explode('|',$region);
+				}else{
+					$product_merit=array();
+					foreach($para_select[$val1[id]] as $key=>$val7){
+						$product_merit[]=$val7[info];
+					}
+				}
+				$quiryx='&search=search&class1='.$class1;
+				foreach($product_para as $key=>$val5){
+					if($val5[id]==$price){
+						$quiry="paraprice_".$val5[id];
+						$quirys=$$quiry;
+					}else{
+						if($val5[type]==4){
+							$quiry="para".$val5[id];
+							$quirys=$$quiry;
+						}else{
+							$quiry="para".$val5[id];
+							$quirys=$$quiry;
+						}
+					}
+					if($val5[id]==$val1[id]){
+						$quirys='';
+					}
+					$quiryx.="&".$quiry."=".$quirys;
+				}
+				$conjunctive[$val1[name]][all][id]=$val1[id];
+				$conjunctive[$val1[name]][all][type]=$val1[type];
+				$conjunctive[$val1[name]][all][info]="$lang_cvall";
+				$conjunctive[$val1[name]][all][url]=$met_weburl."product/product.php?lang=".$lang.$quiryx;
+				foreach($product_merit as $key=>$val4){
+					$conjunctive[$val1[name]][$val4][id]=$val1[id];
+					$conjunctive[$val1[name]][$val4][info]=$val4;
+					$conjunctive[$val1[name]][$val4][type]=$val1[type];
+					$quiryx='&search=search&class1='.$class1;
+					foreach($product_para as $key=>$val5){
+						if($val5[id]==$price){
+							$quiry="paraprice_".$val5[id];
+							$quirys=$$quiry;
+						}else{
+						if($val5[type]==4){
+							$quiry="para".$val5[id];
+							$quirys=$$quiry;
+						}else{
+							$quiry="para".$val5[id];
+							$quirys=$$quiry;
+						}
+						}
+						if($val5[id]==$val1[id]){
+							$quirys=$val4;
+						}
+						$quiryx.="&".$quiry."=".$quirys;
+					}
+					$conjunctive[$val1[name]][$val4][url]=$met_weburl."product/product.php?lang=".$lang.$quiryx;				
+				}
+				
+			}
+			
+		
+	}
+	$metinfo.="<style>
+				.mark a{color:red;}
+				.list-search {list-style: none;padding: 0px;margin: 0px;}
+				.list-search dd{float:left; margin-right:20px;}
+				.list-search dt{float:left; margin-right:20px;}
+				.list-search a{white-space: pre-wrap;}
+				</style>";
+	$metinfo.="<ul class='list-search'>";
+	foreach($conjunctive as $key=>$val){
+		$metinfo.="<li>";
+		$metinfo.="<dl><dt>{$key}:</dt>";
+		$k = 0;
+		$j = 0;
+		foreach($conjunctive[$key] as $key1=>$val1){	
+			$class_mark="";
+			if($conjunctive[$key][$key1][info]){
+				if($val1[type]==4){
+					$para_mark="para".$val1[id];
+				}else{
+					$para_mark="para".$val1[id];
+				}
+				if($val1[id]==$price){
+					$para_mark=$$prices;
+				}else{
+					$para_mark=$$para_mark;
+				}
+				if($para_mark){
+					if($conjunctive[$key][$key1][info]==$para_mark){
+						$class_mark="class='mark'";
+					}else{
+						$class_mark="";
+					}
+				}else{
+					if($conjunctive[$key][$key1][info]==$lang_cvall){
+						$class_mark="class='mark'";
+					}else{
+						$class_mark="";
+					}
+				}
+				foreach($img_list as $key3=>$val3){
+					$j++;
+					$img_flist = explode('-',$val3);
+					$img_id[] = $img_flist[0];
+					$img_url[$key][$j] = $img_flist[1]; 
+				}
+				$img_id = array_unique($img_id);			
+				if(!is_numeric($img) && $img != ''){				
+					foreach($img_id as $key2=>$val8){				
+						if($val8 == $conjunctive[$key][$key1][id] && $img_url[$key][$k] !=''){
+							$metinfo.="<dd  {$class_mark}><a href='{$conjunctive[$key][$key1][url]}' title='{$conjunctive[$key][$key1][info]}' >"."<img src='{$img_url[$key][$k]}'></a></dd>";
+						}else{
+							$metinfo.="<dd  {$class_mark}><a href='{$conjunctive[$key][$key1][url]}' title='{$conjunctive[$key][$key1][info]}' >{$conjunctive[$key][$key1][info]}</a></dd>";
+						}
+						$k++;
+					}
+				}else{
+					$metinfo.="<dd  {$class_mark}><a href='{$conjunctive[$key][$key1][url]}' title='{$conjunctive[$key][$key1][info]}' >{$conjunctive[$key][$key1][info]}</a></dd>";
+				}
+			}
+		}
+		$metinfo.="</dl><div class='clear'></div></li>";
+	}
+	$metinfo.="</ul>";
+	return $metinfo;
+}
+
 //Product and Image and download module  parameter search function
 function methtml_parasearch($type,$para1=100,$para2=100,$para4=100,$para6=100,$paraimg,$classid=0,$class1x=0,$class2=0,$class3=0,$title=0,$content=0,$searchtype){
-global $module_listall,$module_list1,$module_list2,$module_list3,$product_paralist,$download_paralist,$img_paralist,$para_select,$class_index,$lang_Title,$lang_Content,$class1;
+global $module_listall,$module_list1,$module_list2,$module_list3,$product_paralist,$download_paralist,$img_paralist,$para_select,$class_index,$lang_Title,$lang_Content,$class1,$class_list;
 global $lang_AllBigclass,$navurl,$lang,$lang_AllThirdclass,$lang_AllSmallclass,$lang_search,$lang_Nolimit,$img_url,$metinfo_member_type,$met_member_use;
   $module=($type=='img')?5:(($type=='download')?4:3);
+  $class1tmp=$class1;
+  if($class_list[$class1][module]!=$module)$class1=10001;
   $type_para=($type=='img')?$img_paralist:(($type=='download')?$download_paralist:$product_paralist);
 if(intval($classid)==0 || $class1x || $class2 || $class3){
   if($type=='')$type='product';
@@ -222,6 +464,7 @@ if($paraimg<>''){
   $metinfo.="</span></li>\n";
   $metinfo.="</form>\n";
   $metinfo.="</ul>\n";
+  $class1=$class1tmp;
   return $metinfo;
 }
 
@@ -364,6 +607,29 @@ if($searchtype==""){
 	$metinfo.="</ul>\n";
     $metinfo.="</form>\n";	
 	return $metinfo;
+}
+//按栏目分类得到url
+function title($class1,$anyid,$lang){
+	global $met_class1,$met_class2,$met_weburl,$met_adminfile,$met_content_type;
+	if($met_content_type==1){
+	foreach ($met_class1 as $val) {
+		$idall[]=$val[id];
+	}
+	if(!in_array($class1, $idall)&&$class1!=0){
+		foreach ($met_class2 as $val1) {
+		foreach ($val1 as $val2) {
+			if($val2[id]==$class1){
+				$classid1=$val2[bigclass];
+				$classname1=$met_class1[$classid1][name];
+				$module1=$met_class1[$classid1][module];
+				$classname2=$val2[name];
+			}
+		}
+		}
+	$title="<a href='{$met_weburl}{$met_adminfile}/content/content.php?anyid={$anyid}&lang={$lang}&module=$module1&class1={$classid1}'>{$classname1}</a>><a href='JavaScript:;'>$classname2</a>";
+	}	
+	}
+	return $title;
 }
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.

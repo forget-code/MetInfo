@@ -19,8 +19,8 @@ if($action=="login"){
          require_once ROOTPATH.'member/captcha.class.php';
          $Captcha= new  Captcha();
          if(!$Captcha->CheckCode($code)){
-         echo("<script type='text/javascript'> alert('$lang_membercode'); window.history.back();</script>");
-		       exit;
+			echo("<script type='text/javascript'> alert('$lang_membercode'); location.href='login.php?lang=$lang';</script>");
+		    exit;
          }
      }
 	

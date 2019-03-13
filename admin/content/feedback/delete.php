@@ -3,7 +3,7 @@
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 $depth='../';
 require_once $depth.'../login/login_check.php';
-$backurl="../content/feedback/index.php?anyid={$anyid}&lang=$lang&class1=$class1&customerid={$customerid}";
+$backurl="../content/feedback/index.php?anyid={$anyid}&lang=$lang&class1=$class1&customerid={$customerid}&classall={$classall}";
 $query = "select * from $met_parameter where lang='$lang' and module='8' and type='5' order by no_order";
 $result = $db->query($query);
 while($list = $db->fetch_array($result)){
@@ -13,11 +13,9 @@ if($action=="del"){
 	$allidlist=explode(',',$allid);
 	foreach($allidlist as $key=>$val){
 		/*delete images*/
-		if($met_deleteimg){
-			foreach($para_list as $key=>$val1){
-				$imagelist=$db->get_one("select * from $met_flist where lang='$lang' and  paraid='$val1[id]' and listid='$val'");
-				file_unlink($depth."../".$imagelist[info]);
-			}
+		foreach($para_list as $key=>$val1){
+			$imagelist=$db->get_one("select * from $met_flist where lang='$lang' and  paraid='$val1[id]' and listid='$val'");
+			file_unlink($depth."../".$imagelist[info]);
 		}
 		$query = "delete from $met_flist where listid='$val' and module='8'";
 		$db->query($query);
@@ -36,11 +34,9 @@ if($action=="del"){
 	}
 	foreach($allidlist as $key=>$val){
 		/*delete images*/
-		if($met_deleteimg){
-			foreach($para_list as $key=>$val1){
-				$imagelist=$db->get_one("select * from $met_flist where lang='$lang' and  paraid='$val1[id]' and listid='$val[id]'");
-				file_unlink($depth."../".$imagelist[info]);
-			}
+		foreach($para_list as $key=>$val1){
+			$imagelist=$db->get_one("select * from $met_flist where lang='$lang' and  paraid='$val1[id]' and listid='$val[id]'");
+			file_unlink($depth."../".$imagelist[info]);
 		}
 		$query = "delete from $met_flist where listid='$val[id]' and module='8'";
 		$db->query($query);
@@ -52,11 +48,9 @@ if($action=="del"){
 	$admin_list = $db->get_one("SELECT * FROM $met_feedback WHERE id='$id'");
 	if(!$admin_list)metsave('-1',$lang_dataerror,$depth);
 	/*delete images*/
-	if($met_deleteimg){
-		foreach($para_list as $key=>$val){
-			$imagelist=$db->get_one("select * from $met_flist where lang='$lang' and  paraid='$val[id]' and listid='$id'");
-			file_unlink($depth."../".$imagelist[info]);
-		}
+	foreach($para_list as $key=>$val){
+		$imagelist=$db->get_one("select * from $met_flist where lang='$lang' and  paraid='$val[id]' and listid='$id'");
+		file_unlink($depth."../".$imagelist[info]);
 	}
 	$query = "delete from {$met_flist} where listid='$id' and module='8'";
 	$db->query($query);

@@ -1,0 +1,22 @@
+<!--<?php
+echo <<<EOT
+-->
+<!--
+EOT;
+foreach($message_list as $key=>$val){
+echo <<<EOT
+-->   
+		<li>
+			<a href="messagedetail.php?lang={$lang}&id={$val[id]}&mtitle={$lang_memberShowMS}">
+				<div class="title">{$val[info]}</div>
+				<div class="desc"><span>{$val[addtime]}</span><span>{$lang_memberReply}：{$val[readok]}</span></div>
+			</a>
+		</li>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<!--
+EOT;
+?>-->

@@ -71,7 +71,7 @@ $title=iconv($codeold,$codenew,$val[0]);
 $items=1;
 $querycsvpara=array();
 if($classcsv['module']!=2){
-	$querypara = "select * from $met_parameter where lang='$lang' and module='$classcsv[module]' and (class1='$classcsv[id]' or class1=0) order by no_order";
+	$querypara = "select * from $met_parameter where lang='$lang' and module='$classcsv[module]' and (class1='0' or (class1='$class1' and class2='$class2' and class3=0) or (class1='$class1' and class2='$class2' and class3='$class3') or (class1='$class1' and class2=0 and class3=0)) order by no_order";
 	$csvpara=$db->get_all($querypara);
 	foreach($csvpara as $key1=>$val1){
 	if($val1['type']!=5){

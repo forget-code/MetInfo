@@ -8,7 +8,7 @@ $mtype=$met_flasharray[$module][type];
 $flashmdtype=$flashrec1['img_path']!=''?1:2;
 $mtype=$flashmdtype==2?2:1;
 $flashmdtype1[$flashmdtype]='selected';
-$query="select * from $met_column where lang='$lang' and if_in='0' order by no_order";
+$query="select * from $met_column where lang='$lang' and (if_in='0' or module>1000 )order by no_order";
 $result= $db->query($query);
 while($list = $db->fetch_array($result)){
 	if(!$met_flasharray[$list[id]]){

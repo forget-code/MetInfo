@@ -51,6 +51,13 @@ while($list = $db->fetch_array($result)){
 	$para_list[]=$list;
 }
 if($action=="add"){
+	if(!$description){
+		$description=strip_tags($content);
+		$description=str_replace("\n", '', $description); 
+		$description=str_replace("\r", '', $description); 
+		$description=str_replace("\t", '', $description);
+		$description=mb_substr($description,0,200,'utf-8');
+	}
 $access=$access<>""?$access:0;
 $query = "INSERT INTO $met_download SET
                       title              = '$title',
@@ -75,7 +82,9 @@ $query = "INSERT INTO $met_download SET
 					  downloadaccess     = '$downloadaccess',
 					  filename           = '$filename',
 					  lang          	 = '$lang',
-					  top_ok             = '$top_ok'";
+					  top_ok             = '$top_ok',
+					  displaytype        = '$displaytype',
+					  tag                = '$tag'";
          $db->query($query);
 	$later_download=$db->get_one("select * from $met_download where updatetime='$updatetime' and lang='$lang'");
 	$id=$later_download[id];
@@ -114,6 +123,21 @@ $query = "INSERT INTO $met_download SET
 	$gent='../../sitemap/index.php?lang='.$lang.'&htmsitemap='.$met_member_force;
 	metsave($turl,'',$depth,$htmjs,$gent);
 }
+if($description){
+	$description_type=$db->get_one("select * from $met_download where id='$id'");
+	$description1=strip_tags($description_type[content]);
+	$description1=str_replace("\n", '', $description1); 
+	$description1=str_replace("\r", '', $description1); 
+	$description1=str_replace("\t", '', $description1);
+	$description1=mb_substr($description1,0,200,'utf-8');
+	if($description1==$description){
+		$description=strip_tags($content);
+		$description=str_replace("\n", '', $description); 
+		$description=str_replace("\r", '', $description); 
+		$description=str_replace("\t", '', $description);
+		$description=mb_substr($description,0,200,'utf-8');
+	}
+}
 if($action=="editor"){
 $query = "update $met_download SET 
                       title              = '$title',
@@ -121,11 +145,13 @@ $query = "update $met_download SET
 					  keywords           = '$keywords',
 					  description        = '$description',
 					  content            = '$content',
+					  tag                = '$tag',
                       class1             = '$class1',
 					  class2             = '$class2',
 					  class3             = '$class3',
 					  downloadurl        = '$downloadurl',
-					  filesize           = '$filesize',";
+					  filesize           = '$filesize',
+					  displaytype        = '$displaytype',";
 if($metadmin[downloadnew])$query .= "					  
 					  new_ok             = '$new_ok',";
 if($metadmin[downloadcom])$query .= "	

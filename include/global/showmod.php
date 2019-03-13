@@ -6,8 +6,16 @@ $news=$db->get_one("select * from $dbname where id=$id and lang='$lang' and (rec
 if(!$news){okinfo('../404.html');exit();}
 $news['updatetime_order']=$news['updatetime'];
 $news['updatetime'] = date($met_contenttime,strtotime($news['updatetime']));
-$news['imgurls']=($news['imgurls']<>"")?$news['imgurls']:'../'.$met_agents_img;
-$news['imgurl']=($news['imgurl']<>"")?$news['imgurl']:'../'.$met_agents_img;
+if(strstr($news['imgurls'], "http://")){
+	$news['imgurls']=($news['imgurls']<>"")?$news['imgurls']:$news['imgurls'];
+}else{	
+	$news['imgurls']=($news['imgurls']<>"")?$news['imgurls']:'../'.$met_agents_img;
+	}
+if(strstr($news['imgurl'], "http://")){
+	$news['imgurl']=($news['imgurl']<>"")?$news['imgurl']:$news['imgurl'];
+}else{	
+	$news['imgurl']=($news['imgurl']<>"")?$news['imgurl']:'../'.$met_agents_img;
+}
 $class1=$news['class1'];
 $class2=$news['class2'];
 $class3=$news['class3'];	
@@ -45,7 +53,7 @@ if($mdmendy){
 		if(intval($metparaaccess)>0&&$met_member_use){
 			$paracode=authcode($news[$nowpara1], 'ENCODE', $met_member_force);
 			$paracode=codetra($paracode,1); 
-			$news[$nowpara1]="<script language='javascript' src='../include/access.php?metuser=para&metaccess=".$metparaaccess."&lang=".$lang."&listinfo=".$paracode."&paratype=".$metpara[$list1['paraid']]['type']."'></script>";
+			$news[$nowpara1]="<script language='javascript' src='../include/access.php?metmemberforce={$metmemberforce}&metuser=para&metaccess=".$metparaaccess."&lang=".$lang."&listinfo=".$paracode."&paratype=".$metpara[$list1['paraid']]['type']."'></script>";
 		}
 		$nowparaname="";
 		$nowparaname=$nowpara1."name";
@@ -106,8 +114,16 @@ if($dataoptimize[$pagemark]['otherlist']){
 		$list['news']=$list['top_ok']?"":((((strtotime($m_now_date)-strtotime($list['updatetime']))/86400)<$met_newsdays)?"<img class='listnews' src='".$img_url."news.gif"."' />":"");
 		$pagename1=$list['updatetime'];
 		$list['updatetime'] = date($met_listtime,strtotime($list['updatetime']));
-		$list['imgurls']=($list['imgurls']<>"")?$list['imgurls']:'../'.$met_agents_img;
-		$list['imgurl']=($list['imgurl']<>"")?$list['imgurl']:'../'.$met_agents_img;
+		if(strstr($list['imgurls'], "http://")){
+			$list['imgurls']=($list['imgurls']<>"")?$list['imgurls']:$list['imgurls'];
+		}else{	
+			$list['imgurls']=($list['imgurls']<>"")?$list['imgurls']:'../'.$met_agents_img;
+		}
+		if(strstr($list['imgurl'], "http://")){
+			$list['imgurl']=($list['imgurl']<>"")?$list['imgurl']:$list['imgurl'];
+		}else{	
+			$list['imgurl']=($list['imgurl']<>"")?$list['imgurl']:'../'.$met_agents_img;
+		}
 		if($dataoptimize[$pagemark]['para'][$pagemark]){
 			$query1 = "select * from $met_plist where module='$pagemark' and listid='$list[id]'";
 			$result1 = $db->query($query1);
@@ -161,6 +177,48 @@ if($dataoptimize[$pagemark]['otherlist']){
 		if($list['class1']!=0)$md_class[$list['class1']][]=$list;
 		if($list['class2']!=0)$md_class[$list['class2']][]=$list;
 		if($list['class3']!=0)$md_class[$list['class3']][]=$list;
+		if($list['classother']!=''){
+			$total_class=array();
+			$list['classother']=trim($list['classother'],'|');
+			$total_class=explode('|',$list['classother']);
+			foreach($total_class as $key=>$val){
+				$val=trim($val,'-');
+				$total_classother=explode('-',$val);
+				$classother1[$key]=$total_classother[0];
+				$classother2[$key]=$total_classother[1];
+				$classother3[$key]=$total_classother[2];				
+			}
+			foreach($classother1 as $val){
+				if($val!=0&&!array_key_exists($val,$md_class))$md_class[$val][]=$list;					
+			}
+			foreach($classother2 as $val){
+				if($val!=0&&!array_key_exists($val,$md_class))$md_class[$val][]=$list;
+			}
+			foreach($classother3 as $val){
+				if($val!=0&&!array_key_exists($val,$md_class))$md_class[$val][]=$list;					
+			}			
+		}
+		if($classnow==$class2){
+			foreach($md_class as $key=>$val){
+				if($key==$class1||$key==$class2){
+					$md_class1[$key]=$val;
+				}
+				foreach($nav_list3[$class2] as $v){
+					if($key==$v[id]){
+						$md_class1[$key]=$val;
+					}
+				}
+			}
+		}else if($classnow==$class3){
+			foreach($md_class as $key=>$val){
+				if($key==$class1||$key==$class2||$key==$class3){
+					$md_class1[$key]=$val;
+				}
+			}
+		}else if($classnow==$class1){
+			$md_class1=$md_class;
+		}
+		$md_class=$md_class1;
 		$md_list[]=$list;
 	}
 }
@@ -188,14 +246,29 @@ if($dataoptimize[$pagemark]['nextlist']){
     if($nextnews)$nextnews['url']=$met_pseudo?$nextid.'-'.$lang.'.html':($met_webhtm?($nextnews['filename']?$nextid.$met_ahtmtypep:$nexthtmname.$nextnews['id'].$met_ahtmtypen):$phpname.$nextnews['id']);
 	$preinfo=$prenews;
 	$nextinfo=$nextnews;
+	$preinfo[url]    = $preinfo[url]?$preinfo[url]:'#';
+	$preinfo[title]  = $preinfo[title]?$preinfo[title]:$lang_Noinfo;
+	$nextinfo[url]   = $nextinfo[url]?$nextinfo[url]:'#';
+	$nextinfo[title] = $nextinfo[title]?$nextinfo[title]:$lang_Noinfo;
 }
 $class2=$class_list[$class1]['releclass']?$class1:$class2;
 $class1=$class_list[$class1]['releclass']?$class_list[$class1]['releclass']:$class1;	
-$show['description']= $news['description']?$news['description']:$met_keywords;
+$show['description']= $news['description']?$news['description']:$met_description;
 $show['keywords']   = $news['keywords']?$news['keywords']:$met_keywords;
 $met_title          = $news['ctitle']?$news['ctitle']:($met_title?$news['title'].'-'.$met_title:$news['title']);
 $nav_x['name']      = $nav_x['name']." > ".$news['title'];
 $class_concent=$metadmin[fujiatype]?'':'<div id="metinfo_additional">'.($class_list[$news[class3]]['content']?$class_list[$news[class3]]['content']:($class_list[$news[class2]]['content']?$class_list[$news[class2]]['content']:$class_list[$news[class1]]['content'])).'</div>';
+if($news[tag]){
+	if(!$lang_tagweb)$lang_tagweb='TAG';
+	$tagstr="<br /><span>{$lang_tagweb}:&nbsp";
+	$tags=explode('|',$news[tag]);
+	foreach($tags as $key=>$val){
+		$urlval = urlencode($val);
+		if($met_pseudo||$met_tag_pseudo){$tagstr.="&nbsp<a href=\"../tag/{$urlval}-{$lang}\" target=\"_blank\">$val</a>";}
+		else{$tagstr.="&nbsp<a href=\"../search/search.php?class1=&class2=&class3=&searchtype=0&searchword={$urlval}&lang={$lang}\" target=\"_blank\">$val</a>";}
+	}
+	$class_concent.=$tagstr.'</span>';
+}
 $news['content'].=$class_concent;
 $news['content1'].=$class_concent;
 $news['content2'].=$class_concent;
@@ -228,15 +301,15 @@ if($pagemark==3||$pagemark==5){
 	}
 }
 if($news['classother']){
-	$met_pnorder=0;
+	//$met_pnorder=0;
 	//$lang_sidebarjstype=1;
-	$csnow='x';
-	$class3='x';
-	$class_list[$classnow][name]=$class1_info[name];
-	$navdown='';
+	//$csnow='x';
+	//$class3='x';
+	//$class_list[$classnow][name]=$class1_info[name];
+	//$navdown='';
 }
 require_once '../public/php/methtml.inc.php';
 if($news['classother']){
-	$nav_x[name]="<a href=".$news['url']." >".$news['title']."</a>";
+	//$nav_x[name]="<a href=".$news['url']." >".$news['title']."</a>";
 }
 ?>

@@ -2,7 +2,7 @@
 Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
-
+.cke_toolbox{ margin:5px!important;}
 .cke_skin_BootstrapCK-Skin *,.cke_skin_BootstrapCK-Skin a:hover,.cke_skin_BootstrapCK-Skin a:link,.cke_skin_BootstrapCK-Skin a:visited,.cke_skin_BootstrapCK-Skin a:active{
 margin:0;
 padding:0;
@@ -51,16 +51,15 @@ border:2px groove #E0DFE3;
 display:block;
 }
 span.cke_skin_BootstrapCK-Skin, span.cke_skin_BootstrapCK-Skin:focus{
-border:1px solid rgba(0, 0, 0, 0.05);
+border:1px solid #ddd;
 background-color: #f5f5f5;
-padding:3px;
+padding:0px 0px 0px 0px;/*6px 10px 6px 8px*/
 }
 .cke_skin_BootstrapCK-Skin span.cke_browser_webkit,.cke_skin_BootstrapCK-Skin span.cke_browser_gecko18{
 display:block;
 }
 .cke_skin_BootstrapCK-Skin .cke_wrapper{
 -webkit-touch-callout:none;
-border-radius:5px;
 background:url(images/sprites.png) 0 -1950 repeat-x;
 display:block;
 _display:inline-block;
@@ -88,15 +87,15 @@ margin-left:-10px;
 display:table;
 }
 .cke_skin_BootstrapCK-Skin .cke_contents{
-margin:5px;
+border-top:1px solid #ddd;
+margin:0px;
+font-size:0px;
 }
 .cke_skin_BootstrapCK-Skin .cke_hc .cke_contents{
 border:1px solid black;
 }
 .cke_skin_BootstrapCK-Skin .cke_contents iframe{
 background-color:#fff;
-border-radius: 4px;
-border:1px solid rgba(0, 0, 0, 0.05);
 }
 .cke_skin_BootstrapCK-Skin .cke_focus{
 /*outline:auto 5px -webkit-focus-ring-color;*/
@@ -169,7 +168,6 @@ background-color:#fff;
 width:130px;
 height:100px;
 overflow:hidden;
-border-radius:4px;
 padding: 5px;
 margin-top: 5px !important;
 }
@@ -305,7 +303,7 @@ float:right;
 border:1px outset #D3D3D3;
 margin:11px 0 2px;
 cursor:pointer;
-border-radius: 3px;
+display:none!important;
 }
 .cke_skin_BootstrapCK-Skin .cke_rtl a.cke_toolbox_collapser,.cke_skin_BootstrapCK-Skin .cke_rtl a:hover.cke_toolbox_collapser{
 float:left;
@@ -361,7 +359,6 @@ margin-right:0;
 margin-left:6px;
 }
 .cke_skin_BootstrapCK-Skin .cke_button a,.cke_skin_BootstrapCK-Skin .cke_button a:hover,.cke_skin_BootstrapCK-Skin .cke_button a:focus,.cke_skin_BootstrapCK-Skin .cke_button a:active,.cke_skin_BootstrapCK-Skin .cke_button a.cke_off{
-border-radius:3px;
 outline:none;
 padding:2px 4px;
 height:18px;
@@ -371,7 +368,6 @@ cursor:default;
 .cke_skin_BootstrapCK-Skin .cke_button a,.cke_skin_BootstrapCK-Skin .cke_button a.cke_off{
 filter:alpha(opacity=70);
 opacity:.70;
-border-radius:3px;
 }
 .cke_skin_BootstrapCK-Skin .cke_hc .cke_button a,.cke_skin_BootstrapCK-Skin .cke_hc .cke_button a.cke_off{
 opacity:1.0;
@@ -653,11 +649,9 @@ height:auto;
 _height:100px;
 }
 .cke_skin_BootstrapCK-Skin .cke_rcombo a,.cke_skin_BootstrapCK-Skin .cke_rcombo a:active,.cke_skin_BootstrapCK-Skin .cke_rcombo a:hover{
-border-radius:4px;
 background:#FDFDFD none 0 -100px repeat-x;
 _background-image:url(images/sprites_ie6.png);
 border: 1px solid rgba(0, 0, 0, 0.05);
-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05) inset;
 float:left;
 padding:2px;
 height:21px;

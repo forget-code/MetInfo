@@ -5,7 +5,6 @@ header("Content-type: text/html;charset=utf-8");
 error_reporting(E_ERROR | E_PARSE);
 @set_time_limit(0);
 set_magic_quotes_runtime(0);
-define('VERSION','5.2.1');
 if(PHP_VERSION < '4.1.0') {
 	$_GET         = &$HTTP_GET_VARS;
 	$_POST        = &$HTTP_POST_VARS;
@@ -91,6 +90,38 @@ switch ($action)
 		if(!function_exists('gzinflate')){
 			$function='WARN';
 			$fstr.="<li class='WARN'>空间不支持gzinflate函数，无法在线解压ZIP文件。（无法通过后台上传模板和数据备份文件）</li>";
+		}
+		if(!function_exists('fopen')){
+			$function='WARN';
+			$fstr.="<li class='WARN'>空间不支持fopen函数，无法在线解压ZIP文件。（无法通过后台上传模板和数据备份文件）</li>";
+		}
+		if(!function_exists('opendir')){
+			$function='WARN';
+			$fstr.="<li class='WARN'>空间不支持opendir函数，无法在线解压ZIP文件。（无法通过后台上传模板和数据备份文件）</li>";
+		}
+		if(!function_exists('crc32')){
+			$function='WARN';
+			$fstr.="<li class='WARN'>空间不支持crc32函数，无法在线解压ZIP文件。（无法通过后台上传模板和数据备份文件）</li>";
+		}
+		if(!function_exists('gzopen')){
+			$function='WARN';
+			$fstr.="<li class='WARN'>空间不支持gzopen函数，无法在线解压ZIP文件。（无法通过后台上传模板和数据备份文件）</li>";
+		}
+		if(!function_exists('unpack')){
+			$function='WARN';
+			$fstr.="<li class='WARN'>空间不支持unpack函数，无法在线解压ZIP文件。（无法通过后台上传模板和数据备份文件）</li>";
+		}
+		if(!function_exists('bin2hex')){
+			$function='WARN';
+			$fstr.="<li class='WARN'>空间不支持bin2hex函数，无法在线解压ZIP文件。（无法通过后台上传模板和数据备份文件）</li>";
+		}
+		if(!function_exists('pack')){
+			$function='WARN';
+			$fstr.="<li class='WARN'>空间不支持pack函数，无法在线解压ZIP文件。（无法通过后台上传模板和数据备份文件）</li>";
+		}
+		if(!function_exists('php_uname')){
+			$function='WARN';
+			$fstr.="<li class='WARN'>空间不支持php_uname函数，无法在线解压ZIP文件。（无法通过后台上传模板和数据备份文件）</li>";
 		}
 		if(!function_exists('ini_set')){
 			$function='WARN';
@@ -189,7 +220,7 @@ switch ($action)
 				$content=readover("sql.sql");
 				$content=str_replace('ENGINE=MyISAM DEFAULT CHARSET=utf8','TYPE=MyISAM',$content);
 			}
-			if($cndata=="yes" or ($cndata<>"yes" and $endata<>"yes")){
+			if($cndata=="yes" or ($cndata<>"yes" and $endata<>"yes" and $tcdata<>"yes")){
 				$content=readover("cn_config.sql");
 				$content=preg_replace("/{#(.+?)}/eis",'$lang[\\1]',$content);	
 				$installinfo.=creat_table($content);	
@@ -199,6 +230,11 @@ switch ($action)
 				$content=preg_replace("/{#(.+?)}/eis",'$lang[\\1]',$content);	
 				$installinfo.=creat_table($content);	
             }	
+			if($tcdata=="yes"){
+				$content=readover("tc_config.sql");
+				$content=preg_replace("/{#(.+?)}/eis",'$lang[\\1]',$content);	
+				$installinfo.=creat_table($content);	
+            }
 			if($showdata=='yes'){
 				if($cndata=="yes" or ($cndata<>"yes" and $endata<>"yes")){
 					$content=readover("cn.sql");
@@ -210,6 +246,11 @@ switch ($action)
 					$content=preg_replace("/{#(.+?)}/eis",'$lang[\\1]',$content);	
 					$installinfo.=creat_table($content);	
 				}
+				if($tcdata=="yes"){
+				$content=readover("tc.sql");
+				$content=preg_replace("/{#(.+?)}/eis",'$lang[\\1]',$content);	
+				$installinfo.=creat_table($content);	
+            }
 				$img_file="<?php
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
@@ -245,7 +286,7 @@ require_once '../img/showimg.php';
 			$content=preg_replace("/{#(.+?)}/eis",'$lang[\\1]',$content);	
 			$installinfo.=creat_table($content);
 			file_put_contents('../config/config_safe.php','<?php/*'.met_rand_i(32).'*/?>');
-			header("location:index.php?action=adminsetup&cndata={$cndata}&endata={$endata}");exit;
+			header("location:index.php?action=adminsetup&cndata={$cndata}&endata={$endata}&tcdata={$tcdata}");exit;
 		}else {
 			include template('databasesetup');
 		}
@@ -257,6 +298,16 @@ require_once '../img/showimg.php';
 			if($regname=='' || $regpwd=='' || $email==''){
 				echo("<script type='text/javascript'> alert('请填写管理员信息！'); history.go(-1); </script>");
 			}
+			
+			if($email_scribe==1){
+				$post=array(
+					'id'=>'67d6b20a0ee8352affc40bd275b55299df2e04aded66c4e4',
+					't'=>'qf_booked_feedback',
+					'to'=>"$email"
+				);
+				$yj = curl_post1($post,45);
+			}
+			
 			$regname = trim($regname);
 			$regpwd  = md5(trim($regpwd));
 			$email   = trim($email);
@@ -275,6 +326,7 @@ require_once '../img/showimg.php';
 			$met_config      = "{$tablepre}config";
 			$met_column      = "{$tablepre}column";
 			$met_lang      = "{$tablepre}lang";
+			$met_skin_table="{$tablepre}skin_table";
 			 $query = " INSERT INTO $met_admin_table set
                       admin_id           = '$regname',
                       admin_pass         = '$regpwd',
@@ -286,6 +338,7 @@ require_once '../img/showimg.php';
 					  admin_register_date= '$m_now_date',
 					  admin_shortcut='[{\"name\":\"lang_skinbaseset\",\"url\":\"system/basic.php?anyid=9&lang=cn\",\"bigclass\":\"1\",\"field\":\"s1001\",\"type\":\"2\",\"list_order\":\"10\",\"protect\":\"1\",\"hidden\":\"0\",\"lang\":\"lang_skinbaseset\"},{\"name\":\"lang_indexcolumn\",\"url\":\"column/index.php?anyid=25&lang=cn\",\"bigclass\":\"1\",\"field\":\"s1201\",\"type\":\"2\",\"list_order\":\"0\",\"protect\":\"1\",\"hidden\":\"0\",\"lang\":\"lang_indexcolumn\"},{\"name\":\"lang_unitytxt_75\",\"url\":\"interface/skin_editor.php?anyid=18&lang=cn\",\"bigclass\":\"1\",\"field\":\"s1101\",\"type\":\"2\",\"list_order\":\"0\",\"protect\":\"1\",\"hidden\":\"0\",\"lang\":\"lang_unitytxt_75\"},{\"name\":\"lang_tmptips\",\"url\":\"interface/info.php?anyid=24&lang=cn\",\"bigclass\":\"1\",\"field\":\"\",\"type\":\"2\",\"list_order\":\"0\",\"protect\":\"1\",\"hidden\":\"0\",\"lang\":\"lang_tmptips\"},{\"name\":\"lang_mod2add\",\"url\":\"content/article/content.php?action=add&lang=cn&anyid=29\",\"bigclass\":\"1\",\"field\":\"\",\"type\":\"2\",\"list_order\":\"0\",\"protect\":\"0\",\"hidden\":\"0\",\"lang\":\"lang_mod2add\"},{\"name\":\"lang_mod3add\",\"url\":\"content/product/content.php?action=add&lang=cn&anyid=29\",\"bigclass\":\"1\",\"field\":\"\",\"type\":2,\"list_order\":\"0\",\"protect\":0}]',
 					  usertype        	 = '3',
+					  content_type   = '1',
 					  admin_ok           = '1'";
 			mysql_query($query) or die('写入数据库失败: ' . mysql_error());
 			$query = " UPDATE $met_config set value='$webname_cn' where name='met_webname' and lang='cn'";
@@ -295,6 +348,10 @@ require_once '../img/showimg.php';
 			$query = " UPDATE $met_config set value='$webname_en' where name='met_webname' and lang='en'";
 			mysql_query($query) or die('写入数据库失败: ' . mysql_error());
 			$query = " UPDATE $met_config set value='$webkeywords_en' where name='met_keywords' and lang='en'";
+			mysql_query($query) or die('写入数据库失败: ' . mysql_error());
+			$query = " UPDATE $met_config set value='$webname_tc' where name='met_webname' and lang='tc'";
+			mysql_query($query) or die('写入数据库失败: ' . mysql_error());
+			$query = " UPDATE $met_config set value='$webkeywords_tc' where name='met_keywords' and lang='tc'";
 			mysql_query($query) or die('写入数据库失败: ' . mysql_error());
 			$force =randStr(7);
 			$query = " UPDATE $met_config set value='$force' where name='met_member_force'";
@@ -307,17 +364,37 @@ require_once '../img/showimg.php';
 			$adminurl=$install_url.'admin/';
 			$query = " UPDATE $met_column set out_url='$adminurl' where module='0'";
 			mysql_query($query) or die('写入数据库失败: ' . mysql_error());
-			if($cndata=="yes"&&$endata=="yes"){
+			if($tcdata=="yes"){
+				$query = "UPDATE $met_config set value='0' where name='met_ch_lang' and lang='metinfo'";
+				mysql_query($query) or die('写入数据库失败: ' . mysql_error());
+			}
+			$SQL="SELECT * FROM $met_skin_table";
+			$query=mysql_query($SQL);
+			while($row=mysql_fetch_array($query)){
+				$destination="../templates/".$row[skin_file]."/lang/language_tc.ini";
+				if(!file_exists($destination)){
+					$fp=fopen("$destination", "w+");
+					fclose($fp);
+					$source="../templates/".$row[skin_file]."/lang/language_cn.ini";
+					copy($source,$destination);
+				}
+			}
+			if($cndata=="yes"&&$endata=="yes"&&$tcdata=="yes"){
 				$query = "UPDATE $met_config set value='$lang_index_type' where name='met_index_type' and lang='metinfo'";
 			}
 			else{
-				if($cndata=="yes" or ($cndata<>"yes" and $endata<>"yes")){
+				if($cndata=="yes" or ($cndata<>"yes" and $endata<>"yes" and $tcdata<>"yes")){
 					$query = "UPDATE $met_config set value='cn' where name='met_index_type' and lang='metinfo'";
 				}
 				else{
-					$query = "UPDATE $met_config set value='en' where name='met_index_type' and lang='metinfo'";
+					if($endata=="yes"){
+						$query = "UPDATE $met_config set value='en' where name='met_index_type' and lang='metinfo'";
+					}else{
+						$query = "UPDATE $met_config set value='tc' where name='met_index_type' and lang='metinfo'";
+					}
 				}
 			}
+			
 			mysql_query($query) or die('写入数据库失败: ' . mysql_error());
 			@chmod('../config/config_db.php',0554);
 			require_once '../include/mysql_class.php';
@@ -348,13 +425,15 @@ require_once '../img/showimg.php';
 			unlink('../cache/langadmin_en.php');
 			unlink('../cache/lang_cn.php');
 			unlink('../cache/lang_en.php');
+			$query="select * from $met_config where name='metcms_v'";
+			$ver=$db->get_one($query);
 			$webname=$webname_cn?$webname_cn:($webname_en?$webname_en:'');
 			$webkeywords=$webkeywords_cn?$webkeywords_cn:($webkeywords_en?$webkeywords_en:'');
 			$spt = '<script type="text/javascript" src="http://api.metinfo.cn/record_install.php?';
 			$spt .= "url=" .$install_url;
 			$spt .= "&email=".$email."&installtime=".$m_now_date."&softtype=1";
 			$spt .= "&webname=".$webname."&webkeywords=".$webkeywords."&tel=".$tel;
-			$spt .= "&version=".VERSION."&php_ver=" .PHP_VERSION. "&mysql_ver=" .mysql_get_server_info()."&browser=".$_SERVER['HTTP_USER_AGENT'].'|'.$se360;
+			$spt .= "&version=".$ver[value]."&php_ver=" .PHP_VERSION. "&mysql_ver=" .mysql_get_server_info()."&browser=".$_SERVER['HTTP_USER_AGENT'].'|'.$se360;
 			$spt .= "&agents=".$agents;
 			$spt .= '"></script>';
 			echo $spt;
@@ -363,58 +442,46 @@ require_once '../img/showimg.php';
 			@fclose($fp);
 			$metHOST=$_SERVER['HTTP_HOST'];
 			$m_now_year=date('Y');
-			$metcms_v=VERSION;
+			$metcms_v=$ver[value];
 $met404="
-<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">
-<html xmlns=\"http://www.w3.org/1999/xhtml\">
+<!DOCTYPE HTML>
+<html>
 <head>
-<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />
+<meta charset=\"utf-8\" />
 <title>Page Not Found!</title>
-<meta http-equiv=\"refresh\" content=\"3; url='{$met_weburl}' \"> 
 <style type=\"text/css\">
 <!--
 body, td, th {  font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; margin: 0; padding: 0;}
 a:link,
-a:visited {color: #0240a3;}
-.top {height: 50px;	background-image:  url({$met_weburl}upload/image/top.gif); background-position: top right; background-repeat: no-repeat;	margin-bottom:40px;	padding-top: 5px;padding-left: 10px; color:#FFFFFF;}
-.top a{color:#FFFFFF; text-decoration:none;}
-.logo{ float:left; width:auto; height:auto; margin:5px 0px 0px 5px; overflow:hidden;}
-.copyright{ float:right; width:auto; margin:5px 5px 0px 0px; text-align:right;}
-.content {width: 652px;	margin: auto;	border: 1px solid #D1CBD0;	background: #F9F9F9 url({$met_weburl}upload/image/top1.gif) no-repeat right top;}
-.content_TOP {width: 600px; margin: auto;}
-.message {width: 98%; margin: 15px auto; padding-top:10px;}
-.banner {height:100px; text-align:center; background: #F9F9F9 url({$met_weburl}upload/image/foot.gif) no-repeat center; overflow:auto;}
-.bannertext{ width:95%; height:20px; margin-top:70px; line-height:20px; color:#FFFFFF; text-align:right;}
-.bannertext a{ color:#FFFFFF; text-decoration:none;}
+a:visited {color: #545454;}
+.list-none{list-style:none; padding:0px; margin:0px;}
+.clear{clear:both;}
+.headLogo{width:720px; margin:0 auto; *margin:15px auto -6px; _margin:15px auto -6px;}
+.headLogo img{border:none;}
+.navspan{font-weight:bold; font-size:14px;}
+.headNav{margin:0 auto; width:707px; padding-left:13px; _width:710px; _padding-left:10px; height:43px; border:1px solid #9EAA99; border-radius: 3px; box-shadow: 0 0 4px rgba(0,0,0,.25);}
+.headNav ul .line{color:#9EAA99; width:2px;}
+.headNav ul .line2{color:#000; font-weight:bold; width:3px; overflow:hidden;}
+.headNav ul li{float:left; height:43px; line-height:43px; text-align:center;}
+.headNav ul li a{font-size:14px; text-decoration:none;}
+.headNav ul li a:hover{color:#000;}
+.mod_lost_child, .mod_lost_child_little{margin:20px auto 40px !important; *padding-bottom:40px; _padding-bottom:40px;}
 -->
 </style>
 </head>
 <body>
-<div class=\"top\">
-<div class=\"logo\"></div>
-<div class=\"copyright\">&copy;&nbsp;2008-{$m_now_year} {$webname}<br /> <a href=\"{$met_weburl}\" >{$metHOST}</a></div>
+
+<div class=\"headLogo\">
+			<h2 class=\"title\">
+				<a href=\"{$met_weburl}\" title=\"{$webname}\">
+					<img src=\"{$met_weburl}upload/201207/1342516529.png\" alt=\"{$webname}\" title=\"{$webname}\" />
+				</a>
+			</h2>
 </div>
 
-<div class=\"content_TOP\"></div>
-<div class=\"content\">
-  <div class=\"message\">
-  <table width=\"586\" height=\"220\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">
-    <tr>
-      <td width=\"134\" height=\"116\" valign=\"middle\"><img src=\"{$met_weburl}upload/image/notice.gif\" /></td>
-      <td width=\"452\" valign=\"middle\" >
-	  <br /><br />
-<p><big><b>Page Not Found!</b></big></p>
-<p>The requested URL was not found, please contact with your administrator. </p>
-<p><big><b>3 seconds, automatically jump to the home page.</b></big></p>
-<p>&raquo;&nbsp;<a href=\"{$met_weburl}\">Goto Home</a>
-</td>
-    </tr>
-  </table>
-<div class=\"banner\">
-<div class=\"bannertext\">
-<p style=\"font-family:arial;\">Powered by&nbsp;<a href=\"http://www.MetInfo.cn\" target=\"_blank\" ><b>MetInfo</b></a> {$metcms_v} &copy;&nbsp;2008-$m_now_year <a href=\"http://www.MetInfo.cn\" target=\"_blank\">www.MetInfo.cn</a></p></div></div>
-  </div>
-  
+<div class=\"headNav\"><ul class=\"list-none\"><li id=\"nav_10001\" style='width:99px;' class='navdown'><a href='{$met_weburl}' title='网站首页' class='nav'><span>网站首页</span></a></li><li class=\"line\">|</li><li id='nav_1' style='width:99px;' ><a href='about/'  title='关于我们' class='hover-none nav'><span>关于我们</span></a></li><li class=\"line\">|</li><li id='nav_2' style='width:99px;' ><a href='news/'  title='新闻资讯' class='hover-none nav'><span>新闻资讯</span></a></li><li class=\"line\">|</li><li id='nav_3' style='width:99px;' ><a href='product/'  title='产品展示' class='hover-none nav'><span>产品展示</span></a></li><li class=\"line\">|</li><li id='nav_32' style='width:99px;' ><a href='download/'  title='下载中心' class='hover-none nav'><span>下载中心</span></a></li><li class=\"line\">|</li><li id='nav_33' style='width:99px;' ><a href='case/'  title='客户案例' class='hover-none nav'><span>客户案例</span></a></li><li class=\"line\">|</li><li id='nav_36' style='width:98px;' ><a href='job/'  title='招贤纳士' class='hover-none nav'><span>招贤纳士</span></a></li></ul><div class=\"clear\"></div></div>
+<div style=\"width:720px; margin:20px auto;\">
+<iframe scrolling='no' frameborder='0' src='http://yibo.iyiyun.com/Home/Distribute/ad404/key/16748' width='654' height='470' style='display:block;'></iframe>
 </div>
 </body>
 </html>
@@ -428,7 +495,7 @@ a:visited {color: #0240a3;}
 			@chmod('../config/install.lock',0554);				
 			include template('finished');
 		}else {
-			$langnum=($cndata=="yes"&&$endata=="yes")?2:1;
+			$langnum=($cndata=="yes"||$endata=="yes"||$tcdata=="yes")?2:1;
 			$lang=$langnum==2?'中文':($endata=="yes"&&$cndata<>"yes"?'英文':'中文');
 			include template('adminsetup');
 		}
@@ -546,6 +613,78 @@ function is_writable_met($dir){
 	}
 	return true;
 }
+
+function curl_post1($post,$timeout){
+global $met_weburl;
+	$host='list.qq.com/cgi-bin/qf_compose_send';
+	if(get_extension_funcs('curl')&&function_exists('curl_init')&&function_exists('curl_setopt')&&function_exists('curl_exec')&&function_exists('curl_close')){
+		$curlHandle=curl_init(); 
+		curl_setopt($curlHandle,CURLOPT_URL,'http://'.$host); 
+		curl_setopt($curlHandle,CURLOPT_REFERER,$met_weburl);
+		curl_setopt($curlHandle,CURLOPT_RETURNTRANSFER,1); 
+		curl_setopt($curlHandle,CURLOPT_CONNECTTIMEOUT,$timeout);
+		curl_setopt($curlHandle,CURLOPT_TIMEOUT,$timeout);
+		curl_setopt($curlHandle,CURLOPT_POST, 1);	
+		curl_setopt($curlHandle,CURLOPT_POSTFIELDS, $post);
+		$result=curl_exec($curlHandle); 
+		curl_close($curlHandle); 
+	}
+	else{
+		if(function_exists('fsockopen')||function_exists('pfsockopen')){
+			$post_data=$post;
+			$post='';
+			@ini_set("default_socket_timeout",$timeout);
+			while (list($k,$v) = each($post_data)) {
+				$post .= rawurlencode($k)."=".rawurlencode($v)."&";
+			}
+			$post = substr( $post , 0 , -1 );
+			$len = strlen($post);
+			if(function_exists(fsockopen)){
+				$fp = @fsockopen($host,80,$errno,$errstr,$timeout);
+			}
+			else{
+				$fp = @pfsockopen($host,80,$errno,$errstr,$timeout);
+			}
+			if (!$fp) {
+				$result='';
+			}
+			else {
+				$result = '';
+				$out = "POST $file HTTP/1.0\r\n";
+				$out .= "Host: $host\r\n";
+				$out .= "Referer: $met_weburl\r\n";
+				$out .= "Content-type: application/x-www-form-urlencoded\r\n";
+				$out .= "Connection: Close\r\n";
+				$out .= "Content-Length: $len\r\n";
+				$out .="\r\n";
+				$out .= $post."\r\n";
+				fwrite($fp, $out);
+				$inheader = 1; 	
+				while(!feof($fp)){
+					$line = fgets($fp,1024); 
+						if ($inheader == 0) {    
+							$result.=$line;
+						}  
+						if ($inheader && ($line == "\n" || $line == "\r\n")) {  
+							$inheader = 0;  
+					}    
+
+				}
+			
+				while(!feof($fp)){
+					$result.=fgets($fp,1024);
+				}
+				fclose($fp);
+				str_replace($out,'',$result);
+			}
+		}
+		else{
+			$result='';
+		}
+	}
+	return '订阅邮件已发送到您的邮箱！';
+}
+
 function curl_post($post,$timeout){
 global $met_weburl,$met_host,$met_file;
 	$host='api.metinfo.cn';

@@ -1,0 +1,41 @@
+<!--<?php
+echo <<<EOT
+-->
+<!--
+EOT;
+$i=0;
+foreach($download_list as $key=>$val){
+$i++;
+$fiz=sprintf("%.2f",$val['filesize']/1024);
+$val['filesize']=$fiz>1?$fiz:$val['filesize'];
+$bd=$fiz>1?'Mb':'Kb';
+if($val[news])$val[drx]="[{$lang_drxnew}]";
+if($val[hot])$val[drx]="[{$lang_drxhot}]";
+if($val[top])$val[drx]="[{$lang_drxtop}]";
+echo <<<EOT
+-->
+		<li>
+			<dl>
+				<dt>
+					<a href='{$val[url]}' title='{$val[title]}'>
+					<h3 class="title"><span class="hot">{$val[drx]}</span>{$val[title]}</h3>
+					<div class="desc">
+						<span>{$val[updatetime]}</span>
+						<span>{$val[filesize]}{$bd}</span>
+						<span>{$val[hits]}{$lang_downloadtext2}</span>
+					</div>
+					</a>
+				</dt>
+				<dd>
+					<a href='{$val[downloadurl]}'><span></span><p>{$lang_downloadtext1}</p></a>
+				</dd>
+			</dl>
+		</li>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<!--
+EOT;
+?>-->

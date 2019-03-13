@@ -20,7 +20,7 @@ if($p){
    }
 }
 function generate_password($length) {
-    $chars = "0123456789";
+    $chars = "ABCDEFGHIJKMNPQRSTUVWXYZabcdefghigkmnpqrstuvwxyz0123456789";
     $password = '';
     for ( $i = 0; $i < $length; $i++ ) {
         $password .= $chars[ mt_rand(0, strlen($chars) - 1) ];
@@ -40,6 +40,7 @@ switch($action){
 	break;
 	case 'next2':
 		if($abt_type==1){
+			die();
 			if($met_smspass){
 				$admin_list = $db->get_one("SELECT * FROM $met_admin_table WHERE admin_id='$admin_mobile' and usertype='3'");
 				if($admin_list && $admin_list['admin_mobile']=='')okinfo('../admin/getpassword.php',$lang_password6);
@@ -114,15 +115,24 @@ switch($action){
 				$body .="#metinfo .copy b{ font-weight:normal; }\n";
 				$body .="</style>\n";
 				$body .="<div id='metinfo'>\n";
-				$body .="<div class='logo'><a href='$met_weburl' title='$met_webname'><img src='http://www.metinfo.cn/upload/200911/1259148297.gif' /></a></div>";
+				if($met_agents_type<=1){
+					$body .="<div class='logo'><a href='$met_weburl' title='$met_webname'><img src='http://www.metinfo.cn/upload/200911/1259148297.gif' /></a></div>";
+				}
 				$body .="<div class='text'><p>".$lang_hello.$admin_name."</p><p>$lang_getTip1</p>";
 				$body .="<p><a href='$mailurl'>$mailurl</a></p>\n";
-				$body .="<p>$lang_getTip2</p></div><div class='copy'>$foot</a></div>";
-				require_once ROOTPATH.'include/export.func.php';
-				$post=array('to'=>$to,'title'=>$title,'body'=>$body);
-				$met_file='/passwordmail.php';
-				$sendMail=curl_post($post,30);
-				if($sendMail=='nohost')$sendMail=0;	
+				if($met_agents_type<=1){
+					$body .="<p>$lang_getTip2</p></div><div class='copy'>$foot</a></div>";
+				}
+				require_once ROOTPATH.'include/jmail.php';
+				$sendMail=jmailsend($from,$fromname,$to,$title,$body,$usename,$usepassword,$smtp);
+				if($sendMail==0){
+					require_once ROOTPATH.'include/export.func.php';
+					$post=array('to'=>$to,'title'=>$title,'body'=>$body);
+					$met_file='/passwordmail.php';
+					$sendMail=curl_post($post,30);
+					if($sendMail=='nohost')$sendMail=0;	
+				}
+				
 				$text=$sendMail?$lang_getTip3.$lang_memberEmail.'：'.$admin_list['admin_email']:$lang_getTip4;
 				okinfo('../index.php',$text);
 			}
@@ -178,6 +188,7 @@ switch($action){
 			if($password=='')okinfo('javascript:history.back();',$lang_dataerror);
 			if($passwordsr!=$password)okinfo('javascript:history.back();',$lang_js6);
 			$password = md5($password);
+			if(!$p)die();
 			$array = explode('.',authcode($p,'DECODE', $met_webkeys));
 			$array[0]=daddslashes($array[0]);
 			$query="update $met_admin_table set

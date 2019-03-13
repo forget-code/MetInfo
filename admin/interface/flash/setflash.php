@@ -5,7 +5,7 @@ $depth='../';
 require_once $depth.'../login/login_check.php';
 $cs=isset($cs)?$cs:1;
 $listclass[$cs]='class="now"';
-$query="select * from $met_column where lang='$lang' and if_in='0' order by no_order";
+$query="select * from $met_column where lang='$lang' and (if_in='0' or module>1000) order by no_order";
 $result= $db->query($query);
 $mod1[0]=$mod[10000]=array(
 			id=>10000,

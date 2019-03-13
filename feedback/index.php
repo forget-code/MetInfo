@@ -52,6 +52,7 @@ $timeok2=(float)($time2-$_COOKIE['submit']);
 if($timeok<=$met_fd_time||$timeok2<=$met_fd_time){
 $fd_time="{$lang_Feedback1}".$met_fd_time."{$lang_Feedback2}";
 okinfo('javascript:history.back();',$fd_time);
+exit;
 }
 $query = "SELECT * FROM $met_parameter where lang='$lang' and module=8 and class1='$id' order by no_order";
 if($met_member_use)$query = "SELECT * FROM $met_parameter where lang='$lang' and  module=8 and class1='$id' and access<='$metinfo_member_type' order by no_order";
@@ -102,29 +103,66 @@ $query = "INSERT INTO $met_feedback SET
 					  customerid         = '$metinfo_member_name',
 					  lang               = '$lang'";					  
 $db->query($query);
-$id=mysql_insert_id();
-foreach($fd_para  as $key=>$val){
+$class_1 = $id;
+$id=$db->insert_id();
+$new_time = time();
+$news_type = "feedback-".$class_1;
+$query = "INSERT INTO $met_infoprompt SET
+                      news_id           = '$id',
+                      newstitle         = '$title',
+					  member            = '$metinfo_member_name',
+					  type              = '$news_type',
+					  time              = '$new_time',
+					  lang              = '$lang'";					  
+$db->query($query);
+$query = "select * from $met_parameter where lang='$lang' and module='8'";
+$result = $db->query($query);
+while($list = $db->fetch_array($result)){
+	$paravalue[]=$list;
+}
+foreach($paravalue  as $key=>$val){
     if($val[type]!=4){
-	  $para=$$val[para];
+	    $infos ="para".$val[id];
+		$info=$$infos;
+		if($val[type]==5){$info="../upload/file/$info";}
+		$query = "INSERT INTO $met_flist SET
+                      listid         = '$id',
+					  info           = '$info',
+					  paraid         = '$val[id]',
+					  module         = '8',
+					  lang           = '$lang'";
+		$db->query($query);
 	}else{
-	  $para="";
-	  for($i=1;$i<=$$val[para];$i++){
-	  $para1p="para".$val[id]."_".$i;
-	  $para2p=$$para1p;
-	  $para=($para2p<>"")?$para.$para2p."-":$para;
-	  }
-	  $para=substr($para, 0, -1);
+		$query1 = "select * from $met_list where lang='$lang' and bigid='$val[id]'";
+		$result1 = $db->query($query1);
+		while($list1 = $db->fetch_array($result1)){
+			$paravalue1[]=$list1;
+		}
+		$i=1;
+		$infos="";
+		foreach($paravalue1 as $key=>$val1){
+			$paras4_name="para".$val[id]."_".$i;
+			$para_name=$$paras4_name;
+			if($infos){
+			if($para_name){
+			$infos=$infos."-".$para_name;
+			}
+			}else{
+			if($para_name){
+			$infos=$para_name;
+			}
+			}
+			$i=$i+1;
+		}
+		$query = "INSERT INTO $met_flist SET
+                      listid         = '$id',
+					  paraid         = '$val[id]',
+					  info           = '$infos',
+					  module         = '8',
+					  lang           = '$lang'";
+		$db->query($query);
 	}
-	
-	if($val[type]==5){$para="../upload/file/$para";}
-	$para=strip_tags($para);
-    $query = "INSERT INTO $met_flist SET
-                      listid   ='$id',
-					  paraid   ='$val[id]',
-					  info     ='$para',
-					  module   ='8',
-					  lang     ='$lang'";
-    $db->query($query);
+
  }
 }
 /**/
@@ -142,6 +180,13 @@ if($met_nurse_feed){
 		$message="您网站[{$domain}]收到了新的反馈信息[{$title}]，请尽快登录网站后台查看";
 		sendsms($met_nurse_feed_tel,$message,4);
 	}
+}
+/*短信回复*/
+$tell='para'.$met_fd_sms_dell;
+$tel=$$tell;
+if($tel&&$met_fd_sms_back){
+		require_once ROOTPATH.'include/export.func.php';
+		sendsms($tel,$met_fd_sms_content,1);
 }
 /*邮件提醒*/
 if($met_fd_type==0 or $met_fd_type==2){
@@ -179,10 +224,8 @@ jmailsend($from,$fromname,$fdto,$met_fd_title,$met_fd_content,$usename,$usepassw
 okinfo($returnurl,"{$lang_Feedback4}");
 }
 else{
-
-
 $query = "SELECT * FROM $met_parameter where lang='$lang' and  module=8 and class1='$id' order by no_order";
-if($met_member_use)$query = "SELECT * FROM $met_parameter where lang='$lang' and  module=8 and class1='$id'  and access<='$metinfo_member_type' order by no_order";
+if($met_member_use)$query = "select * from $met_parameter where (access in(select id from $met_admin_array where user_webpower<='$metinfo_member_type') or access=0) and lang='$lang' and module=8 and class1='$id' order by no_order;";
 $result = $db->query($query);
 while($list= $db->fetch_array($result)){
  if($list[type]==2 or $list[type]==4 or $list[type]==6){
@@ -268,7 +311,10 @@ $fdjs=$fdjs."return false;}\n";
  $fdjs=$fdjs."return false;}\n";
 }
 }
-$fdjs=$fdjs."}</script>";
+$fdjs=$fdjs."}";
+$fdjs=$fdjs."function verification(){ ";
+$fdjs=$fdjs."document.getElementById('new_code').click();}\n";
+$fdjs=$fdjs."</script>";
 
 $class2=$class_list[$class1][releclass]?$class1:$class2;
 $class1=$class_list[$class1][releclass]?$class_list[$class1][releclass]:$class1;
@@ -277,7 +323,7 @@ if($class2!=""){
 $class_info[name]=$class2_info[name]."--".$class1_info[name];
 }
 
-     $show[description]=$class_info[description]?$class_info[description]:$met_keywords;
+     $show[description]=$class_info[description]?$class_info[description]:$met_description;
      $show[keywords]=$class_info[keywords]?$class_info[keywords]:$met_keywords;
 	 $met_title=$met_title?$navtitle.'-'.$met_title:$navtitle;
 	 if($class_info['ctitle']!='')$met_title=$class_info['ctitle'];
@@ -299,8 +345,8 @@ require_once '../public/php/methtml.inc.php';
     }
 if($met_memberlogin_code==1){  
      $methtml_feedback.="<tr><td class='text'>".$lang_memberImgCode."</td>\n";
-     $methtml_feedback.="<td class='input'><input name='code' onKeyUp='pressCaptcha(this)' type='text' class='code' id='code' size='6' maxlength='8' style='width:50px' />";
-     $methtml_feedback.="<img align='absbottom' src='../member/ajax.php?action=code'  onclick=this.src='../member/ajax.php?action=code&'+Math.random() style='cursor: pointer;' title='".$lang_memberTip1."'/>";
+     $methtml_feedback.="<td class='input'><input name='code' onKeyUp='pressCaptcha(this)' type='text' class='code' id='code' size='6' maxlength='8' style='width:50px' onclick=verification() >";
+     $methtml_feedback.="<img align='absbottom' id='new_code' src='../member/ajax.php?action=code'  onclick=this.src='../member/ajax.php?action=code&'+Math.random() style='cursor: pointer;' title='".$lang_memberTip1."'/>";
      $methtml_feedback.="</td>\n";
      $methtml_feedback.="</tr>\n";
 }
@@ -315,7 +361,13 @@ if($met_memberlogin_code==1){
      $methtml_feedback.="<input type='reset' name='Submit' value='".$lang_Reset."' class='tj'></td></tr>\n";
      $methtml_feedback.="</table>\n";
      $methtml_feedback.="</form>\n";
-
+	if(!$title){
+		foreach($settings_arr as $key=>$val){
+			if($val['columnid']==$id && $val['name']=='met_fdtable'){
+				$title=$val['value'];
+			}
+		}
+	}
 include template('feedback');
 footer();
 # This program is an open source system, commercial use, please consciously to purchase commercial license.

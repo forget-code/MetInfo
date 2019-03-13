@@ -31,12 +31,14 @@ echo <<<EOT
                 <td class="list" width="60">
 				<form method="POST" name="filterform" action="smsnotes.php?anyid={$anyid}&lang={$lang}&search=type_search&cs={$cs}" target="_self">
 					<select name="notes_type" onChange="handle_form('filterform')">
-						<option value="0" {$selec_notes_type[0]}>{$lang_smstips56}</option>
+						<option value="-1" {$selec_notes_type[-1]}>{$lang_smstips56}</option>
 						<option value="1" {$selec_notes_type[1]}>{$lang_smstips57}</option>
 						<option value="2" {$selec_notes_type[2]}>{$lang_smstips58}</option>
 						<option value="3" {$selec_notes_type[3]}>{$lang_smstips59}</option>
 						<option value="4" {$selec_notes_type[4]}>{$lang_smstips60}</option>
 						<option value="5" {$selec_notes_type[5]}>{$lang_smstips61}</option>
+						<option value="6" {$selec_notes_type[6]}>{$lang_smstips97}</option>
+						<option value="0" {$selec_notes_type[0]}>{$lang_smstips96}</option>
 					</select>
 				</form>
 				</td>

@@ -1,0 +1,61 @@
+<!--<?php
+$ContentsPage=1;
+require_once template('head'); 
+require_once template('sidebar');
+echo <<<EOT
+-->
+<script src="{$img_url}js/met_Verification.js"></script>
+	<div class="metinfo_mobile_form">
+		<form method='POST' name='myform' action='addlink.php?action=add&lang={$lang}' class="signupForm">
+			<ul>
+				<li class="txtname">
+					<div class="name">{$lang_OurWebName}</div><div class="val">{$met_linkname}</div>
+				</li>
+				<li class="txtname">
+					<div class="name">{$lang_OurWebLOGO}</div><div class="val"><img src='{$met_logo}' alt='{$lang_OurWebName}' title='{$lang_OurWebName}' /></div>
+				</li>
+				<li class="txtname">
+					<div class="name">{$lang_OurWebKeywords}</div><div class="val">{$met_keywords}</div>
+				</li>
+				<li class="input required">
+					<div class="xbox">
+						<input name='webname' type='text' class='input-text' placeholder="{$lang_YourWebName}" />
+					</div>
+				</li>
+				<li class="input required">
+					<div class="xbox">
+						<input name='weburl' type='text' class='input-text' placeholder="{$lang_YourWebUrl}" value="http://" />
+					</div>
+				</li>
+				<li class="radio">
+					<div class="xbox">
+						<span class='name'>{$lang_LinkType}</span>
+						<label><input name='link_type' type='radio' value='0' checked />{$lang_TextLink}</label>
+						<label><input name='link_type' type='radio' value='1' />{$lang_PictureLink}</label>
+					</div>
+				</li>
+				<li class="input">
+					<span class='info'>{$lang_YourWebLOGO}</span>
+					<div class="xbox">
+						<input name='weblogo' type='text' class='input-text' placeholder="{$lang_YourWebLOGO}" value="http://" />
+					</div>
+				</li>
+				<li class="input">
+					<div class="xbox">
+						<input name='info' type='text' class='input-text' placeholder="{$lang_YourWebKeywords}" value="" />
+					</div>
+				</li>
+				<li class="input">
+					<div class="xbox">
+						<textarea name='contact' class='textarea-text' placeholder="{$lang_Contact}"></textarea>
+					</div>
+				</li>
+			</ul>
+			<div class="input-submit"><input type='submit' name='Submit' value='{$lang_Submit}' /></div>
+		</form>
+    </div>
+<!--
+EOT;
+require_once template('gap');
+require_once template('foot'); 
+?>

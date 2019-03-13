@@ -59,7 +59,7 @@ function sql_dumptable($table, $startfrom = 0, $currsize = 0)
 		$tabledump = "DROP TABLE IF EXISTS $table;\n";
 		$createtable = $db->query("SHOW CREATE TABLE $table");
 		$create = $db->fetch_row($createtable);
-		$tabledump .= $create[1].";\n\n";
+		$tabledump .= str_replace(strtolower($table),$table,$create[1]).";\n\n";
 	}
 
 	$tabledumped = 0;
@@ -87,9 +87,9 @@ function sql_dumptable($table, $startfrom = 0, $currsize = 0)
 	$tabledump .= "\n";
 	return $tabledump;
 }
-function sql_execute($sql,$replace=0)
+function sql_execute($sql, $replace = 0, $dosubmit1 = 0)
 {
-	global $db,$tablepre,$met_visit_day,$met_visit_detail;
+	global $db,$tablepre,$met_visit_day,$met_visit_detail,$met_admin_table;
     $split = sql_split($sql);
 	$sqls  = $split['sql'];
 	$info  = $split['info'];
@@ -112,6 +112,9 @@ function sql_execute($sql,$replace=0)
 				$sql=str_replace('met_',$tablepre,$sql);
 				$sql=str_replace('metconfig_','met_',$sql);
 			}
+			if($dosubmit1 == '1'){
+				$sql = preg_replace(array('/INSERT INTO '.$met_admin_table.'/','/DROP TABLE IF EXISTS '.$met_admin_table.'/','/CREATE TABLE `'.$met_admin_table.'`/'),array('INSERT INTO test_admin_table1','DROP TABLE IF EXISTS test_admin_table1','CREATE TABLE `test_admin_table1`'),$sql);
+			}
 			if($sqlre1==1)$sql=preg_replace(array('/^INSERT INTO '.$infos[3].'/','/^DROP TABLE IF EXISTS '.$infos[3].'/','/^CREATE TABLE `'.$infos[3].'/'),array('INSERT INTO '.$tablepre,'DROP TABLE IF EXISTS '.$tablepre,'CREATE TABLE `'.$tablepre),$sql,1);
 			if($sqlre2==1){
 				if(!preg_match('/^INSERT INTO (('.$met_visit_day.')|('.$met_visit_detail.'.))/',$sql)){
@@ -125,11 +128,15 @@ function sql_execute($sql,$replace=0)
 				}
 			}
 		}
-		
 	}
 	else
 	{
 		if(!$db->query($sqls)){
+			return false;
+		}
+	}
+	if($dosubmit1 == '1'){
+		if(!$db->query('DROP TABLE IF EXISTS test_admin_table1')){
 			return false;
 		}
 	}
@@ -196,6 +203,31 @@ function traversal($jkdir)
 		}	
 	}
 	return $allfileunm;
+}
+
+
+
+function eliminate() {
+	$path = '../../databack/';
+	$current_dir = opendir($path);
+	while(($file = readdir($current_dir)) !== false) {  
+		$sub_dir = $path . DIRECTORY_SEPARATOR . $file;  
+		if($file == '.' || $file == '..') {
+			continue;
+		} else if(is_dir($sub_dir)) {   
+			if($file!='sql' && $file!='web' && $file!='stat'){
+				$dir = $path.$file;
+				deltree($dir);
+				rmdir($dir);
+			}
+		} else {   
+			$suffix = explode('.',$file);
+			$info1=pathinfo($file);
+			if($info1['extension'] != 'sql') {
+				cache_delete($file);
+			}
+		}
+	}
 }
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.

@@ -4,7 +4,7 @@
 $met_oline=1;
 require_once 'common.inc.php';
 if($met_online_type<>3){
-	$met_url   = $navurl.'public/';
+	$met_url   = $met_weburl.'public/';
 	$cache_online = met_cache('online_'.$lang.'.inc.php');
 	if(!$cache_online){$cache_online=cache_online();}
 	foreach($cache_online as $key=>$list){
@@ -34,21 +34,22 @@ if($met_online_type<>3){
 		if(!$met_onlinenameok)$metinfo.="<dt>".$val[name]."</dt>";
 		$metinfo.="<dd>";
 		if($val[qq]!=""){
-			$metinfo.='<a href="tencent://message/?uin='.$val[qq].'&Site=&Menu=yes" title="QQ'.$val[name].'"><img border="0" src="http://wpa.qq.com/pa?p=2:'.$val[qq].':'.$met_qq_type.'"></a>';
+			$metinfo.='<a href="http://wpa.qq.com/msgrd?v=3&uin='.$val[qq].'&site=qq&menu=yes" target="_blank"><img alt="QQ'.$val[name].'" border="0" src="http://wpa.qq.com/pa?p=2:'.$val[qq].':'.$met_qq_type.'" title="QQ'.$val[name].'" /></a>';
 		}
 		if($val[msn]!="")$metinfo.='<span class="met_msn"><a href="msnim:chat?contact='.$val[msn].'"><img border="0" alt="MSN'.$val[name].'" src="'.$met_url.'images/msn/msn_'.$met_msn_type.'.gif"/></a></span>';
-		if($val[taobao]!="")$metinfo.='<span class="met_taobao"><a target="_blank" href="http://amos.im.alisoft.com/msg.aw?v='.$met_taobao_type.'&uid='.$val[taobao].'&site=cntaobao&s=2&charset=utf-8" ><img border="0" src="http://amos.im.alisoft.com/online.aw?v=2&uid='.$val[taobao].'&site=cntaobao&s='.$met_taobao_type.'&charset=utf-8" alt="'.$val[name].'" /></a></span>';
+		if($val[taobao]!="")$metinfo.='<span class="met_taobao"><a target="_blank" href="http://www.taobao.com/webww/ww.php?ver=3&touid='.$val[taobao].'&siteid=cntaobao&status='.$met_taobao_type.'&charset=utf-8"><img border="0" src="http://amos.alicdn.com/online.aw?v=2&uid='.$val[taobao].'&site=cntaobao&s='.$met_taobao_type.'&charset=utf-8" alt="'.$val[name].'" /></a></span>';
+		if($val[alibaba]!=""){
+			$span="";
+			if($met_alibaba_type==11){
+				$span="<span class='met_alibaba'>$val[alibaba]</span>";
+			}
+			$metinfo.='<div><a target="_blank" href="http://amos.alicdn.com/msg.aw?v=2&uid='.$val[alibaba].'&site=cnalichn&s='.$met_alibaba_type.'&charset=UTF-8"><img border="0" src="http://amos.alicdn.com/online.aw?v=2&uid='.$val[alibaba].'&site=cnalichn&s='.$met_alibaba_type.'&charset=UTF-8" alt="'.$val[name].'" />'.$span.'</a></div>';
+		}
+		if($val[skype]!="")$metinfo.='<span><a href="callto://'.$val[skype].'"><img src="'.$met_url.'images/skype/skype_'.$met_skype_type.'.gif" border="0"></a></span>';
 		$metinfo.="</dd>"; 
 		$metinfo.="</dl>"; 
 		$metinfo.='<div class="clear"></div>'; 
-	}
-	foreach($skype_list as $key=>$val){
-		$metinfo.='<div class="met_skype"><a href="callto://'.$val[skype].'"><img src="'.$met_url.'images/skype/skype_'.$met_skype_type.'.gif" border="0"></a></div>';
-	}
-	foreach($alibaba_list as $key=>$val){
-		$metinfo.='<div class="met_alibaba">
-		<a target="_blank" href="http://amos1.sh1.china.alibaba.com/msg.atc?v=1&uid='.$val[alibaba].'"><img border="0" src="http://amos1.sh1.china.alibaba.com/online.atc?v=1&uid='.$val[alibaba].'&s='.$met_alibaba_type.'" alt="'.$val[name].'"></a></div>';
-	} 
+	}	 
 	//online over
 	$metinfo.='			</div>';
 	$metinfo.='		</div>';
@@ -62,16 +63,35 @@ if($met_online_type<>3){
 	$metinfo.='<div class="onlinebox-bottom-bg"></div>';
 	if($met_online_skin<3)$metinfo.='</div>';
 	$metinfo.='</div>';
-	$_REQUEST['jsoncallback'] = strip_tags($_REQUEST['jsoncallback']);
-	if($_REQUEST['jsoncallback']){
-		$metinfo=str_replace("'","\'",$metinfo);
-		$metinfo=str_replace('"','\"',$metinfo);
-		$metinfo=preg_replace("'([\r\n])[\s]+'", "", $metinfo);
-		echo $_REQUEST['jsoncallback'].'({"metcms":"'.$metinfo.'"})';
-	}else{
-		echo $metinfo;
+
+	$tmpincfile=ROOTPATH."templates/{$_M[config][met_skin_user]}/metinfo.inc.php";
+	if(file_exists($tmpincfile)){
+		require_once $tmpincfile;
 	}
-	die();
+
+	if($metinfover == 'v1'){
+		//处理回传数据(sea.js处理方式)
+		$onlinex=$met_online_type<2?$met_onlineleft_left:$met_onlineright_right;
+		$onliney=$met_online_type<2?$met_onlineleft_top:$met_onlineright_top;
+		$data['html']=$metinfo;
+		$data['t']=$met_online_type;
+		$data['x']=$onlinex;
+		$data['y']=$onliney;
+		echo json_encode($data);
+	}else{
+		//处理回传数据(老模板处理方式)
+		$_REQUEST['jsoncallback'] = strip_tags($_REQUEST['jsoncallback']);
+		if($_REQUEST['jsoncallback']){
+			$metinfo=str_replace("'","\'",$metinfo);
+			$metinfo=str_replace('"','\"',$metinfo);
+			$metinfo=preg_replace("'([\r\n])[\s]+'", "", $metinfo);
+			echo $_REQUEST['jsoncallback'].'({"metcms":"'.$metinfo.'"})';
+		}else{
+			echo $metinfo;
+		}
+		die();
+	}
+
 }
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.

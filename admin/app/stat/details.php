@@ -27,15 +27,25 @@ $tmst=date("Y-m-d",$st);
 $tmet=date("Y-m-d",$et);
 $css_url=$depth."../templates/".$met_skin."/css";
 $img_url=$depth."../templates/".$met_skin."/images";
-
-$total_count = $db->counter($met_visit_day, " acctime >='{$st}' and acctime<='{$et}'", "*");
+$et=$et+86300;
+if($setip!=null){
+	$total_count = $db->counter($met_visit_day, " acctime >='{$st}' and acctime<='{$et}' and ip='$setip'", "*");
+}else{
+	$total_count = $db->counter($met_visit_day, " acctime >='{$st}' and acctime<='{$et}'", "*");
+}
 $list_num = 15;
 require_once $depth.'../include/pager.class.php';
 $page = (int)$page;
 if($page_input){$page=$page_input;}
 $rowset = new Pager($total_count,$list_num,$page);
 $from_record = $rowset->_offset();
-$query="select * from {$met_visit_day} WHERE acctime >='{$st}' and acctime<='{$et}' order by acctime desc LIMIT {$from_record},{$list_num}";
+
+if($setip!=null){
+	$query="select * from {$met_visit_day} WHERE acctime >='{$st}' and acctime<='{$et}' and ip='$setip' order by acctime desc LIMIT {$from_record},{$list_num}";
+}else{
+	$query="select * from {$met_visit_day} WHERE acctime >='{$st}' and acctime<='{$et}' order by acctime desc LIMIT {$from_record},{$list_num}";
+}
+//$query="select * from {$met_visit_day} WHERE acctime >='{$st}' and acctime<='{$et}' and ip='127.0.0.1' order by acctime desc LIMIT {$from_record},{$list_num}";
 $result= $db->query($query);
 while($list = $db->fetch_array($result)){
 	$valmet=acceptun($list['columnid'],$list['listid'],$list['lang']);
@@ -70,7 +80,7 @@ function ipdizhi($ip){
 	$metinfo = curl_post($post,30);
 	return $metinfo;
 }
-$page_list = $rowset->link("details.php?lang={$lang}&anyid={$anyid}&st={$st}&et={$et}&cs={$cs}&page=");
+$page_list = $rowset->link("details.php?lang={$lang}&anyid={$anyid}&st={$st}&et={$et}&cs={$cs}&setip=$setip&page=");
 include template('app/stat/details');footer();
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.

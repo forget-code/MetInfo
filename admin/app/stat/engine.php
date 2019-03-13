@@ -32,17 +32,23 @@ $field=$field?$field:'pv';
 $zvist[$field]='<b style="color:#f00;">↓</b>';
 $query="select * from {$met_visit_detail} WHERE stattime>='{$st}' and stattime<='{$et}' and type='1' and name!='' order by pv desc";
 $result= $db->query($query);
-while($list = $db->fetch_array($result)){
+while($list1 = $db->fetch_array($result)){
 	switch($labtype){
 		case 1:
-			if($visit[$list['name']]){
-				$list['pv']=$visit[$list['name']]['pv']+$list['pv'];
-				$list['ip']=$visit[$list['name']]['ip']+$list['ip'];
-				$list['alone']=$visit[$list['name']]['alone']+$list['alone'];
+			if($visit[$list1['name']]){
+				$list1['pv']=$visit[$list1['name']]['pv']+$list1['pv'];
+				$list1['ip']=$visit[$list1['name']]['ip']+$list1['ip'];
+				$list1['alone']=$visit[$list1['name']]['alone']+$list1['alone'];
 			}
-			$list['per']=sprintf("%.2f",($list['pv']/$list['alone']));
-			$visit[$list['name']]=$list;
+			$list1['per']=sprintf("%.2f",($list1['pv']/$list1['alone']));
+			$visit[$list1['name']]=$list1;
 		break;
+	}
+}
+$query="select * from {$met_visit_detail} WHERE stattime>='{$st}' and stattime<='{$et}' and type='1' order by pv desc";
+$result= $db->query($query);
+while($list = $db->fetch_array($result)){
+	switch($labtype){
 		case 2:
 			$shp=explode('|',$list['remark']);
 			for($i=0;$i<count($shp);$i++){

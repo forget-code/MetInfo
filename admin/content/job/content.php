@@ -4,6 +4,7 @@
 $depth='../';
 require_once $depth.'../login/login_check.php';
 require_once $depth.'global.func.php';
+require_once ROOTPATH.'public/php/searchhtml.inc.php';
 $settingse = parse_ini_file($depth.'../../config/job_'.$lang.'.inc.php');
 @extract($settingse);
 $job_list=$db->get_one("select * from $met_job where id='$id'");
@@ -14,6 +15,13 @@ if($met_member_use){
 }
 if($job_list[top_ok]==1)$top_ok="checked";
 if($job_list[wap_ok]==1)$wap_ok="checked";
+if($job_list[displaytype]==1){
+		$displaytypes[0]='checked';
+		$displaytypes[1]="";
+	}else{
+		$displaytypes[0]="";
+		$displaytypes[1]='checked';
+	}
 $list_access['access']=$job_list['access'];
 require '../access.php';
 $term=0;
@@ -21,6 +29,8 @@ foreach($column_lang[6] as $key=>$val){
     if($val[lang]!=$lang)$term++;
 }
 if($action=="add"){
+$displaytypes[0]='checked';
+$displaytypes[1]='';
 $lang_editinfo=$lang_addinfo;
 $job_list[addtime]=$m_now_counter;
 $job_list[no_order]=0;

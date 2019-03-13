@@ -23,6 +23,8 @@ if(PHP_VERSION < '4.1.0') {
 	$_ENV         = &$HTTP_ENV_VARS;
 	$_FILES       = &$HTTP_POST_FILES;
 }
+$settings=array();
+$db_settings=array();
 $db_settings = parse_ini_file(ROOTPATH.'config/config_db.php');
 @extract($db_settings);
 require_once ROOTPATH_ADMIN.'include/mysql_class.php';
@@ -34,6 +36,7 @@ $mettables=explode('|',$mettable[value]);
 foreach($mettables as $key=>$val){
 	$tablename='met_'.$val;	
 	$$tablename=$tablepre.$val;
+	$_M[table][$tablename]=$tablepre.$val;
 }
 require_once dirname(__file__).'/global.func.php';
 require_once dirname(__file__).'/global/snap.func.php';
@@ -41,14 +44,18 @@ define('MAGIC_QUOTES_GPC', get_magic_quotes_gpc());
 $lang=$_GET['lang']<>""?$_GET['lang']:$_POST['lang'];
 $lang=daddslashes($lang,0,1);
 $metinfoadminok=1;
+$settings_arr=array();
 require_once ROOTPATH.'config/config.inc.php';
-met_cooike_start();
-if(!is_array($met_langadmin[$_GET[langset]])&&$_GET[langset]!='')die('not have this language');
 if($_GET[langset]!=''){
 	$_GET[langset]=daddslashes($_GET[langset],0,1);
 	change_met_cookie('languser',$_GET[langset]);
 	save_met_cookie();
 }
+met_cooike_start();
+$query="select * from {$tablepre}lang where mark='{$_GET[langset]}' and lang='metinfo'";
+$isadminlang=$db->get_one($query);
+if(!$isadminlang&&$_GET[langset]!='')die('not have this language');
+$_M['user']['cookie'] = $met_cookie;
 $metinfo_admin_name     = get_met_cookie('metinfo_admin_name');
 $metinfo_admin_pass     = get_met_cookie('metinfo_admin_pass');
 $metinfo_admin_pop      = get_met_cookie('metinfo_admin_pop');
@@ -67,10 +74,13 @@ $met_cookie_filter=$met_cookie;
 foreach(array('_COOKIE', '_POST', '_GET') as $_request) {
 	foreach($$_request as $_key => $_value) {
 		$_key{0} != '_' && $$_key = daddslashes($_value,0,0,1);
+		$_M['form'][$_key]=daddslashes($_value,0,0,1);
 	}
 }
 $met_cookie=array();
 $met_cookie=$met_cookie_filter;
+$settings=array();
+$db_settings=array();
 $db_settings = parse_ini_file(ROOTPATH.'config/config_db.php');
 @extract($db_settings);
 $query="select * from {$tablepre}config where name='met_tablename' and lang='metinfo'";
@@ -79,6 +89,7 @@ $mettables=explode('|',$mettable[value]);
 foreach($mettables as $key=>$val){
 	$tablename='met_'.$val;	
 	$$tablename=$tablepre.$val;
+	$_M['table'][$val] = $tablepre.$val;
 }
 (!MAGIC_QUOTES_GPC) && $_FILES = daddslashes($_FILES);
 $REQUEST_URI  = $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'];
@@ -131,15 +142,36 @@ if(!function_exists('ob_phpintan')) {
  if(!function_exists('ob_pcontent')) {
 	function ob_pcontent($content){return intval($content);}
 }
-/*手机后台*/
-$ua = strtolower($_SERVER['HTTP_USER_AGENT']);
-if($_SERVER['HTTP_USER_AGENT']){
-	$uachar = "/(nokia|sony|ericsson|mot|samsung|sgh|lg|philips|panasonic|alcatel|lenovo|cldc|midp|mobile|wap|Android|ucweb)/i";
-	if(($ua == '' || preg_match($uachar, $ua))&& !strpos(strtolower($_SERVER['REQUEST_URI']),'wap')){
-		$metinfo_mobile=1;
-		echo '请打开JS，已保证可以正常访问后台！！！';
+//接口
+if($_M['plugin']['doadmin']){
+	define('IN_MET', true);
+	if(file_exists(ROOTPATH.'app/system/include/class/mysql.class.php')){
+		require_once ROOTPATH.'app/system/include/class/mysql.class.php';
+		$db_settings = array();
+		$db_settings = parse_ini_file(ROOTPATH.'config/config_db.php');
+		@extract($db_settings);
+		DB::dbconn($con_db_host, $con_db_id, $con_db_pass, $con_db_name);
+		foreach($_M['plugin']['doadmin'] as $key => $val){
+				$applistfile=ROOTPATH.'app/app/'.$val.'/plugin/'.'plugin_'.$val.'.class.php';
+				$_M['url']['own'] = $_M['url']['site'].'app/app/'.$val.'/';
+				if(file_exists($applistfile)&&!is_dir($applistfile)&&((file_get_contents($applistfile))!='metinfo')){
+					require_once $applistfile;
+					$app_plugin_name=str_replace('.class.php', '', 'plugin_'.$val);
+					if (class_exists($app_plugin_name)) {
+						$newclass=new $app_plugin_name;
+						if(method_exists($newclass, 'doadmin')){
+							call_user_func(array($newclass,  'doadmin'));
+						}
+					}
+				}
+		}
+		$_M['url']['own'] = '';
+		DB::close();
+		$db = new dbmysql();
+		$db->dbconn($con_db_host,$con_db_id,$con_db_pass,$con_db_name);
 	}
 }
+//结束
 /*管理员权限处理*/
 $admin_list = $db->get_one("SELECT * FROM {$met_admin_table} WHERE admin_id='{$metinfo_admin_name}'");
 $metinfo_admin_pop=$admin_list['admin_type'];

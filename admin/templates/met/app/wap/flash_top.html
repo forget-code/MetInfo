@@ -1,0 +1,18 @@
+<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
+require_once template('metlangs');
+echo <<<EOT
+-->
+<div class="stat_list">
+	<ul>
+		<li {$listclass[1]}><a href="{$dirdd}flash.php?lang={$lang}&anyid={$anyid}&cs=1" title="{$lang_indexflash}">{$lang_indexflash}</a></li>
+		<li {$listclass[2]}><a href="{$dirdd}setflash.php?lang={$lang}&anyid={$anyid}&cs=2" title="{$lang_indexflashset}">{$lang_indexflashset}</a></li>
+	</ul>
+</div>
+<div style="clear:both;"></div>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved..
+?>

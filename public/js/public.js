@@ -56,13 +56,15 @@ function metmessagesubmit(info3,info4){
 		return false;
 	}
 }
-function addlinksubmit(info2,info3){ 
-	if (document.myform.webname.value.length == 0) {
+function addlinksubmit(info2,info3){
+	var webnamelength = document.myform.webname.value.replace(/(^\s*)|(\s*$)/g, '');
+	var weburllength = document.myform.weburl.value.replace(/(^\s*)|(\s*$)/g, '');
+	if(webnamelength==0){
 		alert(info2);
 		document.myform.webname.focus();
 		return false;
 	}
-	if (document.myform.weburl.value.length == 0 || document.myform.weburl.value == 'http://'){
+	if(weburllength==0||weburllength=='http://'){
 		alert(info3);
 		document.myform.weburl.focus();
 		return false;

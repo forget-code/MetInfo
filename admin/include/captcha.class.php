@@ -109,8 +109,10 @@ function WriteCheckCodeToImage()
  {
 	global $met_webkeys;
   if(!empty($code)&&$this->authcode($_COOKIE['met_capcha'],'DECODE', md5($met_webkeys))===$code){
+	$this -> CreateCheckCode();
 	return true; 
   }else{
+	$this -> CreateCheckCode();
 	return false;
   }
  }

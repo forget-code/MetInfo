@@ -88,14 +88,15 @@
  //html
 function link($url, $exc='')
   {
-      global $lang_PageTotal,$lang_Page,$lang_PageLocation,$lang_PageHome,$lang_PageEnd,$lang_PagePre,$lang_PageNext,$lang_PageGo,$met_pageskin,$total_count;
-	  global $lang_Total,$lang_Pagenum,$met_url,$langnums,$metinfouiok,$class1,$class2,$class3,$class_list,$classnow,$met_pseudo;
+      global $lang_PageTotal,$lang_Page,$lang_PageLocation,$lang_PageHome,$lang_PageEnd,$lang_PagePre,$lang_PageNext,$lang_PageGo,$met_pageskin,$total_count,$metinfover;
+	  global $lang_Total,$lang_Pagenum,$met_url,$langnums,$metinfouiok,$class1,$class2,$class3,$class_list,$classnow,$met_pseudo,$search;
 		if(!$exc&&($class_list[$classnow][module]<6)){
 			$url=str_replace('&class2=0','',$url);
 			$url=str_replace('&class3=0','',$url);
 		}
  if($met_pageskin=='' or $met_pageskin==0 or $met_pageskin>9)$met_pageskin=1;
  $firestpage=$langnums==1?'../'.$this->SELF.'/':$url.'1'.$exc;
+
 if($class_list[$classnow][module]==11)$firestpage=$url.'1'.$exc;
  if($exc){
 	if($class2||$class3){
@@ -112,8 +113,92 @@ if($class_list[$classnow][module]==11)$firestpage=$url.'1'.$exc;
 	}
  }
  $prepage=$langnums==1?'../'.$this->SELF.'/':$url.($this->_cur_page-1).$exc;
+
+  if($metinfover == 'v1'){
+	$text="
+		    <div class='met_pager'>
+			";
+    if ($this->_cur_page == 1){     //$this->_cur_page当前页面的码数
+			if($this->pages!=0){
+			 $text.="
+				<span class='PreSpan'>$lang_PagePre</span>
+				";
+			}
+		}else{
+			 $text.="<a href=".$url.($this->_cur_page-1).$exc." class='PreA'>$lang_PagePre</a>";
+		}
+		
+	if($this->pages >7 ){
+	   if($this->_cur_page>4){
+		 $firstPage = "
+			    <a href=".$firestpage." class='firstPage'>1...</a>
+				";
+		
+	     if(($this->pages-$this->_cur_page)>=4){
+	        $startnum=$this->_cur_page-3;
+		    $endnum=$this->_cur_page+3;			
+		  }else{
+		    $startnum=$this->pages-6;
+		    $endnum=$this->pages;
+		   }
+		}else{
+		    $startnum=1;
+		    $endnum=7;		
+		}
+		
+		if(($this->pages-$this->_cur_page)>3){
+		$lastPage = "
+			    <a href=".$url.$this->pages.$exc." class='lastPage'>...".$this->pages."</a>
+		";
+		}
+	 }else{
+	   	$startnum=1;
+		$endnum=$this->pages;	
+	 }
+	 
+	  $text.=$firstPage;
+	  
+	for($i=$startnum;$i<=$endnum;$i++){
+	   $pageurl=$i==1?$firestpage:$url.$i.$exc;
+	   if($i==$this->_cur_page){$page_stylenow="class='Ahover'";}
+	    $text.="
+			    <a href=".$pageurl." $page_stylenow>".$i."</a> 
+		       ";
+		$page_stylenow='';
+	   }
+	   $text.=$lastPage;
+	 if ($this->_cur_page == $this->pages){
+        $text.="	    <span class='NextSpan'>$lang_PageNext</span>
+				";
+	  }else{
+		if($this->pages!=0){
+	    $text.="	    <a href=".$url.($this->_cur_page+1).$exc." class='NextA'>$lang_PageNext</a>
+				";
+		}
+	   }
+	 
+if($this->pages!=0){
+
+         for($i=1;$i<=$this->pages;$i++){
+            if($i==$this->_cur_page){
+				$text.="
+			    <span class='PageText'>$lang_PageGo</span>
+			    <input type='text' id='metPageT' data-pageurl='".$url."|".$exc."|".$this->pages."' value='".$i."' />
+			    <input type='button' id='metPageB' value='".$lang_Page."' />";	
+            }
+          }			  
+	  
+}
+	   
+	   $text .="
+		    </div>
+		";
+		
+		
+	}else{
   switch($met_pageskin){
 case 1:
+	
 	$metpgs=$this->pages==0?1:$this->pages;
     $text= "<div class='metpager_1'>$lang_PageTotal<span>$metpgs</span>$lang_Page $lang_PageLocation<span style='color:#990000'>$this->_cur_page</span>$lang_Page ";
       if ($this->_cur_page == 1 && $this->pages>1) 
@@ -146,7 +231,6 @@ case 1:
             }
           }
               $text.="</select> $lang_Page </div>";
-
   break;
   
   case 2:
@@ -176,7 +260,7 @@ case 1:
   break;
   
   case 3:
-	$text="<div class='metpager_3'>";
+  	$text="<div class='metpager_3'>";
     if ($this->_cur_page == 1){
 			if($this->pages==0){
 				$text.="<span style='font-family: Tahoma, Verdana;'><b>«</b></span> <span style='font-size:12px;font-family: Tahoma, Verdana;'>‹</span>";
@@ -205,6 +289,7 @@ case 1:
 		    $endnum=10;		
 		}
 	 }else{
+	 
 	   	$startnum=1;
 		$endnum=$this->pages;	
 	 }
@@ -224,6 +309,7 @@ case 1:
 		}
 	   }
 	   $text .="</div>";
+
   break;
   
   case 4 or 5 or 6 or 7 or 8 or 9:
@@ -361,6 +447,8 @@ case 1:
 		}  
         $text.="</div>";
   break;
+  
+}
   
   }
          return $text; 

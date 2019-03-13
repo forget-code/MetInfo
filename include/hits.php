@@ -27,8 +27,11 @@ $db->query($query);
 $query="select * from $met_hits where id='$id'";
 $hits_list=$db->get_one($query);
 $hits=$hits_list[hits];
+if($metinfover=='v1'){
+	echo $hits;
+}else{
+	echo " document.write({$hits}); ";
+}
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>
-$hits="<?php echo $hits; ?>";
-document.write($hits) 

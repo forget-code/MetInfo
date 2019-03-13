@@ -10,6 +10,7 @@ $dbname = $met_product;
 $dbname_list = $met_product_list;
 $mdmendy = 1;
 $imgproduct = 'product';
+$class1re = '';
 require_once '../include/global/listmod.php';
 $product_listnow = $modlistnow;
 $product_list_new  = $md_list_new;

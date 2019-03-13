@@ -58,6 +58,8 @@ if($htmsitemap==$met_member_force && ($met_sitemap_html||$met_sitemap_xml||$met_
 			$val[url]=str_replace('"','&quot;',$val[url]);
 			$val[url]=str_replace('>','&gt;',$val[url]);
 			$val[url]=str_replace('<','&lt;',$val[url]);
+			$val[url]=str_replace('..html','.html',$val[url]);
+			$val[url]=str_replace('..htm','.htm',$val[url]);
 			$i++;
 			$val[updatetime]=date("Y-m-d",strtotime($val[updatetime]));
 			$val[priority]=$val[priority]?$val[priority]:'0.5';
@@ -85,6 +87,8 @@ if($htmsitemap==$met_member_force && ($met_sitemap_html||$met_sitemap_xml||$met_
 		$i=0;
 		foreach($sitemaplist as $key=>$val){
 			$i++;
+			$val[url]=str_replace('..html','.html',$val[url]);
+			$val[url]=str_replace('..htm','.htm',$val[url]);
 			$config_save.="{$val[url]}"."\r\n";
 			if($i>=$met_sitemap_max)break;
 		}

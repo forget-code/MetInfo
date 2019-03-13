@@ -1,7 +1,7 @@
 <?php
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
-require_once $depth.'../../include/export.func.php';
+require_once ROOTPATH.'include/export.func.php';
 function syn_lang($post,$filename,$langmark,$site,$type){
 	global $met_host,$met_file,$met_language,$db;
 	$met_file='/dl/lang/lang.php';
@@ -20,7 +20,7 @@ function syn_lang($post,$filename,$langmark,$site,$type){
 	$no_order_s=0;
 	if(file_exists($filename)){
 		if($type!=1){
-			$query="delete from $met_language where site='$site' and lang='$langmark'";
+			$query="delete from $met_language where site='$site' and app='0' and lang='$langmark'";
 			$db->query($query);
 		}
 		$fp = @fopen($filename, "r");
@@ -73,7 +73,7 @@ function syn_lang($post,$filename,$langmark,$site,$type){
 	return 1;
 }
 function copyconfig(){
-	global $db,$met_config,$met_language,$langfile,$synchronous,$langmark,$langautor,$thisurl,$lang_langcopyfile,$langdlok,$met_skin_user,$depth;
+	global $db,$met_config,$met_language,$langfile,$synchronous,$langmark,$langautor,$thisurl,$lang_langcopyfile,$langdlok,$met_skin_user,$depth,$met_templates;
 	global $met_file,$met_host,$metcms_v;
 	if($langdlok=='1'){
 		$newlangmark=$langautor?$langmark:$synchronous;
@@ -81,7 +81,7 @@ function copyconfig(){
 		$file_basicname=$depth.'../update/lang/lang_'.$newlangmark.'.ini';
 		$sun_re=syn_lang($post,$file_basicname,$langmark,0,1);
 	}else{
-		$query="select * from $met_language where site='0' and lang='$langfile'";
+		$query="select * from $met_language where site='0' and app='0' and lang='$langfile'";
 		$languages=$db->get_all($query);
 		foreach($languages as $key=>$val){
 			$val[value] = str_replace("'","''",$val[value]);
@@ -99,12 +99,23 @@ function copyconfig(){
 		$query = "insert into $met_config set name='$val[name]',value='$val[value]',columnid='$val[columnid]',flashid='$val[flashid]',lang='$langmark'";
 		$db->query($query);
 	}
+	
+	$query="select * from $met_templates where lang='$langfile' and no='$met_skin_user'";
+	$configs=$db->get_all($query);
+	foreach($configs as $key=>$val){
+		$val[value] = str_replace("'","''",$val[value]);
+		$val[value] = str_replace("\\","\\\\",$val[value]);
+		$query = "insert into $met_templates set no='$val[no]',pos='$val[pos]',no_order='$val[no_order]',type='$val[type]',style='$val[style]',selectd='$val[selectd]',name='$val[name]',value='$val[value]',valueinfo='$val[valueinfo]',tips='$val[tips]',lang='$langmark'";
+		$db->query($query);
+	}
+	/*
 	$oldfile      =$depth."../../templates/$met_skin_user/lang/language_$langfile.ini";   
 	$newfile      =$depth."../../templates/$met_skin_user/lang/language_$langmark.ini"; 
 	//if(!is_writable($depth."../../templates/".$met_skin_user."/lang/"))@chmod($depth."../../templates/".$met_skin_user."/lang/", 0777); 
 	if(!file_exists($newfile)){  
 		if (!copy($oldfile,   $newfile))metsave('-1',$lang_langcopyfile);
 	}
+	*/
 	return $sun_re;
 }
 # This program is an open source system, commercial use, please consciously to purchase commercial license.

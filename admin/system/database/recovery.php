@@ -4,6 +4,7 @@
 $depth='../';
 require_once $depth.'../login/login_check.php';
 require_once 'global.func.php';
+eliminate();
 $listclass='';
 $listclass[2]='class="now"';
 $rurls='../system/database/recovery.php?anyid='.$anyid.'&lang='.$lang;
@@ -22,15 +23,45 @@ if($action=='delete'){
 		}
 	}
 	metsave($rurls,'',$depth);
-}elseif($dosubmit){
+}else if($action=='daoru'){
+	$query="select admin_op from $met_admin_table where admin_id='{$metinfo_admin_name}'";
+	$admin_op = $db->get_one($query);
+	if(strstr($admin_op['admin_op'],'metinfo') === false){
+		echo "<script type='text/javascript'> alert('$lang_jsx38');location.href='recovery.php?anyid={$anyid}&lang={$lang}&cs=2'; </script>";
+		die();
+	}	
 	$fileid = $fileid ? $fileid : 1;
 	$filename = $pre.$fileid.'.sql';
 	$filepath = '../../databack/'.$filename;
 	if(file_exists($filepath)){
 		$sql = file_get_contents($filepath);
-		if(substr($sql,28,5)!=$metcms_v)metsave($rurls,$lang_dataerr1,$depth);
-		sql_execute($sql);
-		$fileid++;	
+		if(substr($sql,28,5)!=$metcms_v && substr($sql,28,6)!=$metcms_v)metsave($rurls,$lang_dataerr1,$depth);
+		if($action == 'daoru'){
+			if(stristr($sql,'INSERT INTO met_admin_table')){
+				echo "<script>
+				function import1(text){
+					if(confirm(text)){
+						location.href='./recovery.php?anyid=$anyid&pre=$pre&dosubmit=1&dosubmit1=0&lang=$lang';
+					}else{
+						location.href='./recovery.php?anyid=$anyid&pre=$pre&dosubmit=1&dosubmit1=1&lang=$lang';
+					}
+				}
+				import1('$lang_js72');
+				</script>";	
+			}else{
+				header("location:./recovery.php?anyid=$anyid&pre=$pre&dosubmit=1&lang=$lang");
+			}
+		}
+	}
+}else if($dosubmit){
+	$fileid = $fileid ? $fileid : 1;
+	$filename = $pre.$fileid.'.sql';
+	$filepath = '../../databack/'.$filename;
+	if(file_exists($filepath)){
+		$sql = file_get_contents($filepath);
+		if(substr($sql,28,5)!=$metcms_v && substr($sql,28,6)!=$metcms_v)metsave($rurls,$lang_dataerr1,$depth);
+		sql_execute($sql,0,$dosubmit1);
+		$fileid++;
 		save_met_cookie();
 		metsave($rurls."&pre=".$pre."&fileid=".$fileid."&dosubmit=1&adminmodify=1&database_met=1","{$lang_setdbDBFile} {$filename} {$lang_setdbImportOK}{$lang_setdbImportcen}",$depth,'','',1);
 	}else{	
@@ -45,8 +76,7 @@ if($action=='delete'){
 				column_copyconfig($val['foldername'],$val['module'],$val['id']);
 			}
 		}
-		deldir(ROOTPATH.'cache');	
-		//met_cooike_unset($metinfo_admin_name);
+		deltree(ROOTPATH.'cache');	
 		$adminfile=$url_array[count($url_array)-2];
 		if($met_adminfile!=""&&$met_adminfile!=$adminfile){
 			$oldname='../../../'.$adminfile;
@@ -59,6 +89,7 @@ if($action=='delete'){
 				die();
 			}
 		}
+		
 		$gent='../../include/404.php?lang='.$lang.'&metinfonow='.$met_member_force;
 		metsave($rurls,$lang_setdbDBRestoreOK,$depth,'','',2,$gent);
 	}
@@ -105,7 +136,6 @@ if($action=='delete'){
 		}
 		return $new_array; 
 	} 
-	//$info2=array_sort($infos1,'time','we');
 	foreach($infos1 as $key=>$val){
 		if($val['number']==1){
 			$infos2[$val['pre']]=$val;

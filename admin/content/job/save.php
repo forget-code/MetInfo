@@ -23,6 +23,13 @@ if($action=="add"){
 		$filenameok = $db->get_one("SELECT * FROM $met_job WHERE filename='$filename'");
 		if($filenameok)metsave('-1',$lang_modFilenameok,$depth);
 	}
+	if(!$description){
+		$description=strip_tags($content);
+		$description=str_replace("\n", '', $description); 
+		$description=str_replace("\r", '', $description); 
+		$description=str_replace("\t", '', $description);
+		$description=mb_substr($description,0,200,'utf-8');
+	}
 	$query = "INSERT INTO $met_job SET
 						position           = '$position',
 						count              = '$count',
@@ -37,7 +44,8 @@ if($action=="add"){
 						filename           = '$filename',
 						email              = '$email',
 						wap_ok             = '$wap_ok',
-						top_ok             = '$top_ok'";
+						top_ok             = '$top_ok',
+						displaytype        = '$displaytype'";
 			 $db->query($query);	 
 	$later_job=$db->get_one("select * from $met_job where lang='$lang' order by id desc");
 	$id=$later_job[id];
@@ -62,7 +70,8 @@ if($action=="editor"){
 						  useful_life        = '$useful_life',
 						  addtime            = '$addtime',
 						  access			 = '$access',
-						  no_order		     = '$no_order',";
+						  no_order		     = '$no_order',
+						  displaytype        = '$displaytype',";
 	if($metadmin[pagename])$query .= "
 						  filename       	 = '$filename',";
 						  $query .= "
@@ -75,7 +84,6 @@ if($action=="editor"){
 	$htmjs.=contenthtm($class1,$id,'showjob',$filename,0,'job',$addtime).'$|$';
 	$htmjs.=classhtm($class1,0,0);
 	if($filenameold<>$filename and $metadmin[pagename])deletepage($met_class[$class1][foldername],$id,'showjob',$updatetimeold,$filenameold);
-	//if($top_ok==1)$page=0;
 	$turl='../content/job/index.php?anyid='.$anyid.'&lang='.$lang.'&class1='.$class1.'&modify='.$id.'&page='.$page;
 	$gent='../../sitemap/index.php?lang='.$lang.'&htmsitemap='.$met_member_force;
 	metsave($turl,'',$depth,$htmjs,$gent);

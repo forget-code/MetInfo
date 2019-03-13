@@ -1,0 +1,58 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
+echo <<<EOT
+-->
+<div id="member_basic">
+	<ul>
+		<li>
+			<a href="editor.php?lang={$lang}">
+			<div class="title">{$admin_list[admin_id]}<span>{$access}</span></div>
+			<div class="desc"><span>{$lang_memberbasicLastLogin}：{$admin_list[admin_modify_date]}</span></div>
+			</a>
+		</li>
+		<li>
+			<a href="feedback.php?lang={$lang}&mtitle={$lang_memberIndex5}">
+			<div class="title">{$lang_memberIndex5}</div>
+			<div class="desc">
+				<span>{$lang_memberbasicType3}{$lang_memberIndex13}{$feedback_totalcount_readyes}{$lang_memberIndex12}</span>
+				<span>{$lang_memberbasicType3}{$lang_memberIndex14}{$feedback_totalcount_readno}{$lang_memberIndex12}</span>
+			</div>
+			</a>
+		</li>
+		<li>
+			<a href="message.php?lang={$lang}">
+			<div class="title">{$lang_memberIndex6}</div>
+			<div class="desc">
+				<span>{$lang_memberbasicType3}{$lang_memberIndex13}{$message_totalcount_readyes}{$lang_memberIndex12}</span>
+				<span>{$lang_memberbasicType3}{$lang_memberIndex14}{$message_totalcount_readno}{$lang_memberIndex12}</span>
+			</div>
+			</a>
+		</li>
+		<li>
+			<a href="cv.php?lang={$lang}&mtitle={$lang_memberIndex7}">
+			<div class="title">{$lang_memberIndex15}</div>
+			<div class="desc">
+				<span>{$lang_memberbasicType3}{$lang_memberIndex13}{$cv_totalcount_readyes}{$lang_memberIndex12}</span>
+				<span>{$lang_memberbasicType3}{$lang_memberIndex14}{$cv_totalcount_readno}{$lang_memberIndex12}</span>
+			</div>
+			</a>
+		</li>
+		<li class="an">
+			<div class="title">{$lang_memberIndex16}</div>
+			<div class="desc">
+				<span>{$met_membercontrol}</span>
+			</div>
+		</li>
+	</ul>
+	<div class="metinfo_mobile_form" style=" padding-top:18px;">
+	<form method="get" action="login_out.php?lang={$lang}">
+	<div class="input-submit"><input type='submit' name='Submit' value='{$lang_memberIndex10}' /></div>
+	</form>
+	</div>
+</div>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>

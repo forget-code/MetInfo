@@ -37,6 +37,19 @@ $table=moduledb($table);
 $query="select * from $table where id='$id'";
 $renow[0]=$db->get_one($query);
 foreach($renow as $key=>$val){
+	if($mou==2&&!$val['imgurl']){
+		$imgauto=preg_match('/<img.*src="(.*?)".*?>/i',$val['content'],$out);
+		$filename=explode("images/",$out[1]);
+		$filename=$filename[count($filename)-1];
+		if($filename){
+			$val['imgurl']='../upload/images/'.$filename;
+			$val['imgurls']='../upload/images/thumb/'.str_ireplace("watermark/","",$filename);
+			$query="UPDATE $met_news SET imgurl='$val[imgurl]',imgurls='$val[imgurls]' WHERE id='$val[id]'";
+			echo $query;
+			$db->query($query);
+			echo $db->error($query);
+		}
+	}
 	if($val['imgurls']){
 		$met_big_img = str_ireplace("/watermark","",$val['imgurl']);
 		$imgurls=$depth.'../'.$val['imgurls'];
@@ -63,7 +76,7 @@ foreach($renow as $key=>$val){
 				if($met_thumb_img!=$depth."../".str_ireplace("/thumb","",$val['imgurls'])){
 					$imgurls='../'.str_ireplace("../","",$imgurls);
 					$query="update $table set imgurls='$imgurls' where id='$val[id]'";
-					if($met_deleteimg==1&&$db->query($query)){@file_unlink("../../$val[imgurls]");}
+					if($db->query($query)){@file_unlink("../../$val[imgurls]");}
 				}
 			}
 			$met_img_x='';
@@ -72,7 +85,7 @@ foreach($renow as $key=>$val){
 			if($mou==5){$met_img_x=$met_imgdetail_x;$met_img_y=$met_imgdetail_y;}
 			$met_bigthumb_img=$depth."../".$met_big_img;
 			$imgurls = $f->createthumb($met_bigthumb_img,$met_img_x,$met_img_y,'thumb_dis/');
-			if($met_big_wate){
+			if($met_big_wate&&$mou!=2){
 				if($met_wate_class==2){
 					$img->met_image_name = $depth.$met_wate_bigimg;
 				}else {

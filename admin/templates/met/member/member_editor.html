@@ -2,6 +2,7 @@
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 require_once template('head');
+$paras_email=$db->get_one("SELECT * FROM $met_language WHERE name='js13' and no_order='13' and lang='$lang'");
 echo <<<EOT
 -->
 </head>
@@ -10,11 +11,13 @@ function Disb1(M,K){
 var ty= K==1?false:true;
     M.attr('disabled',ty);
 }
+{$para_member_list[2]}
 function pass2null(pass2){
 			Disb1($('#passsubmit'),0);
 			$('#pass2').text('{$lang_memberjstxt1}');
 			$('#pass2').show();
 			$("input[type='submit']").attr('disabled',true);
+			
 }
 function pass1null(pass1){
 			Disb1($('#passsubmit'),0);
@@ -27,6 +30,7 @@ function passnot(pass2){
 			$('#pass2').text('{$lang_memberjstxt3}');
 			$('#pass2').show();
 			$("input[type='submit']").attr('disabled',true);
+			
 }
 $(document).ready(function(){
     var pass1 = $("input[name='pass1']");
@@ -58,13 +62,14 @@ $(document).ready(function(){
 });
 </script>
 <body>
+
 <!--
 EOT;
 $title="{$lang_editor}{$lang_content}({$admin_list[admin_id]})";
 require_once template('metlangs');
 echo <<<EOT
 -->
-<form method="POST" name="myform" action="save.php?action=editor&id=$id&lang=$lang&anyid={$anyid}" target="_self">
+<form method="POST" name="myform" action="save.php?action=editor&id=$id&lang=$lang&anyid={$anyid}" onSubmit='return Checkmember();' target="_self">
 		<input name="useid" type="hidden" value="$admin_list[admin_id]">
 <div class="v52fmbx_tbmax v52fmbx_tbmaxmt">
 <div class="v52fmbx_tbbox">
@@ -121,133 +126,15 @@ echo <<<EOT
 		</div>
 		<div class="v52fmbx_dlbox">
 		<dl>
-			<dt>{$lang_memberName}{$lang_marks}</dt>
+			<dt><font color='#FF0000'>*</font>Email{$lang_marks}</dt>
 			<dd>
-				<input name="name" type="text" class="text" value="$admin_list[admin_name]" />
+				<input name="email" id='email' type="text" class="text nonull" value="$admin_list[admin_email]" />{$lang_memberTip1}
 			</dd>
 		</dl>
 		</div>
-		<div class="v52fmbx_dlbox">
-		<dl>
-			<dt>{$lang_memberSex}{$lang_marks}</dt>
-			<dd>
-<!--
-EOT;
-if($admin_list[admin_sex]==0){
-echo <<<EOT
--->	
-		<label><input name="sex" type="radio" value="0" checked="checked"> {$lang_memberMan}</label>
-		<label><input name="sex" type="radio" class="radio" value="1"> {$lang_memberWoman}</label>
-<!--
-EOT;
-}else{
-echo <<<EOT
--->	
-		<label><input name="sex" type="radio" value="0" > {$lang_memberMan}</label>
-		<label><input name="sex" type="radio" value="1" class="radio" checked="checked"> {$lang_memberWoman}</label>
-<!--
-EOT;
-}echo <<<EOT
--->
-			</dd>
-		</dl>
-		</div>
-		<div class="v52fmbx_dlbox">
-		<dl>
-			<dt>{$lang_memberTel}{$lang_marks}</dt>
-			<dd>
-				<input name="tel" type="text" class="text" value="$admin_list[admin_tel]" />
-			</dd>
-		</dl>
-		</div>
-		<div class="v52fmbx_dlbox">
-		<dl>
-			<dt>{$lang_memberCell}{$lang_marks}</dt>
-			<dd>
-				<input name="mobile" type="text" class="text" value="$admin_list[admin_mobile]" />
-			</dd>
-		</dl>
-		</div>
-		<div class="v52fmbx_dlbox">
-		<dl>
-			<dt>Email{$lang_marks}</dt>
-			<dd>
-				<input name="email" type="text" class="text" value="$admin_list[admin_email]" />{$lang_memberTip1}
-			</dd>
-		</dl>
-		</div>
-		<div class="v52fmbx_dlbox">
-		<dl>
-			<dt>QQ{$lang_marks}</dt>
-			<dd>
-				<input name="qq" type="text" class="text" value="$admin_list[admin_qq]" />
-			</dd>
-		</dl>
-		</div>
-		<div class="v52fmbx_dlbox">
-		<dl>
-			<dt>MSN{$lang_marks}</dt>
-			<dd>
-				<input name="msn" type="text" class="text" value="$admin_list[admin_msn]" />
-			</dd>
-		</dl>
-		</div>
-		<div class="v52fmbx_dlbox">
-		<dl>
-			<dt>{$lang_memberTaoBao}{$lang_marks}</dt>
-			<dd>
-				<input name="taobao" type="text" class="text" value="$admin_list[admin_taobao]" />
-			</dd>
-		</dl>
-		</div>
-		<div class="v52fmbx_dlbox">
-		<dl>
-			<dt>{$lang_memberIntro}{$lang_marks}</dt>
-			<dd>
-				<textarea name="admin_introduction" class="textarea gen">{$admin_list[admin_introduction]}</textarea>
-			</dd>
-		</dl>
-		</div>
-		<div class="v52fmbx_dlbox">
-		<dl>
-			<dt>{$lang_memberCompanyName}{$lang_marks}</dt>
-			<dd>
-				<input name="companyname" type="text" class="text" value="$admin_list[companyname]" />
-			</dd>
-		</dl>
-		</div>
-		<div class="v52fmbx_dlbox">
-		<dl>
-			<dt>{$lang_memberCompanyFax}{$lang_marks}</dt>
-			<dd>
-				<input name="companyfax" type="text" class="text" value="$admin_list[companyfax]" />
-			</dd>
-		</dl>
-		</div>
-		<div class="v52fmbx_dlbox">
-		<dl>
-			<dt>{$lang_memberCompanyCode}{$lang_marks}</dt>
-			<dd>
-				<input name="companycode" type="text" class="text" value="$admin_list[companycode]" />
-			</dd>
-		</dl>
-		</div>
-		<div class="v52fmbx_dlbox">
-		<dl>
-			<dt>{$lang_memberCompanyAddress}{$lang_marks}</dt>
-			<dd>
-				<input name="companyaddress" type="text" class="text" value="$admin_list[companyaddress]" />
-			</dd>
-		</dl>
-		</div>
-		<div class="v52fmbx_dlbox">
-		<dl>
-			<dt>{$lang_memberCompanyWebsite}{$lang_marks}</dt>
-			<dd>
-				<input name="companywebsite" type="text" class="text" value="$admin_list[companywebsite]" />
-			</dd>
-		</dl>
-		</div>
+
+
+		{$para_member_list[1]}	
 		<div class="v52fmbx_dlbox">
 		<dl>
 			<dt>{$lang_memberType}{$lang_marks}</dt>

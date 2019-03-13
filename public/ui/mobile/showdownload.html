@@ -1,0 +1,55 @@
+<!--<?php
+$ContentsPage=1;
+require_once template('head'); 
+require_once template('sidebar');
+$methits=methtml_hits('download',1);
+$met_next=methtml_prenextinfo(2);
+echo <<<EOT
+-->
+        <div class="active" id="showdownload">
+			<h1 class="title">{$download[title]}</h1>
+            <ul class="paralist list-none">
+                <li><div class="pn">{$lang_showdownload1}：</div><div class="pv">{$download[updatetime]}</div></li>
+<!--
+EOT;
+foreach($download_paralist as $key=>$val){
+echo <<<EOT
+-->
+                <li><div class="pn">{$val[name]}：</div><div class="pv">{$download[$val[para]]}</div></li>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+			</ul>
+<!--
+EOT;
+if($download[description]){
+echo <<<EOT
+-->
+			<div class="desc">{$download[description]}</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+			<div class="downloadmun">
+				<a href="{$download[downloadurl]}" class="button" title="{$lang_showdownload3}">
+					{$lang_showdownload3}
+				</a>
+			</div>
+			<h3 class="Tabtitle">
+			    <div class="l">{$lang_detailtxt}</div>
+			</h3>
+			<div class="editor"">
+				{$download[content]}
+				<div class="clear"></div>
+			</div>
+			<div class="none">{$methits}</div>
+            <div class="met_page">{$met_next}</div>
+        </div>
+<!--
+EOT;
+require_once template('gap');
+require_once template('foot'); 
+?>

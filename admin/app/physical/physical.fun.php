@@ -86,6 +86,8 @@ file_put_contents($file,$string);
 function fingerprint($jkdir,$fileback){
 	global $filenamearray,$physical_fingerprint,$url_array;
 	$adminfile=$url_array[count($url_array)-2];
+	deltree(ROOTPATH.'/cache');
+	deltree(ROOTPATH."/$adminfile/update");
 	$physical_fingerprint="";
 	$fbdir=$fileback;
 	$fileback=parse_ini_file($fileback,true);
@@ -107,21 +109,23 @@ function fingerprint($jkdir,$fileback){
 	foreach($filenamearray as $key=>$val){
 		$filenow[$key]=$val;
 	}
-	deldir(ROOTPATH.'/cache');
-	mkdir(ROOTPATH.'cache/','0755');
-	deldir(ROOTPATH."/$adminfile/update");
 	if($fbdir=='fingerprint_metinfo.php'){
 		unset($filenow['config/config_db.php']);
 		unset($filenow["$adminfile/app/physical/fingerprint_metinfo.php"]);
 		unset($filenow["$adminfile/app/physical/standard.php"]);
 		unset($filenow["$adminfile/app/wap/wap.php"]);
 		unset($filenow["$adminfile/templates/met/app/wap/wap.html"]);
-		
+
 		unset($filenow["install/index.php"]);
 		unset($filenow["install/js/IE6-png.js"]);
 		unset($filenow["install/js/install.js"]);
 		unset($filenow["install/phpinfo.php"]);
+		
+		unset($filenow["$adminfile/include/metvar.js"]);
+		unset($fileback["$adminfile/include/metvar.js"]);
 	}
+	unset($filenow["$adminfile/app/physical/dlappfile.php"]);
+	unset($fileback["$adminfile/app/physical/dlappfile.php"]);
 	foreach($fileback as $key=>$val){
 		if(stripos($key,'admin/add.php')!==false){
 			$admin_filebacks=explode('/',$key);
@@ -162,8 +166,10 @@ function dangerfun($jkdir,$danger,$suffix,$trust){
 	@unlink('../../../install/phpinfo.php');
 	$physical_function="";
 	$adminfile=$url_array[count($url_array)-2];
+	deltree(ROOTPATH.'/cache');
+	deltree(ROOTPATH."/$adminfile/update");
 	$column=$db->get_all("select * from $met_column where classtype=1 or releclass!=0");
-	$columnfile=array('about',$adminfile,'cache','config','download','feedback','img','include','job','lang','link','member','message','news','product','public','search','sitemap','templates','upload','wap','install','update');
+	$columnfile=array('about',$adminfile,'cache','config','download','feedback','img','include','job','lang','link','member','message','news','product','public','search','sitemap','templates','upload','wap','install','update','webscan360','app');
 	foreach($column as $key=>$val){
 		array_push($columnfile,$val['foldername']);
 	}
@@ -235,6 +241,8 @@ function filescan($jkdir,$fileback){
 		}
 	$fileback=array_merge($fileback,$fileback_temp);
 	}
+	unset($fileback["$adminfile/app/physical/standard.php"]);
+	unset($fileback["$adminfile/app/physical/dlappfile.php"]);
 	$filenamearray=array();
 	//traversal($jkdir);
 	//$filenow=$filenamearray;

@@ -61,7 +61,7 @@ EOT;
 }else{
 echo <<<EOT
 -->			
-			<a href="?anyid={$anyid}&pre=$info[pre]&dosubmit=1&lang=$lang" title="{$lang_setdbImportData}">{$lang_setdbImportData}</a>&nbsp; 
+			<a href="?anyid={$anyid}&pre=$info[pre]&action=daoru&lang=$lang" title="{$lang_setdbImportData}">{$lang_setdbImportData}</a>&nbsp; 
 	        <a href="?anyid={$anyid}&action=delete&filenames=$id&lang=$lang&rutnmt=import" onclick="return linkSmit($(this),1);" title="{$lang_delete}">{$lang_delete}</a>&nbsp;  
 	        <a href="filedown.php?anyid={$anyid}&lang=$lang&cs=6&filenames=$id" target="_self" title="{$lang_setdbDownload}">{$lang_setdbDownload}</a></td>
 <!--

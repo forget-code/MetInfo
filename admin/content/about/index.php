@@ -3,7 +3,7 @@
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 $depth='../';
 require_once $depth.'../login/login_check.php';
-
+require_once ROOTPATH.'public/php/searchhtml.inc.php';
 if($class1){
 	if($class3){
 		$sqlclass1.=" id=$class3 ";

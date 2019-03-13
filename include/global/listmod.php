@@ -2,9 +2,10 @@
 require_once substr(dirname(__FILE__), 0, -6).'common.inc.php';
 require_once '../include/global/pseudo.php';
 if($dbname!=$met_download&&$dbname!=$met_img&&$dbname!=$met_news&&$dbname!=$met_product){okinfo('../404.html');exit();}
-if($class_list[$class1]['module']>=100||($class1==0&&$class2==0&&$class3==0)){
+if($class_list[$class1]['module']>=100||($class1==0&&$class2==0&&$class3==0)||$class1==10001){
 	if($search=="search"){
 		$search_module=$imgproduct=='product'?3:5;
+		if($searchtype)$search_module=$searchtype;
 		$query="select * from $met_column where module='$search_module' and (classtype=1 or releclass!=0) and lang='$lang' order by no_order ASC,id ASC";
 		$search_coloumn=$db->get_all($query);
 		$class1=$search_coloumn[0]['id'];
@@ -29,9 +30,13 @@ if($met_member_use){
 }
 require_once '../include/head.php';
 if($class1){if(!is_array($class_list[$class1]))okinfo('../404.html');}
+$pseudos=$db->get_one("select * from $met_column where filename='$class2' and lang='$lang'");
+if($pseudos){
+$class2=$pseudos[id];
+}
 if($class2){
 	if(!is_array($class_list[$class2])){
-		okinfo('../404.html');
+			okinfo('../404.html');
 	}
 	else{
 		if($class_list[$class2]['bigclass']!=$class1){
@@ -39,6 +44,7 @@ if($class2){
 		}
 	}
 }
+
 if($class3){
 	if(!is_array($class_list[$class3])){
 		okinfo('../404.html');
@@ -107,7 +113,7 @@ if($search=="search" && $mdmendy){
 				if(trim($paratitle)<>'')$paratitle=substr($paratitle, 0, -1);
 			}
 			if(trim($paratitle)<>''){
-				$serch_sql .= " and exists(select * from $met_plist where module=3 and $met_plist.listid='$dbname.id and' $met_plist.info='".trim($paratitle)."') "; 
+				$serch_sql .= " and exists(select * from $met_plist where module=3 and $met_plist.paraid='$val[id]' and $met_plist.listid='$dbname.id and' $met_plist.info='".trim($paratitle)."') "; 
 				$serchpage .= "&".$val['para']."=".trim($paratitle);
 			}
 		}
@@ -126,28 +132,63 @@ if($search=="search" && $mdmendy){
 		}
 		foreach($dbparaname as $key=>$val){
 			$paratitle=$$val['para'];
-			if($val['type']==4 and intval($page<1)){
-				$paratitle="";
-				foreach($para_select[$val['id']] as $key=>$val1){
-					$parasel="para".$val['id']."_".$val1['id'];
-					if(trim($$parasel)<>'')$paratitle.=$$parasel."-";
+			if($val['type']==4){
+				if(!$paratitle){
+					$paratitle="";
+					foreach($para_select[$val['id']] as $key=>$val1){
+						$parasel="para".$val['id']."_".$val1['id'];
+						if(trim($$parasel)<>'')$paratitle.=$$parasel."-";
+					}
+					if(trim($paratitle)<>'')$paratitle=substr($paratitle, 0, -1);
+					if(trim($paratitle)<>''){
+						$serch_sql .= " and exists(select * from $met_plist where module=3  and $met_plist.paraid='$val[id]' and $met_plist.listid=$dbname.id and $met_plist.info like'%".trim($paratitle)."%') ";  
+						$serchpage .= "&".$val['para']."=".trim($paratitle);
+					}
+				}else{
+					$serch_sql .= " and exists(select * from $met_plist where module=3 and $met_plist.paraid='$val[id]' and $met_plist.listid=$dbname.id and $met_plist.info like'%".trim($paratitle)."%') ";  
+					$serchpage .= "&".$val['para']."=".trim($paratitle);
 				}
-				if(trim($paratitle)<>'')$paratitle=substr($paratitle, 0, -1);
+			}else{
+				if(trim($paratitle)<>''){
+					$serch_sql .= " and exists(select * from $met_plist where module=3 and $met_plist.paraid='$val[id]' and $met_plist.listid=$dbname.id and $met_plist.info = '$paratitle') ";  
+					$serchpage .= "&".$val['para']."=".trim($paratitle);
+				}
 			}
-			if(trim($paratitle)<>''){
-				$serch_sql .= " and exists(select * from $met_plist where module=3 and $met_plist.listid=$dbname.id and $met_plist.info like'%".trim($paratitle)."%') ";  
-				$serchpage .= "&".$val['para']."=".trim($paratitle);
-			}
+			
 		}
 		//5.0.4
-		if($content<>'')$serch_sql .= " or exists(select * from $met_plist where module=3 and $met_plist.listid=$dbname.id and $met_plist.info like'%".trim($content)."%')) ";
-	} 
+		if($content<>'')$serch_sql .= " or exists(select $met_plist.id from $met_plist inner join $met_parameter on $met_plist.paraid=$met_parameter.id where $met_plist.module=3 and $met_parameter.type<>5 and $met_plist.listid=$dbname.id and $met_plist.info like'%".trim($content)."%')) ";
+		//价格搜索
+		foreach($dbparaname as $key=>$val2){
+			$prices1="paraprice_".$val2['id'];
+			$prices=$$prices1;
+			if($prices){
+					if(!strstr($prices, "-")){
+						preg_match('/([0-9\.]+)/',$prices,$result);
+						$results=$result[0];
+						$serch_sql .= " and exists(select * from $met_plist where module=3 and $met_plist.paraid='$val2[id]' and $met_plist.listid=$dbname.id and $met_plist.info > $results) "; 
+						$serchpage .= "&".$prices1."=".trim($$prices1);
+					}else{
+						$prices_sql=explode('-',$prices);
+						preg_match('/([0-9\.]+)/',$prices_sql[1],$result);
+						$results=$result[0];
+						$serch_sql .= " and exists(select * from $met_plist where module=3 and $met_plist.paraid='$val2[id]' and $met_plist.listid=$dbname.id and $met_plist.info > $prices_sql[0] and $met_plist.info < $results) "; 
+						$serchpage .= "&".$prices1."=".trim($$prices1);
+					}
+				
+			}
+		}
+	}
 } 
 if($mdmendy)$serchpage .= "&searchtype=".$searchtype;
 if($met_member_use==2)$serch_sql .= " and access<=$metinfo_member_type";
 $order_sql=$class3?list_order($class_list[$class3]['list_order']):($class2?list_order($class_list[$class2]['list_order']):list_order($class_list[$class1]['list_order']));
 $order_sql=($search=="search" && $mdmendy)?" order by top_ok desc,com_ok desc,no_order desc,updatetime desc,id desc":$order_sql;
 $order_sql=$order_sql==''?" order by top_ok desc,com_ok desc,no_order desc,updatetime desc,id desc":$order_sql;
+if($mdname=='news'||$mdname=='product'||$mdname=='download'||$mdname=='img'||$mdname=='job'){
+		$serch_sql .=" and displaytype='1'";
+}
+$serch_sql .= " and addtime<='{$m_now_date}'";
 $total_count = $db->counter($dbname, "$serch_sql", "*");
 require_once '../include/pager.class.php';
     $page = (int)$page;
@@ -177,7 +218,7 @@ require_once '../include/pager.class.php';
 					if(intval($metparaaccess)>0&&$met_member_use){
 						$paracode=authcode($list[$nowpara1], 'ENCODE', $met_member_force);
 						$paracode=codetra($paracode,1); 
-						$list[$nowpara1]="<script language='javascript' src='../include/access.php?metuser=para&metaccess=".$metparaaccess."&lang=".$lang."&listinfo=".$paracode."&paratype=".$metpara[$list1['paraid']]['type']."'></script>";
+						$list[$nowpara1]="<script language='javascript' src='../include/access.php?metmemberforce={$metmemberforce}&metuser=para&metaccess=".$metparaaccess."&lang=".$lang."&listinfo=".$paracode."&paratype=".$metpara[$list1['paraid']]['type']."'></script>";
 					}
 					$nowparaname="";
 					$nowparaname=$nowpara1."name";
@@ -220,7 +261,11 @@ require_once '../include/pager.class.php';
 		$phpname=$showname.'.php?'.$langmark."&id=".$list['id'];
 		$panyid = $list['filename']!=''?$list['filename']:$list['id'];
 		$met_ahtmtype = $list['filename']<>''?$met_chtmtype:$met_htmtype;
-		$list['url']=$met_pseudo?$panyid.'-'.$lang.'.html':($met_webhtm?$htmname.$met_ahtmtype:$phpname);
+		if($list['links']){
+			$list['url']=$list['links'];
+		}else{
+			$list['url']=$met_pseudo?$panyid.'-'.$lang.'.html':($met_webhtm?$htmname.$met_ahtmtype:$phpname);
+		}
 		if($class_list[$class1]['module']>=100||$search=='search'||$list['class1']!=$class1)$list['url']='../'.$class_list[$list['class1']]['foldername'].'/'.$list['url'];
 		if($mdname=='download'){
 			if(intval($list['downloadaccess'])>0&&$met_member_use){
@@ -242,6 +287,48 @@ require_once '../include/pager.class.php';
 		if($list['class1']!=0)$md_class[$list['class1']][]=$list;
 		if($list['class2']!=0)$md_class[$list['class2']][]=$list;
 		if($list['class3']!=0)$md_class[$list['class3']][]=$list;
+		if($list['classother']!=''){
+			$total_class=array();
+			$list['classother']=trim($list['classother'],'|');
+			$total_class=explode('|',$list['classother']);
+			foreach($total_class as $key=>$val){
+				$val=trim($val,'-');
+				$total_classother=explode('-',$val);
+				$classother1[$key]=$total_classother[0];
+				$classother2[$key]=$total_classother[1];
+				$classother3[$key]=$total_classother[2];				
+			}
+			foreach($classother1 as $val){
+				if($val!=0&&!array_key_exists($val,$md_class))$md_class[$val][]=$list;					
+			}
+			foreach($classother2 as $val){
+				if($val!=0&&!array_key_exists($val,$md_class))$md_class[$val][]=$list;
+			}
+			foreach($classother3 as $val){
+				if($val!=0&&!array_key_exists($val,$md_class))$md_class[$val][]=$list;					
+			}			
+		}
+		if($classnow==$class2){
+			foreach($md_class as $key=>$val){
+				if($key==$class1||$key==$class2){
+					$md_class1[$key]=$val;
+				}
+				foreach($nav_list3[$class2] as $v){
+					if($key==$v[id]){
+						$md_class1[$key]=$val;
+					}
+				}
+			}
+		}else if($classnow==$class3){
+			foreach($md_class as $key=>$val){
+				if($key==$class1||$key==$class2||$key==$class3){
+					$md_class1[$key]=$val;
+				}
+			}
+		}else if($classnow==$class1){
+			$md_class1=$md_class;
+		}
+		$md_class=$md_class1;
 		$md_list[]=$list;
 	}
 if($search=='search' && $mdmendy){
@@ -270,8 +357,7 @@ if($search=='search' && $mdmendy){
 			$met_ahtmtype = $class_list[$class1]['filename']<>''?$met_chtmtype:$met_htmtype;
 		}
 		$page_list = $rowset->link($met_pagelist,$met_ahtmtype);
-	}
-	else{
+	}else{
 		$pagemor = $mdname.'.php?'.$langmark."&class1=$class1&class2=$class2&class3=$class3&page=";
 		$hz = '';
 		$page_list = $rowset->link($pagemor,$hz);
@@ -302,11 +388,29 @@ if($class2){
 if($class3){
 	$class_info['name']=$class3_info['name']."-".$class2_info['name']."-".$class1_info['name'];
 }
-$show['description']=$class_info['description']?$class_info['description']:$met_keywords;
+$show['description']=$class_info['description']?$class_info['description']:$met_description;
 $show['keywords']=$class_info['keywords']?$class_info['keywords']:$met_keywords;
 $met_title=$met_title?$class_info['name'].'-'.$met_title:$class_info['name'];
 if($class_info['ctitle']!='')$met_title=$class_info['ctitle'];
 if($page>1)$met_title.='-'.$lang_Pagenum1.$page.$lang_Pagenum2;
 $pageall=$rowset->pages;
+if(($met_product_page && $class_list[$class1]['module']==3) || ($class_list[$class1]['module']==5 && $met_img_page) && $search<>'search' && $metinfover=='v1'){
+	$product_listp=array();
+	if($class2 && count($nav_list3[$class2]) && !$class3){
+		$product_listp=$nav_list3[$class2];
+	}
+	if(!$class2 && count($nav_list2[$class1]) && $class1 && !$class3){
+		$product_listp=$nav_list2[$class1];
+	}
+	if($product_listp){
+		foreach($product_listp as $key=>$val){
+			$val['title']=$val['name'];
+			$val['imgurl']=$val['columnimg']==''?$weburly.$met_agents_img:$val['columnimg'];
+			$val['imgurls']=$val['imgurl'];
+			$show_listp[] = $val;
+		}
+		$md_list = $show_listp;
+	}
+}
 require_once '../public/php/methtml.inc.php';
 ?>

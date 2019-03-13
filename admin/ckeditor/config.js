@@ -5,15 +5,15 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 CKEDITOR.editorConfig = function( config )
 {
+	config.extraPlugins="video";
 	config.toolbar_Full = [
-	['Font','FontSize','Table','HorizontalRule'],
-	['NumberedList','BulletedList','Outdent','Indent'],
-	['Anchor','PageBreak','SpecialChar','SelectAll','Paste','PasteText','PasteFromWord'],
-	['Blockquote','ShowBlocks','Replace'],
+	['FontSize','Font'],
+	['NumberedList','BulletedList','Outdent','Indent','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
+	['Strike','Subscript','Superscript','Undo','Redo','Anchor'],
 	'/',
-	['Bold','Italic','Underline','TextColor','BGColor','Link','Unlink','RemoveFormat'],
-	['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],['Image','Flash'],
-	['Strike','Subscript','Superscript','Undo','Redo','Cut','Copy','Source']
+	['Bold','Italic','Underline','TextColor','BGColor','RemoveFormat'],
+	['Link','Unlink','Image','video','Flash','Table','Blockquote','HorizontalRule','PageBreak'],
+	['PasteText','Replace','Source']
 	];
 	config.skin = 'BootstrapCK-Skin';
 	//config.enterMode=2;

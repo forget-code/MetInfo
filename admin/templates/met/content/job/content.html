@@ -10,6 +10,8 @@ echo <<<EOT
 EOT;
 $title="<a href='index.php?anyid={$anyid}&lang={$lang}&class1={$class1}'>{$met_class[$class1][name]}</a>";
 $title.=$action=='editor'?" > {$lang_editor}{$lang_content}":" > {$lang_add}{$lang_content}";
+$class1=$class1?$class1:($id?$id:0);
+$title=title($class1,$anyid,$lang)?title($class1,$anyid,$lang):$title;
 require_once template('metlangs');
 echo <<<EOT
 -->
@@ -32,7 +34,7 @@ echo <<<EOT
 			</dd>
 		</dl>
 		</div>
-		<div class="v52fmbx_dlbox">
+		<div class="v52fmbx_dlbox v52fmbx_inline">
 		<dl>
 			<dt>{$lang_article1}{$lang_marks}</dt>
 			<dd>
@@ -122,6 +124,17 @@ echo <<<EOT
 			</dd>
 		</dl>
 		</div>
+
+	<h3 class="v52fmbx_hr metsliding" sliding="0">{$lang_contentdetail}</h3>
+	<div class="metsliding_box metsliding_box_0">
+		<div class="v52fmbx_dlbox_content">
+			<textarea class="ckeditor" name="content">$job_list[content]</textarea>
+<script type="text/javascript">
+met_ckeditor('$depth','content');
+</script>
+		</div>
+	</div>
+	<h3 class="v52fmbx_hr metsliding" sliding="14">{$lang_unitytxt_33}</h3>
 <!--
 EOT;
 if($met_member_use){
@@ -141,16 +154,17 @@ echo <<<EOT
 EOT;
 }
 echo <<<EOT
--->	
-	<h3 class="v52fmbx_hr metsliding" sliding="0">{$lang_contentdetail}</h3>
-	<div class="metsliding_box metsliding_box_0">
-		<div class="v52fmbx_dlbox_content">
-			<textarea class="ckeditor" name="content">$job_list[content]</textarea>
-<script type="text/javascript">
-met_ckeditor('$depth','content');
-</script>
+-->		
+	
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_displaytype}{$lang_marks}</dt>
+			<dd>
+			<label><input name="displaytype" type="radio" class="radio" {$displaytypes[0]} value="1" />{$lang_yes}</label>
+			<label><input name="displaytype" type="radio" class="radio" {$displaytypes[1]} value="0" />{$lang_no}</label>
+			</dd>
+		</dl>
 		</div>
-	</div>
 		<div class="v52fmbx_submit">
 			<input type="submit" name="Submit" value="{$lang_Submit}" class="submit" onclick="return Smit($(this),'myform');" />
 		</div>

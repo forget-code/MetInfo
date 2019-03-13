@@ -2,6 +2,7 @@
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 require_once '../login/login_check.php';
+require_once '../include/common.inc.php';
 require_once 'global.func.php';
 if($action=="del"){
 	$allidlist=explode(',',$allid);
@@ -23,6 +24,11 @@ if($action=="del"){
 				}
 			}
 			delcolumn($admin_list);
+		}
+		if($admin_list[module]>1000){
+			deldir("../../".$admin_list[foldername]);
+			$query = "delete from $met_ifmember_left where columnid='$val'";
+			$db->query($query);
 		}
 	}
 	file_unlink("../../cache/column_$lang.inc.php");
@@ -51,6 +57,14 @@ if($action=="del"){
 		$out_url     = 'out_url_'.$allidlist[$i];     $out_url     = $$out_url;
 		$if_in       = 'if_in_'.$allidlist[$i];       $if_in       = $$if_in;
 		if(!$if_in)$if_in   = $module==999?1:0;
+		if($module>1000){
+		$fixed=$db->get_one("select * from $met_ifcolumn where no='$module'");
+		if($fixed[fixed_name]){
+			$foldername=$fixed[fixed_name];
+		}
+		$out_url = $met_weburl.$foldername;
+		$if_in=1;
+		}
 		$index_num   = 'index_num_'.$allidlist[$i];   $index_num   = $$index_num;
 		$classtype   = 'classtype_'.$allidlist[$i];   $classtype   = $$classtype;
 		//$access      = 'access_'.$allidlist[$i];      $access      = $$access;
@@ -86,7 +100,7 @@ if($action=="del"){
 		if($module==999)$module=0;
 		if(!$if_in)$if_in=0;
 		if($if_in==1 && $out_url=="")$metinfo.=$ertxt.'out_url_'.$allidlist[$i].'|'.$lang_modOuturl.'$';
-		if($module>5 && $module!=8)$foldername = $tesumods[$module];
+		if($module>5 && $module!=8 && $module<1000)$foldername = $tesumods[$module];
 
 		if($if_in==0){
 			$out_url='';
@@ -183,6 +197,11 @@ if($action=="del"){
 		}
 		$uptp = $val['tpif']?"update":"insert into";
 		$upbp = $val['tpif']?"where id='$val[id]'":"";
+		if($uptp=="insert into"){
+			if($val[module]==0){
+				$val[foldername]=null;
+			}			
+		}
 		$query="$uptp $met_column set
 				name               = '$val[name]',
 				out_url            = '$val[out_url]',
@@ -202,6 +221,17 @@ if($action=="del"){
 		$upid=$val['tpif']?$val[id]:mysql_insert_id();
 		if(($val['classtype']==1 || $val['releclass']) && !$val['tpif'])$metinfo_admin_pop1.='c'.$upid.'-';
 		column_copyconfig($val['foldername'],$val['module'],$upid);
+		$column_id=$db->get_one("select * from $met_column where name='$val[name]' and lang='$lang'");
+		if($val[module]>1000){
+			establish_appmodule($val[foldername],$val[module]);
+			$module_Information=$db->get_one("select * from $met_ifcolumn where no='$val[module]'");
+			if($module_Information[memberleft]==1){
+				if($uptp=="insert into"){
+					$query="insert into $met_ifmember_left set no='$val[module]',columnid='$column_id[id]',title='$column_id[name]',foldername='$val[foldername]',filename='index.php'";
+					$db->query($query);
+				}
+			}
+		}
 	}
 	if($metinfo_admin_pop1!=''){
 		if($metinfo_admin_pop!="metinfo"){
@@ -219,7 +249,6 @@ if($action=="del"){
 		}
 	}
 	file_unlink("../../cache/column_$lang.inc.php");
-	echo 0;
 }
 elseif($action=="editorok"){
 $gent='../../sitemap/index.php?lang='.$lang.'&htmsitemap='.$met_member_force;
@@ -241,6 +270,11 @@ metsave('../column/index.php?anyid='.$anyid.'&lang='.$lang,'','','',$gent);
 			}
 			delcolumn($list1);
 		}
+	}
+	if($admin_list[module]>1000){
+		deldir("../../".$admin_list[foldername]);
+		$query = "delete from $met_ifmember_left where columnid='$id'";
+		$db->query($query);
 	}
 	delcolumn($admin_list);
 	file_unlink("../../cache/column_$lang.inc.php");

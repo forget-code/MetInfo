@@ -20,6 +20,8 @@ if($met_content_type==2){
 	if(!$met_class[$class2][releclass] && $ctp)$title.=" > ";
 	if($ctp)$title.=$ctype1?"<a href='../content.php?anyid={$anyid}&lang={$lang}&module=1&class2={$class2}'>{$met_class[$class2][name]}</a>":"{$met_class[$class2][name]}";
 	if($nott)$title.=$ctype?" > <a href='../content.php?anyid={$anyid}&lang={$lang}&module=1&class2={$id}'>{$about[name]}</a>":" > {$about[name]}";
+	$class1=$class1?$class1:($id?$id:0);
+	$title=title($class1,$anyid,$lang)?title($class1,$anyid,$lang):$title;
 	if(!$met_class[$class2][releclass])$rurl="../content.php?anyid={$anyid}&lang={$lang}&module=1&class1={$class1}";
 }
 require_once template('metlangs');
@@ -33,7 +35,7 @@ echo <<<EOT
 <div class="v52fmbx_tbmax">
 <div class="v52fmbx_tbbox">
 <div class="v52fmbx">
-	<h3 class="v52fmbx_hr metsliding">{$lang_contentdetail}</h3>
+	<h3 class="v52fmbx_hr metsliding">{$lang_contentdetail}    <a href="{$met_weburl}{$met_adminfile}/column/index.php?anyid=25&lang=$lang">{$lang_indexcolumn}</a></h3>
 		<div class="v52fmbx_dlbox_content">
 			<textarea class="ckeditor" name="content">$about[content]</textarea>
 		</div>

@@ -19,7 +19,7 @@ if($action=='add'){
 					<input name='displayimg{$lp}' type='text' class='text' value='' />
 					<input name='met_upsql{$lp}' type='file' id='displayimg_upload{$lp}' />
 					<script type='text/javascript'>
-						metuploadify('#displayimg_upload{$lp}','big_wate_img','displayimg{$lp}','','3');
+						metuploadify('#displayimg_upload{$lp}','big_wate_img','displayimg{$lp}','','5');
 					</script>
 					<a href='javascript:;' onclick='imgnumfu();deletdisplayimg($(this));' class='displayimg_del'>{$lang_delete}</a>
 				</dd>

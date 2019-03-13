@@ -28,6 +28,8 @@ $title="<a href='index.php?anyid={$anyid}&lang={$lang}&class1={$class1}'>{$met_c
 }else{
 $title="{$lang_feedbackview}";
 }
+$class1=$class1?$class1:($id?$id:0);
+$title=title($class1,$anyid,$lang)?title($class1,$anyid,$lang):$title;
 require_once template('content/feedback/top');
 echo <<<EOT
 -->

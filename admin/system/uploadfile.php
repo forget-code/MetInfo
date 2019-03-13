@@ -5,7 +5,9 @@ require_once '../login/login_check.php';
 require_once 'mydir.class.php';
 $rurls='../system/uploadfile.php?anyid='.$anyid.'&cs='.$cs.'&lang='.$lang;
 if($action=='deletefolder'){
-   $filedir="../../".$filename;
+	if(strcasecmp(substr(trim($filename),0,7),'upload/')!=0)die('met1');
+	if(substr_count(trim($filename),'../')!=0)die('met2');
+	$filedir="../../".$filename;
    deldir($filedir,0);
    metsave($rurls);
 }

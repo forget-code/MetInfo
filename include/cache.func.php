@@ -19,8 +19,15 @@ function cache_str(){
 	$query = "SELECT * FROM $met_label where lang='$lang' order BY char_length(oldwords) DESC";
 	$result = $db->query($query);
 	while($list = $db->fetch_array($result)) {
+		if(!$list[newwords]){
+			$list[newwords]=$list[oldwords];
+		}
 		$str_list_temp[0]=$list['oldwords'];
-		$str_list_temp[1]="<a title='$list[newtitle]' target='_blank' href='$list[url]' class='seolabel'>$list[newwords]</a>";
+		if($list[url]){
+			$str_list_temp[1]="<a title='$list[newtitle]' target='_blank' href='$list[url]' class='seolabel'>$list[newwords]</a>";
+		}else{
+			$str_list_temp[1]=$list[newwords];
+		}
 		$str_list_temp[2]=$list['num'];
 		$str_list[]=$str_list_temp;
 	}
@@ -31,6 +38,7 @@ function cache_column(){
 	$query="select * from $met_column where lang='$lang' order by classtype desc,no_order";
 	$result= $db->query($query);
 	while($list = $db->fetch_array($result)){
+		$list['new_windows'] = $list['new_windows']?$list['new_windows']:'';
 		$cache_column[$list['id']]=$list;
 	}
 	return cache_page("column_".$lang.".inc.php",$cache_column);
