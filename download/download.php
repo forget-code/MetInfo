@@ -56,8 +56,8 @@ $class_info[e_keywords]=$class1_info[e_keywords];
 $class_info[c_keywords]=$class1_info[c_keywords];
 $class_info[e_name]=$class1_info[e_name];
 $class_info[c_name]=$class1_info[c_name];
-$nav_x[c_name]=$class1_info[c_name];
-$nav_x[e_name]=$class1_info[e_name];
+$nav_x[c_name]="<a href=download.php?class1=".$class1_info[id]." >".$class1_info[c_name]."</a>";
+$nav_x[e_name]="<a href=download.php?en=en&class1=".$class1_info[id]." >".$class1_info[e_name]."</a>";
 
 if($class2!=""){
 foreach($nav_list2[$class1] as $key=>$val){
@@ -69,8 +69,8 @@ $class_info[e_keywords]=$class2_info[e_keywords];
 $class_info[c_keywords]=$class2_info[c_keywords];
 $class_info[e_name]=$class2_info[e_name]."--".$class1_info[e_name];
 $class_info[c_name]=$class2_info[c_name]."--".$class1_info[c_name];
-$nav_x[c_name]=$class1_info[c_name]." > ".$class2_info[c_name];
-$nav_x[e_name]=$class1_info[e_name]." > ".$class2_info[e_name];
+$nav_x[c_name]="<a href=download.php?class1=".$class1_info[id]." >".$class1_info[c_name]."</a>"." > "."<a href=download.php?class1=".$class1_info[id]."&class2=".$class2_info[id]." >".$class2_info[c_name]."</a>";
+$nav_x[e_name]="<a href=download.php?en=en&class1=".$class1_info[id]." >".$class1_info[e_name]."</a>"." > "."<a href=download.php?en=en&class1=".$class1_info[id]."&class2=".$class2_info[id]." >".$class2_info[e_name]."</a>";
 }
 }
 }
@@ -84,8 +84,8 @@ $class_info[e_keywords]=$class3_info[e_keywords];
 $class_info[c_keywords]=$class3_info[c_keywords];
 $class_info[e_name]=$class3_info[e_name]."--".$class2_info[e_name]."--".$class1_info[e_name];
 $class_info[c_name]=$class3_info[c_name]."--".$class2_info[c_name]."--".$class1_info[c_name];
-$nav_x[c_name]=$class1_info[c_name]." > ".$class2_info[c_name]." > ".$class3_info[c_name];
-$nav_x[e_name]=$class1_info[e_name]." > ".$class2_info[e_name]." > ".$class3_info[e_name];
+$nav_x[c_name]="<a href=download.php?class1=".$class1_info[id]." >".$class1_info[c_name]."</a>"." > "."<a href=download.php?class1=".$class1_info[id]."&class2=".$class2_info[id]." >".$class2_info[c_name]."</a>"." > "."<a href=download.php?class1=".$class1_info[id]."&class2=".$class2_info[id]."&class3=".$class3_info[id]." >".$class3_info[c_name]."</a>";
+$nav_x[e_name]="<a href=download.php?en=en&class1=".$class1_info[id]." >".$class1_info[e_name]."</a>"." > "."<a href=download.php?en=en&class1=".$class1_info[id]."&class2=".$class2_info[id]." >".$class2_info[e_name]."</a>"." > "."<a href=download.php?en=en&class1=".$class1_info[id]."&class2=".$class2_info[id]."&class3=".$class3_info[id]." >".$class3_info[e_name]."</a>";
 }
 }
 }

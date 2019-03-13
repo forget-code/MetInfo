@@ -1,0 +1,60 @@
+<!--<?php
+require_once template('head'); 
+require_once template('flash'); 
+echo <<<EOT
+-->
+<div class="web">
+<!--左边开始-->
+<div class="web_left">
+<div class="contact_left">
+
+<!--
+EOT;
+require_once template('online'); 
+echo <<<EOT
+-->
+</div>
+</div>
+<!--左边结束-->
+<div class="rightcontent">
+<div class="nav_left"><font>q</font>$navtitle</div>
+<div class="content">
+<div class="message_line"><a href="addlink.php">申请友情链接>></a></div>
+<div class="index_link_img">
+<b>图片链接：</b><br />
+<!--
+EOT;
+foreach($link_img as $key=>$val){
+echo <<<EOT
+-->
+<a href="$val[weburl]" target="_blank"><img src="$val[weblogo]" alt="$val[c_webname]" /></a>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</div>
+<br />
+<div class="index_link_text">
+<b>文字链接：</b><br />
+<!--
+EOT;
+foreach($link_text as $key=>$val){
+echo <<<EOT
+-->
+<a href="$val[weburl]" target="_blank" title="$val[c_info]">$val[c_webname]</a>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</div>
+</div>
+</div>
+
+
+</div>
+<!--
+EOT;
+require_once template('foot'); 
+?>

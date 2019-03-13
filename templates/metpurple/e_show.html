@@ -1,0 +1,57 @@
+<!--<?php
+require_once template('e_head'); 
+require_once template('e_flash'); 
+echo <<<EOT
+-->
+
+<div class="web">
+<!--左边开始-->
+<div class="web_left">
+<div class="nav_right">$class1_list[e_name]</div>
+<div class="product_list1">
+<div id="button">
+<ul>
+<!--
+EOT;
+$i=$class1_list[id];
+foreach($nav_list2[$i] as $key=>$val){
+echo <<<EOT
+-->
+<li><a href="$val[e_url]">$val[e_name]</a></li>
+<!--
+EOT;
+$j=$val[id];
+foreach($nav_list3[$j] as $key=>$val1){
+echo <<<EOT
+-->
+<li style="padding-left:20px;"><a href="$val1[e_url]">--$val1[e_name]</a></li>
+<!--
+EOT;
+}}
+echo <<<EOT
+-->
+
+</ul>
+</div>
+</div>
+<div class="contact_left">
+
+<!--
+EOT;
+require_once template('e_online'); 
+echo <<<EOT
+-->
+</div>
+</div>
+<!--左边结束-->
+
+<div class="rightcontent">
+<div class="nav_left"><font>q</font>$show[e_name]</div>
+<div class="content">$show[e_content]</div>
+</div>
+</div>
+
+<!--
+EOT;
+require_once template('e_foot'); 
+?>

@@ -1,0 +1,56 @@
+<!--<?php
+require_once template('head'); 
+require_once template('flash'); 
+echo <<<EOT
+-->
+
+<div class="web">
+<!--左边开始-->
+<div class="web_left">
+<!--
+EOT;
+require_once template('leftlist'); 
+echo <<<EOT
+-->
+</div>
+<div class="contact_left">
+
+<!--
+EOT;
+require_once template('online'); 
+echo <<<EOT
+-->
+</div>
+</div>
+<!--左边结束-->
+<div class="rightcontent">
+<div class="nav_left"><font>q</font>$nav_x[c_name]</div>
+<h1>$img[c_title]</h1>
+<div class="content">
+<div class="img_list"><a href="$img[imgurl]" target="_blank"><img src="$img[imgurls]" alt="查看大图" /></a></div>
+<div class="img_list_para">
+<!--
+EOT;
+foreach($img_para200 as $key=>$val1){
+$para_no="c_".$val1[name];
+echo <<<EOT
+-->
+<b>$val1[c_mark]</b>:$img[$para_no]<br />
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</div>
+
+<div class="content">$img[c_content]</div>
+
+<div class="hits">点击数：<span><script language="javascript" src="../include/hits.php?type=img&id=$img[id]"></script></span>&nbsp; 更新时间:$img[updatetime]&nbsp;【<a href='javascript:window.print()'>打印此页</a>】&nbsp;【<a href="javascript:self.close()">关闭</a>】</div>
+
+</div>
+</div>
+
+<!--
+EOT;
+require_once template('foot'); 
+?>

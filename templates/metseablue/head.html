@@ -1,0 +1,80 @@
+<!--<?php
+echo <<<EOT
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="description" content="$show[c_description]">
+<meta name="keywords" content="$show[c_keywords]">
+<meta name="language" content="zh-CN">
+<meta name="robots" content="all">
+<meta name="GOOGLEBOT" content="all">
+<meta name="author" content="$met_c_webname">
+<meta name="copyright" content="Copyright 2008 -MetInfo">
+<LINK href="$rooturl/favicon.ico" rel="shortcut icon">
+<link rel="stylesheet" type="text/css" href="$css_url/metinfo.css">
+<TITLE>$c_title_keywords--$met_c_webname</TITLE>
+</head>
+<body>
+<div class="body">
+<div class="top" style="background-image:url($img_url/top01.gif);">
+<div class="logo"><a href="$index_c_url"><img src="$met_logo" alt="$met_c_alt" /></a></div>
+<div class="top_right">
+<div class="top_right_home"><a href="#" style="BEHAVIOR: url(#default#homepage)" onClick="this.style.behavior='url(#default#homepage)';this.setHomePage('$met_weburl');return(false);" title="设为首页">设为首页</a> | <a href="javascript:window.external.AddFavorite('$met_weburl', '$met_c_webname')" target="_self" title="收藏本站">加入收藏</a> 
+<!--
+EOT;
+if($met_en_lang==1){
+echo <<<EOT
+-->
+| <a href="$index_e_url">English</a>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</div>
+<div class="top_right_time">今天是
+<script language="JavaScript">
+today=new Date();
+function initArray(){
+this.length=initArray.arguments.length
+for(var i=0;i<this.length;i++)
+this[i+1]=initArray.arguments[i]  }
+var d=new initArray(
+" 星期日",
+" 星期一",
+" 星期二",
+" 星期三",
+" 星期四",
+" 星期五",
+" 星期六");
+document.write(
+"",
+today.getFullYear(),"年",
+today.getMonth()+1,"月",
+today.getDate(),"日",
+d[today.getDay()+1],
+"" ); 
+</script></div>
+
+<div class="nav">
+<a href="$navurl?ch=ch">首页</a>|
+<!--
+EOT;
+foreach($nav_list as $key=>$val){
+echo <<<EOT
+--><a href="$val[c_url]" $val[new_windows] title="$val[c_name]">$val[c_name]</a>|<!--
+EOT;
+}
+echo <<<EOT
+-->
+
+</div>
+</div>
+</div>
+
+
+<!--
+EOT;
+?>

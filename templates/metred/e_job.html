@@ -1,0 +1,52 @@
+<!--<?php
+require_once template('e_head'); 
+require_once template('e_flash'); 
+echo <<<EOT
+-->
+
+<div class="web">
+<!--左边开始-->
+<div class="web_left">
+<div class="contact_left">
+
+<!--
+EOT;
+require_once template('e_online'); 
+echo <<<EOT
+-->
+</div>
+</div>
+<!--左边结束-->
+<div class="rightcontent">
+<div class="nav_left"><font>q</font>$nav_x[e_name]</div>
+<div class="content">
+<!--
+EOT;
+foreach($job_list as $key=>$val){
+echo <<<EOT
+-->
+<div class="job_list">
+<div class="job_list_img"><img src="$img_url/list.gif" /></div>
+<div class="job_list_title">
+Position：<a href="$val[e_url]" target="_blank"><b>$val[e_position]</b></a>&nbsp;&nbsp;&nbsp;
+Person Number：$val[count]&nbsp;&nbsp;&nbsp;
+Work Place：$val[e_place]&nbsp;&nbsp;&nbsp;
+Add Date：$val[addtime]&nbsp;&nbsp;&nbsp;
+</div>
+<div class="job_list_right"><a href="$val[e_url]" target="_blank">Detail>></a></div>
+
+</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</div>
+$e_page_list
+</div>
+
+</div>
+<!--
+EOT;
+require_once template('e_foot'); 
+?>

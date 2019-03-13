@@ -1,0 +1,32 @@
+<!--<?php
+echo <<<EOT
+-->
+<div class="nav_right">$class1_info[e_name]</div>
+<div class="product_list1">
+<div id="button">
+<ul>
+<!--
+EOT;
+$i=$class1_info[id];
+foreach($nav_list2[$i] as $key=>$val){
+echo <<<EOT
+-->
+<li><a href="$val[e_url]">$val[e_name]</a></li>
+<!--
+EOT;
+$j=$val[id];
+foreach($nav_list3[$j] as $key=>$val1){
+echo <<<EOT
+-->
+<li style="padding-left:20px;"><a href="$val1[e_url]">--$val1[e_name]</a></li>
+<!--
+EOT;
+}}
+echo <<<EOT
+-->
+
+</ul>
+</div> 
+<!--
+EOT;
+?>

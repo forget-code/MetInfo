@@ -6,6 +6,19 @@ $index_e_url=$met_webhtm?$met_weburl."index.htm":$met_weburl."index.php";
 $index_c_url=$met_webhtm?$met_weburl."index_ch.htm":$met_weburl."index.php?ch=ch";
 }
 $searchurl=($en=="en")?$navurl."search/search.php?en=en":$navurl."search/search.php";
+
+$otherinfo = $db->get_one("SELECT * FROM $met_otherinfo order by id desc");
+if($index=="index"){
+$otherinfo[c_imgurl1]=explode("../",$otherinfo[c_imgurl1]);
+$otherinfo[c_imgurl1]=$otherinfo[c_imgurl1][1];
+$otherinfo[c_imgurl2]=explode("../",$otherinfo[c_imgurl2]);
+$otherinfo[c_imgurl2]=$otherinfo[c_imgurl2][1];
+$otherinfo[e_imgurl1]=explode("../",$otherinfo[e_imgurl1]);
+$otherinfo[e_imgurl1]=$otherinfo[e_imgurl1][1];
+$otherinfo[e_imgurl2]=explode("../",$otherinfo[e_imgurl2]);
+$otherinfo[e_imgurl2]=$otherinfo[e_imgurl2][1];
+}
+
 $query="select * from $met_online order by no_order";
 $result= $db->query($query);
 while($list = $db->fetch_array($result)){
@@ -83,6 +96,11 @@ $met_flash_ypx=$met_flash_y."px";
 	$result= $db->query($query);
 	while($list = $db->fetch_array($result)){
 	$nav_list_2[]=$list;
+	}
+	$query="select * from $met_column where classtype='3' order by no_order";
+	$result= $db->query($query);
+	while($list = $db->fetch_array($result)){
+	$nav_list_3[]=$list;
 	}
     $query="select * from $met_column where (nav='1' or nav='3') order by no_order";
 	$result= $db->query($query);

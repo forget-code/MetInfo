@@ -4,7 +4,7 @@ $admin_ok = 1;
 if($admin_pop=="yes"){
 $admin_type="metinfo";}
 else{
-for($i=1001;$i<=1018;$i++){
+for($i=1001;$i<=1019;$i++){
 $admin_pop="admin_pop".$i;
 if($$admin_pop!=""){
 $admin_type.=$$admin_pop."-";

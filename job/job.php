@@ -31,8 +31,8 @@ $e_page_list = $rowset->link("job.php?en=en&search=$search&e_position=$e_positio
 require_once '../include/head.php';
 
 $class_info=$db->get_one("select * from $met_column where module='6'");
-$nav_x[c_name]=$class_info[c_name];
-$nav_x[e_name]=$class_info[e_name];
+$nav_x[c_name]="<a href=job.php>".$class_info[c_name]."</a>";
+$nav_x[e_name]="<a href=job.php?en=en>".$class_info[e_name]."</a>";
 
 
 if($en=="en"){

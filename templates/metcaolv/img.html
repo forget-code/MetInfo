@@ -1,0 +1,53 @@
+<!--<?php
+require_once template('head'); 
+require_once template('flash'); 
+echo <<<EOT
+-->
+
+<div class="web">
+<!--左边开始-->
+<div class="web_left">
+<!--
+EOT;
+require_once template('leftlist'); 
+echo <<<EOT
+-->
+</div>
+<div class="contact_left">
+
+<!--
+EOT;
+require_once template('online'); 
+echo <<<EOT
+-->
+</div>
+</div>
+<!--左边结束-->
+
+<div class="rightcontent">
+<div class="nav_left"><font>q</font>$nav_x[c_name]</div>
+<div class="content">
+<!--
+EOT;
+foreach($img_list as $key=>$val){
+$val[c_title]=utf8substr($val[c_title], 0, 14); 
+echo <<<EOT
+-->
+	<div class="product_display1">
+   <div class="product_img"><a href='$val[c_url]' target=_blank><img src="$val[imgurls]" /></a></div>
+   <div class="product_title"><a href='$val[c_url]' target=_blank>$val[c_title]</a></div>
+   </div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<div class="page">$c_page_list</div>
+
+</div>
+</div>
+</div>
+<!--
+EOT;
+require_once template('foot'); 
+?>

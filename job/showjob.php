@@ -25,8 +25,9 @@ $navurl=($rooturl=="..")?$rooturl."/":"";
 	
 require_once '../include/head.php';
 
-$nav_x[c_name]=$class1_info[c_name];
-$nav_x[e_name]=$class1_info[e_name];
+$nav_x[c_name]="<a href=job.php>".$class1_info[c_name]."</a>";
+$nav_x[e_name]="<a href=job.php?en=en>".$class1_info[e_name]."</a>";
+
 
 
 if($en=="en"){

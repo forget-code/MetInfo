@@ -46,7 +46,11 @@ echo <<<EOT
 -->			  <tr bgcolor="#ECF5FF"> 
             <td height="25">同级栏目排序：</td>
             <td > <input name="no_order" type="text" class="input" size="2" maxlength="20"></td>
-          </tr>
+          </tr> 
+           <tr bgcolor="#ECF5FF" > 
+		  <td height="25" >首页标识：</td>
+            <td > <input name="index_num" type="text" class="input" size="2" maxlength="20" value="0">请参考“<a href="info.php">模板设置导航</a>”进行设置,一般可为0</td>
+		 </tr> 
 		  <tr bgcolor="#ECF5FF"> 
             <td height="25">主导航条显示：</td>
             <td ><input name="nav" type="radio" value="0" checked="checked">不显示 &nbsp;<input name="nav" type="radio" value="1">头部主导航条<input name="nav" type="radio" value="2">尾部导航条<input name="nav" type="radio" value="3">都显示</td>
@@ -86,7 +90,8 @@ echo <<<EOT
             <td width="20%" height="25"><font color="#FF0000">*</font>静态页面名称：</td>
             <td > <input name="filename" type="text" class="input" size="20" maxlength="20" >用于生成静态页面，不能重名。</td>
           </tr>
-		  <tr bgcolor="#ECF5FF"> 
+		  
+		<tr bgcolor="#ECF5FF">
             <td height="25" colspan="3"><b>搜索引擎优化设置</b> </td> 
           </tr>
 		  <tr bgcolor="#ECF5FF"> 

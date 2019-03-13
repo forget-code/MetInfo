@@ -41,13 +41,13 @@ $REQUEST_URI  = $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'];
 $t_array = explode(' ',microtime());
 $P_S_T	 = $t_array[0] + $t_array[1];
 $met_obstart == 1 && function_exists('ob_gzhandler') ? ob_start('ob_gzhandler') :ob_start();
-//if (!$m_check_referer) $_SESSION['mvm_sess_referer'] = getenv('HTTP_REFERER');
 $referer?$forward=$referer:$forward=$_SERVER['HTTP_REFERER'];
 $char_key=array("\\",'&',' ',"'",'"','/','*',',','<','>',"\r","\t","\n",'#','%','?');
 $m_now_time     = time();
 $m_now_date     = date('Y-m-d H:i:s',$m_now_time);
 $m_now_counter  = date('Y-m-d',$m_now_time);
 $m_now_month    = date('Ym',$m_now_time);
+$m_now_year     = date('Y',$m_now_time);
 $m_user_agent   =  $_SERVER['HTTP_USER_AGENT'];
 if($_SERVER['HTTP_X_FORWARDED_FOR']){
 	$m_user_ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
@@ -58,17 +58,11 @@ if($_SERVER['HTTP_X_FORWARDED_FOR']){
 }
 $m_user_ip  = preg_match('/^([0-9]{1,3}\.){3}[0-9]{1,3}$/',$m_user_ip) ? $m_user_ip : 'Unknown';
 $PHP_SELF = $_SERVER['PHP_SELF'] ? $_SERVER['PHP_SELF'] : $_SERVER['SCRIPT_NAME'];
-//$m_mall_skin_dir    = ROOTPATH."templates";
+
 $db_settings = parse_ini_file(ROOTPATH.'config/config_db.php');
 @extract($db_settings);
 require_once ROOTPATH.'config/tablepre.php';
 
-//$imgpath = "images/$mm_skin_name";
-//执行session类
-//require_once ROOTPATH.'include/session.class.php';
-//!$session_save_dir&& $session_save_dir='./forumdata/session'; //存取的目录
-//!$session_lifetime && $session_lifetime= get_cfg_var('session.gc_maxlifetime'); //SESSION的存活期
-//PHPVERSION()<'5'?mvm_session::handler():eval(mvm_session::handler());
 session_start();
 $metinfo_admin_name     = $_SESSION['metinfo_admin_name'];
 $metinfo_admin_pass     = $_SESSION['metinfo_admin_pass'];
@@ -92,6 +86,7 @@ $db->dbconn($con_db_host,$con_db_id,$con_db_pass,$con_db_name);
 $met_skin="met";
 
 //显示参数转换
+$metcms_v="1.2";
 $met_e_seo=stripslashes($met_e_seo);
 $met_c_seo=stripslashes($met_c_seo);
 $met_c_foottext=stripslashes($met_c_foottext);

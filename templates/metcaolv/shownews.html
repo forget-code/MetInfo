@@ -1,0 +1,55 @@
+<!--<?php
+require_once template('head'); 
+require_once template('flash'); 
+echo <<<EOT
+-->
+<div class="web">
+<!--左边开始-->
+<div class="web_left">
+<!--
+EOT;
+require_once template('leftlist'); 
+echo <<<EOT
+-->
+</div>
+<div class="contact_left">
+
+<!--
+EOT;
+require_once template('online'); 
+echo <<<EOT
+-->
+</div>
+</div>
+<!--左边结束-->
+<div class="rightcontent">
+<div class="nav_left"><font>q</font>$nav_x[c_name]</div>
+<h1>$news[c_title]</h1>
+<div class="content">$news[c_content]</div>
+<div class="hits">点击数：<span><script language="javascript" src="../include/hits.php?type=news&id=$news[id]"></script></span>&nbsp; 更新时间:$news[updatetime]&nbsp;【<a href='javascript:window.print()'>打印此页</a>】&nbsp;【<a href="javascript:self.close()">关闭</a>】</div>
+<div class="nav_left"><font>q</font>相关文章</div>
+<div class="content">
+<!--
+EOT;
+$i=0;
+foreach($news_list as $key=>$val){
+$i=$i+1;
+echo <<<EOT
+-->
+<div class="newsline1">
+	<img src="$img_url/dot.gif" />
+<a href='$val[c_url]' target=_blank>$val[c_title]</a>($val[updatetime])
+	</div>	
+<!--
+EOT;
+if($i>=8)break;
+}
+echo <<<EOT
+-->
+</div>
+</div>
+</div>
+<!--
+EOT;
+require_once template('foot'); 
+?>

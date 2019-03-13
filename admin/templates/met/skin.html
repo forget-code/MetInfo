@@ -73,7 +73,8 @@ echo <<<EOT
                 <td width="5%" height="25" align="center">序号</td>
                 <td width="20%" align="center" >名称</td>
                 <td width="10%" align="center" >文件夹名</td>
-                <td width="50%" align="center" >描述</td>
+                <td width="40%" align="center" >描述</td>
+				<td width="10%" align="center" >预览</td>
 				<td width="10%" align="center" >操作</td>
               </tr>
 			  <form name="del" method="Post" action="skin_manager.php?action=delete" onSubmit="return ConfirmDelall();">
@@ -88,6 +89,7 @@ echo <<<EOT
                 <td  bgcolor="#ECF5FF" align="center">$val[skin_name]</a></td>
                 <td  bgcolor="#ECF5FF" align="center">$val[skin_file]</td>
                 <td align="center" bgcolor="#ECF5FF">$val[skin_info]</td>
+				<td align="center" bgcolor="#ECF5FF"><a href="../../templates/$val[skin_file]/view.jpg" target="_blank">预览</a></td>
 				<td align="center" bgcolor="#ECF5FF" ><a href="skin_manager.php?id=$val[id]&action=modify" >编辑</a> | <a href="skin_manager.php?id=$val[id]&action=delete" onClick="return ConfirmDel();" >删除</a></td>
               </tr>
 <!--

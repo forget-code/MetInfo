@@ -54,6 +54,10 @@ echo <<<EOT
             <td > <input name="no_order" type="text" class="input" size="2" maxlength="20" value="$column_list[no_order]"></td>
           </tr>
 		  <tr bgcolor="#ECF5FF"> 
+            <td height="25">首页标识：</td>
+            <td > <input name="index_num" type="text" class="input" size="2" maxlength="20" value="$column_list[index_num]">请参考“<a href="info.php">模板设置导航</a>”进行设置,一般可为0</td>
+          </tr>
+		  <tr bgcolor="#ECF5FF"> 
             <td height="25">主导航条显示：</td>
             <td ><input name="nav" type="radio" value="0" $nav[0] >不显示 &nbsp;<input name="nav" type="radio" value="1" $nav[1]>头部主导航条<input name="nav" type="radio" value="2" $nav[2]>尾部导航条<input name="nav" type="radio" value="3" $nav[3]>都显示</td>
           </tr> 

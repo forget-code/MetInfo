@@ -26,13 +26,14 @@ echo <<<EOT
           <tr> 
             <td colspan="4" valign="top"><table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#003366" class="border" style="word-break:break-all">
               <tr class="back_southidc2"> 
-                <td width="15%" align="center" height="25" >栏目名称[排序]</td>
+                <td width="12%" align="center" height="25" >栏目名称[排序]</td>
 				<td width="3%" align="center">ID</td>
-                <td width="8%" align="center" >导航栏显示</td>
-                <td width="8%" align="center" >栏目属性</td>
-                <td width="8%" align="center" >栏目模型</td>
+                <td width="9%" align="center" >导航栏显示</td>
+                <td width="7%" align="center" >栏目属性</td>
+                <td width="7%" align="center" >栏目模型</td>
 				<td width="8%" align="center" >栏目文件夹</td>
                 <td width="16%" align="center" >中文链接地址</td>
+				<td width="4%" align="center" >标识</td>
 				<td width="4%" height="25" align="center">选中</td>
 				<td width="20%" align="center" >操作</td>
               </tr>
@@ -54,6 +55,7 @@ echo <<<EOT
                 <td align="center" bgcolor="#DCDCDC">$val[module]</td>
 				<td bgcolor="#DCDCDC" align="center" >$val[foldername] </td>
                 <td align="center" bgcolor="#DCDCDC">$val[c_out_url]</td>
+				<td bgcolor="#DCDCDC" align="center"  >$val[index_num]</td>
 				<td height="22" align="center" bgcolor="#DCDCDC"><input name='id' type='checkbox' onClick="unselectall()" id="id" value='$val[id]' class="xz"></td>
 <!--
 EOT;
@@ -90,8 +92,9 @@ echo <<<EOT
                 <td align="center" bgcolor="#FFCCCC">$val2[module]</td>
 				<td bgcolor="#FFCCCC" align="center" >$val2[foldername] </td>
                 <td align="center" bgcolor="#FFCCCC">$val2[out_url]</td>
+				<td bgcolor="#DCDCDC" align="center"  >$val2[index_num]</td>
 				<td height="22" align="center" bgcolor="#FFCCCC"><input name='id' type='checkbox' onClick="unselectall()" id="id" value='$val2[id]' class="xz"></td>
-				<td align="center" bgcolor="#FFCCCC" ><a href="add.php?class2=$val2[id]"  style="color:#FF6600">添加三级栏目</a> | <a href="editor.php?id=$val2[id]" >编辑</a> | <a href="delete.php?id=$val[id]" onClick="return ConfirmDel();" >删除</a></td>
+				<td align="center" bgcolor="#FFCCCC" ><a href="add.php?class2=$val2[id]"  style="color:#FF6600">添加三级栏目</a> | <a href="editor.php?id=$val2[id]" >编辑</a> | <a href="delete.php?id=$val2[id]" onClick="return ConfirmDel();" >删除</a></td>
               </tr>
 <!--
 EOT;
@@ -110,8 +113,9 @@ echo <<<EOT
                 <td align="center" bgcolor="#ffffff">$val3[module]</td>
 				<td bgcolor="#ffffff" align="center" >$val3[foldername] </td>
                 <td align="center" bgcolor="#ffffff">$val3[out_url]</td>
+				<td bgcolor="#DCDCDC" align="center"  >$val3[index_num]</td>
 				<td height="22" align="center" bgcolor="#ffffff"><input name='id' type='checkbox' onClick="unselectall()" id="id" value='$val3[id]' class="xz"></td>
-				<td align="center" bgcolor="#ffffff" > <a href="editor.php?id=$val3[id]" >编辑</a> | <a href="delete.php?id=$val[id]" onClick="return ConfirmDel();" >删除</a></td>
+				<td align="center" bgcolor="#ffffff" > <a href="editor.php?id=$val3[id]" >编辑</a> | <a href="delete.php?id=$val3[id]" onClick="return ConfirmDel();" >删除</a></td>
               </tr>
 
 <!--

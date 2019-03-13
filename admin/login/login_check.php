@@ -9,10 +9,10 @@ else{
 require_once '../include/common.inc.php';
 }
 if($force_index!="metinfo"){
+if(!$admin_index){
 if (!strstr($_SERVER['HTTP_REFERER'],$_SERVER ['HTTP_HOST'])){
 die($lang[nomeet]);
-} 
-}
+} }
 
 if($action=="login"){
 $metinfo_admin_name     = $login_name;
@@ -54,6 +54,7 @@ $admincp_list = $db->get_one("SELECT * FROM $met_admin_table WHERE admin_id='$me
 		  }
 Header("Location: ../");
 }
+else{
 if(!$metinfo_admin_name||!$metinfo_admin_pass){
 if($admin_index){
 Header("Location: login/login.php");
@@ -62,5 +63,18 @@ else{
 Header("Location: ../login/login.php");
 }
 exit;
+}else{
+$admincp_ok = $db->get_one("SELECT * FROM $met_admin_table WHERE admin_id='$metinfo_admin_name' and admin_pass='$metinfo_admin_pass'");
+if (!$admincp_ok){
+if($admin_index){
+Header("Location: login/login.php");
+}
+else{
+Header("Location: ../login/login.php");
+}
+exit;
+}
+}
+}
 }
 ?>

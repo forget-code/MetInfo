@@ -43,6 +43,7 @@ $m_now_time     = time();
 $m_now_date     = date('Y-m-d H:i:s',$m_now_time);
 $m_now_counter  = date('Ymd',$m_now_time);
 $m_now_month    = date('Ym',$m_now_time);
+$m_now_year     = date('Y',$m_now_time);
 $m_user_agent   =  $_SERVER['HTTP_USER_AGENT'];
 if($_SERVER['HTTP_X_FORWARDED_FOR']){
 	$m_user_ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
@@ -72,6 +73,7 @@ $db = new dbmysql();
 $db->dbconn($con_db_host,$con_db_id,$con_db_pass,$con_db_name);
 
 //显示参数转换
+$metcms_v="1.2";
 $met_e_seo=stripslashes($met_e_seo);
 $met_c_seo=stripslashes($met_c_seo);
 $met_c_foottext=stripslashes($met_c_foottext);

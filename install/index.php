@@ -27,7 +27,7 @@ $localurl.=$_SERVER['HTTP_HOST'].$_SERVER["PHP_SELF"];
 $install_url=$localurl;
 if(file_exists('../config/install.lock')){
 	exit('对不起，该程序已经安装过了。<br/>
-	      如您要重新安置，请手动删除config/install.lock文件。');
+	      如您要重新安装，请手动删除config/install.lock文件。');
 }
 switch ($action)
 {

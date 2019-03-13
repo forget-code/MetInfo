@@ -86,12 +86,12 @@ if($if_in==1&&met_en_lang==1){
 if($e_out_url==""){okinfo('javascript:history.back();',$lang[out_url ]);}
 }
 if($action=="add"){
-$c_name_if=$db->get_one("SELECT * FROM $met_column WHERE c_name='$c_name'");
+$c_name_if=$db->get_one("SELECT * FROM $met_column WHERE c_name='$c_name' and bigclass='$bigclass'");
 if($c_name_if){
 okinfo('javascript:history.back();',$lang[c_name]);
 }
 if($e_name!=""){
-$e_name_if=$db->get_one("SELECT * FROM $met_column WHERE e_name='$e_name'");
+$e_name_if=$db->get_one("SELECT * FROM $met_column WHERE e_name='$e_name' and bigclass='$bigclass'");
 if($e_name_if){okinfo('javascript:history.back();',$lang[e_name]);}
 }
 if($if_in==0){
@@ -108,6 +108,7 @@ $query = "INSERT INTO $met_column SET
 					  filename           = '$filename',
 					  foldername         = '$foldername',
 					  module             = '$module',
+					  index_num          = '$index_num',
 					  c_out_url          = '',
 					  e_out_url          = '',
 					  classtype          = '$classtype',
@@ -157,6 +158,7 @@ $query = "update $met_column SET
 					  module             = '$module',
 					  c_keywords         = '$c_keywords',
 					  e_keywords         = '$e_keywords',
+					  index_num          = '$index_num',
 					  c_out_url          = '',
 					  e_out_url          = '',
 					  classtype          = '$classtype',
@@ -176,7 +178,8 @@ $query = "update $met_column SET
 					  filename           = '$filename',
 					  foldername         = '$foldername',
 					  module             = '$module',
-					  c_keywords         = '$c_keywords',					 
+					  c_keywords         = '$c_keywords',
+					  index_num          = '$index_num',					 
 					  c_out_url          = '',
 					  e_out_url          = '',
 					  classtype          = '$classtype',

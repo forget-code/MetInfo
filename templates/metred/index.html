@@ -1,0 +1,166 @@
+<!--<?php
+require_once template('head'); 
+echo <<<EOT
+-->
+<div class="web">
+<!--动画开始-->
+<div class="index_img">
+<!--
+EOT;
+if($met_flash_type==0&&$met_flash_ok==1){
+echo <<<EOT
+-->
+<div class="flash">
+
+<script type="text/javascript">
+<!--
+var pic_width=$met_flash_x
+var pic_height=$met_flash_y
+var text_height=0
+var swfpath = '$img_url'+'/focus.swf'
+var pics='$met_flash_img'
+var links='$met_flashurl'
+var texts=''
+document.write('<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0" width="'+ pic_width +'" height="'+ pic_height +'">');
+document.write('<param name="allowScriptAccess" value="sameDomain"><param name="movie" value="'+swfpath+'"><param name="quality" value="high"><param name="bgcolor" value="#ffffff">');
+document.write('<param name="menu" value="false"><param name=wmode value="opaque">');
+document.write('<param name="FlashVars" value="pics='+pics+'&links='+links+'&texts='+texts+'&borderwidth='+pic_width+'&borderheight='+pic_height+'&textheight='+text_height+'">');
+document.write('<embed src="'+swfpath+'" wmode="opaque" FlashVars="pics='+pics+'&links='+links+'&texts='+texts+'&borderwidth='+pic_width+'&borderheight='+pic_height+'&textheight='+text_height+'" menu="false" bgcolor="#ffffff" quality="high" width="'+ pic_width +'" height="'+ pic_height +'" allowScriptAccess="sameDomain" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />');document.write('</object>');
+//-->
+</script>
+</div>
+<!--
+EOT;
+}
+if($met_flash_type==1&&$met_flash_ok==1){
+echo <<<EOT
+-->
+<div class="flash" style="background-image: url($met_flash_back); width:$met_flash_xpx; height:$met_flash_ypx;">
+<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,29,0" width="$met_flash_x" height="$met_flash_y">
+            <param name="movie" value="$met_flash_url">
+            <param name="quality" value="high">
+            <param name="wmode" value="transparent" />
+		 <embed src="$met_flash_url" width="$met_flash_x" height="$met_flash_y" quality="high" wmode="transparent" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" wmode="transparent"></embed>
+ </object>
+ </div>
+ <!--
+EOT;
+}
+echo <<<EOT
+-->
+</div>
+<!--产品列表开始-->
+<div class="web_right">
+<div class="nav_right">产品导航</div>
+<div class="product_list">
+<div id="button">
+<ul>
+<!--
+EOT;
+$i=0;
+foreach($nav_list2[$class_index[1][id]] as $key=>$val){
+$i++;
+echo <<<EOT
+-->
+<li><a href="$val[c_url]">$val[c_name]</a></li>
+<!--
+EOT;
+if($i>=9)break;
+}
+$classindex[2]=$class_index[2][c_name];
+echo <<<EOT
+-->
+</ul>
+</div>
+</div>
+</div>
+</div>
+<!--产品列表结束-->
+</div>
+
+<div class="web">
+<!--新闻中心开始-->
+<div class="kown_left">
+<div class="nav_left"><div class="nav_left1"><font>q</font>$classindex[2]</div></div>
+<div class="kown_text">
+<!--
+EOT;
+$i=0;
+foreach($news_list as $key=>$val){
+if($val[$class_index[2][classtype]]==$class_index[2][id]){
+$val[c_title]=utf8substr($val[c_title], 0, 14); 
+$i++;
+echo <<<EOT
+-->
+<li><a href="$val[c_url]" target="_blank">$val[c_title]</a> [$val[updatetime]] </li>
+<!--
+EOT;
+if($i>=$index[news_no])break;
+}}
+echo <<<EOT
+-->
+</div>
+</div>
+<!--新闻中心结束-->
+<!--推荐产品开始-->
+<div class="product_right">
+<div class="nav_left"><div class="nav_left1"><font>q</font>推荐产品</div></div>
+<!--
+EOT;
+$i=0;
+foreach($product_listhits_com as $key=>$val){
+$val[c_title]=utf8substr($val[c_title], 0, 12); 
+$i++;
+echo <<<EOT
+-->
+   <div class="product_display">
+   <div class="product_img"><a href='$val[c_url]' target=_blank><img src="$val[imgurls]" /></a></div>
+   <div class="product_title"><a href='$val[c_url]' target=_blank>$val[c_title]</a></div>
+   </div>
+<!--
+EOT;
+if($i>=$index[product_no])break;
+}
+echo <<<EOT
+-->
+	
+</div>
+<!--推荐产品结束-->
+</div>
+
+<!--
+EOT;
+if($index[link_ok]){
+echo <<<EOT
+-->
+<div class="indexlink">
+<b>友情链接:</b>
+<!--
+EOT;
+$i=0;
+foreach($link_text_com as $key=>$val){
+$i++;
+echo <<<EOT
+-->
+<a href="$val[weburl]" target="_blank" title="$val[c_info]">$val[c_webname]</a>
+<!--
+EOT;
+if($i>=$index[link_text])break;
+}
+echo <<<EOT
+-->
+
+</div>
+
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+
+</div>
+<!--
+EOT;
+require_once template('online'); 
+require_once template('foot'); 
+?>

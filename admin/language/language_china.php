@@ -42,6 +42,8 @@ $lang[copyfile]                  ='复制文件失败';
 $lang[filenamenull]              ='静态页面名不能为空';
 $lang[filenameok]                ='静态页面名已存在';
 $lang[c_mark]                    ='中文标识不能为空';
+$lang[bigclass]                  ='请先删除下级栏目';
+$lang[bigclass1]                 ='请先批量删除下级（二、三级）栏目';
 
 //图片上传
 $lang[filemaxsize]               ='文件已超出网站限制的最大值';

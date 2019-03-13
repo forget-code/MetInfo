@@ -17,5 +17,6 @@
 				   $met_message = $tablepre."message";
 				   $met_index = $tablepre."index";
 				   $met_link = $tablepre."link";
+				   $met_otherinfo = $tablepre."otherinfo";
 
  ?>

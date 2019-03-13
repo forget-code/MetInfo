@@ -1,0 +1,135 @@
+<!--<?php
+echo <<<EOT
+-->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="$css_url/metinfo_admin.css">
+<title>备用字段配置</title>
+</head>
+<body>
+
+<table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr> 
+    <td align="center" valign="top"><table width="95%" border="0" cellpadding="2" cellspacing="1" class="table_southidc">
+        <form method="POST" name="myform"  action="other_info.php?action=modify" target="_self">
+		<input name="id" type="hidden" value="$otherinfo[id]">
+          <tr> 
+            <td class="back_southidc" height="30" colspan="3" align="center">备用字段配置</td>
+          </tr>
+		  <tr bgcolor="#ECF5FF"> 
+            <td height="30" colspan="3" >请参考相应的模板配置导航，如果已经开启了静态页面，字段更改后需要手动生成全部静态页面。</td>
+          </tr>
+			<tr bgcolor="#ECF5FF"> 
+            <td width="20%" height="25"><b>$infoname1[0]：</b></td>
+            <td width="80%" ><input name="c_info1" type="text" size="30" value="$otherinfo[c_info1]">$infoname1[1]</td></tr>
+			<tr bgcolor="#ECF5FF"> 
+            <td width="20%" height="25"><b>$infoname2[0]：</b></td>
+            <td width="80%" ><input name="c_info2" type="text" size="30" value="$otherinfo[c_info2]">$infoname2[1]</td></tr>
+			<tr bgcolor="#ECF5FF"> 
+            <td width="20%" height="25"><b>$infoname3[0]：</b></td>
+            <td width="80%" ><input name="c_info3" type="text" size="30" value="$otherinfo[c_info3]">$infoname3[1]</td></tr>
+			<tr bgcolor="#ECF5FF"> 
+            <td width="20%" height="25"><b>$infoname4[0]：</b></td>
+            <td width="80%" ><input name="c_info4" type="text" size="30" value="$otherinfo[c_info4]">$infoname4[1]</td></tr>
+			<tr bgcolor="#ECF5FF"> 
+            <td width="20%" height="25"><b>$infoname5[0]：</b></td>
+            <td width="80%" ><input name="c_info5" type="text" size="30" value="$otherinfo[c_info5]">$infoname5[1]</td></tr>
+			<tr bgcolor="#ECF5FF"> 
+			<td width="20%" height="25"><b>$infoname6[0]：</b></td>
+            <td width="80%" ><input name="c_info6" type="text" size="30" value="$otherinfo[c_info6]">$infoname6[1]</td></tr>
+			<tr bgcolor="#ECF5FF"> 
+            <td width="20%" height="25"><b>$infoname7[0]：</b></td>
+            <td width="80%" ><input name="c_info7" type="text" size="30" value="$otherinfo[c_info7]">$infoname7[1]</td></tr>
+			<tr bgcolor="#ECF5FF"> 
+            <td width="20%" height="25"><b>$imgurlname1[0]：</b><br>$imgurlname1[1]</td>
+            <td width="80%" ><input name="c_imgurl1" type="text" class="input" size="20" maxlength="200" value="$otherinfo[c_imgurl1]"><iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_photo.php?returnid=c_imgurl1&flash=flash" frameborder=0 scrolling=no width="280" height="25"></iframe>	</td></tr>
+			<tr bgcolor="#ECF5FF"> 
+            <td width="20%" height="25"><b>$imgurlname2[0]：</b><br>$imgurlname2[1]</td>
+            <td width="80%" ><input name="c_imgurl2" type="text" class="input" size="20" maxlength="200" value="$otherinfo[c_imgurl2]"><iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_photo.php?returnid=c_imgurl2&flash=flash" frameborder=0 scrolling=no width="280" height="25"></iframe>	</td></tr>
+			<tr bgcolor="#ECF5FF"> 
+            <td width="20%" height="25"><b>$infoname8[0]：</b><br>$infoname8[1]</td>
+            <td width="80%" ><textarea name="c_info8" cols="60" rows="5">$otherinfo[c_info8]</textarea></td></tr>
+			<tr bgcolor="#ECF5FF"> 
+            <td width="20%" height="25"><b>$infoname9[0]：</b><br>$infoname8[1]</td>
+            <td width="80%" ><textarea name="c_info9" cols="60" rows="5">$otherinfo[c_info9]</textarea></td></tr>
+			<tr bgcolor="#ECF5FF"> 
+            <td width="20%" height="25"><b>$infoname10[0]：</b><br>$infoname10[1]</td>
+            <td width="80%" >
+<!--
+EOT;
+echo "-->";
+$oFCKeditor = new FCKeditor('c_info10'); 
+$oFCKeditor->BasePath = '../../fckeditor/';
+$oFCKeditor->Value = $otherinfo[c_info10];
+$oFCKeditor->Width = '100%';   
+$oFCKeditor->Height = '300';
+$oFCKeditor->Create();
+echo "</td></tr>" ;
+if($met_en_lang==1){
+echo <<<EOT
+          <tr bgcolor="#999999" ><td width="20%" height="25" colspan="2" align="center"><b>英文信息</b></td></tr>
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="20%" height="25"><b>$infoname1[0]：</b></td>
+            <td width="80%" ><input name="e_info1" type="text" size="30" value="$otherinfo[e_info1]">$infoname1[1]</td></tr>
+			<tr bgcolor="#ECF5FF"> 
+            <td width="20%" height="25"><b>$infoname2[0]：</b></td>
+            <td width="80%" ><input name="e_info2" type="text" size="30" value="$otherinfo[e_info2]">$infoname2[1]</td></tr>
+			<tr bgcolor="#ECF5FF"> 
+            <td width="20%" height="25"><b>$infoname3[0]：</b></td>
+            <td width="80%" ><input name="e_info3" type="text" size="30" value="$otherinfo[e_info3]">$infoname3[1]</td></tr>
+			<tr bgcolor="#ECF5FF"> 
+            <td width="20%" height="25"><b>$infoname4[0]：</b></td>
+            <td width="80%" ><input name="e_info4" type="text" size="30" value="$otherinfo[e_info4]">$infoname4[1]</td></tr>
+			<tr bgcolor="#ECF5FF"> 
+            <td width="20%" height="25"><b>$infoname5[0]：</b></td>
+            <td width="80%" ><input name="e_info5" type="text" size="30" value="$otherinfo[e_info5]">$infoname5[1]</td></tr>
+			<tr bgcolor="#ECF5FF"> 
+			<td width="20%" height="25"><b>$infoname6[0]：</b></td>
+            <td width="80%" ><input name="e_info6" type="text" size="30" value="$otherinfo[e_info6]">$infoname6[1]</td></tr>
+			<tr bgcolor="#ECF5FF"> 
+            <td width="20%" height="25"><b>$infoname7[0]：</b></td>
+            <td width="80%" ><input name="e_info7" type="text" size="30" value="$otherinfo[e_info7]">$infoname7[1]</td></tr>
+			<tr bgcolor="#ECF5FF"> 
+            <td width="20%" height="25"><b>$imgurlname1[0]：</b><br>$imgurlname1[1]</td>
+            <td width="80%" ><input name="e_imgurl1" type="text" class="input" size="20" maxlength="200" value="$otherinfo[e_imgurl1]"><iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_photo.php?returnid=e_imgurl1&flash=flash" frameborder=0 scrolling=no width="280" height="25"></iframe>	</td></tr>
+			<tr bgcolor="#ECF5FF"> 
+            <td width="20%" height="25"><b>$imgurlname2[0]：</b><br>$imgurlname2[1]</td>
+            <td width="80%" ><input name="e_imgurl2" type="text" class="input" size="20" maxlength="200" value="$otherinfo[e_imgurl2]"><iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_photo.php?returnid=e_imgurl2&flash=flash" frameborder=0 scrolling=no width="280" height="25"></iframe>	</td></tr>
+			<tr bgcolor="#ECF5FF"> 
+            <td width="20%" height="25"><b>$infoname8[0]：</b><br>$infoname8[1]</td>
+            <td width="80%" ><textarea name="e_info8" cols="60" rows="5">$otherinfo[e_info8]</textarea></td></tr>
+			<tr bgcolor="#ECF5FF"> 
+            <td width="20%" height="25"><b>$infoname9[0]：</b><br>$infoname9[1]</td>
+            <td width="80%" ><textarea name="e_info9" cols="60" rows="5">$otherinfo[e_info9]</textarea></td></tr>
+          <tr bgcolor="#ECF5FF"> 
+            <td width="20%" height="25"><b>$infoname10[0]</b>：<br>$infoname10[1]</td>
+            <td width="80%" >
+<!--
+EOT;
+echo "-->";
+$oFCKeditor = new FCKeditor('e_info10'); 
+$oFCKeditor->BasePath = '../../fckeditor/';
+$oFCKeditor->Value = $otherinfo[e_info10];
+$oFCKeditor->Width = '100%';   
+$oFCKeditor->Height = '300';
+$oFCKeditor->Create();
+echo "</td></tr>" ; 
+}
+echo <<<EOT
+		  <tr bgcolor="#ECF5FF"><td colspan="3" style="border:0px;">&nbsp;</td>
+		  </tr>
+		  
+<tr> <td height="30" colspan="2" align="center" bgcolor="#ECF5FF"> <input type="submit" name="Submit" value="提交" class="tj">
+              　 
+              <input type="reset" name="Submit" value="重置" class="tj"> </td>
+          </tr>
+        </form>
+    </table></td>
+  </tr>
+</table>
+</body>
+</html>
+<!--
+EOT;
+?>-->

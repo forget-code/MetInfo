@@ -13,19 +13,22 @@ switch($class1_info[module]){
     case 2;
 	$table_name=$met_news;
 	$preurl="../".$class1_info[foldername]."/shownews";
-	echo $preurl;
+    $pagename="../".$class1_info[foldername]."/news.php";
 	break;
 	case 3;
 	$table_name=$met_product;
 	$preurl="../".$class1_info[foldername]."/showproduct";
+	$pagename="../".$class1_info[foldername]."/product.php";
 	break;
 	case 4;
 	$table_name=$met_download;
 	$preurl="../".$class1_info[foldername]."/showdownload";
+	$pagename="../".$class1_info[foldername]."/download.php";
 	break;
 	case 5;
 	$table_name=$met_img;
 	$preurl="../".$class1_info[foldername]."/showimg";
+	$pagename="../".$class1_info[foldername]."/img.php";
 	break;
 }
     $serch_sql=" where class1=$class1 ";
@@ -58,8 +61,8 @@ require_once '../include/head.php';
 
 $class_info[e_name]=$class1_info[e_name];
 $class_info[c_name]=$class1_info[c_name];
-$nav_x[c_name]=$class1_info[c_name];
-$nav_x[e_name]=$class1_info[e_name];
+$nav_x[c_name]="<a href=".$pagename."?class1=".$class1_info[id]." >".$class1_info[c_name]."</a>";
+$nav_x[e_name]="<a href=".$pagename."?en=en&class1=".$class1_info[id]." >".$class1_info[e_name]."</a>";
 
 if($class2!=""){
 foreach($nav_list2[$class1] as $key=>$val){
@@ -67,8 +70,8 @@ if($class2==$val[id]){
 $class2_info=$val;
 $class_info[e_name]=$class2_info[e_name]."--".$class1_info[e_name];
 $class_info[c_name]=$class2_info[c_name]."--".$class1_info[c_name];
-$nav_x[c_name]=$class1_info[c_name]." > ".$class2_info[c_name];
-$nav_x[e_name]=$class1_info[e_name]." > ".$class2_info[e_name];
+$nav_x[c_name]="<a href=".$pagename."?class1=".$class1_info[id]." >".$class1_info[c_name]."</a>"." > "."<a href=".$pagename."?class1=".$class1_info[id]."&class2=".$class2_info[id]." >".$class2_info[c_name]."</a>";
+$nav_x[e_name]="<a href=".$pagename."?en=en&class1=".$class1_info[id]." >".$class1_info[e_name]."</a>"." > "."<a href=".$pagename."?en=en&class1=".$class1_info[id]."&class2=".$class2_info[id]." >".$class2_info[e_name]."</a>";
 }
 }
 }
@@ -78,8 +81,8 @@ if($class3==$val[id]){
 $class3_info=$val;
 $class_info[e_name]=$class3_info[e_name]."--".$class2_info[e_name]."--".$class1_info[e_name];
 $class_info[c_name]=$class3_info[c_name]."--".$class2_info[c_name]."--".$class1_info[c_name];
-$nav_x[c_name]=$class1_info[c_name]." > ".$class2_info[c_name]." > ".$class3_info[c_name];
-$nav_x[e_name]=$class1_info[e_name]." > ".$class2_info[e_name]." > ".$class3_info[e_name];
+$nav_x[c_name]="<a href=".$pagename."?class1=".$class1_info[id]." >".$class1_info[c_name]."</a>"." > "."<a href=".$pagename."?class1=".$class1_info[id]."&class2=".$class2_info[id]." >".$class2_info[c_name]."</a>"." > "."<a href=".$pagename."?class1=".$class1_info[id]."&class2=".$class2_info[id]."&class3=".$class3_info[id]." >".$class3_info[c_name]."</a>";
+$nav_x[e_name]="<a href=".$pagename."?en=en&class1=".$class1_info[id]." >".$class1_info[e_name]."</a>"." > "."<a href=".$pagename."?en=en&class1=".$class1_info[id]."&class2=".$class2_info[id]." >".$class2_info[e_name]."</a>"." > "."<a href=".$pagename."?en=en&class1=".$class1_info[id]."&class2=".$class2_info[id]."&class3=".$class3_info[id]." >".$class3_info[e_name]."</a>";
 }
 }
 }
