@@ -1,0 +1,47 @@
+/*pay-oder*/
+.pay-oder-top{ padding:40px 20px 20px; }
+.pay-oder-mode{ padding:30px 15px 10px; }
+.pay-oder-top h1{ font-size:20px; padding-top:30px; padding-bottom:20px; text-align:center; }
+.pay-oder-top i.icon{font-size:96px;}
+.pay-oder-top .pay-order-price{ margin-top:10px; }
+.pay-oder-mode h4.panel-title{ padding:0px; }
+.pay-oder-mode-body .pay-div{ padding:0px; margin:0px auto; margin-bottom:15px; margin-right:10px;overflow: hidden;}
+.pay-oder-mode-body .pay-div:hover{background: none;}
+.pay-oder-balance{ height:60px; line-height:60px; min-width:190px; text-align:center; padding:0px 30px!important; }
+#balanceinput .form-group{ max-width:300px; }
+#balanceinput button.btn{ display:block; margin:0px; margin-top:15px; width:100%;}
+@media (min-width: 768px) {
+	.pay-oder-top,.pay-oder-mode{ padding:30px 20px; }
+	.pay-oder-top h1{ font-size:25px; padding-top:0px; padding-bottom:0px; text-align:left; }
+	.pay-oder-top .pay-order-price{ margin-top:0px; }
+	.pay-oder-mode-body button{ display:inline; margin-right:10px; }
+	#balanceinput button.btn{ display:inline-block; width:auto;}
+}
+#payment-weixin-modal .modal-body img{ margin:0px auto; }
+
+/*pay*/
+.pay-form label.example-title,.pay-form h3.example-title{ font-size:18px; color:#37474f; font-weight:normal; text-shadow:none; }
+.pay-body .example .form-group .example-title{ margin-bottom:10px; }
+.pay-body .example #invoice-body{ width:auto!important;  }
+.pay-body .example .pay-set-body{ width:100%; }
+.pay-body .example .pay-set-body .pull-left{ width:100%; float:none!important; }
+.pay-body input.labelauty+label{ padding:13px 40px; display:block; text-align:center; }
+.pay-submit button.btn{ margin-top:15px; display:block; width:100%; }
+@media (min-width: 768px) {
+	.pay-body .example .pay-set-body{ width:auto; }
+	.pay-body .example #invoice-body{ width:400px!important; }
+	.pay-body .example .pay-set-body .pull-left{ width:auto; margin-right:30px; float:left!important; }
+	.pay-submit button.btn{ margin-top:0px; display:inline-block; width:auto; }
+}
+
+.pay-body #pay-total{ font-size:26px; }
+.pay-goods-body{ padding:20px; border-bottom:1px solid #E4EAEC; }
+.pay-goods-body:last-child{ border-bottom:none; }
+.pay-goods-body .media-heading{ font-size:14px; }
+.pay-goods-body .media-heading a{ color:#37474f; }
+.pay-goods-body .media-heading a:hover{ text-decoration:none; }
+.pay-goods-body .p-message{ max-width:400px; }
+.pay-goods-body .p-num{ display:block; }
+@media (min-width: 768px) {
+	.pay-goods-body .p-num{ display:inline; }
+}

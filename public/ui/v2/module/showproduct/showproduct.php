@@ -1,8 +1,8 @@
 <?php
 echo <<<EOT
 -->
-<div class="page met-showproduct pagetype1 bg-pagebg1">
-	<div class="met-showproduct-head page-content bg-pagebg">
+<main class="page met-showproduct pagetype1">
+	<div class="met-showproduct-head page-content block-bg">
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-7">
@@ -16,35 +16,33 @@ echo <<<EOT
 	                </div>
 				</div>
 				<div class="col-lg-5">
-	                <div class="row">
-	                	{$prointro_class}
-	                    <div class="product-intro">
-	    				    <h1 class='m-t-0 font-size-24'>{$product[title]}</h1>
+                	{$prointro_class}
+                    <div class="product-intro">
+    				    <h1 class='m-t-0 font-size-24'>{$product[title]}</h1>
 <!--
 EOT;
 if($product[description] && $lang_pro_des_ok){
 echo <<<EOT
 -->
-                        	<p class="description m-b-15">{$product[description]}</p>
+                    	<p class="description">{$product[description]}</p>
 <!--
 EOT;
 }
 if($_M['config']['shopv2_open']){
-    require_once template('module/shop/shop_option');
+    require_once template('module/md/shop_option');
 }else{
     require_once template('module/showproduct/product_paralist');
 }
 if($lang_sharecode){
 echo <<<EOT
 -->
-                        	<div class="tools m-t-15">{$lang_sharecode}</div>
+                    	<div class="met-tools m-t-15">{$lang_sharecode}</div>
 <!--
 EOT;
 }
 echo <<<EOT
 -->
-	                    </div>
-	                </div>
+                    </div>
 				</div>
 			</div>
 		</div>
@@ -63,19 +61,19 @@ echo <<<EOT
 				</div>
 				<div class="col-lg-3">
 					<div class="row">
-						<div class="panel panel-body m-b-0 radius0 product-hot{$sidebar_position}" boxmh-h>
+						<aside class="panel panel-body m-b-0 product-hot met-sidebar{$sidebar_position}" boxmh-h>
 <!--
 EOT;
 require_once template('module/md/piclist');
 echo <<<EOT
 -->
-						</div>
+						</aside>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
+</main>
 <!--
 EOT;
 ?>

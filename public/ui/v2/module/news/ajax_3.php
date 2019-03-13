@@ -15,10 +15,10 @@ foreach($news_list as $key=>$val){
 	$val['desc']=mb_substr($val['description'],0,$lang_news_des_max,'utf-8').'...';
 echo <<<EOT
 -->
-<div class="card card-shadow radius0{$val['page']}">
-	<div class="card-header p-0 radius0">
+<div class="card card-shadow{$val['page']}">
+	<div class="card-header p-0">
 		<a href="{$val[url]}" title="{$val[title]}" {$metblank}>
-			<img class="cover-image" {$original}="{$val[imgurls]}" {$srcset}='{$val[imgurl_xs]} 400w,{$val[imgurls]}' sizes='(max-width:479px) 400px,{$lang_news_type3_x}px' alt="{$val[title]}">
+			<img class="cover-image" {$original}="{$val[imgurls]}" {$srcset}='{$val[imgurl_xs]} 400w,{$val[imgurls]}' sizes='(max-width:479px) 400px,{$lang_news_type3_x}px' alt="{$val[title]}" height='100'>
 		</a>
 	</div>
 	<div class="card-body">

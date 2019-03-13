@@ -1,7 +1,6 @@
 <?php
 global $metui;
-require_once PATH_WEB.'public/ui/v2/static/metresclass.class.php';// 自定义类
-require_once PATH_WEB.'public/ui/v2/static/metuipack.class.php';// UI打包
+require_once PATH_WEB.'public/ui/v2/static/metresclass.class.php';// 模板自定义类
 // 模板引擎url
 $metui[url][static2]="{$_M[url][site]}app/system/include/static2/";
 $metui[url][static2_vendor]="{$metui[url][static2]}vendor/";
@@ -227,11 +226,10 @@ $metui[paths]=array(
     // 图片懒加载
     lazyload=>array(
         "{$metui[url][uiv2_plugin]}StackBlur.js",
-        "{$metui[url][uiv2_plugin]}lazyload/jquery.lazyload.min.js"
+        "{$metui[url][uiv2_plugin]}jquery.lazyload.min.js"
     ),
     // 相册1
     lightgallery=>array(
-        "{$metui[url][uiv2]}static/fonts/iconfont/iconfont.css",
         "{$metui[url][uiv2_plugin]}lightGallery/css/lightgallery.min.css",
         "{$metui[url][uiv2_plugin]}lightGallery/js/lightgallery.min.js",
         "{$metui[url][uiv2_plugin]}lightGallery/js/lg-fullscreen.min.js",
@@ -253,6 +251,7 @@ $metui[paths]=array(
     ),
     // 响应式图片切换、旋转木马
     slick=>array(
+        "{$metui[url][uiv2]}static/fonts/iconfont/iconfont.css",
         "{$metui[url][uiv2_plugin]}slick/slick.min.css",
         "{$metui[url][uiv2_plugin]}slick/slick-theme.min.css",
         "{$metui[url][uiv2_plugin]}slick/slick.min.js"
@@ -270,5 +269,6 @@ $metui[paths]=array(
     form=>"{$metui[url][uiv2_js]}form.js",
     datatable=>"{$metui[url][uiv2_js]}datatable.js"
 );
+require_once PATH_WEB.'public/ui/v2/static/metuipack.class.php';// UI打包
 if($metuipack->isLteIe9) $resui_lteie9=$metuipack->getUi($metui[paths][lteie9],'','',true);// IE9兼容JS打包生成文件，返回文件路径
 ?>

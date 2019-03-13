@@ -1,6 +1,7 @@
 <!--<?php
 require_once template('static/config');
-if($nofollow)$nofollow = "<meta name=\"robots\" content=\"noindex,nofllow\" />";
+if($nofollow)$nofollow = "\n<meta name=\"robots\" content=\"noindex,nofllow\" />";
+$user_name=$_M['user']?" data-user_name='{$_M['user']['username']}'":'';
 echo <<<EOT
 --><!DOCTYPE HTML>
 <html>
@@ -9,10 +10,10 @@ echo <<<EOT
 <meta name="renderer" content="webkit">
 <meta charset="utf-8" />{$nofollow}
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+<meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=0,minimal-ui">
 <meta name="description" content="{$show['description']}" />
 <meta name="keywords" content="{$show['keywords']}" />
-<meta name="generator" content="MetInfo {$_M[config][metcms_v]}"  data-variable="{$_M[config][met_weburl]}|{$lang}|{$navurl}|{$classnow}|{$id}|{$class_list[$classnow][module]}|{$_M[config][met_skin_user]}|{$_M['langlist']['web'][$_M['lang']]['synchronous']}" />
+<meta name="generator" content="MetInfo {$_M[config][metcms_v]}" data-variable="{$_M['url']['site']}|{$lang}|{$classnow}|{$id}|{$class_list[$classnow][module]}|{$_M[config][met_skin_user]}"{$user_name}/>
 <link href="{$navurl}favicon.ico" rel="shortcut icon" type="image/x-icon" />
 <!--
 EOT;
@@ -39,19 +40,9 @@ echo <<<EOT
     <button type="button" class="close" aria-label="Close" data-dismiss="alert">
         <span aria-hidden="true">×</span>
     </button>
-    你正在使用一个 <strong>过时</strong> 的浏览器。请 <a href="http://browsehappy.com/" target="_blank">升级您的浏览器</a>，以提高您的体验。
+    {$_M['word']['browserupdatetips']}
 </div>
 <![endif]-->
 <!--
 EOT;
-if(!$metuipack->isLteIe9 && $lang_pageprogress_ok && $metresclass->useragent('desktop') && !strpos($_SERVER['HTTP_USER_AGENT'], 'SE')){
-    // $nprogress_status=round(100*$_COOKIE['NProgress_status'])-100;
-    $nprogress_style='transform: translate3d(-30%,0,0);';
-    if($metuipack->isLteIe9) $nprogress_style='-ms-transform: translate(-30%,0);';
-echo <<<EOT
--->
-<section id="nprogress"><div class="bar" role="bar" style="{$nprogress_style}"><div class="peg"></div></div><div class="spinner" role="spinner"><div class="spinner-icon"></div></div></section>
-<!--
-EOT;
-}
 ?>

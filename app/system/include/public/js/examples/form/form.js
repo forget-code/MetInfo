@@ -228,15 +228,14 @@ define(function(require, exports, module) {
 			}
 		}
 		// 商品图尺寸数组合并赋值（新模板框架v2）
-		var $pictureList=d.parents('form').find('.js-picture-list'),
+		var $appimagelist=d.parents('form').find('.app-image-list'),
 			imgsizes_value = '';
-		$pictureList.append('<input type="hidden" name="imgsizes" value="" />');
-		$pictureList.find('li [data-imgval]').each(function(index, el) {
-			var size=$(this).data('size');
+		$appimagelist.find('.sort img').each(function(index, el) {
 			if(index>0) imgsizes_value+='|';
-			imgsizes_value+=size;
+			imgsizes_value+=$(this).data('size');
 		});
-		$pictureList.find("input[name='imgsizes']").val(imgsizes_value);
+		if(!d.parents('form').find("input[name='imgsizes']").length) $appimagelist.parent('.picture-list').after('<input type="hidden" name="imgsizes"/>');
+		d.parents('form').find("input[name='imgsizes']").val(imgsizes_value);
 
 		var f=ftn(d),r;
 		if(f){

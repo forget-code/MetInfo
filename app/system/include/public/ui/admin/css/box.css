@@ -79,3 +79,20 @@ i.fa-mobile{ font-size:26px!important; top:4px!important;}
 
 
 
+
+
+/* 6.0 */
+.metlogo a { height: 60px; line-height: 60px;padding-left:25px; text-align: left;}
+.metlogo a img { height: 40px; vertical-align: middle; }
+.fixedbar { zoom: 1;text-align: center; }
+.fixedbar .fixedbar-box{padding:10px 0px 10px 20px;    text-align: left;}
+.fixedbar .fixedbar-box .left{position: relative;
+    left: -2.5px;color: #a7c6dc;}
+.fixedbar .fixedbar-box .right{position: relative;
+    left: 2.5px;color: #a7c6dc;}
+.fixedbar:after { content: " "; display: block; clear: both; height: 0; }
+.fixedbar a { display: inline-block;  padding:0px 5px; color: #a7c6dc; text-align: center;  transition: all .23s ease-out; }
+
+.fixedbar a .fa { display: block; font-size: 20px; }
+.fixedbar a span { font-size: 14px; }
+.fixedbar a:hover {color: #eee; }

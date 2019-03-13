@@ -1,10 +1,9 @@
 <?php
 $search_list_num=0;
 foreach($search_list as $val){
-	if(!strstr($val['title'],$lang_SearchInfo1)){
-		if($val['url']!=$_M['url']['site']){
-			$val['urlhrml'] = str_replace("../",$_M['url']['site'],$val[url]);
-			$search_list_num++;
+	if(!strstr($val['title'],$lang_SearchInfo1) && $val['url']!=$_M['url']['site']){
+		$val['urlhrml'] = str_replace("../",$_M['url']['site'],$val[url]);
+		$search_list_num++;
 echo <<<EOT
 -->
 <li class="list-group-item">
@@ -12,19 +11,18 @@ echo <<<EOT
 	<a class="search-result-link" href="{$val[url]}" {$metblank}>{$val[urlhrml]}</a>
 <!--
 EOT;
-			if($val[content]){
+		if($val[content]){
 echo <<<EOT
 -->
 	<p class='search-text'>{$val[content]}</p>
 <!--
 EOT;
-			}
+		}
 echo <<<EOT
 -->
 </li>
 <!--
 EOT;
-		}
 	}
 }
 ?>

@@ -207,11 +207,12 @@ function template_app($template,$EXT="html"){
 
 /*页面输出*/
 function footer(){
-	global $output;
+	global $output,$db;
 	$output = str_replace(array('<!--<!---->','<!---->','<!--fck-->','<!--fck','fck-->','',"\r",substr($admin_url,0,-1)),'',ob_get_contents());
     ob_end_clean();
 	echo $output;
-	mysql_close();
+	//mysql_close();
+	$db->close();
 	exit;
 }
 /*删掉多余页面*/
@@ -875,17 +876,12 @@ function metnew_dir($pathf){
 }
 /*复制首页*/
 function Copyindx($newindx,$type){
-    if(!file_exists($newindx)){
-        if($type==3){
-            //生成产品栏目index
-            $oldcont ="<?php\n# MetInfo Enterprise Content Management System \n# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. \n\$filpy = basename(dirname(__FILE__));\n\$fmodule=$type;\n\$cmodule='product_index';\nrequire_once '../include/module.php'; \nrequire_once \$module; \n# This program is an open source system, commercial use, please consciously to purchase commercial license.\n# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.\n?>";
-        }else{
-            $oldcont ="<?php\n# MetInfo Enterprise Content Management System \n# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. \n\$filpy = basename(dirname(__FILE__));\n\$fmodule=$type;\nrequire_once '../include/module.php'; \nrequire_once \$module; \n# This program is an open source system, commercial use, please consciously to purchase commercial license.\n# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.\n?>";
-        }
-        $fp = fopen($newindx,w);
-        fputs($fp, $oldcont);
-        fclose($fp);
-    }
+	if(!file_exists($newindx)){
+		$oldcont ="<?php\n# MetInfo Enterprise Content Management System \n# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. \n\$filpy = basename(dirname(__FILE__));\n\$fmodule=$type;\nrequire_once '../include/module.php'; \nrequire_once \$module; \n# This program is an open source system, commercial use, please consciously to purchase commercial license.\n# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.\n?>";
+		$fp = fopen($newindx,w);
+		fputs($fp, $oldcont);
+		fclose($fp);
+	}
 }
 /*生成反馈配置文件*/
 function verbconfig($array,$id){

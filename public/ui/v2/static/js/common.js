@@ -1,38 +1,22 @@
 /*!
  * M['weburl'] 		网站网址
  * M['lang']  		网站语言
- * M['navurl']      相对于根目录地址
  * M['tem']  		模板目录路径
  * M['classnow']  	当前栏目ID
  * M['id']  		当前页面ID
  * M['module']  	当前页面所属模块
- * default_placeholder 开发者自定义默认图片延迟加载方式，'base64'：灰色背景；自定义背景图片路径；'blur'：图片高斯模糊；默认为'blur'
  * met_prevarrow,met_nextarrow slick插件翻页按钮自定义html
  * device_type       客户端判断（d：PC端，t：平板端，m：手机端）
  */
-M['plugin_lang']=true;//前台页面插件文件多语言开关
+M['plugin_lang']=true;// 前台页面插件文件多语言开关
 $(function(){
-    // 移动端兼容
-    // if(device_type!='d') $('body').wrapInner('<div class="cover"></div>');
     // 列表图片高度预设及删除
     var $imagesize=$('.imagesize[data-scale]');
     if($imagesize.length) $imagesize.imageSize();
     // 图片延迟加载
-    var $original=$('[data-original]');
-    // 图片加载方式整理
-    if("undefined" == typeof default_placeholder) var default_placeholder='blur';
-    met_placeholder=met_placeholder||default_placeholder;
-    if(met_placeholder!=default_placeholder && met_placeholder!=met_lazyloadbg_base64 && "undefined" != typeof default_placeholder && default_placeholder.indexOf(M['tem'])>=0){
-        if(met_placeholder==met_lazyloadbg){
-            if(!met_lazyloadbg_set) met_placeholder=default_placeholder;
-        }else if(met_lazyloadbg!=met_lazyloadbg_base64){
-            met_lazyloadbg=default_placeholder;
-        }
-    }
-    if($original.length){
-        setTimeout(function(){
-            $original.lazyload({placeholder:met_placeholder});
-        },0)
+    if(typeof $.fn.lazyload == 'function'){
+        var $original=$('[data-original]');
+        if($original.length) $original.lazyload({placeholder:met_lazyloadbg});
     }
     // 内页子栏目导航水平滚动
     var $metcolumn_nav=$('.met-column-nav-ul');
@@ -43,10 +27,6 @@ $(function(){
             }
         })
     }
-    // 手风琴
-    $(document).on('click', '[data-toggle=collapses]', function() {
-        $(this).next('.collapse').slideToggle().parent().siblings().find('.collapse').slideUp();
-    });
     if($('[boxmh-mh]').length) $('[boxmh-mh]').boxMh('[boxmh-h]');//左右区块最小高度设置
     // 侧栏图片列表
     var $sidebar_piclist=$('.sidebar-piclist-ul');
@@ -72,9 +52,9 @@ $(function(){
                 vhtml='<div class="metvideobox"><video class="metvideo video-js vjs-default-skin" controls preload="none" width="'+width+'" height="'+height+'" poster="'+poster+'" data-setup=\'{\"autoplay\":'+autoplay+'}\'><source src="'+src+'" type="video/mp4" /></video></div>';
             $(this).after(vhtml).remove();
         });
-        $.include(M['navurl']+'public/ui/v1/js/effects/video-js/video-js.css');
+        $.include(M['weburl']+'public/ui/v1/js/effects/video-js/video-js.css');
         if(device_type=='d'){
-            $.include(M['navurl']+"public/ui/v1/js/effects/video-js/video_hack.js",function(){
+            $.include(M['weburl']+"public/ui/v1/js/effects/video-js/video_hack.js",function(){
                 setTimeout(function(){
                     $('.metvideo').videoSizeRes();
                 },0)
@@ -90,8 +70,9 @@ $.fn.extend({
     // 选项卡列表水平滚动处理
     navtabSwiper:function(){
         var $self=$(this),
-            $navObj_p=$(this).parents('.subcolumn-tile'),
+            $navObj_p=$(this).parents('.subcolumn-nav'),
             navtabSdefault=function(){
+                if(typeof Swiper =='undefined') return false;
                 var navObjW=$self.find('>li').parentWidth();
                 if(navObjW>$self.parent().width()){
                     // 添加或初始化水平滚动处理
@@ -123,7 +104,6 @@ $.fn.extend({
         $(window).resize(function(){
             navtabSdefault();
         })
-        $(this).removeClass('hidden-xs-down');
         // 移动端下拉菜单浮动方向
         Breakpoints.on('xs sm',{
             enter:function(){
@@ -171,18 +151,37 @@ $.fn.extend({
         var imgObj=imgObj||'img';
         $(this).each(function(){
             var scale=$(this).data('scale'),
-                $img=$(imgObj,this);
-            if(scale && $img.length){
-                // 图片高度预设
-                var time=setInterval(function(){
-                    if($img.attr('src')){
-                        $img.height(Math.round($img.width()*scale));
-                        clearInterval(time);
+                $self_scale=$(this),
+                $img=$(imgObj,this),
+            img_length=$img.length;
+            if(!isNaN(scale)) scale=scale.toString();
+            // 图片对象筛选
+            for (var i = 0; i < $img.length; i++) {
+                for (var s = 0; s < $img.length; s++) {
+                    if($($img[s]).parents('[data-scale]').eq(0).index('[data-scale]')!=$self_scale.index('[data-scale]')){
+                        $img.splice(s,1);
+                        break;
                     }
-                },50);
+                }
+                if(s==$img.length) break;
+            }
+            if($img.length && scale.indexOf('x')>=0){
+                scale=scale.split('x');
+                scale=scale[0]/scale[1];
+                // 图片高度预设
+                if($img.attr('src')){
+                    $img.height(Math.round($img.width()*scale));
+                }else{
+                    var time=setInterval(function(){
+                        if($img.attr('src')){
+                            $img.height(Math.round($img.width()*scale));
+                            clearInterval(time);
+                        }
+                    },30);
+                }
                 $(window).resize(function(){
                     $img.each(function(){
-                        if($(this).attr('src')!=$(this).data('original') && $(this).is(':visible')) $(this).height(Math.round($(this).width()*scale));
+                        if($(this).is(':visible') && $(this).data('original') && $(this).attr('src')!=$(this).data('original')) $(this).height(Math.round($(this).width()*scale));
                     })
                 });
                 // 图片高度删除
@@ -272,7 +271,8 @@ $.fn.extend({
      * @param  {Array} dynamic 自定义图片数组
      */
     galleryLoad:function(dynamic){
-        $("body").addClass("met-white-lightGallery");//画廊皮肤
+        if(typeof $.fn.lightGallery == 'undefined') return false;
+        $("body").addClass("met-lightgallery");//画廊皮肤
         if(dynamic){
             // 自定义图片数组
             $(this).lightGallery({
@@ -333,5 +333,46 @@ $.fn.extend({
                 });
             }
         });
+    },
+    // 表格响应式格式化
+    tablexys:function(){
+        var $self=$(this);
+        $(this).addClass('tablesaw table-striped table-bordered table-hover tablesaw-sortable tablesaw-swipe').attr({"data-tablesaw-mode":"swipe",'data-tablesaw-sortable':''});
+        Breakpoints.get('xs').on({
+            enter:function(){
+                $self.each(function(){
+                    if(!$('thead',this).length){
+                        var td=$("tbody tr:eq(0) td",this),th;
+                        if(td.length==0) td=$("tbody tr:eq(0) th",this);
+                        td.each(function(){
+                            th+='<th data-tablesaw-sortable-col>'+$(this).html()+'</th>';
+                        });
+                        $(this).prepend("<thead><tr>"+th+"</tr></thead>");
+                        $("tbody tr:eq(0)",this).remove();
+                        $("tbody td",this).attr('width','auto');
+                    }
+                });
+                $(document).trigger("enhance.tablesaw");
+            }
+        });
     }
 });
+// UI执行
+function metui(obj) {
+    this.obj = obj;
+    var keys = [];
+    var values = [];
+    for (var key in obj) {
+        keys.push(key);
+        values.push(obj[key]);
+        if (typeof(obj[key]) == 'string') {
+            if (keys == 'name') {
+                METUI[obj[key]]=$('.' + obj[key]);
+            }
+        } else if (typeof(obj[key]) == 'function') {
+            this.obj[key]();
+        }
+    }
+    return this;
+}
+window.METUI=METUI_FUN=new Array();

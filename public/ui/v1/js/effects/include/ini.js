@@ -1,4 +1,4 @@
-﻿define(function(require, exports, module) {
+define(function(require, exports, module) {
 	var common = require('common');   		//公用类
 	
 	/*繁体中文*/

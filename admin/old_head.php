@@ -1,6 +1,6 @@
 <!--<?php
-# MetInfo Enterprise Content Management System 
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+# MetInfo Enterprise Content Management System
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 $msecount = $db->counter($_M['table']['infoprompt'], " WHERE lang='{$_M[lang]}' and see_ok='0'", "*");
 $_M['url']['adminurl'] = $_M['url']['site'].$met_adminfile."/index.php?lang={$lang}&";
 if($_M[config][met_agents_type] > 2) $met_agents_display = "style=\"display:none\"";
@@ -26,15 +26,35 @@ function is_strinclude($str, $needle, $type = 0){
 			if(strstr($str, $needle) === false){
 				$flag = false;
 			}
-		}		
+		}
 	}
 	return $flag;
 }
+// 判断来源页面是否有pageset=1 ，如果有而本页url没有pageset=1，则本页加上pageset=1跳转
+$pageURL = 'http';
+if ($_SERVER["HTTPS"] == "on") $pageURL .= "s";
+$pageURL .= "://";
+if($_SERVER["SERVER_PORT"] != "80"){
+	$pageURL .= $_SERVER["SERVER_NAME"].":" . $_SERVER["SERVER_PORT"] . $_SERVER['REQUEST_URI'];
+}else{
+	$pageURL .= $_SERVER["SERVER_NAME"] . $_SERVER['REQUEST_URI'];
+}
+if(strpos($_SERVER["HTTP_REFERER"], 'pageset=1')!=false && strpos($pageURL, 'pageset=1')==false){
+	$newurl=$pageURL;
+	if(strpos($pageURL, '?')!=false){
+		$newurl.='&pageset=1';
+	}else{
+		$newurl.='?pageset=1';
+	}
+	header("Location:{$newurl}");
+	exit;
+}
+$head_hide=$_M['form']['pageset']?' hide':'';
 echo <<<EOT
 -->
-	 <div class="metcms_top_right">
+	 <div class="metcms_top_right{$head_hide}">
 		<div class="metcms_top_right_box">
-			<div class="metcms_top_right_box_div clearfix"> 
+			<div class="metcms_top_right_box_div clearfix">
 <!--
 EOT;
 if($_M['form']['iframeurl']){
@@ -87,7 +107,7 @@ if($_M['form']['iframeurl']){
 			if($val == 9999){
 				$privilege['see'] = "metinfo";
 			}
-		}	
+		}
 		$privilege['navigation'] = trim($privilege['navigation'], '|');
 		$privilege['column'] = trim($privilege['column'], '|');
 		$privilege['application'] = trim($privilege['application'], '|');
@@ -186,8 +206,8 @@ echo <<<EOT
 		<span class="caret"></span>
 	</button>
 	<ul class="dropdown-menu" role="menu" aria-labelledby="adminuser">
-		<li class="met-tool-list"><a href="{$_M[url][site_admin]}admin/editor_pass.php?anyid=47&lang={$_M[lang]}">{$_M['word']['modify_information']}</a></li>
-		<li class="met-tool-list"><a target="_top" href="{$_M[url][site_admin]}login/login_out.php">{$_M[word][indexloginout]}</a></li>
+		<li class="met-tool-list"><a href="{$_M[url][site_admin]}admin/index.php?n=admin&c=admin_admin&a=doeditor_info&anyid=47&lang={$_M[lang]}">{$_M['word']['modify_information']}</a></li>
+		<li class="met-tool-list"><a target="_top" href="{$_M['url']['site_admin']}index.php?n=login&c=login&a=doindex">{$_M[word][indexloginout]}</a></li>
 	</ul>
 </div>
 <div class="btn-group pull-right met-tool met-msecount-tool">
@@ -231,7 +251,7 @@ EOT;
 }
 echo <<<EOT
 -->
-		
+
 		<li class="met-tool-list">
 			<button class="btn btn-success" type="submit" onclick="location.href = '{$_M[url][site_admin]}system/lang/lang.php?anyid=10&langaction=add&lang={$_M[lang]}&cs=1';"><i class="fa fa-plus"></i>新增{$_M['word']['langweb']}</button>
 		</li>
@@ -265,7 +285,7 @@ if ($key_info['authpass'] && $key_info['authcode']) {
 }
 if(!$otherinfoauth) {
 echo <<<EOT
--->				
+-->
 		<li class="met-tool-list text-center"><a target="_blank" class="liaojie" href="http://www.metinfo.cn/web/product.htm">{$_M['word']['sys_authorization2']}</a></li>
 		<li class="met-tool-list text-center">
 		<button class="btn btn-primary" type="submit" onclick="location.href = '{$_M['url']['adminurl']}&n=system&c=authcode&a=doindex';">{$_M['word']['sys_authorization1']}</button>
@@ -274,7 +294,7 @@ echo <<<EOT
 EOT;
 } else {
 echo <<<EOT
--->	
+-->
 		<li class="met-tool-list text-center">
 			<button class="btn btn-info" type="submit">{$otherinfoauth['info1']}</button>
 		</li>
@@ -286,7 +306,7 @@ EOT;
 }
 echo <<<EOT
 -->
-		
+
 	</ul>
 </div>
 <div class="btn-group pull-right met-tool supportbox" {$met_agents_display}>
@@ -317,7 +337,7 @@ echo <<<EOT
 			</div>
 		</div>
 	 </div>
-<SCRIPT language=JavaScript>  
+<SCRIPT language=JavaScript>
 var langtime;
 	$(".metcms_top_right_box li.lang").hover(function(){
 		clearTimeout(langtime);
@@ -328,7 +348,7 @@ var langtime;
 		var dl = $(this).find("dl");
 		dl.hide();
 	});
-	var str = window.parent.document.URL; 
+	var str = window.parent.document.URL;
 	var s = str.indexOf(lang);
 	var str1 = window.location.href;
 	var s1 = str1.indexOf('switch=1');
@@ -339,6 +359,7 @@ var langtime;
 </SCRIPT>
 <!--
 EOT;
+// require_once "../../app/system/include/public/ui/admin/function_ency.php";
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

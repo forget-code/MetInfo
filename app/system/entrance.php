@@ -1,6 +1,6 @@
 <?php
-# MetInfo Enterprise Content Management System 
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+# MetInfo Enterprise Content Management System
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 
 //版本号
 define ('SYS_VER', 'beta 1.101');
@@ -47,32 +47,38 @@ if (!defined('M_TYPE')) {
 }
 
 if (!defined('M_MODULE')) {
+	$ia = $_GET['a'] ? $_GET['a'] : $_POST['a'];
+	$ic = $_GET['c'] ? $_GET['c'] : $_POST['c'];
 	define ('M_MODULE', 'include');
-	define ('M_CLASS', $_GET['c']);
-	define ('M_ACTION', $_GET['a']);
+	define ('M_CLASS', $ic);
+	define ('M_ACTION', $ia);
 }
 //当前文件夹地址
 if(M_TYPE == 'system'){
 	if(M_MODULE == 'include'){
 		define ('PATH_OWN_FILE', PATH_APP.M_TYPE.'/'.M_MODULE.'/module/');
 	}else{
-		define ('PATH_OWN_FILE', PATH_APP.M_TYPE.'/'.M_MODULE.'/'.M_NAME.'/');
+		define ('PATH_OWN_FILE', PATH_APP.M_TYPE.'/'. M_NAME.'/'.M_MODULE.'/');
 	}
 }else{
 	define ('PATH_OWN_FILE', PATH_APP.M_TYPE.'/'.M_NAME.'/'.M_MODULE.'/');
 	define ('PATH_APP_FILE', PATH_APP.M_TYPE.'/'.M_NAME.'/');
 }
 
-define ('PATH_MODULE_FILE', PATH_APP.'system'.'/'.M_MODULE.'/');
+define ('PATH_MODULE_FILE', PATH_APP.'system'.'/'.M_MODULE.'/');//兼容v20150511内核，之后请不要使用。
+
 //程序运行开始时间
 define ('TIME_SYS_START', time());
 //表单变量自动过滤
 define ('MAGIC_QUOTES_GPC', get_magic_quotes_gpc());
 
 //当前访问的主机名
-define ('HTTP_HOST', $_SERVER['HTTP_HOST']);
+define ('HTTP_HOST', isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME']);
 //来源页面
 define('HTTP_REFERER', $_SERVER['HTTP_REFERER']);
+//来源页面
+define('REQUEST_URI', $_SERVER['REQUEST_URI']);
+
 //脚本路径
 $phpfile = basename(__FILE__);
 $_SERVER['PHP_SELF']=htmlentities($_SERVER['PHP_SELF']);

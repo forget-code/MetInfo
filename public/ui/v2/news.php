@@ -9,24 +9,26 @@ if($lang_news_listtype>1){// 列表图片尺寸比例判断
     $imagesize=' imagesize';
 }
 if($mbpagelist){
-    if($lang_news_listtype>1) require_once template('static/metresclass.class');// 模板处理方法
     require_once template('module/news/ajax_'.$lang_news_listtype);// 无刷新翻页获取数据
 }else{
-    $subcolumn_no = 1;
+    $paths[lazyload]=1;
+    $paths[pager]=1;
+    $paths[news]=1;
+    $page_type='news';
     require_once template('head');
     $type3=$lang_news_listtype==3?' type-3':'';
 echo <<<EOT
 -->
-<section class="met-news met-page-body bg-pagebg1">
+<main class="met-news page-content">
     <div class="container">
         <div class="row">
-            <div class="col-lg-9 met-news-body met-page-content box-shadow1{$content_position}" boxmh-mh>
+            <div class="col-lg-9 met-news-body panel panel-body m-b-0{$content_position}" boxmh-mh>
 <!--
 EOT;
     if($news_list){
         if($lang_news_listtype<3 && $lang_news_headlines_ok){
-            require_once template('module/news/headlines');//头条
-            $news_firstkey=$lang_news_headlines_num;// 从新闻头条数量后开始输出
+            require_once template('module/news/headlines');// 头条
+            $news_firstkey=$page==1&&!$class2?$lang_news_headlines_num:0;// 从新闻头条数量后开始输出
         }else{
             $news_firstkey=0;
         }
@@ -41,7 +43,7 @@ EOT;
     }else{// 列表没有内容时
 echo <<<EOT
 -->
-                    <div class='h-100 text-xs-center font-size-20 vertical-align'>暂无内容</div>
+                    <div class='h-100 text-xs-center font-size-20 vertical-align'>{$lang_nodata}</div>
 <!--
 EOT;
     }
@@ -52,7 +54,7 @@ echo <<<EOT
 EOT;
     if($news_list){
         // 分页
-        $pagetxt = $lang_news_more_txt;// 无刷新分页文字特殊定义
+        $lang_page_ajax_next = $lang_news_ajax_next;// 自定义无刷新翻页文字
         require_once template('module/pager');
     }
 echo <<<EOT
@@ -69,7 +71,7 @@ echo <<<EOT
             </div>
         </div>
     </div>
-</section>
+</main>
 <!--
 EOT;
     require_once template('foot');

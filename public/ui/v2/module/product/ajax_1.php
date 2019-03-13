@@ -1,4 +1,5 @@
 <?php
+$text_truncate=$lang_product_listmasonry_ok?'':' class="block text-truncate"';
 foreach($product_list as $key=>$val){
 	$val['page'] = $mbpagelist?'page'.$page:'';
 	if($_M['url']['shop']){
@@ -7,7 +8,7 @@ foreach($product_list as $key=>$val){
 	}
 	$val[imgurls]="{$thumb_src}dir={$val[imgurl]}&x={$met_productimg_x}&y={$met_productimg_y}";
 	if($key<4&&!$mbpagelist){
-		$shown=' shown';
+		$shown=$lang_product_listmasonry_ok?' shown':'';
 		$original = 'src';
 	}else{
 		$shown='';
@@ -16,14 +17,14 @@ foreach($product_list as $key=>$val){
 echo <<<EOT
 -->
 <li class="{$val['page']}{$shown}">
-	<div class="card card-shadow radius0">
-		<figure class="card-header cover radius0">
+	<div class="card card-shadow">
+		<figure class="card-header cover">
 			<a href="{$val[url]}" title="{$val[title]}" {$metblank}>
-				<img class="cover-image" {$original}="{$val['imgurls']}" alt="{$val[title]}" style='height:200px;'>
+				<img class="cover-image" {$original}="{$val['imgurls']}" alt="{$val[title]}" height='100'>
 			</a>
 		</figure>
-		<h4 class="card-title m-0 font-size-16 text-xs-center">
-			<a href="{$val[url]}" title="{$val[title]}" {$metblank}>{$val[title]}</a>
+		<h4 class="card-title m-0 p-x-10 font-size-16 text-xs-center">
+			<a href="{$val[url]}" title="{$val[title]}"{$text_truncate} {$metblank}>{$val[title]}</a>
 			{$val['price_str_html']}
 		</h4>
 	</div>

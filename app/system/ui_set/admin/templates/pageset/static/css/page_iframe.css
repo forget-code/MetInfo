@@ -1,0 +1,42 @@
+@charset "utf-8";
+/* 兼容样式 */
+[hidden]{display: none !important;}
+/* 页面设置的按妞 */
+[m-id].set{border: 1px solid #f00 !important;}
+.pageset-btn,
+.pageeditor-btn{position: absolute;z-index: 999999 !important;}
+.pageset-btn{
+	-webkit-transform: translate3d(-50%,0,0) !important;
+	   -moz-transform: translate3d(-50%,0,0) !important;
+	    -ms-transform: translate3d(-50%,0,0) !important;
+	     -o-transform: translate3d(-50%,0,0) !important;
+	        transform: translate3d(-50%,0,0) !important;
+}
+.pageeditor-btn{
+	position: absolute;z-index: 999999 !important;
+	-webkit-transform: translate(-50%,0) !important;
+	   -moz-transform: translate(-50%,0) !important;
+	    -ms-transform: translate(-50%,0) !important;
+	     -o-transform: translate(-50%,0) !important;
+	        transform: translate(-50%,0) !important;
+}
+.pageset-btn .btn,
+.pageeditor-btn .btn{vertical-align: top !important;}
+.pageset-btn .btn{display: none;}
+.pageeditor-editor{width: auto !important;height: auto !important;
+	-webkit-border-radius: 100%;
+	-moz-border-radius: 100%;
+	-ms-border-radius: 100%;
+	-o-border-radius: 100%;
+	border-radius: 100%;
+}
+.pageeditor-btn .editable-container{display: block;}
+.pageeditor-btn .editable-container .editableform{padding: 10px;border: 1px solid  #ddd;background: #fff;box-shadow: 0 1px 10px rgba(0, 0, 0,.2);}
+.pageeditor-btn .editable-container .editable-input .form-control{padding: 5px !important;}
+.pageeditor-btn .editable-container .editable-input .form-control,.pageeditor-btn .editable-container .editable-input input{min-width: 100px;max-width: 500px;}
+.pageeditor-btn .editable-container .editable-input input{height: 2rem;}
+.pageeditor-btn .editable-container .editable-buttons{margin-top: 5px;}
+.pageeditor-btn .editable-container .editable-buttons .btn{padding:2px 5px;}
+.pageeditor-btn .editable-container .editable-buttons .editable-cancel{margin-left: 5px;}
+/* 页面设置对应的元素 */
+[met-id].set{outline: 1px solid #46be8a !important;}

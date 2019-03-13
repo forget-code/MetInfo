@@ -6,9 +6,9 @@ echo <<<EOT
 <div class="card card-shadow">
 	<h4 class='card-title p-0 font-size-24'>{$val[position]}</h4>
 	<p class="card-metas font-size-12 blue-grey-400">
-		<span>{$val[addtime]}</span>
-		<span><i class="icon wb-map m-r-5" aria-hidden="true"></i>{$val[place]}</span>
-		<span><i class="icon wb-user m-r-5" aria-hidden="true"></i>{$val[count]}</span>
+		<span class='m-r-10'>{$val[addtime]}</span>
+		<span class='m-r-10'><i class="icon wb-map m-r-5" aria-hidden="true"></i>{$val[place]}</span>
+		<span class='m-r-10'><i class="icon wb-user m-r-5" aria-hidden="true"></i>{$val[count]}</span>
 		<span><i class="icon wb-payment m-r-5" aria-hidden="true"></i>{$val[deal]}</span>
 	</p>
 	<hr>

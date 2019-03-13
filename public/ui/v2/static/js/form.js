@@ -18,8 +18,13 @@ $(function(){
         $text.val(value);
     });
     // 验证码点击刷新
-    $(document).on('click',".met-form-codeimg",function(){
-        $(this).attr({src:$(this).data("src")+'&random='+Math.floor(Math.random()*9999+1)});
+    $(document).on('click',"#getcode",function(){
+        var data_src=$(this).attr("data-src");
+        if(!data_src){
+            data_src=$(this).prop("src")+'&random=';
+            $(this).attr({'data-src':data_src});
+        }
+        $(this).attr({src:data_src+Math.floor(Math.random()*9999+1)});
     });
 });
 // 表单验证通用
@@ -48,45 +53,39 @@ $.fn.validation=function(){
     function formDataAjax(e,func){
         var $form    = $(e.target);
         if(is_lteie9){
-            $.ajax({
-                url: $form.attr('action'),
-                data: $form.serializeArray(),
-                cache: false,
-                type: 'POST',
-                dataType:'json',
-                success: function(result) {
-                    $form.data('formValidation').resetForm();
-                    if (typeof func==="function") return func(result,$form);
-                }
-            });
+            var formData = $form.serializeArray(),
+                contentType='application/x-www-form-urlencoded',
+                processData=true;
         }else{
             var formData = new FormData(),
-                params   = $form.serializeArray();
+                params   = $form.serializeArray(),
+                contentType=false,
+                processData=false;
             $.each(params, function(i, val) {
                 formData.append(val.name, val.value);
             });
-            $.ajax({
-                url: $form.attr('action'),
-                data: formData,
-                cache: false,
-                contentType: false,
-                processData: false,
-                type: 'POST',
-                dataType:'json',
-                success: function(result) {
-                    $form.data('formValidation').resetForm();
-                    if (typeof func==="function") return func(result,$form);
-                }
-            });
         }
+        $.ajax({
+            url: $form.attr('action'),
+            data: formData,
+            cache: false,
+            contentType: contentType,
+            processData: processData,
+            type: 'POST',
+            dataType:'json',
+            success: function(result) {
+                $form.data('formValidation').resetForm();
+                if (typeof func==="function") return func(result,$form);
+            }
+        });
     }
-    return {self_validation:self_validation,success:success,formDataAjax:formDataAjax};
+    return {success:success,formDataAjax:formDataAjax};
 }
 // formValidation多语言选择
 window.validation_locale='';
-if("undefined" != typeof M && M['lang_pack'] && M['plugin_lang']){
-    validation_locale=M['lang_pack']+'_';
-    switch(M['lang_pack']){
+if("undefined" != typeof M && M['plugin_lang']){
+    validation_locale=M['lang']+'_';
+    switch(M['lang']){
         case 'sq':validation_locale+='AL';break;
         case 'ar':validation_locale+='MA';break;
         // case 'az':validation_locale+='az';break;

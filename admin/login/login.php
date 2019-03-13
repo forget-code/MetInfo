@@ -1,8 +1,11 @@
 <?php
 # MetInfo Enterprise Content Management System 
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
+
 $admin_index=FALSE;
 require_once '../include/common.inc.php';
+$url=$_M[url][site_admin]."index.php?n=login&c=login&a=doindex";
+header("Location:".$url);
 $countpoint=substr_count($_SERVER[HTTP_HOST],'.');
  
    if(strstr($_SERVER[HTTP_HOST],'www') || $countpoint==1){

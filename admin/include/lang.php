@@ -20,14 +20,14 @@ $languser = $_GET[langset];
 $langset=($languser!="")?$languser:$met_admin_type;
 if(!file_get_contents(ROOTPATH.'cache/langadmin_'.$langset.'.php')){
 	$js="var user_msg = new Array();\n";
-	$query="select * from $met_language where lang='$langset' and site='1' and array!='0'";
+	$query="select * from $met_language where lang='$langset' and site='1'";
 	$result= $db->query($query);
 	if($db->affected_rows()==0){
 		require_once ROOTPATH_ADMIN.'system/lang/lang.func.php';
 		$post=array('newlangmark'=>$langset,'metcms_v'=>$metcms_v,'newlangtype'=>'admin');
 		$file_basicname=ROOTPATH_ADMIN.'update/lang/lang_'.$langset.'.ini';
 		$re=syn_lang($post,$file_basicname,$langset,1,0);
-		$query="select * from $met_language where lang='$langset' and site='1' and array!='0'";
+		$query="select * from $met_language where lang='$langset' and site='1'";
 		$result= $db->query($query);
 	}
 	while($listlang= $db->fetch_array($result)){
@@ -43,7 +43,7 @@ if(!file_get_contents(ROOTPATH.'cache/langadmin_'.$langset.'.php')){
 	$js1='$'."js='".str_replace("'","\\'",$js).'\';';
 	$str="<?php\n".$str.$js1."\n?>";
 	file_put_contents(ROOTPATH.'cache/langadmin_'.$langset.'.php',$str);
-	file_put_contents(ROOTPATH.'cache/lang_json_admin_'.$langset.'.php',json_encode($lang_json));
+	//file_put_contents(ROOTPATH.'cache/lang_json_admin_'.$langset.'.php',json_encode($lang_json));
 }else{
 	require_once ROOTPATH.'cache/langadmin_'.$langset.'.php';
 }

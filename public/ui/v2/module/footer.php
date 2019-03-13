@@ -1,15 +1,8 @@
 <?php
-if($lang_placeholder){
-echo <<<EOT
--->
-<input type="hidden" name='met_placeholder' value='{$lang_placeholder}'>
-<!--
-EOT;
-}
 if($lang_lazyloadbg){
 echo <<<EOT
 -->
-<input type="hidden" name='met_lazyloadbg_set' value='{$lang_lazyloadbg}'>
+<input type="hidden" name='met_lazyloadbg' value='{$lang_lazyloadbg}'>
 <!--
 EOT;
 }

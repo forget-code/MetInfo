@@ -1,7 +1,7 @@
 <?php
 echo <<<EOT
 -->
-<div class="page met-showproduct pagetype2 bg-pagebg" id="product-details">
+<div class="page met-showproduct pagetype2 block-bg" id="product-details">
 <!--
 EOT;
 require_once template('module/showproduct/fashion/navbar');

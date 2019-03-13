@@ -2,7 +2,7 @@ define(function(require, exports, module) {
 
 	var $ = require('jquery');
 	var common = require('common');
-	
+
 	function tags_add(put){
 		var vput = put.parent("li").parent("ul").prev('.tags_val').find("input");
 		var l = vput.attr('data-label');
@@ -11,7 +11,7 @@ define(function(require, exports, module) {
 		if(myval!=''){
 			put.parent("li").before('<li class="tags_list"><span>'+myval+'</span><a></a></li>');
 			vput.val(function(){
-				return put.val()==''?$(this).val():$(this).val()+l+put.val();
+				return put.val()==''?$(this).val():($(this).val()?$(this).val()+l+put.val():put.val());
 			});
 			put.val('');
 		}
@@ -40,13 +40,13 @@ define(function(require, exports, module) {
 			d.find('.fbox').html(t_html);
 		}
 	}
-	
+
 	exports.func = function(d){
 		d = d.find('.ftype_tags');
 		TagsM(d);
 	}
-	
-	//点击添加按钮
+
+	//鐐瑰嚮娣诲姞鎸夐挳
 	$(document).on('click',".tags_box .tags_tj span",function(){
 		var put = $(this).next();
 		if(put.is(':hidden')){
@@ -64,15 +64,15 @@ define(function(require, exports, module) {
 			$(this).hide();
 		}
 	});
-	//输入框输入文字时自动增加宽度
-	$(document).on('keyup','.tags_box .tags_tj input',function(){ 
+	//杈撳叆妗嗚緭鍏ユ枃瀛楁椂鑷姩澧炲姞瀹藉害
+	$(document).on('keyup','.tags_box .tags_tj input',function(){
 		var current=$(this).val().replace(/[^\u0000-\u00ff]/g,"aa").length;
 		var size=current;
 		var wd = size*8;
 			wd = wd+25;
 		$(this).css("width",wd+'px');
 	});
-	//回车增加
+	//鍥炶溅澧炲姞
 	$(document).on('keypress',".tags_box .tags_tj input",function(e){
 		var keyCode = e.keyCode ? e.keyCode : e.which ? e.which : e.charCode;
 		if (keyCode == 13 ){
@@ -82,7 +82,7 @@ define(function(require, exports, module) {
 			return true;
 		}
 	});
-	//删除标签
+	//鍒犻櫎鏍囩
 	$(document).on('click',".tags_box .tags_list a",function(){
 		var kl = $(this).parent('li').index();
 		var dm = $(this).parent("li").parent("ul").prev('.tags_val').find("input");
@@ -90,15 +90,15 @@ define(function(require, exports, module) {
 		dm.val(function(){
 			var v = $(this).val(),vn='';
 				v = v.split(l);
+			v=$.grep(v, function(n) {return $.trim(n).length > 0;});
 			for(var i=0;i<v.length;i++){
 				if(i!=kl&&v[i]!=''){
-					vn += v[i]+l;
+					vn += l+v[i];
 				}
 			}
-			if(vn.charAt(vn.length - 1)==l)vn=vn.substring(0,vn.length-1);
+			vn=vn.substring(1);
 			return vn;
 		});
 		$(this).parent("li").remove();
 	});
-	
 });

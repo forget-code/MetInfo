@@ -1,6 +1,11 @@
 <!--<?php
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+if($_M['config']['met_agents_metmsg']){
+	$met_agents_metmsg = '';
+}else{
+	$met_agents_metmsg = 'style="display:none;"';
+}
 $msecount = DB::counter($_M['table']['infoprompt'], " WHERE lang='{$_M[lang]}' and see_ok='0'", "*");
 $privilege = background_privilege();
 $navigation=$privilege['navigation'];
@@ -10,23 +15,37 @@ $arrlanguage=explode('|', $navigation);
   }else{
     $langprivelage=0;
   }
+// 判断来源页面是否有pageset=1 ，如果有而本页url没有pageset=1，则本页加上pageset=1跳转
+if(strpos($_SERVER["HTTP_REFERER"], 'pageset=1')!==false && strpos($_SERVER['REQUEST_URI'], 'pageset=1')===false){
+echo <<<EOT
+-->
+<script>
+	var newurl=location.href;
+	if(location.search!=''){
+		newurl+='&pageset=1';
+	}else{
+		newurl+='?pageset=1';
+	}
+	location.href=newurl;
+</script>
+<!--
+EOT;
+	die;
+}
+$head_hide=$_M['form']['pageset']?' hide':'';//有‘pageset=1’则隐藏头部
 echo <<<EOT
 -->
    <script>
       function valid(){
 	      if({$langprivelage}){
-           location.href = '{$_M[url][site_admin]}system/lang/lang.php?anyid=10&langaction=add&lang={$_M[lang]}&cs=1';
+           location.href = '{$_M[url][adminurl]}anyid=10&n=language&c=language_admin&a=dolangadd';
 	      }else{
-	        alert("您没有此操作权限请联系管理员");
+	        alert("{$_M[word][js81]}");
 	      }
       }
 
    </script>
-<!--
-EOT;
-echo <<<EOT
--->
-	 <div class="metcms_top_right">
+	 <div class="metcms_top_right{$head_hide}">
 		<div class="metcms_top_right_box">
 			<div class="metcms_top_right_box_div clearfix"> 
 <!--
@@ -88,16 +107,28 @@ echo <<<EOT
 		<span class="caret"></span>
 	</button>
 	<ul class="dropdown-menu" role="menu" aria-labelledby="adminuser">
-		<li class="met-tool-list"><a href="{$_M[url][site_admin]}admin/editor_pass.php?anyid=47&lang={$_M[lang]}">{$_M['word']['modify_information']}</a></li>
-		<li class="met-tool-list"><a target="_top" href="{$_M[url][site_admin]}login/login_out.php">{$_M[word][indexloginout]}</a></li>
+		<li class="met-tool-list"><a href="{$_M[url][adminurl]}n=admin&c=admin_admin&a=doeditor_info">{$_M['word']['modify_information']}</a></li>
+		<li class="met-tool-list"><a target="_top" href="{$_M[url][adminurl]}n=login&c=login&a=dologinout">{$_M[word][indexloginout]}</a></li>
 	</ul>
 </div>
-<div class="btn-group pull-right met-tool met-msecount-tool">
-	<button class="btn btn-default text-center dropdown-toggle msecount" type="button" onclick="location.href = '{$_M[url][site_admin]}index.php?n=system&c=news&a=doindex&lang={$_M[lang]}';">
-		<i class="fa fa-bell-o"></i>
-		<span class="label label-danger">{$msecount}</span>
-	</button>
-</div>
+<!--
+EOT;
+
+if(!$_M['config']['met_agents_switch']){
+echo <<<EOT
+-->
+    <div class="btn-group pull-right met-tool met-msecount-tool">
+        <button class="btn btn-default text-center dropdown-toggle msecount" type="button" onclick="location.href = '{$_M[url][adminurl]}n=system&c=news&a=doindex';">
+            <i class="fa fa-bell-o"></i>
+            <span class="label label-danger">{$msecount}</span>
+        </button>
+    </div>
+<!--
+EOT;
+}
+
+echo <<<EOT
+-->
 <div class="btn-group pull-right met-tool">
 	<button class="btn btn-default dropdown-toggle" type="button" id="langlistbox" data-toggle="dropdown" aria-expanded="true">
 		<i class="fa fa-globe"></i><span class="hidden-xs">{$_M['langlist']['web'][$_M['lang']]['name']}</span>
@@ -120,7 +151,7 @@ if(!strstr($url_now, "lang=")) {
 
 echo <<<EOT
 -->
-		<li class="met-tool-list"><a href="{$val['url']}">{$val[name]}</a></li>
+		<li class="met-tool-list"><a href="{$val['url']}&switch=1">{$val[name]}</a></li>
 <!--
 EOT;
 }
@@ -128,11 +159,11 @@ echo <<<EOT
 -->
 		
 		<li class="met-tool-list">
-			<button class="btn btn-success" type="submit" onclick="valid()"><i class="fa fa-plus"></i>新增{$_M['word']['langweb']}</button>
+			<button class="btn btn-success" type="submit" onclick="valid()"><i class="fa fa-plus"></i>{$_M[word][added]}{$_M['word']['langweb']}</button>
 		</li>
 	</ul>
 </div>
-<div class="btn-group pull-right met-tool" {$met_agents_display}>
+<div class="btn-group pull-right met-tool" {$met_agents_metmsg}>
 	<button class="btn btn-default dropdown-toggle" type="button" id="shouquan" data-toggle="dropdown" aria-expanded="true">
 		<i class="fa fa-bookmark"></i><span class="hidden-xs">{$_M['word']['indexcode']}</span>
 		<span class="caret"></span>
@@ -169,32 +200,49 @@ echo <<<EOT
 		
 	</ul>
 </div>
-
-<div class="btn-group pull-right met-tool supportbox" {$met_agents_display}>
-	<!--<a href="http://www.metinfo.cn/bangzhu/index.php?ver=metcms" class="btn btn-success dropdown-toggle" target="_blank">技术支持<a>
-	<button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-		<i class="fa fa-life-ring"></i><span class="hidden-xs">技术支持</span>
+<div class="btn-group pull-right met-tool supportbox" {$met_agents_metmsg}>
+    <a href="http://www.metinfo.cn/bangzhu/index.php?ver=metcms" class="btn btn-default dropdown-toggle" target="_blank">
+    <i class="fa fa-life-ring"></i>{$_M[word][indexbbs]}</a>
+    </div>
+	<!--<button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+		<i class="fa fa-life-ring"></i><span class="hidden-xs">{$_M[word][indexbbs]}</span>
 		<span class="caret"></span>
 		<input name="supporturldata" type="hidden" value="user_key={$_M['config']['met_secret_key']}&siteurl={$_M['url']['site']}" />
 	</button>
 	<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-		<li class="met-tool-list text-center support_loading">获取中...</li>
-		<li class="met-tool-list text-center support_youok">处理时间：每天 </li>
-		<li class="met-tool-list text-center support_youok"><button class="btn btn-primary" type="submit">工单</button></li>
+		<li class="met-tool-list text-center support_loading">{$_M[word][loading]}</li>
+		<li class="met-tool-list text-center support_youok">{$_M[word][systips3]} </li>
+		<li class="met-tool-list text-center support_youok"><button class="btn btn-primary" type="submit">{$_M[word][systips4]}</button></li>
 		<li class="divider support_youok"></li>
-		<li class="met-tool-list text-center support_youok">在线时间：工作日</li>
-		<li class="met-tool-list text-center support_youok"><button class="btn btn-info supportmechatlink" type="submit">点我咨询</button></li>
+		<li class="met-tool-list text-center support_youok">{$_M[word][systips5]}</li>
+		<li class="met-tool-list text-center support_youok"><button class="btn btn-info supportmechatlink" type="submit">{$_M[word][systips6]}</button></li>
 		<li class="divider support_youok"></li>
-		<li class="met-tool-list text-center support_desc">于 <span id="support_expiretime"></span> 到期</li>
-		<li class="met-tool-list text-center support_desc"><a href="{$_M[url][adminurl]}n=appstore&c=support&a=doindex">续费服务</a></li>
-		<li class="met-tool-list text-center support_no"><span class="text-danger">尚未开通服务</span>
-		<a href="http://www.metinfo.cn/news/shownews1248.htm" target="_blank">什么是技术支持？</a>
+		<li class="met-tool-list text-center support_desc">{$_M[word][systips8]} <span id="support_expiretime"></span> {$_M[word][systips7]}</li>
+		<li class="met-tool-list text-center support_desc"><a href="{$_M[url][adminurl]}anyid=65&n=appstore&c=support&a=doindex">{$_M[word][systips9]}</a></li>
+		<li class="met-tool-list text-center support_no"><span class="text-danger">{$_M[word][systips10]}</span>
+		<a href="http://www.metinfo.cn/news/shownews1248.htm" target="_blank">{$_M[word][systips11]}</a>
 		</li>
 		<li class="met-tool-list text-center support_no">
-		<button class="btn btn-primary" type="submit" onclick="location.href = '{$_M[url][adminurl]}n=appstore&c=support&a=doindex';">开通服务</button>
+		<button class="btn btn-primary" type="submit" onclick="location.href = '{$_M[url][adminurl]}anyid=65&n=appstore&c=support&a=doindex';">{$_M[word][systips12]}</button>
 		</li>
 	</ul>-->
+<!--
+EOT;
+$power = admin_information();
+if($power['admin_group'] == '10000' || $power['admin_group'] == '3'){
+echo <<<EOT
+-->
+<div class="btn-group pull-right met-tool" {$met_agents_metmsg}>
+<button class="btn btn-default dropdown-toggle" data-toggle="modal" data-target="#functionEncy">
+<i class="fa fa-pie-chart"></i>
+<span class="hidden-xs">{$_M[word][funcCollection]}</span>
+</button>
 </div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
 			</div>
 		</div>
 	 </div>
@@ -241,6 +289,7 @@ echo <<<EOT
 </div>
 <!--
 EOT;
+require_once $this->template('ui/function_ency');// 系统功能大全弹框
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

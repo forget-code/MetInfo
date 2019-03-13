@@ -60,8 +60,6 @@ class Uploader
         } else {
             $this->upFile();
         }
-
-        $this->stateMap['ERROR_TYPE_NOT_ALLOWED'] = iconv('unicode', 'utf-8', $this->stateMap['ERROR_TYPE_NOT_ALLOWED']);
     }
 
     /**
@@ -114,10 +112,17 @@ class Uploader
             $this->stateInfo = $this->getStateInfo("ERROR_DIR_NOT_WRITEABLE");
             return;
         }
+        //windows 中文文件名支持
+        if (strstr(PHP_OS,"WIN")) {
+            $truePath = iconv("UTF-8", "GBK", $this->filePath);
+        }else{
+            $truePath = $this->filePath;
+        }
 
         //移动文件
         //if (!(move_uploaded_file($file["tmp_name"], $this->filePath) && file_exists($this->filePath))) { //移动失败
-		if (!(move_uploaded_file($file["tmp_name"], $this->filePath))) { //移动失败
+		//if (!(move_uploaded_file($file["tmp_name"], $this->filePath))) { //移动失败
+		if (!(move_uploaded_file($file["tmp_name"], $truePath))) { //移动失败
 			if(!(copy($file["tmp_name"], $this->filePath))){
 				$this->stateInfo = $this->getStateInfo("ERROR_FILE_MOVE");
 			}else{
@@ -269,6 +274,11 @@ class Uploader
         $t = time();
         $d = explode('-', date("Y-y-m-d-H-i-s"));
         $format = $this->config["pathFormat"];
+        //自动重命名
+        global $_M;
+        if ($_M['config']['met_img_rename'] != 1) {
+            $format = str_replace("{time}{rand:6}","{filename}",$format);
+        }
         $format = str_replace("{yyyy}", $d[0], $format);
         $format = str_replace("{yy}", $d[1], $format);
         $format = str_replace("{mm}", $d[2], $format);
@@ -344,8 +354,8 @@ class Uploader
     public function getFileInfo()
     {
 		global $_M;
-		$fullName = $this->fullName; 
-		$fullName = str_replace(PATH_WEB,$_M['url']['site'],$fullName); 
+		$fullName = $this->fullName;
+		$fullName = str_replace(PATH_WEB,$_M['url']['site'],$fullName);
         return array(
             "state" => $this->stateInfo,
             "url" => $fullName,

@@ -1,6 +1,6 @@
 <!--<?php
-# MetInfo Enterprise Content Management System 
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+# MetInfo Enterprise Content Management System
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 
 defined('IN_MET') or exit('No permission');
 $jsrand=str_replace('.','',$_M[config][metcms_v]).$_M[config][met_patch];
@@ -10,6 +10,7 @@ if(strstr($_M[config][met_weburl],'https')){
 }
 
 if($_M[config][met_agents_type] > 2) $met_agents_display = "style=\"display:none\"";
+$languser=get_met_cookie('languser')?get_met_cookie('languser'):'cn';
 echo <<<EOT
 --><!DOCTYPE HTML>
 <html>
@@ -45,15 +46,18 @@ var langtxt = {
 	"detection":"{$_M[word][detection]}",
 	"try_again":"{$_M[word][try_again]}"
 },
+langset="{$languser}",
 anyid="{$_M[form][anyid]}",
 own_form="{$_M[url][own_form]}",
 own_name="{$_M[url][own_name]}",
-tem="{$_M[url][own_tem]}",
+own="{$_M[url][own]}",
+own_tem="{$_M[url][own_tem]}",
 adminurl="{$_M[url][adminurl]}",
 apppath="{$_M[url][api]}",
 jsrand="{$jsrand}",
-editorname="{$_M[config][met_editor]}"
-;
+editorname="{$_M[config][met_editor]}",
+met_keywords = "{$_M['config']['met_keywords']}"
+
 </script>
 <!--[if IE]><script src="{$_M[url][site]}public/js/html5.js" type="text/javascript"></script><![endif]-->
 </head>

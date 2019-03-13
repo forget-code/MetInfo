@@ -1,13 +1,13 @@
 <!--<?php
-# MetInfo Enterprise Content Management System 
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+# MetInfo Enterprise Content Management System
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 require_once template('head');
 echo <<<EOT
 -->
 <script type="text/javascript">
 function pass2null(pass2){
 			$('#pass2').text('{$lang_memberjstxt1}');
-			$('#pass2').show();		
+			$('#pass2').show();
 }
 function pass1null(pass1){
 			$('#pass1').text('{$lang_memberjstxt2}');
@@ -24,29 +24,29 @@ $(document).ready(function(){
 	var submit= $("input[type='submit']")
 	pass1.focusout(function(){
 		if($(this).val()=='')pass1null($(this));
-		else 
+		else
 		if(pass2.val()!='' && pass2.val()!=pass1.val()){
 		$('#pass1').hide();
 		passnot(pass2);
 		}
-		else 
+		else
 		if(pass2.val()==''){
 		$('#pass1').hide();
 		pass2null(pass2);
-		}else{ 
+		}else{
 		$('#pass1').hide();
 		$("input[type='submit']").attr('disabled',false);
 		}
 	});
 	pass2.focusout(function(){
 		if($(this).val()=='')pass2null($(this));
-		else 
+		else
 		if(pass1.val()!='' && pass2.val()!=pass1.val())passnot($(this));
-		else 
+		else
 		if(pass1.val()==''){
 		$('#pass2').hide();
 		pass1null(pass1);
-		}else{ 
+		}else{
 		$('#pass2').hide();
 		$("input[type='submit']").attr('disabled',false);
 		}
@@ -66,7 +66,7 @@ $(document).ready(function(){
 				return false;
 			}
 		}
-	});	
+	});
 });
 </script>
 <title>{$lang_adminpassTitle}</title>
@@ -441,7 +441,7 @@ echo <<<EOT
 	</div>
 	<div>
 <a href='../admin/editor.php?lang=$lang&id=$id&anyid=$anyid' style="margin-left:15px;display:block">修改密码</a>
-</div>		
+</div>
 <!--
 EOT;
 }

@@ -1,21 +1,25 @@
 <?php
-$i=0;
+echo <<<EOT
+-->
+<article class="product-detail">
+<!--
+EOT;
 if($product[description] && $lang_pro_des_ok){
 echo <<<EOT
 -->
-<div class="product-detail">
-	<div class="content met-page-body">
+	<section class="content page-content">
 		<div class="container">
 			<p class="description m-b-0">{$product[description]}</p>
 		</div>
-	</div>
+	</section>
 <!--
 EOT;
 }
+$i=0;
 if(count($product_paralist)){
 echo <<<EOT
 -->
-	<div class="content met-page-body" id="content-{$i}">
+	<section class="content page-content" id="content-{$i}">
 		<div class="container">
 <!--
 EOT;
@@ -23,7 +27,7 @@ EOT;
 echo <<<EOT
 -->
 		</div>
-	</div>
+	</section>
 <!--
 EOT;
 	$i++;
@@ -31,15 +35,13 @@ EOT;
 if($product[content]){
 echo <<<EOT
 -->
-	<div class="content met-page-body" id='content-{$i}'>
+	<section class="content page-content" id='content-{$i}'>
 		<div class="container">
-			<div class="row">
-				<div class="met-editor clearfix">
-					{$product[content]}
-				</div>
+			<div class="met-editor clearfix">
+				{$product[content]}
 			</div>
 		</div>
-	</div>
+	</section>
 <!--
 EOT;
 	$i++;
@@ -48,15 +50,13 @@ foreach($productTablist as $key=>$val){
 	if($val[content]){
 echo <<<EOT
 -->
-	<div class="content met-page-body" id="content-{$i}">
+	<section class="content page-content" id="content-{$i}">
 		<div class="container">
-			<div class="row">
-				<div class="met-editor clearfix">
-					{$val[content]}
-				</div>
+			<div class="met-editor clearfix">
+				{$val[content]}
 			</div>
 		</div>
-	</div>
+	</section>
 <!--
 EOT;
 		$i++;
@@ -65,9 +65,13 @@ EOT;
 if($lang_sharecode){
 echo <<<EOT
 -->
-	<div class="tools container m-y-15">{$lang_sharecode}</div>
-</div>
+	<div class="met-tools tools container m-y-15">{$lang_sharecode}</div>
 <!--
 EOT;
 }
+echo <<<EOT
+-->
+</article>
+<!--
+EOT;
 ?>

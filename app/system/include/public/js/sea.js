@@ -4,53 +4,68 @@
 function getQueryString(name) {
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
     var r = window.location.search.substr(1).match(reg);
-    if (r != null) return unescape(r[2]); return null;
+    if (r != null) return unescape(r[2]);
+    return null;
 }
-function HrefUrl(){
-	var ret = new Object();
-	var s=location.href;
-		s = s.split('?');
-	var w = s[0].split('/');
-	var a = s[0].replace(w[w.length-2]+'/'+w[w.length-1],"");
-	ret['url'] = a;
-	ret['admin'] = w[w.length-2];
-	return ret;
+
+function HrefUrl() {
+    var ret = new Object();
+    var s = location.href;
+    s = s.split('?');
+    var w = s[0].split('/');
+    var a = s[0].replace(w[w.length - 2] + '/' + w[w.length - 1], "");
+    ret['url'] = a;
+    ret['admin'] = w[w.length - 2];
+    return ret;
 }
 
 /*MetInfo*/
-
 var editorname;
-var lang = getQueryString('lang'),ret = HrefUrl(),siteurl = ret['url'],basepath = siteurl+ret['admin']+'/',pubjspath = siteurl + 'app/system/include/public/',table;
-var metn = getQueryString('n'),metc = getQueryString('c'),meta = getQueryString('a');
+
+
+var lang = getQueryString('lang'),
+    ret = HrefUrl(),
+    siteurl = ret['url'],
+    basepath = siteurl + ret['admin'] + '/',
+    pubjspath = siteurl + 'app/system/include/public/',
+    table;
+    if(own.indexOf(ret['admin']) > -1 && own.indexOf('app/app') > -1){
+      own= own.replace(ret['admin']+'/','');
+    }
+var metn = getQueryString('n'),
+    metc = getQueryString('c'),
+    meta = getQueryString('a');
 seajs.config({
-  paths: {
-    'pub': pubjspath.substring(0,pubjspath.length-1),
-    'epl': 'examples',
-	'own': siteurl+'app/app/'+getQueryString('n'),
-	'tem': tem.substring(0,tem.length-1),
-	'edturl': siteurl+'app/app/'+editorname
-  },
-  alias: {
-    "jquery": "jquery/1.11.1/jquery_seajs.js",
-    "common": "epl/include/common.js"
-  },
-  map: [
-    [ /^(.*\/app\/.*\.(?:css|js))(?:.*)$/i, '$1?'+jsrand ]
-  ]
+    paths: {
+        'pub': pubjspath.substring(0, pubjspath.length - 1),
+        'epl': pubjspath + 'js/examples',
+        'own': own.substring(0, own.length - 1),
+        'own_tem': own_tem.substring(0, own_tem.length - 1),
+        //'tem': tem.substring(0, tem.length-1),
+        'edturl': siteurl + 'app/app/' + editorname
+    },
+    alias: {
+        "jquery": pubjspath + 'js/jquery/1.11.1/jquery_seajs.js',
+        "common": "epl/include/common.js",
+        "lang_json_admin":siteurl+'cache/lang_json_admin_'+langset+'.js'
+    },
+    map: [
+        [/^(.*\/app\/.*\.(?:css|js))(?:.*)$/i, '$1?' + jsrand]
+    ]
 })
 if (typeof(indexbox) == "undefined") {
-	seajs.use("epl/include/min");
-}else{
-	seajs.use("epl/include/box");
+    seajs.use("epl/include/min");
+} else {
+    seajs.use("epl/include/box");
 }
-var str = window.parent.document.URL; 
-var s = str.indexOf("lang="+lang);
+var str = window.parent.document.URL;
+var s = str.indexOf("lang=" + lang);
 var z = str.indexOf("lang");
-if(s == '-1' && z != '-1'){
-	var s1 = str.indexOf('#');
-	if(s1 == '-1'){
-		str = str.replace(/(lang=[^#]*)/g,"lang="+lang+"#");
-	}
-	str = str.replace(/(lang=[^#]*#)/g,"lang="+lang+"#");
-	parent.location.href=str;
+if (s == '-1' && z != '-1') {
+    var s1 = str.indexOf('#');
+    if (s1 == '-1') {
+        str = str.replace(/(lang=[^#]*)/g, "lang=" + lang + "#");
+    }
+    str = str.replace(/(lang=[^#]*#)/g, "lang=" + lang + "#");
+    parent.location.href = str;
 }

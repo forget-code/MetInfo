@@ -1,5 +1,5 @@
 <!--<?php
-require_once template('head'); 
+require_once template('head');
 require_once template('sidebar');
 $met_newsnext=methtml_prenextinfo(1,1);
 echo <<<EOT
@@ -23,5 +23,5 @@ echo <<<EOT
 <!--
 EOT;
 require_once template('gap');
-require_once template('foot'); 
+require_once template('foot');
 ?>

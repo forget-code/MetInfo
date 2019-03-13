@@ -5,9 +5,11 @@
 defined('IN_MET') or exit('No permission');
 
 //记录消息内容
-function obtain($news_id,$newstitle,$content,$url,$member,$type,$lang) {
+function obtain($news_id,$newstitle,$content,$url,$member,$type,$lang,$time) {
 	global $_M;
-	$time = time();
+	if(!$time){
+		$time = time();
+	}
 	$query = "INSERT INTO {$_M['table']['infoprompt']} SET news_id='{$news_id}',newstitle='{$newstitle}',content='{$content}',url='{$url}',member='{$member}',type='{$type}',time='{$time}',lang='{$lang}'";
 	$result = DB::query($query);
 	

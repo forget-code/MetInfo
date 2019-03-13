@@ -1,12 +1,12 @@
 <?php
-# MetInfo Enterprise Content Management System 
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+# MetInfo Enterprise Content Management System
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 
 defined('IN_MET') or exit('No permission');
 
 /**
  * 输出字符串或数组
- * @param string/array	$vars	输出字符串或数组 
+ * @param string/array	$vars	输出字符串或数组
  * @param string		$label	提示标题
  * @param string		$return	是否有返回值
  */
@@ -29,7 +29,7 @@ function dump($vars, $label = '', $return = false){
 /**
  * 提取一个数组中部分键值返回
  * @param  array	$roc		提取的数组
- * @param  keyarray	$keyarray	需要提取的键值数组 
+ * @param  keyarray	$keyarray	需要提取的键值数组
  * @return array				返回提取的键值数组
  */
 function copykey($roc, $keyarray){
@@ -56,7 +56,11 @@ function daddslashes($string, $force = 0) {
 				$string[$key] = daddslashes($val, $force);
 			}
 		} else {
-			$string = trim(addslashes($string));
+			if(!defined('IN_ADMIN')){
+				$string = trim(addslashes(sqlinsert($string)));
+			}else{
+				$string = trim(addslashes($string));
+			}
 		}
 	}
 	return $string;
@@ -187,7 +191,7 @@ function server_info(){
 	$serverinfo['system'] = php_uname('s');                  //获取系统类型
 	$serverinfo['sysos'] = $_SERVER["SERVER_SOFTWARE"];      //获取php版本及运行环境
 	$serverinfo['phpinfo'] = PHP_VERSION;      //获取PHP信息
-	$serverinfo['mysqlinfo'] = mysql_get_server_info();      //获取数据库信息
+	$serverinfo['mysqlinfo'] = DB::version();      //获取数据库信息
 	return $serverinfo;
 }
 
@@ -325,6 +329,7 @@ function httphead_info(){
  */
 function get_word($str) {
 	global $_M;
+
 	$str_old = $str;
 	if (substr($str, 0, 5) == 'lang_') {
 		$str = str_replace('lang_', '', $str);
@@ -337,6 +342,48 @@ function get_word($str) {
 	}else{
 		return $str_old;
 	}
+}
+
+function thumb($image_path, $x = '', $y = ''){
+	global $_M;
+	$image = load::sys_class('image','new');
+	return $image->met_thumb($image_path,$x,$y);
+}
+
+
+function  met_substr($string, $start = 0,$len = 20, $end = '')
+{
+	preg_match("/<m[\s_a-zA-Z=\d->]+<\/m>/", $string,$match);
+	if($match){
+		$m = $match[0];
+	}else{
+		$m = '';
+	}
+
+	$string = preg_replace("/<m[\s_a-zA-Z=\d->]+<\/m>/", '', $string);
+    $con = mb_substr($string, $start, $len, 'utf-8');
+    $con = $con.$m;
+    if ($con != $string) {
+        $con .= $end;
+    }
+    return $con;
+}
+//判断用户终端
+/**
+ * @return bool true:mobile  false:PC
+ */
+function is_mobile() {
+    $user_agent = $_SERVER['HTTP_USER_AGENT'];
+    $mobile_agents = Array("240x320","acer","acoon","acs-","abacho","ahong","airness","alcatel","amoi","android","anywhereyougo.com","applewebkit/525","applewebkit/532","asus","audio","au-mic","avantogo","becker","benq","bilbo","bird","blackberry","blazer","bleu","cdm-","compal","coolpad","danger","dbtel","dopod","elaine","eric","etouch","fly ","fly_","fly-","go.web","goodaccess","gradiente","grundig","haier","hedy","hitachi","htc","huawei","hutchison","inno","ipad","ipaq","ipod","jbrowser","kddi","kgt","kwc","lenovo","lg ","lg2","lg3","lg4","lg5","lg7","lg8","lg9","lg-","lge-","lge9","longcos","maemo","mercator","meridian","micromax","midp","mini","mitsu","mmm","mmp","mobi","mot-","moto","nec-","netfront","newgen","nexian","nf-browser","nintendo","nitro","nokia","nook","novarra","obigo","palm","panasonic","pantech","philips","phone","pg-","playstation","pocket","pt-","qc-","qtek","rover","sagem","sama","samu","sanyo","samsung","sch-","scooter","sec-","sendo","sgh-","sharp","siemens","sie-","softbank","sony","spice","sprint","spv","symbian","tablet","talkabout","tcl-","teleca","telit","tianyu","tim-","toshiba","tsm","up.browser","utec","utstar","verykool","virgin","vk-","voda","voxtel","vx","wap","wellco","wig browser","wii","windows ce","wireless","xda","xde","zte");
+    $is_mobile = false;
+    foreach ($mobile_agents as $device) {
+        if (stristr($user_agent, $device)) {
+
+            $is_mobile = true;
+            break;
+        }
+    }
+    return $is_mobile;
 }
 
 load::sys_func('compatible');

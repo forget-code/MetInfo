@@ -15,7 +15,7 @@ echo <<<EOT
 <li class="media media-lg border-bottom1{$val['page']}">
 	<div class="media-left">
 		<a href="{$val[url]}" title="{$val[title]}" {$metblank}>
-			<img class="media-object" {$original}="{$val[imgurls]}" alt="{$val[title]}">
+			<img class="media-object" {$original}="{$val[imgurls]}" alt="{$val[title]}" height='100'>
 		</a>
 	</div>
 	<div class="media-body">

@@ -85,7 +85,7 @@ echo <<<EOT
 	</button>
 	<div class="modal fade modal-3d-flip-vertical" id="met-langlist-modal" aria-hidden="true" role="dialog" tabindex="-1">
 		<div class="modal-dialog modal-center modal-lg">
-			<div class="modal-content radius0">
+			<div class="modal-content">
 				<div class="modal-body p-y-40">
 					<button type="button" class="close font-size-40" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">×</span>

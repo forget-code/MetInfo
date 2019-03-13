@@ -1,6 +1,6 @@
 <?php
-# MetInfo Enterprise Content Management System 
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+# MetInfo Enterprise Content Management System
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 if(@file_exists('../app/app/shop/include/product.class.php') && @$cmodule){
 	require_once '../app/app/shop/include/product.class.php';
 	if($gotonew == 1){
@@ -19,8 +19,8 @@ $HeaderTime=time();
 define('ROOTPATH', substr(dirname(__FILE__), 0, -7));
 define ('PATH_WEB', substr(dirname(__FILE__),0,-7));
 PHP_VERSION >= '5.1' && date_default_timezone_set('Asia/Shanghai');
-session_cache_limiter('private, must-revalidate'); 
-@ini_set('session.auto_start',0); 
+session_cache_limiter('private, must-revalidate');
+@ini_set('session.auto_start',0);
 if(PHP_VERSION < '4.1.0') {
 	$_GET         = &$HTTP_GET_VARS;
 	$_POST        = &$HTTP_POST_VARS;
@@ -29,7 +29,9 @@ if(PHP_VERSION < '4.1.0') {
 	$_ENV         = &$HTTP_ENV_VARS;
 	$_FILES       = &$HTTP_POST_FILES;
 }
-require_once ROOTPATH.'include/mysql_class.php';
+#require_once ROOTPATH.'include/mysql_class.php';
+define("IN_MET",1);
+require_once ROOTPATH.'app/system/include/class/mysql.class.php';
 define('MAGIC_QUOTES_GPC', get_magic_quotes_gpc());
 isset($_REQUEST['GLOBALS']) && exit('Access Error');
 require_once ROOTPATH.'include/global.func.php';
@@ -44,13 +46,14 @@ $settings=array();
 $db_settings=array();
 $db_settings = parse_ini_file(ROOTPATH.'config/config_db.php');
 @extract($db_settings);
-$db = new dbmysql();
+#$db = new dbmysql();
+$db = new DB();
 $db->dbconn($con_db_host,$con_db_id,$con_db_pass,$con_db_name);
 $query="select * from {$tablepre}config where name='met_tablename' and lang='metinfo'";
 $mettable=$db->get_one($query);
 $mettables=explode('|',$mettable[value]);
 foreach($mettables as $key=>$val){
-	$tablename='met_'.$val;	
+	$tablename='met_'.$val;
 	$$tablename=$tablepre.$val;
 	$_M['table'][$val] = $tablepre.$val;
 }
@@ -157,11 +160,11 @@ if($_M['plugin']['doweb']){
 							call_user_func(array($newclass,  'doweb'));
 						}
 					}
-					
+
 				}
 		}
 		$_M['url']['own'] = '';
-		DB::close();
+		//DB::close();
 	}
 }
 //结束
@@ -171,6 +174,20 @@ if($met_oline!=1){
 		if(file_exists(ROOTPATH."$met_adminfile".$valflie)&&!is_dir(ROOTPATH."$met_adminfile".$valflie)&&((file_get_contents(ROOTPATH."$met_adminfile".$valflie))!='metinfo')){require_once ROOTPATH."$met_adminfile".$valflie;}
 	}
 }
+
+//获取首页网址
+if ($_SERVER['SERVER_PORT'] == 443 || $_SERVER['HTTPS'] === 'on' || $_SERVER['HTTPS'] === 1) {
+    $http = 'https://';
+}else{
+    $http = 'http://';
+}
+
+if(M_NAME=="index"){
+    $_M['config']['met_weburl'] = str_replace('/index.php','',$http . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'].'/');
+}else{
+    $_M['config']['met_weburl'] = $http . $_SERVER['HTTP_HOST'].preg_replace("/include.+/",'',$_SERVER['PHP_SELF']);
+}
+$_M['url']['site'] = $_M['config']['met_weburl'];
 include_once ROOTPATH.$met_adminfile.'/app/wap/wapjs.php';
 if (!$search && !$action){jump_pseudo();}
 # This program is an open source system, commercial use, please consciously to purchase commercial license.

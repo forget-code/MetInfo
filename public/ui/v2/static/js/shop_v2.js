@@ -44,7 +44,7 @@ function loadTopcart(d){
         $.each(json, function(i, item){
             item.shopmax = item.purchase>0?item.purchase:item.stock;
             item.img=item.img.replace(M['weburl'],'');
-            item.img=M['navurl']+'include/thumb.php?dir='+item.img+'&x=40&y=40';
+            item.img=M['weburl']+'include/thumb.php?dir='+item.img+'&x=40&y=40';
             html += '<div class="list-group-item" role="menuitem">'+
                         '<div class="media">'+
                             '<div class="media-left p-r-10">'+
@@ -110,6 +110,13 @@ $(function(){
     // 产品详情页
     if($(".shop-product-intro").length){
         $('[data-plugin="touchSpin"]').TouchSpin();// 数量调整
+        Breakpoints.on('xs',{
+            enter:function(){
+                var cart_favorite_h=$('.cart-favorite').height();
+                $('body').css({'padding-bottom':cart_favorite_h});
+                $('.met-scroll-top').css({bottom:cart_favorite_h+10});
+            }
+        })
         // 立即购买 && 加入购物车
         $(document).on('click', '.product-buynow,.product-tocart', function(e) {
             e.preventDefault();
@@ -121,29 +128,15 @@ $(function(){
                 var paraval_str = encodeURIComponent(shopParaVal()).replace('*','u002A'),
                     url = $(this).attr('href')+'|'+paraval_str+'&num='+$("#buynum").val();
                 location = url;
-                // var paraval_str = encodeURIComponent(shopParaVal()).replace('*','u002A'),
-                //  url = $(this).attr('href')+'|'+paraval_str;
-                // $.ajax({
-                //  url: $(this).attr('href'),
-                //  type: 'POST',
-                //  dataType: 'json',
-                //  data: {pid:$(this).data('pid'),para:paravalStr,num:$("#buynum").val()},
-                //  success:function(result){
-                //      console.log(result);
-                //      result.status=parseInt(result.status);
-                //      // if(result.status){
-                //      //  location=result.url;
-                //      // }else if(result.status<0){
-                //      //  location=result.url;
-                //      // }else{
-                //      //  alertify.theme('bootstrap').okBtn(SHOPLANG.app_shop_ok).alert(result.msg,function(){
-                //      //      location=result.url;
-                //      //  });
-                //      // }
-                //  }
-                // })
             }else{
                 alertify.error(SHOPLANG.app_shop_choosepara);
+                Breakpoints.on('xs',{
+                    enter:function(){
+                        var product_para_top=$('.shop-product-para').offset().top;
+                        if($('body.met-navfixed').length) product_para_top-=$('.met-nav').height();
+                        $('html,body').animate({scrollTop:product_para_top});
+                    }
+                })
             }
         });
         // 选择选项

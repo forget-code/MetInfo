@@ -54,8 +54,8 @@ if(!file_get_contents(ROOTPATH.'cache/lang_'.$lang.'.php')||!file_get_contents(R
 	}
 	$lang_json['met_weburl'] = $met_langok[$lang][met_weburl];
 	$str="<?php\n".$str."\n?>";
-	file_put_contents(ROOTPATH.'cache/lang_'.$lang.'.php',$str);
-	file_put_contents(ROOTPATH.'cache/lang_json_'.$lang.'.php',json_encode($lang_json));
+	// file_put_contents(ROOTPATH.'cache/lang_'.$lang.'.php',$str);
+	// file_put_contents(ROOTPATH.'cache/lang_json_'.$lang.'.php',json_encode($lang_json));
 }else{
 	require_once ROOTPATH.'cache/lang_'.$lang.'.php';
 }

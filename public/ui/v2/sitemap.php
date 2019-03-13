@@ -2,12 +2,12 @@
 require_once template('head');
 echo <<<EOT
 -->
-<section class="met-sitemap met-page-body bg-pagebg1">
-	<div class="container met-sitemap-body met-page-content box-shadow1">
-		<ul class="sitemap-list m-0 met-uldestyle blue-grey-500">
+<main class="met-sitemap page-content">
+	<div class="container met-sitemap-body panel panel-body m-b-0">
+		<ul class="sitemap-list m-0 ulstyle blue-grey-500">
 <!--
 EOT;
-foreach($nav_list_1 as $key=>$val){
+foreach($nav_list_1 as $val){
 echo <<<EOT
 -->
 			<li>
@@ -20,7 +20,7 @@ echo <<<EOT
 				<ul>
 <!--
 EOT;
-		foreach($nav_list2[$val[id]] as $key=>$val2){
+		foreach($nav_list2[$val[id]] as $val2){
 echo <<<EOT
 -->
 					<li><a href='{$val2[url]}' title='{$val2[name]}' {$metblank}><i class="icon wb-link pull-xs-right"></i><span>{$val2[name]}</span></a></li>
@@ -32,7 +32,7 @@ echo <<<EOT
 					<ul class="sitemap-list-sub">
 <!--
 EOT;
-				foreach($nav_list3[$val2[id]] as $key=>$val3){
+				foreach($nav_list3[$val2[id]] as $val3){
 echo <<<EOT
 -->
 						<li><a href='{$val3[url]}' title='{$val3[name]}' {$metblank}>{$val3[name]}</a></li>
@@ -62,7 +62,7 @@ echo <<<EOT
 -->
 		</ul>
 	</div>
-</section>
+</main>
 <!--
 EOT;
 require_once template('foot');

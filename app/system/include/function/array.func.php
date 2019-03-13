@@ -1,13 +1,13 @@
 <?php
-# MetInfo Enterprise Content Management System 
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+# MetInfo Enterprise Content Management System
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 
 defined('IN_MET') or exit('No permission');
 
 load::sys_func('str');
 
 /**
- * 数组是否为空 
+ * 数组是否为空
  * @param  array    $arr	要检测的数组
  * @return boolean  $flag   数组为空返回false，否则返回true
  */
@@ -50,7 +50,7 @@ function arrayto_string($arr,$decollator1=',',$decollator2='|',$decollator3='&')
 				return false;
 			}
 			if($i == 0){
-			
+
 			}else{
 				$str = $str.$decollator3;
 			}
@@ -84,14 +84,14 @@ function stringto_array($str, $decollator1 = '', $decollator2 = '', $decollator3
 			$str2 = $decollator2 == $stop ? $val : trim($val, $decollator2);
 			$arr2 = explode($decollator2, $str2);
 			foreach($arr2 as $value){
-				$str3 = $decollator1 == $stop ? $value : trim($value, $decollator1);				
+				$str3 = $decollator1 == $stop ? $value : trim($value, $decollator1);
 				if($decollator3 == $stop && $decollator2 == $stop){
 					$arr = explode($decollator1, $str3);
 				}else if($decollator3 == $stop && $decollator2 != $stop){
 					$arr[] = explode($decollator1, $str3);
 				}else{
 					$arr[$key][] = explode($decollator1, $str3);
-				}				
+				}
 			}
 		}
 	}else{
@@ -120,7 +120,7 @@ function array_level($arr, &$arr1 = array(), $level = 0){
 }
 
 /**
- * 一维数组/二维数组排序 
+ * 一维数组/二维数组排序
  * @param  array		$arr		要排序的数组
  * @param  string(int)	$sort_key	如果数组是二维数组则代表要排序的键，如果为一维数组 0代表按值排序 1代表按键排序
  * @param  string		$sort		SORT_ASC - 按照上升顺序排序    SORT_DESC - 按照下降顺序排序（默认升序）
@@ -129,14 +129,14 @@ function array_level($arr, &$arr1 = array(), $level = 0){
 function arr_sort($arr, $sort_key = 0, $sort = SORT_ASC){
 	if(array_level($arr) == 2){
 		foreach ($arr as $key=>$val){
-			if(is_array($val)){ 
+			if(is_array($val)){
 				$key_arr[] = $val[$sort_key];
 			}else{
 				return false;
 			}
 		}
 		array_multisort($key_arr, $sort, $arr);
-		return $arr; 
+		return $arr;
 	}else if(array_level($arr) == 1){
 		if($sort_key == 0){
 			if($sort == SORT_ASC){
@@ -223,10 +223,10 @@ function jsondecode($json){
 					$str .= '=>';
 				}else{
 					$str .= $json[$i];
-				}                                    
+				}
 			}else{
 				$str .= $json[$i];
-			}         
+			}
 			if ($json[$i] == '"' && $json[($i-1)]!="\\"){
 				$convert = !$convert;
 			}
@@ -241,7 +241,7 @@ function jsondecode($json){
 
 /*
  * 把数组转成JSON，用于ajax返回，可以用于普通json请求返回，也可以用于跨域的ajax的jsonp格式的数据请求返回。
- * @param array  $back      输出字符串或数组 
+ * @param array  $back      输出字符串或数组
  * @param string $callback  ajax的回调函数的名称
  */
 function jsoncallback($back ,$callback = 'callback'){

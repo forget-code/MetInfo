@@ -3,8 +3,8 @@ echo <<<EOT
 -->
 <div class="modal fade modal-primary" id="met-job-cv" aria-hidden="true" role="dialog" tabindex="-1">
     <div class="modal-dialog">
-        <div class="modal-content radius0">
-            <div class="modal-header radius0">
+        <div class="modal-content">
+            <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>

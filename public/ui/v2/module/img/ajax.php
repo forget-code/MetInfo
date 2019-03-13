@@ -37,9 +37,9 @@ foreach($img_list as $key=>$val){
 	}
 echo <<<EOT
 -->
-<li class="card radius0{$val['page']}">
+<li class="card{$val['page']}">
 	<div class="cover overlay overlay-hover">
-		<img class="cover-image overlay-scale" {$original}="{$val[imgurls]}" alt="{$val[title]}" style='height:300px;'/>
+		<img class="cover-image overlay-scale" {$original}="{$val[imgurls]}" alt="{$val[title]}" height='100'>
 		<div class="overlay-panel overlay-fade overlay-background overlay-background-fixed text-xs-center vertical-align">
 			<div class="vertical-align-middle">
 				<div class="card-time card-divider">

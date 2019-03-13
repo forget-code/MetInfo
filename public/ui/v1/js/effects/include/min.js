@@ -1,6 +1,6 @@
 define(function(require, exports, module) {
 	var common = require('common');   			//全局库
-	
+
 	require('effects/font-awesome/css/font-awesome.min.css');
 	if(met_mobile=='mobile'){
 		require.async('effects/include/ini_mobile');

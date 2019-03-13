@@ -7,14 +7,14 @@ defined('IN_MET') or exit('No permission');
 load::sys_func('file.func.php');
 
 /** 
- * ËõÂÔÍ¼Àà
- * @param string $thumb_width 	ËõÂÔÍ¼¿í
- * @param string $thumb_height 	ËõÂÔÍ¼¸ß
- * @param string $thumb_savepath	ËõÂÔÍ¼±£´æµØÖ·
- * @param string $thumb_save_type	±£´æ·½Ê½£¬1:±£´æÔÚÔ­Í¼Â·¾¶µÄ×ÓÄ¿Â¼ÏÂ£¬2:¸²¸ÇÔ­Í¼Æ¬£¬3:×Ô¶¨ÒåÂ·¾¶
- * @param string $thumb_bgcolor		ËõÂÔÍ¼±³¾°ÑÕÉ«£¬ÒÑ#¿ªÍ·
- * @param string $thumb_kind		Éú³ÉËõÂÔÍ¼·½Ê½£¬1À­Éı£¬2Áô°×£¬3²Ã¼ô
- * ÒÔÉÏÂ·¾¶±äÁ¿¶¼±ØĞëÊÇ¾ø¶ÔÂ·¾¶£¬Èç¹û²»Ê¹ÓÃÀàµÄset·½·¨
+ * ç¼©ç•¥å›¾ç±»
+ * @param string $thumb_width 	ç¼©ç•¥å›¾å®½
+ * @param string $thumb_height 	ç¼©ç•¥å›¾é«˜
+ * @param string $thumb_savepath	ç¼©ç•¥å›¾ä¿å­˜åœ°å€
+ * @param string $thumb_save_type	ä¿å­˜æ–¹å¼ï¼Œ1:ä¿å­˜åœ¨åŸå›¾è·¯å¾„çš„å­ç›®å½•ä¸‹ï¼Œ2:è¦†ç›–åŸå›¾ç‰‡ï¼Œ3:è‡ªå®šä¹‰è·¯å¾„
+ * @param string $thumb_bgcolor		ç¼©ç•¥å›¾èƒŒæ™¯é¢œè‰²ï¼Œå·²#å¼€å¤´
+ * @param string $thumb_kind		ç”Ÿæˆç¼©ç•¥å›¾æ–¹å¼ï¼Œ1æ‹‰å‡ï¼Œ2ç•™ç™½ï¼Œ3è£å‰ª
+ * ä»¥ä¸Šè·¯å¾„å˜é‡éƒ½å¿…é¡»æ˜¯ç»å¯¹è·¯å¾„ï¼Œå¦‚æœä¸ä½¿ç”¨ç±»çš„setæ–¹æ³•
  */
 class thumb {
 	public $thumb_src_image = ""; 
@@ -31,12 +31,12 @@ class thumb {
 	}
 	
 	/** 
-	 * ÉèÖÃ×Ö¶Î
-	 * @param string $name  ĞèÒªÉèÖÃµÄ×Ö¶ÎÃû£¬Îªpublic×Ö¶Î¶¼¿ÉÒÔÉèÖÃ
-	 * @param string $value ĞèÒªÉèÖÃµÄ×Ö¶ÎÃûµÄÖµ	 
-	 * thumb_savepathµ±thumb_save_typeÎª3Ê±ÖÃ¿ÉÒÔÊÇ¾ø¶ÔÂ·¾¶£¬Ò²ÊÇÏà¶ÔÍøÕ¾ºóÌ¨¸ùÄ¿Â¼µÄÏà¶ÔÂ·¾¶
-	 * thumb_savepathµ±thumb_save_typeÎª2£¬ÉèÖÃÎŞĞ§
-	 * thumb_savepathµ±thumb_save_typeÎª1£¬thumb_savepathÎªÏà¶ÔÔ­Í¼µÄÂ·¾¶
+	 * è®¾ç½®å­—æ®µ
+	 * @param string $name  éœ€è¦è®¾ç½®çš„å­—æ®µåï¼Œä¸ºpublicå­—æ®µéƒ½å¯ä»¥è®¾ç½®
+	 * @param string $value éœ€è¦è®¾ç½®çš„å­—æ®µåçš„å€¼	 
+	 * thumb_savepathå½“thumb_save_typeä¸º3æ—¶ç½®å¯ä»¥æ˜¯ç»å¯¹è·¯å¾„ï¼Œä¹Ÿæ˜¯ç›¸å¯¹ç½‘ç«™åå°æ ¹ç›®å½•çš„ç›¸å¯¹è·¯å¾„
+	 * thumb_savepathå½“thumb_save_typeä¸º2ï¼Œè®¾ç½®æ— æ•ˆ
+	 * thumb_savepathå½“thumb_save_typeä¸º1ï¼Œthumb_savepathä¸ºç›¸å¯¹åŸå›¾çš„è·¯å¾„
 	 */
 	public function set($name, $value) {
 		global $_M;
@@ -71,8 +71,8 @@ class thumb {
 	}
 	
 	/** 
-	 * °´ÍøÕ¾ÁĞ±íÒ³ËõÂÔÍ¼·½Ê½ËõÂÔÍ¼Æ¬£¨2 = ĞÂÎÅÄ£¿é, 3 = ²úÆ·Ä£¿é, 5 = Í¼Æ¬Ä£¿é£©
-	 * @param string $module  2/news:ĞÂÎÅÄ£¿é£¬3/product:²úÆ·Ä£¿é£¬5/img:Í¼Æ¬Ä£¿é£©
+	 * æŒ‰ç½‘ç«™åˆ—è¡¨é¡µç¼©ç•¥å›¾æ–¹å¼ç¼©ç•¥å›¾ç‰‡ï¼ˆ2 = æ–°é—»æ¨¡å—, 3 = äº§å“æ¨¡å—, 5 = å›¾ç‰‡æ¨¡å—ï¼‰
+	 * @param string $module  2/news:æ–°é—»æ¨¡å—ï¼Œ3/product:äº§å“æ¨¡å—ï¼Œ5/img:å›¾ç‰‡æ¨¡å—ï¼‰
 	 */
 	public function list_module($module) {
 		if ($module == 'news') $module = 2;
@@ -92,8 +92,8 @@ class thumb {
 	}
 	
 	/** 
-	 * °´ÍøÕ¾ÄÚÈİÒ³ËõÂÔÍ¼·½Ê½ËõÂÔÍ¼Æ¬£¨3 = ²úÆ·Ä£¿é, 5 = Í¼Æ¬Ä£¿é£©
-	 * @param string $module 3/product:²úÆ·Ä£¿é£¬5/img:Í¼Æ¬Ä£¿é£©
+	 * æŒ‰ç½‘ç«™å†…å®¹é¡µç¼©ç•¥å›¾æ–¹å¼ç¼©ç•¥å›¾ç‰‡ï¼ˆ3 = äº§å“æ¨¡å—, 5 = å›¾ç‰‡æ¨¡å—ï¼‰
+	 * @param string $module 3/product:äº§å“æ¨¡å—ï¼Œ5/img:å›¾ç‰‡æ¨¡å—ï¼‰
 	 */
 	public function content_module($module) {
 		if ($module == 'product') $module = 3;
@@ -109,7 +109,7 @@ class thumb {
 	}
 	
 	/** 
-	 * °´ÍøÕ¾ĞÂÎÅÁĞ±íÒ³ËõÂÔÍ¼·½Ê½ËõÂÔÍ¼Æ¬
+	 * æŒ‰ç½‘ç«™æ–°é—»åˆ—è¡¨é¡µç¼©ç•¥å›¾æ–¹å¼ç¼©ç•¥å›¾ç‰‡
 	 */
 	public function list_news() {
 		global $_M;
@@ -122,7 +122,7 @@ class thumb {
 	}
 	
 	/** 
-	 * °´ÍøÕ¾²úÆ·ÁĞ±íÒ³ËõÂÔÍ¼·½Ê½ËõÂÔÍ¼Æ¬
+	 * æŒ‰ç½‘ç«™äº§å“åˆ—è¡¨é¡µç¼©ç•¥å›¾æ–¹å¼ç¼©ç•¥å›¾ç‰‡
 	 */
 	public function list_product() {
 		global $_M;
@@ -135,7 +135,7 @@ class thumb {
 	}
 	
 	/** 
-	 * °´ÍøÕ¾Í¼Æ¬ÁĞ±íÒ³ËõÂÔÍ¼·½Ê½ËõÂÔÍ¼Æ¬
+	 * æŒ‰ç½‘ç«™å›¾ç‰‡åˆ—è¡¨é¡µç¼©ç•¥å›¾æ–¹å¼ç¼©ç•¥å›¾ç‰‡
 	 */
 	public function list_img() {
 		global $_M;
@@ -148,7 +148,7 @@ class thumb {
 	}
 	
 	/** 
-	 * °´ÍøÕ¾Í¼Æ¬ÄÚÈİÒ³ËõÂÔÍ¼·½Ê½ËõÂÔÍ¼Æ¬
+	 * æŒ‰ç½‘ç«™å›¾ç‰‡å†…å®¹é¡µç¼©ç•¥å›¾æ–¹å¼ç¼©ç•¥å›¾ç‰‡
 	 */
 	public function contents_img() {
 		global $_M;
@@ -161,7 +161,7 @@ class thumb {
 	}
 	
 	/** 
-	 * °´ÍøÕ¾²úÆ·ÄÚÈİÒ³ËõÂÔÍ¼·½Ê½ËõÂÔÍ¼Æ¬
+	 * æŒ‰ç½‘ç«™äº§å“å†…å®¹é¡µç¼©ç•¥å›¾æ–¹å¼ç¼©ç•¥å›¾ç‰‡
 	 */
 	public function contents_product() {
 		global $_M;
@@ -174,10 +174,10 @@ class thumb {
 	}
 	
     /**
-	 * Éú³ÉËõÂÔÍ¼µÄ·½·¨
-	 * @param  strint	Ô­Í¼µØÖ·       
-	 * @return array	·µ»Ø³É¹¦»ò´íÎóĞÅÏ¢
-	 * ·µ»ØÖµÎªÊı×é¸÷×Ö¶Îº¬Òå£¬error:ÊÇ·ñ³ö´í£¬1³ö´í£¬0Õı³££¬errorcode:±¨´í´úÂë£¬path:ËõÂÔÍ¼Æ¬Â·¾¶
+	 * ç”Ÿæˆç¼©ç•¥å›¾çš„æ–¹æ³•
+	 * @param  strint	åŸå›¾åœ°å€       
+	 * @return array	è¿”å›æˆåŠŸæˆ–é”™è¯¯ä¿¡æ¯
+	 * è¿”å›å€¼ä¸ºæ•°ç»„å„å­—æ®µå«ä¹‰ï¼Œerror:æ˜¯å¦å‡ºé”™ï¼Œ1å‡ºé”™ï¼Œ0æ­£å¸¸ï¼Œerrorcode:æŠ¥é”™ä»£ç ï¼Œpath:ç¼©ç•¥å›¾ç‰‡è·¯å¾„
      */
     public function createthumb($thumb_src_image) {
 		global $_M;
@@ -202,9 +202,9 @@ class thumb {
 		$this->thumb_height=$this->thumb_height?$this->thumb_height:100;
 		$gd = $this->gd_version(); 
 
-        //¼ì²éÔ­Ê¼ÊÇ·ñÎÄ¼ş´æÔÚ²¢ÇÒµÃµ½Ô­Í¼ĞÅÏ¢
-        $org_info = @getimagesize($thumb_src_image);//·µ»ØÍ¼Æ¬´óĞ¡
-        if ($org_info[mime]=='image/bmp') {//bmpÍ¼ÎŞ·¨Ñ¹Ëõ   
+        //æ£€æŸ¥åŸå§‹æ˜¯å¦æ–‡ä»¶å­˜åœ¨å¹¶ä¸”å¾—åˆ°åŸå›¾ä¿¡æ¯
+        $org_info = @getimagesize($thumb_src_image);//è¿”å›å›¾ç‰‡å¤§å°
+        if ($org_info[mime]=='image/bmp') {//bmpå›¾æ— æ³•å‹ç¼©   
 		   return $this->error($_M['word']['upfileFail5']);
         }
         if (!$this->check_img_function($org_info[2])) {
@@ -213,11 +213,11 @@ class thumb {
 
         $img_org = $this->img_resource($thumb_src_image, $org_info[2]);
 
-        //Ô­Ê¼Í¼ÏñºÍËõÂÔÍ¼³ß´ç¶Ô±È
+        //åŸå§‹å›¾åƒå’Œç¼©ç•¥å›¾å°ºå¯¸å¯¹æ¯”
         $scale_org      = $org_info[0] / $org_info[1];
 		$scale_tumnb    = $this->thumb_width / $this->thumb_height;
 		
-        //´¦ÀíËõÂÔÍ¼¿í¶ÈºÍ¸ß¶ÈÎª0µÄÇé¿ö£¬±³¾°ºÍËõÂÔÍ¼Ò»Ñù´ó
+        //å¤„ç†ç¼©ç•¥å›¾å®½åº¦å’Œé«˜åº¦ä¸º0çš„æƒ…å†µï¼ŒèƒŒæ™¯å’Œç¼©ç•¥å›¾ä¸€æ ·å¤§
         if ($this->thumb_width == 0) {
             $this->thumb_width = $this->thumb_height * $scale_org;
         }
@@ -225,19 +225,19 @@ class thumb {
             $this->thumb_height = $this->thumb_width / $scale_org;
         }
 
-        //´´½¨ËõÂÔÍ¼
-        if ($gd == 2) {//´´½¨Ò»ÕÅËõÂÔÍ¼£¨ºÚÉ«£©
+        //åˆ›å»ºç¼©ç•¥å›¾
+        if ($gd == 2) {//åˆ›å»ºä¸€å¼ ç¼©ç•¥å›¾ï¼ˆé»‘è‰²ï¼‰
             $img_thumb  = imagecreatetruecolor($this->thumb_width, $this->thumb_height);
         } else {
             $img_thumb  = imagecreate($this->thumb_width, $this->thumb_height);
         }
 
-        //ËõÂÔÍ¼±³¾°ÑÕÉ«
+        //ç¼©ç•¥å›¾èƒŒæ™¯é¢œè‰²
         if (empty($this->thumb_bgcolor)) $this->thumb_bgcolor = "#FFFFFF";
         $this->thumb_bgcolor = trim($this->thumb_bgcolor, "#");
         sscanf($this->thumb_bgcolor, "%2x%2x%2x", $red, $green, $blue);
         $clr = imagecolorallocate($img_thumb, $red, $green, $blue);
-        imagefilledrectangle($img_thumb, 0, 0, $this->thumb_width, $this->thumb_height, $clr);//´´½¨±³¾°É«£¬Ä¬ÈÏÎª°×É«
+        imagefilledrectangle($img_thumb, 0, 0, $this->thumb_width, $this->thumb_height, $clr);//åˆ›å»ºèƒŒæ™¯è‰²ï¼Œé»˜è®¤ä¸ºç™½è‰²
 		switch ($this->thumb_kind) {
 			case 1:
 				$dst_x=0;
@@ -250,11 +250,11 @@ class thumb {
 				$scr_h=$org_info[1];
 			break;
 			case 2:
-			  if ($org_info[0] / $this->thumb_width > $org_info[1] / $this->thumb_height){//ÉÏÏÂÁô°×
+			  if ($org_info[0] / $this->thumb_width > $org_info[1] / $this->thumb_height){//ä¸Šä¸‹ç•™ç™½
 					$lessen_width  = $this->thumb_width;
 					$lessen_height  = $this->thumb_width / $scale_org;
 				}
-				else{//×óÓÒÁô°×
+				else{//å·¦å³ç•™ç™½
 					$lessen_width  = $this->thumb_height * $scale_org;
 					$lessen_height = $this->thumb_height;
 				}
@@ -270,10 +270,10 @@ class thumb {
 				$dst_y=0;
 				$lessen_width=$this->thumb_width;
 				$lessen_height=$this->thumb_height;
-				if ($org_info[0] / $this->thumb_width > $org_info[1] / $this->thumb_height) {//ÉÏÏÂÁô°×,½Ø×óÓÒ
+				if ($org_info[0] / $this->thumb_width > $org_info[1] / $this->thumb_height) {//ä¸Šä¸‹ç•™ç™½,æˆªå·¦å³
 					$scr_w  = $org_info[1] * $scale_tumnb;
 					$scr_h = $org_info[1];
-				} else {//×óÓÒÁô°×,½ØÉÏÏÂ
+				} else {//å·¦å³ç•™ç™½,æˆªä¸Šä¸‹
 					$scr_w  = $org_info[0];
 					$scr_h  = $org_info[0] / $scale_tumnb;
 				}
@@ -281,7 +281,7 @@ class thumb {
 				$scr_y = ($org_info[1] - $scr_h) / 2;
 			break;			
 		}
-       //·Å´óÔ­Ê¼Í¼Æ¬
+       //æ”¾å¤§åŸå§‹å›¾ç‰‡
         if ($gd == 2) {
             imagecopyresampled($img_thumb, $img_org, $dst_x, $dst_y, $scr_x, $scr_y, $lessen_width, $lessen_height, $scr_w, $scr_h);
         } else {
@@ -326,17 +326,17 @@ class thumb {
 		if (stristr(PHP_OS,"WIN")) {
 			$thumbname = @iconv("GBK","utf-8",$thumbname);
 		}
-		$thumbname='../'.str_replace(PATH_WEB, '', $thumbname);
+		$thumbname=str_replace(PATH_WEB, '', $thumbname);
         imagedestroy($img_thumb);
         imagedestroy($img_org);
         return $this->sucess($thumbname);
     }
 
 	/**
-	 * ´´½¨Í¼Æ¬×ÊÔ´
-	 * @param string $img:	     ´´½¨Í¼Æ¬µÄÂ·¾¶
-	 * @param string $mime_type: Í¼Æ¬ÀàĞÍ
-	 * @return                   ·µ»Ø´´½¨µÄÍ¼Æ¬×ÊÔ´
+	 * åˆ›å»ºå›¾ç‰‡èµ„æº
+	 * @param string $img:	     åˆ›å»ºå›¾ç‰‡çš„è·¯å¾„
+	 * @param string $mime_type: å›¾ç‰‡ç±»å‹
+	 * @return                   è¿”å›åˆ›å»ºçš„å›¾ç‰‡èµ„æº
 	 */
     protected function img_resource($img, $mime_type) {
         switch ($mime_type) {
@@ -364,8 +364,8 @@ class thumb {
     }	
 	
 	/**
-	 * µÃµ½µÄGd·şÎñÆ÷°æ±¾
-	 * @return int ·µ»ØGd·şÎñÆ÷°æ±¾
+	 * å¾—åˆ°çš„GdæœåŠ¡å™¨ç‰ˆæœ¬
+	 * @return int è¿”å›GdæœåŠ¡å™¨ç‰ˆæœ¬
      */
     protected function gd_version() {
         static $version = -1;
@@ -375,7 +375,7 @@ class thumb {
         if (!extension_loaded('gd')) {
             $version = 0;
         } else {
-            // Ê¹ÓÃ gd_info() º¯ÊıÈ¡µÃµ±Ç°°²×°µÄ GD ¿âµÄĞÅÏ¢
+            // ä½¿ç”¨ gd_info() å‡½æ•°å–å¾—å½“å‰å®‰è£…çš„ GD åº“çš„ä¿¡æ¯
             if (PHP_VERSION >= '4.3') {
                 if (function_exists('gd_info')) {
                     $ver_info = gd_info();
@@ -392,7 +392,7 @@ class thumb {
                 if (preg_match('/phpinfo/', ini_get('disable_functions'))) {     
                     $version = 1;
                 } else {
-                  // Ê¹ÓÃ phpinfo() º¯Êı
+                  // ä½¿ç”¨ phpinfo() å‡½æ•°
                    ob_start();
                    phpinfo(8);
                    $info = ob_get_contents();
@@ -407,8 +407,8 @@ class thumb {
     }
 	
     /**
-	 * ¼ì²âPHP°æ±¾ÒÔ¼°´¦Àíº¯ÊıÊÇ·ñ¿ÉÓÃ
-	 * @return buttton ·µ»Ø¿ÉÓÃ»ò²»¿ÉÓÃĞÅÏ¢
+	 * æ£€æµ‹PHPç‰ˆæœ¬ä»¥åŠå¤„ç†å‡½æ•°æ˜¯å¦å¯ç”¨
+	 * @return buttton è¿”å›å¯ç”¨æˆ–ä¸å¯ç”¨ä¿¡æ¯
      */
     protected function check_img_function($img) {
         switch ($img){
@@ -447,9 +447,9 @@ class thumb {
     }
 	
 	/**
-	 * ËõÂÔÍ¼´íÎóµ÷ÓÃ·½·¨		
-	 * @param string $error ´íÎóĞÅÏ¢
-	 * @return array ·µ»Ø´íÎóĞÅÏ¢
+	 * ç¼©ç•¥å›¾é”™è¯¯è°ƒç”¨æ–¹æ³•		
+	 * @param string $error é”™è¯¯ä¿¡æ¯
+	 * @return array è¿”å›é”™è¯¯ä¿¡æ¯
 	 */
 	protected function error($error) {
 		$back['error'] = 1;
@@ -458,9 +458,9 @@ class thumb {
 	}
 	
 	/**
-	 * ËõÂÔÍ¼³É¹¦µ÷ÓÃ·½·¨
-	 * @param string $path Â·¾¶
-	 * @return array ·µ»Ø³É¹¦Â·¾¶(Ïà¶ÔÓÚµ±Ç°Â·¾¶)
+	 * ç¼©ç•¥å›¾æˆåŠŸè°ƒç”¨æ–¹æ³•
+	 * @param string $path è·¯å¾„
+	 * @return array è¿”å›æˆåŠŸè·¯å¾„(ç›¸å¯¹äºå½“å‰è·¯å¾„)
 	 */
 	protected function sucess($path) {
 		$back['error']=0;

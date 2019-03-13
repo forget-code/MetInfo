@@ -9,6 +9,8 @@ load::sys_func('power');
 load::sys_func('array');
 load::sys_class('mysql');
 load::sys_class('cache');
+//定义ip
+define('IP', get_userip());
 
 /**
  * 系统一级基类
@@ -25,6 +27,7 @@ class common {
 		$this->load_form();//表单过滤
 		$this->load_lang();//加载语言配置
 		$this->load_config_global();//加载全站配置数据
+		$this->load_url_site();
 		$this->load_config_lang();//加载当前语言配置数据
 		$this->load_url();//加载url数据
 	}
@@ -37,7 +40,7 @@ class common {
 		$db_settings = array();
 		$db_settings = parse_ini_file(PATH_CONFIG.'config_db.php');
 		@extract($db_settings);
-		DB::dbconn($con_db_host, $con_db_id, $con_db_pass, $con_db_name);
+		DB::dbconn($con_db_host, $con_db_id, $con_db_pass, $con_db_name, $con_db_port);
 		$_M['config']['tablepre'] = $tablepre;
 		return true;
 	}
@@ -58,8 +61,17 @@ class common {
 		foreach($_GET as $_key => $_value) {
 			$_key{0} != '_' && $_M['form'][$_key] = daddslashes($_value);
 		}
-		if(!preg_match('/^[0-9A-Za-z-]+$/', $_M['form']['lang']) && $_M['form']['lang']){
-			echo "No data in the database,please reinstall11.";
+		if(is_numeric($_M['form']['lang'])){//伪静态兼容
+			$_M['form']['page'] = $_M['form']['lang'];
+			$_M['form']['lang'] = '';
+		}
+		if($_M['form']['metid'] == 'list'){
+			$_M['form']['list'] = 1;
+			$_M['form']['metid'] = $_M['form']['page'];
+			$_M['form']['page'] = 1;
+		}
+		if(!preg_match('/^[0-9A-Za-z]+$/', $_M['form']['lang']) && $_M['form']['lang']){
+			echo "No data in the database,please reinstall.";
 			die();
 		}
 	}
@@ -97,7 +109,13 @@ class common {
 			file_put_contents(PATH_WEB.'/config/config_safe.php', "<?php/*{$_M['config']['met_webkeys']}*/?>");
 		}
 		$_M['config']['met_adminfile_code'] = $_M['config']['met_adminfile'];
-		$_M['config']['met_adminfile'] = authcode($_M['config']['met_adminfile'],'DECODE', $_M['config']['met_webkeys']);
+        $_M['config']['met_adminfile'] = authcode($_M['config']['met_adminfile'],'DECODE', $_M['config']['met_webkeys']);
+        if ($_M['config']['met_adminfile'] == '') {
+            $_M['config']['met_adminfile'] = 'admin';
+            $met_adminfile = authcode($_M['config']['met_adminfile'],'ENCODE', $_M['config']['met_webkeys']);
+            $query = "UPDATE {$_M['config']['tablepre']}config SET `value` = '$met_adminfile' where `name`='met_adminfile'";
+            $result = DB::query($query);
+        }
 
 		$_M['table'] = array();
 		$_Mettables = explode('|', $_M['config']['met_tablename']);
@@ -114,6 +132,7 @@ class common {
 	protected function load_config_lang() {
 		global $_M;
 		$_M['lang'] = $_M['form']['lang'] ? $_M['form']['lang'] : $_M['config']['met_index_type'];
+
 		if(!$_M['langlist']['web'][$_M['lang']]){
 			echo "No data in the database,please reinstall.";
 			die();
@@ -125,12 +144,14 @@ class common {
 	  * 获取网站的网站设置，存放在$_M['config']，网站设置数组
 	  * @param string $lang 需要获取网站设置的语言，metinfo为全局网站设置
 	  */
-	protected function load_config($lang) {
+	protected function load_config($lang, $columnid=0) {
 		global $_M;
-		$query = "SELECT * FROM {$_M['config']['tablepre']}config WHERE lang='{$lang}'";
-		$result = DB::query($query);
-		while ($list_config = DB::fetch_array($result)) {
-			$_M['config'][$list_config['name']] = $this->filter_config($list_config['value']);
+		if($columnid)$sql = " AND columnid = '{$columnid}'";
+		$query = "SELECT * FROM {$_M['config']['tablepre']}config WHERE lang='{$lang}' {$sql}";
+		$result = DB::get_all($query);
+
+		foreach ($result as $value) {
+			$_M['config'][$value['name']] = $this->filter_config($value['value']);
 		}
 	}
 
@@ -148,7 +169,7 @@ class common {
 	  */
 	protected function load_url() {
 		global $_M;
-		$this->load_url_site();
+
 		$this->load_url_other();
 		$this->load_url_unique();
 	}
@@ -158,7 +179,36 @@ class common {
 	  */
 	protected function load_url_site() {
 		global $_M;
+			if ($_SERVER['SERVER_PORT'] == 443 || $_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1 || $_SERVER['HTTP_X_CLIENT_SCHEME'] == 'https' || $_SERVER['HTTP_FROM_HTTPS'] == 'on') {
+					$http = 'https://';
+			}else{
+					$http = 'http://';
+			}
+
+			if(strstr(PHP_SELF, 'entrance.php')){//直接从入口文件访问，如验证码，字段前台显示权限功能
+				$_M['config']['met_weburl'] = $http . HTTP_HOST.preg_replace("/\w+\/\w+\/\w+\.php$/",'',PHP_SELF);
+			}else{
+				if(M_NAME=="index"){
+					$_M['config']['met_weburl'] = str_replace('/index.php','',$http . HTTP_HOST . PHP_SELF.'/');
+				}else{
+					$_M['config']['met_weburl'] = $http . HTTP_HOST.preg_replace("/[0-9A-Za-z-_]+\/\w+\.php$/",'',PHP_SELF);
+
+				}
+			}
+        $_M['config']['met_weburl'] = sqlinsert($_M['config']['met_weburl']);
 		$_M['url']['site'] = $_M['config']['met_weburl'];
+
+		$query = "SELECT * FROM {$_M['table']['lang']} WHERE link = '{$_M['url']['site']}'";
+		$lang = DB::get_one($query);
+		if($lang && !$_M['form']['pageset']){
+			// 如果绑定的域名强制访问语言，http://www.a.com/index.php?lang=en,强制整站语言显示英文
+			if($_M['form']['lang'] && $_M['form']['lang'] != $lang['mark']){
+				$_M['lang'] = $_M['form']['lang'];
+			}else{
+				$_M['lang'] = $lang['mark'];
+			}
+			$_M['config']['met_index_type'] = $_M['lang'];
+		}
 		$_M['url']['site_admin'] = $_M['url']['site'].$_M['config']['met_adminfile'].'/';
 	}
 
@@ -214,15 +264,45 @@ class common {
 	  * @param int    $site    获取语言参数位置，1:后台语言，2:前台语言
 	  */
 	protected function load_word($lang, $site) {
-		global $_M;
-		$query = "SELECT * FROM {$_M['table']['language']} WHERE lang='{$lang}' AND site='{$site}'";
-		$result = DB::query($query);
-		while ($listlang = DB::fetch_array($result)) {
-			$_M['word'][$listlang['name']] = trim($listlang['value']);
-		}
-		$langtype = $site ? 'admin_' : '';
-		$json_cache = PATH_CACHE.'lang_json_'.$langtype.$lang.'.php';
-		file_put_contents($json_cache, jsonencode($_M['word']));
+        global $_M;
+        $langtype = $site ? 'admin_' : '';
+        $json_cache = PATH_CACHE.'lang_json_'.$langtype.$lang.'.php';
+        if(!file_exists($json_cache)){
+            $query = "SELECT * FROM {$_M['table']['language']} WHERE lang='{$lang}' AND site='{$site}'";
+            $result = DB::query($query);
+            while ($listlang = DB::fetch_array($result)) {
+                $_M['word'][$listlang['name']] = trim($listlang['value']);
+            }
+            if($_M['form']['pageset'] == 1){
+                $result = DB::get_all($query);
+                foreach ($result as $value) {
+                    $_M['word'][$value['name']] = trim($value['value']);
+                }
+            }
+            if (!$_M[form][pageset]) {
+                file_put_contents($json_cache, jsonencode($_M['word']));
+            }
+        }else{
+            $langjson = file_get_contents($json_cache);
+            $_M[word] = json_decode($langjson,true);
+        }
+
+        //生成js语言文件  app字段为1则为js语言
+        $langtype = $site ? 'admin_' : '';
+        $js_lang_cache = PATH_CACHE.'lang_json_'.$langtype.$lang.'.js';
+        if(!file_exists($js_lang_cache)){
+            $query = "SELECT * FROM {$_M['table']['language']} WHERE lang='{$lang}' AND app=1 AND site='{$site}'";
+            $result = DB::query($query);
+            while ($listlang = DB::fetch_array($result)) {
+                $_M['jsword'][$listlang['name']] = trim($listlang['value']);
+            }
+            $jslang = 'window.METLANG = ';
+            $jslang .= jsonencode($_M['jsword'] );
+            if (!$_M[form][pageset]) {
+                file_put_contents($js_lang_cache, $jslang);
+            }
+
+        }
 	}
 
 	/**
@@ -251,12 +331,34 @@ class common {
 		}
 		if($postion == 'tem'){
 			if (M_MODULE == 'admin') {
-				if(file_exists(PATH_SYS."admin/templates/web/".M_NAME."/{$file}.php")){
-					return PATH_SYS."admin/templates/web/".M_NAME."/{$file}.php";
+				if(file_exists(PATH_SYS.'/'.M_NAME."/admin/templates/{$file}.php")){
+					return PATH_SYS.'/'.M_NAME."/admin/templates/{$file}.php";
 				}else{
-					return PATH_SYS."admin/templates/web/{$file}.php";
+					return PATH_SYS."index/templates/{$file}.php";
 				}
 			} else {
+				if($_M['config']['metinfover']){
+					$tem_ver = $_M['config']['metinfover'];
+					$tem_w = 'php';
+				}else{
+					$tem_ver = 'met';
+					$tem_w = 'html';
+				}
+				if ($_M['form']['ajax'] == 1) {
+					$file_ajax = 'ajax/'.$file;
+					if (file_exists(PATH_TEM."{$file_ajax}.php")) {
+						return PATH_TEM."{$file_ajax}.php";
+					}
+					if (file_exists(PATH_TEM."{$file_ajax}.html")) {
+						return PATH_TEM."{$file_ajax}.html";
+					}
+					if (file_exists(PATH_TEM."{$file_ajax}.htm")) {
+						return PATH_TEM."{$file_ajax}.htm";
+					}
+					if (file_exists(PATH_WEB."public/ui/{$tem_ver}/{$file_ajax}.{$tem_w}")) {
+						return PATH_WEB."public/ui/{$tem_ver}/{$file_ajax}.{$tem_w}";
+					}
+				}
 				if (file_exists(PATH_TEM."{$file}.php")) {
 					return PATH_TEM."{$file}.php";
 				}
@@ -266,11 +368,19 @@ class common {
 				if (file_exists(PATH_TEM."{$file}.htm")) {
 					return PATH_TEM."{$file}.htm";
 				}
-				return PATH_WEB."public/ui/met/{$file}.html";
-
+				return PATH_WEB."public/ui/{$tem_ver}/{$file}.{$tem_w}";
 			}
 		}
 	}
+	/**
+    * 模板解析
+    * @param string $file 模板文件
+    */
+    protected function view($file, $data) {
+        global $_M;
+        $view = load::sys_class('engine','new');
+        return  $view->dodisplay($file, $data);
+    }
 
 	/**
 	  * 销毁

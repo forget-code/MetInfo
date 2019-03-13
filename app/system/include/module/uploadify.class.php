@@ -1,6 +1,6 @@
 <?php
-# MetInfo Enterprise Content Management System 
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+# MetInfo Enterprise Content Management System
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 
 defined('IN_MET') or exit('No permission');
 
@@ -13,7 +13,7 @@ load::sys_func('array');
  * @param object $upfile		实例化upfile类
  * @param object $watermark 	实例化watermark类
  * @param object $thumb			实例化thumb类
- */	
+ */
 class uploadify extends web {
 	public $upfile;
 	function __construct(){
@@ -21,10 +21,10 @@ class uploadify extends web {
 		global $_M;
 		$this->upfile = new upfile();
 	}
-		
+
 	/**
 	 * 设置上传属性
-	 */	
+	 */
 	public function set_upload($info){
 		global $_M;
 		$this->upfile->set('savepath', $info['savepath']);
@@ -37,17 +37,17 @@ class uploadify extends web {
 	/**
 	 * 上传函数
 	 * @return json   		 					返回成功或失败信息，成功有路径，失败有错误信息，不过要通过json解析
-	 */	
+	 */
 	public function upload($formname){
 		global $_M;
 		$back = $this->upfile->upload($formname);
 		return $back;
 	}
-		
+
 	/**
 	 * 上传图片
 	 * @param array	$file 	设置属性
-	 */	
+	 */
 	public function upimg($file){
 		global $_M;
 		$this->upfile->set_upimg();
@@ -57,7 +57,7 @@ class uploadify extends web {
 		$back['original'] = $back['path'];
 		return $back;
 	}
-	
+
 	/**
 	 * 上传文件函数
 	 * @return json   			 	返回成功或失败信息，成功有路径，失败有错误信息，不过要通过json解析
@@ -77,17 +77,19 @@ class uploadify extends web {
 				$back['error'] = $back['errorcode'];
 			}else{
 				$backs['path'] = $back['path'];
+
 				$backs['append'] = 'false';
 				$back = $backs;
 			}
 		}
+	    $back['filesize'] =  round(filesize($back['path'])/1024,2);
 		echo jsonencode($back);
 	}
-	
+
 	/**
 	 * 上传文件
 	 * @return json   		 					返回成功或失败信息，成功有路径，失败有错误信息，不过要通过json解析
-	 */	
+	 */
 	public function doupimg(){
 		global $_M;
 		$infoarray = array('formname', 'savepath', 'format', 'maxsize', 'is_rename', 'is_overwrite');
@@ -96,20 +98,20 @@ class uploadify extends web {
 		$imgpath = explode('../',$back['path']);
 		$img_info = getimagesize(PATH_WEB.$imgpath[1]);
 		$img_name = pathinfo(PATH_WEB.$imgpath[1]);
-		$back['name'] = $img_name['basename']; 
-		$back['path'] = $imgpath[1]; 
-		$back['x'] = $img_info[0]; 
-		$back['y'] = $img_info[1]; 
+		$back['name'] = $img_name['basename'];
+		$back['path'] = $imgpath[1];
+		$back['x'] = $img_info[0];
+		$back['y'] = $img_info[1];
 		echo jsonencode($back);
 	}
-	
+
 	/**
 	 * 上传头像
 	 * @return json   		 					返回成功或失败信息，成功有路径，失败有错误信息，不过要通过json解析
-	 */	
+	 */
 	public function dohead(){
 		global $_M;
-		
+
 		$info['formname'] = $_M['form']['formname'];
 		$info['savepath'] = '/head';
 		$info['format'] = 'jpg|jpeg|png|gif';
@@ -126,7 +128,7 @@ class uploadify extends web {
 		$file_new = PATH_WEB.'upload/head/'.get_met_cookie('id').'.png';
 		rename($file_old, $file_new);
 
-		
+
 		$thumb = load::sys_class('thumb', 'new');//加载缩略图类
 		//$thumb->list_module(3);//按网站列表页缩略图方式缩略图片
 		$thumb->set('thumb_width', '200');//保存在原图路径的子目录下
@@ -139,15 +141,15 @@ class uploadify extends web {
 		$re['path'] = str_replace(PATH_WEB, '../', $file_new);
 		$re['append'] = 'false';
 		$re['type'] = 'head';
-		
+
 		echo jsonencode($re);
 	}
-	
+
 	public function doupico(){
 		global $_M;
-		
-		
-		if(md5(md5(substr($_M['config']['met_webkeys'],0,8))) == $_M['form']['data_key']){		
+
+
+		if(md5(md5(substr($_M['config']['met_webkeys'],0,8))) == $_M['form']['data_key']){
 			$info['formname'] = $_M['form']['formname'];
 			$info['savepath'] = '/file';
 			$info['format'] = 'jpeg|jpg|png|ico';
@@ -159,14 +161,14 @@ class uploadify extends web {
 				echo jsonencode($back);
 				die();
 			}
-						
+
 			$imgpath = explode('../',$back['path']);
 			$img_info = getimagesize(PATH_WEB.$imgpath[1]);
 			$img_name = pathinfo(PATH_WEB.$imgpath[1]);
-			$back['name'] = $img_name['basename']; 
-			$back['path'] = $imgpath[1]; 
-			$back['x'] = $img_info[0]; 
-			$back['y'] = $img_info[1]; 
+			$back['name'] = $img_name['basename'];
+			$back['path'] = $imgpath[1];
+			$back['x'] = $img_info[0];
+			$back['y'] = $img_info[1];
 		}else{
 			$back['error'] = 1;
 			$back['errorcode'] = '无权限上传';
@@ -176,10 +178,10 @@ class uploadify extends web {
 		$back['path'] = str_replace("//", "/", $back['path']);
 		$back['original'] = str_replace("//", "/", $back['original']);
 		echo jsonencode($back);
-		
+
 	}
 	/**
-	 * 上传错误调用方法	
+	 * 上传错误调用方法
 	 * @return array 返回错误信息
 	 */
 	public function error($error){
@@ -187,7 +189,7 @@ class uploadify extends web {
 		$back['errorcode'] = $error;
 		return $back;
 	}
-	
+
 	/**
 	 * 上传成功调用方法
 	 * @return array 返回成功路径(相对于当前路径)
@@ -197,7 +199,7 @@ class uploadify extends web {
 		$back['path']=$path;
 		return $back;
 	}
-	
+
 }
 
 # This program is an open source system, commercial use, please consciously to purchase commercial license.

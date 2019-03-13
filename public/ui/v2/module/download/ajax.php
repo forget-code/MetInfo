@@ -7,19 +7,15 @@ echo <<<EOT
 -->
 <li class="list-group-item">
 	<div class="media">
-		<div class="media-left p-r-5 p-l-10">
+		<div class="media-left p-r-5 p-l-10 hidden-xs-down">
 			<a href="{$val[url]}" title="{$val[title]}">
 				<i class="icon fa-file-archive-o blue-grey-400"></i>
 			</a>
 		</div>
 		<div class="media-body">
-			<div class="pull-xs-right">
-				<a class="btn btn-outline btn-primary btn-squared m-r-10" href="{$val[downloadurl]}" title="{$val[title]}">{$lang_download}</a>
-			</div>
+			<a class="btn btn-outline btn-primary btn-squared pull-xs-right" href="{$val[downloadurl]}" title="{$val[title]}">{$lang_download}</a>
 			<h4 class="media-heading font-size-16">
-				<a class="name" href="{$val[url]}" title="{$val[title]}" {$metblank}>
-					{$val[title]}
-				</a>
+				<a class="name" href="{$val[url]}" title="{$val[title]}" {$metblank}>{$val[title]}</a>
 			</h4>
 			<small class='font-size-14 blue-grey-500'>
 				<span>{$val[filesize]}{$bd}</span>

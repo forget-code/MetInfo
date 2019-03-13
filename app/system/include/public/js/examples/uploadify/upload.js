@@ -15,9 +15,12 @@ define(function(require, exports, module) {
 		d.val(o.path);
 		var listval=$("input[name='"+lval+"']"),
 		contentval=$("input[name='"+cval+"']");
+		filesizeval=$("input[name='filesize']");
+		if(filesizeval)filesizeval.val(o.filesize);
 		if(listval)listval.val(o.thumblist_path);
 		if(contentval)contentval.val(o.thumbcontent_path);
 	}
+
 	function upload(d) { //上传
 		var t_html,n=d.attr("name"),t,url,is_thumblist,is_thumbcontent,accept=d.attr("accept");//上传参数添加accept（新模板框架v2）
 		d.addClass("text").attr("style","display:block;");
@@ -26,7 +29,7 @@ define(function(require, exports, module) {
 		t_html+='<div class="file_uploadfrom">';
 		t_html+='<input name="'+n+'_upload" type="file" accept="'+accept+'">';//上传参数添加accept（新模板框架v2）
 		t_html+='</div>';
-		t_html+='<a href="javascript:;" title="'+text1+'" class="upbutn">'+text1+'</a>';
+		t_html+='<a href="javascript:;" title="'+text1+'" class="upbutn btn btn-primary btn-sm">'+text1+'</a>';
 		t_html+='</form>';
 		t_html+='<span class="uptips"></span>';
 		t_html+='</div>';
@@ -66,12 +69,14 @@ define(function(require, exports, module) {
 					uperror(r,t);
 				},
 				success: function (r) {
+
 					var obj = eval('('+r+')');
+
 					if(obj.error==0){
 						t.html(text3);
 						upHandle(obj,d,lval,cval);
 					}else{
-						uperror(obj.errorcode,t);
+						uperror('上传失败',t);
 					}
 				}
 			});
@@ -79,7 +84,7 @@ define(function(require, exports, module) {
 			$("#upfileFormmet_"+n).submit();
 		});
 		$("div.file_uploadfrom").css("opacity", "0");
-		d.next(".metuplaodify").css('left',d.outerWidth());
+		d.next(".metuplaodify").css('left',d.outerWidth()+10);
 	}
 	exports.func = function(d){
 		d = d.find('.ftype_upload .fbox input');

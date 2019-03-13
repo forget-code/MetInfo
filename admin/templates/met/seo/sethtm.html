@@ -1,7 +1,7 @@
 <!--<?php
-# MetInfo Enterprise Content Management System 
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
-require_once template('head'); 
+# MetInfo Enterprise Content Management System
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
+require_once template('head');
 echo <<<EOT
 -->
 </head>
@@ -30,7 +30,7 @@ echo <<<EOT
 EOT;
 if($cs==1){
 echo <<<EOT
--->	
+-->
 	<h3 class="v52fmbx_hr metsliding" sliding="0">{$lang_unitytxt_1}</h3>
 	<div class="metsliding_box metsliding_box_0">
 		<div class="v52fmbx_dlbox">
@@ -53,7 +53,7 @@ echo <<<EOT
 				<span class="tips">{$lang_sethtmway3}</span>
 			</dd>
 		</dl>
-		</div>		
+		</div>
 		<div class="v52fmbx_dlbox div_met_htmlurl" {$display_htmlurl}>
 		<dl>
 			<dt>{$lang_htmltopseudo}{$lang_marks}</dt>
@@ -110,24 +110,24 @@ EOT;
 }elseif($cs==3){
 echo <<<EOT
 -->
-	<tr> 
+	<tr>
         <td class="text"></td>
         <td class="input color390">{$lang_rewriteok}
 <!--
 EOT;
 if($met_agents_type<=1){
 echo <<<EOT
--->			
+-->
 		<a href="http://www.metinfo.cn/faq/rewrite.htm" target="_blank" title="{$lang_rewritefaq}">{$lang_rewritefaq}</a>
 <!--
 EOT;
 }
 echo <<<EOT
--->			
+-->
 		&nbsp;<a href="pseudo.php?pseudo_download=1" target="_blank" title="{$lang_rewriteruledownload1}">{$lang_rewriteruledownload1}</a>
 		</td>
     </tr>
-	<tr> 
+	<tr>
         <td class="text">{$lang_rewrite}{$lang_marks}</td>
         <td class="input">
 		    <label><input name="met_pseudo" type="radio" value="0" id="label18" {$met_pseudo1[0]} />&nbsp;{$lang_close}</label>&nbsp;&nbsp;&nbsp;
@@ -135,19 +135,19 @@ echo <<<EOT
 	        <span class="tips red">{$lang_rewritefinfo2}</span>
 		</td>
     </tr>
-	<tr> 
+	<tr>
         <td class="text"></td>
         <td class="input color999">{$lang_seotips5}</td>
     </tr>
-	<tr> 
+	<tr>
         <td class="text color999">{$lang_seotips6}{$lang_marks}</td>
         <td class="input color999">index-{$lang_langmark}.html（{$lang_seotips7}：index-cn.html）</td>
     </tr>
-	<tr> 
+	<tr>
         <td class="text color999">{$lang_setskinListPage}{$lang_marks}</td>
         <td class="input color999">{$lang_columndocument}/list-{$lang_seotips8}-{$lang_langmark}.html（{$lang_seotips7}：product/list-1-cn.html）</td>
     </tr>
-	<tr> 
+	<tr>
         <td class="text color999">{$lang_seotips9}{$lang_marks}</td>
         <td class="input color999">{$lang_columndocument}/{$lang_seotips8}-{$lang_langmark}.html（{$lang_seotips7}：product/100-cn.html）</td>
     </tr>

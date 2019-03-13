@@ -65,47 +65,50 @@ function admin_information(){
  */
 function background_privilege(){
 	global $_M;
-	$metinfo_admin_name = $_M['user']['admin_name'];
-	$query = "SELECT * from {$_M['table']['admin_table']} WHERE admin_id = '{$metinfo_admin_name}'";
-	$user = DB::get_one($query);
-	$privilege = array();
-	$privilege['admin_op'] = $user['admin_op'];
-	if(strstr($user['langok'], "metinfo")) {
-		$privilege['langok'] = $_M['langlist']['web'];
-	} else {
-		$langok = explode('-',$user['langok']);
-		foreach($langok as $key=>$val){
-			if($val) {
-				$privilege['langok'][$val] = $_M['langlist']['web'][$val];
+	if(!$_M['privilege']){
+		$metinfo_admin_name = $_M['user']['admin_name'];
+		$query = "SELECT * from {$_M['table']['admin_table']} WHERE admin_id = '{$metinfo_admin_name}'";
+		$user = DB::get_one($query);
+		$privilege = array();
+		$privilege['admin_op'] = $user['admin_op'];
+		if(strstr($user['langok'], "metinfo")) {
+			$privilege['langok'] = $_M['langlist']['web'];
+		} else {
+			$langok = explode('-',$user['langok']);
+			foreach($langok as $key=>$val){
+				if($val) {
+					$privilege['langok'][$val] = $_M['langlist']['web'][$val];
+				}
 			}
 		}
+		if(strstr($user['admin_type'], "metinfo")){
+			$privilege['navigation'] = "metinfo";
+			$privilege['column'] = "metinfo";
+			$privilege['application'] = "metinfo";
+			$privilege['see'] = "metinfo";
+		}else{
+			$allidlist = explode('-', $user['admin_type']);
+			foreach($allidlist as $key=>$val){
+				if(strstr($val, "s")){
+					$privilege['navigation'].= str_replace('s','',$val)."|";
+				}
+				if(strstr($val, "c")){
+					$privilege['column'].= str_replace('c','',$val)."|";
+				}
+				if(strstr($val, "a")){
+					$privilege['application'].= str_replace('a','',$val)."|";
+				}
+				if($val == 9999){
+					$privilege['see'] = "metinfo";
+				}
+			}	
+			$privilege['navigation'] = trim($privilege['navigation'], '|');
+			$privilege['column'] = trim($privilege['column'], '|');
+			$privilege['application'] = trim($privilege['application'], '|');
+		}
+		$_M['privilege'] = $privilege;
 	}
-	if(strstr($user['admin_type'], "metinfo")){
-		$privilege['navigation'] = "metinfo";
-		$privilege['column'] = "metinfo";
-		$privilege['application'] = "metinfo";
-		$privilege['see'] = "metinfo";
-	}else{
-		$allidlist = explode('-', $user['admin_type']);
-		foreach($allidlist as $key=>$val){
-			if(strstr($val, "s")){
-				$privilege['navigation'].= str_replace('s','',$val)."|";
-			}
-			if(strstr($val, "c")){
-				$privilege['column'].= str_replace('c','',$val)."|";
-			}
-			if(strstr($val, "a")){
-				$privilege['application'].= str_replace('a','',$val)."|";
-			}
-			if($val == 9999){
-				$privilege['see'] = "metinfo";
-			}
-		}	
-		$privilege['navigation'] = trim($privilege['navigation'], '|');
-		$privilege['column'] = trim($privilege['column'], '|');
-		$privilege['application'] = trim($privilege['application'], '|');
-	}
-	return $privilege;
+	return $_M['privilege'];
 }
 
 /**
@@ -116,7 +119,7 @@ function operation_column() {
 	global $_M;
 	$jurisdiction = background_privilege();
 	if($jurisdiction['column'] == "metinfo"){
-		$query = "SELECT * from {$_M['table']['column']} WHERE lang = '{$_M['lang']}' AND module < 100";
+		$query = "SELECT * from {$_M['table']['column']} WHERE lang = '{$_M['lang']}' AND module < 100 ORDER BY no_order ASC, id DESC";
 		$admin_column = DB::get_all($query);
 	}else{
 		$column_id = explode('|', $jurisdiction['column']);
@@ -147,6 +150,36 @@ function operation_column() {
 		$column[$val['id']] = $admin_column[$key];
 	}
 	return $column;
+}
+
+/**
+ * 是否有权限操作
+ * @param  int    $type		1；按模块生成;2：按栏目生成
+ * @return array  $column	返回把记录当前管理员有权限操作的栏目信息的数组按模块归类或栏目归类整理后的数组
+ */
+function is_have_power($now){
+	$power = background_privilege();
+	$a = substr($now, 0, 1);
+	switch ($a) {
+		case 's':
+			$list = $power['navigation'];
+		break;
+		case 'a':
+		$list = $power['application'];
+		break;
+		case 'c':
+			$list = $power['column'];
+		break;
+	}
+	$p = str_replace($a, '', $now);
+	if(!$list){
+		return false;
+	}
+	if ( $list == 'metinfo' || strstr("|{$list}|", "|{$p}|") ) {
+		return true;
+	}else{
+		return false;
+	}
 }
 
 /**
@@ -209,6 +242,7 @@ function column_sorting($type) {
 function get_adminnav() {
 	global $_M;
 	$jurisdiction = background_privilege();
+	//dump($jurisdiction);
 	$query = "select * from {$_M['table']['admin_column']} order by type desc,list_order";
 	$sidebarcolumn = DB::get_all($query);
 	$bigclass = array();

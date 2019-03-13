@@ -1,12 +1,13 @@
 <?php
-# MetInfo Enterprise Content Management System 
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+# MetInfo Enterprise Content Management System
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 
 defined('IN_MET') or exit('No permission');
 
 load::sys_func('file.func.php');
+load::sys_class('common');
 
-/** 
+/**
  * 上传文件类
  * @param string $savepath		路径,为上传文件夹（upload）下的路径
  * @param string $format		允许上传文件后缀,如zip|jpg|txt,用竖线隔开,设置的格式不能超过网站设置中的格式
@@ -15,20 +16,28 @@ load::sys_func('file.func.php');
  * @param string $ext			后缀
  * 以上路径变量都必须是绝对路径，如果不使用类的set方法
  */
-class upfile {
-	public    $savepath;
-	public    $format;
-	public    $maxsize = 1073741824;
-	public    $is_rename;
-	
-	protected $ext;
-	
-	public function __construct() {
-		global $_M;
-		$this->set_upfile();
+class upfile extends common{
+    public    $savepath;
+    public    $format;
+    public    $maxsize = 1073741824;
+    public    $is_rename;
+
+    protected $ext;
+
+    public function __construct() {
+        parent::__construct();
+        global $_M;
+        if(file_exists(PATH_WEB."cache/lang_json_admin_{$_M['lang']}.php")){
+            $langf = file_get_contents(PATH_WEB . "cache/lang_json_admin_{$_M['lang']}.php");
+            $lang = json_decode($langf,JSON_UNESCAPED_UNICODE);
+        }
+        foreach ($lang as $key => $val) {
+            $_M[word][$key] = $val;
+        }
+        $this->set_upfile();
 	}
-	
-	/** 
+
+	/**
 	 * 设置字段
 	 */
 	public function set($name, $value) {
@@ -38,7 +47,7 @@ class upfile {
 		switch ($name) {
 			case 'savepath':
 				$this->savepath = path_standard(PATH_WEB.'upload/'.$value);
-				
+
 			break;
 			case 'format':
 				$this->format = $value;
@@ -49,10 +58,10 @@ class upfile {
 			case 'is_rename':
 				$this->is_rename = $value;
 			break;
-		}	
+		}
 	}
-	
-	/** 
+
+	/**
 	 * 设置上传文件模式
 	 */
 	public function set_upfile() {
@@ -62,8 +71,8 @@ class upfile {
 		$this->set('maxsize', min($_M['config']['met_file_maxsize']*1048576, 1073741824));
 		$this->set('is_rename', $_M['config']['met_img_rename']);
 	}
-	
-	/** 
+
+	/**
 	 * 设置上传图片模式
 	 */
 	public function set_upimg() {
@@ -73,8 +82,8 @@ class upfile {
 		$this->set('maxsize', min($_M['config']['met_file_maxsize']*1048576, 1073741824));
 		$this->set('is_rename', $_M['config']['met_img_rename']);
 	}
-	
-	/** 
+
+	/**
 	 * 上传方法
 	 * @param array $form 上传空间名，也就是input，file上传控件的name字段值
 	 */
@@ -93,22 +102,36 @@ class upfile {
 				break;
 			}
 		}
+
 		//是否能正常上传
 		if(!is_array($filear))$filear['error'] = 4;
 		if($filear['error'] != 0 ){
 			$errors = array(
-				0 => $_M['word']['upfileOver4'], 
-				1 => $_M['word']['upfileOver'], 
-				2 => $_M['word']['upfileOver1'], 
-				3 => $_M['word']['upfileOver2'], 
-				4 => $_M['word']['upfileOver3'], 
-				6 => $_M['word']['upfileOver5'], 
+				0 => $_M['word']['upfileOver4'],
+				1 => $_M['word']['upfileOver'],
+				2 => $_M['word']['upfileOver1'],
+				3 => $_M['word']['upfileOver2'],
+				4 => $_M['word']['upfileOver3'],
+				6 => $_M['word']['upfileOver5'],
 				7 => $_M['word']['upfileOver5']
 			);
 			$error_info[]= $errors[$filear['error']] ? $errors[$filear['error']] : $errors[0];
 			return $this->error($errors[$filear['error']]);
 		}
-		//文件大小是否正确
+        //空间超容 有些虚拟主机不支持此函数
+        if(function_exists('disk_free_space')){
+        	if(disk_free_space(__DIR__) != FALSE && disk_free_space(__DIR__) != 'NULL'){
+        		if(disk_free_space(__DIR__)<$filear["size"]){
+		            return $this->error("out of disk space");
+		        }
+        	}
+
+		}
+        //目录不可写
+        if (!is_writable(PATH_WEB."upload")) {
+            return $this->error("directory ['".PATH_WEB."upload'] can not weite");
+        }
+        //文件大小是否正确{}
 		if ($filear["size"] > $this->maxsize || $filear["size"] > $_M['config']['met_file_maxsize']*1048576) {
 			return $this->error("{$_M['word']['upfileFile']}".$filear["name"]." {$_M['word']['upfileMax']} {$_M['word']['upfileTip1']}");
 		}
@@ -118,14 +141,14 @@ class upfile {
 			return $this->error($this->ext." {$_M['word']['upfileTip3']}");
 		}
 		if ($_M['config']['met_file_format']) {
-			if($_M['config']['met_file_format'] != "" && !in_array(strtolower($this->ext), explode('|',strtolower($_M['config']['met_file_format']))) && $filear){  	
+			if($_M['config']['met_file_format'] != "" && !in_array(strtolower($this->ext), explode('|',strtolower($_M['config']['met_file_format']))) && $filear){
 				return $this->error($this->ext." {$_M['word']['upfileTip3']}");
 			}
 		} else {
 			return $this->error($this->ext." {$_M['word']['upfileTip3']}");
 		}
 		if ($this->format) {
-			if ($this->format != "" && !in_array(strtolower($this->ext), explode('|',strtolower($this->format))) && $filear) {  	
+			if ($this->format != "" && !in_array(strtolower($this->ext), explode('|',strtolower($this->format))) && $filear) {
 				return $this->error($this->ext." {$_M['word']['upfileTip3']}");
 			}
 		}
@@ -134,6 +157,9 @@ class upfile {
 		//新建保存文件
 		if(stripos($this->savepath, PATH_WEB.'upload/') !== 0){
 			return $this->error($_M['word']['upfileFail2']);
+		}
+		if(strstr($this->savepath, './')){
+			return $this->error($_M['word']['upfileTip3']);
 		}
 		if (!makedir($this->savepath)) {
 			return $this->error($_M['word']['upfileFail2']);
@@ -144,7 +170,7 @@ class upfile {
 		$file_name=$this->savepath.$this->savename;
 		if (stristr(PHP_OS,"WIN")) {
 			$file_name = @iconv("utf-8","GBK",$file_name);
-		}		
+		}
 		if (function_exists("move_uploaded_file")) {
 			if (move_uploaded_file($file_tmp, $file_name)) {
 				$upfileok=1;
@@ -185,7 +211,7 @@ class upfile {
 		$ext = explode(".", $filename);
 		return $this->ext = $ext[count($ext)-1];
 	}
-	
+
 	/**
 	 * 是否重命名
 	 * @param  string $filename 	文件名
@@ -197,7 +223,7 @@ class upfile {
 			srand((double)microtime() * 1000000);
 			$rnd = rand(100, 999);
 			$filename = date('U') + $rnd;
-			$filename = $filename.".".$this->ext;	
+			$filename = $filename.".".$this->ext;
 		} else {
 			$name_verification = explode('.',$filename);
 			$verification_mun = count($name_verification);
@@ -221,17 +247,17 @@ class upfile {
 			$savename_temp=str_replace('.'.$this->ext,'',$filename_temp);
 			while (file_exists($this->savepath.$filename_temp)) {
 				$i++;
-				$filename_temp = $savename_temp.'('.$i.')'.'.'.$this->ext;	
+				$filename_temp = $savename_temp.'('.$i.')'.'.'.$this->ext;
 			}
 			if ($i != 0) {
-				$filename = str_replace('.'.$this->ext,'',$filename).'('.$i.')'.'.'.$this->ext;	
+				$filename = str_replace('.'.$this->ext,'',$filename).'('.$i.')'.'.'.$this->ext;
 			}
 		}
 		return $this->savename = $filename;
 	}
 
 	/**
-	 * 上传错误调用方法		
+	 * 上传错误调用方法
 	 * @param string $error 错误信息
 	 * @return array 返回错误信息
 	 */
@@ -240,7 +266,7 @@ class upfile {
 		$back['errorcode'] = $error;
 		return $back;
 	}
-	
+
 	/**
 	 * 上传成功调用方法
 	 * @param string $path 路径

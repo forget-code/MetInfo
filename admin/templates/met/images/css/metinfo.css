@@ -23,7 +23,7 @@ textarea.textarea {
 	outline: 0;
 }
 input.text {
-	height: 35px;
+	height: 35px !important;
 	line-height: 35px\9;
 	padding: 2px 5px;
 	border: 1px solid #ccc;

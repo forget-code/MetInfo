@@ -1,14 +1,13 @@
 <?php
-$sidebar_allcolumn=$sidebar_allcolumn?$sidebar_allcolumn:$class1_info[name];
 $active = $classnow==$class1?' class="active"':'';
 echo <<<EOT
 -->
 <ul class="sidebar-column list-icons">
-    <li><a href="{$class1_info['url']}" title="{$sidebar_allcolumn}"{$active} {$metblank}>{$sidebar_allcolumn}</a></li>
+    <li><a href="{$class1_info['url']}" title="{$class1_info[name]}"{$active} {$metblank}>{$class1_info[name]}</a></li>
 <!--
 EOT;
-foreach($nav_list2[$navdown] as $key => $val){
-    if($key<$sidebar_column_num){
+foreach($nav_list2[$class1] as $key => $val){
+    if($key<$lang_sidebar_column_num){
         $active = $val['id']==$class2?' class="active"':'';
 echo <<<EOT
 -->
@@ -20,7 +19,7 @@ EOT;
         $val_url=$val[url];
         if($dropok){
             $val_url="javascript:;";
-            $data_toggle=' data-toggle="collapses"';
+            $data_toggle=" data-toggle='collapse' data-target='.sidebar-column3-{$key}'";
             $data_icon=' <i class="wb-chevron-right-mini"></i>';
         }
 echo <<<EOT
@@ -33,8 +32,8 @@ EOT;
         if($dropok){
 echo <<<EOT
 -->
-        <div class="collapse">
-            <ul>
+        <div class="collapse sidebar-column3-{$key}">
+            <ul class='m-t-5 p-l-20'>
 <!--
 EOT;
             if($val['isshow']){
@@ -46,7 +45,7 @@ echo <<<EOT
 <!--
 EOT;
             }
-            foreach($nav_list3[$val['id']] as $key=>$val2){
+            foreach($nav_list3[$val['id']] as $val2){
                 $active = $val2['id'] == $classnow?' class="active"':'';
 echo <<<EOT
 -->

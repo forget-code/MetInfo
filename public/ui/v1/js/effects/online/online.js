@@ -176,6 +176,7 @@ function olne_app(msg,type,mxq,myq){
 	my=Number(myq);
 	if(type>0 && type<3){//0固左1滚左2滚右3关闭4固右
 		var floatDivr=document.getElementById('onlinebox');
+		floatDivr.style.position = "absolute";
 		Floaters.addItem(floatDivr,mx,my);
 		Floaters.sPlay();
 	}else{
@@ -189,7 +190,7 @@ function olne_app(msg,type,mxq,myq){
 }
 
 $(document).ready(function() {
-	var url=met_weburl+'include/online.php?metinfover_url=v1&lang='+lang;
+	var url=met_weburl+"online/?lang="+lang;
 	$.ajax({
 		type: "POST",
 		url: url,

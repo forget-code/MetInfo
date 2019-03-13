@@ -68,7 +68,6 @@ $(window.parent.document).find("#adminsetup").addClass('stepnow');
      <input name="setup" type="hidden" value="1">
 	 <input name="cndata" type="hidden" value="$cndata" />
 	 <input name="endata" type="hidden" value="$endata" />
-	 <input name="tcdata" type="hidden" value="$tcdata" />
 	 <input name="showdata" type="hidden" value="$showdata" />
 	 <input name="se360" type="hidden" value="111111111" />
 	  <fieldset>
@@ -76,7 +75,7 @@ $(window.parent.document).find("#adminsetup").addClass('stepnow');
 		<div class="section1">
 		  <p>管理员用户名</p>
 		  <input type="text" class="text" name="regname" />
-		  <span>输入系统管理员帐号的用户名</span>
+		  <span>系统创始人管理员帐号,建议不要使用admin</span>
 		</div>
 		<div class="section1">
 		  <p>管理员密码</p>
@@ -115,9 +114,7 @@ if(($cndata=='yes'&&$endata!=='yes'&&$tcdata!=='yes')||($cndata=='yes'&&($endata
 if(($endata=='yes'&&$cndata!=='yes'&&$tcdata!=='yes')||($cndata!='yes'&&$endata=='yes'&&$tcdata=='yes')){
 	$lang_en='checked="checked"';
 }
-if($tcdata=='yes'&&$cndata!=='yes'&&$endata!=='yes'){
-	$lang_tc='checked="checked"';
-}
+
 echo <<<EOT
 -->
 	  <fieldset>

@@ -7,7 +7,7 @@ foreach($product_list as $key=>$val){
 	}
 	$val[imgurls]="{$thumb_src}dir={$val[imgurl]}&x={$met_productimg_x}&y={$met_productimg_y}";
 	if($key<4&&!$mbpagelist){
-		$shown=' shown';
+		$shown=$lang_product_listmasonry_ok?' shown':'';
 		$original = 'src';
 	}else{
 		$shown='';
@@ -15,10 +15,10 @@ foreach($product_list as $key=>$val){
 	}
 echo <<<EOT
 -->
-<li class="card radius0{$val['page']}{$shown}">
+<li class="card{$val['page']}{$shown}">
 	<div class="cover overlay overlay-hover animation-hover">
 		<a href="{$val[url]}" title="{$val[title]}" {$metblank}>
-			<img class="cover-image overlay-scale" {$original}="{$val['imgurls']}" alt="{$val[title]}" style='height:200px;'>
+			<img class="cover-image overlay-scale" {$original}="{$val['imgurls']}" alt="{$val[title]}" height='100'>
 			<figcaption class="overlay-panel overlay-background overlay-fade text-xs-center vertical-align">
 				<div class="vertical-align-middle">
 					<h4 class="animation-slide-bottom m-0 font-weight-300">

@@ -30,6 +30,11 @@ class curl{
 		}
 		switch($name){
 			case 'host':
+				$value = trim($value);
+				if(substr($value, 0, 8) == 'https://'){
+					$this->set('ssl', 1);
+				}
+				$value = trim(str_replace('https://', '', $value), '/');
 				$this->host = trim(str_replace('http://', '', $value), '/');
 			break;
 			case 'file':
@@ -37,6 +42,9 @@ class curl{
 			break;
 			case 'ignore':
 				$this->ignore = $value;
+			break;
+			case 'ssl':
+				$this->ssl = $value;
 			break;
 			default:
 				return false;
@@ -54,7 +62,11 @@ class curl{
 		global $_M;
 		if(get_extension_funcs('curl') && function_exists('curl_init') && function_exists('curl_setopt') && function_exists('curl_exec') && function_exists('curl_close')){
 			$curlHandle = curl_init();
-			curl_setopt($curlHandle, CURLOPT_URL, 'http://'.$this->host.'/'.$this->file); 
+			if($this->ssl == 1){
+				curl_setopt($curlHandle, CURLOPT_URL, 'https://'.$this->host.'/'.$this->file); 
+			}else{
+				curl_setopt($curlHandle, CURLOPT_URL, 'http://'.$this->host.'/'.$this->file);
+			}
 			curl_setopt($curlHandle, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
 			curl_setopt($curlHandle, CURLOPT_REFERER, $_M['config']['met_weburl']);
 			curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, 1); 
@@ -62,6 +74,11 @@ class curl{
 			curl_setopt($curlHandle, CURLOPT_TIMEOUT, $timeout);
 			curl_setopt($curlHandle, CURLOPT_POST, 1);	
 			curl_setopt($curlHandle, CURLOPT_POSTFIELDS, $post);
+			if($this->ssl == 1){
+				curl_setopt($curlHandle, CURLOPT_SSL_VERIFYPEER, false);
+				curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+				curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+			}
 			$result = curl_exec($curlHandle);
 			curl_close($curlHandle); 
 		}else{

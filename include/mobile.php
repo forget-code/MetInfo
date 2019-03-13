@@ -156,13 +156,13 @@ if($pcok!='pc'){
 		$met_footother ='';
 		$met_foottext ='';
 		
-		if($metinfover){
-		$wap_footertext.="
-		<script src=\"../public\ui\mobile\js\ini.js\" type=\"text/javascript\"></script>\n
-		<link rel=\"stylesheet\" type=\"text/css\" href=\"../public/ui/v1/js/effects/video-js/video-js.css\" />\n
-		<script src=\"../public/ui/v1/js/effects/video-js/video_hack.js\" type=\"text/javascript\"></script>\n
-		";
-		}
+		// if($metinfover){
+		// $wap_footertext.="
+		// <script src=\"../public\ui\mobile\js\ini.js\" type=\"text/javascript\"></script>\n
+		// <link rel=\"stylesheet\" type=\"text/css\" href=\"../public/ui/v1/js/effects/video-js/video-js.css\" />\n
+		// <script src=\"../public/ui/v1/js/effects/video-js/video_hack.js\" type=\"text/javascript\"></script>\n
+		// ";
+		// }
 		
 		$met_flasharraytd = array();
 		foreach($met_flasharray as $key=>$val){

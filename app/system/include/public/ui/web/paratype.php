@@ -18,7 +18,7 @@ EOT;
 if($val['type']==1){
 echo <<<EOT
 -->
-			<div class="form-group met-form-choice">				
+			<div class="form-group">				
 				<div class="row">
 					<div class="met-form-file-title col-md-3">{$val['name']}</div>
 					<div class="col-md-9">
@@ -36,7 +36,7 @@ EOT;
 if($val['type']==2){
 echo <<<EOT
 -->
-			<div class="form-group met-form-choice">
+			<div class="form-group">
 				<div class="row">
 					<div class="met-form-file-title col-md-3">{$val['name']}</div>
 					<div class="col-md-9">
@@ -69,7 +69,7 @@ EOT;
 if($val['type']==3){
 echo <<<EOT
 -->
-			<div class="form-group met-form-choice">				
+			<div class="form-group">				
 				<div class="row">
 					<div class="met-form-file-title col-md-3">{$val['name']}</div>
 					<div class="col-md-9">
@@ -87,7 +87,7 @@ EOT;
 if($val['type']==4){
 echo <<<EOT
 -->
-			<div class="form-group met-form-choice">
+			<div class="form-group">
 				<div class="row">
 					<div class="met-form-file-title col-md-3">{$val['name']}</div>
 					<div class="col-md-9">
@@ -128,7 +128,7 @@ EOT;
 if($val['type']==5){
 echo <<<EOT
 -->
-			<div class="form-group met-form-choice met-upfile">
+			<div class="form-group met-upfile">
 				<div class="row">
 					<div class="met-form-file-title col-md-3">{$val['name']}</div>
 					<div class="col-md-9">
@@ -146,7 +146,7 @@ EOT;
 if($val['type']==6){
 echo <<<EOT
 -->
-			<div class="form-group met-form-choice">
+			<div class="form-group">
 				<div class="row">
 					<div class="met-form-file-title col-md-3">{$val['name']}</div>
 					<div class="col-md-9">
@@ -182,7 +182,7 @@ $city = $para['info_'.$val['id'].'_2'];
 $dist = $para['info_'.$val['id'].'_3'];
 echo <<<EOT
 -->
-			<div class="form-group met-form-choice">
+			<div class="form-group">
 				<div class="row select-linkage">
 					<div class="met-form-file-title col-md-3">{$val['name']}</div>
 					<div class="col-md-3"><select name="info_{$val['id']}_1" data-selected="{$prov}" class="form-control prov" {$wr_ok}></select></div>
@@ -198,7 +198,7 @@ EOT;
 if($val['type']==8){
 echo <<<EOT
 -->
-   			<div class="form-group met-form-choice">
+   			<div class="form-group">
 				<div class="row">
 					<div class="met-form-file-title col-md-3">{$val['name']}</div>
 					<div class="col-md-9">

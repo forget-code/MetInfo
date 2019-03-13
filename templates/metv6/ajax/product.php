@@ -1,0 +1,32 @@
+<?php defined('IN_MET') or exit('No permission'); ?>
+<if value="$c['met_product_page'] && $data['sub']">
+	<tag action='category' cid="$data['classnow']" type="son" num="$c['met_product_list']">
+	<li class=" shown">
+		<div class="card card-shadow">
+			<figure class="card-header cover">
+				<a href="{$m.url}" title="{$m.name}" {$m.urlnew}>
+					<img class="cover-image" src="{$m.columnimg|thumb:$c['met_productimg_x'],$c['met_productimg_y']}" alt="{$m.name}" height='100'>
+				</a>
+			</figure>
+			<h4 class="card-title m-0 p-x-10 font-size-16 text-xs-center">
+				<a href="{$m.url}" {$m.urlnew} title="{$m.name}" class="block text-truncate">{$m.name}</a>
+			</h4>
+		</div>
+	</li>
+	</tag>
+	<else/>
+	<tag action='product.list' num="$c['met_product_list']">
+	<li class=" shown">
+		<div class="card card-shadow">
+			<figure class="card-header cover">
+				<a href="{$v.url}" title="{$v.title}" {$v.urlnew} target="{$lang.met_listurlblank}">
+					<img class="cover-image" src="{$v.imgurl|thumb:$c['met_productimg_x'],$c['met_productimg_y']}" alt="{$v.title}" height='100'>
+				</a>
+			</figure>
+			<h4 class="card-title m-0 p-x-10 font-size-16 text-xs-center">
+				<a href="{$v.url}" title="{$v.title}" {$v.urlnew} class="block text-truncate" target="{$lang.met_listurlblank}">{$v.title}</a>
+			</h4>
+		</div>
+	</li>
+	</tag>
+</if>

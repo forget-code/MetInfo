@@ -45,7 +45,6 @@ class user {
         if (!$this->check_password($password)) {
             return false;
         }
-      
         $this->password = $password;
         $password = md5($password);
         return $this->insert_uesr_sql($username, $password, $email, $tel, $valid, $groupid, $source);
@@ -468,16 +467,27 @@ class user {
 
     //长度
     public function check_str($username) {
+        global $_M;
         $len = str_length($username, 1);
         if ($len < 2 || $len > 30) {
             $this->errorno = 'error_username_cha';
             return false;
         }
-        $guestexp = '\xA1\xA1|\xAC\xA3|^Guest|^\xD3\xCE\xBF\xCD|\xB9\x43\xAB\xC8';
+
+        #$guestexp = '\xA1\xA1|\xAC\xA3|^Guest|^\xD3\xCE\xBF\xCD|\xB9\x43\xAB\xC8';
+        $guestexp = '\xA1\xA1|^Guest|^\xD3\xCE\xBF\xCD|\xB9\x43\xAB\xC8';
         if ($len > 30 || $len < 2 || preg_match("/\s+|^c:\\con\\con|[%,\*\"\s\<\>\&]|$guestexp/is", $username)) {
             $this->errorcode = "含有非法字符";
             $this->errorno = 'error_username_cha';
             return false;
+        }
+        $arr = (explode('|',$_M['config']['met_fd_word']));
+        foreach ($arr as $val) {
+            if (strstr($username ,$val)) {
+                $this->errorcode = "含有非法字符";
+                $this->errorno = 'error_username_cha';
+                return false;
+            }
         }
         return true;
     }
@@ -495,7 +505,17 @@ class user {
         return $re;
     }
 
-    public function get_login_user_info() {
+    public function get_login_user_info($met_auth = '', $met_key = '') {
+        global $_M;
+        $m = $this->get_m();
+        if (!$m) {
+            $met_auth =  $met_auth ? $met_auth : $_M['form']['acc_auth'];
+            $met_key  =  $met_key  ?  $met_key : $_M['form']['acc_key'];
+            $userclass = load::sys_class('user', 'new');
+            if($met_auth && $met_key) {
+                $this->login_by_auth($met_auth, $met_key);
+            }
+        }
         return $this->get_m();
     }
 
@@ -564,13 +584,43 @@ class user {
     //cookie
     public function logout() {
         global $_M;
-        met_cooike_unset('metinfo_member_name');
+        //met_cooike_unset('metinfo_member_name');
         met_setcookie("acc_auth", '');
         met_setcookie("acc_key", '');
         $this->set_m('');
         # 系统登陆退出接口
-        load::plugin('dologout');
-       
+        load::plugin('dologout'); 
+    }
+
+    public function check_power($groupid = 0) {
+        global $_M;
+        $user = $this->get_login_user_info();
+        if(!$user){
+            met_cooike_start();//读取已登管理员信息
+            $_M['admin']['username'] =  get_met_cookie('metinfo_admin_name');
+            $_M['user'] = array();
+        }
+        if($groupid > 0){
+            if($_M['admin']['username']){
+                return 1;
+            }
+            if(!$user['access']){
+				return -2;
+			}
+			$group = load::sys_class('group', 'new')->get_group($groupid);
+			if($user['access'] < $group['access']){
+				return -1;
+			}
+        }
+        return 1;
+    }
+
+    public function check_power_script($str, $groupid) {
+        global $_M;
+        $str = urlencode(load::sys_class('auth', 'new')->encode($str));
+        $groupid = urlencode(load::sys_class('auth', 'new')->encode($groupid));
+        $url = load::sys_class('handle', 'new')->url_transform("{$_M['url']['entrance']}?m=include&c=access&a=doinfo&str={$str}&groupid={$groupid}");
+        return "<script language='javascript' src='{$url}'></script>";
     }
 
 }

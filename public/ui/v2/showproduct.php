@@ -1,7 +1,11 @@
 <?php
+$paths[img_slick]=1;
+$paths[editor]=1;
+$paths[product]=1;
+$page_type='showproduct';
 if($lang_product_pagetype==1){
     $fname = 'showproduct';// 标准模式
-    $patternshow = 1;
+    $subcolumn_type = 1;
 }else{
     $fname='fashion/fashion';// 时尚模式
     $subcolumn_no = 1;

@@ -28,7 +28,7 @@ function get_met_cookie($key){
 			$userclass->login_by_auth($_M['form']['acc_auth'], $_M['form']['acc_key']);
 		}
 		$m = $userclass->get_login_user_info();
-		$m['metinfo_admin_name'] = $m['username'];
+		$m['metinfo_admin_name'] = $_M['user']['cookie']['metinfo_admin_name'];
 		$m['metinfo_member_name'] = $m['username'];
 		$m['metinfo_member_id'] = $m['id'];
 		$m['metinfo_admin_id'] = $m['id'];                              
@@ -63,8 +63,10 @@ function met_cooike_start(){
 		if(defined('IN_ADMIN')){
 			$_M['user']['admin_name'] = get_met_cookie('metinfo_admin_name');
 			$_M['user']['admin_id'] = $_M['user']['cookie']['metinfo_admin_id'];
-			$privilege = background_privilege();
-			$_M['user']['langok'] = $privilege['langok'];
+			if(function_exists('background_privilege')){
+				$privilege = background_privilege();
+				$_M['user']['langok'] = $privilege['langok'];
+			}
 		}
 		$_M['user']['cookie']['time'] = time();
 		$json = json_encode($_M['user']['cookie']);
@@ -77,7 +79,7 @@ function met_cooike_start(){
  * 清除COOKIE
  * @param  int $userid 用户ID    
  */
-function met_cooike_unset($userid){
+function met_cooike_unset($userid=0){
 	global $_M;
 	$met_admin_table = $_M['table']['admin_table'];
 	$userid = sqlinsert($userid);

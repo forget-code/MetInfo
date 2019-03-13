@@ -139,7 +139,7 @@ function metmodname($module){
 }
 
 function template($template){
-	global $_M,$metinfover,$shop_tem;
+	global $_M,$metinfover;
     if($metinfover){
         $uifile = $metinfover;//修改赋值（新模板框架v2）
         $uisuffix = 'php';
@@ -149,7 +149,7 @@ function template($template){
     }
     $path = PATH_WEB."templates/{$_M['config']['met_skin_user']}/{$template}.html";
     !file_exists($path) && $path=PATH_WEB."templates/{$_M['config']['met_skin_user']}/{$template}.php";
-    if(M_NAME=='shop' && $metinfover=='v2' && $shop_tem!='tem') !file_exists($path) && $path=PATH_ALL_APP."shop/web/templates/met/{$template}.php";// 商城V3使用默认模板时
+    if($metinfover=='v2') !file_exists($path) && $path=PATH_ALL_APP."shop/web/templates/met/{$template}.php";// 商城V3使用默认模板时
     !file_exists($path) && $path=PATH_WEB."public/ui/{$uifile}/{$template}.{$uisuffix}";
 	return $path;
 }
@@ -169,7 +169,7 @@ function footer(){
  */
 function cache_online(){
     global $_M;
-	$query="SELECT * FROM {$_M['table']['met_online']} WHERE lang='{$_M['lang']}' ORDER BY no_order";
+	$query="SELECT * FROM {$_M['table']['online']} WHERE lang='{$_M['lang']}' ORDER BY no_order";
 	$result= DB::query($query);
 	while($list = DB::fetch_array($result)){
 		$data[]=$list;
@@ -413,34 +413,36 @@ function get_keyword_str($str,$keyword,$getstrlen,$searchtype,$type){
 }
 /*模板未授权*/
 function authtemp($code){
-global $au_site,$met_weburl,$theme_preview;
-$met_weburl = $_SERVER['HTTP_HOST'];
-if(function_exists(authcode))
-run_strtext(authcode($code,DECODE,md5("metinfo")));
-
-$au_site=explode("|",$au_site);
-foreach($au_site as $val)
-{
-	if(stristr($met_weburl,$val))
-	{
-		return;
-	}
-}
-if($theme_preview){
-var_export("-->");
-echo "<script>alert(\"{$met_weburl}未授权使用此模板或已经过期!Powered by MetInfo\");window.parent.close();</script>";
-/*
-window.parent.document.getElementsByName('tabs_item_set')[0].innerHTML = '';
-window.parent.document.getElementsByName('tabs_item_set')[1].innerHTML = '';
-window.parent.document.getElementsByName('tabs_item_set')[2].innerHTML = '';
-window.parent.document.getElementsByName('tabs_item_set')[3].innerHTML = '';
-*/
+    global $au_site,$met_weburl,$theme_preview;
+    $met_weburl = $_SERVER['HTTP_HOST'];
+    if(function_exists(authcode)){
+        $res = run_strtext(authcode($code,DECODE,md5("metinfo")));
+    }
+    $au_site=explode("|",$au_site);
+    foreach($au_site as $val)
+    {
+        if(stristr($met_weburl,$val))
+        {
+            return $res;
+        }
+    }
+    if($theme_preview){
+        var_export("-->");
+        echo "<script>alert(\"{$met_weburl}未授权使用此模板或已经过期!Powered by MetInfo\");window.parent.close();</script>";
+        /*
+        window.parent.document.getElementsByName('tabs_item_set')[0].innerHTML = '';
+        window.parent.document.getElementsByName('tabs_item_set')[1].innerHTML = '';
+        window.parent.document.getElementsByName('tabs_item_set')[2].innerHTML = '';
+        window.parent.document.getElementsByName('tabs_item_set')[3].innerHTML = '';
+        */
 //okinfo("http://www.metinfo.cn","{$met_weburl}未授权使用此模板或已经过期! Powered by MetInfo");exit();
-}
+    }
+
 }
 /*把字符串当成代码运行*/
 function run_strtext($code){
-    return eval($code);
+    eval($code);
+    return $code;
 }
 /*图片显示大小*/
 function met_imgxy($xy,$module){
@@ -489,7 +491,10 @@ function met_rand($length){
 /*内容页面容热门标签替换和内容分页*/
 function contentshow($content) {
 global $lang_PagePre,$lang_PageNext,$navurl,$index,$lang;
-global $met_atitle,$met_alt,$metinfover;
+global $met_atitle,$met_alt,$metinfover,$_M;
+$met_atitle = $_M['config']['met_atitle'];
+$met_alt = $_M['config']['met_alt'];
+$metinfover = $_M['config']['metinfover'];
 $str=met_cache('str_'.$lang.'.inc.php');
 if(!$str){$str=cache_str();}
 foreach ($str as $key=>$val){
@@ -624,6 +629,25 @@ if(!function_exists('json_encode')){
         $json = new Services_JSON();
         return $json->decode($val);
     }
+}
+
+/*兼容老模板加密*/
+function met_temprecode($tempname=''){
+    global $_M;
+    if ($tempname == '') {
+        $tempname = $_M['config']['met_skin_user'];
+    }
+    $tindex = file_get_contents(PATH_WEB . "templates/{$tempname}/index.php");
+    $pattern = "/authtemp\(.+\)\;/";
+    preg_match_all($pattern, $tindex, $matches);
+    $code = $matches[0][0];
+    if(!$code){
+        return false;
+    }
+    $recode = '$res = ' . $code . 'eval($res);';
+    $content = str_replace($code, $recode, $tindex);
+    file_put_contents(PATH_WEB . "templates/{$tempname}/index.php", $content);
+    return true;
 }
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.

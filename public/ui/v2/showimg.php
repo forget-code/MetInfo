@@ -1,18 +1,21 @@
 <?php
-$subcolumn_no = 1;
+$paths[img_slick]=1;
+$paths[editor]=1;
+$paths[img]=1;
+$page_type='showimg';
 require_once template('head');
-methtml_imgdisplay('img');//图片模块详情页数据处理
+methtml_imgdisplay('img');// 图片模块详情页数据处理
 $img['content'] = $metresclass->lazyload($img['content']);// 内容图片懒加载设置
 if(!$img['issue']) $img['issue'] = $met_webname;// 发布者判断
 $img_num=$displaylist?count($displaylist):count($img[imgurl]);// 展示图片数量判断
 if($img_num>1) $paddingb=' slick-dotted';// 展示图片数量>1时的样式
 echo <<<EOT
 -->
-<section class="met-shownews border-top1 met-page-body bg-pagebg1">
+<main class="met-shownews page-content border-top1">
 	<div class="container">
 		<div class="row">
-			<div class="col-lg-9 met-shownews-body met-page-content box-shadow1{$content_position}" boxmh-mh>
-				<div class="met-shownews-header details-title border-bottom1">
+			<article class="col-lg-9 met-shownews-body panel panel-body m-b-0{$content_position}" boxmh-mh>
+				<section class="details-title border-bottom1">
 					<h1 class='m-t-10 m-b-5'>{$img[title]}</h1>
 					<div class="info">
 						<span>
@@ -25,14 +28,14 @@ echo <<<EOT
 							<i class="icon wb-eye m-r-5" aria-hidden="true"></i>{$img['hits']}
 						</span>
 					</div>
-				</div>
+				</section>
 <!--
 EOT;
 // 展示图片列表
 if($img_num){
 echo <<<EOT
 -->
-				<div class='met-showimg-con'>
+				<section class='met-showimg-con'>
 					<div class='met-showimg-list fngallery{$paddingb} cover text-xs-center' id="met-imgs-slick">
 <!--
 EOT;
@@ -73,7 +76,7 @@ EOT;
 echo <<<EOT
 -->
 					</div>
-				</div>
+				</section>
 <!--
 EOT;
 }
@@ -101,7 +104,7 @@ EOT;
 }
 echo <<<EOT
 -->
-				<div class="met-editor clearfix p-x-0">
+				<section class="met-editor clearfix m-t-20">
 					{$img[content]}
 <!--
 EOT;
@@ -109,21 +112,19 @@ EOT;
 if($lang_sharecode){
 echo <<<EOT
 -->
-					<div class="met_tools_code">{$lang_sharecode}</div>
+					<div class="met-tools">{$lang_sharecode}</div>
 <!--
 EOT;
 }
 echo <<<EOT
 -->
-				</div>
-				<div class="met-shownews-footer border-top1">
+				</section>
 <!--
 EOT;
 require_once template('module/page');// 翻篇
 echo <<<EOT
 -->
-				</div>
-			</div>
+			</article>
 			<div class="col-lg-3">
 				<div class="row">
 <!--
@@ -135,7 +136,7 @@ echo <<<EOT
 			</div>
 		</div>
 	</div>
-</section>
+</main>
 <!--
 EOT;
 require_once template('foot');

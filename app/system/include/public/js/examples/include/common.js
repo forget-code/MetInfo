@@ -3,10 +3,10 @@ define(function(require, exports, module) {
 	window.met_mobile= document.body.clientWidth<700?true:false;
 	var $ = require('jquery');
 	window.jQuery = window.$ = $;
-	
+
 	/*增加对$.browser.msie的支持*/
 	require('epl/include/jquery-migrate-1.2.1.min');
-	
+
 	function AssemblyLoad(dom){
 		/*上传组件*/
 		if(dom.find('.ftype_upload .fbox input').length>0){
@@ -14,62 +14,78 @@ define(function(require, exports, module) {
 				a.func(dom);
 			});
 		}
-		
+
 		/*编辑器*/
 		if(dom.find('.ftype_ckeditor .fbox textarea').length>0){
 			require.async('edturl/own',function(a){
 				a.func(dom);
 			});
 		}
-		
+
 		/*颜色选择器*/
 		if(dom.find('.ftype_color').length>0){
 			require.async('epl/color/set',function(a){
 				a.func(dom);
 			});
 		}
-		
+
 		/*滑块*/
 		if(dom.find('.ftype_range .fbox input').length>0){
 			require.async('epl/range/range',function(a){
 				a.func(dom);
 			});
 		}
-		
+
 		/*日期选择器*/
 		if(dom.find('.ftype_day input').length>0){
 			require.async('epl/time/time',function(a){
 				a.func(dom);
 			});
 		}
-		
+
 		/*联动菜单*/
 		if(dom.find('.ftype_select-linkage .fbox').length>0){
 			require.async('epl/select-linkage/select',function(a){
 				a.func(dom);
 			});
 		}
-		
+
 		/*标签增加器*/
 		if(dom.find('.ftype_tags').length>0){
 			require.async('epl/tags/tags',function(a){
 				a.func(dom);
 			});
 		}
-			
+
 		/*表格控件*/
-		if(dom.find('.ui-table').length>0){
+		if(dom.find('.ui-table:not([data-noajax])').length>0){
 			require.async('epl/table/table',function(a){
 				a.func(dom);
 			});
 		}
+
+		/*特殊参数表单控件处理*/
+		var $input_data_name=dom.find('.ftype_input input[data-name]');
+		if($input_data_name.length){
+			$input_data_name.each(function(index, el) {
+				if($(this).data('name')=='met_font'){
+					var met_font=new Array('宋体','Microsoft YaHei','Tahoma','Verdana','Simsun','Segoe UI','Lucida Grande','Helvetica','Arial','FreeSans','Arimo','Droid Sans','wenquanyi micro hei','Hiragino Sans GB','Hiragino Sans GB W3','sans-serif'),
+						met_font_str='<datalist id="tsselect_met_font">';
+					$.each(met_font, function(index, val) {
+						met_font_str+='<option value="'+val+'"/>';
+					});
+					met_font_str+='</datalist>';
+					$(this).attr({list:'tsselect_met_font'}).after(met_font_str);
+				}
+			});
+		}
 	}
-	
+
 	/*加载组件*/
 	exports.AssemblyLoad = function(dom){
 		AssemblyLoad(dom);
 	}
-	
+
 	/*默认选中*/
 	exports.defaultoption = function(box){
 		function ckchuli(n,v){
@@ -99,9 +115,9 @@ define(function(require, exports, module) {
 					}
 				}
 			});
-		}	
+		}
 	}
-	
+
 	exports.metalert = function(data){
 		var html     = data.html,
 			type     = data.type?data.type:'alert',
@@ -110,7 +126,7 @@ define(function(require, exports, module) {
 			MaxWidth = data.MaxWidth?data.MaxWidth:400;
 		switch(type){
 			case 'alert':
-				html = "<p>"+html+"</p><ul class='cd-buttons metalert_type_alert'><li><a href='#0'>我知道了</a></li></ul>";
+				html = "<p>"+html+"</p><ul class='cd-buttons metalert_type_alert'><li><a href='#0'>"+METLANG.jslang5+"</a></li></ul>";
 			break;
 			case 'confirm':
 				html = "<p>"+html+"</p><ul class='cd-buttons metalert_type_confirm'><li><a href='#0' data-buer='1'>"+LeftTxt+"</a></li><li><a href='#0' data-buer='0'>"+RighTtxt+"</a></li></ul>";
@@ -151,19 +167,19 @@ define(function(require, exports, module) {
 			}
 		});
 	}
-	
+
 	/*数值转换为金额*/
 	exports.fmoney = function(s, n){
-		n = n > 0 && n <= 20 ? n : 2; 
-		s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + ""; 
-		var l = s.split(".")[0].split("").reverse(), r = s.split(".")[1]; 
-		t = ""; 
-		for (i = 0; i < l.length; i++) { 
-		t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : ""); 
-		} 
-		return '￥'+t.split("").reverse().join("") + "." + r; 
-	} 
-	
+		n = n > 0 && n <= 20 ? n : 2;
+		s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";
+		var l = s.split(".")[0].split("").reverse(), r = s.split(".")[1];
+		t = "";
+		for (i = 0; i < l.length; i++) {
+		t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
+		}
+		return '￥'+t.split("").reverse().join("") + "." + r;
+	}
+
 	/*列表自适应排版*/
 	function listpun(zd,ld,min,i){
 			i = i?i:1;
@@ -182,21 +198,37 @@ define(function(require, exports, module) {
 	exports.listpun = function(zd,ld,min){//整体元素,列表元素,最小宽度
 		listpun(zd,ld,min);
 	}
-	
+
 	/*替换URL特定参数*/
 	exports.replaceParamVal = function(Url,Name,Val){
 		var re=eval('/('+ Name+'=)([^&]*)/gi');
 		var nUrl = Url.replace(re,Name+'='+Val);
 		return nUrl;
 	}
-		
+
 	/*等高*/
 	exports.ifreme_methei = function(mh){ }
-	
+
 	/*语言文字*/
-		
+
 	exports.langtxt = function(){
 		return langtxt;
 	}
-	
+
+	/*隐藏、展开更多设置*/
+	exports.showMoreSet = function(){
+		$(document).on('click','.showmoreset-btn',function(e){
+			var $self=$(this),
+				index=$(this).index($('.showmoreset-btn')),
+				$content=$('.showmoreset-content').eq(index);
+			$content.slideToggle(300);
+			setTimeout(function(){
+				if($content.is(':visible')){
+					$self.html(METLANG.jslang7);
+				}else{
+					$self.html(METLANG.jslang6);
+				}
+			},500)
+		})
+	}
 });

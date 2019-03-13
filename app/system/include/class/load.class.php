@@ -1,6 +1,6 @@
 <?php
-# MetInfo Enterprise Content Management System 
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+# MetInfo Enterprise Content Management System
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 
 defined('IN_MET') or exit('No permission');
 
@@ -19,7 +19,7 @@ class load {
 	public static function sys_class($classname ,$action = '') {
 		return self::_load_class(PATH_SYS_CLASS, $classname, $action);
 	}
-	
+
 	/**
 	 * 加载系统函数库
 	 * @param  string $funcname 需要引用系统函数库名，一般不需要加func.php
@@ -28,21 +28,22 @@ class load {
 	public static function sys_func($funcname) {
 		return self::_load_func(PATH_SYS_FUNC, $funcname);
 	}
-	
+
 	/**
 	 * 加载模块功能类
 	 */
 	public static function mod_class($classname ,$action = '') {
 		$classname=str_replace('.class.php', '', $classname);
-		$filedir = PATH_MODULE_FILE;
-		if(file_exists($filedir.'include/class/'.$classname.'.class.php')){
-			return self::_load_class($filedir.'include/class/', $classname, $action);
+		$filedir = PATH_SYS;
+		$classdir = self::dir_get($classname);
+		$dirs = explode('/', trim($classdir['dir'], '/'));
+		if(file_exists(PATH_SYS.$dirs[0].'/include/class/'.$classdir['file'].'.class.php')){
+			return self::_load_class(PATH_SYS.$dirs[0].'/include/class/', $classdir['file'], $action);
 		}else{
-			$classdir = self::dir_get($classname);
 			return self::_load_class($filedir.$classdir['dir'], $classdir['file'], $action);
 		}
 	}
-	
+
 	/**
 	 * 加载模块功能方法
 	 */
@@ -101,7 +102,7 @@ class load {
 			return self::_load_func($filedir.$funcdir['dir'], $funcdir['file']);
 		}
 	}
-	
+
 	/**
 	 * 加载模块
 	 * @param  string $funcname    需要引用模块路径
@@ -118,7 +119,7 @@ class load {
 		}
 		return self::_load_class($path, $modulename, $action);
 	}
-	
+
 	/**
 	 * 加载系统模块
 	 * @param  string $funcname    需要引用模块路径
@@ -128,7 +129,7 @@ class load {
 	public static function sys_module($modulename='') {
 		return self::module(PATH_SYS_MODULE, $modulename);
 	}
-	
+
 		public static function is_plugin_exist($plugin){
 			global $_M;
            $query = "SELECT * FROM {$_M['table']['app_plugin']} WHERE m_action = '{$plugin}' AND effect='1'";
@@ -139,7 +140,7 @@ class load {
 	 * 加载插件
 	 * @param  string $plugin 需要加载的插件系统名
 	 */
-	public static function plugin($plugin, $action = 0, $parameter){
+	public static function plugin($plugin, $action = 0, $parameter=array()){
 		global $_M;
 		if (!$_M['plugin']) {
 			$query = "SELECT * FROM {$_M['table']['app_plugin']}  WHERE effect='1' ORDER BY no_order DESC";
@@ -156,7 +157,7 @@ class load {
 		foreach ($_M['plugin'][$plugin] as $key => $val) {
 			$own = $_M['url']['own'];
 			$_M['url']['own'] = $_M['url']['app'].$val.'/';
-			if (file_exists(PATH_APP.'app/'.$val.'/plugin/'.'plugin_'.$val.'.class.php')) {		
+			if (file_exists(PATH_APP.'app/'.$val.'/plugin/'.'plugin_'.$val.'.class.php')) {
 				self::change_own_include_dir($val);
 				require_once PATH_APP.'app/'.$val.'/plugin/'.'plugin_'.$val.'.class.php';
 				//self::_load_class(PATH_APP.'app/'.$val.'/plugin/', 'plugin_'.$val, $plugin);
@@ -166,9 +167,9 @@ class load {
 					if(method_exists($newclass, $plugin)){
 						if($action == 99){
 							$re = call_user_func(array($newclass, $plugin), $parameter);
-							
-							self::change_own_include_dir($dir);	
-							
+
+							self::change_own_include_dir($dir);
+
 							return $re;
 						}else if($action == 1){
 							$return = call_user_func(array($newclass, $plugin), $parameter);
@@ -192,10 +193,10 @@ class load {
 				foreach ($parameter as $key=>$val) {
 					return $val;
 				}
-			}	
-		}		
+			}
+		}
 	}
-	
+
 	/**
 	 * 加载系统类
 	 * @param string $path      加载类的路径，必须是绝对地址
@@ -218,11 +219,11 @@ class load {
 			if (file_exists($path.'myclass/'.$myclass.'.class.php')) {
 				$is_myclass = 1;
 				require_once $path.'myclass/'.$myclass.'.class.php';
-			} 
+			}
 		}
 		if ($action) {
 			if (!class_exists($classname)) {
-				die($action.' class\'s file is not exists!!!');
+				die($classname . ' ' . $action . ' class\'s file is not exists!!!');
 			}
 			if(self::$mclass[$classname]){
 				$newclass = self::$mclass[$classname];
@@ -248,7 +249,7 @@ class load {
 		}
 		return  true;
 	}
-	
+
 	/**
 	 * 加载系统类
 	 * @param  string $path 需要引用函数库的地址，必须是绝对路径
@@ -265,7 +266,7 @@ class load {
 		}
 		return  true;
 	}
-	
+
 	public static function change_own_include_dir($dir) {
 		if($dir){
 			//$dirs = explode('/', PATH_APP_FILE);
@@ -276,7 +277,7 @@ class load {
 			self::$own_include_dir = '';
 		}
 	}
-	
+
 	/**
 	 * 路径解析
 	 * @param  string $path 需要解析的路径

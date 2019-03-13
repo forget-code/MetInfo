@@ -3,8 +3,8 @@ define(function(require, exports, module) {
 	var common = require('common');
 	var langtxt = common.langtxt();
 
-	require('tem/remodal/jquery.remodal.css');
-	require('tem/remodal/jquery.remodal.min');
+	require('own_tem/remodal/jquery.remodal.css');
+	require('own_tem/remodal/jquery.remodal.min');
 	
 	var box = $('[data-remodal-id=modal]');
 

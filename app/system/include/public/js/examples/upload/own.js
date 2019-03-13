@@ -167,10 +167,10 @@ define(function(require, exports, module) {
 		var $appimagelist=dom.next().find(".app-image-list"),
 			sort_l=$appimagelist.find('.sort').length;
 		$li = ' <li class="sort">' +
-			'<a href="'+src+'" target="_blank">' +
-				'<img src="'+src+'">' +
-			'</a>' +
-			'<span class="close hide" data-imgval="'+value+'">&times;</span>' +
+				'<a href="'+src+'" target="_blank">' +
+					'<img src="'+src+'">' +
+				'</a>' +
+				'<span class="close hide">&times;</span>' +
 			'</li>';
 		dom.next().find(".app-image-list li.upnow").before($li);
 		// 商品图尺寸设置
@@ -178,15 +178,15 @@ define(function(require, exports, module) {
         imgtemp.src = src;
         imgtemp.index=sort_l;
         imgtemp.onload = function(){
-			dom.next().find(".app-image-list li.sort:eq("+this.index+") [data-imgval]").attr({'data-size':this.width+'x'+this.height});
+			dom.next().find(".app-image-list li.sort:eq("+this.index+") img").attr({'data-size':this.width+'x'+this.height});
 		}
 	}
 	/*重新赋值*/
 	function imgvalue(dom){
 		var list = dom.next().find('li.sort'),value = '',l = list.length;
 		list.each(function(i){
-			var vl = $(this).find("span").data('imgval');
-			value += (i+1)==l?vl:vl + '|';
+			var vl = $(this).find("img").attr('src').replace(siteurl,'../');
+			value += i>0 ? '|' + vl: vl;
 		});
 		dom.attr('value',value);
 	}
@@ -210,17 +210,32 @@ define(function(require, exports, module) {
 					if($(this).data("upload-type")=='doupimg')html+= '<li class="imgku">';
 					if($(this).data("upload-type")=='doupimg')html+= '<button type="button" data-name="'+name+'" class="btn btn-default">从图片库选择</button>';
 					if($(this).data("upload-type")=='doupimg')html+= '</li>';
+					html+= '<li class="add-outside"><button type="button" class="btn btn-default add-outside-btn" data-toggle="popover" data-original-title="" title="">添加外部图片</button>'
+							+'</li>';
 					html+= '</ul>';
 					html+= '</div>';
 				dom.after(html);
+				dom.parent().find('.picture-list .add-outside-btn').popover({
+					content:function(){
+						return '<div class="ftype_input outside-box">'
+									+'<div class="fbox" style="margin-right:0;"><input type="text" name="outside_img" placeholder="外部图片链接" style="width: 100% !important;margin-bottom: 5px;"/><br /><button type="button" class="btn btn-primary btn-sm outside-ok" style="margin-right:5px;">确定</button><button type="button" class="btn btn-default btn-sm  outside-cancel">取消</a></div>'
+								+'</div>';
+					},
+					html:true,
+					placement:'left'
+				});
 				var src = dom.val();
 				if(src){
 					src += '|';
 					var srcs = src.split('|'),isrc='';
 					for(var i=0;i<srcs.length;i++){
 						if(srcs[i]!=''){
-							isrc = srcs[i].split('../');
-							isrc = siteurl + isrc[1];
+							if(srcs[i].indexOf('../')>=0){
+								isrc = srcs[i].split('../');
+								isrc = siteurl + isrc[1];
+							}else{
+								isrc=srcs[i];
+							}
 							imgadd(dom,isrc,srcs[i]);
 							isrc = '';
 						}
@@ -272,6 +287,27 @@ define(function(require, exports, module) {
 				tf = true;
 			}
 		});
+		// 添加外部图片链接
+		$(document).on('shown.bs.popover', '.ftype_upload .add-outside-btn', function(event) {
+			var $outside_img=$(this).parents('.ftype_upload').find('.outside-box input[name=outside_img]');
+			$outside_img.val($(this).attr('data-outside_img'));
+		})
+		$(document).on('click', '.ftype_upload .outside-box .outside-ok', function(event) {
+			var $input_upload=$(this).parents('.ftype_upload').find('input[data-upload-type]'),
+				$outside_img=$(this).parents('.outside-box').find('input[name=outside_img]'),
+				$sort_img=$(this).parents('.ftype_upload').find('.js-picture-list .sort:eq(0) img');
+			if(typeof ($input_upload.attr('data-oldimg'))=="undefined") $input_upload.attr({'data-oldimg':$input_upload.val()});// 暂存原图路径
+			if($outside_img.val()){
+				if(!$input_upload.attr('data-upload-many')) $(this).parents('.ftype_upload').find('.js-picture-list .sort').remove();
+				imgadd($input_upload,$outside_img.val());
+				imgvalue($input_upload);
+			}
+			$(this).parents('.ftype_upload').find('.add-outside-btn').attr({'data-outside_img':$outside_img.val()});// 暂存外部图片路径
+		});
+		$(document).on('click', '.ftype_upload .outside-box .btn', function(event) {
+			$(this).parents('.ftype_upload').find('.add-outside-btn').popover('hide');
+		});
+
 		if(tf){
 			require.async('epl/uploadify/upload',function(a){
 				a.func(e);
@@ -282,25 +318,25 @@ define(function(require, exports, module) {
 			/*拖曳排序*/
 			require.async('pub/examples/dragsort/jquery.dragsort-0.5.2.min',function(){
 				$('.ftype_upload ul.app-image-list').dragsort({
-					dragSelector: "li.sort",
+					dragSelector: "li.sort a",
 					dragBetween: false ,
 					dragEnd: function() {
-						var dom = $(this).parents('.picture-list').prev();
+						var dom = $(this).parents('.picture-list').parent().find('input[data-upload-type="doupimg"]');
 						imgvalue(dom);
 					}
-				}).find('.sort a').click(function(e) {//火狐浏览器拖拽会跳转的兼容
+				}).find('.sort a').click(function(e) {// 火狐浏览器拖拽会跳转的兼容
 					if(navigator.userAgent.indexOf("Firefox") > -1) e.preventDefault();
 				});
 			});
 
 			//删除按钮
-			$(document).on('click','.ftype_upload .app-image-list li.sort span',function(){
-				var dom = $(this).parents('.picture-list').prev();
-				$(this).parent('li.sort').remove();
+			$(document).on('click','.ftype_upload .app-image-list li.sort .close',function(){
+				var dom = $(this).parents('.picture-list').parent().find('input[data-upload-type="doupimg"]');
+				$(this).parents('li.sort').remove();
 				imgvalue(dom);
 			});
 
-			imgku();//图片库
+			if(!$('#UploadModal').length) imgku();//图片库
 		}
 
 	}

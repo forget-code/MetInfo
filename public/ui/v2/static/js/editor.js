@@ -6,15 +6,15 @@ $(function(){
 	var $metEditorImg=$(".met-editor img");
 	if($metEditorImg.length){
 		// 响应式图片
-		$metEditorImg.each(function(index, el) {
-            var thumbdir=$(this).data('original').replace(M['weburl'],'');
-            thumbdir=M['navurl']+'include/thumb.php?dir='+thumbdir+'&x=';
-            if(!$(this).attr('data-srcset') && ($(this).data('width')>=700 || $(this).attr('width')>=700)){
-                var data_srcset=thumbdir+'450 450w,'+$(this).data('original'),
-                    sizes="(max-width:450px) 450px";
-                $(this).attr({'data-srcset':data_srcset,sizes:sizes});
-            }
-        });
+		// $(".met-editor [data-original]").each(function(index, el) {
+  //           var thumbdir=$(this).data('original').replace(M['weburl'],'');
+  //           thumbdir=M['weburl']+'include/thumb.php?dir='+thumbdir+'&x=';
+  //           if(!$(this).attr('data-srcset') && ($(this).data('width')>=700 || $(this).attr('width')>=700)){
+  //               var data_srcset=thumbdir+'450 450w,'+$(this).data('original'),
+  //                   sizes="(max-width:450px) 450px";
+  //               $(this).attr({'data-srcset':data_srcset,sizes:sizes});
+  //           }
+  //       });
 		Breakpoints.get('xs').on({
 			enter:function(){
 				var editorimg_gallery_open=true;
@@ -50,25 +50,3 @@ $(function(){
 		})
 	}
 });
-// 表格响应式格式化
-$.fn.tablexys=function(){
-	var $self=$(this);
-	$(this).addClass('tablesaw table-striped table-bordered table-hover tablesaw-sortable tablesaw-swipe').attr({"data-tablesaw-mode":"swipe",'data-tablesaw-sortable':''});
-	Breakpoints.get('xs').on({
-		enter:function(){
-			$self.each(function(){
-				if(!$('thead',this).length){
-					var td=$("tbody tr:eq(0) td",this),th;
-					if(td.length==0) td=$("tbody tr:eq(0) th",this);
-					td.each(function(){
-						th+='<th data-tablesaw-sortable-col>'+$(this).html()+'</th>';
-					});
-					$(this).prepend("<thead><tr>"+th+"</tr></thead>");
-					$("tbody tr:eq(0)",this).remove();
-					$("tbody td",this).attr('width','auto');
-				}
-			});
-			$(document).trigger("enhance.tablesaw");
-		}
-	});
-}

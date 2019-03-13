@@ -46,17 +46,6 @@ echo <<<EOT
 -->
             <a href="{$navurl}member/basic.php?lang={$lang}" title='{$_M['word']['memberIndex9']}' class='dropdown-item'><i class="icon wb-user" aria-hidden="true"></i> {$_M['word']['memberIndex9']}</a>
             <a href="{$navurl}member/basic.php?lang={$lang}&a=dosafety" title='{$_M['word']['accsafe']}' class='dropdown-item'><i class="icon wb-lock" aria-hidden="true"></i> {$_M['word']['accsafe']}</a>
-<!--
-EOT;
-        foreach($_M['html']['app_sidebar'] as $key=>$val){
-echo <<<EOT
--->
-           <a href="{$val['url']}" class="dropdown-item" title="{$val['title']}"><i class="icon fa-money" aria-hidden="true"></i> {$val['title']}</a>
-<!--
-EOT;
-        }
-echo <<<EOT
--->
             <div class="dropdown-divider"></div>
             <a href="{$navurl}member/login.php?lang={$lang}&a=dologout" class='dropdown-item'><i class="icon wb-power"></i> {$_M['word']['memberIndex10']}</a>
 <!--

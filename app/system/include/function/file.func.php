@@ -1,6 +1,6 @@
 <?php
-# MetInfo Enterprise Content Management System 
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+# MetInfo Enterprise Content Management System
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 defined('IN_MET') or exit('No permission');
 
 load::sys_func('str');
@@ -228,6 +228,9 @@ function deldir($fileDir,$type = 0){
 function delfile($fileUrl){
 	$fileUrl = path_absolute($fileUrl);
 	@clearstatcache();
+	if(stristr(PHP_OS,"WIN")) {
+		$fileUrl = @iconv("utf-8", "GBK", $fileUrl);
+	}
 	if(file_exists($fileUrl)){
 		unlink($fileUrl);
 		return true;
@@ -358,7 +361,7 @@ function zipfile($dir, $destination='', $overwrite = true){
 		return false;
 	}
 	@clearstatcache();
-	if(file_exists($destination) && $overwrite == false){ 
+	if(file_exists($destination) && $overwrite == false){
 		return false;
 	}else{
 		if(file_exists($destination)){
@@ -374,7 +377,7 @@ function zipfile($dir, $destination='', $overwrite = true){
 		}
 
 	}
-	
+
 }
 
 /**
@@ -387,14 +390,14 @@ function getdirpower($dir){
 	@clearstatcache();
 	$dir = substr($dir, -1) == '/' ? $dir : $dir.'/';
 	if(is_dir($dir)){
-		$file_hd = @fopen($dir.'/test.txt','w'); 
+		$file_hd = @fopen($dir.'/test.txt','w');
 		if($file_hd){
 			$flag = true;
 		}else{
 			$flag = false;
 		}
 		@fclose($file_hd);
-		@unlink($dir.'/test.txt'); 
+		@unlink($dir.'/test.txt');
 	}else{
 		$flag = false;
 	}
@@ -425,7 +428,7 @@ function getfilepower($file){
 			}else{
 				return false;
 			}
-		}		
+		}
 	}else{
 		return false;
 	}
@@ -501,9 +504,9 @@ function traversal($jkdir, $suffix='[A-Za-z]*', $jump=null, &$filenamearray = ar
 	if($jkdir == '.' || $jkdir == './') $jkdir = '';
 	$jkdir = path_absolute($jkdir);
 	$hand = opendir($jkdir);
-	while ($file = readdir($hand)) {	
+	while ($file = readdir($hand)) {
 		$filename=$jkdir.$file;
-		if (@is_dir($filename) && $file != '.' && $file!= '..' && $file != './..') { 
+		if (@is_dir($filename) && $file != '.' && $file!= '..' && $file != './..') {
 			if ($jump != null) {
 				if (preg_match_all("/^({$jump})/", str_replace(PATH_WEB, '', $filename), $out)) {
 					continue;
@@ -513,15 +516,42 @@ function traversal($jkdir, $suffix='[A-Za-z]*', $jump=null, &$filenamearray = ar
 		} else {
 			if ($file != '.' && $file!= '..' && $file != './..' && preg_match_all ("/\.({$suffix})/i", $filename, $out)) {
 				if (stristr(PHP_OS,"WIN")) {
-					$filename = iconv("gbk", "utf-8", $filename);		
+					$filename = iconv("gbk", "utf-8", $filename);
 				}
 				$filenamearray[] = str_replace(PATH_WEB, '', $filename);
 			}
-		}	
+		}
 
 	}
 	return $filenamearray;
 }
+
+	function file_zip($dir,$zip)
+    {
+    	global $_M;
+    	$web_path = PATH_WEB.'/';
+
+    	$handler = opendir($dir);
+
+	    while(($filename = readdir($handler))!==false){
+
+	        if($filename != "." && $filename != ".."){
+	            if(is_dir($dir."/".$filename)){
+	            	$zip->addEmptyDir($dir.'/'.$filename,str_replace($web_path, '', $dir.'/'.$filename));
+
+	                file_zip($dir."/".$filename, $zip);
+	            }else{
+
+	                $row = $zip->addFile($dir."/".$filename,str_replace($web_path, '', $dir.'/'.$filename));
+
+	            }
+	        }
+	    }
+	    @closedir($dir);
+    }
+
+
+
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

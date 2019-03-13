@@ -8,6 +8,7 @@ function metlabel_head($closure=1,$iehack=1,$mobileto=''){
 	$met_skin_css = $_M['config']['met_skin_css']==''?'metinfo.css':$_M['config']['met_skin_css'];
 	$closure = $closure?"\n</head>":'';
 	if($met_mobileok){
+		$img_url=$_M[url][site]."/templates/".$_M['config']['met_skin_user']."/images/";
 		$metinfo="
 <!DOCTYPE HTML>
 <html>
@@ -27,8 +28,13 @@ function metlabel_head($closure=1,$iehack=1,$mobileto=''){
 <link href=\"favicon.ico\" rel=\"shortcut icon\" type=\"image/x-icon\" />
 <link rel=\"stylesheet\" type=\"text/css\" href=\"{$img_url}css/{$met_skin_css}\" />{$met_js_access}{$closure}";
 	}else{
-		$iehack = $iehack?"<!--[if IE]><script src=\"{$navurl}public/js/html5.js\" type=\"text/javascript\"></script><![endif]-->":'';
-		$metinfo="
+        if(is_mobile()){
+            $headstat = $_M['config']['met_headstat_mobile'];
+        }else{
+            $headstat = $_M['config']['met_headstat'];
+        }
+        $iehack = $iehack?"<!--[if IE]><script src=\"{$navurl}public/js/html5.js\" type=\"text/javascript\"></script><![endif]-->":'';
+        $metinfo="
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -42,7 +48,7 @@ function metlabel_head($closure=1,$iehack=1,$mobileto=''){
 <meta name=\"generator\" content=\"MetInfo {$_M[config][metcms_v]}\"  data-variable=\"{$_M[config][met_weburl]}|{$_M[lang]}|{$classnow}|{$id}|{$class_list[$classnow][module]}|{$_M[config][met_skin_user]}\" />
 <link href=\"{$navurl}favicon.ico\" rel=\"shortcut icon\" />
 <link rel=\"stylesheet\" type=\"text/css\" href=\"{$img_url}css/{$met_skin_css}\" />
-{$_M['html_plugin']['head_script']}{$appscriptcss}{$iehack}{$met_js_access}{$_M[config][met_headstat]}{$closure}";
+{$_M['html_plugin']['head_script']}{$appscriptcss}{$iehack}{$met_js_access}{$headstat}{$closure}";
 	}
 	return $metinfo;
 }
@@ -145,7 +151,7 @@ function metlabel_form($list,$type){
 				$val[type_html]=$metinfo;
 			break;
 		}
-		$lista[]=$val;
+		if($val['type'] != '100')$lista[]=$val;
 	}
 	if($met_memberlogin_code==1){
 		$val[name] = $lang_memberImgCode;

@@ -1,0 +1,110 @@
+/**/
+body{word-wrap: break-word;}
+.v52fmbx{overflow: visible;}
+input[disabled]{background: #ccc !important;}
+.temset{border: none;}
+.temset td input.ui-input{width: 100%;}
+.temset .table.dataTable.stripe tbody tr.odd,
+.temset table.dataTable.display tbody tr.odd{
+background:#fff;
+}
+.temset .table.dataTable.stripe tbody tr.fenqu,
+.temset table.dataTable.display tbody tr.fenqu{
+background:#eee;
+}
+.temset .table.dataTable.stripe tbody tr.fenqu:hover,.temset table.dataTable.display tbody tr.fenqu:hover{
+background:#eee!important;
+}
+.temset .dataTable tr.xuanxiang{ display:none!important; }
+.temset .dataTable tr.xuanxiang i{ display:none; }
+.temset .dataTable tr.fenqu i,.temset .dataTable tfoot tr i,.temset .dataTable thead tr i{ width:100%; display:block; font-size:22px; cursor:pointer; }
+.temset .dataTable th.formsubmit i{ display:inline; font-size:16px; }
+.temset .dataTables_info{ display:none; }
+.temset .dataTables_paginate{ display:none; }
+
+.temset tr .selectd{ display:none;}
+
+.temset_box{ text-align:left; font-size:12px; }
+.remodal{ padding:15px!important;}
+.remodal-close{ right:5px; left:auto; }
+
+.temset .zhanwei{ padding:2px; background:#ccc;}
+.temset .zhanwei td{}
+
+.temset table.dataTable.hover tbody tr:hover,
+.temset table.dataTable.hover tbody tr.odd:hover,
+.temset table.dataTable.hover tbody tr.even:hover,
+.temset table.dataTable.display tbody tr:hover,
+.temset table.dataTable.display tbody tr.odd:hover,
+.temset table.dataTable.display tbody tr:hover,
+.temset table.dataTable.display tbody tr.even:hover {
+  background-color: transparent;
+}
+.temset table.dataTable tbody tr .btn:not(:first-child){margin-left:5px;}
+.temset table.dataTable.display input[type=checkbox]{margin-top: -3px;}
+.nowtem{ position:absolute; right:40px; top:70px; height:40px; line-height:40px; color:#666; }
+
+.ui-add,.uisub-add,.uiremote-add{cursor: pointer;}
+.ui-copy,.uiconfig-add,.ui-addlist,.page-add,.tem-pack{float: left;margin-right: 15px;}
+
+/* UI管理-添加UI */
+.v52fmbx dl dt{line-height: 2;}
+/* UI变量-变量类型弹窗 */
+.temsetlist{margin-top: 0;}
+
+/* 页面管理-添加UI弹框 */
+.ui-add-modal .modal-body>.tab-content{}
+.ui-add-modal .modal-body .tab-pane{margin: 20px -5px 0;}
+.ui-add-modal .modal-body .tab-pane [class*=col]{padding: 0 5px;}
+.ui-add-modal .modal-body .tab-pane .ui-item{cursor: pointer;position: relative;border: 2px solid #eee;}
+.ui-add-modal .modal-body .tab-pane .ui-readme{margin-bottom: 10px;text-align: center;}
+.ui-add-modal .modal-body .tab-pane .ui-item.checked{border-color:#09F;}
+.ui-add-modal .modal-body .tab-pane .ui-item:after{
+    position: absolute;
+    display: block;
+    content: ' ';
+    right: 0px;
+    top: 0px;
+    border: 14px solid #ddd;
+    border-left-color: transparent;
+    border-bottom-color: transparent;
+}
+.ui-add-modal .modal-body .tab-pane .ui-item.checked:after{border-right: 14px solid #09f;border-top: 14px solid #09f;}
+.ui-add-modal .modal-body .tab-pane .ui-item h4{padding:5px;text-align: center;font-size: 16px;}
+.ui-add-modal .modal-body .tab-pane .ui-item h4 span{display: block;margin-top: 5px;color: #999;}
+.ui-add-modal .modal-body .tab-pane .ui-item i{position: absolute;right: 0;top: 0;z-index: 2;color: #fff;}
+.modal .modal-body .ftype_checkbox label{margin-right: 0;padding-left: 0;}
+.tool_tips_parent{position: relative;}
+.tool_tips{display: none;}
+/* 提示 */
+.returnover{
+    position: fixed;
+    left: 50%;top: 50%;
+    -webkit-transform: translate(-50%,-50%);
+   -moz-transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+     -o-transform: translate(-50%,-50%);
+        transform: translate(-50%,-50%);
+}
+/* modal弹窗 */
+.modal-center{
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: -webkit-box;
+    display: flex;
+    height: 100%;
+    margin: 0 auto;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-flex-flow: column nowrap;
+    -ms-flex-flow: column nowrap;
+    flex-flow: column nowrap;
+    -webkit-align-content: stretch;
+    -ms-flex-line-pack: center;
+    align-content: center;
+}
+/* 添加模板 UI */
+#ui-all_ui .nav-tabs li.active a{background: #6c6fbf;color: #fff;}
+#ui-all_ui .nav-tabs li a{padding: 5px;}

@@ -2,7 +2,7 @@
 require_once template('head');
 require_once template('sidebar');
 $met_productnext=methtml_prenextinfo(1);
-$product[imgurl]=str_replace($navurl, $_M[url][site], $product[imgurl]);
+$product[imgurls]=str_replace($navurl, $_M[url][site], $product[imgurl]);
 echo <<<EOT
 -->
 <div id="showproduct">
@@ -10,7 +10,7 @@ echo <<<EOT
 		<ul class="am-slides my-simple-gallery am-gallery" data-am-widget="gallery" data-am-gallery="{pureview: 1}">
 			<li>
 				<div class="am-gallery-item">
-					<img src="{$thumb_src}dir={$product[imgurl]}&x=480&y=480" data-rel="{$product[imgurl]}" alt="{$product[title]}" />
+					<img src="{$thumb_src}dir={$product[imgurl]}&x={$met_productdetail_x}&y={$met_productdetail_y}" data-rel="{$product[imgurls]}" alt="{$product[title]}" />
 					<h3 class="am-gallery-title">{$product[title]}</h3>
 				</div>
 			</li>
@@ -18,12 +18,12 @@ echo <<<EOT
 EOT;
 if(count($displaylist)>0){
 	foreach($displaylist as $key=>$val){
-		$val[imgurl]=str_replace($navurl, $_M[url][site], $val[imgurl]);
+		$val[imgurls]=str_replace($navurl, $_M[url][site], $val[imgurl]);
 echo <<<EOT
 -->
 			<li>
 				<div class="am-gallery-item">
-					<img src="{$thumb_src}dir={$val[imgurl]}&x=480&y=480" data-rel="{$val[imgurl]}" alt="{$val[title]}" />
+					<img src="{$thumb_src}dir={$val[imgurl]}&x={$met_productdetail_x}&y={$met_productdetail_y}" data-rel="{$val[imgurls]}" alt="{$val[title]}" />
 					<h3 class="am-gallery-title">{$val[title]}</h3>
 				</div>
 			</li>

@@ -185,4 +185,4 @@ window.SHOPLANG = {
     "app_shop_searchfail": "查询失败，请联系管理员！",
     "app_shop_doreceipt_if": "确认收货吗？",
     "app_shop_usetime": "使用时间"
-}
+};

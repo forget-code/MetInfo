@@ -1,5 +1,5 @@
 <?php
-# MetInfo Enterprise Content Management System 
+# MetInfo Enterprise Content Management System
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 function wap_foot_menu(){
 	global $weburly,$met_menu_ok,$met_menu_oks,$met_menu_rgb,$met_menu_bg,$met_title,$show,$m_now_year,$navurl,$met_js_access,$met_skin_css,$img_url,$met_webname,$metcms_v,$appscriptcss,$met_ch_lang,$lang,$met_ch_mark,$met_url,$metinfouiok,$classnow,$class_list,$met_headstat;
@@ -16,7 +16,7 @@ function wap_foot_menu(){
 		$met_menu_bgs="";
 		$met_sioncss="";
 		}
-	
+
 	if($textbg==null){
 		$textbg='#014C8D';
 	}
@@ -57,7 +57,7 @@ function wap_foot_menu(){
 		$metinfo="<style type='text/css'>
 				div.on:nth-of-type(1) {
 				-webkit-transform: translate(70.5px, -70.5px) rotate(720deg) !important;
-				}									
+				}
 			</style>";
 	}
 	if($amount==2){
@@ -66,7 +66,7 @@ function wap_foot_menu(){
 				-webkit-transform: translate(33.5px, -90.3px) rotate(720deg) !important;
 				}				div.on:nth-of-type(2) {
 				-webkit-transform: translate(90.3px, -33.5px) rotate(720deg) !important;
-				}					
+				}
 			</style>";
 	}
 	if($amount==3){
@@ -77,7 +77,7 @@ function wap_foot_menu(){
 				-webkit-transform: translate(70.5px, -70.5px) rotate(720deg) !important;
 				}				div.on:nth-of-type(3) {
 				-webkit-transform: translate(97.45px, -24.35px) rotate(720deg) !important;
-				}	
+				}
 			</style>";
 	}
 	if($amount==4){
@@ -124,7 +124,7 @@ function wap_foot_menu(){
 				if($val[type]==5){
 					$url_value=$class_list[$val[value]]['url'];
 					$url_value=str_replace("../","",$url_value);
-					$url_value=$navurl.$url_value;
+					$url_value=$url_value;
 					if($metinfover){
 						$val[size] = '20';$val[lineheight] = '35';$val[marginleft] = '1';
 						switch($val[columnicon]){
@@ -154,8 +154,8 @@ function wap_foot_menu(){
 						$metinfo.="<div style='background:{$textbg} !important;'> <a href='{$url_value}'><i class='{$val[columnicon]}' style='color:{$val[menu_iconrgb]}; font-size:22px; line-height:32px;'></i></a> </div>";
 						}
 					}
-					
-					
+
+
 				}
 			}
 			$metinfo.="</div>
@@ -166,7 +166,7 @@ function wap_foot_menu(){
 			.metcont{ padding-bottom:0px!important;}
 			</style>";
 		}
-		
+
 		if($types==2){
 			$i=1;
 				$metinfo='';
@@ -176,7 +176,7 @@ function wap_foot_menu(){
 			$metinfo.="
 			<style type='text/css'>
 				{$met_sioncss}
-				#footer .footerlist.footerlist{background:-webkit-gradient(linear,0 0,0 100%,from({$textbg}),to({$textbgto}), color-stop(100%, {$textbgto})); }												
+				#footer .footerlist.footerlist{background:-webkit-gradient(linear,0 0,0 100%,from({$textbg}),to({$textbgto}), color-stop(100%, {$textbgto})); }
 			</style>";
 			$metinfo.="<div id='footer' >
 			<div class='footerbox'>
@@ -214,7 +214,7 @@ function wap_foot_menu(){
 				if($val[type]==5){
 					$url_value=$class_list[$val[value]]['url'];
 					$url_value=str_replace("../","",$url_value);
-					$url_value=$navurl.$url_value;
+					$url_value=$url_value;
 					if($metinfover){
 						$val[size] = '20';$val[lineheight] = '35';$val[marginleft] = '1';
 						switch($val[columnicon]){
@@ -248,7 +248,7 @@ function wap_foot_menu(){
 		</style>";
 	}
 return $metinfo;
-}  
+}
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

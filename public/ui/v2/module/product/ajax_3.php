@@ -5,9 +5,9 @@ foreach($product_list as $key=>$val){
 		$val['shopinfo'] = get_goods($val['id']);
 		$val['price_str_html'] = "<p class='red-600 font-size-20'>{$val['shopinfo']['price_str']}</p>";
 	}
-	$val[imgurls]="{$thumb_src}dir={$val[imgurl]}&x={$met_imgs_x}&y={$met_imgs_y}";
+	$val[imgurls]="{$thumb_src}dir={$val[imgurl]}&x={$met_productimg_x}&y={$met_productimg_y}";
 	if($key<4&&!$mbpagelist){
-		$shown=' shown';
+		$shown=$lang_product_listmasonry_ok?' shown':'';
 		$original = 'src';
 	}else{
 		$shown='';
@@ -16,14 +16,14 @@ foreach($product_list as $key=>$val){
 echo <<<EOT
 -->
 <li class="{$val['page']}{$shown}">
-	<div class="card card-shadow radius0">
-		<figure class="card-header cover radius0">
+	<div class="card card-shadow">
+		<figure class="card-header cover">
 			<a href="{$val[url]}" title="{$val[title]}" {$metblank}>
-				<img class="cover-image" {$original}="{$val['imgurls']}" alt="{$val[title]}" style='height:200px;'>
+				<img class="cover-image" {$original}="{$val['imgurls']}" alt="{$val[title]}" height='100'>
 			</a>
 		</figure>
 		<div class="card-body">
-			<h4 class='card-title p-0 font-size-24'>{$val['title']}</h4>
+			<h4 class='card-title font-size-24'>{$val['title']}</h4>
 			{$val['price_str_html']}
 <!--
 EOT;
@@ -32,7 +32,7 @@ EOT;
 		if(!strstr($val[$val2[para]],'../include/access.php?metmemberforce=') && $val[$val2[para]]){
 echo <<<EOT
 -->
-			<p class="card-metas font-size-12 blue-grey-400"><span>{$val2[name]} : {$val[$val2[para]]}</span></p>
+			<p class="card-metas m-b-5 font-size-12 blue-grey-400"><span>{$val2[name]} : {$val[$val2[para]]}</span></p>
 <!--
 EOT;
 		}
@@ -47,13 +47,13 @@ EOT;
 echo <<<EOT
 -->
 			<div class="card-body-footer">
-				<div class="card-actions pull-xs-right">
+				<a href="{$val[url]}" title="{$val[title]}" class="btn btn-outline btn-primary btn-squared" {$metblank}>{$lang_product_listlook}</a>
+				<div class="card-actions pull-xs-right m-t-5">
 					<a href="{$val[url]}" title="{$val[title]}" {$metblank}>
 						<i class="icon wb-eye" aria-hidden="true"></i>
 						<span>{$val[hits]}</span>
 					</a>
 				</div>
-				<a href="{$val[url]}" title="{$val[title]}" class="btn btn-outline btn-primary btn-squared" {$metblank}>{$lang_product_listlook}</a>
 			</div>
 		</div>
 	</div>

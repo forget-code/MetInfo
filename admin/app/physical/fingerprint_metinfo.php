@@ -273,7 +273,7 @@ have=1
 filesize=942
 [app/system/admin/appstore/appstore.class.php]
 have=1
-filesize=3390
+filesize=3137
 [app/system/admin/appstore/include/inapp.class.php]
 have=1
 filesize=688
@@ -403,15 +403,12 @@ filesize=1894
 [app/system/admin/templates/web/appstore/logininfo.php]
 have=1
 filesize=1606
-[app/system/admin/templates/web/appstore/partner.php]
-have=1
-filesize=1734
 [app/system/admin/templates/web/appstore/raty/jquery.raty.js]
 have=1
 filesize=13152
 [app/system/admin/templates/web/appstore/recharge.php]
 have=1
-filesize=2225
+filesize=2195
 [app/system/admin/templates/web/appstore/record.php]
 have=1
 filesize=1236
@@ -480,7 +477,7 @@ have=1
 filesize=2421
 [app/system/admin/templates/web/index/home.php]
 have=1
-filesize=6854
+filesize=6855
 [app/system/admin/templates/web/index/index.php]
 have=1
 filesize=3446
@@ -534,7 +531,7 @@ have=1
 filesize=2332
 [app/system/admin/templates/web/theme/js/ckeditor.js]
 have=1
-filesize=969
+filesize=947
 [app/system/admin/templates/web/theme/js/func.js]
 have=1
 filesize=1956
@@ -591,7 +588,7 @@ have=1
 filesize=1268
 [app/system/admin/templates/web/user/open.php]
 have=1
-filesize=4288
+filesize=4144
 [app/system/admin/templates/web/user/user_add.php]
 have=1
 filesize=1436
@@ -624,7 +621,7 @@ have=1
 filesize=1195
 [app/system/admin/theme/class/skinc.class.php]
 have=1
-filesize=8233
+filesize=8049
 [app/system/admin/theme/class/skininc.class.php]
 have=1
 filesize=8380
@@ -672,7 +669,7 @@ have=1
 filesize=1136
 [app/system/include/class/common.class.php]
 have=1
-filesize=8234
+filesize=8233
 [app/system/include/class/csv.class.php]
 have=1
 filesize=1343
@@ -768,7 +765,7 @@ have=1
 filesize=662
 [app/system/include/class/session.class.php]
 have=1
-filesize=1057
+filesize=696
 [app/system/include/class/sms.class.php]
 have=1
 filesize=909
@@ -849,7 +846,7 @@ have=1
 filesize=1060
 [app/system/include/module/keylogin.class.php]
 have=1
-filesize=4287
+filesize=4249
 [app/system/include/module/qrcode.class.php]
 have=1
 filesize=487
@@ -1071,7 +1068,7 @@ have=1
 filesize=610
 [app/system/include/public/ui/admin/head.php]
 have=1
-filesize=2584
+filesize=2488
 [app/system/include/public/ui/admin/paratype.php]
 have=1
 filesize=3455
@@ -2409,7 +2406,7 @@ have=1
 filesize=2148
 [app/system/web/user/class/weixin.class.php]
 have=1
-filesize=2472
+filesize=2404
 [app/system/web/user/getpassword.class.php]
 have=1
 filesize=3056
@@ -2817,7 +2814,7 @@ have=1
 filesize=3749
 [public/php/methtml.inc.php]
 have=1
-filesize=57173
+filesize=57047
 [public/php/metlabel.inc.php]
 have=1
 filesize=92308
@@ -3618,7 +3615,7 @@ have=1
 filesize=1261
 [admin/app/wap/menu_map.php]
 have=1
-filesize=1084
+filesize=1062
 [admin/app/wap/menu_set.php]
 have=1
 filesize=1437
@@ -3840,7 +3837,7 @@ have=1
 filesize=4810
 [admin/include/global.func.php]
 have=1
-filesize=47848
+filesize=47357
 [admin/include/lang.php]
 have=1
 filesize=2568
@@ -4026,7 +4023,7 @@ have=1
 filesize=4991
 [admin/templates/met/app/physical/index.html]
 have=1
-filesize=4163
+filesize=4156
 [admin/templates/met/app/sms/index.html]
 have=1
 filesize=4726
@@ -4081,15 +4078,15 @@ filesize=23173
 [admin/templates/met/app/wap/flash.html]
 have=1
 filesize=4157
+[admin/templates/met/app/wap/flash_top.html]
+have=1
+filesize=674
 [admin/templates/met/app/wap/flashadd.html]
 have=1
 filesize=3729
 [admin/templates/met/app/wap/flashedit.html]
 have=1
 filesize=4236
-[admin/templates/met/app/wap/flash_top.html]
-have=1
-filesize=674
 [admin/templates/met/app/wap/menu_set.html]
 have=1
 filesize=8062

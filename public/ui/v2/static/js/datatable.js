@@ -1,10 +1,10 @@
 $(function(){
     var $datatable=$('[data-table-ajaxurl]');
     if($datatable.length){
-        var datatable_langurl= M['navurl']+'app/system/include/static2/vendor/datatables/language/';
+        var datatable_langurl= M['weburl']+'app/system/include/static2/vendor/datatables/language/';
         // datatable多语言选择
-        if("undefined" != typeof M && M['lang_pack'] && M['plugin_lang']){
-            switch(M['lang_pack']){
+        if("undefined" != typeof M && M['plugin_lang']){
+            switch(M['lang']){
                 case 'sq':datatable_langurl+='AL';break;
                 case 'ar':datatable_langurl+='MA';break;
                 // case 'az':datatable_langurl+='az';break;

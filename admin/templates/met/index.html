@@ -1,5 +1,5 @@
 <!--<?php
-# MetInfo Enterprise Content Management System 
+# MetInfo Enterprise Content Management System
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 $boxwidth=$met_kzqie?'99%':'1000px';
 $qietext =$met_kzqie?$lang_indexnarrowver1:$lang_indexwidever1;
@@ -59,7 +59,7 @@ $(document).ready(function() {
 </style>
 <body id="indexid">
 <div id="metcmsbox">
-<div id="top"> 
+<div id="top">
 	<div class="topnbox">
     <div class="floatr">
 		<div class="top-r-box">
@@ -74,7 +74,7 @@ echo <<<EOT
 -->
 					<li class="list">{$lang_indexwelcom} <a href="index.php?lang={$lang}" id="mydata" title="{$lang_editor} {$metinfo_admin_name} {$lang_indexpeople}" class='tui'>{$metinfo_admin_name_r}</a></li>
 					<li class="line">|</li>
-					<li class="list"><a target="_top" href="login/login_out.php" id="outhome" title="{$lang_indexloginout}" class='tui'>{$lang_indexloginout}</a></li>
+					<li class="list"><a target="_top" href="{$_M['url']['site_admin']}index.php?n=login&c=login&a=doindex" id="outhome" title="{$lang_indexloginout}" class='tui'>{$lang_indexloginout}</a></li>
 					<li class="line">|</li>
 					<li class="list"><a href="javascript:;" id="kzqie" title="{$qietext_title}">{$qietext}</a></li>
 <!--
@@ -178,7 +178,7 @@ echo <<<EOT
 EOT;
 }
 echo <<<EOT
--->	
+-->
 				</ul>
 <!--
 EOT;
@@ -191,19 +191,19 @@ echo <<<EOT
 EOT;
 if($met_agents_type<=1){
 echo <<<EOT
--->	
+-->
 		<div class="left_footer"><div class="left_footer_box"><a href="http://www.metinfo.cn/proposal/index.php?ver=$metcms_v" target="_blank">{$lang_proposal}</a></div></div>
 <!--
 EOT;
 }else{
 echo <<<EOT
--->	
+-->
 	<div class="left_footer"><div class="left_footer_box">{$lang_indexthanks}</div></div>
 <!--
 EOT;
 }
 echo <<<EOT
--->		
+-->
 		</div>
 	</div>
     <div class="floatr" id="metright">
@@ -239,10 +239,10 @@ if(!$.cookie('upgraderemind')){
 						cache: false,
 						success: function(data) {
 						}
-					});	
+					});
 				}
 			}
-		});	
+		});
 	}
 	$.cookie('upgraderemind', '1');
 }
@@ -253,7 +253,7 @@ if(!$.cookie('appsynchronous')|| {$appaddok} == 0){
 		cache: false,
 		success: function(data) {
 		}
-	});	
+	});
 	$.cookie('appsynchronous', '1');
 }
 
@@ -301,7 +301,7 @@ function showdiv(){
 			$('#update_contents .content').html(data.message);
 			$(".nano").nanoScroller({alwaysVisible: true});
 		}
-	});	
+	});
 }
 function okdiv(olupdate_type){
 	if(olupdate_type==2){
@@ -333,7 +333,7 @@ if($admin_date_type['admin_type'] == 'metinfo' || strstr($admin_listed['admin_ty
 	$olupdate_type=2;
 }
 echo <<<EOT
--->	
+-->
 <div id="update_content_control" onclick="showdiv()" style="display:none;"></div>
 <div id="update_content_back"></div>
 <div id="update_contents">

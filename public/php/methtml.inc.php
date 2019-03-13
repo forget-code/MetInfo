@@ -165,6 +165,7 @@ if($met_lang_mark){
 	//结束
 	return $metinfo;
 }
+
 //top nav
 function methtml_topnav($type,$label,$max=100,$maxclass2=100,$classtitlemax=100,$homeclass=1,$homeok=1){
 global $index_url,$lang_home,$nav_list,$lang,$classnow,$class1,$class_list,$class_index,$nav_list2;
@@ -334,7 +335,6 @@ $metinfo=$labellen?substr($metinfo, 0, -$labellen):$metinfo;
 return $metinfo;
 }
 
-
 //x nav
 $nav_x[name]="<a href=".$class1_info[url]." >".$class1_info[name]."</a>";
 if($class2<>0){
@@ -364,7 +364,6 @@ $navlist_y1.="<br />&nbsp;&nbsp;&nbsp;<font style='font-size:12px'><a href='$val
 }
 }
 }
-
 
 function methtml_classlist($type,$namelen,$mark,$class3ok=1,$class3now=1,$class2char=1,$class3char=0){
 global $navlist_y1,$class1,$class2,$class3,$classnow,$nav_list2,$nav_list3,$class_index,$module_list1,$class_list;
@@ -857,8 +856,6 @@ switch($met_flasharray[$classnow][type]){
 		}
 	break;
 }
-
-
 //loop array 
 function methtml_getarray($mark,$type,$order,$module,$listmx=-1,$para=0,$categoryname=0,$marktype=0,$txtmax=0,$descmax=0,$rand=0){
 	global $met_member_use,$class_index,$met_listtime,$metinfo_member_type,$db,$met_news,$met_product,$met_download,$met_img,$met_job,$met_parameter,$met_plist,$class_list,$metpara,$module_list2;
@@ -914,10 +911,9 @@ function methtml_getarray($mark,$type,$order,$module,$listmx=-1,$para=0,$categor
 			$modulex=metmodname($class_index[$mark]['module']);
 			$sqlorder=$order?$sqlorder:list_order($class_index[$mark]['list_order']);
 		}
-
 		$folderone=$db->get_one("SELECT * FROM $met_column WHERE bigclass='$listnowid' and module ='{$class_list[$listnowid][module]}' and releclass!='0' and lang='$lang'");
 		if($folderone){
-			 $sqlclounm="and ($listnowclass='$listnowid' or class1='$folderone[id]')";
+			$sqlclounm="and ($listnowclass='$listnowid' or class1='$folderone[id]')";
 		}else{
 			
 		}
@@ -936,20 +932,16 @@ function methtml_getarray($mark,$type,$order,$module,$listmx=-1,$para=0,$categor
 			$sqlclounm="and $listnowclass='$listnowid'";
 		}
 		if(!$modulex){
-            //取消默认调用新闻模块
-			#$module=$module?$module:'news';
-			$module=$module?$module:'';
+			$module=$module?$module:'news';
 			$sqlclounm='';
 		}else{
-            $module=$modulex;
-        }
-    }
-    //取消默认调用新闻模块
-    #$module=$module?$module:'news';
-    var_dump($module);
-    switch($module){
+			$module=$modulex;
+		}
+	}
+	$module=$module?$module:'news';
+	switch($module){
 		case 'news':
-             $modulenunm=2;
+			$modulenunm=2;
 			break;
 		case 'product':
 			$modulenunm=3;
@@ -965,7 +957,7 @@ function methtml_getarray($mark,$type,$order,$module,$listmx=-1,$para=0,$categor
 			break;
 	}
 	if($listmx==-1){
-        switch($module){
+		switch($module){
 			case 'news':
 				$listmx=$index_news_no;
 				break;
@@ -1017,7 +1009,6 @@ function methtml_getarray($mark,$type,$order,$module,$listmx=-1,$para=0,$categor
 		}
 		$query = "SELECT $select FROM $table where lang='$lang' {$mobilesql} $sqlclounm $access_sql $sqltype and (recycle='0' or recycle='-1') and addtime<='{$m_now_date}' $displaytype_sql $rand_query";
 	}
-
 	$result = $db->query($query);
 	while($list= $db->fetch_array($result)){
 		if($modulenunm==6){$list['updatetime']=$list['addtime'];$list['title']=$list['position'];}
@@ -1126,7 +1117,6 @@ function methtml_getarray($mark,$type,$order,$module,$listmx=-1,$para=0,$categor
 		$list['img_y']=met_imgxy(2,$module);
 		$relist[]=$list;
 	}
-    #dump($relist);
 	return $relist;
 }
 

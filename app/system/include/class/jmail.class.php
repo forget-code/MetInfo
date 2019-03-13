@@ -120,7 +120,9 @@ class jmail{
 		$mail->CharSet = "UTF-8";
 		$mail->Encoding = "base64";
 		$mail->Timeout = 15; 
+		$mail->ClearAddresses();
 		$mail->IsSMTP();
+		
 		if (stripos($this->smtp,'.gmail.com') === false) {
 			$mail->Port = $this->port;
 			$mail->Host = $this->smtp;
@@ -146,7 +148,7 @@ class jmail{
 		}
 		$mail->WordWrap = 50; // line 
 		$mail->Subject = (isset($this->title)) ? $this->title : '';//title
-		$body = eregi_replace("[\]", '', $this->body);
+		$body = preg_replace("\\", '', $this->body);
 		$mail->MsgHTML($this->body);
 		if ($this->touser) {
 			$address = explode("|",$this->touser);
@@ -164,6 +166,7 @@ class jmail{
 			return true;
 		}		
 	}
+	
 }
 
 # This program is an open source system, commercial use, please consciously to purchase commercial license.

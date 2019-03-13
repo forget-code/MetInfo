@@ -1,11 +1,8 @@
-function onlineclose(){
+/*function onlineclose(){
 	//$('#onlinebox').hide();
 	document.getElementById("onlinebox").style.display="none";
 	return false;
 }
-
-
-
 define(function(require, exports, module) {
 
 	var $ = jQuery = require('jquery');
@@ -144,9 +141,8 @@ function olne_mouse_on(t,my,nex,type){
 	}
 	olne_resize();
 }
-/*页面尺寸变化*/
-function olne_resize(){
 
+function olne_resize(){
 	mx=Number(olne_domx_op(t,x));
 	my=Number(y);
 	if(t>0 && t<3){//0固左1滚左2滚右3关闭4固右
@@ -208,5 +204,4 @@ $(document).ready(function() {
 		}
 	});
 });
-
-});
+});*/

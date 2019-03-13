@@ -1,5 +1,5 @@
 <!--<?php
-require_once template('static/metresclass.class');//模板处理方法
+require_once template('static/metresclass.class');// 模板自定义类
 echo <<<EOT
 -->
 <input type='hidden' name='lang' value='{$lang}' />

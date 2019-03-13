@@ -19,8 +19,8 @@ echo <<<EOT
     </div>
 </div>
 <!-- End Page -->
+</body>
+</html>
 <!--
 EOT;
-$resui='';
-require_once template('module/footer');
-?>
+?>-->

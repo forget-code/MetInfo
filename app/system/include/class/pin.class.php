@@ -41,7 +41,7 @@ class pin {
 			$tmp =substr($text,$i,1);
 			$array = array(-1,1);
 			$p = array_rand($array);
-			$an = $array[$p]*mt_rand(1,10);//角度
+			$an = $array[$p]*mt_rand(1,10);
 			$size = 28;
 			imagettftext($im, $size, $an, 15+$i*$size, 35, $text_c, $font, $tmp);
 		}
@@ -58,8 +58,8 @@ class pin {
 				}
 			}
 		}
-		//加入干扰象素;
-		$count = 160;//干扰像素的数量
+
+		$count = 160;
 		for($i=0; $i<$count; $i++){
 			$randcolor = ImageColorallocate($distortion_im,mt_rand(0,255),mt_rand(0,255),mt_rand(0,255));
 			imagesetpixel($distortion_im, mt_rand()%$im_x , mt_rand()%$im_y , $randcolor);
@@ -82,18 +82,18 @@ class pin {
 			}
 		}
 
-		//设置文件头;
+
 		Header("Content-type: image/JPEG");
 
-		//以PNG格式将图像输出到浏览器或文件;
+
 		ImagePNG($distortion_im);
 
-		//销毁一图像,释放与image关联的内存;
+
 		ImageDestroy($distortion_im);
 		ImageDestroy($im);
 	}
 
-	function make_rand($length="32"){//验证码文字生成函数
+	function make_rand($length="32"){
 		$str="A2B3C4D5E6F7G8H9iJKLMNPQRSTUVWXYZ";
 		$result="";
 		for($i=0;$i<$length;$i++){
