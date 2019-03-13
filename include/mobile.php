@@ -2,12 +2,13 @@
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 require_once 'mobile_detect.php';
-if($pcok=='deleted')$pcok='';
+if($pcok=='deleted' || $pcok=='\de\leted')$pcok='';
 if($pcok){
 	if($pcok!='wap'&&$pcok!='pc'){
 		header("location:404.html");die;
 	}
 }
+
 if($met_mobileok){
 	$pattern='/^[1-9]?\d$/';
 	if(!preg_match($pattern,$met_mobileok)){
@@ -45,15 +46,17 @@ function mobilejump($tp){
 	global $met_wap_tpa,$met_wap_tpb,$met_wap_url,$met_wap,$met_mobileok,$lang,$index,$db;
 	$met_mobileok=$tp?$met_mobileok:0;
 	if($met_wap&&!$met_mobileok){
-		$Loaction = $index?'wap/index.php?lang='.$lang:'../wap/index.php?lang='.$lang;
+		//$Loaction = $index?'wap/index.php?lang='.$lang:'../wap/index.php?lang='.$lang;
+         $Loaction  ='index.php?lang='.$lang.'&met_mobileok=1';
 		if($met_wap_tpa==1){
 			$ua = strtolower($_SERVER['HTTP_USER_AGENT']);
 			if($_SERVER['HTTP_USER_AGENT']){
 				$uachar = "/(nokia|sony|ericsson|mot|samsung|sgh|lg|philips|panasonic|alcatel|lenovo|cldc|midp|mobile|wap|Android|ucweb)/i";
 				if(($ua == '' || preg_match($uachar, $ua))&& !strpos(strtolower($_SERVER['REQUEST_URI']),'wap')){
 					if (!empty($Loaction)){
-						if($met_wap_tpb==1&&$met_wap_url!='')$Loaction=$met_wap_url.$Loaction;
-						header("Location: $Loaction\n");
+						//if($met_wap_tpb==1&&$met_wap_url!='') $Loaction=$met_wap_url.$Loaction;
+						$Loaction = trim($Loaction);
+						header("Location: $Loaction");
 						exit;
 					}
 				}

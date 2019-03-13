@@ -418,6 +418,7 @@ echo <<<EOT
 <!--
 EOT;
 }else if($edtp==2){
+
 echo <<<EOT
 -->
 	<h3 class="v52fmbx_hr metsliding" sliding="2">{$lang_unitytxt_68}</h3>
@@ -429,6 +430,18 @@ echo <<<EOT
 		</dd>
 	</dl>
 	</div>
+	<div class="v52fmbx_dlbox">
+	<dl>
+		<dt>初始密码</dt>
+		<dd>
+			<label><input name="admin_password" type="text" class="text nonull" value="" /><span style="padding-left:10px;color:orange">温馨提示：不知道初始密码可通过修改密码获取。</span></label>
+		</dd>
+
+	</dl>
+	</div>
+	<div>
+<a href='../admin/editor.php?lang=$lang&id=$id&anyid=$anyid' style="margin-left:15px;display:block">修改密码</a>
+</div>		
 <!--
 EOT;
 }

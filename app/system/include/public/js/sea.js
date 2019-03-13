@@ -18,6 +18,8 @@ function HrefUrl(){
 }
 
 /*MetInfo*/
+
+var editorname;
 var lang = getQueryString('lang'),ret = HrefUrl(),siteurl = ret['url'],basepath = siteurl+ret['admin']+'/',pubjspath = siteurl + 'app/system/include/public/',table;
 var metn = getQueryString('n'),metc = getQueryString('c'),meta = getQueryString('a');
 seajs.config({
@@ -25,7 +27,8 @@ seajs.config({
     'pub': pubjspath.substring(0,pubjspath.length-1),
     'epl': 'examples',
 	'own': siteurl+'app/app/'+getQueryString('n'),
-	'tem': tem.substring(0,tem.length-1)
+	'tem': tem.substring(0,tem.length-1),
+	'edturl': siteurl+'app/app/'+editorname
   },
   alias: {
     "jquery": "jquery/1.11.1/jquery_seajs.js",

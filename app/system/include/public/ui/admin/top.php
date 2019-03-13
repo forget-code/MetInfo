@@ -51,7 +51,7 @@ EOT;
 	foreach($navlist as $key => $val){
 echo <<<EOT
 -->
-	<a {$val['classnow']} title="{$val['title']}" href="{$val['url']}">{$val['title']}</a>
+	<a {$val['classnow']} title="{$val['title']}" href="{$val['url']}" target="{$val['target']}">{$val['title']}</a>
 <!--
 EOT;
 	}

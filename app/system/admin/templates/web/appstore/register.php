@@ -24,7 +24,7 @@ var ownlangtxt = '';
 				<div class="fbox">
 					<input type="text" name="user_id" data-required="1" value="" placeholder="{$_M['word']['Prompt_user']}" data-ajaxcheck-url="{$_M['url']['own_form']}&a=doverifica">
 				</div>
-				<span class="tips">{$_M['word']['usernametips']}</span>
+				<span class="tips">可用 www.metinfo.cn 官网用户中心账号登录，无需重复注册</span>
 			</dd>
 		</dl>
 		<dl>
@@ -49,7 +49,7 @@ var ownlangtxt = '';
 			<dt>{$_M['word']['memberCell']}</dt>
 			<dd class="ftype_input">
 				<div class="fbox">
-					<input type="text" name="user_mobile" data-mobile="1" value="{$adm['admin_mobile']}" placeholder="{$_M['word']['Prompt_mobile']}">
+					<input type="text" name="user_mobile" data-mobile="1" value="{$adm['admin_mobile']}" placeholder="{$_M['word']['Prompt_mobile']}" data-ajaxcheck-url="{$_M['url']['own_form']}&a=doverifica">
 				</div>
 				<span class="tips">{$_M['word']['services_future']}</span>
 			</dd>
@@ -58,7 +58,7 @@ var ownlangtxt = '';
 			<dt>{$_M['word']['mailbox']}</dt>
 			<dd class="ftype_input">
 				<div class="fbox">
-					<input type="text" name="user_email" data-email="1" value="{$adm['admin_email']}" placeholder="{$_M['word']['Prompt_email']}">
+					<input type="text" name="user_email" data-email="1" value="{$adm['admin_email']}" placeholder="{$_M['word']['Prompt_email']}" data-ajaxcheck-url="{$_M['url']['own_form']}&a=doverifica">
 				</div>
 				<span class="tips">{$_M['word']['services_future']}</span>
 			</dd>

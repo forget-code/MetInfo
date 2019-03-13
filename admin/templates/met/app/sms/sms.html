@@ -31,7 +31,7 @@ echo <<<EOT
 			<dd>
 			<lo>
 				<li class="red">{$lang_smstips31}</li>
-				<li id='audit_msg' class="red">{$lang_smstips90}
+				<li id='audit_msg' >{$lang_smstips90}
 <!--
 EOT;
 if($met_agents_type>1){
@@ -73,8 +73,8 @@ echo <<<EOT
 			<dd>
 				<textarea class="textarea nonull" id="smstelbox" style="float:left; width:120px; height:150px;" name="phone"></textarea>
 				<span class="tips" style="float:left; margin-right:80px; position:relative; bottom:3px; margin-left:10px;">{$lang_smstips39} <span id='changegetel' class="color390"></span> {$lang_smstips40}
-				<br/><a href="javascript:;" onclick="return smsmembertel($(this))" style="text-decoration:underline;">{$lang_smstips41}</a>&nbsp;&nbsp;<span class="tips"></span>
-				<br/><a href="javascript:;" onclick="return smsmetelrepeat()" style="text-decoration:underline;">{$lang_smstips42}</a>
+				<br/><a href="javascript:;" onClick="return smsmembertel($(this))" style="text-decoration:underline;">{$lang_smstips41}</a>&nbsp;&nbsp;<span class="tips"></span>
+				<br/><a href="javascript:;" onClick="return smsmetelrepeat()" style="text-decoration:underline;">{$lang_smstips42}</a>
 				</span>
 			</dd>
 		</dl>
@@ -103,7 +103,7 @@ echo <<<EOT
 -->			
 		</h3>
 		<div class="v52fmbx_submit">
-			<input type="submit" name="submit" class="submit" disabled="disabled" value="{$lang_smstips48}" onclick="return smssubmit($(this))" />
+			<input type="submit" name="submit" class="submit" disabled="disabled" value="{$lang_smstips48}" onClick="return smssubmit($(this))" />
 			<span class="tips red "></span>&nbsp;&nbsp;<span class="tips color999 submit-tips">{$lang_smstips49}</span>
 		</div>
 </div>
@@ -235,7 +235,6 @@ $(document).ready(function(){
 				$('#balance').append(data.msg);
 				if(data.audit==0||data.audit==null){
 					$('#audit_msg').show();
-					$('.submit-tips').html("您的账号未通过群发审核");
 				}else{
 					$("[name='submit']").removeAttr('disabled');
 				}

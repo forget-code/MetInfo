@@ -133,11 +133,14 @@ class para{
 		global $_M;
 		$table = $this->table($module);
 		foreach($infos as $paraid=>$val){
-			if($val){
-				$query = "UPDATE {$table} SET info = '{$val}' WHERE listid = '{$listid}' and paraid = '{$paraid}' and lang = '{$this->lang}'
-				";
-				DB::query($query);
-				if(DB::affected_rows() == 0){
+			if(isset($val)){
+				$query = "SELECT * FROM {$table} WHERE listid = '{$listid}' and paraid = '{$paraid}' and lang = '{$this->lang}'";
+				$para = DB::get_all($query);
+				if(count($para) > 1){
+					$query = "DELETE FROM {$table} WHERE listid = '{$listid}' and paraid = '{$paraid}' and lang = '{$this->lang}'";
+					DB::query($query);
+				}
+				if(count($para) == 0 || count($para) > 1){
 					$query = "INSERT INTO {$this->table($module)} SET 
 							listid  = '{$listid}',
 							paraid  = '{$paraid}',
@@ -148,6 +151,9 @@ class para{
 								imgname = '',		
 					";
 					$query .= "lang    = '{$this->lang}'";
+					DB::query($query);
+				}else if(count($para) == 1){
+					$query = "UPDATE {$table} SET info = '{$val}' WHERE listid = '{$listid}' and paraid = '{$paraid}' and lang = '{$this->lang}'";
 					DB::query($query);
 				}
 			}

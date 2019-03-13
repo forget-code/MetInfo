@@ -1,3 +1,6 @@
+<?php
+header("Content-type: text/html; charset=utf-8");
+?>
 {
     "sProcessing":   "处理中...",
     "sLengthMenu":   "显示 _MENU_ 项结果",

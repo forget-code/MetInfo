@@ -1,6 +1,6 @@
 <?php
-# MetInfo Enterprise Content Management System 
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+# MetInfo Enterprise Content Management System
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 require_once '../include/common.inc.php';
 
 if($action=="add"){
@@ -35,11 +35,11 @@ while($list= $db->fetch_array($result)){
  if($list[type]==4){
   $query1 = " where lang='$lang' and bigid='".$list[id]."'";
   $total_list[$list[id]] = $db->counter($met_list, "$query1", "*");
-  } 
+  }
 $list[para]="para".$list[id];
 $cv_para[]=$list;
 }
-$cvstr = $met_cv_word; 
+$cvstr = $met_cv_word;
 $cvarray=explode("|",$cvstr);
 $cvarrayno=count($cvarray);
 $cvok=false;
@@ -47,7 +47,7 @@ foreach($cv_para as $key=>$val){
 $para="para".$val[id];
 $content=$content."-".$$para;
 }
-for($i=0;$i<$cvarrayno;$i++){ 
+for($i=0;$i<$cvarrayno;$i++){
 if(strstr($content, $cvarray[$i])){
 $cvok=true;
 $cv_word=$cvarray[$i];
@@ -59,7 +59,7 @@ $cvto=$$cvto;
 $cv_word="工作简历中不能包含 [".$cv_word."] ";
 if($cvok==true)okinfo('javascript:history.back();',$cv_word);
 setcookie('submit',$time2);
-require_once '../include/jmail.php';	 
+require_once '../include/jmail.php';
 require_once 'uploadfile_save.php';
 $customerid=$metinfo_member_name!=''?$metinfo_member_name:0;
 if(!is_numeric($jobid))okinfo('javascript:history.back();',$lang_js1);
@@ -77,7 +77,7 @@ $query = "INSERT INTO $met_infoprompt SET
 				  member            = '$customerid',
 				  type              = '$news_type',
 				  time              = '$new_time',
-				  lang              = '$lang'";					  
+				  lang              = '$lang'";
 $db->query($query);
 $later_cv=$db->get_one("select * from $met_cv where lang='$lang' order by addtime desc");
 $id=$later_cv[id];
@@ -169,12 +169,12 @@ $body=$body.'<tr><td class="l">'.$val[name].'</td><td class="r">'.$para.'</td>'.
 }
 }
 }
-$body.='<tr><td class="footer" colspan="3">Powered by <a target="_blank" href="http://www.metinfo.cn">MetInfo '.$metcms_v.'</a> &copy;2008-2011 &nbsp;<a target="_blank" href="http://www.metinfo.cn">MetInfo Inc.</a></td></tr>';
+//$body.='<tr><td class="footer" colspan="3">Powered by <a target="_blank" href="http://www.metinfo.cn">MetInfo '.$metcms_v.'</a> &copy;2008-2011 &nbsp;<a target="_blank" href="http://www.metinfo.cn">MetInfo Inc.</a></td></tr>';
 $body.='</table>';
 if($met_cv_back==1){
 jmailsend($from,$fromname,$cvto,$met_cv_title,$met_cv_content,$usename,$usepassword,$smtp);
 }
-jmailsend($from,$fromname,$to,$title,$body,$usename,$usepassword,$smtp); 
+jmailsend($from,$fromname,$to,$title,$body,$usename,$usepassword,$smtp);
 }
 /*短信提醒*/
 if($met_nurse_job){
@@ -186,8 +186,12 @@ sendsms($met_nurse_job_tel,$message,4);
 }
 }
 /**/
-$backurl=$metinfo_member_name==""?'../index.php?lang='.$lang:'../member/'.$member_index_url;					  
-okinfo($backurl,$lang_js21);
+
+$backurls=str_replace('save.php', '', $_SERVER["PHP_SELF"]);
+
+
+$backurl=$metinfo_member_name==""?'../index.php?lang='.$lang:'../member/'.$member_index_url;
+okinfo($backurls,$lang_js21);
 }
 
 # This program is an open source system, commercial use, please consciously to purchase commercial license.

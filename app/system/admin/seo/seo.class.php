@@ -109,7 +109,7 @@ class seo extends admin {
 				$httpdurl ='.htaccess';
 				$httpd    = $htaccess;	
 			}
-			else if(stristr($_SERVER['SERVER_SOFTWARE'],'IIS/7')){
+			else if(stristr($_SERVER['SERVER_SOFTWARE'],'IIS')){
 				$web = '<?xml version="1.0" encoding="UTF-8"?>'."\n";
 				$web.= '<configuration>'."\n";
 				$web.= '<system.webServer>'."\n";
@@ -162,7 +162,7 @@ class seo extends admin {
 				$httpd.= 'CacheClockRate 3600'."\n";
 				$httpd.= 'RepeatLimit 32'."\n";
 				$httpd.= 'RewriteRule '.$metbase.'index-([a-zA-Z0-9_^\x00-\xff]+).html '.$metbase.'index.php\?lang=$1&pseudo_jump=1'."\n";
-				$httpd.= 'RewriteRule '.$metbase.'([a-zA-Z0-9_^\x00-\xff]+)/list-([a-zA-Z0-9_^\x00-\xff]+)-([a-zA-Z0-9_^\x00-\xff]+).html '.$metbase.'$1/index.php\?lang=$3&metid=$2&list=2&pseudo_jump=1'."\n";
+				$httpd.= 'RewriteRule '.$metbase.'([a-zA-Z0-9_^\x00-\xff]+)/list-([a-zA-Z0-9_^\x00-\xff]+)-([a-zA-Z0-9_^\x00-\xff]+).html '.$metbase.'$1/index.php\?lang=$3&metid=$2&list=1&pseudo_jump=1'."\n";
 				$httpd.= 'RewriteRule '.$metbase.'([a-zA-Z0-9_^\x00-\xff]+)/list-([a-zA-Z0-9_^\x00-\xff]+)-([0-9_]+)-([a-zA-Z0-9_^\x00-\xff]+).html '.$metbase.'$1/index.php\?lang=$4&metid=$2&list=1&page=$3&pseudo_jump=1'."\n";
 				$httpd.= 'RewriteRule '.$metbase.'([a-zA-Z0-9_^\x00-\xff]+)/jobcv-([a-zA-Z0-9_^\x00-\xff]+)-([a-zA-Z0-9_^\x00-\xff]+).html '.$metbase.'$1/cv.php\?lang=$3&selectedjob=$2&pseudo_jump=1'."\n";
 				$httpd.= 'RewriteRule '.$metbase.'([a-zA-Z0-9_^\x00-\xff]+)/product-list-([a-zA-Z0-9_^\x00-\xff]+).html '.$metbase.'$1/product.php\?lang=$2&pseudo_jump=1'."\n";
@@ -199,7 +199,7 @@ class seo extends admin {
 	
 	function doanchor_json(){
 		global $_M;
-		
+
 		$table = load::sys_class('tabledata', 'new');
 		$where = "lang='{$_M[lang]}'"; //在条件语句中加入查询条件 $search
 		$order = "id";
@@ -247,8 +247,17 @@ class seo extends admin {
 					$newtitle = $_M['form']['newtitle-'.$id];
 					$url 	  = $_M['form']['url-'.$id];
 					$num 	  = $_M['form']['num-'.$id];
-					$url=str_replace('http://','',$url);
-					$url="http://".$url;
+                    if(strstr($_M['config']['met_weburl'],'https')){
+                        if(!strstr($url,'http')){
+                              $url.='https://'.$url;
+                          }
+                        if(strstr($url,'http') && !strstr($url,'https')){
+                              $url= str_replace('http','https',$url);
+                          }
+                    }else{
+                             $url=str_replace('http://','',$url);
+                             $url="http://".$url;
+                    }
 					if(is_number($id)){//修改
 						$query = "UPDATE {$_M['table']['label']} SET 
 							oldwords = '{$oldwords}',

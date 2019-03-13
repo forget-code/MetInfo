@@ -44,7 +44,7 @@ define(function(require, exports, module) {
 		}	
 	}
 	function trim(str) {
-		return str
+		return $.trim(str);
 	}
 	function ftn(m) {
 		var f = '';
@@ -75,7 +75,7 @@ define(function(require, exports, module) {
 				}
 			}
 			if (d.attr('data-required')) {
-				if (t == 'input' || t == 'text' || t == 'password' || d[0].tagName == 'TEXTAREA') {
+				if (t == 'input' || t == 'text' || t == 'password' || d[0].tagName == 'TEXTAREA' || t == 'file') {
 					if (l == '') {
 						j = 1;
 						e += err[1] + '|$|'
@@ -367,9 +367,7 @@ define(function(require, exports, module) {
 		}
 		keys = []
 	});
-	$(".ftype_code input[name='code']").click(function() {
-		$(this).next().click()
-	});
+
 	$(document).on('keyup', ".ftype_code input[name='code']", function() {
 		var v = $(this).val();
 		v = v.toUpperCase();

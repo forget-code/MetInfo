@@ -31,6 +31,10 @@
 	}else{
 		$where=" and exists(select info from $met_flist where listid=$met_feedback.id and paraid=$met_fd_class and info='$met_fd_export')";
 	}
+	if($_M['form']['check_id'] != "")
+	{
+		$where .= " AND id in ({$_M['form']['check_id']})";
+	}
 	$query = "SELECT * FROM $met_feedback where class1='$class1' and lang='$lang' ".$where;
 	$result = $db->query($query);
 	while($list= $db->fetch_array($result)){
@@ -115,7 +119,14 @@
 			$xls->Textc($i+2,$j+1,$feedback_list[$i][$param[$j]]);
 		}
 	}	
-	$xls->Output($met_module[8][0][name].".xls");
+		$feedname = $db->get_one("SELECT name FROM $met_column WHERE id=$class1");
+		if($feedname)
+		{
+			$excelname = $feedname['name'];
+		}else{
+			$excelname = $met_module[8][0][name];
+		}
+	$xls->Output($excelname.".xls");
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

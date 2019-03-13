@@ -33,7 +33,7 @@ required:必选项
 		var prov_val=settings.prov;
 		var city_val=settings.city;
 		var dist_val=settings.dist;
-		var select_prehtml=(settings.required) ? "" : "<option value=''>请选择asdasdasd</option>";
+		var select_prehtml=(settings.required) ? "" : "<option value=''>请选择所在地区</option>";
 		//var select_prehtml="<option value=''>请选择</option>";//metinfo xiugai
 		var city_json;
 

@@ -61,7 +61,7 @@ EOT;
 if($_M['config']['met_qq_open']){
 echo <<<EOT
 -->
-					<div class="col-xs-4 col-md-4"><a href="{$_M['url']['login_other']}&type=qq"><i class="fa fa-qq"></i></a></div>
+					<div class="col-xs-4 col-md-4"><a title="QQ{$_M['word']['login']}" href="{$_M['url']['login_other']}&type=qq"><i class="fa fa-qq"></i></a></div>
 <!--
 EOT;
 }

@@ -470,7 +470,6 @@ echo <<<EOT
 	$('#met-lang').change(function(){
 		if($(this).val()==''){
 			expandtan($('#langmark'));
-			$("input[name='langflag']").val('');
 			$('#langautor-box').hide();
 			$("input[name=langdlok]:eq(1)").attr("checked",'checked');changelang(0);
 			if($('input:radio[name="langdlok"]:checked').val()==1){

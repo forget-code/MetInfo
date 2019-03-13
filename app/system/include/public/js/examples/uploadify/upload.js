@@ -19,12 +19,12 @@ define(function(require, exports, module) {
 		if(contentval)contentval.val(o.thumbcontent_path);
 	}
 	function upload(d) { //上传
-		var t_html,n=d.attr("name"),t,url,is_thumblist,is_thumbcontent;
+		var t_html,n=d.attr("name"),t,url,is_thumblist,is_thumbcontent,accept=d.attr("accept");//上传参数添加accept（新模板框架v2）
 		d.addClass("text").attr("style","display:block;");
 		t_html ='<div class="metuplaodify">';
 		t_html+='<form id="upfileFormmet_'+n+'" enctype="multipart/form-data">';
 		t_html+='<div class="file_uploadfrom">';
-		t_html+='<input name="'+n+'_upload" type="file">';
+		t_html+='<input name="'+n+'_upload" type="file" accept="'+accept+'">';//上传参数添加accept（新模板框架v2）
 		t_html+='</div>';
 		t_html+='<a href="javascript:;" title="'+text1+'" class="upbutn">'+text1+'</a>';
 		t_html+='</form>';

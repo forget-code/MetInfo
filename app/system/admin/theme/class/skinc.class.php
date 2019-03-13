@@ -160,11 +160,10 @@ class skinc{
 	/*保存配置*/
 	function tminisave($have){
 		global $_M;
-		
-		//新方法
-		$this->iniclass->tminisave($have);
-		
-		$wap_ok = 0;
+        //新方法
+        $this->iniclass->tminisave($have);
+
+        $wap_ok = 0;
 		$cglist = $this->configlist;
 		if($have['mobile']=='1'){
 			$have['wap_skin_user'] = $have['met_skin_user'];
@@ -190,8 +189,14 @@ class skinc{
 			DB::query($query);
 			load::sys_func('file');
 			delfile(PATH_WEB."cache/otherinfo_{$this->lang}.inc.php");
-			
-			$have['flash_10001'] = '1|'.$have['met_flash_10001_x'].'|'.$have['met_flash_10001_y'].'|'.$have['met_flash_10001_imgtype'];
+
+            /*dump($_M['form']);
+            die();*/
+
+            //轮播图尺寸
+            if ($have['met_flash_10001_x'] || $have['met_flash_10001_y'] || $have['met_flash_10001_imgtype']) {
+                $have['flash_10001'] = '1|'.$have['met_flash_10001_x'].'|'.$have['met_flash_10001_y'].'|'.$have['met_flash_10001_imgtype'];
+            }
 		}
 		$cglist[] = 'met_productTabok';
 		$cglist[] = 'met_productTabname';
@@ -199,7 +204,9 @@ class skinc{
 		$cglist[] = 'met_productTabname_2';
 		$cglist[] = 'met_productTabname_3';
 		$cglist[] = 'met_productTabname_4';
+
 		configsave($cglist, $have, $this->lang);/*保存系统配置*/
+
 		/*保存banner设置*/
 		$nowidold = array();
 		$bannerid = DB::get_all("select * from {$_M[table][flash]} where wap_ok='{$wap_ok}' and (module like '%,10001,%' or module = 'metinfo') and lang='{$this->lang}' and img_path!='' order by no_order ");
@@ -208,38 +215,73 @@ class skinc{
 		}
 		$nowidnew = array();
 		$have['indexbannerlist'] = str_replace("\\","",$have['indexbannerlist']);
+		
 		$bannerlist = json_decode($have['indexbannerlist'],true);
+        #dump($_M['form']);
+        #die();
 		foreach($bannerlist as $key=>$val){
 			if($val['img_path']!=''){
 				if(!strstr($val['img_path'],"../"))$val['img_path'] = '../'.$val['img_path'];
+
 				if($val['id']){
+					// 添加banner属性img_title_color、img_des、img_des_color、img_text_position（新模板框架v2）
 					$query = "update {$_M[table][flash]} SET 
-					img_title = '{$val['img_title']}',
 					img_path  = '{$val['img_path']}',
 					img_link  = '{$val['img_link']}',
+					img_title = '{$val['img_title']}',
+					img_title_color = '{$val['img_title_color']}',
+					img_des = '{$val['img_des']}',
+					img_des_color = '{$val['img_des_color']}',
+					img_text_position = '{$val['img_text_position']}',
 					no_order  = '{$key}'
 					WHERE id  = '{$val['id']}'";
 					$nowidnew[] = $val['id'];
 				}else{
+					// 添加banner属性img_title_color、img_des、img_des_color、img_text_position（新模板框架v2）
 					$query = "INSERT INTO {$_M[table][flash]} SET 
-					img_title = '{$val['img_title']}',
 					img_path  = '{$val['img_path']}',
 					img_link  = '{$val['img_link']}',
+					img_title = '{$val['img_title']}',
+					img_title_color = '{$val['img_title_color']}',
+					img_des = '{$val['img_des']}',
+					img_des_color = '{$val['img_des_color']}',
+					img_text_position = '{$val['img_text_position']}',
 					no_order  = '{$key}',
 					module    = ',10001,',
 					wap_ok    = '{$wap_ok}',
 					lang      = '{$this->lang}'";
 				}
-				DB::query($query);
-			}
-		}
+                DB::query($query);
+            }
+            #echo $query."<br>";
+
+        }
+
 		$nowid = array_diff($nowidold,$nowidnew);
+
 		if($nowid){
 			foreach($nowid as $key=>$val){
-				$query = "delete from {$_M[table][flash]} where id='{$val}'";
-				DB::query($query);
+
+				 $query="select module from {$_M[table][flash]} where id='{$val}'";
+
+				   $result=DB::query($query);
+
+				  while ($metinfo=mysql_fetch_array($result)){
+
+				       if($metinfo['module']!='metinfo'){
+
+				 	    $query = "delete from {$_M[table][flash]} where id='{$val}'";
+
+			              DB::query($query);
+				
+				       }
+				  }
+				
+				
+				
 			}
 		}
+		
 	}
 	/*模板验证*/
 	public function check($no) {

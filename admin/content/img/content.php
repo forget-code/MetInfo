@@ -1,6 +1,6 @@
 <?php
-# MetInfo Enterprise Content Management System 
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+# MetInfo Enterprise Content Management System
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 $depth='../';
 require_once $depth.'../login/login_check.php';
 require_once $depth.'global.func.php';
@@ -45,11 +45,12 @@ if($action=="editor"){
 			$newdisplay=explode('*',$displayimg[$i]);
 			$displaylist[$i]['name']=$newdisplay[0];
 			$displaylist[$i]['imgurl']=$newdisplay[1];
+			$displaylist[$i]['size']=$newdisplay[2];//添加属性（新模板框架v2）
 		}
 	}
 	$class1x[$img_list[class1]]='selected="selected"';
 	$class2x[$img_list[class2]]="selected='selected'";
-	$class3x[$img_list[class3]]="selected='selected'";	
+	$class3x[$img_list[class3]]="selected='selected'";
 	$class1=$img_list[class1];
 	$class2=$img_list[class2];
 	$class3=$img_list[class3];

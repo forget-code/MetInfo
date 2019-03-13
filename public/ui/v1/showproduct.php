@@ -124,8 +124,9 @@ echo <<<EOT
 <!--
 EOT;
 $i=0;
+$time=date("Y-m-d H:i:s",time());
 foreach($product_list as $key=>$val){
-if($val[id]!=$product[id]){
+if($val[id]!=$product[id]&&$val[displaytype]==1&&($val[addtime]<$time)){
 $i++;
 echo <<<EOT
 -->

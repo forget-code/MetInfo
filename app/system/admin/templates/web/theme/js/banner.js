@@ -2,7 +2,7 @@ define(function(require, exports, module) {
 
 	var $ = require('jquery');
 	var common = require('common');
-	
+
 	var themefunc = require('tem/js/func');//公共函数
 	/*图片上传*/
 	var up = require('tem/js/upload');
@@ -17,6 +17,13 @@ define(function(require, exports, module) {
 		if($(".bannerlist li").length==0){
 			var html = $("textarea[name='bannerlist_li_html']").val();
 			$(".bannerlist ul").append(html);
+			// 组件添加（新模板框架banner文字颜色控件）
+			if($('.bannerlist li .ftype_color').length>0){
+				require.async(['epl/color/jquery.minicolors.css','epl/color/jquery.minicolors.min'],function(){
+					$(".bannerlist li .ftype_color .fbox input").minicolors();
+				});
+			}
+
 			up.bannerup($('.banner_rep input'));
 		}else{
 			$(".bannerlist li:eq(0)").clone().appendTo(".bannerlist ul");
@@ -24,13 +31,22 @@ define(function(require, exports, module) {
 			d.hide();
 			//d.find(".banner_input").show();
 			d.slideDown();
-			d.find("input").val('');
+			d.find("input").val('').attr({value:'','data-myvalue':''});
 			d.find("img").css("min-height",90).attr('src','');
 			d.removeAttr("data-bannerid");
 			$('.bannerlist ul').sortable('destroy');
 			$('.bannerlist ul').sortable().bind('sortupdate', function() {
 				themefunc.ajaxiframe(9);
 			});
+			// 组件添加（新模板框架banner文字颜色控件）
+			var $ftype_color=d.find(".ftype_color .fbox input");
+			if($ftype_color.length>0){
+				d.find(".ftype_color .fbox .minicolors-swatch-color").css({'background-color':''});
+				require.async(['epl/color/jquery.minicolors.css','epl/color/jquery.minicolors.min'],function(){
+					$ftype_color.minicolors();
+				});
+			}
+
 		}
 	});
 	/*设置标题和链接*/
@@ -65,5 +81,5 @@ define(function(require, exports, module) {
 				themefunc.ajaxiframe(10);
 		});
 	}
-	
+
 });

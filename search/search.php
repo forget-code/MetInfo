@@ -65,7 +65,7 @@ if(($class1=="" || $class1==10000 || $class1==10001 || $class1==0) and (intval($
    }
 $serch_sql.= "and lang='$lang' and (recycle='0' or recycle='-1') and displaytype='1' "; 
 if($met_member_use==2)$serch_sql.= " and access<='$metinfo_member_type'";
-$searchitem="id,title,top_ok,com_ok,content,updatetime,addtime,filename,hits,imgurls,class1";
+$searchitem="id,title,top_ok,com_ok,content,updatetime,addtime,filename,hits,imgurls,class1,links";
 $searchitem1="id,title,top_ok,com_ok,content,updatetime,addtime,filename,hits,class1";
 switch($met_htmpagename){
 case 0:   
@@ -326,7 +326,7 @@ break;
 	foreach($search_list_content as $key=>$val){
 		$search_list[]=$val;
 	}
-	$search_list=array_slice($search_list,$from_record,$list_num);
+	//$search_list=array_slice($search_list,$from_record,$list_num);//多余，可删除
 }
 }
 
@@ -340,6 +340,7 @@ if($class_info[name]=="")$class_info=array('name'=>$lang_search,'url'=>'search.p
      $show[keywords]=$class_info[keywords]?$class_info[keywords]:$met_keywords;
 	 $met_title=$met_title?$class_info['name'].'-'.$met_title:$class_info['name'];
 	 if($class_info['ctitle']!='')$met_title=$class_info['ctitle'];
+	  if($class_info['keywords']!='')$met_title.='-'.$class_info['keywords'];
 	 if($page>1)$met_title.='-'.$lang_Pagenum1.$page.$lang_Pagenum2;
 require_once '../public/php/methtml.inc.php';
 function methtml_searchlist($content=1,$time=1,$detail=1,$img=0){

@@ -21,20 +21,30 @@ define(function(require, exports, module) {
 			var li = $(".index_bannerlist li"),v= new Object(),json;
 			li.each(function(i){
 				var img_path  = $(this).find("input[name='img_path']").val(),
-					img_title = $(this).find("input[name='img_title']").val(),
 					img_link  = $(this).find("input[name='img_link']").val(),
+					img_title = $(this).find("input[name='img_title']").val(),
+					// 添加变量（新模板框架banner属性）
+					img_title_color = $(this).find("input[name='img_title_color']").val(),
+					img_des = $(this).find("input[name='img_des']").val(),
+					img_des_color = $(this).find("input[name='img_des_color']").val(),
+					img_text_position = $(this).find("input[name='img_text_position']:checked").val(),
+
 					id        = $(this).attr("data-bannerid");
 					img_path = img_path.replace("../","");
 				v[i] = new Object();
 				v[i]['img_path'] = img_path;
-				v[i]['img_title'] = img_title;
 				v[i]['img_link'] = img_link;
+				v[i]['img_title'] = img_title;
+				v[i]['img_title_color'] = img_title_color;
+				v[i]['img_des'] = img_des;
+				v[i]['img_des_color'] = img_des_color;
+				v[i]['img_text_position'] = img_text_position;
 				v[i]['id'] = id;
 			});
 			json = JSON.stringify(v);
 			$("input[name='indexbannerlist']").val(json);
 		}
-	}	
+	}
 	/*预览*/
 	function ajaxiframe(t){
 		upimgchuli();
@@ -59,5 +69,5 @@ define(function(require, exports, module) {
 	exports.ajaxiframe = function(i,t){
 		ajaxiframe(t);
 	}
-	
+
 });

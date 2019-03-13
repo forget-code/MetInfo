@@ -80,9 +80,13 @@ if($dataoptimize[6][otherlist]){
 	}
 	$preid = $prejob['filename']!=''?$prejob['filename']:$prejob['id'];
 	$nextid = $nextjob['filename']!=''?$nextjob['filename']:$nextjob['id'];
+	
+	$preid_html = $prejob['filename']!=''?$prejob['filename']:$prehtmname.$prejob[id];
+	$nextid_html = $nextjob['filename']!=''?$nextjob['filename']:$nexthtmname.$nextjob[id];
+	
 	$phpname="showjob.php?".$langmark."&id=";
-	if($prejob)$prejob[url]=$met_pseudo?$preid.'-'.$lang.'.html':($met_webhtm?$prehtmname.$prejob[id].$met_htmtype:$phpname.$prejob[id]);
-    if($nextjob)$nextjob[url]=$met_pseudo?$nextid.'-'.$lang.'.html':($met_webhtm?$nexthtmname.$nextjob[id].$met_htmtype:$phpname.$nextjob[id]);
+	if($prejob)$prejob[url]=$met_pseudo?$preid.'-'.$lang.'.html':($met_webhtm?$preid_html.$met_htmtype:$phpname.$prejob[id]);
+    if($nextjob)$nextjob[url]=$met_pseudo?$nextid.'-'.$lang.'.html':($met_webhtm?$nextid_html.$met_htmtype:$phpname.$nextjob[id]);
 	$preinfo=$prejob;
 	$nextinfo=$nextjob;
 	if($preinfo)$preinfo[title]=$preinfo[position];

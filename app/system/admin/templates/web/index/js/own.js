@@ -50,7 +50,7 @@ define(function(require, exports, module) {
 				success: function(json) {
 					var html='',adu=apppath.split('index.php'),imgsrc='',price='';
 					$.each(json, function(i, item){ 
-						if(i<5){
+						if(i<6){
 							price  = item.price_html;
 							imgsrc = item.icon;
 							var media = $(".index_hotapp .media").eq(i);

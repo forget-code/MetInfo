@@ -1,6 +1,6 @@
 <?php
-# MetInfo Enterprise Content Management System 
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+# MetInfo Enterprise Content Management System
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 
 defined('IN_MET') or exit('No permission');
 
@@ -27,8 +27,8 @@ class common {
 		$this->load_config_global();//加载全站配置数据
 		$this->load_config_lang();//加载当前语言配置数据
 		$this->load_url();//加载url数据
-	}	
-	
+	}
+
 	/**
 	  * 链接数据库
 	  */
@@ -41,7 +41,7 @@ class common {
 		$_M['config']['tablepre'] = $tablepre;
 		return true;
 	}
-	
+
 	/**
 	  * 获取GET,POST,COOKIE，存放在$_M['form']，系统表单提交变量数组
 	  */
@@ -58,8 +58,12 @@ class common {
 		foreach($_GET as $_key => $_value) {
 			$_key{0} != '_' && $_M['form'][$_key] = daddslashes($_value);
 		}
+		if(!preg_match('/^[0-9A-Za-z-]+$/', $_M['form']['lang']) && $_M['form']['lang']){
+			echo "No data in the database,please reinstall11.";
+			die();
+		}
 	}
-	
+
 	/**
 	  * 获取网站的语言设置，存放在$_M['langlist']，语言设置数组
 	  */
@@ -76,53 +80,69 @@ class common {
 			}
 		}
 	}
-	
+
 	/**
 	  * 获取网站的全局网站设置，存放在$_M['config']，网站设置数组
 	  */
 	protected function load_config_global() {
 		global $_M;
-		
+
 		$this->load_config('metinfo');
-		
+
 		$_M['config']['met_webkeys'] = trim(file_get_contents(PATH_WEB.'/config/config_safe.php'));
 		$_M['config']['met_webkeys'] = str_replace('<?php/*', '', $_M['config']['met_webkeys']);
 		$_M['config']['met_webkeys'] = str_replace('*/?>', '', $_M['config']['met_webkeys']);
+		if(!preg_match('/^[0-9A-Za-z]{32}$/',$_M['config']['met_webkeys'])){
+			$_M['config']['met_webkeys'] = random(32);
+			file_put_contents(PATH_WEB.'/config/config_safe.php', "<?php/*{$_M['config']['met_webkeys']}*/?>");
+		}
 		$_M['config']['met_adminfile_code'] = $_M['config']['met_adminfile'];
 		$_M['config']['met_adminfile'] = authcode($_M['config']['met_adminfile'],'DECODE', $_M['config']['met_webkeys']);
-		
+
 		$_M['table'] = array();
 		$_Mettables = explode('|', $_M['config']['met_tablename']);
 		foreach ($_Mettables as $key => $val) {
 			$_M['table'][$val] = $_M['config']['tablepre'].$val;
 		}
 		//$_M['config']['met_host_new'] = 'app.metinfo.cn';
-		$_M['config']['met_host'] = $_M['config']['met_host_new'];		
-	}			
-				
+		$_M['config']['met_host'] = $_M['config']['met_host_new'];
+	}
+
 	/**
 	  * 获取网站的当前语言的网站设置，存放在$_M['config']，网站设置数组
 	  */
 	protected function load_config_lang() {
 		global $_M;
 		$_M['lang'] = $_M['form']['lang'] ? $_M['form']['lang'] : $_M['config']['met_index_type'];
+		if(!$_M['langlist']['web'][$_M['lang']]){
+			echo "No data in the database,please reinstall.";
+			die();
+		}
 		$this->load_config($_M['lang']);
 	}
-	
+
 	/**
 	  * 获取网站的网站设置，存放在$_M['config']，网站设置数组
 	  * @param string $lang 需要获取网站设置的语言，metinfo为全局网站设置
 	  */
-	protected function load_config($lang) {	
+	protected function load_config($lang) {
 		global $_M;
 		$query = "SELECT * FROM {$_M['config']['tablepre']}config WHERE lang='{$lang}'";
 		$result = DB::query($query);
 		while ($list_config = DB::fetch_array($result)) {
-			$list_config['value'] = str_replace('"', '&#34;', str_replace("'", '&#39;',$list_config['value']));
-			$_M['config'][$list_config['name']] = $list_config['value'];
+			$_M['config'][$list_config['name']] = $this->filter_config($list_config['value']);
 		}
 	}
-	
+
+	/**
+	  * 配置变量过滤
+	  * @param string $value 配置变量
+	  */
+	protected function filter_config($value) {
+		$value = str_replace('&#34;', '"', str_replace("&#39;", "'", $value));
+		return $value;
+	}
+
 	/**
 	  * 获取$_M['url']，系统URL网址数组
 	  */
@@ -132,7 +152,7 @@ class common {
 		$this->load_url_other();
 		$this->load_url_unique();
 	}
-	
+
 	/**
 	  * 获取前台网址与后台网址
 	  */
@@ -141,7 +161,7 @@ class common {
 		$_M['url']['site'] = $_M['config']['met_weburl'];
 		$_M['url']['site_admin'] = $_M['url']['site'].$_M['config']['met_adminfile'].'/';
 	}
-	
+
 	/**
 	  * 获取其他网址，web与admin公用
 	  */
@@ -157,19 +177,19 @@ class common {
 		$_M['url']['app'] = $_M['url']['site'].'app/app/';
 		$_M['url']['pub'] = $_M['url']['site'].'app/system/include/public/';
 		$_M['url']['static'] = $_M['url']['site'].'app/system/include/static/';
-		$_M['url']['api'] = 'http://'.$_M['config']['met_host'].'/'."index.php?lang=".$_M['lang'].'&';
+		$_M['url']['api'] = 'https://'.$_M['config']['met_host'].'/'."index.php?lang=".$_M['lang'].'&';
 	}
-	
+
 	/**
 	  * 用于web与admin类加载不同的网址
 	  */
 	protected function load_url_unique() {
-	}	
-	
+	}
+
 	/**
 	  * 获取网站的flash设置，存放在$_M['flashset']，flash设置数组
 	  */
-	protected function load_flashset_data($lang = '') {	
+	protected function load_flashset_data($lang = '') {
 		global $_M;
 		$lang = $lang ? $lang : $_M['lang'];
 		$query = "SELECT * FROM {$_M['config']['tablepre']}config WHERE flashid!='0' and lang='{$lang}'";
@@ -187,7 +207,7 @@ class common {
 			$_M['flashset'][$list_config['flashid']] = $falshval;
 		}
 	}
-	
+
 	/**
 	  * 获取语言参数，存放在$_M['word']，网站设置数组
 	  * @param string $lang    需要获取语言参数的语言
@@ -204,7 +224,7 @@ class common {
 		$json_cache = PATH_CACHE.'lang_json_'.$langtype.$lang.'.php';
 		file_put_contents($json_cache, jsonencode($_M['word']));
 	}
-	
+
 	/**
 	  * 包含模板文件
 	  * @param string $path 要包含的模板文件地址，已“模板文件类型/模板文件名称”方式输入
@@ -213,7 +233,11 @@ class common {
 	  */
 	protected function template($path){
 		global $_M;
-		list($postion, $file) = explode('/',$path);
+		// 前缀、路径转换优化（新模板框架v2）
+		$dir = explode('/',$path);
+		$postion = $dir[0];
+		$file = substr(strstr($path, '/'),1);
+
 		if ($postion == 'own') {
 			return PATH_OWN_FILE."templates/{$file}.php";
 		}
@@ -235,7 +259,7 @@ class common {
 			} else {
 				if (file_exists(PATH_TEM."{$file}.php")) {
 					return PATH_TEM."{$file}.php";
-				}	
+				}
 				if (file_exists(PATH_TEM."{$file}.html")) {
 					return PATH_TEM."{$file}.html";
 				}
@@ -247,7 +271,7 @@ class common {
 			}
 		}
 	}
-	  
+
 	/**
 	  * 销毁
 	  */
@@ -260,7 +284,7 @@ class common {
 		DB::close();//关闭数据库连接
 		exit;
 	}
-} 
+}
 
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.

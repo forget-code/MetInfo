@@ -5,6 +5,8 @@
 defined('IN_MET') or exit('No permission');
 
 require $this->template('ui/head');
+
+
 echo <<<EOT
 -->
 <form method="POST" class="ui-from" name="myform" action="{$_M[url][own_form]}a=doaddsubmit" target="_self">
@@ -17,7 +19,17 @@ echo <<<EOT
 				<select name="add_class2" class="city"></select>
 				<select name="add_class3" class="dist"></select>
 			</div>
+			<!--
+EOT;
+if(in_array('metinfo',$arrlanguage)||in_array('1201',$arrlanguage)){
+echo <<<EOT
+-->     
 			<span class="tips" style="float:left; margin-left:20px;"><a href="{$_M[url][site_admin]}column/index.php?anyid=25&lang={$_M[lang]}" >{$_M['word']['configuration_section']}</a></span>
+<!--
+EOT;
+}
+echo <<<EOT
+--> 
 		</dd>
 	</dl>
 	<dl class="noborder">

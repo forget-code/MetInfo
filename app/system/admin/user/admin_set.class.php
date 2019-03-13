@@ -16,6 +16,7 @@ class admin_set extends admin {
 		nav::set_nav(3, '会员属性', $_M['url']['own_name'].'c=admin_set&a=douserfield');
 		nav::set_nav(4, '会员功能设置', $_M['url']['own_name'].'c=admin_set&a=doindex');
 		nav::set_nav(5, '社会化登录', $_M['url']['own_name'].'c=admin_set&a=doopen');
+		nav::set_nav(6, '邮件内容设置', $_M['url']['own_name'].'c=admin_set&a=doemailset');
 		$this->paraclass = load::mod_class('system/class/sys_para', 'new');
 		
 	}
@@ -104,6 +105,31 @@ class admin_set extends admin {
 		configsave($configlist);
 		turnover("{$_M[url][own_form]}a=doopen");
 	}
+	
+	public function doemailset(){
+		global $_M;
+		nav::select_nav(6);
+		require_once $this->template('tem/email');
+	
+	}
+	
+	public function doemailsetsave(){
+		global $_M;
+		$configlist = array();
+		$configlist[] = 'met_member_email_reg_title';
+		$configlist[] = 'met_member_email_reg_content';
+		
+		$configlist[] = 'met_member_email_password_title';
+		$configlist[] = 'met_member_email_password_content';
+			
+		$configlist[] = 'met_member_email_safety_title';
+		$configlist[] = 'met_member_email_safety_content';
+
+		configsave($configlist);
+		turnover("{$_M[url][own_form]}a=doemailset");
+	
+	}
+	
 }
 
 # This program is an open source system, commercial use, please consciously to purchase commercial license.

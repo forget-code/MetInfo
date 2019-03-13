@@ -21,11 +21,11 @@ while($list= $db->fetch_array($result)){
 		}
 	}
 	$list[content]=$value_list[info];
-	if($list[type]==5 && $met_cv_image == $value_list[paraid]){
-		$jobzhaop='../../'.$src;
-	}else{
+	// if($list[type]==5 && $met_cv_image == $value_list[paraid]){
+	// 	$jobzhaop='../../'.$src;
+	// }else{
 		$cv_para[]=$list;
-	}
+	// }
 }
 $m_list = $db->get_one("SELECT * FROM $met_column WHERE module='6' and lang='$lang'");
 $class1 = $m_list['id'];

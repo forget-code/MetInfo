@@ -39,8 +39,8 @@ INSERT INTO met_config VALUES('729','metconfig_watermark','0','','0','0','tc');
 INSERT INTO met_config VALUES('730','metconfig_img_style','1','','0','0','tc');
 INSERT INTO met_config VALUES('731','metconfig_img_x','150','','0','0','tc');
 INSERT INTO met_config VALUES('732','metconfig_img_y','150','','0','0','tc');
-INSERT INTO met_config VALUES('733','metconfig_newsimg_x','200','','0','0','tc');
-INSERT INTO met_config VALUES('734','metconfig_newsimg_y','200','','0','0','tc');
+INSERT INTO met_config VALUES('733','metconfig_newsimg_x','90','','0','0','tc');
+INSERT INTO met_config VALUES('734','metconfig_newsimg_y','90','','0','0','tc');
 INSERT INTO met_config VALUES('735','metconfig_productimg_x','213','','0','0','tc');
 INSERT INTO met_config VALUES('736','metconfig_productimg_y','160','','0','0','tc');
 INSERT INTO met_config VALUES('737','metconfig_imgs_x','190','','0','0','tc');
@@ -48,7 +48,7 @@ INSERT INTO met_config VALUES('738','metconfig_imgs_y','150','','0','0','tc');
 INSERT INTO met_config VALUES('739','metconfig_keywords','網站關鍵詞','','0','0','tc');
 INSERT INTO met_config VALUES('740','metconfig_description','網站描述，壹般顯示在搜索引擎搜索結果中的描述文字，用於介紹網站，吸引瀏覽者點擊。','','0','0','tc');
 INSERT INTO met_config VALUES('741','metconfig_title_type','2','','0','0','tc');
-INSERT INTO met_config VALUES('742','metconfig_seo','<p>營銷-SEO-頭部優化文字</p>','','0','0','tc');
+INSERT INTO met_config VALUES('742','metconfig_seo','<p>後臺-營銷-SEO-頭部優化文字處修改</p>','','0','0','tc');
 INSERT INTO met_config VALUES('743','metconfig_tools_ok','1','','0','0','tc');
 INSERT INTO met_config VALUES('744','metconfig_alt','圖片關鍵詞','','0','0','tc');
 INSERT INTO met_config VALUES('745','metconfig_atitle','鏈接關鍵詞','','0','0','tc');
@@ -537,10 +537,17 @@ INSERT INTO met_config VALUES('4396','metconfig_weixin_open','0','','0','0','tc'
 INSERT INTO met_config VALUES('4397','metconfig_weibo_open','0','','0','0','tc');
 INSERT INTO met_config VALUES('4398','metconfig_qq_open','0','','0','0','tc');
 
-INSERT INTO met_config VALUES('4407','met_weixin_gz_appid','','','0','0','tc');
-INSERT INTO met_config VALUES('4408','met_weixin_gz_appsecret','','','0','0','tc');
-INSERT INTO met_config VALUES('4409','met_member_bgcolor','','','0','0','tc');
-INSERT INTO met_config VALUES('4410','met_member_bgimage','','','0','0','tc');
+INSERT INTO met_config VALUES('4407','metconfig_weixin_gz_appid','','','0','0','tc');
+INSERT INTO met_config VALUES('4408','metconfig_weixin_gz_appsecret','','','0','0','tc');
+INSERT INTO met_config VALUES('4409','metconfig_member_bgcolor','','','0','0','tc');
+INSERT INTO met_config VALUES('4410','metconfig_member_bgimage','','','0','0','tc');
+
+INSERT INTO met_config VALUES('4423','metconfig_member_email_reg_title','{webname} 會員中心注册驗證','','0','0','tc');
+INSERT INTO met_config VALUES('4424','metconfig_member_email_reg_content','<div style="width:500px;margin:20px auto;"><div class="header clearfix" style="font-family: &#39;lucida Grande&#39;, Verdana, &#39;Microsoft YaHei&#39;; line-height: 23.7999992370605px; background-color: rgb(255, 255, 255);"><a href="{weburl}"><strong style="outline: none; cursor: pointer; color: rgb(30, 84, 148);">{webname} 會員中心</strong></a></div><p>&nbsp;</p><div class="content" style="font-family: &#39;lucida Grande&#39;, Verdana, &#39;Microsoft YaHei&#39;; line-height: 23.7999992370605px; border: 1px solid rgb(233, 233, 233); margin: 2px 0px 0px; padding: 30px; background: none 0px 0px repeat scroll rgb(255, 255, 255);"><p style="line-height: 23.7999992370605px;">您好：</p><p style="line-height: 23.7999992370605px;">這是您在 {webname} 會員中心上的重要郵件, 功能是進行&nbsp;會員中心注册驗證, 請點擊下麵的連接完成驗證</p><p style="line-height: 23.7999992370605px; border-top-width: 1px; border-top-style: solid; border-top-color: rgb(221, 221, 221); margin-top: 15px; margin-bottom: 25px; padding: 15px;">請點擊連結繼續：{opurl}</p><p style="line-height: 23.7999992370605px;">&nbsp;</p><p class="footer" style="line-height: 23.7999992370605px; border-top-width: 1px; border-top-style: solid; border-top-color: rgb(221, 221, 221); padding-top: 6px; margin-top: 25px; color: rgb(131, 131, 131);">請勿回複本郵件,此郵箱未受監控,您不會得到任何回復。<br/><br/><a href="{weburl}"><strong style="outline: none; cursor: pointer; color: rgb(30, 84, 148);">{webname}會員中心</strong></a></p></div></div>','','0','0','tc');
+INSERT INTO met_config VALUES('4425','metconfig_member_email_password_title','{webname} 會員中心 密碼找回','','0','0','tc');
+INSERT INTO met_config VALUES('4426','metconfig_member_email_password_content','<div style="width:500px;margin:20px auto;"><div class="header clearfix" style="font-family: &#39;lucida Grande&#39;, Verdana, &#39;Microsoft YaHei&#39;; line-height: 23.7999992370605px; background-color: rgb(255, 255, 255);"><a href="{weburl}"><strong style="outline: none; cursor: pointer; color: rgb(30, 84, 148);">{webname} 會員中心</strong></a></div><p>&nbsp;</p><div class="content" style="font-family: &#39;lucida Grande&#39;, Verdana, &#39;Microsoft YaHei&#39;; line-height: 23.7999992370605px; border: 1px solid rgb(233, 233, 233); margin: 2px 0px 0px; padding: 30px; background: none 0px 0px repeat scroll rgb(255, 255, 255);"><p style="line-height: 23.7999992370605px;">您好：</p><p style="line-height: 23.7999992370605px;">这是您在 {webname} 會員中心上的重要郵件, 功能是進行&nbsp;會員中心密碼找回, 請點擊下麵的連接完成驗證</p><p style="line-height: 23.7999992370605px; border-top-width: 1px; border-top-style: solid; border-top-color: rgb(221, 221, 221); margin-top: 15px; margin-bottom: 25px; padding: 15px;">請點擊連結繼續：{opurl}</p><p style="line-height: 23.7999992370605px;">&nbsp;</p><p class="footer" style="line-height: 23.7999992370605px; border-top-width: 1px; border-top-style: solid; border-top-color: rgb(221, 221, 221); padding-top: 6px; margin-top: 25px; color: rgb(131, 131, 131);">請勿回複本郵件,此郵箱未受監控,您不會得到任何回復。<br/><br/><a href="{weburl}"><strong style="outline: none; cursor: pointer; color: rgb(30, 84, 148);">{webname}會員中心</strong></a></p></div></div>','','0','0','tc');
+INSERT INTO met_config VALUES('4427','metconfig_member_email_safety_title','{webname} 會員中心 修改綁定郵箱','','0','0','tc');
+INSERT INTO met_config VALUES('4428','metconfig_member_email_safety_content','<div style="width:500px;margin:20px auto;"><div class="header clearfix" style="font-family: &#39;lucida Grande&#39;, Verdana, &#39;Microsoft YaHei&#39;; line-height: 23.7999992370605px; background-color: rgb(255, 255, 255);"><a href="{weburl}"><strong style="outline: none; cursor: pointer; color: rgb(30, 84, 148);">{webname} 會員中心</strong></a></div><p>&nbsp;</p><div class="content" style="font-family: &#39;lucida Grande&#39;, Verdana, &#39;Microsoft YaHei&#39;; line-height: 23.7999992370605px; border: 1px solid rgb(233, 233, 233); margin: 2px 0px 0px; padding: 30px; background: none 0px 0px repeat scroll rgb(255, 255, 255);"><p style="line-height: 23.7999992370605px;">您好：</p><p style="line-height: 23.7999992370605px;">這是您在 {webname} 會員中心上的重要郵件, 功能是進行&nbsp;會員中心綁定郵箱修改, 請點擊下麵的連接完成驗證</p><p style="line-height: 23.7999992370605px; border-top-width: 1px; border-top-style: solid; border-top-color: rgb(221, 221, 221); margin-top: 15px; margin-bottom: 25px; padding: 15px;">請點擊連結繼續：{opurl}</p><p style="line-height: 23.7999992370605px;">&nbsp;</p><p class="footer" style="line-height: 23.7999992370605px; border-top-width: 1px; border-top-style: solid; border-top-color: rgb(221, 221, 221); padding-top: 6px; margin-top: 25px; color: rgb(131, 131,131);">請勿回複本郵件,此郵箱未受監控,您不會得到任何回復。<br/><br/><a href="{weburl}"><strong style="outline: none; cursor: pointer; color: rgb(30, 84, 148);">{webname}會員中心</strong></a></p></div></div>','','0','0','tc');
 
 INSERT INTO met_language VALUES(36115,'emailcheck','郵箱驗證',0,102,4,0,'tc');
 INSERT INTO met_language VALUES(36116,'emailchecktips1','感謝您的注册！啟動連結已經發送到您的郵箱',0,103,4,0,'tc');

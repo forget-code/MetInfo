@@ -109,7 +109,7 @@ background-color: #eff0f2;
 .theme_color a.now,.theme_color a:hover{ border:8px solid #eee; }
 
 .bannerlist{ text-align:center; padding:0px 10px!important;}
-.bannerlist img{ width:100%; min-height:90px;}
+.bannerlist img{ width:100%; min-height:90px;height:0px;}
 .bannerlist .fbox{ padding:0px!important; margin:0px!important;}
 .bannerlist .fbox li{ margin-bottom:10px; background:#eee; padding:10px 10px 0px; min-height:40px; position:relative; cursor:move; }
 .bannerlist .fbox li input{ margin-bottom:10px; }

@@ -12,7 +12,7 @@ echo <<<EOT
 		</div>
 	</section>
 </footer>
-<div class="powered_by_metinfo">Powered&nbsp;by&nbsp;<a href="http://www.MetInfo.cn" target="_blank" title="{$lang_Info1}">MetInfo&nbsp;{$metcms_v}</a> &copy;2008-{$m_now_year}&nbsp;<a href="http://www.MetInfo.cn" target="_blank" title="{$lang_Info3}">www.metinfo.cn</a></div>
+<div class="powered_by_metinfo">Powered&nbsp;by&nbsp;<a href="http://www.MetInfo.cn" target="_blank" title="{$lang_Info1}">MetInfo&nbsp;{$metcms_v}</a> &copy;2008-{$m_now_year}&nbsp;<a href="http://www.MetInfo.cn" target="_blank" title="{$lang_Info3}">www.MetInfo.cn</a></div>
 {$foot_menu}
 <script src="{$navurl}public/ui/v1/js/sea.js" type="text/javascript"></script>
 </body>

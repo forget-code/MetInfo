@@ -114,15 +114,13 @@ if($class_list[$classnow][module]==11)$firestpage=$url.'1'.$exc;
  }
  $prepage=$langnums==1?'../'.$this->SELF.'/':$url.($this->_cur_page-1).$exc;
 
-  if($metinfover == 'v1'){
+  if($metinfover == 'v1' || $metinfover == 'v2'){// 增加$metinfover判断值（新模板框架v2）
 	$text="
 		    <div class='met_pager'>
 			";
     if ($this->_cur_page == 1){     //$this->_cur_page当前页面的码数
 			if($this->pages!=0){
-			 $text.="
-				<span class='PreSpan'>$lang_PagePre</span>
-				";
+			 $text.="<span class='PreSpan'>$lang_PagePre</span>";
 			}
 		}else{
 			 $text.="<a href=".$url.($this->_cur_page-1).$exc." class='PreA'>$lang_PagePre</a>";
@@ -130,9 +128,7 @@ if($class_list[$classnow][module]==11)$firestpage=$url.'1'.$exc;
 		
 	if($this->pages >7 ){
 	   if($this->_cur_page>4){
-		 $firstPage = "
-			    <a href=".$firestpage." class='firstPage'>1...</a>
-				";
+		 $firstPage = "<a href=".$firestpage." class='firstPage'>1...</a>";
 		
 	     if(($this->pages-$this->_cur_page)>=4){
 	        $startnum=$this->_cur_page-3;
@@ -147,9 +143,7 @@ if($class_list[$classnow][module]==11)$firestpage=$url.'1'.$exc;
 		}
 		
 		if(($this->pages-$this->_cur_page)>3){
-		$lastPage = "
-			    <a href=".$url.$this->pages.$exc." class='lastPage'>...".$this->pages."</a>
-		";
+		$lastPage = "<a href=".$url.$this->pages.$exc." class='lastPage'>...".$this->pages."</a>";
 		}
 	 }else{
 	   	$startnum=1;
@@ -161,19 +155,15 @@ if($class_list[$classnow][module]==11)$firestpage=$url.'1'.$exc;
 	for($i=$startnum;$i<=$endnum;$i++){
 	   $pageurl=$i==1?$firestpage:$url.$i.$exc;
 	   if($i==$this->_cur_page){$page_stylenow="class='Ahover'";}
-	    $text.="
-			    <a href=".$pageurl." $page_stylenow>".$i."</a> 
-		       ";
+	    $text.="<a href=".$pageurl." $page_stylenow>".$i."</a>";
 		$page_stylenow='';
 	   }
 	   $text.=$lastPage;
 	 if ($this->_cur_page == $this->pages){
-        $text.="	    <span class='NextSpan'>$lang_PageNext</span>
-				";
+        $text.="<span class='NextSpan'>$lang_PageNext</span>";
 	  }else{
 		if($this->pages!=0){
-	    $text.="	    <a href=".$url.($this->_cur_page+1).$exc." class='NextA'>$lang_PageNext</a>
-				";
+	    $text.="<a href=".$url.($this->_cur_page+1).$exc." class='NextA'>$lang_PageNext</a>";
 		}
 	   }
 	 
@@ -234,11 +224,11 @@ case 1:
   break;
   
   case 2:
- 
+  $text = "<div class='metpager_2'>";
       if ($this->_cur_page == 1 && $this->pages>1) 
         {
 
-            $text= "<div class='metpager_2'>$lang_PageHome $lang_PagePre <a href=".$url.($this->_cur_page+1).$exc.">$lang_PageNext</a>  <a href=".$url.$this->pages.$exc.">$lang_PageEnd</a>";
+            $text.= "$lang_PageHome $lang_PagePre <a href=".$url.($this->_cur_page+1).$exc.">$lang_PageNext</a>  <a href=".$url.$this->pages.$exc.">$lang_PageEnd</a>";
         } 
         elseif($this->_cur_page == $this->pages && $this->pages>1) 
         {

@@ -243,7 +243,11 @@ function delfile($fileUrl){
  * @return string			返回转换好的路径
  */
 function path_absolute($path){
-	$path = PATH_WEB.str_replace(array('../', './', PATH_WEB), '', $path);
+	if(substr($path, 0, strlen(PATH_WEB) ) == PATH_WEB){
+		$path = $path;
+	}else{
+		$path = PATH_WEB.str_replace(array('../', './', PATH_WEB), '', $path);
+	}
 	if(is_dir($path)){
 		$last = substr($path, -1, 1);
 		if($last != '/' && $last != '\\'){

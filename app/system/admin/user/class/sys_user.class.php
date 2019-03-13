@@ -59,7 +59,10 @@ class sys_user extends user {
 		if(!$useridlist){
 			return false;
 		}
-		$list = explode(",",$useridlist) ;
+		    $list = explode(",",$useridlist) ;
+		    //会员删除接口
+			$lists   = load::plugin('douserdel',1,$list);
+      if(is_array($lists)) $list = $lists;
 		foreach($list as $id){
 			if($id){
 				if(is_number($id)){
@@ -94,8 +97,9 @@ class sys_user extends user {
 	}
 	public function save_group($allid,$type){
 		global $_M;
-		
+
 		$list = explode(",",$allid) ;
+    
 		foreach($list as $id){
 			if($id){
 				if($type=='save'){
@@ -103,6 +107,13 @@ class sys_user extends user {
 					$access = $_M['form']['access-'.$id];
 					$access = $access ? $access : 0 ;
 					if(is_number($id)){
+
+						if($access<1){
+							
+							echo "<script>alert('阅读权限值必需大于0')</script>";
+                            turnover("{$_M[url][own_form]}a=doindex", '操作失败');
+                      
+						}
 						$query = "UPDATE {$_M['table']['user_group']} SET 
 						name = '{$name}',
 						access = '{$access}'
@@ -117,6 +128,13 @@ class sys_user extends user {
 						if($query1)DB::query($query1);
 					}else{
 						if($name){
+
+						    if($access<1){
+                             
+                                echo "<script>alert('阅读权限值必需大于0')</script>";
+                                turnover("{$_M[url][own_form]}a=doindex", '操作失败');
+
+					      	  }
 							$query = "INSERT INTO {$_M['table']['user_group']} SET 
 							name = '{$name}',
 							access = '{$access}',
@@ -143,6 +161,7 @@ class sys_user extends user {
 					if($query1)DB::query($query1);
 				}
 			}
+
 		}
 		cache::del('user', 'file');
 		return true;

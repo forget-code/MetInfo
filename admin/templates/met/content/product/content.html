@@ -421,7 +421,7 @@ echo <<<EOT
 	<div class="metsliding_box metsliding_box_0">
 <!--
 EOT;
-if($metinfover=='v1'){
+if($metinfover=='v1' || $metinfover == 'v2'){// 新模板框架v2增加判断
 	$metadmin[productother] = $met_productTabok-1;
 	$tems['productTabname']  = $met_productTabname;
 	$tems['productTabname_1']  = $met_productTabname_1;

@@ -540,11 +540,13 @@ $(document).ready(function(){
 		function () {
 			$(this).find('span.text').addClass("columnmore_hover");
 			$(this).find('div.columnmorediv').show();
+			$(this).parents('tr:first').addClass("ontr");;
 		},
 		function () {
 			$(this).find('span.text').removeClass("columnmore_hover");
 			$(this).find('div.columnmorediv').hide();
 			$(this).find('.moveb1').hide();
+			$(this).parents('tr:first').removeClass("ontr");;
 		}
 	);
 	$('.moveb1 .b2box').live('mouseenter',function(){

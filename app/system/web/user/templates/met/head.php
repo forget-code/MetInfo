@@ -26,9 +26,9 @@ echo <<<EOT
 <div class="container met-head">
 
 			<div class="row">
-				<div class="col-xs-12 col-sm-6 logo">
+				<div class="col-xs-6 col-sm-6 logo">
 	<ul class="list-none">
-		<li><a href="{$_M['url']['site']}member/" class="met-logo"><img src="{$_M['config']['met_logo']}" /></a></li>
+		<li><a href="{$_M['url']['site']}index.php?lang={$_M['lang']}" class="met-logo"><img src="{$_M['config']['met_logo']}" /></a></li>
 <!--
 EOT;
 if($title){
@@ -43,7 +43,7 @@ echo <<<EOT
 	</ul>
 				</div>
 
-				<div class="col-xs-12 col-sm-6 user-info">
+				<div class="col-xs-6 col-sm-6 user-info">
 					<ol class="breadcrumb pull-right">
 <!--
 EOT;
@@ -57,7 +57,7 @@ EOT;
 }
 echo <<<EOT
 -->
-					  <li><a href="{$_M['url']['site']}" title="{$_M['word']['rehomepage']}">{$_M['word']['rehomepage']}</a></li>
+					  <li><a href="{$_M['url']['site']}index.php?lang={$_M['lang']}" title="{$_M['word']['rehomepage']}">{$_M['word']['rehomepage']}</a></li>
 					</ol>
 				</div>
 			</div>

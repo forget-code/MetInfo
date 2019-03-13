@@ -1,6 +1,6 @@
 <!--<?php
-# MetInfo Enterprise Content Management System 
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+# MetInfo Enterprise Content Management System
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 
 defined('IN_MET') or exit('No permission');
 require $this->template('tem/head');
@@ -24,7 +24,7 @@ echo <<<EOT
 			</dd>
 		</dl>
 	</div>
-	
+
 	<div class="buydiv remodal" style="display:none" data-remodal-id="modalbuydiv">
 	<div class="v52fmbx">
 	<form method="POST" class="ui-from" name="myform" action="" target="_self">
@@ -45,14 +45,14 @@ echo <<<EOT
 				</div>
 			</dd>
 		</dl>
-		
+
 		<dl>
 			<dt>{$buy_Explain}{$_M['word']['marks']}</dt>
 			<dd>
 				{$buy_Explain1}
 			</dd>
 		</dl>
-		
+
 		<div style="display:none">
 		<dl>
 			<dt>{$_M['word']['top_domain_names']}{$_M['word']['marks']}</dt>
@@ -89,7 +89,7 @@ echo <<<EOT
 	</form>
 	</div>
 	</div>
-	
+
 	<div class="appdetail">
 		<div class="appdetail_cont">
 			<div class="appdetail_cont_bodr">
@@ -108,7 +108,7 @@ echo <<<EOT
 						<h5 class="buybuttondiv none"><span class="buybutton"><a href="#modalbuydiv">{$_M['word']['sys_purchase']}</a></span></h5>
 						<h5 class="downloaddiv none">
 							<span class="download-noclick"></span>
-							<span class="metcms_upload_download" data-a-download="{$appdetail['type']}|{$appdetail['no']}|check|1|"></span>
+							<span class="metcms_upload_download" data-a-download="{$appdetail['type']}|{$appdetail['no']}|doc|1|"></span>
 						</h5>
 						<h5 class="completediv none"><span class="complete">{$appdetail['url']}</span></h5>
 					</div>
@@ -193,7 +193,7 @@ echo <<<EOT
 					<dt>{$_M['word']['score']}</dt>
 					<dd class="ftype_radio ftype_transverse">
 						<div class="fbox my_evaluation_num_box">
-							
+
 						</div>
 						<span class="tips">{$_M['word']['mouse_click_rating']}</span>
 						<input name="my_evaluation_num" type="hidden" value="0" />

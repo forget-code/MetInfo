@@ -43,15 +43,13 @@ define(function(require, exports, module) {
 				box.find(".file-preview").show();
 				$(this).fileinput("upload");
 			}).on('filebatchuploadsuccess', function(event, data, previewId, index) {
-			
-				var path = data.response.path;
-				var type = data.response.type;
+				var path = data.response.path+'?'+$.now();
 				if($("input[name='"+$(this).attr("name")+"'][type='hidden']").length){
 					$("input[name='"+$(this).attr("name")+"'][type='hidden']").attr('value',path);
 				}else{
 					$(this).after("<input type='hidden' name='"+$(this).attr("name")+"' value='"+path+"' />");
 				}
-				if(type == 'head'){
+				if(data.response.type == 'head'){
 					var box = $(this).parents(".file-input"),f =  box.find(".file-preview .file-preview-frame"),img = f.find(".file-preview-image");
 					img.attr('src', path);
 					img.attr('style', 'width:200px!important');

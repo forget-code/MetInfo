@@ -1,6 +1,6 @@
 <?php
-# MetInfo Enterprise Content Management System 
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+# MetInfo Enterprise Content Management System
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 
 defined('IN_MET') or exit('No permission');
 
@@ -22,10 +22,10 @@ class sys_product extends module {
 	public function json_list($where, $order){
 		global $_M;
 		$this->table = load::sys_class('tabledata', 'new');
-		
+
 		$p = $this->tablename;
 		$s = $_M['table']['shopv2_product'];
-		
+
 		if($_M['config']['shopv2_open']){//开启在线订购时
 			$table = $p.' Left JOIN '.$s." ON ({$p}.id = {$s}.pid)";
 			$where = "{$p}.lang='{$_M['lang']}' and ({$p}.recycle = '0' or {$p}.recycle = '-1') {$where}";
@@ -33,7 +33,7 @@ class sys_product extends module {
 			$table = $p;
 			$where = "lang='{$_M['lang']}' and (recycle = '0' or recycle = '-1') {$where}";
 		}
-		
+
 		$data = $this->table->getdata($table, '*', $where, $order);
 		return $data;
 	}
@@ -45,13 +45,22 @@ class sys_product extends module {
 	public function get_list($id){
 		global $_M;
 		$query = "SELECT * FROM {$this->tablename} WHERE id='{$id}'";
-		$list = DB::get_one($query); 
+		$list = DB::get_one($query);
 		return $list;
 	}
+	/*读取产品参数*/
+	 public  function  get_paralist($id){
+		global $_M;
+		$query="SELECT * FROM {$_M['table']['plist']} WHERE listid='{$id}'";
+		$paralist = DB::get_all($query);
+        return  $paralist;
+	}
+
 	/*复制*/
 	public function list_copy($id,$class1,$class2,$class3){
 		global $_M;
 		$list = $this->get_list($id);
+
 		$list['filename'] = '';
 		$list['class1']   = $class1;
 		$list['class2']   = $class2;
@@ -63,14 +72,30 @@ class sys_product extends module {
 		$list['content2'] = str_replace('\'','\'\'',$list['content2']);
 		$list['content3'] = str_replace('\'','\'\'',$list['content3']);
 		$list['content4'] = str_replace('\'','\'\'',$list['content4']);
-		return $this->insert_list_sql($list);
+		$copyid=$this->insert_list_sql($list); //复制产品参数
+		$paralist = $this->get_paralist($id);//
+		foreach ($paralist as $key=>$paravalue) {
+		 $listid=$copyid;
+		 $paraid= $paravalue[paraid];
+		 $val   =$paravalue[val];
+		 $module=$paravalue[module];
+		 $lang  =$paravalue[lang];
+		 $imgname=$paravalue[imgname];
+		 $info=$paravalue[info];
+		 $query3="INSERT INTO  {$_M['table']['plist']}
+						(`id` ,  `listid` ,   `paraid` ,   `info` ,     `lang` ,    `imgname` ,  `module`)	VALUES
+						(NULL ,  '{$listid}', '{$paraid}' , '{$info}' , '{$lang}' , '{$imgname}','{$module}')";
+		 DB::query($query3);
+		}
+		 return $copyid;
 	}
+
 	/*移动产品*/
 	public function list_move($id,$class1,$class2,$class3){
 		global $_M;
-		$query = "UPDATE {$this->tablename} SET 
-			class1 = '{$class1}', 
-			class2 = '{$class2}', 
+		$query = "UPDATE {$this->tablename} SET
+			class1 = '{$class1}',
+			class2 = '{$class2}',
 			class3 = '{$class3}'
 			WHERE id = '{$id}'";
 		DB::query($query);
@@ -115,7 +140,7 @@ class sys_product extends module {
 	/*编辑产品*/
 	public function update_list($list,$id){
 		global $_M;
-		
+
 		$list = $this->form_classlist($list);
 		if($list['imgurl'])$list = $this->form_imglist($list,$this->module);
 		//$list['updatetime'] = date("Y-m-d H:i:s");
@@ -128,7 +153,7 @@ class sys_product extends module {
 		}else{
 			return false;
 		}
-		
+
 	}
 	public function update_list_sql($list,$id){
 		global $_M;
@@ -143,7 +168,7 @@ class sys_product extends module {
 		}
 		if($list['description']){
 			$query = "SELECT content FROM {$this->tablename} WHERE id='{$id}'";
-			$listown = DB::get_one($query); 
+			$listown = DB::get_one($query);
 			$description = $this->description($listown['content']);
 			if($list['description']==$description){
 				$list['description'] = $this->description($list['content']);
@@ -151,6 +176,8 @@ class sys_product extends module {
 		}else{
 			$list['description'] = $this->description($list['content']);
 		}
+		$list['displayimg'] = $this->displayimg_check($list['displayimg']);
+		// 增加展示图片尺寸属性imgsize（新模板框架v2）
 		$query = "UPDATE {$this->tablename} SET
 			title              = '{$list['title']}',
 			ctitle             = '{$list['ctitle']}',
@@ -163,13 +190,14 @@ class sys_product extends module {
 			classother         = '{$list['classother']}',
 			new_ok             = '{$list['new_ok']}',
 			imgurl             = '{$list['imgurl']}',
+			imgsize            = '{$list['imgsize']}',
 			imgurls            = '{$list['imgurls']}',
 			displayimg         = '{$list['displayimg']}',
 			com_ok             = '{$list['com_ok']}',
 			wap_ok             = '{$list['wap_ok']}',
 			issue              = '{$list['issue']}',
-			hits               = '{$list['hits']}', 
-			addtime            = '{$list['addtime']}', 
+			hits               = '{$list['hits']}',
+			addtime            = '{$list['addtime']}',
 			updatetime         = '{$list['updatetime']}',
 			access             = '{$list['access']}',
 			filename           = '{$list['filename']}',
@@ -191,7 +219,7 @@ class sys_product extends module {
 	/*新增产品*/
 	public function insert_list($list){
 		global $_M;
-		
+
 		$list = $this->form_classlist($list);
 		if($list['imgurl'])$list = $this->form_imglist($list,$this->module);
 		//$list['updatetime'] = date("Y-m-d H:i:s");
@@ -206,7 +234,7 @@ class sys_product extends module {
 		}else{
 			return false;
 		}
-		
+
 	}
 	public function insert_list_sql($list){
 		global $_M;
@@ -220,6 +248,14 @@ class sys_product extends module {
 			$list['links'] = url_standard($list['links']);
 		}
 		if(!$list['description'])$list['description'] = $this->description($list['content']);
+		    $titlenum =substr_count($list['title'],"\'");
+		    if(!$titlenum){
+		       $list['title']=str_replace("'", "\'",$list['title']);
+              $list['description']=str_replace("'", "\'",$list['description']);
+		    }
+
+
+		// 增加展示图片尺寸属性imgsize（新模板框架v2）
 		$query = "INSERT INTO {$this->tablename} SET
 			title              = '{$list['title']}',
 			ctitle             = '{$list['ctitle']}',
@@ -232,13 +268,14 @@ class sys_product extends module {
 			classother         = '{$list['classother']}',
 			new_ok             = '{$list['new_ok']}',
 			imgurl             = '{$list['imgurl']}',
+			imgsize            = '{$list['imgsize']}',
 			imgurls            = '{$list['imgurls']}',
 			displayimg         = '{$list['displayimg']}',
 			com_ok             = '{$list['com_ok']}',
 			wap_ok             = '{$list['wap_ok']}',
 			issue              = '{$list['issue']}',
-			hits               = '{$list['hits']}', 
-			addtime            = '{$list['addtime']}', 
+			hits               = '{$list['hits']}',
+			addtime            = '{$list['addtime']}',
 			updatetime         = '{$list['updatetime']}',
 			access             = '{$list['access']}',
 			filename           = '{$list['filename']}',
@@ -255,6 +292,19 @@ class sys_product extends module {
 		";
 		DB::query($query);
 		return DB::insert_id();
+	}
+
+	/*去除多余的displayimg里面的图片数据*/
+	public function displayimg_check($img){
+		$imgs = stringto_array($img, '*', '|');
+		$str = '';
+		foreach($imgs as $val){
+			if($val[1]){
+				$str .="{$val[0]}*{$val[1]}*{$val[2]}|";//增加展示图片尺寸值{$val[2]}（新模板框架v2）
+			}
+		}
+		$str = trim($str, '|');
+		return $str;
 	}
 }
 

@@ -61,6 +61,7 @@ $releclass=$column_list['releclass'];
 $edjs= "<script language='javascript'>var metadminpagename=$metadmin[pagename];</script>";
 $css_url="../templates/".$met_skin."/css";
 $img_url="../templates/".$met_skin."/images";
+$parent_class = $bigclass;
 include template('column/column_editor');
 footer();
 # This program is an open source system, commercial use, please consciously to purchase commercial license.

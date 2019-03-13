@@ -115,7 +115,7 @@ $query = "INSERT INTO $met_infoprompt SET
 					  time              = '$new_time',
 					  lang              = '$lang'";					  
 $db->query($query);
-$query = "select * from $met_parameter where lang='$lang' and module='8'";
+$query = "select * from $met_parameter where lang='$lang' and module='8'  and class1='$class1'";
 $result = $db->query($query);
 while($list = $db->fetch_array($result)){
 	$paravalue[]=$list;
@@ -195,7 +195,7 @@ foreach($fd_para as $key=>$val){
 	  $para=$$val[para];
 	}else{
 	  $para="";
-	  for($i=1;$i<=$$val[para];$i++){
+	  for($i=1;$i<=15;$i++){
 	  $para1p="para".$val[id]."_".$i;
 	  $para2p=$$para1p;
 	  $para=($para2p<>"")?$para.$para2p."-":$para;

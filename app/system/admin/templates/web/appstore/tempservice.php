@@ -30,7 +30,7 @@ echo <<<EOT
 			<tfoot>
 				<tr>
 					<th colspan="7" class="formsubmit" style="text-align:right!important;">
-						<a href="#" class="shangjiaruzhu">商家如何入驻？</a>
+						<a href="javascript:;" class="shangjiaruzhu">商家如何入驻？</a>
 						<textarea class="none">
 							<div class="v52fmbx">
 								<h3 class="v52fmbx_hr">商家入驻说明</h3>

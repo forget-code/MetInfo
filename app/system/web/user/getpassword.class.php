@@ -32,7 +32,7 @@ class getpassword extends userweb {
 		if(is_email($_M['form']['username'])){
 			$user = $this->userclass->get_user_by_email($_M['form']['username']);
 			if(!$user){
-				okinfo($_M['url']['getpassword'], $_M['word']['nouser']);
+				okinfo($_M['url']['getpassword'], $_M['word']['NoidJS']);
 			}
 			$valid = load::mod_class('user/class/valid','new');
 			if ($valid->get_email($_M['form']['username'],'getpassword')) {
@@ -43,7 +43,7 @@ class getpassword extends userweb {
 		}elseif(is_phone($_M['form']['username'])){
 			$user = $this->userclass->get_user_by_tel($_M['form']['username']);
 			if(!$user){
-				okinfo($_M['url']['getpassword'], $_M['word']['nouser']);
+				okinfo($_M['url']['getpassword'], $_M['word']['NoidJS']);
 			}
 			require_once $this->template('tem/getpassword_telset');
 		}else{
@@ -55,7 +55,7 @@ class getpassword extends userweb {
 		global $_M;
 		$user = $this->userclass->get_user_by_tel($_M['form']['phone']);
 		if(!$user){
-			okinfo($_M['url']['getpassword'], $_M['word']['nouser']);
+			okinfo($_M['url']['getpassword'], $_M['word']['NoidJS']);
 		}
 		
 		$valid = load::mod_class('user/class/valid','new');
@@ -85,13 +85,14 @@ class getpassword extends userweb {
 				okinfo($_M['url']['login'], $_M['word']['opfail']);
 			}
 		}else{
-			okinfo($_M['url']['login'], $_M['word']['nouser']);
+			okinfo($_M['url']['login'], $_M['word']['NoidJS']);
 		}
 	}
 	public function dovalid() {
 		global $_M;
 		$auth = load::sys_class('auth', 'new');
-		$email = $auth->decode($_M['form']['p']);
+		$email = $auth->decode($_M['form']['p']);	
+		if(!is_email($email))$email = '';
 		if($email){
 			if($_M['form']['password']){
 				$user = $this->userclass->get_user_by_email($email);
@@ -102,7 +103,7 @@ class getpassword extends userweb {
 						okinfo($_M['url']['login'], $_M['word']['opfail']);
 					}
 				}else{
-					okinfo($_M['url']['login'], $_M['word']['nouser']);
+					okinfo($_M['url']['login'], $_M['word']['NoidJS']);
 				}
 			}
 			require_once $this->template('tem/getpassword_mailset');

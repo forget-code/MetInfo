@@ -46,6 +46,7 @@ if($action=="editor"){
 			$newdisplay=explode('*',$displayimg[$i]);
 			$displaylist[$i]['name']=$newdisplay[0];
 			$displaylist[$i]['imgurl']=$newdisplay[1];
+			$displaylist[$i]['size']=$newdisplay[2];//添加属性（新模板框架v2）
 		}
 	}
 	$class1x[$product_list[class1]]='selected="selected"';

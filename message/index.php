@@ -75,11 +75,11 @@ $k=count($nav_list2[$class1]);
 $nav_list2[$class1][$k]=$class1_info;
 $nav_list2[$class1][$k][name]=$lang_messageview;
 $k++;
-$nav_list2[$class1][$k]=array('url'=>$addmessage_url,'name'=>$lang_messageadd);
+$nav_list2[$class1][$k]=array('id'=>$class1.'_add','url'=>$addmessage_url,'name'=>$lang_messageadd);
 }else{
 $k=count($nav_list2[$class1]);
   if(!$k){
-   $nav_list2[$class1][0]=array('url'=>$addmessage_url,'name'=>$lang_messageadd);
+   $nav_list2[$class1][0]=array('id'=>$class1.'_add','url'=>$addmessage_url,'name'=>$lang_messageadd);
    $nav_list2[$class1][1]=$class1_info;
    $nav_list2[$class1][1][name]=$lang_messageview;
    }

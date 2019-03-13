@@ -2,7 +2,7 @@
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 require_once template('head');
-if($column_list[module]==100 or $column_list[module]==101)$bigclass=$lang_funMod100;
+if($column_list[module]==100 or $column_list[module]==101)$parent_class=$lang_funMod100;
 echo <<<EOT
 -->
 </head>
@@ -38,7 +38,7 @@ echo <<<EOT
 		<dl>
 			<dt>{$lang_columnPreName}{$lang_marks}</dt>
 			<dd>
-				{$bigclass}
+				{$parent_class}
 			</dd>
 		</dl>
 		</div>

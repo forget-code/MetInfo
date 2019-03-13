@@ -2,7 +2,7 @@ define(function(require, exports, module) {
 
 	var common = require('common');
 	$(document).on('click',".lookcontact",function(){
-		event.preventDefault();
+		//event.preventDefault();
 		common.metalert({
 			html:$(this).next().val(),
 			type:'window',
@@ -10,7 +10,7 @@ define(function(require, exports, module) {
 		});
 	});
 	$(document).on('click',".shangjiaruzhu",function(){
-		event.preventDefault();
+		//event.preventDefault();
 		common.metalert({
 			html:$(this).next().val(),
 			type:'window',

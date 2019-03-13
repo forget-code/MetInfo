@@ -62,8 +62,13 @@ if($action == 'modify'){
 	if(!strstr($met_wap_url,"http://"))$met_wap_url="http://".$met_wap_url;
 	if($met_wap_url=='http://'||$met_wap_url=='http:///')$met_wap_url='';
 	require_once $depth.'../include/config.php';
-	metsave('../app/wap/wap.php?lang='.$lang.'&anyid='.$anyid,'',$depth);
+	$reload = $_M['config']['met_wap'] == $met_wap ? 0 : 1;
+	metsave('../app/wap/wap.php?lang='.$lang.'&anyid='.$anyid.'&reload='.$reload,'',$depth);
 }else{
+	if($reload == 1){
+		echo "<script>parent.window.location.reload();</script>";
+		exit();
+	}
 	$met_wap1[$met_wap]="checked";
 	$met_waplink1[$met_waplink]="checked";
 	$met_wap_ok1[$met_wap_ok]="checked";

@@ -78,13 +78,13 @@ function stringto_array($str, $decollator1 = '', $decollator2 = '', $decollator3
 	if(!$decollator2)$decollator2 = $stop;
 	if(!$decollator3)$decollator3 = $stop;
 	if(is_string($str)){
-		$str1 = trim($str,$decollator3);
+		$str1 = $decollator3 == $stop? $str : trim($str,$decollator3);
 		$arr1 = explode($decollator3, $str1);
 		foreach($arr1 as $key=>$val){
-			$str2 = trim($val, $decollator2);
+			$str2 = $decollator2 == $stop ? $val : trim($val, $decollator2);
 			$arr2 = explode($decollator2, $str2);
 			foreach($arr2 as $value){
-				$str3 = trim($value, $decollator1);				
+				$str3 = $decollator1 == $stop ? $value : trim($value, $decollator1);				
 				if($decollator3 == $stop && $decollator2 == $stop){
 					$arr = explode($decollator1, $str3);
 				}else if($decollator3 == $stop && $decollator2 != $stop){

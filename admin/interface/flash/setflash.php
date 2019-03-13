@@ -105,7 +105,7 @@ $img_url=$depth."../templates/".$met_skin."/images";
 if(file_exists("../../../templates/{$met_skin_user}/metinfo.inc.php")){
 	require_once "../../../templates/{$met_skin_user}/metinfo.inc.php";
 }
-if($metinfover == 'v1'){
+if($metinfover == 'v1' || $metinfover == 'v2'){// 新模板框架v2增加判断
 	$v1dispaly = "style='display:none'";
 }
 include template('interface/flash/setflash');footer();

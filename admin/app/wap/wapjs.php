@@ -8,7 +8,7 @@ if($pcok=='pc'){
 	$met_wap_tpb=1;
 }
 $wap_footertext.="<div class='metpcmobile'>";
-$wap_footertext.="<a href=\"http://".htmlentities("{$_SERVER['HTTP_HOST']}{$_SERVER['PHP_SELF']}")."?".str_replace(array('&met_mobileok=1','&pcok=wap','&pcok=pc'),'',$_SERVER['QUERY_STRING'])."&pcok=pc\">{$lang_foottext5}</a>";
+$wap_footertext.="<a href=\"http://".htmlentities("{$_SERVER['HTTP_HOST']}{$_SERVER['PHP_SELF']}")."?".str_replace(array('&met_mobileok=1','&pcok=wap','&pcok=pc'),'',htmlentities($_SERVER['QUERY_STRING']))."&pcok=pc\">{$lang_foottext5}</a>";
 $wap_footertext.="<span>|</span>";
 $wap_footertext.="<a href=\"http://".htmlentities("{$_SERVER['HTTP_HOST']}{$_SERVER['PHP_SELF']}")."?".str_replace(array('&met_mobileok=1','&pcok=wap','&pcok=pc'),'',htmlentities($_SERVER['QUERY_STRING']))."&pcok=wap&met_mobileok=1\">{$lang_foottext6}</a>";
 $wap_footertext.="</div>";
@@ -18,7 +18,7 @@ if($pcok=='wap'){
 }
 
 if($pcok=='pc'&&$pad!=1){
-$met_foottext.="<a href=\"http://".htmlentities("{$_SERVER['HTTP_HOST']}{$_SERVER['PHP_SELF']}")."?".str_replace(array('&met_mobileok=1','&pcok=wap','&pcok=pc'),'',$_SERVER['QUERY_STRING'])."&met_mobileok=1&pcok=wap\">{$lang_foottext6}</a>";
+$met_foottext.="<a href=\"http://".htmlentities("{$_SERVER['HTTP_HOST']}{$_SERVER['PHP_SELF']}")."?".str_replace(array('&met_mobileok=1','&pcok=wap','&pcok=pc'),'',htmlentities($_SERVER['QUERY_STRING']))."&met_mobileok=1&pcok=wap\">{$lang_foottext6}</a>";
 $methtml_foot.="<a href=\"http://".htmlentities("{$_SERVER['HTTP_HOST']}{$_SERVER['PHP_SELF']}")."?".str_replace(array('&met_mobileok=1','&pcok=wap','&pcok=pc'),'',htmlentities($_SERVER['QUERY_STRING']))."&met_mobileok=1&pcok=wap\">{$lang_foottext6}</a>";
 }
 

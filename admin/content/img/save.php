@@ -1,6 +1,6 @@
 <?php
-# MetInfo Enterprise Content Management System 
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+# MetInfo Enterprise Content Management System
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 $depth='../';
 require_once $depth.'../login/login_check.php';
 $filename=namefilter($filename);
@@ -25,7 +25,7 @@ if($filename_okno){
 	}
 	echo $metinfo;
 	die;
-}  
+}
 $save_type=$action=="add"?1:($filename!=$filenameold?2:0);
 if($filename!='' && $save_type){
 		$sql="class1='$class1'";
@@ -49,32 +49,31 @@ while($list = $db->fetch_array($result)){
 		$total_list[$list[id]] = $db->counter($met_list, "$query1", "*");
 	}
 	$para_list[]=$list;
-} 
+}
 if($imgnum>0){
+	$imgsizes_list=explode('|',$imgsizes);//添加变量（新模板框架v2）
 	for($i=0;$i<$imgnum;$i++){
 		$displayimg = "displayimg".$i;
 		$displayname = "displayname".$i;
 		$$displayname=str_replace(array('|','*'),'_',$$displayname);
+		$displaysize=$imgsizes_list[$i];//添加变量（新模板框架v2）
 		if($$displayname||$$displayimg){
-			if($i==0){
-				$displayimglist=$$displayname.'*'.$$displayimg;
-			}else{
-				$displayimglist=$displayimglist.'|'.$$displayname.'*'.$$displayimg;
-			}
+			if($i>0) $displayimglist.='|';
+			$displayimglist.=$$displayname.'*'.$$displayimg.'*'.$displaysize;//添加变量$displaysize（新模板框架v2）
 		}
 	}
-} 
+}
 $displayimg = $displayimglist;
 	if($action=="add"){
 		if(!$description){
 		$description=strip_tags($content);
-		$description=str_replace("\n", '', $description); 
-		$description=str_replace("\r", '', $description); 
+		$description=str_replace("\n", '', $description);
+		$description=str_replace("\r", '', $description);
 		$description=str_replace("\t", '', $description);
 		$description=mb_substr($description,0,200,'utf-8');
 	}
 	if($links){
-		$links=str_replace("http://",'',$links); 
+		$links=str_replace("http://",'',$links);
 		$links="http://".$links;
 	}
 	$access=$access<>""?$access:0;
@@ -83,6 +82,7 @@ $displayimg = $displayimglist;
 	if($content2)$content2 = concentwatermark_compatible($content2);
 	if($content3)$content3 = concentwatermark_compatible($content3);
 	if($content4)$content4 = concentwatermark_compatible($content4);
+	// 添加属性imgsize（新模板框架v2）
 	$query = "INSERT INTO $met_img SET
 						  title              = '$title',
 						  ctitle             = '$ctitle',
@@ -95,12 +95,13 @@ $displayimg = $displayimglist;
 						  new_ok             = '$new_ok',
 						  imgurl             = '$imgurl',
 						  imgurls            = '$imgurls',
+						  imgsize            = '$imgsize',
 						  displayimg         = '$displayimg',
 						  com_ok             = '$com_ok',
 						  wap_ok             = '$wap_ok',
 						  issue              = '$issue',
-						  hits               = '$hits', 
-						  addtime            = '$addtime', 
+						  hits               = '$hits',
+						  addtime            = '$addtime',
 						  updatetime         = '$updatetime',
 						  access          	 = '$access',
 						  filename           = '$filename',
@@ -161,14 +162,14 @@ $displayimg = $displayimglist;
 if($description){
 	$description_type=$db->get_one("select * from $met_img where id='$id'");
 	$description1=strip_tags($description_type[content]);
-	$description1=str_replace("\n", '', $description1); 
-	$description1=str_replace("\r", '', $description1); 
+	$description1=str_replace("\n", '', $description1);
+	$description1=str_replace("\r", '', $description1);
 	$description1=str_replace("\t", '', $description1);
 	$description1=mb_substr($description1,0,200,'utf-8');
 	if($description1==$description){
 		$description=strip_tags($content);
-		$description=str_replace("\n", '', $description); 
-		$description=str_replace("\r", '', $description); 
+		$description=str_replace("\n", '', $description);
+		$description=str_replace("\r", '', $description);
 		$description=str_replace("\t", '', $description);
 		$description=mb_substr($description,0,200,'utf-8');
 	}
@@ -180,10 +181,11 @@ if($action=="editor"){
 	if($content3)$content3 = concentwatermark_compatible($content3);
 	if($content4)$content4 = concentwatermark_compatible($content4);
 	if($links){
-		$links=str_replace("http://",'',$links); 
+		$links=str_replace("http://",'',$links);
 		$links="http://".$links;
 	}
-	$query = "update $met_img SET 
+	//添加属性imgsize（新模板框架v2）
+	$query = "update $met_img SET
 						  title              = '$title',
 						  ctitle             = '$ctitle',
 						  keywords           = '$keywords',
@@ -195,18 +197,19 @@ if($action=="editor"){
 						  class3             = '$class3',
 						  imgurl             = '$imgurl',
 						  imgurls            = '$imgurls',
+						  imgsize            = '$imgsize',
 						  displayimg         = '$displayimg',
 						  links              = '$links',
 						  displaytype        = '$displaytype',";
-	if($metadmin[imgnew])$query .= "					  
+	if($metadmin[imgnew])$query .= "
 						  new_ok             = '$new_ok',";
-	if($metadmin[imgcom])$query .= "	
+	if($metadmin[imgcom])$query .= "
 						  com_ok             = '$com_ok',";
 						  $query .= "
 						  wap_ok             = '$wap_ok',
 						  issue              = '$issue',
-						  hits               = '$hits', 
-						  addtime            = '$addtime', 
+						  hits               = '$hits',
+						  addtime            = '$addtime',
 						  updatetime         = '$updatetime',";
 	if($met_member_use)  $query .= "
 						  access			 = '$access',";
@@ -261,7 +264,7 @@ if($action=="editor"){
 						  info     ='$para',
 						  imgname  ='$paraname',
 						  module   ='$module',
-						  lang     ='$lang'";	
+						  lang     ='$lang'";
 		 }
 		$db->query($query);
 	   $paraname="";

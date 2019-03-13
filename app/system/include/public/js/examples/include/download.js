@@ -15,10 +15,11 @@ define(function(require, exports, module) {
 			if(data_download == 'end'){
 				return true;
 			}else{
-				url = adminurl+'n=system&c=download&a=dodownload&data='+data_download;
+				url = adminurl+'n=system&c=download&a=dodownload';
 				$.ajax({
 					url: url,//新增行的数据源
 					type: "POST",
+					data:{'data':data_download},
 					cache: false,
 					dataType: "json",
 					success: function(data) {

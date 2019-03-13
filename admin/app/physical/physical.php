@@ -114,6 +114,9 @@ if($action=="do"){
 		$localurl="http://";
 		$localurl.=$_SERVER['HTTP_HOST'].$_SERVER["PHP_SELF"];
 		$localurl=str_replace($met_adminfile."/app/physical/physical.php","",$localurl);
+		  if(substr($localurl,-1)!="/"){
+              $localurl=$localurl.'/';
+		  }
 		$physical_web=$localurl==$met_weburl?"1":"0";
 	}
 	$physical_web=$physical_web==null?"-1":$physical_web;
@@ -229,9 +232,10 @@ elseif($action=="op"){
 			$filedir="../../../".$fileaddr[0];  
 			if(!file_exists($filedir)){ @mkdir ($filedir, 0777); } 
 			if($fileaddr[1]=="index.php"){
-				Copyindx("../../../".$val[1],$val[2]);
-			}
-			else{
+				if($val[2]){
+					Copyindx("../../../".$val[1],$val[2]);
+				}
+			}else{
 			switch($val[2]){
 				case 1:
 					$address="../about/$fileaddr[1]";
@@ -251,10 +255,16 @@ elseif($action=="op"){
 				case 8:
 					$address="../feedback/$fileaddr[1]";
 				break;
+				default:
+					$address = "";
+				break;
 
 			}   
-				$newfile  ="../../../$val[1]";  			
-				Copyfile($address,$newfile);
+				$newfile  ="../../../$val[1]"; 
+				if($address != ''){
+					Copyfile($address,$newfile);
+				}
+				
 			}
 			echo $lang_physicalgenok;
 			break;

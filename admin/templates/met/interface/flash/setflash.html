@@ -72,7 +72,7 @@ if($i==1)$diyi="onclick=\"CheckAllx($(this),'myform')\"";
 $val[url_txt]=$val[url]==''?'':"<a href='{$val[url]}' target='_blank' onclick='return viewflash($(this),\"{$val[id]}\")'>{$lang_preview}</a>";
 echo <<<EOT
 -->	
-              <tr class="mouse"> 
+              <tr> 
                 <td class="list-text list_left">{$nowimg[$val[id]]}<b>$val[name]</b></td>
                 <td class="list-text">
 				<select name="met_flash_{$val[id]}_type" onChange="flashselect($(this))">
@@ -142,7 +142,7 @@ $imgtypedisply=$met_flasharray[$val2[id]][type]==1?'':'style="display:none;"';
 $val2[url_txt]=$val2[url]==''?'':"<a href='{$val2[url]}' target='_blank' onclick='return viewflash($(this),\"{$val2[id]}\")'>{$lang_preview}</a>";
 echo <<<EOT
 -->	  
-                <tr id="class_{$val[id]}_{$val2[id]}" class="mouse" style="display:none;"> 
+                <tr id="class_{$val[id]}_{$val2[id]}" style="display:none;"> 
                 <td class="list-text list_left">{$nowimg[$val2[id]]}{$val2[name]}</td>
                 <td class="list-text">
 				<select name="met_flash_$val2[id]_type" onChange="flashselect($(this))">
@@ -208,7 +208,7 @@ $val3[url_txt]=$val3[url]==''?'':"<a href='{$val3[url]}' target='_blank' onclick
 echo <<<EOT
 -->	
     			  
-                <tr id="class_{$val2[id]}_{$val3[id]}" class="mouse" style="display:none;"> 
+                <tr id="class_{$val2[id]}_{$val3[id]}" style="display:none;"> 
                 <td class="list-text list_left">
 				<img src="$img_url/bg_column1.gif" style="float:left; margin-right:3px;">
 				{$val3[name]}</td>

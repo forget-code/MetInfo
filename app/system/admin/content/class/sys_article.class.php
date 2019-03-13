@@ -86,7 +86,7 @@ class sys_article extends module {
 	public function del_list($id,$recycle){
 		global $_M;
 		if($recycle){
-			$query = "UPDATE {$this->tablename} SET recycle = '3' WHERE id='{$id}'";
+			$query = "UPDATE {$this->tablename} SET recycle = '2' WHERE id='{$id}'";
 			DB::query($query);
 		}else{
 			$query = "DELETE FROM {$this->tablename} WHERE id='{$id}'";
@@ -166,20 +166,27 @@ class sys_article extends module {
 		DB::query($query);
 		return true;
 	}
-	/*新增*/
+	/**
+	 * 新增内容
+	 * @param  前台提交的表单数组 $list 
+	 * @return $pid  新增的ID 失败返回FALSE
+	 */
 	public function insert_list($list){
 		global $_M;
-		
-		//$list['updatetime'] = date("Y-m-d H:i:s");
 		$list['addtime']    = $list['addtime']?$list['addtime']:$list['updatetime'];
-		
 		if($list['imgurl'] == ''){
 			if(preg_match('/<img.*src=\\\\"(.*?)\\\\".*?>/i',$list['content'],$out)){
 				$imgurl             = explode("upload/",$out[1]);
-				$list['imgurl']     = '../upload/'.str_replace('watermark/', '',$imgurl[1]);
+				if(count($imgurl) < 2) {
+					$list['imgurl'] = $_M['config']['met_agents_img'];
+				}else{
+					$list['imgurl']     = '../upload/'.str_replace('watermark/', '',$imgurl[1]);
+				}
+				
+			}else{
+				$list['imgurl'] = $_M['config']['met_agents_img'];
 			}
 		}
-		
 		$list = $this->form_imglist($list,2);
 		
 		$pid = $this->insert_list_sql($list);

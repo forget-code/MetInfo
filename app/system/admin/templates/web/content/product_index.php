@@ -8,7 +8,7 @@ require $this->template('ui/head');
 echo <<<EOT
 -->
 <link rel="stylesheet" href="{$_M[url][own_tem]}css/metinfo.css?{$jsrand}" />
-<form method="POST" class="ui-from" name="myform" action="{$_M[url][own_form]}a=dolistsave" target="_self">
+<form method="POST" class="ui-from" name="myform" action="{$_M[url][own_form]}a=dolistsave&sub_type=editor" target="_self">
 <div class="v52fmbx product_index">
 	<div class="v52fmbx-table-top">
 		<div class="ui-float-left">
@@ -23,15 +23,17 @@ echo <<<EOT
 		<div class="ui-float-right">
 			<div class="ftype_select-linkage">
 				<div class="fbox" data-selectdburl="{$_M[url][own_form]}a=docolumnjson">
-					<select name="class1" class="prov" data-table-search="1" data-checked="{$_M['form']['class1']}"></select>
-					<select name="class2" class="city" data-table-search="1"></select>
-					<select name="class3" class="dist" data-table-search="1"></select>
+					<select name="class1_select" class="prov" data-table-search="1" data-checked="{$_M['form']['class1']}"></select>
+					<select name="class2_select" class="city" data-table-search="1" data-checked="{$_M['form']['class2']}"></select>
+					<select name="class3_select" class="dist" data-table-search="1" data-checked="{$_M['form']['class3']}"></select>
 				</div>
 			</div>
 		</div>
 	</div>
 	<input id="class1id" name="class1" data-table-search="1" value="{$_M['form']['class1']}" class="ui-input" type="hidden" />
-	<table class="display dataTable ui-table new_effects" data-table-ajaxurl="{$_M[url][own_form]}a=dojson_list"  data-table-pageLength="20">
+	<input id="class2id" name="class2" data-table-search="1" value="{$_M['form']['class2']}" class="ui-input" type="hidden" />
+	<input id="class3id" name="class3" data-table-search="1" value="{$_M['form']['class3']}" class="ui-input" type="hidden" />
+	<table class="display dataTable ui-table new_effects" data-table-ajaxurl="{$_M[url][own_form]}a=dojson_list&class1={$_M['form']['class1']}&class2={$_M['form']['class2']}&class3={$_M['form']['class3']}"  data-table-pageLength="20">
 		<thead>
 			<tr>
 				<th width="20" data-table-columnclass="met-center"><input name="id" data-table-chckall="id" type="checkbox" value="" /></th>

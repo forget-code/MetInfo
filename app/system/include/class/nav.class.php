@@ -20,10 +20,11 @@ class nav {
 	 * @param string $title 导航选项卡名称
 	 * @param string $url   导航选项卡地址
 	 */
-	public static function set_nav($num, $title, $url) {
+	public static function set_nav($num, $title, $url, $target='_self') {
 		self::$navlist[$num]['title'] = $title;
 		self::$navlist[$num]['url'] = $url;
 		self::$navlist[$num]['classnow'] = "";
+		self::$navlist[$num]['target'] = $target;
 	}
 	
 	/**

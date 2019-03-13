@@ -47,7 +47,7 @@ class group{
 	public function get_default_group(){
 		$this->get_group_list();
 		foreach($this->grouplist[$this->lang] as $key => $val){
-			return $val['id'];
+			return $val;
 		}
 	}
 	

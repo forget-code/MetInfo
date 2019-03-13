@@ -2,6 +2,28 @@
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 $msecount = DB::counter($_M['table']['infoprompt'], " WHERE lang='{$_M[lang]}' and see_ok='0'", "*");
+$privilege = background_privilege();
+$navigation=$privilege['navigation'];
+$arrlanguage=explode('|', $navigation);
+  if(in_array('metinfo',$arrlanguage)||in_array('1002',$arrlanguage)){
+	$langprivelage=1;
+  }else{
+    $langprivelage=0;
+  }
+echo <<<EOT
+-->
+   <script>
+      function valid(){
+	      if({$langprivelage}){
+           location.href = '{$_M[url][site_admin]}system/lang/lang.php?anyid=10&langaction=add&lang={$_M[lang]}&cs=1';
+	      }else{
+	        alert("您没有此操作权限请联系管理员");
+	      }
+      }
+
+   </script>
+<!--
+EOT;
 echo <<<EOT
 -->
 	 <div class="metcms_top_right">
@@ -91,6 +113,11 @@ if(!strstr($url_now, "lang=")) {
 } else {
 	$val['url'] = str_replace(array("lang={$_M['lang']}", "lang%3D{$_M['lang']}"), array("lang={$val['mark']}", "lang%3D{$val['mark']}"), $url_now);
 }
+  
+  if(strstr($_M[config][met_weburl],'https')){
+	  $val['url']=str_replace('http','https',$val['url']);
+  }
+
 echo <<<EOT
 -->
 		<li class="met-tool-list"><a href="{$val['url']}">{$val[name]}</a></li>
@@ -101,7 +128,7 @@ echo <<<EOT
 -->
 		
 		<li class="met-tool-list">
-			<button class="btn btn-success" type="submit" onclick="location.href = '{$_M[url][site_admin]}system/lang/lang.php?anyid=10&langaction=add&lang={$_M[lang]}&cs=1';"><i class="fa fa-plus"></i>新增{$_M['word']['langweb']}</button>
+			<button class="btn btn-success" type="submit" onclick="valid()"><i class="fa fa-plus"></i>新增{$_M['word']['langweb']}</button>
 		</li>
 	</ul>
 </div>
@@ -144,8 +171,8 @@ echo <<<EOT
 </div>
 
 <div class="btn-group pull-right met-tool supportbox" {$met_agents_display}>
-	<a href="http://www.metinfo.cn/bangzhu/index.php?ver=metcms" class="btn btn-success dropdown-toggle" target="_blank">技术支持<a>
-	<!--<button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+	<!--<a href="http://www.metinfo.cn/bangzhu/index.php?ver=metcms" class="btn btn-success dropdown-toggle" target="_blank">技术支持<a>
+	<button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
 		<i class="fa fa-life-ring"></i><span class="hidden-xs">技术支持</span>
 		<span class="caret"></span>
 		<input name="supporturldata" type="hidden" value="user_key={$_M['config']['met_secret_key']}&siteurl={$_M['url']['site']}" />

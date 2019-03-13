@@ -99,6 +99,7 @@ class member extends admin {
 		$position = $_M['word']['landing'];
 		$url_sec = "{$_M['url']['own_name']}&c=member&a=dologingo";
 		$url_fai = "{$_M['url']['own_name']}&c=member&a=dologin";
+		$returnurl = $_M['form']['returnurl'];
 		require $this->template('tem/login');
 	}
 	
@@ -107,18 +108,67 @@ class member extends admin {
 		$position = $_M['word']['registration'];
 		$url_sec = "{$_M['url']['own_name']}&c=member&a=dologin";
 		$url_fai = "{$_M['url']['own_name']}&c=member&a=doregister";
+		$returnurl = $_M['form']['returnurl'];
 		require $this->template('tem/register');
 	}
 	
+	
+	
+
 	public function doverifica() {
 		global $_M;
-		$user_id	= $_M['form']['user_id'];
+		if($_M['form']['user_id']){
+			$user_id	= $_M['form']['user_id'];
+			$effect=1;
+		}else if($_M['form']['user_email']){
+			$user_id	= $_M['form']['user_email'];
+			$effect=2;
+		}else{
+			$user_id	= $_M['form']['user_mobile'];
+			$effect=3;
+		}
 		$curl = load::sys_class('curl', 'new'); 
 		$curl -> set('host', 'http://account.metinfo.cn/');
-		$curl -> set('file', "index.php?n=register&c=register&a=doappstoreuserok&username={$user_id}"); 
+		$curl -> set('file', "index.php?n=register&c=register&a=doappstoreuservalid&username={$user_id}&effect={$effect}"); 
 		$post = array('post' => ''); 
 		$info = $curl -> curl_post($post); 
 		echo $info;
+	}
+	
+    //远程获取用户信息
+	public function domenmberinfo() {
+		global $_M;
+		$curl = load::sys_class('curl', 'new');    
+		$curl -> set('host', 'http://app.metinfo.cn/');
+		$curl -> set('file', "index.php?n=platform&c=platform&a=domember_obtain&user_key={$_M[config][met_secret_key]}"); 
+		$curl -> set('ignore', ture);
+		$post = array('post' =>''); 
+		$info = $curl -> curl_post($post); 
+		$res = jsondecode($info);
+		$memberinfo= array('username' =>$res['user_id'],'money' =>$res['money']);
+		$memberinfo=json_encode($memberinfo);
+		if($_M['config']['met_secret_key']){
+			echo $memberinfo;
+		}else{
+			echo '';
+		}	
+	}
+  //远程退出登录
+	public function dologout() {
+		global $_M;
+		$curl = load::sys_class('curl', 'new');    
+		$curl -> set('host', 'http://app.metinfo.cn/');
+		$curl -> set('file', "index.php?n=platform&c=platform&a=dologout&user_key={$_M[config][met_secret_key]}"); 
+		$curl -> set('ignore', ture);
+		$post = array('post' =>''); 
+		$info = $curl -> curl_post($post); 
+        $query = "UPDATE {$_M['table']['config']} SET value='' WHERE name='met_secret_key' AND lang='metinfo'";
+		DB::query($query);
+		if($_M['form']['returnurl']){
+        	header("Location:".$_M['form']['returnurl']);;
+        }else{
+        	turnover($_M['url']['own_name']."c=appstore&a=doindex");
+        }
 	}
 	
 	//会员退出
@@ -134,6 +184,10 @@ class member extends admin {
 		if($_M['form']['key']){
 			$query = "UPDATE {$_M['table']['config']} SET value='{$_M['form']['key']}' WHERE  name='met_secret_key' and lang = 'metinfo'";
 			$result = DB::query($query);
+			$returnurl= urldecode($_M['form']['returnurl']);
+			if($returnurl){
+				header("Location:".$returnurl);
+			}
 			turnover($_M['url']['own_name']."c=appstore&a=doindex");
 		}
 	}

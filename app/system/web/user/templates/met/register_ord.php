@@ -37,7 +37,7 @@ echo <<<EOT
 					data-bv-identical-message="{$_M['word']['passwordsame']}"
 					
 					data-bv-stringlength="true"
-					data-bv-stringlength-min="3"
+					data-bv-stringlength-min="6"
 					data-bv-stringlength-max="30"
 					data-bv-stringlength-message="{$_M['word']['passwordcheck']}"
 					>
@@ -53,7 +53,9 @@ echo <<<EOT
 					data-bv-identical="true"
 					data-bv-identical-field="password"
 					data-bv-identical-message="{$_M['word']['passwordsame']}"
+					data-bv-notempty-message="{$_M['word']['noempty']}"
 					>
+					
 				</div>
 			</div>
 			

@@ -15,6 +15,7 @@ var ownlangtxt = '';
 <form method="POST" class="ui-from" name="myform" action="{$_M['url']['app_api']}a=dologin&domain={$_M['url']['site']}&user_id={$_M['form']['user_id']}&user_pass={$_M['form']['user_pass']}&admin_url={$_M['url']['site_admin']}&return_type=jump" target="_self">
 <input type="hidden" name="url_sec" value="{$url_sec}" />
 <input type="hidden" name="url_fai" value="{$url_fai}" />
+<input type="hidden" name="returnurl" value="{$returnurl}"/>
 	<div class="v52fmbx">
 		<h3 class="v52fmbx_hr">{$_M['word']['application_market']}</h3>
 		<dl>

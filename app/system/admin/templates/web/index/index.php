@@ -57,6 +57,7 @@ jsrand="{$jsrand}"
 EOT;
 $i=0;
 foreach($toparr as $key=>$val){
+if($val[id]==18){$pcurl = $val[url];}//得到电脑模板url
 if($val['type']==1){
 $cnm='';
 $dt="{$val[name]}";
@@ -64,6 +65,18 @@ if($val[icon]!=''){
 $cnm = 'class="jslist"';
 $dt="{$val[icon]}{$val[name]}<i class=\"fa fa-angle-right\"></i>";
 }
+if($_M[config][met_wap]==0 && $val[id]==69)
+{
+$dt="{$val[icon]}{$val[name]}";
+echo <<<EOT
+-->
+		<dl {$cnm}>
+			<dt><a href="{$pcurl}" target="_blank">{$dt}</a></dt>
+		</dl>
+<!--
+EOT;
+
+}else{
 echo <<<EOT
 -->
 		<dl {$cnm}>
@@ -71,6 +84,9 @@ echo <<<EOT
 			<dd>
 <!--
 EOT;
+}
+
+
 foreach($toparr as $key=>$val2){
 if($val2['type']==2&&$val2['bigclass']==$val['id']){
 $target = $val2[id]==70||$val2[id]==18?'target="_blank"':'';
@@ -105,6 +121,11 @@ echo <<<EOT
 </div>
 <script>
 var indexbox = 1;
+//手机版关闭时隐藏电脑外观
+if({$_M[config][met_wap]}==0)
+{
+	document.getElementById("metinfo_metnav_18").style.display="none";
+}
 </script>
 <script src="{$_M[url][pub]}js/sea.js?{$jsrand}"></script>
 </body>

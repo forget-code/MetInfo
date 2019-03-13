@@ -2,18 +2,22 @@
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 if(@file_exists('../app/app/shop/include/product.class.php') && @$cmodule){
-	@define('M_NAME', 'shop');
-	@define('M_MODULE', 'web');
-	@define('M_CLASS', @$cmodule);
-	@define('M_ACTION', 'doindex');
-	require_once '../app/system/entrance.php';
-	die();
+	require_once '../app/app/shop/include/product.class.php';
+	if($gotonew == 1){
+		@define('M_NAME', 'shop');
+		@define('M_MODULE', 'web');
+		@define('M_CLASS', @$cmodule);
+		@define('M_ACTION', 'doindex');
+		require_once '../app/system/entrance.php';
+		die();
+	}
 }
 header("Content-type: text/html;charset=utf-8");
 error_reporting(E_ERROR | E_PARSE);
 @set_time_limit(0);
 $HeaderTime=time();
 define('ROOTPATH', substr(dirname(__FILE__), 0, -7));
+define ('PATH_WEB', substr(dirname(__FILE__),0,-7));
 PHP_VERSION >= '5.1' && date_default_timezone_set('Asia/Shanghai');
 session_cache_limiter('private, must-revalidate'); 
 @ini_set('session.auto_start',0); 

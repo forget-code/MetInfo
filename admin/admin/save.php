@@ -2,7 +2,7 @@
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 //define('ADMIN_POWER','metinfo');
-require_once '../login/login_check.php';
+require_once '../login/login_check.php'; if ($_SERVER["REQUEST_METHOD"] !== 'POST') {exit();}
 $admin_ok = 1;
 $admin_issueok=0;
 if($admin_issue=="yes")$admin_issueok=1;
@@ -79,12 +79,21 @@ if($action=="add"){
 }
 
 if($action=="editor"){
+
 	if($edtp==2){
 		if($admincp_ok['admin_group']=='10000'){
-			$query="update $met_admin_table set admin_id='$change_admin_id' where admin_group='10000' and admin_id='admin'";
-			$db->query($query);
+			$admin_pass=md5($_M[form][admin_password]);
+		   $query="select * from $met_admin_table where admin_pass='{$admin_pass}' and admin_id='admin'";
+		  
+			 if($db->get_one($query)){
+                  $query="update $met_admin_table set admin_id='$change_admin_id' where admin_group='10000' and admin_id='admin'";
+			      $db->query($query);
+		  }else{
+            okinfo('javascript:history.back();','密码错误');
+		  }
 		}
 		metsave('../admin/index.php?lang='.$lang.'&anyid='.$anyid);
+		
 	}else{
 		$query = "select * from $met_admin_table where id='$id'";
 		$modify = $db->get_one($query);

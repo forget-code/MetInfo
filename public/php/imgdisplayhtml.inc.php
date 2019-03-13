@@ -44,7 +44,7 @@ case 1:
    $metinfo.="<script src='".$met_url."js/metzoomHTML.js' language='JavaScript' type='text/javascript'></script>\n";
    $metinfo.="<script type='text/javascript'>	window.onload==setupZoom();	</script>\n";
    $metinfo.="<div class='smallimg' style='width:{$met_imgdetail_x}px;'>\n";
-	if($displaylist)array_unshift($displaylist,array('title'=>"$img[title]",'imgurl'=>"$img[imgurl]",'imgurl_dis'=>"$img[imgurl_dis]"));
+	if($displaylist)array_unshift($displaylist,array('title'=>"$img[title]",'imgurl'=>"$img[imgurl]",'size'=>"$img[imgsize]",'imgurl_dis'=>"$img[imgurl_dis]"));//增加图片尺寸属性size（新模板框架v2）
 	$i=0;
 	foreach($displaylist as $key=>$val){
 	$i++;

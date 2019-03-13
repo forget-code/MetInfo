@@ -57,6 +57,11 @@ class weixin extends other {
 
 		$data = jsondecode(load::mod_class('user/class/curl_ssl', 'new')->curl_post($url, $send));
 
+        //unionid
+        if ($data['unionid']=='') {
+            $data['unionid'] = $data['openid'];
+        }
+
 		if($this->error_curl($data)){
 			return false;
 		}else{

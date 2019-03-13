@@ -1,7 +1,13 @@
 <?php
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
-
+$url=$_SERVER['PHP_SELF'];
+$turnurl=dirname('http://'.$_SERVER['HTTP_HOST'].$_SERVER["REQUEST_URI"]);
+$resstr=strstr($url,'index.php/');
+if($resstr){  
+  $turnurl=str_replace('index.php','404.html',$turnurl);
+  header("location:".$turnurl);
+}
 if(!file_exists('./config/install.lock')){
 	if(file_exists('./install/index.php')){
 		header("location:./install/index.php");exit;

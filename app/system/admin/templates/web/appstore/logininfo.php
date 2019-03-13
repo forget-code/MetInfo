@@ -25,7 +25,7 @@ echo <<<EOT
 			<li class="mi">|</li>
 			<li><a href="{$_M['url']['own_form']}c=member&a=dorecord">{$_M['word']['consumption_record']}</a></li>
 			<li class="mi">|</li>
-			<li><a href="{$_M['url']['own_form']}c=member&a=doinformation">{$_M['word']['account_Settings']}</a></li>
+			<li><a href="https://account.metinfo.cn" target="_blank">{$_M['word']['account_Settings']}</a></li>
 			<li class="mi">|</li>
 			<li><a href="{$_M['url']['app_api']}a=dologout&user_key={$_M['config']['met_secret_key']}&url_sec={$url_sec_login}&return_type=jump">{$_M['word']['indexloginout']}</a></li>
 		</ul>

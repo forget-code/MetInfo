@@ -23,17 +23,19 @@ class tabledata {
 	 */
 	public function getdata($table, $field = '*', $where = '', $order = ''){
 		global $_M;
-	
+	//dump( $_M['form']);
 		/*获取表格ajax传递的参数*/
 		$length = $_M['form']['length'];         //每页显示数量
 		$start  = $_M['form']['start'];          //读取数据的起点
 		$draw   = $_M['form']['draw'];           //累计执行次数，无作用但必须回传
-		if($_M['form']['tablepage']&&$start==0&$draw==1){
-			$cook = explode("|",$_M['form']['tablepage']) ;
+		if($_M['form']['tablepage_json']&&$start==0&$draw==1){
+			$cook = explode("|",$_M['form']['tablepage_json']) ;
 			$u = "{$_M['form']['n']},{$_M['form']['c']},{$_M['form']['a']}";
 			if($cook[1]==$u){
 				$start = $cook[0]*$_M['form']['length'];
 			}
+		}else{
+			met_setcookie('tablepage_json', $_M['form']['start']/$_M['form']['length']."|{$_M['form']['n']},{$_M['form']['c']},{$_M['form']['a']}");
 		}
 		/*查询表*/
 		if($where){
@@ -44,9 +46,10 @@ class tabledata {
 		}                
 		//整理查询条件
 		$query = "SELECT {$field} FROM {$table} {$conds} LIMIT {$start},{$length}";  //mysql语句
-
+//echo $query;
 		$array = DB::get_all($query);                                           //执行查询，获得数组
 		$error = DB::error();
+		//echo $error;
 		if($error){
 			$this->error = $query."<br />".$error;
 		}else{

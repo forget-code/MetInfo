@@ -1,11 +1,11 @@
 <?php
-# MetInfo Enterprise Content Management System 
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+# MetInfo Enterprise Content Management System
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 function metlabel_head($closure=1,$iehack=1,$mobileto=''){
 	global $met_mobileok,$met_title,$show,$classnow,$id,$class_list,$navurl,$met_js_access,$img_url;
 	global $appscriptcss;
 	global $_M;
-	$met_skin_css = $_M['config']['et_skin_css']==''?'metinfo.css':$_M['config']['et_skin_css'];
+	$met_skin_css = $_M['config']['met_skin_css']==''?'metinfo.css':$_M['config']['met_skin_css'];
 	$closure = $closure?"\n</head>":'';
 	if($met_mobileok){
 		$metinfo="
@@ -54,7 +54,8 @@ function metlabel_topnav($dt='',$tp=1,$lok=1){
 		if($met_wap_url){
 			$indurl = $met_wap_url;
 		}else{
-			$indurl = $met_index_type==$_M[lang]?$index_url.'wap/':$navurl.'wap/index.php?lang='.$_M[lang];
+			//$indurl = $met_index_type==$_M[lang]?$index_url.'wap/':$navurl.'wap/index.php?lang='.$_M[lang];
+			$indurl = $met_index_type==$_M[lang]? $index_url.'index.php?lang='.$_M[lang].'&met_mobileok=1':$navurl.'index.php?lang='.$_M[lang].'&met_mobileok=1';
 			if($_M['config']['met_wap_tpb']&&$_M['config']['met_wap_url'])$indurl = $_M['config']['met_wap_url'];
 		}
 		$mobile = "<li><a href='{$indurl}' title='{$_M['word']['wap']}'>{$_M['word']['wap']}</a></li>{$dt}";
@@ -74,37 +75,30 @@ function metlabel_topnav($dt='',$tp=1,$lok=1){
 			if($val['useok'])$langlist.="{$dt}<li><a href='{$met_index_url[$val[mark]]}' {$urlnew}>{$flag}{$val[name]}</a></li>";
 		}
 	}
-
-	$metinfo = "
-		<ol>
-		{$sethome}
-		{$addFavorite}
-		{$mobile}
-		{$chjs}
-		{$langlist}
-		</ol>
-		";
-	
+	$metinfo = "<ol>{$sethome}{$addFavorite}{$mobile}{$chjs}{$langlist}</ol>";
+	$metinfo = str_replace($dt.$dt, $dt, $metinfo);
 	/*应用*/
 	$file_site = explode('|',$app_file[4]);
 	foreach($file_site as $keyfile=>$valflie){
 		if(file_exists(ROOTPATH."$met_adminfile".$valflie)&&!is_dir(ROOTPATH."$met_adminfile".$valflie)&&((file_get_contents(ROOTPATH."$met_adminfile".$valflie))!='metinfo')){require_once ROOTPATH."$met_adminfile".$valflie;}
 	}
-	
+
 	return $metinfo;
-	
+
 }
 function metlabel_form($list,$type){
 	global $fdjs,$lang,$lang_Nolimit,$lang_memberPosition,$selectjob,$cv_para,$paravalue,$met_memberlogin_code,$lang_memberImgCode,$lang_memberTip1,$lang_Submit,$navurl;
-	$lista=array(); 
+	$lista=array();
 	foreach($list as $key=>$val){
 		$metinfo="";
+		$val[des]=$val[description];//增加描述赋值给新属性
 		switch($val[type]){
 			case 1:
 				$val[type_class]='ftype_input';
 				$wr_ok = $val[wr_ok]?'data-required=1':'';
 				$val[dataname]=$type=='cv'?$val[para]:"para{$val[id]}";
-				$val[type_html]="<input name='{$val[dataname]}' type='text' placeholder='{$val[name]}' {$wr_ok} />";
+				$val[type_html]="<input name='{$val[dataname]}' type='text' placeholder='{$val[description]}' {$wr_ok} />";
+				$val[description]='';
 			break;
 			case 2:
 				$val[type_class]='ftype_select';
@@ -120,7 +114,8 @@ function metlabel_form($list,$type){
 				$wr_ok = $val[wr_ok]?'data-required=1':'';
 				$val[type_class]='ftype_textarea';
 				$val[dataname]=$type=='cv'?$val[para]:"para{$val[id]}";
-				$val[type_html]="<textarea name='{$val[dataname]}' {$wr_ok} placeholder='{$val[name]}'></textarea>";
+				$val[type_html]="<textarea name='{$val[dataname]}' {$wr_ok} placeholder='{$val[description]}'></textarea>";
+				$val[description]='';
 			break;
 			case 4:
 				$val[type_class]='ftype_checkbox';

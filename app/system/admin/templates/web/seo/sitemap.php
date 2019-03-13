@@ -34,8 +34,9 @@ var ownlangtxt = {
 		<dt>{$_M[word][seotips16]}</dt>
 		<dd class="ftype_checkbox">
 			<div class="fbox">
-				<label><input type="checkbox" name="met_sitemap_not1" value="1" data-checked="{$_M[config][met_sitemap_not1]}" />{$_M[word][seotips17]}</label>
+				<label><input type="checkbox" name="met_sitemap_not1" value="1" data-checked="{$_M[config][met_sitemap_not1]}" /><!--{$_M[word][seotips17]}-->过滤不显示在导航的一级栏目</label>
 				<label><input type="checkbox" name="met_sitemap_not2" value="1" data-checked="{$_M[config][met_sitemap_not2]}" />{$_M[word][seotips18]}</label>
+				<span class="tips">网站地图生成的栏目仅限一级栏目和显示在导航栏上栏目。<br / >不显示内容与栏目，都不会再网站地图中生成。</span>
 			</div>
 		</dd>
 	</dl>

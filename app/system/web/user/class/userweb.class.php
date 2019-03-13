@@ -36,7 +36,7 @@ class userweb extends web {
 		foreach($navigation as $key=>$val){
 			if($val[columnid]){
 				//$column = $class_list[$val[columnid]];
-				$query = "SELECT * FROM {$_M['table']['column']} WHERE id = '{$val[columnid]}'";
+				$query = "SELECT * FROM {$_M['table']['column']} WHERE id = '{$val[columnid]} ' and lang='{$_M['lang']}'";
 				$column = DB::get_one($query);
 				$val['foldername'] = $val['foldername'] ? $val['foldername'] : $column['foldername'];
 				$val['filename'] = $val['filename'] ? $val['filename'] : 'index.php';
@@ -101,8 +101,9 @@ class userweb extends web {
 		$_M['url']['login'] = $_M['url']['site']."member/login.php{$lang}";
 		$_M['url']['register'] = $_M['url']['site']."member/register_include.php{$lang}";
 		$_M['url']['register_userok'] = $_M['url']['site']."member/register_include.php?lang={$_M['lang']}&a=douserok";
-		$_M['url']['getpassword'] = $_M['url']['site']."member/getpassword.php";
+		$_M['url']['getpassword'] = $_M['url']['site']."member/getpassword.php?lang={$_M['lang']}";
 		
+		$_M['url']['user_home'] = $_M['url']['site']."member/index.php{$lang}";
 		$_M['url']['profile'] = $_M['url']['site']."member/basic.php{$lang}"; 
 		$_M['url']['profile_safety'] = $_M['url']['site']."member/basic.php?lang={$_M['lang']}&a=dosafety"; 
 		$_M['url']['pass_save'] = $_M['url']['site']."member/basic.php?lang={$_M['lang']}&a=dopasssave"; 

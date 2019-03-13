@@ -112,7 +112,7 @@ class uploadify extends web {
 		
 		$info['formname'] = $_M['form']['formname'];
 		$info['savepath'] = '/head';
-		$info['format'] = 'jpg|jpeg|png';
+		$info['format'] = 'jpg|jpeg|png|gif';
 		$info['maxsize'] = '5';
 		$info['is_rename'] = 1;
 
@@ -129,7 +129,7 @@ class uploadify extends web {
 		
 		$thumb = load::sys_class('thumb', 'new');//加载缩略图类
 		//$thumb->list_module(3);//按网站列表页缩略图方式缩略图片
-		$thumb->set('$thumb_width', '200');//保存在原图路径的子目录下
+		$thumb->set('thumb_width', '200');//保存在原图路径的子目录下
 		$thumb->set('thumb_height', '200');//保存在原图路径的子目录下
 		$thumb->set('thumb_save_type', 2);//保存在原图路径的子目录下
 		$thumb->set('thumb_kind', 3);//设置生成缩略图方式为裁剪

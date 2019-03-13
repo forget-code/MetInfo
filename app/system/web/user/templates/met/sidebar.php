@@ -4,7 +4,7 @@
 defined('IN_MET') or exit('No permission');//保持入口文件，每个应用模板都要添加
 echo <<<EOT
 -->
-<div class="col-sm-3 sidebar hidden-xs">
+<div class="col-sm-3 sidebar ">
 	<div class="sidebar-box">
 		<div class="list-group">
 			<a href="{$_M['url']['profile']}" class="list-group-item {$active['profile']}" title="{$_M['word']['memberIndex9']}">{$_M['word']['memberIndex9']}</a>

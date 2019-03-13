@@ -1,6 +1,6 @@
 <?php
-# MetInfo Enterprise Content Management System 
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+# MetInfo Enterprise Content Management System
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 $depth='../';
 require_once $depth.'../login/login_check.php';
 if($action == 'html'){
@@ -31,9 +31,9 @@ if($action == 'html'){
 			}
 		}
 	}
-	$htmjs.= indexhtm().'$|$';	
-	
-	$turl  ="../index.php?lang=$lang&anyid=29&n=content&c=product_admin&a=doindex&class1=$class1&class2=$class2&class3=$class3";
+	$htmjs.= indexhtm().'$|$';
+
+	$turl  ="../index.php?lang=$lang&anyid=29&n=content&c=product_admin&a=doindex&class1=$select_class1&class2=$select_class2&class3=$select_class3";
 	$gent='../../sitemap/index.php?lang='.$lang.'&htmsitemap='.$met_member_force;
 	metsave($turl,'',$depth,$htmjs,$gent);
 	die();
@@ -60,7 +60,7 @@ if($filename_okno){
 	}
 	echo $metinfo;
 	die();
-}  
+}
 $save_type=$action=="add"?1:($filename!=$filenameold?2:0);
 if($filename!='' && $save_type){
 		$sql="class1='$class1'";
@@ -86,35 +86,35 @@ while($list = $db->fetch_array($result)){
 	$para_list[]=$list;
 }
 if($imgnum>0){
+	$imgsizes_list=explode('|',$imgsizes);//添加变量（新模板框架v2）
 	for($i=0;$i<$imgnum;$i++){
 		$displayimg = "displayimg".$i;
 		$displayname = "displayname".$i;
 		$$displayname=str_replace(array('|','*'),'_',$$displayname);
+		$displaysize=$imgsizes_list[$i];//添加变量（新模板框架v2）
 		if($$displayname||$$displayimg){
-			if($i==0){
-				$displayimglist=$$displayname.'*'.$$displayimg;
-			}else{
-				$displayimglist=$displayimglist.'|'.$$displayname.'*'.$$displayimg;
-			}
+			if($i>0) $displayimglist.='|';
+			$displayimglist.=$$displayname.'*'.$$displayimg.'*'.$displaysize;//添加变量$displaysize（新模板框架v2）
 		}
 	}
-} 
+}
 $displayimg = $displayimglist;
 $classother=$classothers?'|'.implode('|',$classothers).'|':'';
 if($metinfover)$metadmin[productother] = $met_productTabok-1;
 if($action=="add"){
 	if(!$description){
 		$description=strip_tags($content);
-		$description=str_replace("\n",'',$description); 
-		$description=str_replace("\r",'',$description); 
+		$description=str_replace("\n",'',$description);
+		$description=str_replace("\r",'',$description);
 		$description=str_replace("\t",'',$description);
 		$description=mb_substr($description,0,200,'utf-8');
 	}
 	if($links){
-		$links=str_replace("http://",'',$links); 
+		$links=str_replace("http://",'',$links);
 		$links="http://".$links;
 	}
 	$access=$access<>""?$access:0;
+	//添加属性imgsize（新模板框架v2）
 	$query = "INSERT INTO $met_product SET
 						  title              = '$title',
 						  ctitle             = '$ctitle',
@@ -127,13 +127,14 @@ if($action=="add"){
 						  classother         = '$classother',
 						  new_ok             = '$new_ok',
 						  imgurl             = '$imgurl',
+						  imgsize            = '$imgsize',
 						  imgurls            = '$imgurls',
 						  displayimg         = '$displayimg',
 						  com_ok             = '$com_ok',
 						  wap_ok             = '$wap_ok',
 						  issue              = '$issue',
-						  hits               = '$hits', 
-						  addtime            = '$addtime', 
+						  hits               = '$hits',
+						  addtime            = '$addtime',
 						  updatetime         = '$updatetime',
 						  access          	 = '$access',
 						  filename           = '$filename',
@@ -194,14 +195,14 @@ if($action=="add"){
 if($description){
 	$description_type=$db->get_one("select * from $met_product where id='$id'");
 	$description1=strip_tags($description_type[content]);
-	$description1=str_replace("\n", '', $description1); 
-	$description1=str_replace("\r", '', $description1); 
+	$description1=str_replace("\n", '', $description1);
+	$description1=str_replace("\r", '', $description1);
 	$description1=str_replace("\t", '', $description1);
 	$description1=mb_substr($description1,0,200,'utf-8');
 	if($description1==$description){
 		$description=strip_tags($content);
-		$description=str_replace("\n", '',$description); 
-		$description=str_replace("\r", '', $description); 
+		$description=str_replace("\n", '',$description);
+		$description=str_replace("\r", '', $description);
 		$description=str_replace("\t", '', $description);
 		$description=mb_substr($description,0,200,'utf-8');
 	}
@@ -211,10 +212,11 @@ if($action=="editor"){
 		$classother = '';
 	}
 	if($links){
-		$links=str_replace("http://",'',$links); 
+		$links=str_replace("http://",'',$links);
 		$links="http://".$links;
 	}
-	$query = "update $met_product SET 
+	//添加属性imgsize（新模板框架v2）
+	$query = "update $met_product SET
 						  title              = '$title',
 						  ctitle             = '$ctitle',
 						  keywords           = '$keywords',
@@ -226,19 +228,20 @@ if($action=="editor"){
 						  class3             = '$class3',
 						  classother         = '$classother',
 						  imgurl             = '$imgurl',
+						  imgsize            = '$imgsize',
 						  imgurls            = '$imgurls',
 						  displayimg         = '$displayimg',
 						  displaytype        = '$displaytype',
 						  links              = '$links',";
-	if($metadmin[productnew])$query .= "					  
+	if($metadmin[productnew])$query .= "
 						  new_ok             = '$new_ok',";
-	if($metadmin[productcom])$query .= "	
+	if($metadmin[productcom])$query .= "
 						  com_ok             = '$com_ok',";
 						  $query .= "
 						  wap_ok             = '$wap_ok',
 						  issue              = '$issue',
-						  hits               = '$hits', 
-						  addtime            = '$addtime', 
+						  hits               = '$hits',
+						  addtime            = '$addtime',
 						  updatetime         = '$updatetime',";
 	if($met_member_use)  $query .= "
 						  access			 = '$access',";
@@ -292,7 +295,7 @@ if($action=="editor"){
 						  info     ='$para',
 						  imgname  ='$paraname',
 						  module   ='$module',
-						  lang     ='$lang'";	
+						  lang     ='$lang'";
 		 }
 			 $db->query($query);
 	   $paraname="";

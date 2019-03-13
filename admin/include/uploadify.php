@@ -292,7 +292,8 @@ die();
 			if(stristr($met_file_format,'zip') === false){
 				echo $lang_jsx36;
 				die();
-			}
+			}   
+
 			$filenamearray=explode('.zip',$_FILES['Filedata']['name']);
 			$f = new upfile('sql,zip','../databack/sql/','','');
 			if($f->get_error()){
@@ -300,14 +301,42 @@ die();
 				die();
 			}
 			if(file_exists('../databack/sql/'.$filenamearray[0].'.zip'))$filenamearray[0]='metinfo'.$filenamearray[0];
+  
+
+       
 			if($_FILES['Filedata']['name']!=''){
+
 					$met_upsql = $f->upload('Filedata',$filenamearray[0]); 
 			}
+         
 			include "pclzip.lib.php";
 			$archive = new PclZip('../databack/sql/'.$filenamearray[0].'.zip');
+                $list = $archive->listContent();
+             
+                    foreach ($list as $key => $value) {
+                   	    $explode = explode(".",$value['filename']);
+                        $houzui=$explode[count($explode)-1];
+                      
+                       if($houzui!="sql"){
+                           $zip = new ZipArchive; 
+                           if ($zip->open('../databack/sql/'.$filenamearray[0].'.zip') === TRUE) { 
+                               $zip->deleteName($value['filename']);
+
+                                 if(!$zip->close()){
+
+                           	        echo '上传的压缩包含有非sql文件';
+                           	         exit;
+                                
+                              }
+
+                          }
+                      }
+                 }
+              
 			if($archive->extract(PCLZIP_OPT_PATH, '../databack') == 0){
-				$metinfo=$archive->errorInfo(true);
-			}
+			 	$metinfo=$archive->errorInfo(true);
+
+		    }
 			else{
 				$list = $archive->listContent();
 				$metinfo='1$'.'../databack/sql/'.$filenamearray[0].'.zip';

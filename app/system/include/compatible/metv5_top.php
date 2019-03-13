@@ -105,6 +105,10 @@ $langmark='lang='.$_M['lang'];
 
 $met_langadmin=$_M['langlist']['admin'];
 
+foreach ($_M['langlist']['web'] as $key => $v) {
+	$_M['langlist']['web'][$key]['met_weburl'] .= 'index.php?lang='.$v['lang'];
+}
+
 $met_langok=$_M['langlist']['web'];
 
 $index_url=$_M['langlist']['web'][$_M['lang']]['met_weburl'];
@@ -175,9 +179,11 @@ foreach($vars2 as $key => $val){
 	global $$val;
 	$$val=$a2[$val];
 }
-//dump($_M['form']);
-//echo $metid;
+
 if($met_module && $met_module < 1000){
+	if(isset($murlid)){
+		require_once PATH_WEB.'include/htmlurl.php';
+	}
 	if($metid){
 		global $filpy,$fmodule,$cmodule;
 		require PATH_WEB."include/module.php";
@@ -220,6 +226,35 @@ if($met_module && $met_module < 1000){
 	}
 }
 require_once PATH_WEB."public/php/methtml.inc.php";
+if(!function_exists('rgb2hex')){
+	require_once PATH_WEB."public/php/waphtml.inc.php";
+	function toHex($N) {
+		if ($N==NULL) return "00";
+		if ($N==0) return "00";
+		$N=max(0,$N);
+		$N=min($N,255);
+		$N=round($N);
+		$string = "0123456789ABCDEF";
+		$val = (($N-$N%16)/16);
+		$s1 = $string{$val};
+		$val = ($N%16);
+		$s2 = $string{$val};
+		return $s1.$s2;
+	}
+
+	function rgb2hex($r,$g,$b){
+		return toHex($r).toHex($g).toHex($b);
+	}
+
+	function hex2rgb($N){
+		$dou = str_split($N,2);
+		return array(
+			"R" => hexdec($dou[0]),
+			"G" => hexdec($dou[1]),
+			"B" => hexdec($dou[2])
+		);
+	}
+}
 //页面内容区块顶部导航处理，左侧导航调用系统时候生效，自定义无效。
 if($met_module && $met_module > 1000){
 	if($class_list[$classnow]['releclass']){

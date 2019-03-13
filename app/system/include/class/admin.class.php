@@ -31,7 +31,13 @@ class admin extends common {
 	  */
 	protected function load_url_site() {
 		global $_M;
-		$_M['url']['site_admin'] = 'http://'.str_replace(array('/index.php'), '', HTTP_HOST.PHP_SELF).'/';
+
+		if(strstr($_M[config][met_weburl],'https')){
+              $_M['url']['site_admin'] = 'https://'.str_replace(array('/index.php'), '', HTTP_HOST.PHP_SELF).'/';
+		}else{
+		  $_M['url']['site_admin'] = 'http://'.str_replace(array('/index.php'), '', HTTP_HOST.PHP_SELF).'/';	
+		}
+
 		$_M['url']['site'] = preg_replace('/(\/[^\/]*\/$)/', '', $_M[url][site_admin]).'/';
 	}
 	
@@ -78,7 +84,16 @@ class admin extends common {
 			$_M['word']['oginmetinfo'] = $lang_agents['met_agents_depict_login'];
 		}
 	}
-			
+	
+	/**
+	  * 配置变量过滤
+	  * @param string $value 配置变量
+	  */	
+	protected function filter_config($value) {	
+		$value = str_replace('"', '&#34;', str_replace("'", "&#39;", $value));
+		return $value;
+	}
+	
 	/**
 	 * 检测是否登陆
 	 * 有权限则程序向后运行，无权限则提示物权限
@@ -150,18 +165,31 @@ class admin extends common {
 			} else {
 				$return_url = "javascript:window.history.back();";
 			}
+
 			if (stristr(M_ACTION, 'add')) {
 				if (!strstr($membercp_ok['admin_op'], "add")) okinfo($return_url, $_M['word']['loginadd']);
 			}
-			if (stristr(M_ACTION, 'editor')) {
+			if (stristr(M_ACTION, 'editor')||stristr($_M['form']['sub_type'], 'editor')) {
+
 				if (!strstr($membercp_ok['admin_op'], "editor")) okinfo($return_url, $_M['word']['loginedit']);
 			}
-			if(stristr(M_ACTION, 'del')){
+			if(stristr(M_ACTION, 'del')||stristr($_M['form']['submit_type'], 'del')){
 				if (!strstr($membercp_ok['admin_op'], "del")) okinfo($return_url, $_M['word']['logindelete']);
 			}
 			if (stristr(M_ACTION, 'all')) {
 				if (!strstr($membercp_ok['admin_op'], "metinfo")) okinfo($return_url, $_M['word']['loginall']);
 			}
+    //         if (stristr($_M['form']['submit_type'], 'del')) {
+				// 	if (!strstr($membercp_ok['admin_op'], "del")) okinfo($return_url, $_M['word']['logindelete']);
+				// }
+                 //var_dump($_M['form']);
+                 //exit;
+
+     //         if (stristr($_M['form']['submit_type'], 'editor')) {
+				 // 	if (!strstr($membercp_ok['admin_op'], "editor")) okinfo($return_url, $_M['word']['loginadd']);
+				 // }
+
+
 			if (stristr(M_ACTION, 'table')) {
 				if (stristr($_M['form']['submit_type'], 'save')) {
 					if ($_M['form']['allid']) {
@@ -185,6 +213,7 @@ class admin extends common {
 						}
 					}
 				}
+			
 				if (stristr($_M['form']['submit_type'], 'del')) {
 					if (!strstr($membercp_ok['admin_op'], "del")) okinfo($return_url, $_M['word']['logindelete']);
 				}

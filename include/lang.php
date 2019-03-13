@@ -75,7 +75,7 @@ if(file_exists($tmpincfile)){
 }
 foreach($inc as $key=>$val){
 	$name = 'lang_'.$val['name'];
-	if($val[type]==7&&strstr($val['value'],"../upload/")&&$index=='index'&&$metinfover=='v1'){
+	if(($val[type]==7||$val[type]==13)&&strstr($val['value'],"../upload/")&&$index=='index'&&($metinfover=='v1' || $metinfover=='v2')){// 增加$metinfover判断值，新增判断条件$val[type]==13（新模板框架v2）
 		$val['value']=explode("../",$val['value']);
 		$val['value']=$val['value'][1];
 	}

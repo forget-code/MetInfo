@@ -16,7 +16,7 @@ define(function(require, exports, module) {
 				},
 				accept: {
 					title: 'Images',
-					extensions: 'gif,jpg,jpeg,bmp,png',
+					extensions: 'gif,jpg,jpeg,bmp,png,svg',//增加文件格式（新模板框架v2）
 					mimeTypes: 'image/*'
 				}
 			});
@@ -72,13 +72,13 @@ define(function(require, exports, module) {
 		   url: adminurl+'n=system&c=filept&a=dogetfile',
 		   success: function(obj){
 				var html = '',weburl = siteurl.substring(0,siteurl.length-1);
-				$.each(obj, function (n, value) { 
+				$.each(obj, function (n, value) {
 					var path = weburl + value.path;
 					html += '<li title="'+value.name+'" style="background-image:url('+path+');">';
 					html += '<div class="check hide" data-value="'+value.value+'" data-path="'+path+'"><i class="fa fa-check"></i></div>';
 					html += '<div class="widget-image-meta">'+value.x+'x'+value.y+'</div>';
 					html += '</li>';
-				}); 
+				});
 				$("#upimglist").append(html);
 				$("#upimglist").attr('data-ok', 1);
 		   }
@@ -163,13 +163,23 @@ define(function(require, exports, module) {
 	}
 	/*插入图片*/
 	function imgadd(dom,src,value){
-		$li = ' <li class="sort">' + 
-					'<a href="'+src+'" target="_blank">' +
-						'<img src="'+src+'">' + 
-					'</a>' + 
-					'<span class="close hide" data-imgval="'+value+'">&times;</span>' + 
-				'</li>';
+		// 函数重写（新模板框架v2）
+		var $appimagelist=dom.next().find(".app-image-list"),
+			sort_l=$appimagelist.find('.sort').length;
+		$li = ' <li class="sort">' +
+			'<a href="'+src+'" target="_blank">' +
+				'<img src="'+src+'">' +
+			'</a>' +
+			'<span class="close hide" data-imgval="'+value+'">&times;</span>' +
+			'</li>';
 		dom.next().find(".app-image-list li.upnow").before($li);
+		// 商品图尺寸设置
+		var imgtemp = new Image();
+        imgtemp.src = src;
+        imgtemp.index=sort_l;
+        imgtemp.onload = function(){
+			dom.next().find(".app-image-list li.sort:eq("+this.index+") [data-imgval]").attr({'data-size':this.width+'x'+this.height});
+		}
 	}
 	/*重新赋值*/
 	function imgvalue(dom){
@@ -180,7 +190,7 @@ define(function(require, exports, module) {
 		});
 		dom.attr('value',value);
 	}
-	
+
 	exports.func = function(e){
 		var ik = false,tf = false;
 		//构建版面
@@ -195,7 +205,7 @@ define(function(require, exports, module) {
 				var html = '<div class="picture-list ui-sortable">';
 					html+= '<ul class="js-picture-list app-image-list clearfix">';
 					html+= '<li class="upnow">' +
-							'<button type="button" data-name="'+name+'" id="filePicker_'+name+'" class="btn btn-default"><span class="uptxt">上传</span></button>' +
+							'<div data-name="'+name+'" id="filePicker_'+name+'" class="btn btn-default" style="border-radius:0px"><span class="uptxt">上传</span></div>' +
 							'</li>';
 					if($(this).data("upload-type")=='doupimg')html+= '<li class="imgku">';
 					if($(this).data("upload-type")=='doupimg')html+= '<button type="button" data-name="'+name+'" class="btn btn-default">从图片库选择</button>';
@@ -232,7 +242,7 @@ define(function(require, exports, module) {
 						},
 						accept: {
 							title: 'Images',
-							extensions: 'gif,jpg,jpeg,bmp,png,ico',
+							extensions: 'gif,jpg,jpeg,bmp,png,ico,svg',//增加文件格式（新模板框架v2）
 							mimeTypes: 'image/*'
 						}
 					});
@@ -268,26 +278,28 @@ define(function(require, exports, module) {
 			});
 		}
 		if(ik){
-		
+
 			/*拖曳排序*/
 			require.async('pub/examples/dragsort/jquery.dragsort-0.5.2.min',function(){
-				$('.ftype_upload ul.app-image-list').dragsort({ 
-					dragSelector: "li.sort", 
+				$('.ftype_upload ul.app-image-list').dragsort({
+					dragSelector: "li.sort",
 					dragBetween: false ,
 					dragEnd: function() {
 						var dom = $(this).parents('.picture-list').prev();
 						imgvalue(dom);
 					}
-				}); 
+				}).find('.sort a').click(function(e) {//火狐浏览器拖拽会跳转的兼容
+					if(navigator.userAgent.indexOf("Firefox") > -1) e.preventDefault();
+				});
 			});
-			
+
 			//删除按钮
 			$(document).on('click','.ftype_upload .app-image-list li.sort span',function(){
 				var dom = $(this).parents('.picture-list').prev();
 				$(this).parent('li.sort').remove();
 				imgvalue(dom);
 			});
-			
+
 			imgku();//图片库
 		}
 

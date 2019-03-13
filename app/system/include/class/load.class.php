@@ -9,6 +9,7 @@ defined('IN_MET') or exit('No permission');
  */
 class load {
 	private static $mclass = array();
+	private static $own_include_dir = '';
 	/**
 	 * 加载系统类
 	 * @param string $classname 需要引用系统类的类名，一般不需要加.class.php
@@ -76,7 +77,7 @@ class load {
 	 */
 	public static function own_class($classname ,$action = '') {
 		$classname=str_replace('.class.php', '', $classname);
-		$filedir = PATH_APP_FILE;
+		$filedir = self::$own_include_dir ? self::$own_include_dir:PATH_APP_FILE;
 		if(file_exists($filedir.'include/class/'.$classname.'.class.php')){
 			return self::_load_class($filedir.'include/class/', $classname, $action);
 		}else{
@@ -92,7 +93,7 @@ class load {
 	 */
 	public static function own_func($funcname) {
 		$funcname=str_replace('.func.php', '', $funcname);
-		$filedir = PATH_APP_FILE;
+		$filedir = self::$own_include_dir ? self::$own_include_dir:PATH_APP_FILE;
 		if(file_exists($filedir.'include/function/'.$funcname.'.func.php')){
 			return self::_load_func($filedir.'include/function/', $funcname);
 		}else{
@@ -128,6 +129,12 @@ class load {
 		return self::module(PATH_SYS_MODULE, $modulename);
 	}
 	
+		public static function is_plugin_exist($plugin){
+			global $_M;
+           $query = "SELECT * FROM {$_M['table']['app_plugin']} WHERE m_action = '{$plugin}' AND effect='1'";
+		   $result = DB::get_one($query);
+		   return $result;
+	}
 	/**
 	 * 加载插件
 	 * @param  string $plugin 需要加载的插件系统名
@@ -141,10 +148,16 @@ class load {
 				$_M['plugin'][$val['m_action']][] = $val['m_name'];
 			}
 		}
+		if(M_TYPE == 'system'){
+			$dir = '';
+		}else{
+			$dir = M_NAME;
+		}
 		foreach ($_M['plugin'][$plugin] as $key => $val) {
 			$own = $_M['url']['own'];
 			$_M['url']['own'] = $_M['url']['app'].$val.'/';
-			if (file_exists(PATH_APP.'app/'.$val.'/plugin/'.'plugin_'.$val.'.class.php')) {
+			if (file_exists(PATH_APP.'app/'.$val.'/plugin/'.'plugin_'.$val.'.class.php')) {		
+				self::change_own_include_dir($val);
 				require_once PATH_APP.'app/'.$val.'/plugin/'.'plugin_'.$val.'.class.php';
 				//self::_load_class(PATH_APP.'app/'.$val.'/plugin/', 'plugin_'.$val, $plugin);
 				$name = 'plugin_'.$val;
@@ -152,7 +165,11 @@ class load {
 					$newclass = new $name;
 					if(method_exists($newclass, $plugin)){
 						if($action == 99){
-							return call_user_func(array($newclass, $plugin), $parameter);
+							$re = call_user_func(array($newclass, $plugin), $parameter);
+							
+							self::change_own_include_dir($dir);	
+							
+							return $re;
 						}else if($action == 1){
 							$return = call_user_func(array($newclass, $plugin), $parameter);
 							foreach($parameter as $key=>$val){
@@ -167,7 +184,7 @@ class load {
 			}
 			$_M['url']['own'] = $own;
 		}
-		
+		self::change_own_include_dir($dir);
 		if ($action == 1) {
 			if (isset($return)) {
 				return $return;
@@ -189,15 +206,19 @@ class load {
 	 */
 	private static function _load_class($path, $classname, $action = '') {
 		$classname=str_replace('.class.php', '', $classname);
+		$is_myclass = 0;
 		if(!self::$mclass[$classname]){
-			if (file_exists($path.'myclass/'.$classname.'.class.php')) {
-				require_once $path.'myclass/'.$classname.'.class.php';
-			} else if(file_exists($path.$classname.'.class.php')){
+			if(file_exists($path.$classname.'.class.php')){
 				require_once $path.$classname.'.class.php';
 			} else {
 				echo str_replace(PATH_WEB, '', $path).$classname.'.class.php is not exists';
 				exit;
 			}
+			$myclass = "my_{$classname}";
+			if (file_exists($path.'myclass/'.$myclass.'.class.php')) {
+				$is_myclass = 1;
+				require_once $path.'myclass/'.$myclass.'.class.php';
+			} 
 		}
 		if ($action) {
 			if (!class_exists($classname)) {
@@ -206,7 +227,11 @@ class load {
 			if(self::$mclass[$classname]){
 				$newclass = self::$mclass[$classname];
 			}else{
-				$newclass = new $classname;
+				if($is_myclass){
+					$newclass = new $myclass;
+				}else{
+					$newclass = new $classname;
+				}
 				self::$mclass[$classname] = $newclass;
 			}
 			if ($action!='new') {
@@ -239,6 +264,17 @@ class load {
 			exit;
 		}
 		return  true;
+	}
+	
+	public static function change_own_include_dir($dir) {
+		if($dir){
+			//$dirs = explode('/', PATH_APP_FILE);
+			//$dirs[count($dirs)-2] = $dir;
+			//self::$own_include_dir = implode('/', $dirs);
+			self::$own_include_dir = PATH_APP.'app'.'/'.$dir.'/';
+		}else{
+			self::$own_include_dir = '';
+		}
 	}
 	
 	/**

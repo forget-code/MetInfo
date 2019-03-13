@@ -8,6 +8,7 @@ $commonpath=$depth.'include/common.inc.php';
 $commonpath=$admin_index?$commonpath:'../'.$commonpath;
 define('SQL_DETECT',1);
 require_once $commonpath;
+if($depth!=''&&$depth!='../'&&$depth!='../../'){die();}
 $turefile=$url_array[count($url_array)-2];
 if($met_adminfile!=$turefile&&$adminmodify!=1){
 	$met_adminfile=$turefile;
@@ -23,7 +24,7 @@ if($action=="login"){
 	$metinfo_admin_pass=md5($metinfo_admin_pass);
 	/*code*/
 	if($met_login_code==1){
-		require_once $depth.'../include/captcha.class.php';
+		if($depth != '' && $depth != '../' && $depth != '../../'){ die(); } require_once $depth.'../include/captcha.class.php';
 		$Captcha= new  Captcha();
 		if(!$Captcha->CheckCode($code)){
 			echo("<script type='text/javascript'>alert('$lang_logincodeerror');location.href='login.php?langset=$langset';</script>");
@@ -48,6 +49,8 @@ if($action=="login"){
 		change_met_cookie('metinfo_admin_time',$m_now_time);
 		change_met_cookie('metinfo_admin_lang',$admincp_list['langok']);
 		change_met_cookie('metinfo_admin_shortcut',json_decode($admincp_list['admin_shortcut']));
+
+		
 		if($_GET[langset]!=''){
 			$_GET[langset]=daddslashes($_GET[langset],0,1);
 			change_met_cookie('languser',$_GET[langset]);
@@ -60,6 +63,9 @@ if($action=="login"){
 		admin_login=admin_login+1,
 		admin_modify_ip='$m_user_ip'
 		WHERE admin_id = '$metinfo_admin_name'";
+	
+    
+
 		$db->query($query);
 	}
 	$adminlang=explode('-',$admincp_list[langok]);
@@ -69,6 +75,8 @@ if($action=="login"){
 	$metinfo_mobile=false;
 	if($metinfo_mobile){
 		Header("Location: ../index.php");
+
+	
 	}else{
 		$flag=0;
 		$re_urls=explode('?',$re_url);
@@ -81,11 +89,21 @@ if($action=="login"){
 				$filedir.='/'.$val;
 			}
 		}
+ 
+
 		if($re_url&&file_exists('../..'.$filedir)&&$filedir){
 			if(!strstr($re_url, ".php")){
 				$re_url .= "index.php?lang=".$lang;
+
 			}
-			Header("Location: {$re_url}");
+
+      
+			if(strstr($re_url, "editor")){
+			Header("Location: ../index.php?lang=".$lang."&anyid=&n=index&c=index&a=dohome");
+		     met_setcookie("re_url",$re_url,time()-21600);
+			 exit;
+		}
+		    Header("Location: {$re_url}");
 			met_setcookie("re_url",$re_url,time()-21600);
 			exit;
 		}else{

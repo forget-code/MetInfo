@@ -4,6 +4,11 @@
 
 defined('IN_MET') or exit('No permission');
 $jsrand=str_replace('.','',$_M[config][metcms_v]).$_M[config][met_patch];
+if(strstr($_M[config][met_weburl],'https')){
+    $_M[url][api]=strstr($_M[url][api],'https')?$_M[url][api]:str_replace('http','https',$_M[url][api]);
+    $_M[url][app_api]=strstr($_M[url][app_api],'https')?$_M[url][app_api]:str_replace('http','https',$_M[url][app_api]);
+}
+
 if($_M[config][met_agents_type] > 2) $met_agents_display = "style=\"display:none\"";
 echo <<<EOT
 --><!DOCTYPE HTML>
@@ -46,7 +51,8 @@ own_name="{$_M[url][own_name]}",
 tem="{$_M[url][own_tem]}",
 adminurl="{$_M[url][adminurl]}",
 apppath="{$_M[url][api]}",
-jsrand="{$jsrand}"
+jsrand="{$jsrand}",
+editorname="{$_M[config][met_editor]}"
 ;
 </script>
 <!--[if IE]><script src="{$_M[url][site]}public/js/html5.js" type="text/javascript"></script><![endif]-->

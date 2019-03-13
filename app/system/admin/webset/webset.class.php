@@ -38,7 +38,7 @@ class webset extends admin {
 		}
 		$met_weburl = $_M['form']['met_weburl'];
 		if(substr($met_weburl,-1,1)!="/")$met_weburl.="/";
-		if(!strstr($met_weburl,"http://"))$met_weburl="http://".$met_weburl;
+		if(!strstr($met_weburl,"http://")&&!strstr($met_weburl,"https://"))$met_weburl="http://".$met_weburl;
 		$_M['form']['met_weburl'] = $met_weburl;
 		
 		$configlist = array();

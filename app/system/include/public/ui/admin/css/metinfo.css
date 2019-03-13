@@ -164,6 +164,7 @@ input.ui-input::-webkit-input-placeholder{
 
 /*区块内容*/
 .v52fmbx{ margin:8px 0px 0px; border:1px solid #ddd; border-top:0; overflow:hidden; text-align:left;}
+.product_index{overflow:visible!important;}
 .v52fmbx dl:after{display:block;clear:both;content:"";visibility:hidden;height:0;}
 .v52fmbx dl{ width:100%; zoom:1;  background:#fff;}
 .v52fmbx dl{ border-top:1px solid #ddd; margin:0px 0px; display:-webkit-box; display:-moz-box; display:box; display:-ms-flexbox; position:relative; padding:5px 0px; }
@@ -188,7 +189,15 @@ input.ui-input::-webkit-input-placeholder{
 .v52fmbx dl dd.ftype_description{ color:#fff; padding:8px; margin:0px 5px; background:#6c6fbf; }
 
 
-
+.noborder a.lsblogin{
+	display:inline-block;float:left;margin-left:200px;
+	width:100px;white-space:nowrap;text-indent:-12px;
+	line-height:34px;margin-top:-35px;
+}
+.noborder a.lsblogin:hover{
+	color:#fff;
+}
+.lsbwarning{color:red;line-height: 34px;}
 /*简短输入框*/
 .ftype_input .fbox{ float:left; margin-right:10px; }
 .ftype_input .tips{ float:left; padding-top:5px; }
@@ -310,7 +319,7 @@ border: 1px solid #ccc; padding:4px; color:#333;
 .ftype_upload .tips{ display:block; padding-top:5px; }
 .ftype_upload .app-image-list li{ float:left;margin-right:10px; }
 .ftype_upload .app-image-list li.sort{ border:1px solid #ddd; position:relative; margin-bottom:10px; }
-.ftype_upload .app-image-list li.sort img{ max-height:80px; }
+.ftype_upload .app-image-list li.sort img{ max-height:80px; max-width: 100%}
 .ftype_upload .app-image-list li.sort span.close{ position:absolute; right:-8px; top:-8px; width:18px; height:18px; line-height:18px; text-align:center; background:#666; border-radius:9px; font-size:16px; color:#fff; font-weight:normal; opacity:0.8; }
 .ftype_upload .app-image-list li.sort:hover span.close{ display:block!important;}
 .ftype_upload .app-image-list li button{ border-radius:0;}

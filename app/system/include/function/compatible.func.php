@@ -1,11 +1,11 @@
 <?php
-# MetInfo Enterprise Content Management System 
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+# MetInfo Enterprise Content Management System
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 
 defined('IN_MET') or exit('No permission');
 
 /**
- * json_encodePHP£¬°æ±¾¼æÈİ
+ * json_encodePHPï¼Œç‰ˆæœ¬å…¼å®¹
  */
 if(!function_exists('json_encode')){
     include PATH_WEB.'include/JSON.php';
@@ -21,15 +21,15 @@ if(!function_exists('json_encode')){
 }
 
 /**
- * ×Ö¶ÎÈ¨ÏŞ¿ØÖÆ´úÂë¼ÓÃÜºó£¨¼ÓÃÜºó¿ÉÓÃURL´«µİ£©
- * @param  string $string    ĞèÒª¼ÓÃÜ»ò½âÃÜµÄ×Ö·û´®
- * @param  string $operation ENCODE:¼ÓÃÜ£¬DECODE:½âÃÜ
- * @param  string $key       ÃÜÔ¿
- * @param  int    $expiry    ¼ÓÃÜÓĞĞ§Ê±¼ä
- * @return string            ¼ÓÃÜ»ò½âÃÜºóµÄ×Ö·û´®
+ * å­—æ®µæƒé™æ§åˆ¶ä»£ç åŠ å¯†åï¼ˆåŠ å¯†åå¯ç”¨URLä¼ é€’ï¼‰
+ * @param  string $string    éœ€è¦åŠ å¯†æˆ–è§£å¯†çš„å­—ç¬¦ä¸²
+ * @param  string $operation ENCODE:åŠ å¯†ï¼ŒDECODE:è§£å¯†
+ * @param  string $key       å¯†é’¥
+ * @param  int    $expiry    åŠ å¯†æœ‰æ•ˆæ—¶é—´
+ * @return string            åŠ å¯†æˆ–è§£å¯†åçš„å­—ç¬¦ä¸²
  */
 function authcode($string, $operation = 'DECODE', $key = '', $expiry = 0){
-    $ckey_length = 4;  
+    $ckey_length = 4;
     $key = md5($key ? $key : UC_KEY);
     $keya = md5(substr($key, 0, 16));
     $keyb = md5(substr($key, 16, 16));
@@ -70,10 +70,10 @@ function authcode($string, $operation = 'DECODE', $key = '', $expiry = 0){
         return $keyc.str_replace('=', '', base64_encode($result));
     }
 }
-	
+
 
 /**
- * ÒÔÏÂÎª¼æÈİÇ°Ì¨Ä£°åµ÷ÓÃº¯Êı
+ * ä»¥ä¸‹ä¸ºå…¼å®¹å‰å°æ¨¡æ¿è°ƒç”¨å‡½æ•°
  */
 function codetra($content,$codetype) {
 	if($codetype==1){
@@ -139,17 +139,18 @@ function metmodname($module){
 }
 
 function template($template){
-	global $_M,$metinfover;
-	if(!$metinfover){
-		$uifile = "met";
-		$uisuffix = 'html';
-	}else{
-		$uifile = "v1";
-		$uisuffix = 'php';
-	}
-	$path = PATH_WEB."templates/{$_M['config']['met_skin_user']}/{$template}.html";
-	!file_exists($path) && $path=PATH_WEB."templates/{$_M['config']['met_skin_user']}/{$template}.php";
-	!file_exists($path) && $path=PATH_WEB."public/ui/{$uifile}/{$template}.{$uisuffix}";
+	global $_M,$metinfover,$shop_tem;
+    if($metinfover){
+        $uifile = $metinfover;//ä¿®æ”¹èµ‹å€¼ï¼ˆæ–°æ¨¡æ¿æ¡†æ¶v2ï¼‰
+        $uisuffix = 'php';
+    }else{
+        $uifile = "met";
+        $uisuffix = 'html';
+    }
+    $path = PATH_WEB."templates/{$_M['config']['met_skin_user']}/{$template}.html";
+    !file_exists($path) && $path=PATH_WEB."templates/{$_M['config']['met_skin_user']}/{$template}.php";
+    if(M_NAME=='shop' && $metinfover=='v2' && $shop_tem!='tem') !file_exists($path) && $path=PATH_ALL_APP."shop/web/templates/met/{$template}.php";// å•†åŸV3ä½¿ç”¨é»˜è®¤æ¨¡æ¿æ—¶
+    !file_exists($path) && $path=PATH_WEB."public/ui/{$uifile}/{$template}.{$uisuffix}";
 	return $path;
 }
 
@@ -157,13 +158,14 @@ function footer(){
 	global $output;
 	$output = str_replace(array('<!--<!---->','<!---->','<!--fck-->','<!--fck','fck-->','',"\r",substr($admin_url,0,-1)),'',ob_get_contents());
     ob_end_clean();
+    load::plugin('dofooter_replace',0,array('data'=>$output));
 	echo $output;
 	DB::close();
 	exit;
 }
 
 /**
- * »º´æ¼æÈİº¯Êı
+ * ç¼“å­˜å…¼å®¹å‡½æ•°
  */
 function cache_online(){
     global $_M;
@@ -200,7 +202,7 @@ function cache_str(){
 
 function cache_column(){
 	global $_M;//mobile
-	$query="SELECT * FROM {$_M['table']['column']} WHERE lang='{$_M['lang']}' ORDER BY classtype desc,no_order";
+	$query="SELECT * FROM {$_M['table']['column']} WHERE lang='{$_M['lang']}' AND display =0 ORDER BY classtype desc,no_order";
 	$result= DB::query($query);
 	while($list = DB::fetch_array($result)){
 		$cache_column[$list['id']]=$list;
@@ -208,7 +210,7 @@ function cache_column(){
 	return cache_page("column_".$lang.".inc.php",$cache_column);
 }
 
-function cache_page($file,$string,$retype=1){  
+function cache_page($file,$string,$retype=1){
 	$return = $string;
 	if(is_array($string)) $string = "<?php\n return ".var_export($string, true)."; ?>";
 	$string=str_replace('\n','',$string);
@@ -241,7 +243,7 @@ function metfiletype($qz){
 	$metinfo=$list[count($list)-1];
 	return $metinfo;
 }
-/*È¥³ı¿Õ¸ñ*/
+/*å»é™¤ç©ºæ ¼*/
 function metdetrim($str){
     $str = trim($str);
     $str = ereg_replace("\t","",$str);
@@ -251,28 +253,28 @@ function metdetrim($str){
     $str = ereg_replace(" ","",$str);
     return trim($str);
 }
-function unescape($str){ 
-    $ret = ''; 
-    $len = strlen($str); 
+function unescape($str){
+    $ret = '';
+    $len = strlen($str);
 
-    for ($i = 0; $i < $len; $i++) { 
-        if ($str[$i] == '%' && $str[$i+1] == 'u') { 
-            $val = hexdec(substr($str, $i+2, 4)); 
+    for ($i = 0; $i < $len; $i++) {
+        if ($str[$i] == '%' && $str[$i+1] == 'u') {
+            $val = hexdec(substr($str, $i+2, 4));
 
-            if ($val < 0x7f) $ret .= chr($val); 
-            else if($val < 0x800) $ret .= chr(0xc0|($val>>6)).chr(0x80|($val&0x3f)); 
-            else $ret .= chr(0xe0|($val>>12)).chr(0x80|(($val>>6)&0x3f)).chr(0x80|($val&0x3f)); 
+            if ($val < 0x7f) $ret .= chr($val);
+            else if($val < 0x800) $ret .= chr(0xc0|($val>>6)).chr(0x80|($val&0x3f));
+            else $ret .= chr(0xe0|($val>>12)).chr(0x80|(($val>>6)&0x3f)).chr(0x80|($val&0x3f));
 
-            $i += 5; 
-        }else if ($str[$i] == '%') { 
-            $ret .= urldecode(substr($str, $i, 3)); 
-            $i += 2; 
-        } 
-        else $ret .= $str[$i]; 
-    } 
-    return $ret; 
+            $i += 5;
+        }else if ($str[$i] == '%') {
+            $ret .= urldecode(substr($str, $i, 3));
+            $i += 2;
+        }
+        else $ret .= $str[$i];
+    }
+    return $ret;
 }
-/*ÁĞ±íÒ³ÅÅĞò·½Ê½*/
+/*åˆ—è¡¨é¡µæ’åºæ–¹å¼*/
 function list_order($listid){
 switch($listid){
 case '0':
@@ -306,7 +308,7 @@ return $list_order;
 break;
 }
 }
-/*ÉÏÒ»ÌõÏÂÒ»ÌõÅÅĞò*/
+/*ä¸Šä¸€æ¡ä¸‹ä¸€æ¡æ’åº*/
 function pn_order($list_order,$news){
 switch($list_order){
 case '0':
@@ -354,20 +356,20 @@ return $pn_order;
 break;
 }
 }
-/*×ªUTF-8Âë*/
+/*è½¬UTF-8ç */
 function utf8Substr($str, $from, $len) {
 	$len = preg_match("/[\x7f-\xff]/", $str)?$len:$len*2;
 	if(mb_strlen($str,'utf-8')>intval($len)){
-		return preg_replace('#^(?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,'.$from.'}'. 
-		'((?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,'.$len.'}).*#s', 
-		'$1',$str).".."; 
+		return preg_replace('#^(?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,'.$from.'}'.
+		'((?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,'.$len.'}).*#s',
+		'$1',$str)."..";
 	}else{
-		return preg_replace('#^(?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,'.$from.'}'. 
-		'((?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,'.$len.'}).*#s', 
-		'$1',$str); 
+		return preg_replace('#^(?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,'.$from.'}'.
+		'((?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,'.$len.'}).*#s',
+		'$1',$str);
 	}
 }
-/*ËÑË÷¹Ø¼ü´Ê*/
+/*æœç´¢å…³é”®è¯*/
 function get_keyword_str($str,$keyword,$getstrlen,$searchtype,$type){
 	$str=str_ireplace('<p>','&nbsp;',$str);
 	$str=str_ireplace('</p>','&nbsp;',$str);
@@ -384,14 +386,14 @@ function get_keyword_str($str,$keyword,$getstrlen,$searchtype,$type){
 			$strpos = mb_stripos($str,$keyword,0,'utf-8');
 		}else{
 			$strpos = mb_strpos($str,$keyword,0,'utf-8');
-		}	
+		}
 		$halfStr = intval(($getstrlen-$strlen)/2);
 		if($strpos!=""){
 			if($strpos>=$halfStr){
 				$str = mb_substr($str,($strpos - $halfStr),$halfStr,'utf-8').$keyword.mb_substr($str,($strpos + $strlen),$halfStr,'utf-8');
 			}else{
 				$str = mb_substr($str,0,$strpos,'utf-8').$keyword.mb_substr($str,($strpos + $strlen),($halfStr*2),'utf-8');
-			}	
+			}
 		}else{
 			$str = mb_substr($str,0,$getstrlen,'utf-8');
 		}
@@ -407,9 +409,9 @@ function get_keyword_str($str,$keyword,$getstrlen,$searchtype,$type){
 		}
 		return $metinfo;
 	}
-	
+
 }
-/*Ä£°åÎ´ÊÚÈ¨*/
+/*æ¨¡æ¿æœªæˆæƒ*/
 function authtemp($code){
 global $au_site,$met_weburl,$theme_preview;
 $met_weburl = $_SERVER['HTTP_HOST'];
@@ -426,21 +428,21 @@ foreach($au_site as $val)
 }
 if($theme_preview){
 var_export("-->");
-echo "<script>alert(\"{$met_weburl}Î´ÊÚÈ¨Ê¹ÓÃ´ËÄ£°å»òÒÑ¾­¹ıÆÚ!Powered by MetInfo\");window.parent.close();</script>";
+echo "<script>alert(\"{$met_weburl}æœªæˆæƒä½¿ç”¨æ­¤æ¨¡æ¿æˆ–å·²ç»è¿‡æœŸ!Powered by MetInfo\");window.parent.close();</script>";
 /*
 window.parent.document.getElementsByName('tabs_item_set')[0].innerHTML = '';
 window.parent.document.getElementsByName('tabs_item_set')[1].innerHTML = '';
 window.parent.document.getElementsByName('tabs_item_set')[2].innerHTML = '';
 window.parent.document.getElementsByName('tabs_item_set')[3].innerHTML = '';
 */
-//okinfo("http://www.metinfo.cn","{$met_weburl}Î´ÊÚÈ¨Ê¹ÓÃ´ËÄ£°å»òÒÑ¾­¹ıÆÚ! Powered by MetInfo");exit();
+//okinfo("http://www.metinfo.cn","{$met_weburl}æœªæˆæƒä½¿ç”¨æ­¤æ¨¡æ¿æˆ–å·²ç»è¿‡æœŸ! Powered by MetInfo");exit();
 }
 }
-/*°Ñ×Ö·û´®µ±³É´úÂëÔËĞĞ*/
+/*æŠŠå­—ç¬¦ä¸²å½“æˆä»£ç è¿è¡Œ*/
 function run_strtext($code){
     return eval($code);
 }
-/*Í¼Æ¬ÏÔÊ¾´óĞ¡*/
+/*å›¾ç‰‡æ˜¾ç¤ºå¤§å°*/
 function met_imgxy($xy,$module){
 	global $met_newsimg_x,$met_newsimg_y,$met_productimg_x,$met_productimg_y,$met_imgs_x,$met_imgs_y;
 	switch($module){
@@ -456,7 +458,7 @@ function met_imgxy($xy,$module){
 	}
 	return $met_imgxy;
 }
-//»ñÈ¡µ±Ç°Ò³ÃæURL
+//è·å–å½“å‰é¡µé¢URL
 function request_uri(){
     $pageURL='http';
     if($_SERVER["HTTPS"]=="on")
@@ -484,7 +486,7 @@ function met_rand($length){
 	return $password;
 }
 
-/*ÄÚÈİÒ³ÃæÈİÈÈÃÅ±êÇ©Ìæ»»ºÍÄÚÈİ·ÖÒ³*/
+/*å†…å®¹é¡µé¢å®¹çƒ­é—¨æ ‡ç­¾æ›¿æ¢å’Œå†…å®¹åˆ†é¡µ*/
 function contentshow($content) {
 global $lang_PagePre,$lang_PageNext,$navurl,$index,$lang;
 global $met_atitle,$met_alt,$metinfover;
@@ -538,7 +540,7 @@ $content = implode("<",$tmp1);
 if(pageBreak($content,1)>1){
 	$content = pageBreak($content);
 if(!$metinfover){
-	$content.="<link rel='stylesheet' type='text/css' href='{$navurl}public/css/contentpage.css' />\n"; 
+	$content.="<link rel='stylesheet' type='text/css' href='{$navurl}public/css/contentpage.css' />\n";
 	$content.="
 <script type='text/javascript'>
 $(document).ready(function(){
@@ -548,51 +550,81 @@ $(document).ready(function(){
 		if ($(this).hasClass('on')) {
 			$('#page_break #page_' + $(this).text()).show();
 		} else {
-			$('#page_break').find('.num li').removeClass('on'); 
-			$(this).addClass('on'); 
-			$('#page_break').find('#page_' + $(this).text()).show(); 
-		} 
+			$('#page_break').find('.num li').removeClass('on');
+			$(this).addClass('on');
+			$('#page_break').find('#page_' + $(this).text()).show();
+		}
 	});
 });
 </script>
-	"; 
+	";
 }
 }
 if($content=='<div><div id="metinfo_additional"></div></div>')$content='';
 return $content;
 }
 
-/*ÄÚÈİ·ÖÒ³*/
-function pageBreak($content,$type){ 
-	$content = substr($content,0,strlen($content)-6); 
-    $pattern = "/<div style=\"page-break-after: always;?\">\s*<span style=\"display: none;?\">&nbsp;<\/span>\s*<\/div>/";      
-	$strSplit = preg_split($pattern, $content); 
-	$count = count($strSplit); 
+/*å†…å®¹åˆ†é¡µ*/
+function pageBreak($content,$type){
+	$content = substr($content,0,strlen($content)-6);
+    $pattern = "/<div style=\"page-break-after: always;?\">\s*<span style=\"display: none;?\">&nbsp;<\/span>\s*<\/div>/";
+	$strSplit = preg_split($pattern, $content);
+	$count = count($strSplit);
 	if($type)return $count;
-	$outStr = ""; 
-	$i = 1; 
-	if ($count > 1 ) { 
-	$outStr = "<div id='page_break'>"; 
-	foreach($strSplit as $value) { 
-	if ($i <= 1) { 
+	$outStr = "";
+	$i = 1;
+	if ($count > 1 ) {
+	$outStr = "<div id='page_break'>";
+	foreach($strSplit as $value) {
+	if ($i <= 1) {
 	$value=substr($value,5);
-	$outStr .= "<div id='page_{$i}'>{$value}</div>"; 
-	} else { 
-	$outStr .= "<div id='page_$i' class='collapse'>$value</div>"; 
-	} 
-	$i++; 
-	} 
+	$outStr .= "<div id='page_{$i}'>{$value}</div>";
+	} else {
+	$outStr .= "<div id='page_$i' class='collapse'>$value</div>";
+	}
+	$i++;
+	}
 
-	$outStr .= "<div class='num'>"; 
-	for ($i = 1; $i <= $count; $i++) { 
-	$outStr .= "<li>$i</li>"; 
-	} 
-	$outStr .= "</div></div>"; 
-	return $outStr; 
-	} else { 
-	return $content; 
-	} 
-} 
+	$outStr .= "<div class='num'>";
+	for ($i = 1; $i <= $count; $i++) {
+	$outStr .= "<li>$i</li>";
+	}
+	$outStr .= "</div></div>";
+	return $outStr;
+	} else {
+	return $content;
+	}
+}
+function change_met_cookie($key,$val){
+    global $met_cookie;
+    if($key=='metinfo_admin_name'||$key=='metinfo_member_name'){
+        $val=daddslashes($val,0,1);
+        $val=urlencode($val);
+    }
+    $met_cookie[$key]=$val;
+}
+
+function save_met_cookie(){
+    global $met_cookie,$db,$met_admin_table;
+    $met_cookie['time']=time();
+    $json=json_encode($met_cookie);
+    $username=$met_cookie[metinfo_admin_id]?$met_cookie[metinfo_admin_id]:$met_cookie[metinfo_member_id];
+    $username=daddslashes($username,0,1);
+    $query="update $met_admin_table set cookie='$json' where id='$username'";
+    $user=$db->get_one($query);
+}
+if(!function_exists('json_encode')){
+    include ROOTPATH.'include/JSON.php';
+    function json_encode($val){
+        $json = new Services_JSON();
+        $json=$json->encode($val);
+        return $json;
+    }
+    function json_decode($val){
+        $json = new Services_JSON();
+        return $json->decode($val);
+    }
+}
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

@@ -80,10 +80,12 @@ class upfile {
 	 */
 	public function upload($form = '') {
 		global $_M;
-		if (is_array($form)) {
-			$filear = $form;
-		}else{
-			$filear = $_FILES[$form];
+		if($form){
+			foreach($_FILES as $key => $val){
+				if($form == $key){
+					$filear = $_FILES[$key];
+				}
+			}
 		}
 		if(!$filear){
 			foreach($_FILES as $key => $val){
@@ -161,12 +163,15 @@ class upfile {
 			$filear['error']=$filear['error']?$filear['error']:0;
 			return $this->error($errors[$filear['error']]);
 		} else {
-			@unlink($filear['tmp_name']); //Delete temporary files
+			if(stripos($filear['tmp_name'], PATH_WEB) === false){
+				@unlink($filear['tmp_name']); //Delete temporary files
+			}
 		}
-		
+		load::plugin('doqiniu_upload',0,array('savename'=>str_replace(PATH_WEB, '', $this->savepath).$this->savename,'localfile'=>$file_name));
 		$back = '../'.str_replace(PATH_WEB, '', $this->savepath).$this->savename;
 		return $this->sucess($back);
 	}
+
 
 	/**
 	 * 获取后缀
@@ -208,6 +213,9 @@ class upfile {
 			$filename = str_replace(array(":", "*", "?", "|", "/" , "\\" , "\"" , "<" , ">" , "——" , " " ),'_',$filename);
 			if (stristr(PHP_OS,"WIN")) {
 				$filename_temp = @iconv("utf-8","GBK",$filename);
+			}else
+			{
+				$filename_temp = $filename;
 			}
 			$i=0;
 			$savename_temp=str_replace('.'.$this->ext,'',$filename_temp);

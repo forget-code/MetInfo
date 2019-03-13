@@ -55,8 +55,9 @@ echo <<<EOT
 <!--
 EOT;
 $i=0;
+$time=date("Y-m-d H:i:s",time());
 foreach($news_list as $key=>$val){
-if($val[id]!=$news[id]){
+if($val[id]!=$news[id] && $val[displaytype]==1 && ($val[addtime]<$time)){
 $i++;
 echo <<<EOT
 -->

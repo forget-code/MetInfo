@@ -415,7 +415,8 @@ function metuploadify(id, type, ureturn, module, wate, fileExt, fileDesc) {
 	var depths = depth + '../include/uploadify.php'+'?type='+type+'&wate='+wate+'&module='+module+'&lang='+lang;
 	var tips = module == 67 ? $('#uptips-' + upload_type) : $(id).parent().parent().next('.uptips');
 	//$(".metuplaodify").width($(".metuplaodify .upbutn").outerWidth());
-	$(id).change(function(){ 
+	$(id).change(function(){
+	    if($(this).val()!=''){
 		$(id).attr('name','Filedata');
 		$("#upfileForm"+upload_type).ajaxSubmit({
 			type: "post",
@@ -455,6 +456,7 @@ function metuploadify(id, type, ureturn, module, wate, fileExt, fileDesc) {
 		return false;
 		
 		$("#upfileForm"+upload_type).submit();
+	}
 	});
 	$("div.file_uploadfrom").css("opacity", "0");
 	if (module == 67) $("div.metuplaodify").css("opacity", "0");
@@ -476,9 +478,17 @@ function uponComplete(response, path, dom, module,type,id) {
 		var fileField = encodeURIComponent(yx[1]);
 		location.href = path + '&flienamecsv=' + csvname + '&fileField=' + fileField;
 	}
+	// 展示图片尺寸设置（添加函数-新模板框架v2）
+	var imgsize = function(src,set_obj) {
+		var imgtemp=new Image();
+	    imgtemp.src = src;
+	    imgtemp.onload = function(){
+	    	$(set_obj).attr({'data-size':this.width+'x'+this.height});
+		}
+	}
 	if (res[1].indexOf('|') == -1) {
 		$("input[name='" + path + "']").val(res[1]);
-
+		imgsize(siteurl+res[1].split('../')[1],"input[name='" + path + "']");//增加图片尺寸属性设置步骤（新模板框架v2）
 		if (module == 67) {
 			$("#" + path).attr('src', '../../' + res[1]);
 			var pc = path.split('-');
@@ -512,6 +522,7 @@ function uponComplete(response, path, dom, module,type,id) {
 		}
 		$("input[name='" + ph[0] + "']").val(yx[0]);
 		$("input[name='" + ph[1] + "']").val(yx[1]);
+		imgsize(siteurl+yx[0].split('../')[1],"input[name='" + ph[0] + "']");//增加图片尺寸属性设置步骤（新模板框架v2）
 	}
 	if(type=='sql'){
 		window.location.reload();
@@ -1081,6 +1092,19 @@ function Atoform(form, type) {
 			}
 		}
 	}
+	// 展示图片尺寸数组合并赋值（新模板框架v2）
+	var $pictureList=form.find('.metsliding_box_1'),
+		imgsizes_value = '';
+	$pictureList.find('.v52fmbx_dlbox input[data-size]').each(function(index, el) {
+		var size=$(this).data('size');
+		if(index==0){
+			$pictureList.find('input[name=imgsize]').val(size);
+		}else{
+			if(index>1) imgsizes_value+='|';
+			imgsizes_value+=size;
+		}
+	});
+	$pictureList.find("input[name='imgsizes']").val(imgsizes_value);
 }
 function SmitMeturn(data, firtext) {
 	var data = data.split('$');
@@ -1133,9 +1157,8 @@ function nouhew(M, form) {
 	}
 }
 function Smit(M, fn) {
-	var form = $("form[name='" + fn + "']");
-		Atoform(form);
-	var Ato = Atoform(form);
+	var form = $("form[name='" + fn + "']"),
+		Ato = Atoform(form);//减少重复执行函数（新模板框架v2）
 	if (Ato) {
 		Problem(Ato);
 		return false;
@@ -1467,11 +1490,13 @@ $(document).ready(function() {
 		$(this).next("label").addClass("red");
 	});
 	var tr = $("tr.mouse");
+	/*
 	if (tr) tr.live('hover',
 	function(tm) {
 		if (tm.type == 'mouseover' || tm.type == 'mouseenter') $(this).addClass("ontr");
 		if (tm.type == 'mouseout' || tm.type == 'mouseleave') $(this).removeClass("ontr");
 	});
+	*/
 	var titletips = $("td.title a.tips");
 	if (titletips) titletips.click(function() {
 		titletipsbox($(this));

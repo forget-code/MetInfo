@@ -35,6 +35,9 @@ class curl{
 			case 'file':
 				$this->file = trim($value, '/');
 			break;
+			case 'ignore':
+				$this->ignore = $value;
+			break;
 			default:
 				return false;
 			break;
@@ -115,10 +118,12 @@ class curl{
 			}
 		}
 		$result = trim($result);
+  
 		if(substr($result, 0, 7) == 'metinfo'){
 			return substr($result, 7);
-		}
-		else{
+		}elseif($this->ignore){
+			return $result;          
+        }else{
 			$this->curlerror = $result;
 			return 'nohost';
 		}

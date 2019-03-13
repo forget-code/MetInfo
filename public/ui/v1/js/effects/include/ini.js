@@ -1,4 +1,4 @@
-define(function(require, exports, module) {
+﻿define(function(require, exports, module) {
 	var common = require('common');   		//公用类
 	
 	/*繁体中文*/
@@ -133,24 +133,35 @@ define(function(require, exports, module) {
 	}
 	
 	/*异步加载 - 在线交流 - 站长统计 */
-	var url=met_weburl+'include/interface/uidata.php?lang='+lang,h = window.location.href;
+
+ 
+	var url=met_weburl+'include/interface/uidata.php',h = window.location.href;
 	if(h.indexOf("preview=1")!=-1)url = url + '&theme_preview=1';
+
 	$.ajax({
 		type: "POST",
 		url: url,
 		dataType:"json",
+		data:{lang:lang},
 		success: function(msg){
 			var c = msg.config;
 			if(c.met_online_type!=3){	  //在线交流
 				require.async('effects/online/online');
-			}
+   			}
+                
 			if(c.met_stat==1){			  //站长统计
 				var navurl=classnow==10001?'':'../';
 				var	stat_d=classnow+'-'+id+'-'+lang;
 				var	url = met_weburl+'include/stat/stat.php?type=para&u='+navurl+'&d='+stat_d;
 				$.getScript(url);
 			}
-		}
+		},
+         error:function(msg){
+                  console.log(msg)
+              
+              }
+
+          
 	});
 	
 	

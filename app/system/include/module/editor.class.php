@@ -23,6 +23,20 @@ class editor extends admin {
 		$CONFIG['filePathFormat'] = PATH_WEB.'upload/'.$CONFIG['filePathFormat'];
 		$CONFIG['imageManagerListPath'] = PATH_WEB.'upload/';
 		$CONFIG['fileManagerListPath'] = PATH_WEB.'upload/';
+		
+		$file_maxsize = $_M['config']['met_file_maxsize']*1024*1000;
+		
+		$CONFIG['imageMaxSize'] = $file_maxsize;
+		$CONFIG['scrawlMaxSize'] = $file_maxsize;
+		$CONFIG['catcherMaxSize'] = $file_maxsize;
+		
+		$CONFIG['videoMaxSize'] = $file_maxsize*50;
+		$CONFIG['fileMaxSize'] = $file_maxsize*50;
+		
+		
+		
+		
+		
 		//$CONFIG['imagePathFormat'] = '/metv5/upload/'.$CONFIG['imagePathFormat'];
 		//dump($CONFIG);
 		//die;

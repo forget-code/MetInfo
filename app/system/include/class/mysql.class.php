@@ -280,7 +280,7 @@ class DB {
 		echo"<table style='TABLE-LAYOUT:fixed;WORD-WRAP: break-word'><tr><td>";
 		echo"<br><br><b>The URL Is</b>:<br>http://$_SERVER[HTTP_HOST]$REQUEST_URI";
 		echo"<br><br><b>Can not connect to MySQL server</b>:<br>$sqlerror  ( $sqlerrno )";
-		echo"<br><br><b>You Can Get Help In</b>:<br><a target=_blank href=http://www.MetInfo.cn/><b>http://www.MetInfo.cn</b></a>";
+		echo"<br><br><b>You Can Get Help In</b>:<br><b>http://www.MetInfo.cn</b>";
 		echo"</td></tr></table>";
 		exit;
 	}

@@ -198,6 +198,24 @@ echo <<<EOT
 <!--
 EOT;
 }
+
+if($val['type']==8){
+	echo <<<EOT
+-->
+		<dl>
+			<dt>{$val['name']}</dt>
+			<dd class="ftype_input">
+				<div class="fbox">
+					<input type="text" name="info_{$val['id']}" value="{$value}" {$wr_ok} />
+				</div>
+				<span class="tips">{$val['description']}</span>
+			</dd>
+		</dl>
+
+<!--
+EOT;
+}
+
 echo <<<EOT
 -->		
 <!--

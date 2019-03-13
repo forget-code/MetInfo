@@ -6,9 +6,23 @@ defined('IN_MET') or exit('No permission');
 echo <<<EOT
 -->
 <div class="v52fmbx">
-	<h3 class="v52fmbx_hr">{$_M['word']['larger_wheel']}</h3>
 <!--
 EOT;
+$tmpincfile=PATH_WEB."templates/{$_M[config][met_skin_user]}/metinfo.inc.php";
+require $tmpincfile;
+if($metadmin['system_flash_close'] != 1){
+echo <<<EOT
+-->
+	<h3 class="v52fmbx_hr">{$_M['word']['larger_wheel']}</h3>
+<!--添加banner属性（新模板框架v2） 开始-->
+<!--
+EOT;
+$bannerlist_text_link=$_M['word']['title_link'];
+if($metinfover=='v2'){
+	$bannerlist_text_link='设置文字和链接';
+}else{
+	$bannerlist_class_in2=' class="in2"';
+}
 if($inbaset[0]==1){
 echo <<<EOT
 -->
@@ -17,48 +31,147 @@ echo <<<EOT
 			<input type="hidden" name="indexbannerlist" value="" />
 			<textarea name="bannerlist_li_html" style="display:none;">
 				<li>
-					<a href="#" class="img">
+					<a href="#" class="img" title='请上传宽度为1920像素高度不小于300像素的图片，所有的轮播图片高度要一样。'>
 						<img src="" />
 						<div class="banner_rep">
-						<input type="hidden" name="img_path" data-upload-type="doupimg" value="" />
+							<input type="hidden" name="img_path" data-upload-type="doupimg" value="" />
 						</div>
 						<div class="banner_del"><i class="fa fa-times"></i></div>
 					</a>
-					<div class="banner_more">{$_M['word']['title_link']}<i class="fa fa-sort-desc"></i></div>
+					<div class="banner_more">{$bannerlist_text_link}<i class="fa fa-sort-desc"></i></div>
 					<div class="banner_input">
-					<input type="text" name="img_title" value="" placeholder="{$_M['word']['setflashName']}">
-					<input type="text" name="img_link" class="in2" value="" placeholder="{$_M['word']['columnhref']}">
-					</div>
-				</li>
-			</textarea>
-			<div class="fbox">
-			<ul>
+						<dl>
+							<dt>{$_M['word']['columnhref']}</dt>
+							<dd><input type="text" name="img_link"></dd>
+						</dl>
+						<dl>
+							<dt>{$_M['word']['setflashName']}</dt>
+							<dd><input type="text" name="img_title"{$bannerlist_class_in2}></dd>
+						</dl>
 <!--
 EOT;
-foreach($bannerlist as $key=>$val){
+	if($metinfover=='v2'){
 echo <<<EOT
 -->
-			<li data-bannerid="{$val[id]}">
-				<a href="#" class="img">
-					<img src="{$val[img_path]}" />
-					<div class="banner_rep">
-					<input type="hidden" name="img_path" data-upload-type="doupimg" value="{$val[img_path]}" />
-					</div>
-					<div class="banner_del"><i class="fa fa-times"></i></div>
-				</a>
-				<div class="banner_more">{$_M['word']['title_link']}<i class="fa fa-sort-desc"></i></div>
-				<div class="banner_input">
-				<input type="text" name="img_title" value="{$val[img_title]}" placeholder="{$_M['word']['setflashName']}">
-				<input type="text" name="img_link" class="in2" value="{$val[img_link]}" placeholder="{$_M['word']['columnhref']}">
-				</div>
-			</li>
+						<dl>
+							<dt>图片描述</dt>
+							<dd><input type="text" name="img_des"></dd>
+						</dl>
+						<dl>
+							<dt>标题文字颜色</dt>
+							<dd class="ftype_color">
+								<div class="fbox">
+									<input type="text" name="img_title_color">
+								</div>
+							</dd>
+						</dl>
+						<dl>
+							<dt>描述文字颜色</dt>
+							<dd class="ftype_color">
+								<div class="fbox">
+									<input type="text" name="img_des_color">
+								</div>
+							</dd>
+						</dl>
+						<dl class="in2">
+							<dt>文字区域位置</dt>
+							<dd class="ftype_radio">
+								<div class="fbox">
+									<label><input value="1" name="img_text_position" type="radio">左</label>
+									<label><input value="2" name="img_text_position" type="radio">右</label>
+									<label><input value="3" name="img_text_position" type="radio">上</label>
+									<label><input value="4" name="img_text_position" type="radio">下</label>
+									<label><input value="5" name="img_text_position" type="radio" checked="">居中</label>
+								</div>
+							</dd>
+						</dl>
 <!--
 EOT;
 }
 echo <<<EOT
 -->
-			</ul>
-			<div class="banner_add">{$_M['word']['add_them_picture']}</div>
+					</div>
+				</li>
+			</textarea>
+			<div class="fbox">
+				<ul>
+<!--
+EOT;
+foreach($bannerlist as $key=>$val){
+echo <<<EOT
+-->
+					<li data-bannerid="{$val[id]}">
+						<a href="#" class="img" title='请上传宽度为1920像素高度不小于300像素的图片，所有的轮播图片高度要一样。'>
+							<img src="{$val[img_path]}" />
+							<div class="banner_rep">
+							<input type="hidden" name="img_path" data-upload-type="doupimg" value="{$val[img_path]}" />
+							</div>
+							<div class="banner_del"><i class="fa fa-times"></i></div>
+						</a>
+						<div class="banner_more">{$bannerlist_text_link}<i class="fa fa-sort-desc"></i></div>
+						<div class="banner_input">
+							<dl>
+								<dt>{$_M['word']['columnhref']}</dt>
+								<dd><input type="text" name="img_link" value="{$val[img_link]}"></dd>
+							</dl>
+							<dl>
+								<dt>{$_M['word']['setflashName']}</dt>
+								<dd><input type="text" name="img_title"{$bannerlist_class_in2} value="{$val[img_title]}"></dd>
+							</dl>
+<!--
+EOT;
+	if($metinfover=='v2'){
+		$position_check=array();
+		$position_check[$val[img_text_position]]=' checked';
+echo <<<EOT
+-->
+							<dl>
+								<dt>图片描述</dt>
+								<dd><input type="text" name="img_des" value="{$val[img_des]}"></dd>
+							</dl>
+							<dl>
+								<dt>标题文字颜色</dt>
+								<dd class="ftype_color">
+									<div class="fbox">
+										<input type="text" name="img_title_color" value="{$val[img_title_color]}">
+									</div>
+								</dd>
+							</dl>
+							<dl>
+								<dt>描述文字颜色</dt>
+								<dd class="ftype_color">
+									<div class="fbox">
+										<input type="text" name="img_des_color" value="{$val[img_des_color]}">
+									</div>
+								</dd>
+							</dl>
+							<dl class="in2">
+								<dt>文字区域位置</dt>
+								<dd class="ftype_radio">
+									<div class="fbox">
+										<label><input value="0" name="img_text_position" type="radio"{$position_check[0]}>左</label>
+										<label><input value="1" name="img_text_position" type="radio"{$position_check[1]}>右</label>
+										<label><input value="2" name="img_text_position" type="radio"{$position_check[2]}>上</label>
+										<label><input value="3" name="img_text_position" type="radio"{$position_check[3]}>下</label>
+										<label><input value="4" name="img_text_position" type="radio"{$position_check[4]}>居中</label>
+									</div>
+								</dd>
+							</dl>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<!--添加banner属性（新模板框架v2） 结束-->
+						</div>
+					</li>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+				</ul>
+				<div class="banner_add">{$_M['word']['add_them_picture']}</div>
 			</div>
 		</dd>
 	</dl>
@@ -135,6 +248,7 @@ echo <<<EOT
 	</dl>
 <!--
 EOT;
+}
 require $this->template('tem/zujian');
 echo <<<EOT
 -->

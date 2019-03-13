@@ -1,6 +1,6 @@
 <?php
-# MetInfo Enterprise Content Management System 
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+# MetInfo Enterprise Content Management System
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 
 defined('IN_MET') or exit('No permission');
 
@@ -12,7 +12,7 @@ class skininc {
 		$this->no = $no;
 		$this->lang = $lang;
 	}
-	
+
 	/*读取配置*/
 	public function tminiget($pos = '') {
 		global $_M;
@@ -22,7 +22,7 @@ class skininc {
 		$this->inc = DB::get_all($query);
 		return $this->inc;
 	}
-	
+
 	/*解析配置为html代码*/
 	public function tminiment($pos = '') {
 		global $_M;
@@ -52,25 +52,28 @@ class skininc {
 				break;
 				case 8:
 					$re = $this->editor($val);
-				break;				
+				break;
 				case 9:
 					$re = $this->color($val);
-				break;				
+				break;
 				case 10:
 					$re = $this->dateselect($val);
 				break;
 				case 11:
 					$re = $this->slider($val);
-				break;				
+				break;
 				case 12:
 					$re = $this->label($val);
-				break;				
+				break;
+				case 13://增加新组件类型（新模板框架v2）
+					$re = $this->upload($val);
+				break;
 			}
 			$langtextx[] = $this->clear($re);
 		}
 		return $langtextx;
 	}
-	
+
 	public function clear($val) {
 		global $_M;
 		unset($val['id']);
@@ -86,7 +89,7 @@ class skininc {
 	/*
 	 *标题栏html
 	 * 0：分类设置
-	 * 1：区块设置	 
+	 * 1：区块设置
 	 */
 	public function tlebar($val) {
 		global $_M;
@@ -101,13 +104,13 @@ class skininc {
 		}
 		return $val;
 	}
-	
+
 	/*简短输入框*/
 	public function text($val){
 		global $_M;
 		$convlue = $val[name];
 		$convlue = $val['style'] ==0 ? $val['value'] : $_M['config'][$val['value']];
-		$convlue = $val['value'];
+		$convlue = $val['value']=="" ? $val['defaultvalue']:$val['value'];
 		$val[inputhtm] ="
 			<div class=\"fbox\">
 				<input type=\"text\" name=\"{$val[name]}_metinfo\" value=\"{$convlue}\" />
@@ -117,14 +120,15 @@ class skininc {
 		$val[ftype]="ftype_input";
 		return $val;
 	}
-	
+
 	/*输入文本域*/
 	public function textarea($val){
 		global $_M;
 		$val[ftype]="ftype_textarea";
 		$convlue = $val[name];
 		$convlue = $val['style'] ==0 ? $val['value'] : $_M['config'][$val['value']];
-		$convlue = $val['value'];
+		$convlue = $val['value']=="" ? $val['defaultvalue']:$val['value'];
+
 		$val[inputhtm] ="
 			<div class=\"fbox\">
 				<textarea name=\"{$val[name]}_metinfo\">{$convlue}</textarea>
@@ -141,6 +145,7 @@ class skininc {
 		$val[inputhtm]='<div class="fbox">';
 		foreach($vlist as $key=>$val2){
 			$vz=explode('$T$',$val2);
+			$val['value']=$val['value']=="" ? $val['defaultvalue']:$val['value'];
 			if($vz[0]){
 			$val[inputhtm].="<label>";
 			$select=$val['value']==$vz[1]?'checked':'';
@@ -171,6 +176,7 @@ class skininc {
 			$vlist=explode('$M$',$val['selectd']);
 			foreach($vlist as $key=>$val2){
 				$vz=explode('$T$',$val2);
+				$val['value']=$val['value']=="" ? $val['defaultvalue']:$val['value'];
 				$select=$val['value']==$vz[1]?'selected':'';
 				$val['inputhtm'].="<option value='".$vz[1]."' {$select}>".$vz[0]."</option>";
 			}
@@ -197,7 +203,7 @@ class skininc {
 				case 3:
 					foreach($met_class1 as $key=>$val2){
 						$val2['cok']=0;
-						if(count($met_class2[$val2[id]])){ 
+						if(count($met_class2[$val2[id]])){
 							foreach($met_class2[$val2[id]] as $key=>$val6){
 								if($val6[module] > 1 && $val6[module] < 7 ){
 									$val2['cok'] = 1;
@@ -253,7 +259,7 @@ class skininc {
 		}
 		return $val;
 	}
-	
+
 	/**
 	 * 上传空间html
 	 * 0:自定义
@@ -263,22 +269,25 @@ class skininc {
 		global $_M;
 		$convlue = $val[name];
 		$convlue = $val['style'] ==0 ? $val['value'] : $_M['config'][$val['value']];
-		$convlue = $val['value'];
+		$convlue = $val['value']=="" ? $val['defaultvalue']:$val['value'];
+		// 增加上传组件类型判断（新模板框架v2）
 		$val[ftype]="ftype_upload";
+		$upload_type=$val[type]==13?'doupfile':'doupimg';
+		$upload_accept=$val[type]==13?'video/*':'*';
 		$val[inputhtm]="
 			<div class=\"fbox\">
-				<input 
-					name=\"{$val[name]}_metinfo\" 
-					type=\"text\" 
-					data-upload-type=\"doupimg\"
-					value=\"{$convlue}\" 
+				<input
+					name=\"{$val[name]}_metinfo\"
+					type=\"text\"
+					data-upload-type=\"{$upload_type}\"
+					value=\"{$convlue}\"
 				/>
 			</div>
 			<span class=\"tips\">{$val[tips]}</span>
 		";
 		return $val;
 	}
-	
+
 	/**
 	 * 编辑器html
 	 * 0:自定义
@@ -289,16 +298,16 @@ class skininc {
 		$val[ftype]="ftype_ckeditor_theme";
 		$convlue = $val[name];
 		$convlue = $val['style'] ==0 ? $val['value'] : $_M['config'][$val['value']];
-		$convlue = $val['value'];
+		$convlue = $val['value']=="" ? $val['defaultvalue']:$val['value'];
 		$val[inputhtm] ="
-			<div class=\"fbox\"> 
+			<div class=\"fbox\">
 				<textarea name=\"{$val[name]}_metinfo\" data-ckeditor-type=\"2\" data-ckeditor-y='300'>{$convlue}</textarea>
 			</div>
 			<span class='tips'>{$val[tips]}</span>
 		";
 		return $val;
 	}
-	
+
 	/*颜色选择*/
 	public function color($val){
 		global $_M;
@@ -317,7 +326,7 @@ class skininc {
 	public function slider($val){}
 
 	public function label($val){}
-	
+
 	/*配置文件保存*/
 	function tminisave($inc){
 		global $_M;

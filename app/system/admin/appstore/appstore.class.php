@@ -15,7 +15,10 @@ class appstore extends admin {
 		nav::set_nav(1, $_M['word']['sys_select'], $_M['url']['own_form'].'a=doindex');
 		nav::set_nav(2, $_M['word']['should_used'], $_M['url']['own_form'].'a=doappstore');
 		nav::set_nav(3, $_M['word']['sys_template'], $_M['url']['own_form'].'a=dotem_market');
-		nav::set_nav(4, "服务",$_M['url']['own_form'].'a=doservice');
+		nav::set_nav(4, "无忧服务",'https://www.metinfo.cn/web/wuyou.htm','_blank');
+		nav::set_nav(5, "空间域名",'https://www.metinfo.cn/web/idc.htm','_blank');
+		nav::set_nav(6, "建站套餐",'https://www.metinfo.cn/eweb/','_blank');
+        nav::set_nav(7, "第三方合作", $_M['url']['own_form'].'a=dopartner');
 		$_M['url']['app_api'] = $_M['url']['api'] .= "n=platform&c=platform&";
 	}
 	
@@ -67,8 +70,8 @@ class appstore extends admin {
 			$query = "SELECT * FROM {$_M['table']['skin_table']} WHERE skin_file ='{$appdetail['no']}'";
 			$app = DB::get_one($query);	
 			if($app){
-				$app['ver'] = '1.0';
-				$app['url'] = "<a target=\"_blank\" href=\"{$_M['url']['adminurl']}n=theme&c=theme&a=doindex&mobile={$app['devices']}&anyid=70&lang={$_M['lang']}\">{$_M['word']['configuratio_template']}</a>";
+				//$app['ver'] = '1.0';
+				$app['url'] = "<a target=\"_blank\" href=\"{$_M['url']['adminurl']}n=theme&c=theme&a=doindex&mobile={$app['devices']}&anyid=70&lang={$_M['lang']}\">{$_M['word']['configuratio_template']}</a><a target=\"_blank\" href=\"https://account.metinfo.cn/profile/template/\">下载演示数据</a>";
 			}
 			$appdetail['no'] = $_M['form']['appid'];
 			$buy_Explain = $_M['word']['template_domain'];
@@ -93,6 +96,14 @@ class appstore extends admin {
 		nav::select_nav(4);
 		require $this->template('tem/service');
 	}
+	
+	public function dopartner() {
+        global $_M;
+        nav::select_nav(7);
+        $query = "select * from {$_M['table']['config']} where name='met_secret_key'";
+        $result = DB::get_one($query);
+        require $this->template('tem/partner');
+    }
 	
 }
 

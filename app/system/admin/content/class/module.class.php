@@ -1,6 +1,6 @@
 <?php
-# MetInfo Enterprise Content Management System 
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+# MetInfo Enterprise Content Management System
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 
 defined('IN_MET') or exit('No permission');
 
@@ -26,13 +26,14 @@ class module extends admin {
 	public function description($content){
 		global $_M;
 		$desc = strip_tags($content);
-		$desc = str_replace("\n", '', $desc); 
-		$desc = str_replace("\r", '', $desc); 
+		$desc = str_replace("\n", '', $desc);
+		$desc = str_replace("\r", '', $desc);
 		$desc = str_replace("\t", '', $desc);
 		$desc = mb_substr($desc,0,200,'utf-8');
 		return $desc;
 	}
 	/*静态页面名称验证*/
+
 	public function check_filename($filename,$id,$module){
 		global $_M;
 		if($filename!=''){
@@ -41,7 +42,7 @@ class module extends admin {
 				return false;
 			}
 			$query = "SELECT * FROM {$this->tablename($module)} WHERE filename='{$filename}' and lang='{$_M['lang']}'";
-			$list = DB::get_one($query); 
+			$list = DB::get_one($query);
 			if($list&&$list['id']!=$id){
 				$this->errorno = 'error_filename_exist';
 				return false;
@@ -81,7 +82,7 @@ class module extends admin {
 	}
 	/*获取栏目*/
 	function column($type = 1,$module){
-		
+
 		if(!$this->met_column){
 			$this->met_column = column_sorting(1);
 		}
@@ -150,33 +151,52 @@ class module extends admin {
 	public function waterthumbimg($filePath){
 		global $_M;
 		$watermark = load::sys_class('watermark', 'new');
-		
+
 		$watermark->set_system_thumb();
 		$ret = $watermark->create($filePath);
 		return $ret['path'];
 	}
-	
+
 	/*处理图片*/
 	public function form_imglist($list,$module){
 		global $_M;
 		$imglist = explode("|",$list['imgurl']);
+		$imgsizes=explode("|",$list['imgsizes']);//增加图片尺寸变量（新模板框架v2）
 		$i=0;
 		$list['displayimg'] = '';
 		foreach($imglist as $val){
+
 			$i++;
 			if($i==1){
 				$list['imgurlr'] = str_replace('watermark/', '',$val);
-				$list['imgurl'] = $this->waterbigimg($list['imgurlr']);
-				if($list['imgurl']!=$list['imgurl_l'] || $_M['config']['met_thumb_wate'] == 1){
+
+				if($_M['config']['met_thumb_wate'] == 1)
+				{
+					$list['imgurl'] = $this->waterbigimg($list['imgurlr']);
+				}else{
+					$list['imgurl'] = $list['imgurlr'];
+				}
+
+
+				if($list['imgurlr']!=str_replace('thumb/', '',$list['imgurl_l']) || $_M['config']['met_thumb_wate'] == 1){
+
 					$list['imgurls'] = $this->thumbimg($list['imgurlr'],$module);
 				}else{
 					$list['imgurls'] = $list['imgurl_l'];
 				}
+
 				$list['imgurls'] = $this->waterthumbimg($list['imgurls']);
+				$list['imgsize']=$imgsizes[$i-1];//增加图片尺寸值（新模板框架v2）
 			}else{
-				$val = $this->waterbigimg(str_replace('watermark/', '',$val));
-				$lt = $list['title'].'*'.$val;
+				if($_M['config']['met_thumb_wate'] == 1)
+				{
+					$val = $this->waterbigimg(str_replace('watermark/', '',$val));
+				}
+
+				$lt = $list['title'].'*'.$val.'*'.$imgsizes[$i-1];//增加图片尺寸值$imgsizes[$i-1]（新模板框架v2）
 				$list['displayimg'].= count($imglist)==$i?$lt:$lt.'|';
+
+
 			}
 		}
 		if($_M['config']['met_big_wate'] == 1){
@@ -186,10 +206,10 @@ class module extends admin {
 			if($list['content3'])$list['content3'] = $this->concentwatermark($list['content3']);
 			if($list['content4'])$list['content4'] = $this->concentwatermark($list['content4']);
 		}
-		
+
 		return $list;
 	}
-	
+
 	function concentwatermark($str){
 		if(preg_match_all('/<img.*?src=\\\\"(.*?)\\\\".*?>/i', $str, $out)){
 			foreach($out[1] as $key=>$val){
@@ -229,10 +249,10 @@ class module extends admin {
 		$list['classother'] = trim($list['classother'], '-');
 		return $list;
 	}
-	
+
 	/*栏目下拉菜单*/
 	function column_json($module,$type){
-	
+
 		$array = $this->column(3,$module);
 		$metinfo = array();
 		$i=0;
@@ -247,7 +267,7 @@ class module extends admin {
 				$i++;
 				$metinfo['citylist'][$i]['p']['name']=$val[name];
 				$metinfo['citylist'][$i]['p']['value']=$val[id];
-				
+
 				if(count($array['class2'][$val[id]])){ //二级栏目
 					$metinfo['citylist'][$i]['c'][0]['n']['name']='二级栏目';
 					$metinfo['citylist'][$i]['c'][0]['n']['value']=' ';
@@ -255,7 +275,7 @@ class module extends admin {
 					foreach($array['class2'][$val[id]] as $key=>$val2){
 						$metinfo['citylist'][$i]['c'][$k]['n']['name']=$val2[name];
 						$metinfo['citylist'][$i]['c'][$k]['n']['value']=$val2[id];
-						
+
 						if(count($array['class3'][$val2[id]])){ //三级栏目
 							$metinfo['citylist'][$i]['c'][$k]['a'][0]['s']['name']='三级栏目';
 							$metinfo['citylist'][$i]['c'][$k]['a'][0]['s']['value']=' ';
@@ -267,7 +287,7 @@ class module extends admin {
 							}
 						}
 						$k++;
-						
+
 					}
 				}
 			}
@@ -301,7 +321,7 @@ class module extends admin {
 		$re.= "</select>";
 		return $re;
 	}
-	
+
 }
 
 # This program is an open source system, commercial use, please consciously to purchase commercial license.

@@ -6,6 +6,13 @@ defined('IN_MET') or exit('No permission');
 echo <<<EOT
 -->
 				<div class="v52fmbx">
+<!--
+EOT;
+$tmpincfile=PATH_WEB."templates/{$_M[config][met_skin_user]}/metinfo.inc.php";
+require $tmpincfile;
+if($metadmin['mobile_flash_close'] != 1){
+echo <<<EOT
+-->
 	<h3 class="v52fmbx_hr">{$_M['word']['larger_wheel']}</h3>
 	<dl>
 	<dd class="ftype_description" style="padding:10px;">
@@ -83,6 +90,7 @@ echo <<<EOT
 -->
 <!--
 EOT;
+}
 require $this->template('tem/zujian');
 echo <<<EOT
 -->	

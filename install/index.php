@@ -162,6 +162,15 @@ switch ($action)
 			$function='WARN';
 			$fstr.="<li class='WARN'>空间不支持ini_set函数，系统无法正常包含文件，导致后台会出现空白现象。</li>";
 		}
+
+        
+        
+        if(!function_exists('mb_strlen')){
+			$function='WARN';
+			$fstr.="<li class='WARN'>空间不支持mb_strlen函数，系统无法正常包含文件，会导致前台显示不全。</li>";
+		}
+
+
 		session_start();
 		if($_SESSION['install']!='metinfo'){
 			$function='WARN';

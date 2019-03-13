@@ -18,7 +18,7 @@ define(function(require, exports, module) {
 		contentval=$("input[name='"+cval+"']");
 		if(listval)listval.val(o.thumblist_path);
 		if(contentval)contentval.val(o.thumbcontent_path);
-		d.parents("a.img").find("img").attr("src",o.path);
+		d.parents("a.img").find("img").attr("src","../"+o.path);
 		themefunc.ajaxiframe();
 	}
 	function upload(d) { //上传

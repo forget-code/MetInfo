@@ -14,6 +14,45 @@ foreach($tmp1 as $key=>$val){
 	$tmp2=explode(">",$val);
 	if(strcasecmp(substr(trim($tmp2[0]),0,3),'img')==0){
 		preg_match("/http:\/\/[^\"]*/i",$tmp2[0],$url);
+
+        
+
+
+
+if($url[0]){
+
+            
+
+			$urls=explode('/',$url[0]);
+			$filename=$urls[count($urls)-1];
+			$watermarkfile=$urls[count($urls)-2];
+			 if($watermarkfile=="watermark"){
+                $watermarkfile=$urls[count($urls)-3];
+			 }
+			if(stristr(PHP_OS,"WIN"))$filename=@iconv("utf-8","gbk",$filename);
+		if(file_exists($depth."../../upload/".$watermarkfile."/".$filename)){
+			
+				$filename=$urls[count($urls)-1];
+				$img->src_image_name = $depth."../../upload/".$watermarkfile."/".$filename;
+				$img->save_file = $depth."../../upload/".$watermarkfile."/watermark/".$filename;
+				$img->create();
+				if(!stristr($tmp2[0],'/watermark/')){
+					$concentflag=1;
+					$tmp2[0]=str_ireplace("/".$watermarkfile."/","/".$watermarkfile."/watermark/",$tmp2[0]);
+					$tmp1[$i]=implode(">",$tmp2);
+				}
+			}
+		}
+
+
+
+
+
+
+
+
+
+
 		if($url[0]){
 			$urls=explode('/',$url[0]);
 			$filename=$urls[count($urls)-1];

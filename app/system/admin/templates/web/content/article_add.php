@@ -15,6 +15,9 @@ echo <<<EOT
 	<input type="hidden" name="imgurl_l" value="{$list['imgurl']}">
 	<input type="hidden" name="imgurls_l" value="{$list['imgurls']}">
 	<input type="hidden" name="no_order" value="{$list['no_order']}">
+	<input type="hidden" name="select_class1" value="{$_M['form']['select_class1']}">
+	<input type="hidden" name="select_class2" value="{$_M['form']['select_class2']}">
+	<input type="hidden" name="select_class3" value="{$_M['form']['select_class3']}">
     <div class="v52fmbx">
 		<dl>
 			<dt><em class="required">*</em>所属栏目</dt>
@@ -24,7 +27,7 @@ echo <<<EOT
 						<select name="class2" class="city" data-checked="{$list[class2]}"></select>
 						<select name="class3" class="dist" data-checked="{$list[class3]}"></select>
 					</div>
-				<span class="tips pull-left" style="margin-left:20px;"><a href="{$_M[url][site_admin]}index.php?lang=cn#metnav_25" target="_blank">栏目管理</a></span>
+				<span class="tips pull-left" style="margin-left:20px;"><a href="{$_M[url][site_admin]}index.php?lang={$_M[lang]}#metnav_25" target="_blank">栏目管理</a></span>
 			</dd>
 		</dl>
 		<dl>
@@ -90,6 +93,14 @@ echo <<<EOT
 			</dd>
 		</dl>
 		<h3 class="v52fmbx_hr">其它设置</h3>
+		<dl>
+			<dt>发布人</dt>
+			<dd class="ftype_input">
+				<div class="fbox">
+					<input type="text" name="issue" style="width:100px;" value="{$list[issue]}" />
+				</div>
+			</dd>
+		</dl>
 		<dl>
 			<dt>访问量</dt>
 			<dd class="ftype_input">

@@ -150,7 +150,7 @@ if($search=="search" && $mdmendy){
 				}
 			}else{
 				if(trim($paratitle)<>''){
-					$serch_sql .= " and exists(select * from $met_plist where module=3 and $met_plist.paraid='$val[id]' and $met_plist.listid=$dbname.id and $met_plist.info = '$paratitle') ";  
+					$serch_sql .= " and exists(select * from $met_plist where module=3 and $met_plist.paraid='$val[id]' and $met_plist.listid=$dbname.id and $met_plist.info like'%".trim($paratitle)."%') "; 
 					$serchpage .= "&".$val['para']."=".trim($paratitle);
 				}
 			}
@@ -222,6 +222,36 @@ if($tppl && $dbname==$met_product){
 	}
 }
 
+if($content<>'')
+{
+        // 如果是产品模块搜索
+    if($search_module==3)
+    {
+        // 搜索字段表
+        $serch_sql = "SELECT listid FROM $met_plist WHERE info like '%$content%' and lang='{$_M['lang']}'";
+
+    $res = $db->query($serch_sql);
+
+    $attr = array();
+
+    while ($row = $db->fetch_array($res)) {
+        $attr[] = $row['listid'];
+    }
+
+    // 如果字段里有，到产品里继续找
+    if(!empty($attr))
+    {   
+        //去重
+        $attr = array_unique($attr);
+        $attr = implode(',', $attr);
+        // 用字段 id和关键词在产品表里查询
+        $serch_sql = " WHERE id in({$attr}) or title like '%{$content}%' or content like '%{$content}%' and lang='{$_M['lang']}'";
+    }else{
+        $serch_sql = " WHERE (content like '%{$content}%' or title like '%{$content}%') and lang='{$_M['lang']}'";
+    }
+
+    }   
+}
 $total_count = $db->counter($dbname, "$serch_sql", "*");
 require_once '../include/pager.class.php';
     $page = (int)$page;
@@ -301,8 +331,8 @@ require_once '../include/pager.class.php';
 			$list['url']=$list['links'];
 		}else{
 			$list['url']=$met_pseudo?$panyid.'-'.$lang.'.html':($met_webhtm?$htmname.$met_ahtmtype:$phpname);
+			if($class_list[$class1]['module']>=100||$search=='search'||$list['class1']!=$class1)$list['url']='../'.$class_list[$list['class1']]['foldername'].'/'.$list['url'];
 		}
-		if($class_list[$class1]['module']>=100||$search=='search'||$list['class1']!=$class1)$list['url']='../'.$class_list[$list['class1']]['foldername'].'/'.$list['url'];
 		if($mdname=='download'){
 			if(intval($list['downloadaccess'])>0&&$met_member_use){
 				$list['downloadurl']="down.php?id=$list[id]&lang=$lang";
@@ -394,15 +424,16 @@ if($search=='search' && $mdmendy){
 		}
 		$page_list = $rowset->link($met_pagelist,$met_ahtmtype);
 	}else{
-		if($temporary_plugin_product_list == 1){
-			$temp_page = $newclass->temporary_plugin_product_page();
-		}else{
-			$temp_page = "";
-		}
-		
-		$pagemor = $mdname.'.php?'.$temp_page.$langmark.$temp_page ."&class1=$class1&class2=$class2&class3=$class3&page=";
+		$pagemor = $mdname.'.php?'.$langmark."&class1=$class1&class2=$class2&class3=$class3&page=";
 		$hz = '';
 		$page_list = $rowset->link($pagemor,$hz);
+	}
+	if($temporary_plugin_product_list == 1){
+		$pagemor = $newclass->temporary_plugin_product_page();
+		if($pagemor){
+			$hz = '';
+			$page_list = $rowset->link($pagemor,$hz);	
+		}
 	}
 }
 
@@ -436,7 +467,7 @@ $met_title=$met_title?$class_info['name'].'-'.$met_title:$class_info['name'];
 if($class_info['ctitle']!='')$met_title=$class_info['ctitle'];
 if($page>1)$met_title.='-'.$lang_Pagenum1.$page.$lang_Pagenum2;
 $pageall=$rowset->pages;
-if(($met_product_page && $class_list[$class1]['module']==3) || ($class_list[$class1]['module']==5 && $met_img_page) && $search<>'search' && $metinfover=='v1'){
+if(($met_product_page && $class_list[$class1]['module']==3) || ($class_list[$class1]['module']==5 && $met_img_page) && $search<>'search' && ($metinfover=='v1' || $metinfover=='v2')){// 增加判断值（新模板框架v2）
 	$product_listp=array();
 	if($class2 && count($nav_list3[$class2]) && !$class3){
 		$product_listp=$nav_list3[$class2];

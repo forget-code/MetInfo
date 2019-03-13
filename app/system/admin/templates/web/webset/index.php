@@ -5,6 +5,7 @@
 defined('IN_MET') or exit('No permission');
 
 require $this->template('ui/head');
+
 $disabled='';
 $weburltext = "{$_M[word][upfiletips10]}{$_M[url][site]}";
 if($_M[langlist][web][$_M[lang]][link]){
@@ -15,6 +16,10 @@ if($_M[langlist][web][$_M[lang]][link]){
 if($_M[config][met_weburl]=='')$_M[config][met_weburl]=$_M[url][site];
 $data_key = md5(md5(substr($_M['config']['met_webkeys'],0,8))); 
 $time = time();
+   if(!strstr('https',$_M[url][own_form])){
+	 $_M[url][own_form]=str_replace('http:','',$_M[url][own_form]);
+  }
+
 echo <<<EOT
 -->
 <form method="POST" class="ui-from" name="myform" action="{$_M[url][own_form]}a=doseteditor" target="_self">
@@ -45,7 +50,7 @@ echo <<<EOT
 			</div>
 			<span class="tips">{$_M['word']['suggested_size']} 32 * 32 ({$_M['word']['setimgPixel']})的.ico文件。<a href="https://www.baidu.com/s?wd=ico%E5%9B%BE%E6%A0%87%E5%88%B6%E4%BD%9C" target="_blank">点击制作ICO</a>
 			<br />
-			如果无法正常显示新上传图标，请空浏览器缓存后访问。
+			如果无法正常显示新上传图标，清空浏览器缓存后访问。
 			</span>
 		</dd>
 	</dl>

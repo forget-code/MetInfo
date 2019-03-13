@@ -25,7 +25,7 @@ echo <<<EOT
 			</dd>
 		</dl>
 		<dl>
-			<dt>App Key</dt>
+			<dt>App ID</dt>
 			<dd class="ftype_input">
 				<div class="fbox">
 					<input type="text" name="met_qq_appid" value="{$_M['config']['met_qq_appid']}">
@@ -33,10 +33,18 @@ echo <<<EOT
 			</dd>
 		</dl>
 		<dl>
-			<dt>App Secret</dt>
+			<dt>App Key</dt>
 			<dd class="ftype_input">
 				<div class="fbox">
 					<input type="text" name="met_qq_appsecret" value="{$_M['config']['met_qq_appsecret']}">
+				</div>
+			</dd>
+		</dl>
+		<dl>
+			<dt>回调地址</dt>
+			<dd class="ftype_input">
+				<div class="fbox">
+						{$_M['url']['site']}member/login.php
 				</div>
 			</dd>
 		</dl>
@@ -123,6 +131,14 @@ echo <<<EOT
 			<dd class="ftype_input">
 				<div class="fbox">
 					<input type="text" name="met_weibo_appsecret" value="{$_M['config']['met_weibo_appsecret']}">
+				</div>
+			</dd>
+		</dl>
+		<dl>
+			<dt>回调地址</dt>
+			<dd class="ftype_input">
+				<div class="fbox">
+						{$_M['url']['site']}member/login.php?a=doother_login&type=weibo
 				</div>
 			</dd>
 		</dl>

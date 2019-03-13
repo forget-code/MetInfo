@@ -4,7 +4,8 @@
 require_once ROOTPATH.'include/export.func.php';
 function syn_lang($post,$filename,$langmark,$site,$type){
 	global $met_host,$met_file,$met_language,$db;
-	$met_file='/dl/lang/lang.php';
+	$met_host = 'app.metinfo.cn';
+	$met_file='/file/lang/lang.php';
 	$restr=curl_post($post,30);
 	$link=link_error($restr);
 	if($link!=1){
@@ -99,15 +100,27 @@ function copyconfig(){
 		$query = "insert into $met_config set name='$val[name]',value='$val[value]',columnid='$val[columnid]',flashid='$val[flashid]',lang='$langmark'";
 		$db->query($query);
 	}
+
+           $query="select skin_name from met_skin_table";
+           $res=$db->get_all($query);
+                  foreach ($res as $key => $value) {
+                     $met_skin_user= $value['skin_name'];
+	                   $query="select * from $met_templates where lang='$langfile' and no='$met_skin_user'";
+	                      $configs=$db->get_all($query);
+	                    foreach($configs as $key=>$val){
+		                     $val[value] = str_replace("'","''",$val[value]);
+		                     $val[value] = str_replace("\\","\\\\",$val[value]);
+                                 $val[no]=$value['skin_name'];
+		                  $query= "insert into $met_templates set no='$val[no]',pos='$val[pos]',no_order='$val[no_order]',type='$val[type]',style='$val[style]',selectd='$val[selectd]',name='$val[name]',value='$val[value]',valueinfo='$val[valueinfo]',tips='$val[tips]',lang='$langmark'";
+
+		                     $db->query($query);
+                   
+	       }
+    }
+
+
+
 	
-	$query="select * from $met_templates where lang='$langfile' and no='$met_skin_user'";
-	$configs=$db->get_all($query);
-	foreach($configs as $key=>$val){
-		$val[value] = str_replace("'","''",$val[value]);
-		$val[value] = str_replace("\\","\\\\",$val[value]);
-		$query = "insert into $met_templates set no='$val[no]',pos='$val[pos]',no_order='$val[no_order]',type='$val[type]',style='$val[style]',selectd='$val[selectd]',name='$val[name]',value='$val[value]',valueinfo='$val[valueinfo]',tips='$val[tips]',lang='$langmark'";
-		$db->query($query);
-	}
 	/*
 	$oldfile      =$depth."../../templates/$met_skin_user/lang/language_$langfile.ini";   
 	$newfile      =$depth."../../templates/$met_skin_user/lang/language_$langmark.ini"; 
@@ -116,6 +129,7 @@ function copyconfig(){
 		if (!copy($oldfile,   $newfile))metsave('-1',$lang_langcopyfile);
 	}
 	*/
+  
 	return $sun_re;
 }
 # This program is an open source system, commercial use, please consciously to purchase commercial license.

@@ -14,6 +14,10 @@ echo <<<EOT
 	<input type="hidden" name="addtime_l" value="{$list['addtime']}">
 	<input type="hidden" name="imgurl_l" value="{$list['imgurl']}">
 	<input type="hidden" name="no_order" value="{$list['no_order']}">
+	<input type="hidden" name="issue" value="{$list[issue]}" />
+	<input type="hidden" name="select_class1" value="{$_M['form']['select_class1']}">
+	<input type="hidden" name="select_class2" value="{$_M['form']['select_class2']}">
+	<input type="hidden" name="select_class3" value="{$_M['form']['select_class3']}">
 	<div class="v52fmbx">
 		<h3 class="v52fmbx_hr">基本信息</h3>
 		<dl>
@@ -26,8 +30,19 @@ echo <<<EOT
 					<input type="hidden" name="class" value='' />
 					<span class="tips" style="display:block; margin-top:5px;">按住 Ctrl 可以多选</span>
 				</div>
-				<span class="tips pull-left" style="margin-left:20px;"><a href="{$_M[url][site_admin]}index.php?lang=cn#metnav_25" target="_blank">栏目管理</a></span>
+<!--
+EOT;
+	
+if(in_array('metinfo',$arrlanguage)||in_array('1201',$arrlanguage)){
+echo <<<EOT
+-->
+		<span class="tips pull-left" style="margin-left:20px;"><a href="{$_M[url][site_admin]}index.php?lang={$_M[lang]}#metnav_25" target="_blank">栏目管理</a></span>
 			</dd>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
 		</dl>
 		<dl>
 			<dt><em class="required">*</em>商品名称</dt>
@@ -79,7 +94,7 @@ require $tmpincfile;
 if(isset($metadmin['productother'])){
 	$_M['config']['met_productTabok'] = $metadmin['productother']+1;
 }
-if($metinfover == 'v1' || $metadmin['productother']){
+if($metinfover == 'v1' || $metinfover == 'v2' || $metadmin['productother']){// 增加新模板框架v2判断
 	$tems[productother]    = $_M['config']['met_productTabok']-1;
 	$tems['productTabname']    = $_M['config']['met_productTabname'];
 	$tems['productTabname_1']  = $_M['config']['met_productTabname_1'];

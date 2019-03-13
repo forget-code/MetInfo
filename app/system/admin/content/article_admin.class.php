@@ -24,6 +24,7 @@ class article_admin extends admin {
 		$list['displaytype'] = 1;
 		$list['addtype'] = 1;
 		$list['updatetime'] = date("Y-m-d H:i:s");
+		$list['issue'] = get_met_cookie('metinfo_admin_name');
 		$a = 'doaddsave';
 		$access_option = $this->moduleclass->access_option('access');
 		require $this->template('tem/article_add');
@@ -43,8 +44,8 @@ class article_admin extends admin {
 		global $_M;
 		$_M['form']['addtime'] = $_M['form']['addtype']==2?$_M['form']['addtime']:date("Y-m-d H:i:s");
 		if($this->moduleclass->insert_list($_M['form'])){
-			if($_M['config']['met_webhtm'] == 2 && $_M['config']['met_htmlurl'] == 0){
-				turnover("./content/article/save.php?lang={$_M['lang']}&action=html");
+			if(1){
+				turnover("./content/article/save.php?lang={$_M['lang']}&action=html&select_class1={$_M['form']['select_class1']}&select_class2={$_M['form']['select_class2']}&select_class3={$_M['form']['select_class3']}");
 			}else{
 				turnover("{$_M[url][own_form]}a=doindex");
 			}
@@ -59,6 +60,7 @@ class article_admin extends admin {
 		$list = $this->moduleclass->get_list($_M['form']['id']);
 		$list['addtype'] = strtotime($list['addtime'])>time()?2:1;
 		$list['updatetime'] = date("Y-m-d H:i:s");
+		$list['issue'] = $list['issue'] ? $list['issue'] : get_met_cookie('metinfo_admin_name');
 		$a = 'doeditorsave';
 		$access_option = $this->moduleclass->access_option('access',$list['access']);
 		require $this->template('tem/article_add');
@@ -69,7 +71,7 @@ class article_admin extends admin {
 		if($this->moduleclass->update_list($_M['form'],$_M['form']['id'])){
 			//if($_M['config']['met_webhtm'] == 2 && $_M['config']['met_htmlurl'] == 0){
 			if(1){
-				turnover("./content/article/save.php?lang={$_M['lang']}&action=html");
+				turnover("./content/article/save.php?lang={$_M['lang']}&action=html&select_class1={$_M['form']['select_class1']}&select_class2={$_M['form']['select_class2']}&select_class3={$_M['form']['select_class3']}");
 			}else{
 				turnover("{$_M[url][own_form]}a=doindex");
 			}
@@ -90,9 +92,15 @@ class article_admin extends admin {
 	}
 	function dojson_list(){
 		global $_M;
-		$class1 = $_M['form']['class1'];
-		$class2 = $_M['form']['class2'];
-		$class3 = $_M['form']['class3'];
+		if($_M['form']['class1_select']=='null'&&$_M['form']['class2_select']=='null'&&$_M['form']['class3_select']=='null'){
+			$class1 = $_M['form']['class1'];
+			$class2 = $_M['form']['class2'];
+			$class3 = $_M['form']['class3'];
+		}else{
+			$class1 = $_M['form']['class1_select'];
+			$class2 = $_M['form']['class2_select'];
+			$class3 = $_M['form']['class3_select'];
+		}
 		$class1 = $class1 == ' ' ? 'null' : $class1;
 		$class2 = $class2 == ' ' ? 'null' : $class2;
 		$class3 = $class3 == ' ' ? 'null' : $class3;
@@ -114,6 +122,8 @@ class article_admin extends admin {
 				$where.= "and com_ok = '1'"; 
 			break;
 		}		
+		$admininfo = admin_information();			
+		if($admininfo[admin_issueok] == 1)$where.= "and issue = '{$admininfo[admin_id]}'";
 		$met_class = $this->moduleclass->column(2,$this->module);
 		$order = $this->moduleclass->list_order($met_class[$classnow]['list_order']);
 		if($orderby_hits)$order = "hits {$orderby_hits}";
@@ -135,7 +145,7 @@ class article_admin extends admin {
 			$list[] = $val['updatetime'];
 			$list[] = $val['state'];
 			$list[] = "<input name=\"no_order-{$val['id']}\" type=\"text\" class=\"ui-input text-center\" value=\"{$val[no_order]}\">";
-			$list[] = "<a href=\"{$_M[url][own_form]}a=doeditor&id={$val['id']}\" class=\"edit\">编辑</a><span class=\"line\">-</span><a href=\"{$_M[url][own_form]}a=dolistsave&submit_type=del&allid={$val['id']}\" data-toggle=\"popover\" class=\"delet\">删除</a>
+			$list[] = "<a href=\"{$_M[url][own_form]}a=doeditor&id={$val['id']}&select_class1={$class1}&select_class2={$class2}&select_class3={$class3}\" class=\"edit\">编辑</a><span class=\"line\">-</span><a href=\"{$_M[url][own_form]}a=dolistsave&submit_type=del&allid={$val['id']}\" data-toggle=\"popover\" class=\"delet\">删除</a>
 			";
 			$rarray[] = $list;
 		}

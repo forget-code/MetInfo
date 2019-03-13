@@ -18,6 +18,7 @@ class sys_para extends para {
 				<!--<option value=\"5\">附件</option>-->
 				<option value=\"6\">单选</option>
 				<option value=\"7\">城市选择</option>
+				<option value=\"8\">仅管理员可修改</option>
 			</select>
 		";
 		return $re;

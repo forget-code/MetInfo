@@ -8,6 +8,8 @@ if($action=='admin'){
         exit;
     } 
     $id = dhtmlchars(trim($id));
+
+    
     foreach($char_key as $value){
 		if(strpos($id,$value)!==false){
 			echo $lang_loginUserErr;
@@ -16,6 +18,11 @@ if($action=='admin'){
 	}
 	unset($id_list);
     $id_list = $db->get_one("select admin_id from $met_admin_table where admin_id = '$id'");
+     if(strlen($id)>20||(strlen($id)<2)){
+        echo '输入的字符数必须在2-20之间';
+        exit;
+    }
+
     if ($id_list[admin_id]) {
         echo $lang_loginUserMudb;
         exit;

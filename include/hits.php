@@ -27,7 +27,7 @@ $db->query($query);
 $query="select * from $met_hits where id='$id'";
 $hits_list=$db->get_one($query);
 $hits=$hits_list[hits];
-if($metinfover=='v1'){
+if($metinfover=='v1' || $metinfover=='v2'){// 增加判断值（新模板框架v2）
 	echo $hits;
 }else{
 	echo " document.write({$hits}); ";

@@ -158,8 +158,9 @@ EOT;
 }
 echo <<<EOT
 -->
-					</select>				   
-					<input name="submit" type='submit' value='{$lang_feedbackExport}' class="submitmi" />
+					</select>
+                    <input type="hidden" name="check_id">				   
+					<input name="submit" type='submit' value='{$lang_feedbackExport}' class="submitmi" onclick='fun()'/>
 			</form>
 			</div>
 <!--
@@ -182,6 +183,15 @@ function safesq(){
 	var vp = $("option[value='"+vl+"']").text();
 		vp = '{$lang_js63}'+vp+'？';
 	return vp;
+}
+function fun(){
+    obj = document.getElementsByName("id");
+    check_id = [];
+    for(k in obj){
+        if(obj[k].checked)
+            check_id.push(obj[k].value);
+    }
+   $("input[name=check_id]").val(check_id)
 }
 </script>
 </body>

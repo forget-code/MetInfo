@@ -30,252 +30,406 @@ return $metinfo;
 
 //提取字符串中的数字
 function findNum($str=''){
-	$str=trim($str);
-	if(empty($str)){return '';}
-	$temp=array('1','2','3','4','5','6','7','8','9','0');
-	$result='';
-	for($i=0;$i<strlen($str);$i++){
-		if(in_array($str[$i],$temp)){
-			$result.=$str[$i];
-		}
-	}
-	return $result;
+    $str=trim($str);
+    if(empty($str)){return '';}
+    $temp=array('1','2','3','4','5','6','7','8','9','0');
+    $result='';
+    for($i=0;$i<strlen($str);$i++){
+        if(in_array($str[$i],$temp)){
+            $result.=$str[$i];
+        }
+    }
+    return $result;
 }
 
 //产品模块联合查询函数
-function metlabel_conjunctive($field,$price,$region,$img){
-	global $db,$lang,$met_parameter,$met_plist,$met_weburl,$quirys,$prices,$product_para,$para_select,$class1,$lang_cvall;
-	if(!$class1){
-		$class1=10001;
-	}
-	foreach($product_para as $key=>$val){
-		if($val['class1'] == 0 || $val['class1'] == $class1){
-			$product_para_con[] = $val;
-		}
-	
-	}
-	foreach($product_para_con as $key12=>$val){
-		if($val[type]!=2&&$val[type]!=6&&$val[type]!=4&&$val[id]!=$price){
-			unset($product_para_con[$key12]);
-		}
-		if($val[id]==$price){
-			$prices="paraprice_".$val[id];
-			global $$prices;
-		}
-	}
-	foreach($product_para_con as $key=>$val){
-		if($val[type]==4){
-			$inquiry="para".$val[id];
-			global $$inquiry;
-		}else{
-			$inquiry="para".$val[id];
-			global $$inquiry;
-		}
-	}
-	$img_list = array();
-	if(!is_numeric($img) && $img != ''){
-		$img_list = explode('|',$img);
-	}
-	if($field){
-		$para_product_list = explode('|',$field);
-		foreach($para_product_list as $key=>$val){
-			$product_para_id=array();
-			foreach($product_para_con as $key=>$val6){
-				if($val6[id]==$val){
-					$product_para_id[]=$product_para_con[$key];
-				}
-			}
-			foreach($product_para_id as $key=>$val1){
-				if($val==$price){
-						$product_merit=array();
-						$product_merit=explode('|',$region);	
-				}else{
-					$product_merit=array();
-					$ps = explode('$|$', trim($val1['options'], '$|$'));
-					foreach($ps as $key=>$val7){
-						$product_merit[]=$val7;
-					}
-				}
-				$quiryx='&search=search&class1='.$class1;
-				foreach($product_para_con as $key=>$val5){
-					if($val5[id]==$price){
-						$quiry="paraprice_".$val5[id];
-						$quirys=$$quiry;
-					}else{
-					if($val5[type]==4){
-						$quiry="para".$val5[id];
-						$quirys=$$quiry;
-					}else{
-						$quiry="para".$val5[id];
-						$quirys=$$quiry;
-					}
-					}
-					if($val5[id]==$val1[id]){
-						$quirys='';
-					}
-					$quiryx.="&".$quiry."=".$quirys;
-				}
-				$conjunctive[$val1[name]][all][id]=$val1[id];
-				$conjunctive[$val1[name]][all][type]=$val1[type];
-				$conjunctive[$val1[name]][all][info]=$lang_cvall;
-				$conjunctive[$val1[name]][all][url]=$met_weburl."product/product.php?lang=".$lang.$quiryx;
-				foreach($product_merit as $key=>$val4){
-				$conjunctive[$val1[name]][$val4][info]=$val4;
-				$conjunctive[$val1[name]][$val4][id]=$val1[id];
-				$conjunctive[$val1[name]][$val4][type]=$val1[type];
-				$quiryx='&search=search&class1='.$class1;
-				foreach($product_para_con as $key=>$val5){
-					if($val5[id]==$price){
-						$quiry="paraprice_".$val5[id];
-						$quirys=$$quiry;
-					}else{
-					if($val5[type]==4){
-						$quiry="para".$val5[id];
-						$quirys=$$quiry;
-					}else{
-						$quiry="para".$val5[id];
-						$quirys=$$quiry;
-					}
-					}
-					if($val5[id]==$val1[id]){
-						$quirys=$val4;
-					}
-					$quiryx.="&".$quiry."=".$quirys;
-				}
-				$conjunctive[$val1[name]][$val4][url]=$met_weburl."product/product.php?lang=".$lang.$quiryx;
-				}
-				
-			}
-		}
-	}else{
-			foreach($product_para_con as $key=>$val1){
-				if($val1[id]==$price){
-						$product_merit=explode('|',$region);
-				}else{
-					$product_merit=array();
-					$ps = explode('$|$', trim($val1['options'], '$|$'));
-					foreach($ps as $key=>$val7){
-						$product_merit[]=$val7;
-					}
-				}
-				$quiryx='&search=search&class1='.$class1;
-				foreach($product_para_con as $key=>$val5){
-					if($val5[id]==$price){
-						$quiry="paraprice_".$val5[id];
-						$quirys=$$quiry;
-					}else{
-						if($val5[type]==4){
-							$quiry="para".$val5[id];
-							$quirys=$$quiry;
-						}else{
-							$quiry="para".$val5[id];
-							$quirys=$$quiry;
-						}
-					}
-					if($val5[id]==$val1[id]){
-						$quirys='';
-					}
-					$quiryx.="&".$quiry."=".$quirys;
-				}
-				$conjunctive[$val1[name]][all][id]=$val1[id];
-				$conjunctive[$val1[name]][all][type]=$val1[type];
-				$conjunctive[$val1[name]][all][info]="$lang_cvall";
-				$conjunctive[$val1[name]][all][url]=$met_weburl."product/product.php?lang=".$lang.$quiryx;
-				foreach($product_merit as $key=>$val4){
-					$conjunctive[$val1[name]][$val4][id]=$val1[id];
-					$conjunctive[$val1[name]][$val4][info]=$val4;
-					$conjunctive[$val1[name]][$val4][type]=$val1[type];
-					$quiryx='&search=search&class1='.$class1;
-					foreach($product_para_con as $key=>$val5){
-						if($val5[id]==$price){
-							$quiry="paraprice_".$val5[id];
-							$quirys=$$quiry;
-						}else{
-						if($val5[type]==4){
-							$quiry="para".$val5[id];
-							$quirys=$$quiry;
-						}else{
-							$quiry="para".$val5[id];
-							$quirys=$$quiry;
-						}
-						}
-						if($val5[id]==$val1[id]){
-							$quirys=$val4;
-						}
-						$quiryx.="&".$quiry."=".$quirys;
-					}
-					$conjunctive[$val1[name]][$val4][url]=$met_weburl."product/product.php?lang=".$lang.$quiryx;				
-				}
-				
-			}
-			
-		
-	}
-	$metinfo.="<style>
-				.mark a{color:red;}
-				.list-search {list-style: none;padding: 0px;margin: 0px;}
-				.list-search dd{float:left; margin-right:20px;}
-				.list-search dt{float:left; margin-right:20px;}
-				.list-search a{white-space: pre-wrap;}
-				</style>";
-	$metinfo.="<ul class='list-search'>";
 
-	foreach($conjunctive as $key=>$val){
-		$metinfo.="<li>";
-		$metinfo.="<dl><dt>{$key}:</dt>";
-		$k = 0;
-		$j = 0;
-		foreach($conjunctive[$key] as $key1=>$val1){	
-			$class_mark="";
-			if($conjunctive[$key][$key1][info]){
-				if($val1[type]==4){
-					$para_mark="para".$val1[id];
-				}else{
-					$para_mark="para".$val1[id];
-				}
-				if($val1[id]==$price){
-					$para_mark=$$prices;
-				}else{
-					$para_mark=$$para_mark;
-				}
-				if($para_mark){
-					if($conjunctive[$key][$key1][info]==$para_mark){
-						$class_mark="class='mark'";
-					}else{
-						$class_mark="";
-					}
-				}else{
-					if($conjunctive[$key][$key1][info]==$lang_cvall){
-						$class_mark="class='mark'";
-					}else{
-						$class_mark="";
-					}
-				}
-				foreach($img_list as $key3=>$val3){
-					$j++;
-					$img_flist = explode('-',$val3);
-					$img_id[] = $img_flist[0];
-					$img_url[$key][$j] = $img_flist[1]; 
-				}
-				$img_id = array_unique($img_id);			
-				if(!is_numeric($img) && $img != ''){				
-					foreach($img_id as $key2=>$val8){				
-						if($val8 == $conjunctive[$key][$key1][id] && $img_url[$key][$k] !=''){
-							$metinfo.="<dd  {$class_mark}><a href='{$conjunctive[$key][$key1][url]}' title='{$conjunctive[$key][$key1][info]}' >"."<img src='{$img_url[$key][$k]}'></a></dd>";
-						}else{
-							$metinfo.="<dd  {$class_mark}><a href='{$conjunctive[$key][$key1][url]}' title='{$conjunctive[$key][$key1][info]}' >{$conjunctive[$key][$key1][info]}</a></dd>";
-						}
-						$k++;
-					}
-				}else{
-					$metinfo.="<dd  {$class_mark}><a href='{$conjunctive[$key][$key1][url]}' title='{$conjunctive[$key][$key1][info]}' >{$conjunctive[$key][$key1][info]}</a></dd>";
-				}
-			}
-		}
-		$metinfo.="</dl><div class='clear'></div></li>";
-	}
-	$metinfo.="</ul>";
-	return $metinfo;
+function metlabel_conjunctive($field,$price,$region,$img){
+    
+    global $_M;
+    global $db,$lang,$met_parameter,$met_plist,$met_weburl,$quirys,$prices,$product_para,$para_select,$class1,$lang_cvall;
+
+
+
+    if(!$class1){
+        $class1=10001;
+    }
+    foreach($product_para as $key=>$val){
+        if($val['class1'] == 0 || $val['class1'] == $class1){
+            $product_para_con[] = $val;
+        }
+    
+    }
+    foreach($product_para_con as $key12=>$val){
+        if($val[type]!=2&&$val[type]!=6&&$val[type]!=4&&$val[id]!=$price){
+            unset($product_para_con[$key12]);
+        }
+        if($val[id]==$price){
+            $prices="paraprice_".$val[id];
+            global $$prices;
+        }
+    }
+    foreach($product_para_con as $key=>$val){
+        if($val[type]==4){
+            $inquiry="para".$val[id];
+            global $$inquiry;
+        }else{
+            $inquiry="para".$val[id];
+            global $$inquiry;
+        }
+    }
+    $img_list = array();
+
+
+    if(!is_numeric($img) && $img != ''){
+        $img_list = explode('|',$img);
+    }
+    if($field){
+        $para_product_list = explode('|',$field);
+        foreach($para_product_list as $key=>$val){
+            $product_para_id=array();
+            foreach($product_para_con as $key=>$val6){
+                if($val6[id]==$val){
+                    $product_para_id[]=$product_para_con[$key];
+                }
+            }
+            foreach($product_para_id as $key=>$val1){
+                if($val==$price){
+                        $product_merit=array();
+                        $product_merit=explode('|',$region);    
+                }else{
+                    $product_merit=array();
+                    $ps = explode('$|$', trim($val1['options'], '$|$'));
+                    foreach($ps as $key=>$val7){
+                        $product_merit[]=$val7;
+                    }
+                }
+                $quiryx='&search=search&class1='.$class1;
+                foreach($product_para_con as $key=>$val5){
+                    if($val5[id]==$price){
+                        $quiry="paraprice_".$val5[id];
+                        $quirys=$$quiry;
+                    }else{
+                    if($val5[type]==4){
+                        $quiry="para".$val5[id];
+                        $quirys=$$quiry;
+                    }else{
+                        $quiry="para".$val5[id];
+                        $quirys=$$quiry;
+                    }
+                    }
+                    if($val5[id]==$val1[id]){
+                        $quirys='';
+                    }
+                    $quiryx.="&".$quiry."=".$quirys;
+                }
+
+
+                $conjunctive[$val1[name]][all][id]=$val1[id];
+                $conjunctive[$val1[name]][all][type]=$val1[type];
+                $conjunctive[$val1[name]][all][info]=$lang_cvall;
+                $conjunctive[$val1[name]][all][url]=$met_weburl."product/product.php?lang=".$lang.$quiryx;
+                foreach($product_merit as $key=>$val4){
+                $conjunctive[$val1[name]][$val4][info]=$val4;
+                $conjunctive[$val1[name]][$val4][id]=$val1[id];
+                $conjunctive[$val1[name]][$val4][type]=$val1[type];
+                $quiryx='&search=search&class1='.$class1;
+                foreach($product_para_con as $key=>$val5){
+                    if($val5[id]==$price){
+                        $quiry="paraprice_".$val5[id];
+                        $quirys=$$quiry;
+                    }else{
+                    if($val5[type]==4){
+                        $quiry="para".$val5[id];
+                        $quirys=$$quiry;
+                    }else{
+                        $quiry="para".$val5[id];
+                        $quirys=$$quiry;
+                    }
+                    }
+                    if($val5[id]==$val1[id]){
+                        $quirys=$val4;
+                    }
+                    $quiryx.="&".$quiry."=".$quirys;
+                }
+                $conjunctive[$val1[name]][$val4][url]=$met_weburl."product/product.php?lang=".$lang.$quiryx;
+                 
+                }
+                
+            }
+        }
+    }else{
+            foreach($product_para_con as $key=>$val1){
+                if($val1[id]==$price){
+                        $product_merit=explode('|',$region);
+                }else{
+                    $product_merit=array();
+                    $ps = explode('$|$', trim($val1['options'], '$|$'));
+                    foreach($ps as $key=>$val7){
+                        $product_merit[]=$val7;
+                    }
+                }
+                $quiryx='&search=search&class1='.$class1;
+                foreach($product_para_con as $key=>$val5){
+                    if($val5[id]==$price){
+                        $quiry="paraprice_".$val5[id];
+                        $quirys=$$quiry;
+                    }else{
+                        if($val5[type]==4){
+                            $quiry="para".$val5[id];
+                            $quirys=$$quiry;
+                        }else{
+                            $quiry="para".$val5[id];
+                            $quirys=$$quiry;
+                        }
+                    }
+                    if($val5[id]==$val1[id]){
+                        $quirys='';
+                    }
+                    $quiryx.="&".$quiry."=".$quirys;
+                }
+
+                $conjunctive[$val1[name]][all][id]=$val1[id];
+                $conjunctive[$val1[name]][all][type]=$val1[type];
+                $conjunctive[$val1[name]][all][info]="$lang_cvall";
+                $conjunctive[$val1[name]][all][url]=$met_weburl."product/product.php?lang=".$lang.$quiryx;
+                foreach($product_merit as $key=>$val4){
+                    $conjunctive[$val1[name]][$val4][id]=$val1[id];
+                    $conjunctive[$val1[name]][$val4][info]=$val4;
+                    $conjunctive[$val1[name]][$val4][type]=$val1[type];
+                    $quiryx='&search=search&class1='.$class1;
+                    foreach($product_para_con as $key=>$val5){
+                        if($val5[id]==$price){
+                            $quiry="paraprice_".$val5[id];
+                            $quirys=$$quiry;
+                        }else{
+                        if($val5[type]==4){
+                            $quiry="para".$val5[id];
+                            $quirys=$$quiry;
+                        }else{
+                            $quiry="para".$val5[id];
+                            $quirys=$$quiry;
+                        }
+                        }
+                        if($val5[id]==$val1[id]){
+                            $quirys=$val4;
+                        }
+                        $quiryx.="&".$quiry."=".$quirys;
+                    }
+                    $conjunctive[$val1[name]][$val4][url]=$met_weburl."product/product.php?lang=".$lang.$quiryx;                
+                }
+                
+            }
+            
+        
+    }
+    $metinfo.="<style>
+                .search-box{border: 1px solid #ddd;padding:10px 0;background: #fafafa;}
+                .search-rows{border-bottom: 1px solid #ececec;}
+                .search-rows:last-child{border-bottom:none;}
+                .search-rows p{float: left;
+                display: inline;
+                margin-left: 0;
+                min-width: 90px;
+                text-align: right;
+                text-indent: 20px;
+                line-height: 24px;
+                color: #000;
+                margin-top: 10px;
+            }
+                .search-list{float:left;display:inline;padding: 10px 0 0px 20px;max-width: 900px;margin: 0;}
+                .search-list li{list-style: none;padding: 0px;margin: 0px 5px;float:left;margin-bottom:10px;}
+                .search-list li a{
+                color:#555;
+                padding: 2px 15px;
+                transition:all .3s ease-out;
+                }
+                .search-list li a:hover,.search-list li a:focus,.search-list li a:active{
+                   background-color: #f2a654;
+                   color:#fff;
+                   border-radius:4px;
+                   transition:all .3s ease-out;
+                }
+                .search-list li .mark{
+                color:#fff;
+                padding: 2px 15px;
+                border-radius: 4px;
+                transition:all .3s ease-out;
+            }
+                .search-sort{
+                    height:38px;
+                    line-height: 38px;
+                    background: #fafafa;
+                    border: 1px solid #ddd;
+                    font-size: 14px;
+                    margin-top:20px;
+                }
+                .search-sort .items{
+                 padding: 0 20px;
+                 border-right: 1px solid #ddd;
+                 color: #000;
+                 transition:all .3s ease-out;
+             }
+              .search-sort .items:hover,.search-sort .items:active{
+                    text-decoration: none;
+              }
+             .search-sort .items .fa-sort-desc{
+                position: relative;
+                left: -16.5px;
+             }
+             .search-sort .items i{
+                margin-left: 5px;
+             }
+             .search-sort .items:hover span{
+                color:#f2a654;
+                transition:all .3s ease-out;
+             }
+             .search-sort .select{
+                color:#f2a654;
+                border-right: 1px solid #f2a654;
+             }
+            .search-sort .select i{
+                color:#000;
+             }
+            .search-sort .asc .fa-sort-asc{
+                color:#f2a654;
+             }
+             .search-sort .desc .fa-sort-desc{
+                color:#f2a654;
+             }
+
+                </style>";
+
+    $metinfo.="<div class='search-box clearfix'>";
+    $metinfo.="<div class='container'>";
+    foreach($conjunctive as $key=>$val){
+        $metinfo.="<div class='col-md-12 search-rows'>";
+        $metinfo.="<p>{$key}:</p><ul class='search-list'>";
+        $k = 0;
+        $j = 0;
+        foreach($conjunctive[$key] as $key1=>$val1){    
+            $class_mark="";
+            if($conjunctive[$key][$key1][info]){
+                if($val1[type]==4){
+                    $para_mark="para".$val1[id];
+                }else{
+                    $para_mark="para".$val1[id];
+                }
+                if($val1[id]==$price){
+                    $para_mark=$$prices;
+                }else{
+                    $para_mark=$$para_mark;
+                }
+                if($para_mark){
+                    if($conjunctive[$key][$key1][info]==$para_mark){
+                        $class_mark="class='mark'";
+                    }else{
+                        $class_mark="";
+                    }
+                }else{
+                    if($conjunctive[$key][$key1][info]==$lang_cvall){
+                        $class_mark="class='mark'";
+                    }else{
+                        $class_mark="";
+                    }
+                }
+                foreach($img_list as $key3=>$val3){
+                    $j++;
+                    $img_flist = explode('-',$val3);
+                    $img_id[] = $img_flist[0];
+                    $img_url[$key][$j] = $img_flist[1]; 
+                }
+                $img_id = array_unique($img_id);            
+                if(!is_numeric($img) && $img != ''){                
+                    foreach($img_id as $key2=>$val8){               
+                        if($val8 == $conjunctive[$key][$key1][id] && $img_url[$key][$k] !=''){
+                            $metinfo.=" <li><a {$class_mark} href='{$conjunctive[$key][$key1][url]}' title='{$conjunctive[$key][$key1][info]}' >"."<img src='{$img_url[$key][$k]}'></a></li>";
+                        }else{
+                            $metinfo.="<li><a {$class_mark} href='{$conjunctive[$key][$key1][url]}' title='{$conjunctive[$key][$key1][info]}' >{$conjunctive[$key][$key1][info]}</a></li>";
+                        }
+                        $k++;
+                    }
+                }else{
+                    $metinfo.="<li><a {$class_mark} href='{$conjunctive[$key][$key1][url]}' title='{$conjunctive[$key][$key1][info]}' >{$conjunctive[$key][$key1][info]}</a></li>";
+                }
+            }
+        }
+        $metinfo.="</ul></div>";
+    }
+    $conjunctiveurl=$_SERVER[REQUEST_URI];
+   if($_M[form][ascp]=="asc"){
+    //说明现有价格排序方式是升序
+      $ascp="&ascp=desc";
+      $conjunctiveurl= str_replace('&ascp=asc','',$conjunctiveurl);
+      $select1='select';
+      $select='';
+      $sort1='asc';
+      $select2='';
+      $sort2='';
+      $ppp=1;
+   }elseif(($_M[form][ascp]=="desc") || (!isset($_M[form][ascp]))) {
+      $ascp="&ascp=asc";
+      $conjunctiveurl= str_replace('&ascp=desc','',$conjunctiveurl);
+      $select1='select';
+      $select='';
+      $sort1='desc';
+      $select2='';
+      $sort2='';
+      $ppp=1;
+   }
+  if($_M[form][asct]=="asc" ){
+    //说明现有时间排序方式是升序
+        $asct="&asct=desc";
+        $conjunctiveurl=str_replace('&asct=asc','',$conjunctiveurl);  
+        $select2='select';
+        $select='';
+        $select1='';
+        $sort1='';
+        $sort2='asc';  
+   }elseif(($_M[form][asct]=="desc") || (!isset($_M[form][asct]))){
+       $asct="&asct=asc";
+       $conjunctiveurl=str_replace('&asct=desc','',$conjunctiveurl);
+        if(($ppp!=1) || ($_M[form][asct]=="desc")){
+        $select2='select';
+        $select='';
+        $select1='';
+        $sort1='';
+        $sort2='desc';
+    }
+
+   }
+    if($_M[form][ascp]==""&&$_M[form][asct]==""){
+        //说明是默认排序
+        $select='select';
+        $select1='';
+        $sort1='';
+        $select2='';
+        $sort2='';
+    }
+     if(!strstr($_SERVER[REQUEST_URI], 'para')){
+       foreach ($conjunctive as $value) {
+       }
+     $conjunctiveurl=$value[all][url];
+  }
+ 
+    $metinfo.="</div>";
+    $metinfo.="</div>";
+    $metinfo.="<div class='search-sort'>"."<div class='sort-list'>";
+    $metinfo.="<a class='items {$select}' id='sort_normal' href='{$conjunctiveurl}'>默认排序</a>";
+    $metinfo.="<a class='items {$select1} {$sort1}'  href='{$conjunctiveurl}{$ascp}'>
+    <span>价格</span>
+    <i class='fa fa-sort-asc'></i>
+    <i class='fa fa-sort-desc'></i>
+    </a>";
+    $metinfo.="<a class='items {$select2} {$sort2}' href='{$conjunctiveurl}{$asct}' data-sort='{$attr2}'>
+    <span>时间</span>
+    <i class='fa fa-sort-asc'></i>
+    <i class='fa fa-sort-desc'></i>
+    </a>";
+    $metinfo.="</div></div>";
+    $metinfo.="<script>
+    </script>";
+    return $metinfo;
 }
 
 //Product and Image and download module  parameter search function
@@ -374,8 +528,8 @@ foreach($module_list1[$module] as $key=>$val){
    }elseif(intval($classid)&&$class_index[$classid][classtype]=='class2'){
      if($val[index_num]==$classid)$metinfo.="<option value='".$val[id]."'>".$val[name]."</option>\n";
     }else{
-	$metinfo.="<option value='".$val[id]."'>".$val[name]."</option>\n";
-	}
+    $metinfo.="<option value='".$val[id]."'>".$val[name]."</option>\n";
+    }
    }
  }
   $metinfo.="</select>\n";
@@ -394,8 +548,8 @@ foreach($module_list1[$module] as $key=>$val){
    }elseif(intval($classid)&&$class_index[$classid][classtype]=='class3'){
      if($val[index_num]==$classid)$metinfo.="<option value='".$val[id]."'>".$val[name]."</option>\n";
     }else{
-	$metinfo.="<option value='".$val[id]."'>".$val[name]."</option>\n";
-	}
+    $metinfo.="<option value='".$val[id]."'>".$val[name]."</option>\n";
+    }
    }
  } 
   $metinfo.="</select>\n"; 
@@ -542,7 +696,7 @@ if($class2&&$class3){
     $metinfo.="</script>\n";
     $metinfo.="<form method='Get' name='myformsearch' onSubmit='return Checksearch();'  action='".$searchurl."'>\n";       
     $metinfo.="<ul class='searchnavlist'>\n";
-if($class1){	
+if($class1){    
     $metinfo.="<li><span class='advsearch_class1'><select name='class1' ";
  if($class2)$metinfo.="onChange='changelocation(document.myformsearch.class1.options[document.myformsearch.class1.selectedIndex].value)'";
     $metinfo.=" size='1'>\n";
@@ -575,7 +729,7 @@ if($class3){
   foreach($navsearchlist3 as $key=>$val){
     $metinfo.="<option value='".$val[id]."'>".$val[name]."</option>\n";
    }
-  }	
+  } 
     $metinfo.="</select></span></li>\n";
 }
 if($searchtype==""){
@@ -587,58 +741,58 @@ if($searchtype==""){
 }else{
     $metinfo.="<input type='hidden' name='searchtype' value='".$searchtype."' />\n";
 }
-	if($searchword)$lang_Keywords=$searchword;
+    if($searchword)$lang_Keywords=$searchword;
     $metinfo.="<li><span class='advsearch_searchword'><input id='searchword' type='text' class='input-text' name='searchword' value='".$lang_Keywords."' maxlength='50' onmousedown='select1()'></span></li>\n"; 
     $metinfo.="<input type='hidden' name='lang' value='".$lang."' />\n";
-	if($module)$metinfo.="<input type=\"hidden\" name=\"module\" value='$module'/>&nbsp;";
-	if($classid){
-	switch($class_index[$classid][classtype]){
-	case 'class1':
-	$metinfo.="<input type='hidden' name='".$class_index[$classid][classtype]."' value='".$class_index[$classid][id]."' />\n";
-	break;
-	case 'class2':
-	$metinfo.="<input type='hidden' name='class1' value='".$class_index[$classid][bigclass]."' />\n";
-	$metinfo.="<input type='hidden' name='".$class_index[$classid][classtype]."' value='".$class_index[$classid][id]."' />\n";
-	break;
-	case 'class3':
-	$metinfo.="<input type='hidden' name='class1' value='".$class_list[$class_index[$classid][bigclass]][bigclass]."' />\n";
-	$metinfo.="<input type='hidden' name='class2' value='".$class_index[$classid][bigclass]."' />\n";
-	$metinfo.="<input type='hidden' name='".$class_index[$classid][classtype]."' value='".$class_index[$classid][id]."' />\n";
-	break;
-	}}
+    if($module)$metinfo.="<input type=\"hidden\" name=\"module\" value='$module'/>&nbsp;";
+    if($classid){
+    switch($class_index[$classid][classtype]){
+    case 'class1':
+    $metinfo.="<input type='hidden' name='".$class_index[$classid][classtype]."' value='".$class_index[$classid][id]."' />\n";
+    break;
+    case 'class2':
+    $metinfo.="<input type='hidden' name='class1' value='".$class_index[$classid][bigclass]."' />\n";
+    $metinfo.="<input type='hidden' name='".$class_index[$classid][classtype]."' value='".$class_index[$classid][id]."' />\n";
+    break;
+    case 'class3':
+    $metinfo.="<input type='hidden' name='class1' value='".$class_list[$class_index[$classid][bigclass]][bigclass]."' />\n";
+    $metinfo.="<input type='hidden' name='class2' value='".$class_index[$classid][bigclass]."' />\n";
+    $metinfo.="<input type='hidden' name='".$class_index[$classid][classtype]."' value='".$class_index[$classid][id]."' />\n";
+    break;
+    }}
     $metinfo.="<li><span class='advsearch_search'>";
-	if($searchimg<>''){
+    if($searchimg<>''){
       $metinfo.="<input class='searchimage' type='image' src='".$img_url.$searchimg."' />";
     }else{
       $metinfo.="<input type='submit'  value='".$lang_search."' class='searchgo button orange'/>";
     }
     $metinfo.="</select></span></li>\n";
-	$metinfo.="</ul>\n";
-    $metinfo.="</form>\n";	
-	return $metinfo;
+    $metinfo.="</ul>\n";
+    $metinfo.="</form>\n";  
+    return $metinfo;
 }
 //按栏目分类得到url
 function title($class1,$anyid,$lang){
-	global $met_class1,$met_class2,$met_weburl,$met_adminfile,$met_content_type;
-	if($met_content_type==1){
-	foreach ($met_class1 as $val) {
-		$idall[]=$val[id];
-	}
-	if(!in_array($class1, $idall)&&$class1!=0){
-		foreach ($met_class2 as $val1) {
-		foreach ($val1 as $val2) {
-			if($val2[id]==$class1){
-				$classid1=$val2[bigclass];
-				$classname1=$met_class1[$classid1][name];
-				$module1=$met_class1[$classid1][module];
-				$classname2=$val2[name];
-			}
-		}
-		}
-	$title="<a href='{$met_weburl}{$met_adminfile}/content/content.php?anyid={$anyid}&lang={$lang}&module=$module1&class1={$classid1}'>{$classname1}</a>><a href='JavaScript:;'>$classname2</a>";
-	}	
-	}
-	return $title;
+    global $met_class1,$met_class2,$met_weburl,$met_adminfile,$met_content_type;
+    if($met_content_type==1){
+    foreach ($met_class1 as $val) {
+        $idall[]=$val[id];
+    }
+    if(!in_array($class1, $idall)&&$class1!=0){
+        foreach ($met_class2 as $val1) {
+        foreach ($val1 as $val2) {
+            if($val2[id]==$class1){
+                $classid1=$val2[bigclass];
+                $classname1=$met_class1[$classid1][name];
+                $module1=$met_class1[$classid1][module];
+                $classname2=$val2[name];
+            }
+        }
+        }
+    $title="<a href='{$met_weburl}{$met_adminfile}/content/content.php?anyid={$anyid}&lang={$lang}&module=$module1&class1={$classid1}'>{$classname1}</a>><a href='JavaScript:;'>$classname2</a>";
+    }   
+    }
+    return $title;
 }
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.

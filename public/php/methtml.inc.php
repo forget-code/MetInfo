@@ -50,6 +50,7 @@ if($appscriptcss)$methtml_head.="{$appscriptcss}\n";
 if($_M['html_plugin']['head_script'])$methtml_head.="{$_M['html_plugin']['head_script']}";
 //结束
 $methtml_head.="<script src=\"".$navurl."public/js/public.js\" type=\"text/javascript\" language=\"javascript\"></script>\n";
+$methtml_head.="<script src=\"".$navurl."public/js/video.js\" type=\"text/javascript\" language=\"javascript\"></script>\n";
 $query = "SELECT * FROM met_config where lang='$lang' and name='met_headstat'";
 	$result = $db->query($query);
 	while($list = $db->fetch_array($result)) {
@@ -87,7 +88,7 @@ $methtml_now.="d[today.getDay()+1],\n";
 $methtml_now.="''); \n";
 $methtml_now.="</script>\n";
 
-if($index_hadd_ok&&$metinfover != 'v1'){
+if($index_hadd_ok&&$metinfover != 'v1'&&$metinfover != 'v2'){// 增加$metinfover判断值（新模板框架v2）
 	//set home page
 	$methtml_sethome="<a href='#' onclick='SetHome(this,window.location,\"$lang_MessageInfo5\");' style='cursor:pointer;' title='".$lang_sethomepage."'  >".$lang_sethomepage."</a>";
 	//bookmark
@@ -164,7 +165,6 @@ if($met_lang_mark){
 	//结束
 	return $metinfo;
 }
-
 //top nav
 function methtml_topnav($type,$label,$max=100,$maxclass2=100,$classtitlemax=100,$homeclass=1,$homeok=1){
 global $index_url,$lang_home,$nav_list,$lang,$classnow,$class1,$class_list,$class_index,$nav_list2;
@@ -334,6 +334,7 @@ $metinfo=$labellen?substr($metinfo, 0, -$labellen):$metinfo;
 return $metinfo;
 }
 
+
 //x nav
 $nav_x[name]="<a href=".$class1_info[url]." >".$class1_info[name]."</a>";
 if($class2<>0){
@@ -363,6 +364,7 @@ $navlist_y1.="<br />&nbsp;&nbsp;&nbsp;<font style='font-size:12px'><a href='$val
 }
 }
 }
+
 
 function methtml_classlist($type,$namelen,$mark,$class3ok=1,$class3now=1,$class2char=1,$class3char=0){
 global $navlist_y1,$class1,$class2,$class3,$classnow,$nav_list2,$nav_list3,$class_index,$module_list1,$class_list;
@@ -430,7 +432,7 @@ if($imgurl=='')$imgurl=$met_flash_img;
 if($imglink=='')$imglink=$met_flash_imglink;
 if($imgtitle=='')$imgtitle=$met_flash_imgtitle;
 $imglink=str_replace('&','%26',$imglink);
-if($metinfover=='v1'){
+if($metinfover=='v1' || $metinfover == 'v2'){// 增加$metinfover判断值（新模板框架v2）
 switch($type){
 case 1:
 	$methtml_flash.="
@@ -855,6 +857,8 @@ switch($met_flasharray[$classnow][type]){
 		}
 	break;
 }
+
+
 //loop array 
 function methtml_getarray($mark,$type,$order,$module,$listmx=-1,$para=0,$categoryname=0,$marktype=0,$txtmax=0,$descmax=0,$rand=0){
 	global $met_member_use,$class_index,$met_listtime,$metinfo_member_type,$db,$met_news,$met_product,$met_download,$met_img,$met_job,$met_parameter,$met_plist,$class_list,$metpara,$module_list2;
@@ -876,10 +880,10 @@ function methtml_getarray($mark,$type,$order,$module,$listmx=-1,$para=0,$categor
 	$listmx=$listmx==''?-1:$listmx;
 	if($met_member_use==2)$access_sql= " and access<=$metinfo_member_type";
 	$numname = ' id,title,description,class1,class2,class3,updatetime,addtime,filename,access,top_ok,hits,issue,com_ok,no_order,';
-	$listitem['news']=array(0=>$numname.'img_ok,imgurls,content,imgurl,links',1=>$met_news,2=>'shownews');
-	$listitem['product']=array(0=>$numname.'new_ok,imgurls,content,imgurl,displayimg,links',1=>$met_product,2=>'showproduct');
-	$listitem['download']=array(0=>$numname.'downloadurl,filesize,content,downloadaccess',1=>$met_download,2=>'showdownload');
-	$listitem['img']=array(0=>$numname.'new_ok,imgurls,content,imgurl,displayimg,links',1=>$met_img,2=>'showimg');
+	$listitem['news']=array(0=>$numname.'keywords,img_ok,imgurls,content,imgurl,links',1=>$met_news,2=>'shownews');
+    $listitem['product']=array(0=>$numname.'keywords,new_ok,imgurls,content,imgurl,imgsize,displayimg,links',1=>$met_product,2=>'showproduct');//增加图片尺寸属性imgsize（新模板框架v2）
+    $listitem['download']=array(0=>$numname.'keywords,downloadurl,filesize,content,downloadaccess',1=>$met_download,2=>'showdownload');
+    $listitem['img']=array(0=>$numname.'keywords,new_ok,imgurls,content,imgurl,imgsize,displayimg,links',1=>$met_img,2=>'showimg');//增加图片尺寸属性imgsize（新模板框架v2）
 	$listitem['job']=array(0=>'*',1=>$met_job,2=>'showjob');
 	$sqlorder=$order=='hits'?' order by top_ok desc,com_ok desc,no_order desc,hits desc,id desc':' order by top_ok desc,com_ok desc,no_order desc,updatetime desc,id desc';
 	switch($type){
@@ -910,9 +914,10 @@ function methtml_getarray($mark,$type,$order,$module,$listmx=-1,$para=0,$categor
 			$modulex=metmodname($class_index[$mark]['module']);
 			$sqlorder=$order?$sqlorder:list_order($class_index[$mark]['list_order']);
 		}
+
 		$folderone=$db->get_one("SELECT * FROM $met_column WHERE bigclass='$listnowid' and module ='{$class_list[$listnowid][module]}' and releclass!='0' and lang='$lang'");
 		if($folderone){
-			$sqlclounm="and ($listnowclass='$listnowid' or class1='$folderone[id]')";
+			 $sqlclounm="and ($listnowclass='$listnowid' or class1='$folderone[id]')";
 		}else{
 			
 		}
@@ -931,16 +936,20 @@ function methtml_getarray($mark,$type,$order,$module,$listmx=-1,$para=0,$categor
 			$sqlclounm="and $listnowclass='$listnowid'";
 		}
 		if(!$modulex){
-			$module=$module?$module:'news';
+            //取消默认调用新闻模块
+			#$module=$module?$module:'news';
+			$module=$module?$module:'';
 			$sqlclounm='';
 		}else{
-			$module=$modulex;
-		}
-	}
-	$module=$module?$module:'news';
-	switch($module){
+            $module=$modulex;
+        }
+    }
+    //取消默认调用新闻模块
+    #$module=$module?$module:'news';
+    var_dump($module);
+    switch($module){
 		case 'news':
-			$modulenunm=2;
+             $modulenunm=2;
 			break;
 		case 'product':
 			$modulenunm=3;
@@ -956,7 +965,7 @@ function methtml_getarray($mark,$type,$order,$module,$listmx=-1,$para=0,$categor
 			break;
 	}
 	if($listmx==-1){
-		switch($module){
+        switch($module){
 			case 'news':
 				$listmx=$index_news_no;
 				break;
@@ -1008,6 +1017,7 @@ function methtml_getarray($mark,$type,$order,$module,$listmx=-1,$para=0,$categor
 		}
 		$query = "SELECT $select FROM $table where lang='$lang' {$mobilesql} $sqlclounm $access_sql $sqltype and (recycle='0' or recycle='-1') and addtime<='{$m_now_date}' $displaytype_sql $rand_query";
 	}
+
 	$result = $db->query($query);
 	while($list= $db->fetch_array($result)){
 		if($modulenunm==6){$list['updatetime']=$list['addtime'];$list['title']=$list['position'];}
@@ -1069,7 +1079,7 @@ function methtml_getarray($mark,$type,$order,$module,$listmx=-1,$para=0,$categor
 					$i++;
 					if($list1['paraid']==$val['id']){
 						if(($metpara[$list1['paraid']]['class1']==0) or ($metpara[$list1['paraid']]['class1']==$list['class1'] and $metpara[$list1['paraid']]['class2']==0 and $metpara[$list1['paraid']]['class3']==0) or ($metpara[$list1['paraid']]['class1']==$list['class1'] and $metpara[$list1['paraid']]['class2']==$list['class2'] and $metpara[$list1['paraid']]['class3']==0) or ($metpara[$list1['paraid']]['class1']==$list['class1'] and $metpara[$list1['paraid']]['class2']==$list['class2'] and $metpara[$list1['paraid']]['class3']==$list['class3'])){
-							$ik=$i;
+							$ik=$list1['paraid'];
 						}
 					}
 				}
@@ -1116,6 +1126,7 @@ function methtml_getarray($mark,$type,$order,$module,$listmx=-1,$para=0,$categor
 		$list['img_y']=met_imgxy(2,$module);
 		$relist[]=$list;
 	}
+    #dump($relist);
 	return $relist;
 }
 
@@ -1256,7 +1267,7 @@ global $met_pageclick,$met_pagetime,$met_pageprint,$met_pageclose;
 	$listnow=$$module;
 	if($module=='job')$listnow[updatetime]=$listnow[addtime];
 	$metinfo.="<div class='metjiathis'>{$met_tools_code}</div>";
-	if($metinfover == 'v1'){
+	if($metinfover == 'v1' || $metinfover == 'v2'){// 增加$metinfover判断值（新模板框架v2）
 		if($module!='job' && $met_pageclick)$metinfo.=$lang_Hits."：<span class='metClicks' data-metClicks=".$module."|".$listnow[id]."></span>";
 		if($met_pagetime)$metinfo.='　'.$lang_UpdateTime.'：'.$listnow['updatetime'];
 		if($met_pageprint)$metinfo.='　【<a href="#" class="metPrinting">'.$lang_Printing.'</a>】';
@@ -1399,7 +1410,7 @@ if($type == 0){
   $metinfo.="<div class='login_x' id='login_x2' style='' >";
   $metinfo.="<span class='login_okname' ><span class='login_okname1'>".$lang_memberIndex2."</span><span class='login_okname2'><font style='color:red'>";
   $metinfo.="<script language='javascript' src='".$navurl."member/member.php?memberaction=membername'></script>";
-  $metinfo.="</font></span></span>&nbsp;&nbsp;";
+  $metinfo.="</font></span>{$metinfo_member_name}</span>&nbsp;&nbsp;";
   $metinfo.="<span class='login_okmember' ><span class='login_okmember1'><a href='".$navurl."member/".$member_index_url."' >".$lang_memberIndex1."</a></span><span class='login_okmember2'>|</span><span class='login_okmember3'><a href='".$navurl."member/login.php?a=dologout&lang=".$lang."' >".$lang_memberIndex10."</a></span></span>";
   $metinfo.="</div>";
   $metinfo.="<script language='javascript' src='".$navurl."member/member.php?memberaction=login'></script>";

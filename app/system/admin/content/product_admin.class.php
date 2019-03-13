@@ -24,6 +24,7 @@ class product_admin extends admin {
 		
 		$this->paraclass = load::mod_class('system/class/sys_para', 'new');
 		$this->module = 3;
+
 	}
 	/*获取运费模板*/
 	function dorefresh_discount_list(){
@@ -54,6 +55,7 @@ class product_admin extends admin {
 		$list['displaytype'] = 1;
 		$list['addtype'] = 1;
 		$list['updatetime'] = date("Y-m-d H:i:s");
+		$list['issue'] = get_met_cookie('metinfo_admin_name');
 		$a = 'doaddsave';
 		$class_option = $this->moduleclass->class_option($this->module);
 		$access_option = $this->moduleclass->access_option('access');
@@ -74,7 +76,7 @@ class product_admin extends admin {
 		$class1 = $class[0];
 		$class2 = $class[1];
 		$class3 = $class[2];
-		$this->paraclass->paratem($_M['form']['id'],$this->module,$class1,$class2,$class1);
+		$this->paraclass->paratem($_M['form']['id'],$this->module,$class1,$class2,$class3);
 	}
 	function doaddsave() {
 	
@@ -86,7 +88,7 @@ class product_admin extends admin {
 			//
 			$this->shop->save_product($pid,$_M['form']);
 			//
-			if($_M['config']['met_webhtm'] == 2 && $_M['config']['met_htmlurl'] == 0){
+			if(1){
 				turnover("./content/product/save.php?lang={$_M['lang']}&action=html");
 			}else{
 				turnover("{$_M[url][own_form]}a=doindex");
@@ -127,6 +129,7 @@ class product_admin extends admin {
 		}
 		//
 		$list['updatetime'] = date("Y-m-d H:i:s");
+		$list['issue'] = $list['issue'] ? $list['issue'] : get_met_cookie('metinfo_admin_name');
 		$a = 'doeditorsave';
 		$class_option = $this->moduleclass->class_option($this->module);
 		$access_option = $this->moduleclass->access_option('access',$list['access']);
@@ -161,9 +164,13 @@ class product_admin extends admin {
 		//require $this->template($tmpname);
 		//
 		$tmpname = $this->shop->get_tmpname('product_shop_index');
-		if(!$tmpname){
+		if($tmpname && $_M['config']['shopv2_open']==1){
+			$tmpname = $this->shop->get_tmpname('product_shop_index');
+			
+		} else {
 			$tmpname = $this->template('tem/product_index');
 		}
+
 		require $tmpname;
 		//
 	}
@@ -174,9 +181,15 @@ class product_admin extends admin {
 		global $_M;
 		//dump($_POST);
 		if(!$this->shop->plgin_json_list()){
-			$class1 = $_M['form']['class1'];
-			$class2 = $_M['form']['class2'];
-			$class3 = $_M['form']['class3'];
+			if($_M['form']['class1_select']=='null'&&$_M['form']['class2_select']=='null'&&$_M['form']['class3_select']=='null'){
+				$class1 = $_M['form']['class1'];
+				$class2 = $_M['form']['class2'];
+				$class3 = $_M['form']['class3'];
+			}else{
+				$class1 = $_M['form']['class1_select'];
+				$class2 = $_M['form']['class2_select'];
+				$class3 = $_M['form']['class3_select'];
+			}
 			$class1 = $class1 == ' ' ? 'null' : $class1;
 			$class2 = $class2 == ' ' ? 'null' : $class2;
 			$class3 = $class3 == ' ' ? 'null' : $class3;
@@ -199,8 +212,9 @@ class product_admin extends admin {
 				case 2:
 					$where.= "and {$ps}com_ok = '1'"; 
 				break;
-			}		
-			
+			}	
+			$admininfo = admin_information();			
+			if($admininfo[admin_issueok] == 1)$where.= "and issue = '{$admininfo[admin_id]}'";
 			$met_class = $this->moduleclass->column(2,$this->module);
 			$order = $this->moduleclass->list_order($met_class[$classnow]['list_order']);
 			if($orderby_hits)$order = "{$ps}hits {$orderby_hits}";
@@ -233,7 +247,7 @@ class product_admin extends admin {
 				$list[] = $val['updatetime'];
 				$list[] = $val['state'];
 				$list[] = "<input name=\"no_order-{$val['id']}\" type=\"text\" class=\"ui-input text-center\" value=\"{$val[no_order]}\">";
-				$list[] = "<a href=\"{$_M[url][own_form]}a=doeditor&id={$val['id']}\" class=\"edit\">编辑</a><span class=\"line\">-</span><a href=\"{$_M[url][own_form]}a=dolistsave&submit_type=del&allid={$val['id']}\" data-toggle=\"popover\" class=\"delet\">删除</a>
+				$list[] = "<a href=\"{$_M[url][own_form]}a=doeditor&id={$val['id']}&select_class1={$_M['form']['select_class1']}&select_class2={$_M['form']['select_class2']}&select_class3={$_M['form']['select_class3']}\" class=\"edit\">编辑</a><span class=\"line\">-</span><a href=\"{$_M[url][own_form]}a=dolistsave&submit_type=del&allid={$val['id']}\" data-toggle=\"popover\" class=\"delet\">删除</a>
 				";
 				$rarray[] = $list;
 			}

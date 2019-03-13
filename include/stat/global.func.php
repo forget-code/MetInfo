@@ -4,7 +4,12 @@
 function checkadd($p,$ipaddres){
 	$preg="/\A((([0-9]?[0-9])|(1[0-9]{2})|(2[0-4][0-9])|(25[0-5]))\.){3}(([0-9]?[0-9])|(1[0-9]{2})|(2[0-4][0-9])|(25[0-5]))\Z/";
 	if($p==2){
-		$preg="/^http:\/\/[A-Za-z0-9\-]+\.[A-Za-z0-9]+[\/=\?%\-&_~`@[\]\':+!]*([^<>\"])*$/";
+		if(strstr($ipaddres,'https')){
+            $preg="/^https:\/\/[A-Za-z0-9\-]+\.[A-Za-z0-9]+[\/=\?%\-&_~`@[\]\':+!]*([^<>\"])*$/";
+		}else{
+			 $preg="/^http:\/\/[A-Za-z0-9\-]+\.[A-Za-z0-9]+[\/=\?%\-&_~`@[\]\':+!]*([^<>\"])*$/";
+		}
+		
 		if(substr($ipaddres,0,16)=='http://localhost' || substr($ipaddres,0,11)=='http://xn--')return true;
 	}
 	return preg_match($preg,$ipaddres);

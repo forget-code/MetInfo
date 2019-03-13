@@ -3,9 +3,12 @@
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 require_once '../include/common.inc.php';
 $ip=$m_user_ip;
+
 $message_column=$db->get_one("select * from $met_column where module='7' and lang='$lang'");
+
 $metaccess=$message_column[access];
 $class1=$message_column[id];
+
 foreach($settings_arr as $key=>$val){
 	if($val['columnid']==$class1){
 		$tingname    =$val['name'].'_'.$val['columnid'];
@@ -21,6 +24,7 @@ if($action=="add"){
 	if($met_memberlogin_code==1){
 		require_once ROOTPATH.'member/captcha.class.php';
 		$Captcha= new  Captcha();
+        $code = strtoupper($code);
 		if(!$Captcha->CheckCode($code)){
 		echo("<script type='text/javascript'> alert('$lang_membercode'); window.history.back();</script>");
 			exit;
@@ -91,13 +95,29 @@ if($action=="add"){
 		sendsms($tel,$met_fd_sms_content,4);
 	}
 	/**/
-	$customerid=$metinfo_member_name!=''?$metinfo_member_name:0;
-	$query = "INSERT INTO $met_message SET
+	$query = "select * from $met_parameter where lang='$lang' and module='7'";
+	$result = $db->get_all($query);
+      $countsum=1;
+
+	foreach($result as $key=>$val){
+
+			$infos ="para".$val[id];
+			$info=$$infos;
+			if($val['wr_ok'] == 1 || $countsum == 1){
+				if($info !=''&&$countsum==1){
+					$customerid=$metinfo_member_name!=''?$metinfo_member_name:0;
+	                 $query = "INSERT INTO $met_message SET
 						  ip                 = '$ip',
 						  addtime            = '$addtime',
 						  lang               = '$lang', 
 						  customerid 		 = '$customerid'";
-	$db->query($query);
+						  
+	             $db->query($query);
+	             $countsum=$countsum+1;
+
+				}
+			}
+		}
 	$news_id=$db->insert_id();
 	$fname=$db->get_one("select * from $met_column where module='7' and lang='$lang'");
 	$news_type = "message-".$class1;
@@ -218,13 +238,15 @@ if($action=="add"){
 		$nav_list2[$class1][$k]=$class1_info;
 		$nav_list2[$class1][$k][name]=$lang_messageview;
 		$k++;
-		$nav_list2[$class1][$k]=array('url'=>$addmessage_url,'name'=>$lang_messageadd);
+		$nav_list2[$class1][$k]=array('id'=>$class1,'url'=>$addmessage_url,'name'=>$lang_messageadd);
+		$nav_list2[$class1][$k+1]['id'] = $class1.'_add';
 	}else{
 		$k=count($nav_list2[$class1]);
 		if(!$k){
-			$nav_list2[$class1][0]=array('url'=>$addmessage_url,'name'=>$lang_messageadd);
+			$nav_list2[$class1][0]=array('id'=>$class1,'url'=>$addmessage_url,'name'=>$lang_messageadd);
 			$nav_list2[$class1][1]=$class1_info;
 			$nav_list2[$class1][1][name]=$lang_messageview;
+			$nav_list2[$class1][$k+1]['id'] = $class1.'_add';
 		}
 	}
 	require_once '../public/php/methtml.inc.php';

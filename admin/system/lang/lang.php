@@ -18,6 +18,7 @@ if($action=="modify"){
 	$langoname=trim($langname);
 	$langoflag=trim($langflag);
 	$langolink=trim($langlink);
+	
 	$langlink = ereg_replace(" ","",$langlink);
 	if($langlink!=''){
 	if(!strstr($langlink,"http://"))$langlink="http://".$langlink;
@@ -29,8 +30,12 @@ if($action=="modify"){
 		case 'add':
 			if($langname=='')metsave('-1',$lang_langnamenull,$depth);
 			if($langautor!='')$langmark=$langautor;
-			if($langautor!='')$synchronous=$langautor;
-			if(!$langdlok)$synchronous='';
+			if($langautor!=''){
+				$synchronous=$langautor;
+			}else{
+				$synchronous=$langfile;
+			}
+			if(!$langdlok)$synchronous=$langfile;
 			$lancount=count($met_langok);
 			$isaddlang=1;
 			$met_langok[0]=array(
@@ -38,9 +43,10 @@ if($action=="modify"){
 							'useok'		=>$languseok,
 							'order'		=>$langorder,
 							'mark'		=>$langmark,
-							'flag'		=>$langflag,
+							'flag'		=>$langoflag,
 							'link'		=>$langlink,
 							'newwindows'=>$langnewwindows);
+
 			foreach($met_langok as $key=>$val){
 				if($key){
 					if($langmark==$val['mark'])metsave('-1',$lang_langnamerepeat,$depth);

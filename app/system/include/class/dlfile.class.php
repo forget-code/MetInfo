@@ -26,9 +26,10 @@ class dlfile extends curl {
 	 * @param  string $timeout	超时时间
 	 * @return string			下载成功返回1，失败返回报错信息。 
 	 */
-	public function dlfile($urlfrom, $urlto, $checksum = '',$timeout = 30) {
+	public function dlfile($urlfrom, $urlto, $checksum = '',$info='', $timeout = 30) {
 		global $_M;
-		$post_data = array('urlfrom'=>$urlfrom, 'checknum'=>$checksum, 'cmsver'=>$_M['config']['metcms_v']);
+		$post_data = array('urlfrom'=>$urlfrom, 'checknum'=>$checksum, 'cmsver'=>$_M['config']['metcms_v'],'depend'=>$info);
+
 		$result = $this->curl_post($post_data, $timeout);
 		$link = $this->error_no($result);
 		if($link != 1){
@@ -42,7 +43,7 @@ class dlfile extends curl {
 					if(!file_exists($urlto)){
 						makefile($urlto);
 					}
-					$return = file_put_contents($urlto,$result);		
+					$return = file_put_contents($urlto,$result);
 					if (!$return) {
 						return $this->error_no('No filepower');
 					} else {

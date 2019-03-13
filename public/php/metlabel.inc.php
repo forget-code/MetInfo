@@ -17,7 +17,7 @@ function metlabel_html5($closure=1,$iehack=1,$mobile=0){
 		$mobileto.="<script src=\"{$navurl}public/js/mobile.js\" type=\"text/javascript\"></script>\n";
 	}
 	//
-	if($metinfover == 'v1'){
+	if($metinfover == 'v1' || $metinfover == 'v2'){// 增加$metinfover判断值（新模板框架v2）
 		return metlabel_head($closure,$iehack,$mobileto);
 	}
 	$metinfo="<!DOCTYPE HTML>\n";
@@ -63,6 +63,7 @@ function metlabel_html5($closure=1,$iehack=1,$mobile=0){
 		if(!$met_headstat=="")$metinfo.="\n$met_headstat";
 		}
 	}
+	$metinfo.="<script src=\"{$navurl}public/js/video.js\" type=\"text/javascript\"></script>\n";
 	if($closure)$metinfo.="\n</head>";
 	return $metinfo;
 }
@@ -100,7 +101,7 @@ function metlabel_flash(){
 	global $methtml_flash,$met_flasharray,$classnow,$met_flashimg,$navurl,$metinfover;
 	if($met_flasharray[$classnow][type]){
 		if($met_flasharray[$classnow][type]==1){
-		if($metinfover=='v1'){
+		if($metinfover=='v1' || $metinfover == 'v2'){// 增加$metinfover判断值（新模板框架v2）
 		switch($met_flasharray[$classnow][imgtype]){
 			case 6:
 
@@ -194,15 +195,17 @@ function metlabel_flash(){
 	}
 }
 function metlabel_foot(){
-	global $met_footright,$wap_footertext,$met_footstat,$met_footaddress,$met_foottel,$met_footother,$met_foottext,$_M;
+	global $met_footright,$wap_footertext,$met_footstat,$met_footaddress,$met_foottel,$met_footother,$met_foottext,$_M,$met_mobileok;
 	if($met_footright<>"" or $met_footstat<>"")$metinfo.="<p>".$met_footright." ".$met_footstat."</p>\n";
 	if($met_footaddress<>"")$metinfo.="<p>".$met_footaddress."</p>\n";
 	if($met_foottel<>"")$metinfo.="<p>".$met_foottel."</p>\n";
 	if($met_footother<>"")$metinfo.="<p>".$met_footother."</p>\n";
 	if($met_foottext<>"")$metinfo.="<p>".$met_foottext."</p>\n";
-	if($wap_footertext<>"")$metinfo.="<p>".$wap_footertext."</p>\n";
+	if($wap_footertext<>""&&$met_mobileok == 1)$metinfo.="<p>".$wap_footertext."</p>\n";
 	//接口代码
-	if($_M['html_plugin']['foot_script'])$metinfo.="{$_M['html_plugin']['foot_script']}";
+	if($_M['html_plugin']['foot_script']){
+		$metinfo.="{$_M['html_plugin']['foot_script']}";
+	}
 	//结束
 	return $metinfo;
 }
@@ -221,7 +224,7 @@ function metlabel_nav($type=1,$label='',$z,$l,$home=1){
 		}
 	}
 
-if($metinfover == 'v1'){
+if($metinfover == 'v1' || $metinfover == 'v2'){// 增加$metinfover判断值（新模板框架v2）
 	//v1[begin]
 	
 	if($z){
@@ -444,7 +447,7 @@ if($metinfover == 'v1'){
 }
 function metlable_lang($dt,$tp=1,$lok=1){
 	global $methtml_sethome,$methtml_addfavorite,$index_hadd_ok,$app_file,$met_adminfile,$metinfover;
-	if($metinfover == 'v1'){
+	if($metinfover == 'v1' || $metinfover == 'v2'){// 增加$metinfover判断值（新模板框架v2）
 		return metlabel_topnav($dt,$tp,$lok);
 	}
 	$metinfo=methtml_lang($dt,$tp);
@@ -481,13 +484,14 @@ function metlabel_navnow($type=1,$label='',$indexnum,$listyy=0,$listmax=8,$msow=
 		if($hngy5[1]=='cm')$class=$hngy5[0];
 	}
 	$mod=$class_index[$indexnum]['module'];
-	if($class_list[$class1]['module']>99 && $class_list[$class1]['module']<1001 && !$indexnum){
+	if($class_list[$class1]['module']>99 && $class_list[$class1]['module'] < 1001 && !$indexnum){
 		$mod=$class_list[$class1]['module']==100?3:5;
 		$type=3;
 	}
 	
 	$module=metmodname($mod);
 	$cdown=$sidedwon2==10001?"class='on'":'';
+	
 	switch($type){
 		case 1:
 			$metinfo ='<ul class="list-none navnow">';
@@ -496,7 +500,7 @@ function metlabel_navnow($type=1,$label='',$indexnum,$listyy=0,$listmax=8,$msow=
 				$cdown=$val['id']==$sidedwon2?"class='on'":'';
 				$i++;
 				if($i!=1)$metinfo.=$label;
-				$metinfo.="<li id='navnow1_{$val[id]}' {cdown}>";
+				$metinfo.="<li id='navnow1_{$val[id]}' {$cdown}>";
 				$metinfo.="<a href='{$val[url]}' {$val[new_windows]} title='{$val[name]}' class='nav'><span>{$val[name]}</span></a>";
 				$metinfo.="</li>";
 			}
@@ -781,7 +785,7 @@ function metlabel_news($time=1,$desc=0,$dlen,$dt=1,$n=0){
 	$metinfo.="<ul class='list-none metlist'>";
 	$i=0;
 	$style=2;//样式展示列表   1/文章列表(默认)   2/图文列表
-	if($metinfover=="v1"){
+	if($metinfover=="v1" || $metinfover == 'v2'){// 增加$metinfover判断值（新模板框架v2）
 		if($style==2){
 			foreach($news_list as $key=>$val){
 				if($id!=$val[id]){
@@ -854,7 +858,7 @@ function metlabel_product($z,$w,$l,$n=0){
 	$met_img_x=$met_img_style?met_imgxy(1,'product'):$met_img_x;
 	$met_img_y=$met_img_style?met_imgxy(2,'product'):$met_img_y;
 	
-	if($metinfover=="v1"){
+	if($metinfover=="v1" || $metinfover == 'v2'){// 增加$metinfover判断值（新模板框架v2）
 	
 	$listarray=$product_list;
 	$metok=0;
@@ -993,7 +997,7 @@ function metlabel_img($z,$w,$l,$n=0){
 	$met_img_x=$met_img_style?met_imgxy(1,'img'):$met_img_x;
 	$met_img_y=$met_img_style?met_imgxy(2,'img'):$met_img_y;
 	
-	if($metinfover=="v1"){
+	if($metinfover=="v1" || $metinfover == 'v2'){// 增加$metinfover判断值（新模板框架v2）
 
 	$listarray=$img_list;
 	$metok=0;
@@ -1435,7 +1439,7 @@ function metlabel_feedback($fid,$mobile){
 	if($met_member_use)$query = "select * from $met_parameter where (access in(select id from $met_admin_array where user_webpower<='$metinfo_member_type') or access=0) and lang='$lang' and module=8 and class1='$id' order by no_order;";
 	$result = $db->query($query);
 	while($list= $db->fetch_array($result)){
-	 if(!$paravalue){
+	 if(!$paravalue[$list[id]]){
 	 if($list[type]==2 or $list[type]==4 or $list[type]==6){
 		$listinfo=$db->get_one("select * from $met_list where bigid='$list[id]' and no_order=99999");
 		$listinfoid=intval(trim($listinfo[info]));
@@ -1591,7 +1595,7 @@ function metlabel_feedback($fid,$mobile){
     }
 if($met_memberlogin_code==1){  
      $metinfo.="<tr><td class='text'>".$lang_memberImgCode."</td>\n";
-     $metinfo.="<td class='input'><input name='code' onKeyUp='pressCaptcha(this)' type='text' class='code' id='code' size='6' maxlength='8' style='width:50px' onclick=verification() >";
+     $metinfo.="<td class='input'><input name='code' onKeyUp='pressCaptcha(this)' type='text' class='code' id='code' size='6' maxlength='8' style='width:50px' >";
      $metinfo.="<img align='absbottom' id='new_code' src='{$navurl}member/ajax.php?action=code'  onclick=this.src='{$navurl}member/ajax.php?action=code&'+Math.random() style='cursor: pointer;' title='".$lang_memberTip1."'/>";
      $metinfo.="</td>\n";
      $metinfo.="</tr>\n";
@@ -2470,39 +2474,45 @@ function sitemaplist(){
 			$val[updatetime]=date("Y-m-d",strtotime($m_now_date));
 			$val[title]=$val[name];
 			$val[url]=str_replace('../','',$val[url]);
-			$val[url]=$met_weburl.$val[url];
+			$val[url]=$val[if_in] ? $val[url] : $met_weburl.$val[url];
 			$sitemaplist[]=$val;
 		}
 	}
+
 	foreach(methtml_getarray('','all','time','news',50000) as $key=>$val){
+		if($met_sitemap_not2 == 1 && $val[links])continue;
 		$val[url]=str_replace('..//','',$val[url]);
 		$val[url]=str_replace('../','',$val[url]);
-		$val[url]=$met_weburl.$val[url];
+		$val[url]= $val[links] ? $val[links] : $met_weburl.$val[url];
 		$val['updatetime']=$val['updatetime_original'];
 		$sitemaplist[]=$val;
 	}
 	foreach(methtml_getarray('','all','time','product',50000) as $key=>$val){
+		if($met_sitemap_not2 == 1 && $val[links])continue;
 		$val[url]=str_replace('..//','',$val[url]);
 		$val[url]=str_replace('../','',$val[url]);
-		$val[url]=$met_weburl.$val[url];
+		$val[url]= $val[links] ? $val[links] : $met_weburl.$val[url];
 		$val['updatetime']=$val['updatetime_original'];
 		$sitemaplist[]=$val;
 	}
 	foreach(methtml_getarray('','all','time','download',50000) as $key=>$val){
+		if($met_sitemap_not2 == 1 && $val[links])continue;
 		$val[url]=str_replace('..//','',$val[url]);
 		$val[url]=str_replace('../','',$val[url]);
-		$val[url]=$met_weburl.$val[url];
+		$val[url]= $val[links] ? $val[links] : $met_weburl.$val[url];
 		$val['updatetime']=$val['updatetime_original'];
 		$sitemaplist[]=$val;
 	}
 	foreach(methtml_getarray('','all','time','img',50000) as $key=>$val){
+		if($met_sitemap_not2 == 1 && $val[links])continue;
 		$val[url]=str_replace('..//','',$val[url]);
 		$val[url]=str_replace('../','',$val[url]);
-		$val[url]=$met_weburl.$val[url];
+		$val[url]= $val[links] ? $val[links] : $met_weburl.$val[url];
 		$val['updatetime']=$val['updatetime_original'];
 		$sitemaplist[]=$val;
 	}
 	foreach(methtml_getarray('','all','time','job',50000) as $key=>$val){
+		if($met_sitemap_not2 == 1 && $val[links])continue;
 		$val[url]=str_replace('..//','',$val[url]);
 		$val[url]=str_replace('../','',$val[url]);
 		$val[url]=$met_weburl.$val[url];
@@ -2521,7 +2531,7 @@ foreach($file_site as $keyfile=>$valflie){
 include_once ROOTPATH.$met_adminfile.'/app/wap/menu_map.php';
 //接口
 if(strstr($_SERVER['PHP_SELF'], 'met_shop'))$special = 1;
-if($metinfover == 'v1' && ($_M['html_plugin']['head_script'] || $appscriptcss || $special))$_M['html_plugin']['head_script'] = "<script src=\"{$navurl}public/js/jQuery1.8.2.js\" type=\"text/javascript\"></script>{$_M['html_plugin']['head_script']}";
+if(($metinfover == 'v1' || $metinfover == 'v2') && ($_M['html_plugin']['head_script'] || $appscriptcss || $special))$_M['html_plugin']['head_script'] = "<script src=\"{$navurl}public/js/jQuery1.8.2.js\" type=\"text/javascript\"></script>{$_M['html_plugin']['head_script']}";// 增加$metinfover判断值（新模板框架v2）
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

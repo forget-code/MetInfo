@@ -12,11 +12,11 @@ class login extends userweb {
 		global $_M;
 		parent::__construct();
 		if($_M['form']['gourl']){
-			$_M['url']['profile'] = $_M['form']['gourl'];
+			$_M['url']['user_home'] = $_M['form']['gourl'];
 			if(strpos($_M['url']['login'], 'lang=')){
-				$_M['url']['login'] .= "&gourl={$_M['form']['gourl']}";
+				$_M['url']['login'] .= "&gourl=".urlencode($_M['form']['gourl']);
 			}else{
-				$_M['url']['login'] .= "?gourl={$_M['form']['gourl']}";
+				$_M['url']['login'] .= "?gourl=".urlencode($_M['form']['gourl']);
 			}
 		}
 	}	
@@ -27,6 +27,24 @@ class login extends userweb {
 	public function doindex() {
 		global $_M;
 		$session = load::sys_class('session', 'new');
+
+		// 如果已登录直接跳转到个人中心
+		if($_M['user'])
+		{
+			okinfo($_M['url']['user_home']);
+		}
+
+		// 如果从其他页面过来
+		if(isset($_SERVER['HTTP_REFERER']))
+		{	
+			// 是否从本站过来
+			$referer = parse_url($_SERVER['HTTP_REFERER']);
+			if($referer['host']==$_SERVER['HTTP_HOST'])
+			{
+				// 来源页面保存到cookie
+				setcookie("referer",$_SERVER['HTTP_REFERER']);
+			}
+		}
 		if($session->get("logineorrorlength")>3)$code=1;
 		require_once $this->template('tem/login');
 	}
@@ -41,14 +59,29 @@ class login extends userweb {
 		$session = load::sys_class('session', 'new');
 		if($session->get("logineorrorlength")>3){
 			if(!load::sys_class('pin', 'new')->check_pin($_M['form']['code'])){
-				okinfo($_M['url']['profile'], $_M['word']['membercode']);
+				okinfo($_M['url']['user_home'], $_M['word']['membercode']);
 			}
 		}
 		$user = $this->userclass->login_by_password($username,  $password, $type);
 		if($user){
 			$session->del('logineorrorlength');
 			$this->userclass->set_login_record($user);
-			okinfo($_M['url']['profile']);
+			// 如果有来源页面,登录之后跳回原来页面 否则跳到个人中心
+			if(isset($_COOKIE['referer']) && !strstr($_COOKIE['referer'], 'member/login')  &&!strstr($_COOKIE['referer'], 'getpassword') )
+			{	
+				$referer = $_COOKIE['referer'];
+				  if(strstr($referer,'/member/register_include.php')){
+                           	okinfo($_M['url']['user_home']);
+				  }
+				// 删除cookie保存的来源地址
+				
+				setcookie("referer");
+				okinfo($referer);
+
+			}else{
+				okinfo($_M['url']['user_home']);
+			}
+			
 		}else{
 			$length = $session->get("logineorrorlength");
 			$length ++;
@@ -76,7 +109,7 @@ class login extends userweb {
 		$type = $_M['form']['amp;type'] ? $_M['form']['amp;type'] : $_M['form']['type'];
 		$other = $this->other($type);
 		$user = $other->get_user($_M['form']['code']);
-		
+		 
 		if(!$other->state_ok($_M['form']['state'])){
 			okinfo($_M['url']['login'], $_M['word']['membererror2']);
 		}

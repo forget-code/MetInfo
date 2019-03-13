@@ -147,6 +147,11 @@
 						$met_flash_img=$met_flash_img.$val['img_path']."|";
 						$met_flash_imglink=$met_flash_imglink.$val['img_link']."|";
 						$met_flash_imgtitle=$met_flash_imgtitle.$val['img_title']."|";
+						// 添加banner属性（新模板框架v2）
+						$met_flash_imgtitle_color=$met_flash_imgtitle_color.$val['img_title_color']."|";
+						$met_flash_imgdes=$met_flash_imgdes.$val['img_des']."|";
+						$met_flash_imgdes_color=$met_flash_imgdes_color.$val['img_des_color']."|";
+						$met_flash_imgtext_position=$met_flash_imgtext_position.$val['img_text_position']."|";
 						$met_flashimg[]=$val;
 				}
 			}
@@ -204,6 +209,11 @@ if($theme_preview&&$met_theme_preview){
 			$met_flash_img=$met_flash_img.$val['img_path']."|";
 			$met_flash_imglink=$met_flash_imglink.$val['img_link']."|";
 			$met_flash_imgtitle=$met_flash_imgtitle.$val['img_title']."|";
+			// 添加banner属性（新模板框架v2）
+			$met_flash_imgtitle_color=$met_flash_imgtitle_color.$val['img_title_color']."|";
+			$met_flash_imgdes=$met_flash_imgdes.$val['img_des']."|";
+			$met_flash_imgdes_color=$met_flash_imgdes_color.$val['img_des_color']."|";
+			$met_flash_imgtext_position=$met_flash_imgtext_position.$val['img_text_position']."|";
 		}
 	}
 	$met_flashall = $met_flashimg;
@@ -294,7 +304,11 @@ document.getElementsByTagName('head').item(0).appendChild(jsFile);
 </script>";
 			$query="select * from $met_admin_array where id='$metaccess'";
 			$metaccess=$db->get_one($query);
-			if(intval($metinfo_member_type)<intval($metaccess)){
+            	if($_M['config']['shopv2_open'] && $_M['user'])
+			{
+				$metinfo_member_type = $_M['user']['access'];
+			}
+			if(intval($metinfo_member_type)<intval($metaccess['user_webpower'])){
 				met_cooike_unset();
 				change_met_cookie('metinfo_member_name',$metinfo_member_name);
 				change_met_cookie('metinfo_member_pass',$metinfo_member_pass);

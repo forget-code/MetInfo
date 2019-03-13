@@ -1,3 +1,11 @@
+function onlineclose(){
+	//$('#onlinebox').hide();
+	document.getElementById("onlinebox").style.display="none";
+	return false;
+}
+
+
+
 define(function(require, exports, module) {
 
 	var $ = jQuery = require('jquery');
@@ -80,10 +88,7 @@ function metplay(){
 	}
 }
 //在线交流部分
-function onlineclose(){
-	$('#onlinebox').hide();
-	return false;
-}
+
 function olne_domx(type,onlinex){
 	var maxr=document.body.offsetWidth-$('#onlinebox').width();
 	if(type>1){

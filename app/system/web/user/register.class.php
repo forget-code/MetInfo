@@ -14,6 +14,7 @@ class register extends userweb {
 	public function __construct() {
 		global $_M;
 		parent::__construct();
+		isset($_SESSION) ? "" : load::sys_class('session', 'new');
 		if(!$_M['config']['met_member_register']){
 			okinfo($_M['url']['login'], $_M['word']['regclose']);
 		}
@@ -40,7 +41,7 @@ class register extends userweb {
 		switch($_M['config']['met_member_vecan']){
 			case 1:
 				if(!load::sys_class('pin', 'new')->check_pin($_M['form']['code'])){
-					okinfo($_M['url']['register'], $_M['word']['membercode']);
+					okinfo(-1, $_M['word']['membercode']);
 				}
 				if($this->userclass->register($_M['form']['username'], $_M['form']['password'], $_M['form']['username'],'',$info, 0)){
 					$valid = load::mod_class('user/class/valid','new');
@@ -48,22 +49,22 @@ class register extends userweb {
 						$this->userclass->login_by_password($_M['form']['username'],  $_M['form']['password']);
 						okinfo($_M['url']['profile']);
 					} else { 
-						okinfo($_M['url']['login'], $_M['word']['getTip3']);
+						okinfo($_M['url']['login'], $_M['word']['emailfail']);
 					}
 				}else{
-					okinfo($_M['url']['register'], $_M['word']['regfail']);
+					okinfo(-1, $_M['word']['regfail']);
 				}
 			break;
 			case 3:
 				$session = load::sys_class('session', 'new');
 				if($_M['form']['code']!=$session->get("phonecode")){
-					okinfo($_M['url']['register'], $_M['word']['membercode']);
+					okinfo(-1, $_M['word']['membercode']);
 				}
 				if(time()>$session->get("phonetime")){
-					okinfo($_M['url']['register'], $_M['word']['codetimeout']);
+					okinfo(-1, $_M['word']['codetimeout']);
 				}
 				if($_M['form']['username']!=$session->get("phonetel")){
-					okinfo($_M['url']['register'], $_M['word']['telcheckfail']);
+					okinfo(-1, $_M['word']['telcheckfail']);
 				}
 				$session->del('phonecode');
 				$session->del('phonetime');
@@ -72,19 +73,19 @@ class register extends userweb {
 					$this->userclass->login_by_password($_M['form']['username'],  $_M['form']['password']);
 					okinfo($_M['url']['profile'], $_M['word']['regsuc']);
 				}else{
-					okinfo($_M['url']['register'], $_M['word']['regfail']);
+					okinfo(-1, $_M['word']['regfail']);
 				}
 			break;
 			default :
 				if(!load::sys_class('pin', 'new')->check_pin($_M['form']['code'])){
-					okinfo($_M['url']['register'], $_M['word']['membercode']);
+					okinfo(-1, $_M['word']['membercode']);
 				}
 				$valid = $_M['config']['met_member_vecan'] == 2?0:1;
-				if($this->userclass->register($_M['form']['username'], $_M['form']['password'], $_M['form']['username'],'',$info, $valid)){
+				if($this->userclass->register($_M['form']['username'], $_M['form']['password'], '','',$info, $valid)){
 					$this->userclass->login_by_password($_M['form']['username'],  $_M['form']['password']);
 					okinfo($_M['url']['profile']);
 				}else{
-					okinfo($_M['url']['register'], $_M['word']['regfail']);
+					okinfo(-1, $_M['word']['regfail']);
 				}
 			break;
 		}

@@ -5,13 +5,13 @@
 defined('IN_MET') or exit('No permission');
 
 /**
- * »ñÈ¡COOKIEÖµ
- * @param  string  $key                             Ö¸¶¨¼üÖµ
- * @return string  $_M['user']['cookie'][$key]	    ·µ»Øµ±Ç°¹ÜÀíÔ±»ò»áÔ±µÄÏà¹ØCOOKIEÖµ
- * Àı£ºget_met_cookie('metinfo_admin_name'):·µ»Øµ±Ç°¹ÜÀíÔ±µÄÕËºÅ
-	   get_met_cookie('metinfo_member_name'):·µ»Øµ±Ç°»áÔ±µÄÕËºÅ
-	   get_met_cookie('metinfo_admin_pass'):·µ»Øµ±Ç°¹ÜÀíÔ±µÄÃÜÂë
-	   get_met_cookie('metinfo_member_pass'):·µ»Øµ±Ç°»áÔ±µÄÃÜÂë
+ * è·å–COOKIEå€¼
+ * @param  string  $key                             æŒ‡å®šé”®å€¼
+ * @return string  $_M['user']['cookie'][$key]	    è¿”å›å½“å‰ç®¡ç†å‘˜æˆ–ä¼šå‘˜çš„ç›¸å…³COOKIEå€¼
+ * ä¾‹ï¼šget_met_cookie('metinfo_admin_name'):è¿”å›å½“å‰ç®¡ç†å‘˜çš„è´¦å·
+	   get_met_cookie('metinfo_member_name'):è¿”å›å½“å‰ä¼šå‘˜çš„è´¦å·
+	   get_met_cookie('metinfo_admin_pass'):è¿”å›å½“å‰ç®¡ç†å‘˜çš„å¯†ç 
+	   get_met_cookie('metinfo_member_pass'):è¿”å›å½“å‰ä¼šå‘˜çš„å¯†ç 
  */
 function get_met_cookie($key){
 	global $_M;
@@ -34,6 +34,7 @@ function get_met_cookie($key){
 		$m['metinfo_admin_id'] = $m['id'];                              
 		$m['metinfo_admin_pass'] = $m['password'];
 		$m['metinfo_member_pass'] = $m['password']; 
+		$m['metinfo_member_head'] = $m['head']; 
 		if($key == 'metinfo_admin_name' || $key == 'metinfo_member_name'){
 			$val = urldecode($m[$key]);
 			$val = sqlinsert($val);
@@ -44,7 +45,7 @@ function get_met_cookie($key){
 }
 
 /**
- * ÅĞ¶ÏCOOKIEÊÇ·ñ³¬¹ıÒ»¸öĞ¡Ê±£¬Èç¹ûÃ»ÓĞ³¬¹ıÔò¸üĞÂ$_M['user']['cookie']ÖĞµÄĞÅÏ¢
+ * åˆ¤æ–­COOKIEæ˜¯å¦è¶…è¿‡ä¸€ä¸ªå°æ—¶ï¼Œå¦‚æœæ²¡æœ‰è¶…è¿‡åˆ™æ›´æ–°$_M['user']['cookie']ä¸­çš„ä¿¡æ¯
  */
 function met_cooike_start(){
 	global $_M;
@@ -73,8 +74,8 @@ function met_cooike_start(){
 }
 
 /**
- * Çå³ıCOOKIE
- * @param  int $userid ÓÃ»§ID    
+ * æ¸…é™¤COOKIE
+ * @param  int $userid ç”¨æˆ·ID    
  */
 function met_cooike_unset($userid){
 	global $_M;

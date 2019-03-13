@@ -98,9 +98,21 @@ if($theme_preview){
 	}
 }
 /*系统安全密钥*/
+function met_rand_x($length){
+	$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+	$password = '';
+	for ( $i = 0; $i < $length; $i++ ) {
+		$password .= $chars[ mt_rand(0, strlen($chars) - 1) ];
+	}
+	return $password;
+}
 $met_webkeys=file_get_contents(ROOTPATH.'/config/config_safe.php');
 $met_webkeys=str_replace('<?php/*','',$met_webkeys);
 $met_webkeys=str_replace('*/?>','',$met_webkeys);
+if(!preg_match('/^[0-9A-Za-z]{32}$/',$met_webkeys)){
+	$met_webkeys = met_rand_x(32);
+	file_put_contents(ROOTPATH.'/config/config_safe.php', "<?php/*{$met_webkeys}*/?>");
+}
 $met_adminfile_code=$met_adminfile;
 $met_adminfile=authcode($met_adminfile,'DECODE', $met_webkeys);
 //接口代码
@@ -109,7 +121,7 @@ $_M[url][site]=$met_weburl;
 $_M[url][entrance]=$met_weburl.'app/system/entrance.php';
 $_M[url][pub]=$met_weburl.'app/system/include/public/';
 $_M[url][app]=$met_weburl.'app/app/';
-$_M['url']['sta'] = $met_weburl.'app/system/include/static/';
+$_M['url']['static'] = $met_weburl.'app/system/include/static/';
 $current_url='http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 //
 

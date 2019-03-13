@@ -1,7 +1,7 @@
-<!--<?php
-# MetInfo Enterprise Content Management System 
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
-require_once template('head'); 
+<?php
+# MetInfo Enterprise Content Management System
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
+require_once template('head');
 echo <<<EOT
 -->
 </head>
@@ -37,7 +37,7 @@ echo <<<EOT
 			<span style="color:#999; padding-left:20px;">{$lang_flashmodify}<a href="setflash.php?anyid={$anyid}&lang={$lang}&kuaijieskin={$kuaijieskin}" title="{$lang_indexflashexplain2}" style="color:#690;">{$lang_indexflashset}</a>{$lang_flashmodify1}{$lang_indexflashexplain7}</span>
 		</dd>
 	</dl>
-	</div>	
+	</div>
 	<div class="v52fmbx_dlbox">
 	<dl>
 		<dt>{$lang_setflashSize}{$lang_marks}</dt>
@@ -48,9 +48,9 @@ echo <<<EOT
 	</div>
 <!--
 EOT;
-if($flashmdtype==1){ 
+if($flashmdtype==1){
 echo <<<EOT
--->	
+-->
 	<div class="v52fmbx_dlbox">
 	<dl>
 		<dt>{$lang_sort}{$lang_marks}</dt>
@@ -60,14 +60,6 @@ echo <<<EOT
 		</dd>
 	</dl>
 	</div>
-	<div class="v52fmbx_dlbox">
-	<dl>
-		<dt>{$lang_setflashName}{$lang_marks}</dt>
-		<dd>
-			<input name="img_title" type="text" class="text" value="" />
-		</dd>
-	</dl>
-	</div>	
 	<div class="v52fmbx_dlbox">
 	<dl>
 		<dt>{$lang_setflashImgUrl}{$lang_marks}</dt>
@@ -82,7 +74,7 @@ $(document).ready(function(){
 </script>
 		</dd>
 	</dl>
-	</div>	
+	</div>
 	<div class="v52fmbx_dlbox">
 	<dl>
 		<dt>{$lang_setflashImgHref}{$lang_marks}</dt>
@@ -91,12 +83,71 @@ $(document).ready(function(){
 			<span class="tips">{$lang_indexflashexplain9}</span>
 		</dd>
 	</dl>
-	</div>	
+	</div>
+	<!-- 图片名称移动到图片链接下面 -->
+	<div class="v52fmbx_dlbox">
+	<dl>
+		<dt>{$lang_setflashName}{$lang_marks}</dt>
+		<dd>
+			<input name="img_title" type="text" class="text" value="" />
+		</dd>
+	</dl>
+	</div>
 <!--
 EOT;
-}elseif($flashmdtype==2){ 
+	if($metinfover =='v2'){// 新模板框架v2增加判断
 echo <<<EOT
--->	
+-->
+	<!-- 增加新模板框架banner属性 开始 -->
+	<div class="v52fmbx_dlbox">
+	<dl>
+		<dt>图片标题颜色{$lang_marks}</dt>
+		<dd class="ftype_color">
+			<div class="fbox">
+				<input type="text" name="img_title_color" class="text">
+			</div>
+		</dd>
+	</dl>
+	</div>
+	<div class="v52fmbx_dlbox">
+	<dl>
+		<dt>图片描述{$lang_marks}</dt>
+		<dd>
+			<input name="img_des" type="text" class="text">
+		</dd>
+	</dl>
+	</div>
+	<div class="v52fmbx_dlbox">
+	<dl>
+		<dt>图片描述颜色{$lang_marks}</dt>
+		<dd class="ftype_color">
+			<div class="fbox">
+				<input type="text" name="img_des_color" value="{$flashrec1[img_des_color]}">
+			</div>
+		</dd>
+	</dl>
+	</div>
+	<div class="v52fmbx_dlbox">
+	<dl>
+		<dt>图片文字位置{$lang_marks}</dt>
+		<dd class="ftype_radio">
+			<div class="fbox">
+				<label><input value="0" name="img_text_position" type="radio">左</label>
+				<label><input value="1" name="img_text_position" type="radio">右</label>
+				<label><input value="2" name="img_text_position" type="radio">上</label>
+				<label><input value="3" name="img_text_position" type="radio">下</label>
+				<label><input value="4" name="img_text_position" type="radio">居中</label>
+			</div>
+		</dd>
+	</dl>
+	</div>
+<!-- 增加新模板框架banner属性 结束 -->
+<!--
+EOT;
+	}
+}elseif($flashmdtype==2){
+echo <<<EOT
+-->
 	<div class="v52fmbx_dlbox">
 	<dl>
 		<dt>{$lang_sort}{$lang_marks}</dt>
@@ -104,7 +155,7 @@ echo <<<EOT
 			<input name="no_order" type="text" class="text mid" value="" /><span class="tips">{$lang_ordernumber}</span>
 		</dd>
 	</dl>
-	</div>	
+	</div>
 	<div class="v52fmbx_dlbox">
 	<dl>
 		<dt>{$lang_setflashUrl}{$lang_marks}</dt>
@@ -113,7 +164,7 @@ echo <<<EOT
 				<input name="met_upsql" type="file" id="file_upload" />
 		</dd>
 	</dl>
-	</div>	
+	</div>
 	<div class="v52fmbx_dlbox">
 	<dl>
 		<dt>{$lang_setflashBg}{$lang_marks}</dt>
@@ -134,7 +185,7 @@ $(document).ready(function(){
 EOT;
 }
 echo <<<EOT
--->		
+-->
 	<div class="v52fmbx_dlbox">
 	<dl>
 		<dt>{$lang_category}{$lang_marks}</dt>
@@ -151,25 +202,25 @@ echo <<<EOT
 EOT;
 foreach($mod1 as $key=>$val){
 echo <<<EOT
--->	
+-->
 	<p><label><input name="met_clumid_{$val[id]}" type="checkbox" class="checkbox" value="{$val[id]}"> {$val[name]}</label></p>
 <!--
 EOT;
 foreach($mod2[$val[id]] as $key=>$val2){
 echo <<<EOT
--->	
+-->
     <p class="met_bigloumn2id_{$val2[bigclass]}" style="margin-left:22px;"><label><input name="met_clumid_{$val2[id]}" type="checkbox" class="checkbox" value="{$val2[id]}"> {$val2[name]}</label></p>
 <!--
 EOT;
 foreach($mod3[$val2[id]] as $key=>$val3){
 echo <<<EOT
--->	
-    <p class="met_bigloumn3id_{$val3[bigclass]}" style="margin-left:42px;"><label><input name="met_clumid_{$val3[id]}" type="checkbox" class="checkbox" value="{$val3[id]}"> {$val3[name]}</label></p>		
+-->
+    <p class="met_bigloumn3id_{$val3[bigclass]}" style="margin-left:42px;"><label><input name="met_clumid_{$val3[id]}" type="checkbox" class="checkbox" value="{$val3[id]}"> {$val3[name]}</label></p>
 <!--
 EOT;
-}}}  
+}}}
 echo <<<EOT
--->	
+-->
 				</div>
 				</div>
 <!--
@@ -190,7 +241,7 @@ echo <<<EOT
 	<div class="v52fmbx_submit">
 		<input type="submit" name="Submit" value="{$lang_Submit}" class="submit" onclick="return flashsubm()" />
 		<input type="hidden" name="f_columnlist" value="" />
-	</div>	
+	</div>
 </div>
 </div>
 </div>
@@ -214,7 +265,7 @@ echo <<<EOT
 	$("input[name='met_clumid_all']").change(function(){
 		if($(this).attr("checked")){
 			$('.flashaddclumn').find('input').attr("checked",true);
-		}else{	
+		}else{
 			$('.flashaddclumn').find('input').attr("checked",false);
 		}
 	});
@@ -230,4 +281,4 @@ echo <<<EOT
 EOT;
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
-?>-->
+?>

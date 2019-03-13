@@ -19,6 +19,7 @@ class admin_user extends admin {
 		nav::set_nav(3, '会员属性', $_M['url']['own_name'].'c=admin_set&a=douserfield');
 		nav::set_nav(4, '会员功能设置', $_M['url']['own_name'].'c=admin_set&a=doindex');
 		nav::set_nav(5, '社会化登录', $_M['url']['own_name'].'c=admin_set&a=doopen');
+		nav::set_nav(6, '邮件内容设置', $_M['url']['own_name'].'c=admin_set&a=doemailset');
 		
 		$this->userclass = load::mod_class('user/class/sys_user', 'new');
 		$this->paraclass = load::sys_class('para', 'new');

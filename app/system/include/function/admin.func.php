@@ -212,6 +212,14 @@ function get_adminnav() {
 	$query = "select * from {$_M['table']['admin_column']} order by type desc,list_order";
 	$sidebarcolumn = DB::get_all($query);
 	$bigclass = array();
+	if(!$met_wap){
+		foreach ($sidebarcolumn as $key => $val) {
+			if(trim($val['name']) == 'lang_adminmobile' && $_M['config']['met_wap'] == 0){
+				unset($sidebarcolumn[$key]);
+			}	
+		}
+		
+	}
 	foreach ($sidebarcolumn as $key => $val) {
 		if($val['id'] == 68)$val['field'] = '1301';
 		if(!is_strinclude($jurisdiction['navigation'], $val['field']) && $jurisdiction['navigation'] != 'metinfo' && $val['field']!=0)continue;
@@ -223,6 +231,7 @@ function get_adminnav() {
 		$val['name'] = get_word($val['name']);
 		$val['info'] = get_word($val['info']);
 		$bigclass[$val['bigclass']] = 1;
+		
 		switch ($val['type']) {
 			case 1:
 				if($bigclass[$val['id']] == 1)$adminnav[$val['id']] = $val;

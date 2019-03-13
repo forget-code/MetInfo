@@ -31,17 +31,12 @@ if($action=='modify'){
 	echo $sms;
 	die;
 }elseif($action=='membertel'){
-	$query = "SELECT plist.info FROM $met_plist plist inner join $met_admin_table atable on plist.listid=atable.id and plist.lang='$lang' and plist.module=10 and atable.checkid=1";
-	$result = $db->query($query);
-	$member_list='';
-	while($list= $db->fetch_array($result)){
-		if(strlen($list['info']) == 11){
-			if(preg_match_all('/^1[3458]{1}\d{8}\d$/', $list['info'],$out)){
-				$member_list.=$list['info'].'|';
-			}
-		}
-	}
-	echo substr($member_list, 0, -1);
+	 $query = "SELECT tel FROM $met_user WHERE valid=1";
+	 $result = $db->query($query);
+ while($list= $db->fetch_array($result)){
+		 echo $list[tel].'|';
+ }
+	
 }else{
 	$total_passok = $db->get_one("SELECT * FROM $met_otherinfo WHERE lang='met_sms'");
 	$met_smsprice=number_format($met_smsprice,2);

@@ -232,54 +232,21 @@ function sedsmserrtype($err,$type){
 }
 /*短信发送*/
 function sendsms($phone,$message,$type){
-	global $db,$met_otherinfo,$met_sms,$met_file;
-	global $code,$lang_smstips66;
-	/*验证商业用户*/
-	$varcode=varcodeb('sms');
-	$varcode=$varcode['re']=='SUC'?$varcode['md5']:'';
-	/*发送短信*/
-	$total_pass = $db->get_one("SELECT * FROM $met_otherinfo WHERE lang='met_sms'");
-	if($total_pass){
-		$met_file='/sms/sendsms.php';
-		$post=array(
-			'total_pass'=>$total_pass['authpass'],
-			'phone'=>$phone,
-			'message'=>$message,
-			'type'=>$type,
-			'varcode'=>$varcode,
-			'code'=>$code
-		);
-		$sms = curl_post($post,30);
-		$sms = trim($sms);
-		$time=time();
-		switch($sms){
-			case 'SUCCESS':$qey=1;break;
-			case 'ERR_10' :$qey=$type==1?0:1;break;
-			case 'ERR_11' :$qey=0;break;
-			case 'ERR_12' :$qey=0;break;
-			case 'ERR_13' :$qey=$type==1?0:1;break;
-			case 'ERR_14' :$qey=$type==1?0:1;break;
-			case 'ERR_15' :$qey=0;break;
-			case 'ERR_16' :$qey=$type==1?0:1;break;
-			case 'ERR_17' :$qey=$type==1?0:1;break;
-			case 'ERR_17' :$qey=0;break;
+	global $_M;
+
+		$sms_path = '../app/app/met_sms';
+
+		if(file_exists($sms_path) && $_M['config']['met_sms_url'])
+		{
+			require_once $sms_path.'/include/class/met_sms.class.php';
+			$sms = new met_sms();
+
+			$errorcode = $sms->auto_send($phone,$message);
+		}else{
+			$errorcode =  '短信功能未开通';
 		}
-		$metinfo = $type==1?sedsmserrtype($sms):$sms;
-		if($qey){
-			$query = "INSERT INTO $met_sms SET
-				time     ='$time',
-				type     ='$type',
-				content  ='$message',
-				tel      ='$phone',
-				remark   ='$sms'";
-			$db->query($query);
-		}
-	}else{
-		$metinfo = $lang_smstips66;
-	}
-	/*删除验证文件*/
-	if($varcode!='')delcodeb($varcode);
-	return $metinfo;
+
+		return $errorcode;
 }
 /*验证商业会员*/
 function smspreice(){

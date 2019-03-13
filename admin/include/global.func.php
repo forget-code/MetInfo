@@ -875,12 +875,17 @@ function metnew_dir($pathf){
 }
 /*复制首页*/
 function Copyindx($newindx,$type){
-	if(!file_exists($newindx)){
-		$oldcont ="<?php\n# MetInfo Enterprise Content Management System \n# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. \n\$filpy = basename(dirname(__FILE__));\n\$fmodule=$type;\nrequire_once '../include/module.php'; \nrequire_once \$module; \n# This program is an open source system, commercial use, please consciously to purchase commercial license.\n# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.\n?>";
-		$fp = fopen($newindx,w);
-		fputs($fp, $oldcont);
-		fclose($fp);
-	}
+    if(!file_exists($newindx)){
+        if($type==3){
+            //生成产品栏目index
+            $oldcont ="<?php\n# MetInfo Enterprise Content Management System \n# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. \n\$filpy = basename(dirname(__FILE__));\n\$fmodule=$type;\n\$cmodule='product_index';\nrequire_once '../include/module.php'; \nrequire_once \$module; \n# This program is an open source system, commercial use, please consciously to purchase commercial license.\n# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.\n?>";
+        }else{
+            $oldcont ="<?php\n# MetInfo Enterprise Content Management System \n# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. \n\$filpy = basename(dirname(__FILE__));\n\$fmodule=$type;\nrequire_once '../include/module.php'; \nrequire_once \$module; \n# This program is an open source system, commercial use, please consciously to purchase commercial license.\n# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.\n?>";
+        }
+        $fp = fopen($newindx,w);
+        fputs($fp, $oldcont);
+        fclose($fp);
+    }
 }
 /*生成反馈配置文件*/
 function verbconfig($array,$id){
@@ -1538,7 +1543,7 @@ function establish_appmodule($foldername,$no){
 		$structure1=$db->get_all("select * from $met_ifcolumn_addfile where no='$no'");
 		foreach($structure1 as $key=>$val){
 			$straction[$val[filename]].="define('M_NAME', '".$val['m_name']."');\ndefine('M_MODULE', '".$val['m_module']."');\ndefine('M_CLASS', '".$val['m_class']."');\n";
-			if(substr($val['m_action'], 0, 1) == '$'){
+			if(substr($val['m_action'], 0, 1) == '$' || substr($val['m_action'], 0, 1) == '@'){
 				$straction[$val[filename]].="define('M_ACTION', ".$val['m_action'].");\n";
 			}else{
 				$straction[$val[filename]].="define('M_ACTION', '".$val['m_action']."');\n";

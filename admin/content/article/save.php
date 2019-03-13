@@ -34,7 +34,7 @@ if($action == 'html'){
 	}
 	$htmjs.= indexhtm().'$|$';	
 	
-	$turl  ="../index.php?lang=$lang&anyid=29&n=content&c=article_admin&a=doindex&class1=$class1&class2=$class2&class3=$class3";
+	$turl  ="../index.php?lang=$lang&anyid=29&n=content&c=article_admin&a=doindex&class1=$select_class1&class2=$select_class2&class3=$select_class3";
 	$gent='../../sitemap/index.php?lang='.$lang.'&htmsitemap='.$met_member_force;
 	metsave($turl,'',$depth,$htmjs,$gent);
 	die();

@@ -9,7 +9,7 @@ $modulefname[6] = array(0=>'job.php',1=>'showjob.php',2=>$met_job);
 $modulefname[8] = array(0=>'feedback.php',1=>'feedback.php',2=>$met_column);
 $modulefname[100] = array(0=>'product.php',1=>'showproduct.php',2=>$met_product);
 $modulefname[101] = array(0=>'img.php',1=>'imgproduct.php',2=>$met_img);
-if(isset($metid) && ($met_pseudo || $met_htmlurl)){
+if(isset($metid) && ($met_pseudo || $met_htmlurl || $pseudo_jump)){
 	/*if(is_numeric($metid)){
 		if($list){
 		}else{
@@ -48,7 +48,7 @@ if(isset($metid) && ($met_pseudo || $met_htmlurl)){
 		else{
 			if($anyone['classtype']==1)$class1= $anyone['id'];
 			if($anyone['classtype']==2)$class2= $anyone['id'];
-			if($anyone['classtype']==3)$class3= $anyone['id'];
+		    if($anyone['classtype']==3)$class3= $anyone['id'];
 			$anyone2 = $db->get_one("SELECT * FROM $met_column WHERE id='$anyone[bigclass]' and lang ='$lang'");
 			if($anyone2['releclass']){
 				$class1=$anyone2['id'];

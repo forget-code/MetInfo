@@ -8,6 +8,7 @@ INSERT INTO met_language VALUES('26266','unitytxt_68','当创始人账号为admi
 INSERT INTO met_language VALUES('26265','unitytxt_67','修改为','1','431','8','0','cn');
 INSERT INTO met_language VALUES('26261','unitytxt_63','QQ支持','1','427','8','0','cn');
 INSERT INTO met_language VALUES('26262','unitytxt_64','论坛支持','1','428','8','0','cn');
+INSERT INTO met_language VALUES('26262','unitytxt_64','论坛支持','1','428','8','0','cn');
 INSERT INTO met_language VALUES('26263','unitytxt_65','服务信息','1','429','8','0','cn');
 INSERT INTO met_language VALUES('26264','unitytxt_66','服务期限','1','430','8','0','cn');
 INSERT INTO met_language VALUES('26260','unitytxt_62','电话支持','1','426','8','0','cn');
@@ -636,9 +637,9 @@ INSERT INTO met_language VALUES('25638','smstips95','错误原因：','1','272',
 INSERT INTO met_language VALUES('25637','smstips94','当前短信发送价格和服务器设定价格不一致，点击<a href=''''>此处</a>刷新页面，重新获取发送价格','1','271','6','0','cn');
 INSERT INTO met_language VALUES('25635','smstips92','联系','1','269','6','0','cn');
 INSERT INTO met_language VALUES('25636','smstips93','开通','1','270','6','0','cn');
-INSERT INTO met_language VALUES('25634','smstips91','访问<a href=\"http://www.metinfo.cn/news/shownews982.htm\" target=\"_blank\">审核说明</a>页面进行审核。','1','268','6','0','cn');
+INSERT INTO met_language VALUES('25634','smstips91','及时查收余额','1','268','6','0','cn');
 INSERT INTO met_language VALUES('25632','smstips84','立即兑换','1','266','6','0','cn');
-INSERT INTO met_language VALUES('25633','smstips90','批量发送必须通过审核后方可发送，请注册充值后，','1','267','6','0','cn');
+INSERT INTO met_language VALUES('25633','smstips90','请注册充值后，','1','267','6','0','cn');
 INSERT INTO met_language VALUES('25631','smstips83','优惠劵使用说明','1','265','6','0','cn');
 INSERT INTO met_language VALUES('25630','smstips82','使用成功','1','264','6','0','cn');
 INSERT INTO met_language VALUES('25629','smstips81','超过使用时间','1','263','6','0','cn');
@@ -2055,10 +2056,10 @@ INSERT INTO met_language VALUES('27648','waptips2','Settings Wap content page sh
 INSERT INTO met_language VALUES('27647','waptips1','Wap settings','1','273','6','0','en');
 INSERT INTO met_language VALUES('27646','smstips95','error Cause :','1','272','6','0','en');
 INSERT INTO met_language VALUES('27645','smstips94','current SMS server set prices and price inconsistencies , click <a href=''''> here </ a> to refresh the page , sending prices to reacquire','1','271','6','0','en');
-INSERT INTO met_language VALUES('27642','smstips91','Visit <a href = \"http://www.metinfo.cn/news/shownews982.htm\" target=\"_blank\"> audit Description </ a> page for review.','1','268','6','0','en');
+INSERT INTO met_language VALUES('27642','smstips91','after deposit','1','268','6','0','en');
 INSERT INTO met_language VALUES('27644','smstips93','open','1','270','6','0','en');
 INSERT INTO met_language VALUES('27643','smstips92','Contact','1','269','6','0','en');
-INSERT INTO met_language VALUES('27641','smstips90','Batch send audit must be sent through the post , registered post , please recharge','1','267','6','0','en');
+INSERT INTO met_language VALUES('27641','smstips90','Please check the balance','1','267','6','0','en');
 INSERT INTO met_language VALUES('27640','smstips84','Redeem','1','266','6','0','en');
 INSERT INTO met_language VALUES('27639','smstips83','coupon use','1','265','6','0','en');
 INSERT INTO met_language VALUES('27637','smstips81','over time','1','263','6','0','en');
@@ -3820,7 +3821,7 @@ INSERT INTO met_language VALUES('24335','langurl','站群功能','1','67','1','0
 INSERT INTO met_language VALUES('24336','langsw','语言切换','1','68','1','0','cn');
 INSERT INTO met_language VALUES('24331','langhome','默认语言','1','63','1','0','cn');
 INSERT INTO met_language VALUES('24332','langdefaultadmin','后台默认语言','1','64','1','0','cn');
-INSERT INTO met_language VALUES('24333','langadminok','语言选择','1','65','1','0','cn');
+INSERT INTO met_language VALUES('24333','langadminok','简繁切换','1','65','1','0','cn');
 INSERT INTO met_language VALUES('24330','langchok','一般以链接形式显示在前台右上角','1','62','1','0','cn');
 INSERT INTO met_language VALUES('24329','langcnch','简体中文或繁体中文语言标识','1','61','1','0','cn');
 INSERT INTO met_language VALUES('24328','langch','简繁体自动切换','1','60','1','0','cn');
@@ -3903,7 +3904,7 @@ INSERT INTO met_language VALUES('26347','langmarkinfo','Please use letters, such
 INSERT INTO met_language VALUES('26344','langsw','when language switching','1','68','1','0','en');
 INSERT INTO met_language VALUES('26343','langurl','station group function','1','67','1','0','en');
 INSERT INTO met_language VALUES('26342','langadminyes','administrator before you can log can select the background language','1','66','1','0','en');
-INSERT INTO met_language VALUES('26341','langadminok','Language Selection','1','65','1','0','en');
+INSERT INTO met_language VALUES('26341','langadminok','Simplified switch','1','65','1','0','en');
 INSERT INTO met_language VALUES('26340','langdefaultadmin','background default language','1','64','1','0','en');
 INSERT INTO met_language VALUES('26339','langhome','default language','1','63','1','0','en');
 INSERT INTO met_language VALUES('26338','langchok','generally displayed as a link in the upper right foreground','1','62','1','0','en');
@@ -4190,7 +4191,7 @@ INSERT INTO met_language VALUES ('31901','payment_amount','支付金额','1','0'
 INSERT INTO met_language VALUES ('31900','account_Settings','账户设置','1','0','1','0','cn');
 INSERT INTO met_language VALUES ('31899','consumption_record','消费记录','1','0','1','0','cn');
 INSERT INTO met_language VALUES ('31898','the_balance','余额','1','0','1','0','cn');
-INSERT INTO met_language VALUES ('31897','website_manually','应用商店需要注册独立账号；登录成功后您的网站将永久自动登录此帐号，除非手动退出。','1','0','1','0','cn');
+INSERT INTO met_language VALUES ('31897','website_manually','登录成功后您的网站将永久自动登录此帐号，除非手动退出。','1','0','1','0','cn');
 INSERT INTO met_language VALUES ('31896','application_market','登陆应用市场','1','0','1','0','cn');
 INSERT INTO met_language VALUES ('31895','installations','安装量','1','0','1','0','cn');
 INSERT INTO met_language VALUES ('31894','permission_download','无权限下载','1','0','1','0','cn');
@@ -4504,7 +4505,7 @@ INSERT INTO met_language VALUES('35751','sys_authorization2','了解商业授权
 INSERT INTO met_language VALUES('35760','detection','检测中','1','0','1','0','cn');
 INSERT INTO met_language VALUES('35761','recommended_tems','推荐应用','1','0','1','0','cn');
 INSERT INTO met_language VALUES('35762','more_tems','更多模板','1','0','1','0','cn');
-INSERT INTO met_language VALUES('35763','usernametips','如果有官网或交流论坛帐号，请注册成一样，因为我们即将同步三个平台的帐号。','1','0','1','0','cn');
+INSERT INTO met_language VALUES('35763','usernametips','如果有官网或交流论坛帐号，请注册成一样，因为我们即将同步三个平台的帐号','1','0','1','0','cn');
 INSERT INTO met_language VALUES('35776','authorization_level','授权等级','1','0','1','0','cn');
 INSERT INTO met_language VALUES('35777','technical_support','获取技术支持','1','0','1','0','cn');
 INSERT INTO met_language VALUES('35778','entry_authorization','重新录入授权','1','0','1','0','cn');
@@ -4796,7 +4797,7 @@ INSERT INTO met_language VALUES ('35435','have_bought','have bought','1','0','1'
 INSERT INTO met_language VALUES ('35434','please_again','Please login application store; application store is independent account system, not registered account please registration operation!','1','0','1','0','en');
 INSERT INTO met_language VALUES ('35432','product_commented','The same products up to 3 comments','1','0','1','0','en');
 INSERT INTO met_language VALUES ('35433','password_mistake','pay password mistake','1','0','1','0','en');
-INSERT INTO met_language VALUES ('35429','website_manually','Application stores need to register an independent account; after a successful login your site will permanently automatically log on this account, unless manually exit.','1','0','1','0','en');
+INSERT INTO met_language VALUES ('35429','website_manually','after a successful login your site will permanently automatically log on this account, unless manually exit.','1','0','1','0','en');
 INSERT INTO met_language VALUES ('35431','permission_download','no permission to download','1','0','1','0','en');
 INSERT INTO met_language VALUES ('35430','goods_comment','buy goods to comment','1','0','1','0','en');
 INSERT INTO met_language VALUES ('35427','installations','installations','1','0','1','0','en');
@@ -5031,7 +5032,7 @@ INSERT INTO met_language VALUES('28374','langcnch','簡體中文或繁體中文�
 INSERT INTO met_language VALUES('28375','langchok','一般以鏈接形式顯示在前台右上角','1','62','1','0','tc');
 INSERT INTO met_language VALUES('28376','langhome','默認語言','1','63','1','0','tc');
 INSERT INTO met_language VALUES('28377','langdefaultadmin','後台默認語言','1','64','1','0','tc');
-INSERT INTO met_language VALUES('28378','langadminok','語言選擇','1','65','1','0','tc');
+INSERT INTO met_language VALUES('28378','langadminok','簡繁切換','1','65','1','0','tc');
 INSERT INTO met_language VALUES('28379','langadminyes','管理員在登錄前可以選擇後台語言','1','66','1','0','tc');
 INSERT INTO met_language VALUES('28380','langurl','站群功能','1','67','1','0','tc');
 INSERT INTO met_language VALUES('28381','langsw','語言切換','1','68','1','0','tc');
@@ -6331,8 +6332,8 @@ INSERT INTO met_language VALUES('29674','smstips81','超過使用時間','1','26
 INSERT INTO met_language VALUES('29675','smstips82','使用成功','1','264','6','0','tc');
 INSERT INTO met_language VALUES('29676','smstips83','優惠劵使用說明','1','265','6','0','tc');
 INSERT INTO met_language VALUES('29677','smstips84','立即兌換','1','266','6','0','tc');
-INSERT INTO met_language VALUES('29678','smstips90','批量發送必須通過審核後方可發送，請注冊充值後，','1','267','6','0','tc');
-INSERT INTO met_language VALUES('29679','smstips91','訪問<a href="http://www.metinfo.cn/news/shownews982.htm" target="_blank">審核說明</a>頁麵進行審核。','1','268','6','0','tc');
+INSERT INTO met_language VALUES('29678','smstips90','請注冊充值後，','1','267','6','0','tc');
+INSERT INTO met_language VALUES('29679','smstips91','及时查收余額。','1','268','6','0','tc');
 INSERT INTO met_language VALUES('29680','smstips92','聯繫','1','269','6','0','tc');
 INSERT INTO met_language VALUES('29681','smstips93','開通','1','270','6','0','tc');
 INSERT INTO met_language VALUES('29682','smstips94','當前短信發送價格和服務器設定價格不一致，點擊<a href="">此處</a>刷新頁麵，重新獲取發送價格','1','271','6','0','tc');
@@ -7062,7 +7063,7 @@ INSERT INTO met_language VALUES ('35190','payment_amount','支付金額','1','0'
 INSERT INTO met_language VALUES ('35189','account_Settings','賬戶設置','1','0','1','0','tc');
 INSERT INTO met_language VALUES ('35188','consumption_record','消費記錄','1','0','1','0','tc');
 INSERT INTO met_language VALUES ('35187','the_balance','余額','1','0','1','0','tc');
-INSERT INTO met_language VALUES ('35186','website_manually','應用商店需要註冊獨立賬號；登錄成功後您的網站將永久自動登錄此帳號，除非手動退出。','1','0','1','0','tc');
+INSERT INTO met_language VALUES ('35186','website_manually','登錄成功後您的網站將永久自動登錄此帳號，除非手動退出。','1','0','1','0','tc');
 INSERT INTO met_language VALUES ('35185','application_market','登陸應用市場','1','0','1','0','tc');
 INSERT INTO met_language VALUES ('35184','installations','安裝量','1','0','1','0','tc');
 INSERT INTO met_language VALUES ('35183','permission_download','無權限下載','1','0','1','0','tc');

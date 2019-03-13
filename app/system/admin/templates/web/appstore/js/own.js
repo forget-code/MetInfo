@@ -1,14 +1,14 @@
 define(function(require, exports, module) {
 	var common = require('common'); //加载公共函数文件（语言文字获取等）
-	
+
 	if($(".tempservice").length>0){
 		require.async('tem/js/tempservice');
 	}
-	
+
 	if($(".support").length>0){
 		require.async('tem/js/support');
 	}
-	
+
 	var langtxt = ownlangtxt;
 	var datatype = $('.v52fmbx').attr('data-type');
 	var datainfo = $('.v52fmbx').attr('data-info');
@@ -45,10 +45,10 @@ define(function(require, exports, module) {
 					alert(js_error(data.jsdo));
 				}
 			}
-		});		
+		});
 		return true;
 	});
-	
+
 	$(document).on('click',".paysucjump",function(){
 		url = apppath+'n=platform&c=pay&a=dois_pay';
 		var ordernum = $("#ordernum").val();
@@ -68,17 +68,17 @@ define(function(require, exports, module) {
 					alert(langtxt.system_temporarily);
 					href = href;
 				}
-				
+
 				location.href = href;
 			}
-		});		
+		});
 		*/
 		return false;
 	});
 
 	$(document).on('click',"input[type='submit']",function(e){
 		if($(this).attr("name")=='paysubmit'||$(this).attr("name")=='buysubmit'||$(this).attr("name")=='evaluationsubmit'){
-			if($(this).attr("name")=='paysubmit'){			
+			if($(this).attr("name")=='paysubmit'){
 				if(!$("input[name='payprice']").val()||$("input[name='payprice']").val()==0){
 					alert(langtxt.enter_amount);
 					return false;
@@ -116,7 +116,7 @@ define(function(require, exports, module) {
 						}
 					});
 				}
-				return false;				
+				return false;
 			}else if($(this).attr("name")=='evaluationsubmit'){
 				if($("input[name='my_evaluation_num']").val()==0){
 					alert(langtxt.click_rating);
@@ -143,7 +143,7 @@ define(function(require, exports, module) {
 							}
 							$("input[name='evaluationsubmit']").attr('data-click',1);
 						}
-					});	
+					});
 				}
 				return false;
 			}
@@ -202,7 +202,7 @@ define(function(require, exports, module) {
 					evainfo(data.comment);
 					click.val(0);
 				}
-			});	
+			});
 		}
 	}
 	$(document).on('click',".page",function(){
@@ -210,13 +210,27 @@ define(function(require, exports, module) {
 	});
 
 	$(document).ready(function(){
+		url = 'https://app.metinfo.cn/index.php?n=platform&c=kf&a=dokfhtml';
+		$.ajax({
+				url: url,//新增行的数据源
+				type: "GET",
+				data: '&ver='+ dataver +'&user_key=' + secret_key,
+				cache: false,
+				dataType: "jsonp",
+				success: function(data) {
+					if(data.suc){
+						$("body").append(data.html)
+					}
+
+				}
+			});
 		//详细页面，请求APP应用信息
 		if(datatype && datainfo){
 			url = apppath+'n=platform&c=platform&a=doapp_check';
 			$.ajax({
 				url: url,//新增行的数据源
 				type: "GET",
-				data: 'type=' + datatype + '&no=' + datainfo + '&appid=' +dataappid+ '&cmsver='+ datacmsver + '&ver='+ dataver +'&user_key=' + secret_key_appdetail + '&authkey=' + authkey + '&authcode=' + authcode,
+				data: 'type=' + datatype + '&no=' + datainfo + '&appid=' +dataappid+ '&cmsver='+ datacmsver + '&ver='+ dataver +'&user_key=' + secret_key_appdetail + '&authkey=' + authkey + '&authcode=' + authcode+ '&download=' + datadownload,
 				cache: false,
 				dataType: "jsonp",
 				success: function(data) {
@@ -244,14 +258,15 @@ define(function(require, exports, module) {
 							}
 						}
 					}
+
 					$('.buyname').html(data.products.name);
 					$('.appdetail_dl dt img').attr("src",data.products.imgsrc);
-					
+
 					/*价格*/
 					var price = data.products.price==0?langtxt.usertype1:common.fmoney(data.products.price,2);
 					if(data.products.price==0){
 						$('.buybuttondiv a').html(langtxt.appinstall);
-						
+
 					}
 					$('.buyprice').html(data.products.price_html.replace("<br/>","&nbsp"));
 					$('.balance').html(data.user.balance);
@@ -262,7 +277,7 @@ define(function(require, exports, module) {
 						$('.appdetail_info').show();
 						$('.info').html(data.products.info);
 					}
-					
+
 					$('.img').html();
 					var imgs = data.products.img.split('|');
 					var imgstr = '';
@@ -319,10 +334,10 @@ define(function(require, exports, module) {
 		}else{
 			login('', 0);
 		}
-		
+
 		eva();
 	});
-	
+
 	function login(data, is_login){
 		var pos = $('input[name="appposition"]').val();
 		if(is_login){
@@ -351,7 +366,7 @@ define(function(require, exports, module) {
 		}else{
 			switch(pos){
 				case 'memberinfo' :
-					alert(js_error('error_code'));	
+					alert(js_error('error_code'));
 					tologin();
 				break;
 				case 'lr' :
@@ -360,7 +375,7 @@ define(function(require, exports, module) {
 					$('.login').show();
 				break;
 			}
-			
+
 		}
 	}
 	function tologin() {
@@ -416,7 +431,7 @@ define(function(require, exports, module) {
 			readOnly: true
 		});
 	}
-	
+
 	/*获取推荐应用列表*/
 	if($(".hotapplist").length>0){
 		url = apppath + 'n=platform&c=platform&a=dotable_applist_json&type=dlist&lang=' +lang+'&user_key=' + secret_key;;
@@ -427,8 +442,8 @@ define(function(require, exports, module) {
 			url: url,
 			success: function(json){
 				var html='',adu=apppath.split('index.php'),imgsrc='',price='';
-				$.each(json, function(i, item){ 
-					if(i<8){
+				$.each(json, function(i, item){
+					if(i<9){
 						price  = item.price_html;
 						imgsrc = item.icon;
 						var media = $(".hotapplist .media").eq(i);
@@ -438,7 +453,7 @@ define(function(require, exports, module) {
 						media.find(".media-body p").html(item.info);
 						media.find(".media-body .label-success").html(price);
 					}
-				}); 
+				});
 			}
 		});
 	}
@@ -452,7 +467,7 @@ define(function(require, exports, module) {
 			url: url,
 			success: function(json){
 				var html='',adu=apppath.split('index.php'),imgsrc='',price='';
-				$.each(json, function(i, item){ 
+				$.each(json, function(i, item){
 					price  = item.price_html;
 					imgsrc = item.icon;
 					var media = $(".hotmblist .hotmblist-md").eq(i);
@@ -460,7 +475,7 @@ define(function(require, exports, module) {
 					media.find("a").attr('href',adminurl+'n=appstore&c=appstore&a=doappdetail&type=tem&no='+item.no+'&appid='+item.id+'&lang='+lang+'&anyid=65');
 					media.find(".price").html(price);
 					media.find(".eye").html('<i class="fa fa-eye"></i>'+item.hits);
-				}); 
+				});
 			}
 		});
 	}
@@ -482,13 +497,13 @@ define(function(require, exports, module) {
 				var html = '';
 				var all = common.replaceParamVal(search_url, 'industry', '');
 				all = common.replaceParamVal(all, 'mince', '');
-				class_select = '';	
+				class_select = '';
 				if(industry == '')class_select = "select";
 				html = '<span class="all '+class_select+'"><a href="'+all+'">'+langtxt.cvall+'</a></span>';
 				if(json.c){
 					$(".industrydl").show();
-					$.each(json.c, function(i, item){ 
-						class_select = '';	
+					$.each(json.c, function(i, item){
+						class_select = '';
 						if(industry == item.n1){class_select = "class='select'";unfold(i);}
 						html = html + '<span '+class_select+'><a href="'+common.replaceParamVal(common.replaceParamVal(search_url, 'mince', ''), 'industry', item.n1)+'">' + item.n1 + '</a></span>';
 						if(item.n2 && item.n1 == industry){
@@ -496,39 +511,39 @@ define(function(require, exports, module) {
 							class_select = '';
 							if(mince == '')class_select = "select";
 							var mincehtml = '<span class="all '+class_select+'"><a href="'+common.replaceParamVal(search_url, 'mince', '')+'">'+langtxt.cvall+'</a></span>';
-							$.each(item.n2, function(i, item){ 
-								class_select = '';	
+							$.each(item.n2, function(i, item){
+								class_select = '';
 								if(mince == item)class_select = "class='select'";
 								mincehtml = mincehtml + '<span '+class_select+'><a href="'+common.replaceParamVal(search_url, 'mince', item)+'">' + item + '</a></span>';
 								$(".mince").html(mincehtml);
 							});
 						}
-					}); 
+					});
 					$(".industry").html(html);
 				}else{
 					$(".industrydl").hide();
 					$(".mincedl").hide();
 				}
-				
+
 				class_select = '';
 				if(temtype == '')class_select = "select";
 				var search_url_type = common.replaceParamVal(search_url, 'color', '');
 				search_url_type = common.replaceParamVal(search_url_type, 'industry', '');
 				search_url_type = common.replaceParamVal(search_url_type, 'mince', '');
 				html = '<span class="all '+class_select+'"><a href="'+common.replaceParamVal(search_url_type, 'temtype', '')+'">'+langtxt.cvall+'</a></span>';
-				$.each(json.t, function(i, item){ 
+				$.each(json.t, function(i, item){
 					class_select = '';
 					if(temtype == item)class_select = "class='select'";
 					html = html + '<span '+class_select+'><a href="'+common.replaceParamVal(search_url_type, 'temtype', item)+'">' + item + '</a></span>';
 				});
 				$(".temtype").html(html);
-				
+
 				if(json.y){
 					$(".colordl").show();
 					class_select = '';
 					if(color == '')class_select = "select";
 					html = '<span class="all '+class_select+'"><a href="'+common.replaceParamVal(search_url, 'color', '')+'">'+langtxt.cvall+'</a></span>';
-					$.each(json.y, function(i, item){ 
+					$.each(json.y, function(i, item){
 						class_select = '';
 						if(color == item)class_select = "class='select'";
 						html = html + '<span '+class_select+'><a href="'+common.replaceParamVal(search_url, 'color', item)+'">' + item + '</a></span>';
@@ -561,7 +576,7 @@ define(function(require, exports, module) {
 		tem_search();
 	}
 
-		
+
 	/*详情页评分*/
 	function pingfen(){
 		require('tem/raty/jquery.raty.css');
@@ -585,7 +600,7 @@ define(function(require, exports, module) {
 			}
 		});
 	}
-	
+
 	/*详情页选项卡*/
 	$(document).on('click',".appdetail_ol li",function(){
 		$(".appdetail_ol li").removeClass("on");
@@ -598,7 +613,7 @@ define(function(require, exports, module) {
 			$(".appdetail_de").hide();
 		}
 	});
-	
+
 	$(document).on('change keyup',"input[data-table-search-tem]",function(){
 		$('.select').removeClass('select');
 		$('.all').addClass('select');
@@ -610,5 +625,5 @@ define(function(require, exports, module) {
 		//$(".industrydl").show();
 		//alert(u);
 	});
-	
+
 });

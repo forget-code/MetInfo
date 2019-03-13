@@ -227,9 +227,11 @@ while($columnid=current($cache_column)){
 		$cache_column[$listc['bigclass']]['url']=$listc['url'];
 		if($langnums==1&&$cache_column[$listc['bigclass']][foldername]==$listc[foldername]&&$listc['module']!=0){
 			if($listc['isshow_out']!=1&&$about_isshow[$listc['classtype']][$urltop]!=1){
-				$cache_column[$listc['bigclass']]['url']='isshow';
-				$listc['url']=$urltop;
-				$about_isshow[$listc['classtype']][$urltop]=1;
+				if($cache_column[$listc['bigclass']]['isshow']===0){
+					$cache_column[$listc['bigclass']]['url']='isshow';
+					$listc['url']=$urltop;
+					$about_isshow[$listc['classtype']][$urltop]=1;
+				}
 			}
 		}
 		

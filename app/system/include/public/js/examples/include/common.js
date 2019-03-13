@@ -17,7 +17,7 @@ define(function(require, exports, module) {
 		
 		/*编辑器*/
 		if(dom.find('.ftype_ckeditor .fbox textarea').length>0){
-			require.async('epl/editor/own',function(a){
+			require.async('edturl/own',function(a){
 				a.func(dom);
 			});
 		}

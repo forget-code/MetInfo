@@ -1,4 +1,6 @@
 <!--<?php
+global $_M;
+$_M['config']['met_skin_css']='metinfo.css';
 $methtml_head  = metlabel_html5();//基于Html5
 $topgu = $lang_mobiletopnavtype?'data-am-sticky':'';
 echo <<<EOT

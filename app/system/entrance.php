@@ -2,7 +2,7 @@
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 
-//°æ±¾ºÅ
+//ç‰ˆæœ¬å·
 define ('SYS_VER', 'beta 1.101');
 define ('SYS_VER_TIME', '20150511');
 
@@ -16,26 +16,26 @@ PHP_VERSION >= '5.1' && date_default_timezone_set('Asia/Shanghai');
 
 define('IN_MET', true);
 
-//ÍøÕ¾¸ùÄ¿Â¼
+//ç½‘ç«™æ ¹ç›®å½•
 define ('PATH_WEB', substr(dirname(__FILE__),0,-10));
-//Ó¦ÓÃ¿ª·¢°ü¸ùÄ¿Â¼
+//åº”ç”¨å¼€å‘åŒ…æ ¹ç›®å½•
 define ('PATH_APP', PATH_WEB."app/");
-//Ó¦ÓÃÎÄ¼ş¸ùÄ¿Â¼
+//åº”ç”¨æ–‡ä»¶æ ¹ç›®å½•
 define ('PATH_ALL_APP', PATH_WEB."app/app/");
-//ÅäÖÃÎÄ¼ş¸ùÄ¿Â¼
+//é…ç½®æ–‡ä»¶æ ¹ç›®å½•
 define ('PATH_CONFIG', PATH_WEB."config/");
-//»º´æÎÄ¼ş¸ùÄ¿Â¼
+//ç¼“å­˜æ–‡ä»¶æ ¹ç›®å½•
 define ('PATH_CACHE', PATH_WEB."cache/");
-//Ó¦ÓÃ¿ª·¢¿ò¼ÜÄÚºË¸ùÄ¿Â¼
+//åº”ç”¨å¼€å‘æ¡†æ¶å†…æ ¸æ ¹ç›®å½•
 define ('PATH_SYS', PATH_APP."system/");
 
-//ÏµÍ³Àà¸ùÄ¿Â¼
+//ç³»ç»Ÿç±»æ ¹ç›®å½•
 define ('PATH_SYS_CLASS', PATH_WEB."app/system/include/class/");
-//ÏµÍ³·½·¨¸ùÄ¿Â¼
+//ç³»ç»Ÿæ–¹æ³•æ ¹ç›®å½•
 define ('PATH_SYS_FUNC', PATH_WEB."app/system/include/function/");
-//ÏµÍ³Ä£°å¹«ÓÃÎÄ¼ş¸ùÄ¿Â¼
+//ç³»ç»Ÿæ¨¡æ¿å…¬ç”¨æ–‡ä»¶æ ¹ç›®å½•
 define ('PATH_SYS_PUBLIC', PATH_WEB."app/system/include/public/");
-//ÏµÍ³Ä£¿é¸ùÄ¿Â¼
+//ç³»ç»Ÿæ¨¡å—æ ¹ç›®å½•
 define ('PATH_SYS_MODULE', PATH_WEB."app/system/include/module/");
 
 if (!defined('M_TYPE')) {
@@ -51,7 +51,7 @@ if (!defined('M_MODULE')) {
 	define ('M_CLASS', $_GET['c']);
 	define ('M_ACTION', $_GET['a']);
 }
-//µ±Ç°ÎÄ¼ş¼ĞµØÖ·
+//å½“å‰æ–‡ä»¶å¤¹åœ°å€
 if(M_TYPE == 'system'){
 	if(M_MODULE == 'include'){
 		define ('PATH_OWN_FILE', PATH_APP.M_TYPE.'/'.M_MODULE.'/module/');
@@ -64,17 +64,19 @@ if(M_TYPE == 'system'){
 }
 
 define ('PATH_MODULE_FILE', PATH_APP.'system'.'/'.M_MODULE.'/');
-//³ÌĞòÔËĞĞ¿ªÊ¼Ê±¼ä
+//ç¨‹åºè¿è¡Œå¼€å§‹æ—¶é—´
 define ('TIME_SYS_START', time());
-//±íµ¥±äÁ¿×Ô¶¯¹ıÂË
+//è¡¨å•å˜é‡è‡ªåŠ¨è¿‡æ»¤
 define ('MAGIC_QUOTES_GPC', get_magic_quotes_gpc());
 
-//µ±Ç°·ÃÎÊµÄÖ÷»úÃû
+//å½“å‰è®¿é—®çš„ä¸»æœºå
 define ('HTTP_HOST', $_SERVER['HTTP_HOST']);
-//À´Ô´Ò³Ãæ
+//æ¥æºé¡µé¢
 define('HTTP_REFERER', $_SERVER['HTTP_REFERER']);
-//½Å±¾Â·¾¶
-define ('PHP_SELF', $_SERVER['PHP_SELF']);
+//è„šæœ¬è·¯å¾„
+$phpfile = basename(__FILE__);
+$_SERVER['PHP_SELF']=htmlentities($_SERVER['PHP_SELF']);
+define ('PHP_SELF', $_SERVER['PHP_SELF']=="" ? $_SERVER['SCRIPT_NAME'] : $_SERVER['PHP_SELF']);
 
 if (!preg_match('/^[A-Za-z0-9_]+$/', M_TYPE.M_NAME.M_MODULE.M_CLASS.M_ACTION)) {
 	echo 'Constants must be numbers or letters or underlined';

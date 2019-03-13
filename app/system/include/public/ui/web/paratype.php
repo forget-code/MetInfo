@@ -193,6 +193,23 @@ echo <<<EOT
 <!--
 EOT;
 }
+
+
+if($val['type']==8){
+echo <<<EOT
+-->
+   			<div class="form-group met-form-choice">
+				<div class="row">
+					<div class="met-form-file-title col-md-3">{$val['name']}</div>
+					<div class="col-md-9">
+						<p style="font-size: 22px;">{$value}</p>
+					</div>
+				</div>
+			</div>
+<!--
+EOT;
+}
+
 echo <<<EOT
 -->	
 <!--

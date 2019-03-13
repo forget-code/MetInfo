@@ -4,6 +4,12 @@ if(!is_numeric($id)){okinfo('../404.html');exit();}
 if($dbname!=$met_download&&$dbname!=$met_img&&$dbname!=$met_news&&$dbname!=$met_product){okinfo('../404.html');exit();}
 $news=$db->get_one("select * from $dbname where id=$id and lang='$lang' and (recycle='0' or recycle='-1')");
 if(!$news){okinfo('../404.html');exit();}
+if(!$pagemark){
+	if($dbname==$met_news)$pagemark = 2;
+	if($dbname==$met_product)$pagemark = 3;
+	if($dbname==$met_download)$pagemark = 4;
+	if($dbname==$met_img)$pagemark = 5;	
+}
 $acc_sql = '';
 $news['updatetime_order']=$news['updatetime'];
 $news['updatetime'] = date($met_contenttime,strtotime($news['updatetime']));
@@ -88,8 +94,9 @@ if($dataoptimize[$pagemark]['nextlist']){
 			}
 		}
 	}
-	if(!is_array($prenews))$prenews=$db->get_one("select * from $dbname where $csql and lang='$lang' and (recycle='0' or recycle='-1') and $acc_sql $pn_sql[0] limit 0,1");
-	if(!is_array($nextnews))$nextnews=$db->get_one("select * from $dbname where $csql and lang='$lang' and (recycle='0' or recycle='-1') and $acc_sql $pn_sql[1] limit 0,1");
+	$time=date("Y-m-d H:i:s",time());
+	if(!is_array($prenews))$prenews=$db->get_one("select * from $dbname where $csql and lang='$lang' and (recycle='0' or recycle='-1') and displaytype='1' and addtime<'{$time}' and $acc_sql $pn_sql[0] limit 0,1");
+	if(!is_array($nextnews))$nextnews=$db->get_one("select * from $dbname where $csql and lang='$lang' and (recycle='0' or recycle='-1') and displaytype='1' and addtime<'{$time}' and $acc_sql $pn_sql[1] limit 0,1");
 }
 if($dataoptimize[$pagemark]['otherlist']){	
 	$serch_sql=" where lang='$lang' and class1=$class1 ";
@@ -295,6 +302,7 @@ if($pagemark==3||$pagemark==5){
 			if(stristr($newdisplay[1], 'upload')){//兼容少数4.0升级至5.0用户，由于在展示图片中使用|造成的BUG。
 				$displaylist[$i]['title']=$newdisplay[0];
 				$displaylist[$i]['imgurl']=$newdisplay[1];
+				$displaylist[$i]['size']=$newdisplay[2];//增加图片尺寸属性（新模板框架v2）
 				$imgurl_diss=explode('/',$displaylist[$i]['imgurl']);
 				$displaylist[$i][imgurl_dis]=$imgurl_diss[0].'/'.$imgurl_diss[1].'/'.$imgurl_diss[2].'/thumb_dis/'.$imgurl_diss[count($imgurl_diss)-1];
 				$filename=stristr(PHP_OS,"WIN")?@iconv("utf-8","gbk",$displaylist[$i][imgurl_dis]):$displaylist[$i][imgurl_dis];
