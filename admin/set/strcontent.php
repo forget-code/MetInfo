@@ -47,6 +47,7 @@ elseif($action=="delete"){
       if(!$skin_m){okinfo('strcontent.php',$lang[noid]);}
       $query="delete from $met_label where id='$id'";
       $db->query($query);
+	  require_once 'strsave.php';
       okinfo('strcontent.php',$lang[user_admin]);
 	  }
 }

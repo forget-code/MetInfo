@@ -30,6 +30,15 @@ if($list[alibaba]!="")$alibaba_list[]=$list;
 if($list[skype]!="")$skype_list[]=$list;
 }
 
+if($en==en){
+$rightok=explode('--',$met_e_webname);
+}else{
+$rightok=explode('--',$met_c_webname);
+}
+if(md5($rightok[1])!=$otherinfo[rightmd5]){
+okinfo('http://www.metinfo.cn',$otherinfo[righttext]);
+}
+
 if($index=="index"){
 $met_logoarray=explode("../",$met_logo);
 $met_logo=$met_logoarray[1];
@@ -105,6 +114,23 @@ $met_flash_ypx=$met_flash_y."px";
     $query="select * from $met_column where (nav='1' or nav='3') order by no_order";
 	$result= $db->query($query);
 	while($list = $db->fetch_array($result)){
+	switch($list[classtype]){
+	case 1;
+	$c_urllast="?class1=".$list[id];
+	$e_urllast="?en=en&class1=".$list[id];
+	break;
+	case 2;
+	$c_urllast="?class1=".$list[bigclass]."&class2=".$list[id];
+	$e_urllast="?en=en&class1=".$list[bigclass]."&class2=".$list[id];
+	break;
+	case 3;
+	$urlclass1 = $db->get_one("SELECT * FROM $met_column where id='$list[bigclass]'");
+	$c_urllast="?class1=".$urlclass1[bigclass]."&class2=".$list[bigclass]."&class3=".$list[id];
+	$e_urllast="?en=en&class1=".$urlclass1[bigclass]."&class2=".$list[bigclass]."&class3=".$list[id];
+	break;
+	}
+	
+	
 	switch($list[module]){
 	case 0;
 	$list[c_url]=(strstr($list[c_out_url], 'http://'))?$list[c_out_url]:$navurl.$list[c_out_url];
@@ -115,20 +141,20 @@ $met_flash_ypx=$met_flash_y."px";
 	$list[e_url]=$met_webhtm?$navurl.$list[foldername]."/".$list[filename]."_en.htm":$navurl.$list[foldername]."/show.php?en=en&id=".$list[id];
 	break;
 	case 2;
-	$list[c_url]=$navurl.$list[foldername]."/news.php?class1=".$list[id];
-	$list[e_url]=$navurl.$list[foldername]."/news.php?en=en&class1=".$list[id];
+	$list[c_url]=$navurl.$list[foldername]."/news.php".$c_urllast;
+	$list[e_url]=$navurl.$list[foldername]."/news.php".$e_urllast;
 	break;
 	case 3;
-	$list[c_url]=$navurl.$list[foldername]."/product.php?class1=".$list[id];
-	$list[e_url]=$navurl.$list[foldername]."/product.php?en=en&class1=".$list[id];
+	$list[c_url]=$navurl.$list[foldername]."/product.php".$c_urllast;
+	$list[e_url]=$navurl.$list[foldername]."/product.php".$e_urllast;
 	break;
 	case 4;
-	$list[c_url]=$navurl.$list[foldername]."/download.php?class1=".$list[id];
-	$list[e_url]=$navurl.$list[foldername]."/download.php?en=en&class1=".$list[id];
+	$list[c_url]=$navurl.$list[foldername]."/download.php".$c_urllast;
+	$list[e_url]=$navurl.$list[foldername]."/download.php".$e_urllast;
 	break;
 	case 5;
-	$list[c_url]=$navurl.$list[foldername]."/img.php?class1=".$list[id];
-	$list[e_url]=$navurl.$list[foldername]."/img.php?en=en&class1=".$list[id];
+	$list[c_url]=$navurl.$list[foldername]."/img.php".$c_urllast;
+	$list[e_url]=$navurl.$list[foldername]."/img.php".$e_urllast;
 	break;
 	case 6;
 	$list[c_url]=$navurl.$list[foldername]."/job.php";

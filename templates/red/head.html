@@ -77,8 +77,9 @@ echo <<<EOT
 </div>
 <div class="headright2">
 <form method="POST" name="myform1" action="$searchurl"  target="_self">
-<input type="text" name="c_title" size="20"/>
+<input type="text" name="c_searchword" size="20"/>
 <select name="class1">
+<option value="">整站搜索</option>
 <!--
 EOT;
 foreach($nav_search as $key=>$val)

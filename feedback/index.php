@@ -9,12 +9,12 @@ $navurl=($rooturl=="..")?$rooturl."/":"";
 $fromurl=$_SERVER['HTTP_REFERER'];
 $ip=$m_user_ip;
 if($title==""){
-$navtitle=($en=="en")?"FeedBack":"咨询反馈";
+$navtitle=($en=="en")?$met_e_fdtable:$met_c_fdtable;
 $title=$navtitle;
 }
 else{
-$c_navtitle1="[".$title."]信息反馈";
-$e_navtitle1="[".$title."]FeedBack";
+$c_navtitle1="[".$title."]".$met_c_fdtable;
+$e_navtitle1="[".$title."]".$met_e_fdtable;
 $navtitle=($en=="en")?$e_navtitle1:$c_navtitle1; 
 }
 if($action=="add"){
@@ -51,6 +51,17 @@ $c_fd_word="反馈信息中不能包含[".$fd_word."]！";
 $e_fd_word="[".$fd_word."] is not permited to send！";
 $fd_word=($en=="en")?$e_fd_word:$c_fd_word;
 if($fdok==true)okinfo('javascript:history.back();',$fd_word);
+
+for($i=21;$i<25;$i++){
+$para="para".$i;
+for($j=1;$j<=$$para;$j++){
+$parad="para".$i."_".$j;
+$parad1=$$parad;
+$fdpara=($parad1=="")?$fdpara:$fdpara.$parad1.",";
+}
+$$para=$fdpara;
+$fdpara="";
+}
 if($met_fd_type==0 or $met_fd_type==2){
 $from=$met_fd_usename;
 $fromname=$met_fd_fromname;
@@ -59,15 +70,18 @@ $usename=$met_fd_usename;
 $usepassword=$met_fd_password;
 $smtp=$met_fd_smtp;
 
+$fdclass1= $db->get_one("SELECT * FROM $met_fdparameter WHERE c_name='$met_fd_class'");
+$fdclass2="para".$fdclass1[id];
+$fdclass=$$fdclass2;
 
-$title=$fdtitle."--反馈邮件";
+$title=$fdclass."--".$fdtitle;
 
 $query = "SELECT * FROM $met_fdparameter order by no_order";
 $result = $db->query($query);
 while($list= $db->fetch_array($result)){
 $emaillist[]=$list;
 }
-for($k=0;$k<20;$k++){
+for($k=0;$k<24;$k++){
 if($emaillist[$k][use_ok]==1){
 $parafd="para".$emaillist[$k][id];
 if($en=="en"){
@@ -95,6 +109,8 @@ mail("$toemail", "$title", "$body", "$headers");
 }else{
 jmailsend($from,$fromname,$to,$title,$body,$usename,$usepassword,$smtp);
 }
+
+
 }
 
 if($met_fd_back==1){
@@ -136,7 +152,11 @@ $query = "INSERT INTO $met_feedback SET
 					  para17             = '$para17',
 					  para18             = '$para18', 
 					  para19             = '$para19', 
-					  para20             = '$para20'";
+					  para20             = '$para20',
+					  para21             = '$para21', 
+					  para22             = '$para22',
+					  para23             = '$para23', 
+					  para24             = '$para24' ";
          $db->query($query);
 }
 if($en=="en"){
@@ -176,6 +196,18 @@ case '3';
 $list[c_input]="<textarea name='para$list[id]' cols='50' rows='5'></textarea>";
 $list[e_input]="<textarea name='para$list[id]' cols='50' rows='5'></textarea>";
 break;
+case '4';
+$i=0;
+foreach($fdlist as $key=>$val){
+if($val[bigid]==$list[id]){
+$i++;
+$list[c_input]=$list[c_input]."<input name='para$list[id]_$i' type='checkbox' value='$val[c_list]' />$val[c_list]&nbsp;&nbsp;";
+$list[e_input]=$list[e_input]."<input name='para$list[id]_$i' type='checkbox' value='$val[e_list]' />$val[e_list]&nbsp;&nbsp;";
+}
+}
+$list[c_input]=$list[c_input]."<input name='para$list[id]' type='hidden' value='$i' />";
+$lagernum[$list[id]]=$i;
+break;
 }
 $fd_para[]=$list;
 if($list[wr_ok])$fdwr_list[]=$list;
@@ -184,14 +216,30 @@ if($list[wr_ok])$fdwr_list[]=$list;
 $fdjs="<script language='javascript'>";
 $fdjs=$fdjs."function Checkfeedback(){ ";
 foreach($fdwr_list as $key=>$val){
+if($val[type]!=4){
 $fdjs=$fdjs."if (document.myform.para$val[id].value.length == 0) {";
-if($en=="en"){
-$fdjs=$fdjs."alert('$val[e_name] is Null');";
+ if($en=="en"){
+ $fdjs=$fdjs."alert('$val[e_name] is Null');";
+  }else{
+  $fdjs=$fdjs."alert('$val[c_name]不能为空');";
+  }
+ $fdjs=$fdjs."document.myform.para$val[id].focus();";
+ $fdjs=$fdjs."return false;}";
 }else{
-$fdjs=$fdjs."alert('$val[c_name]不能为空');";
+ $lagerinput="";
+ for($j=1;$j<=$lagernum[$val[id]];$j++){
+ $lagerinput=$lagerinput."document.myform.para$val[id]_$j.checked||";
+ }
+ $lagerinput=$lagerinput."false";
+ $fdjs=$fdjs."if(!($lagerinput)){";
+ if($en=="en"){
+ $fdjs=$fdjs."alert('$val[e_name] is Null');";
+ }else{
+ $fdjs=$fdjs."alert('$val[c_name]不能为空');";
+ }
+ $fdjs=$fdjs."document.myform.para$val[id]_1.focus();";
+ $fdjs=$fdjs."return false;}";
 }
-$fdjs=$fdjs."document.myform.para$val[id].focus();";
-$fdjs=$fdjs."return false;}";
 }
 $fdjs=$fdjs."}</script>";
 

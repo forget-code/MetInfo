@@ -1,4 +1,12 @@
-<?php require_once('templates/header.htm');?>
+<!--<?php
+require_once template('header'); 
+$SERVER_SIGNATURE=$_SERVER['SERVER_SIGNATURE'];
+$SERVER_NAME=$_SERVER['SERVER_NAME'];
+$bigtime=ini_get("max_execution_time");
+$PHP_VERSION=PHP_VERSION;
+$errormsg_v=$errormsg['version'];
+echo <<<EOT
+-->
 <body >
 <div class="body">
 <div class="head">
@@ -13,11 +21,11 @@
 <fieldset>
 <legend><strong>系统检测结果</strong></legend>
 <div class="section"><ul class="inspect-list">
-   <li class='NA'><strong>服务器 </strong> = <?php echo $_SERVER['SERVER_SIGNATURE']?></li>
-   <li class='NA'><strong>HTTP主机</strong> = <?php echo $_SERVER['SERVER_NAME']?></li>
-   <li class='NA'><strong>PHP页面最大执行时间</strong> = <?php echo ini_get("max_execution_time")?></li>
-   <li class='<?php echo $mysql_ver_class?>'><strong>MySQL支持</strong> = <?php echo $mysql_support?></li>
-   <li class='<?php echo $ver_class?>'><strong>PHP版本</strong> = <?php echo PHP_VERSION?> <?php echo $errormsg['version']?></li>
+   <li class='NA'><strong>服务器 </strong> = $SERVER_SIGNATURE</li>
+   <li class='NA'><strong>HTTP主机</strong> = $SERVER_NAME</li>
+   <li class='NA'><strong>PHP页面最大执行时间</strong> = $bigtime</li>
+   <li class='$mysql_ver_class'><strong>MySQL支持</strong> = $mysql_support</li>
+   <li class='$ver_class'><strong>PHP版本</strong> = $PHP_VERSION $errormsg_v</li>
 
 </ul>
 <br /><a href="javascript:popupWindowLrg('phpinfo.php')">查看服务器的PHPINFO</a>
@@ -33,11 +41,19 @@
 在浏览器中刷新本页面以重新检测设置。<br />
 <br />某些主机不允许您设置 CHMOD 777, 要用666。先试最高的值，不行的话，再逐步降低该值。
 <ul class="inspect-list">
-<?php for($i=0; $i<$count; $i++){?>
-   <li class='<?php echo $class_chcek[$i]?>'>
-   <strong><?php echo $w_check[$i]?></strong> = <?php echo $check_msg[$i]?>   
+<!--
+EOT;
+for($i=0; $i<$count; $i++){
+echo <<<EOT
+-->
+   <li class='$class_chcek[$i]'>
+   <strong>$w_check[$i]</strong> =$check_msg[$i]  
    </li>
-<?}?>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
 </ul>
 </div>
 </fieldset><br />
@@ -45,10 +61,13 @@
 <fieldset>
 <legend><strong>开始安装?  (将删除已有数据，不是升级模式!!!)</strong></legend>
 <strong></strong>
-<p align="right"><input type="submit" name="submit" class="btn2" tabindex="8" value=" 安装 "  <?php echo $disabled?> />
+<p align="right"><input type="submit" name="submit" class="btn2" tabindex="8" value=" 安装 "  $disabled />
 <input type="button" name="refresh" class="btn2" tabindex="11" value="重新检查" onClick="history.go(0)" /></p>
 </fieldset>
 </form>
 </div>
 </div>
-<?php require_once('templates/footer.htm');?>
+<!--
+EOT;
+require_once template('footer'); 
+?>-->

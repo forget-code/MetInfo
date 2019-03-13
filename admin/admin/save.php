@@ -1,6 +1,10 @@
 <?php
+$admin_power="metinfo";
 require_once '../login/login_check.php';
 $admin_ok = 1;
+$admin_issueok=0;
+if($admin_issue=="yes")$admin_issueok=1;
+$admin_op=$admin_op0."-".$admin_op1."-".$admin_op2."-".$admin_op3;
 if($admin_pop=="yes"){
 $admin_type="metinfo";}
 else{
@@ -35,10 +39,12 @@ $pass1=md5($pass1);
 					  admin_qq           = '$qq',
 					  admin_msn          = '$msn',
 					  admin_taobao       = '$taobao',
-					  admin_introduction    = '$admin_introduction',
+					  admin_introduction  = '$admin_introduction',
 				      admin_type          = '$admin_type',
 					  admin_register_date= '$m_now_date',
-					  admin_approval_date= '$m_now_date', 
+					  admin_approval_date= '$m_now_date',
+					  admin_issueok      = '$admin_issueok',
+					  admin_op           = '$admin_op',
 					  admin_ok           = '$admin_ok'";
          $db->query($query);
 okinfo('index.php',$lang[user_admin]);
@@ -57,9 +63,13 @@ $query = "update $met_admin_table SET
 					  admin_taobao       = '$taobao',
 					  admin_introduction    = '$admin_introduction',
 					  admin_register_date= '$m_now_date',
-					  admin_approval_date= '$m_now_date', 
+					  admin_approval_date= '$m_now_date',
 					  admin_ok           = '$admin_ok'";
-if($editorpass!=1)$query .=", admin_type          = '$admin_type'";
+if($editorpass!=1){
+$query .=", admin_type          = '$admin_type'";
+$query .=", admin_issueok      = '$admin_issueok'";
+$query .=", admin_op           = '$admin_op'";
+}
 if($pass1){
 $pass1=md5($pass1);
 $query .=", admin_pass         = '$pass1'";

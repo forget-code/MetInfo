@@ -86,7 +86,7 @@ $db->dbconn($con_db_host,$con_db_id,$con_db_pass,$con_db_name);
 $met_skin="met";
 
 //显示参数转换
-$metcms_v="1.3";
+$metcms_v="1.5";
 $met_e_seo=stripslashes($met_e_seo);
 $met_c_seo=stripslashes($met_c_seo);
 $met_c_foottext=stripslashes($met_c_foottext);
@@ -95,5 +95,10 @@ $met_c_footright=stripslashes($met_c_footright);
 $met_c_footother=stripslashes($met_c_footother);
 $met_e_footright=stripslashes($met_e_footright);
 $met_e_footother=stripslashes($met_e_footother);
+$met_c_foottel=stripslashes($met_c_foottel);
+$met_e_foottel=stripslashes($met_e_foottel);
+$met_c_footaddress=stripslashes($met_c_footaddress);
+$met_e_footaddress=stripslashes($met_e_footaddress);
+
 
 

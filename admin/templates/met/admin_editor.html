@@ -84,8 +84,16 @@ EOT;
           <td width="120" height="25" valign="middle">管理员简介:</td>
           <td colspan="2" valign="top"> <textarea name="admin_introduction" cols="60" rows="5" >$admin_list[admin_introduction]</textarea></td>
           </tr>
+		  <tr bgcolor="#ECF5FF"> 
+          <td width="120" height="25" valign="middle"><font color="#FF0000">*</font>信息权限:</td>
+          <td colspan="2" valign="top"><input name="admin_issue" type="checkbox" value="yes" $admin_issue_ok>只允许查看自己发表的信息</td>
+          </tr>
+		  <tr bgcolor="#ECF5FF"> 
+          <td width="120" height="25" valign="middle"><font color="#FF0000">*</font>操作权限:</td>
+          <td colspan="2" valign="top"><font color="#FF0000"><input name="admin_op0" type="checkbox" value="metinfo" $admin_op_0>完全控制</font>&nbsp;&nbsp;<input name="admin_op1" type="checkbox" value="add" $admin_op_1>添加信息&nbsp;&nbsp;<input name="admin_op2" type="checkbox" value="editor" $admin_op_2>修改信息&nbsp;&nbsp;<input name="admin_op3" type="checkbox" value="del" $admin_op_3>删除信息</td>
+          </tr>
 		   <tr bgcolor="#ECF5FF"> 
-          <td width="120" height="25" valign="middle"><font color="#FF0000">*</font>管理员权限:</td>
+          <td width="120" height="25" valign="middle"><font color="#FF0000">*</font>栏目权限:</td>
           <td colspan="2" valign="top"><font color="#FF0000">
 <input name="admin_pop" type="checkbox" value="yes" $admin_pop>全部选择</font><br>
 <input name="admin_pop1001" type="checkbox" value="1001" $admin_pop1001 >管理员管理&nbsp;&nbsp;

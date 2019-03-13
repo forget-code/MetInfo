@@ -166,7 +166,8 @@ else{
         $totalsize = 0;
         $query = $db->query("SHOW TABLES FROM ".$con_db_name);
         while($r = $db->fetch_row($query))
-        {
+        {  
+		 if(strstr($r[0], $tablepre)){
             $tables[$k] = $r[0];
             $count = $db->get_one("SELECT count(*) as number FROM $r[0] WHERE 1");
             $results[$k] = $count['number'];
@@ -177,6 +178,7 @@ else{
             $size[$k] = round($s['Data_length']/1024/1024, 2);
             $totalsize += $size[$k];
             $k++;
+		 }
         }
 $css_url="../templates/".$met_skin."/css";
 $img_url="../templates/".$met_skin."/images";

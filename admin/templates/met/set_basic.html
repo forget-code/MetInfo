@@ -24,10 +24,20 @@ echo <<<EOT
             <td width="140" height="25"><font color="#FF0000">*</font>网站中文名称：</td>
             <td colspan="2"> <input name="met_c_webname" type="text" class="input" size="20" maxlength="200" value="$met_c_webname"></td>
           </tr> 
+<!--
+EOT;
+if($met_en_lang==1){
+echo <<<EOT
+-->
 		  <tr bgcolor="#ECF5FF"> 
             <td width="140" height="25"><font color="#FF0000">*</font>网站英文名称：</td>
             <td colspan="2"> <input name="met_e_webname" type="text" class="input" size="20" maxlength="200" value="$met_e_webname"></td>
-          </tr> 
+          </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+--> 
 		  <tr bgcolor="#ECF5FF"> 
             <td width="140" height="25"><font color="#FF0000">*</font>网站网址：</td>
             <td colspan="2"> <input name="met_weburl" type="text" class="input" size="20" maxlength="200" value="$met_weburl">系统检测到的地址：<font color="#FF0000">$localurl</font></td>
@@ -37,6 +47,21 @@ echo <<<EOT
             <td colspan="2"><input name="met_logo" type="text" class="input" size="30" maxlength="200" value="$met_logo"><iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_photo.php?returnid=logo" frameborder=0 scrolling=no width="280" height="25"></iframe>
 			</td>
           </tr>
+<!--
+EOT;
+if($met_en_lang==1){
+echo <<<EOT
+-->
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="119" height="25">英文LOGO：</td>
+            <td colspan="2"><input name="met_e_logo" type="text" class="input" size="30" maxlength="200" value="$met_e_logo"><iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_photo.php?returnid=met_e_logo&flash=flash" frameborder=0 scrolling=no width="280" height="25"></iframe>
+			</td>
+          </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+--> 
 		  <tr bgcolor="#ECF5FF"> 
             <td width="140" height="25">开启英文版本：</td>
             <td colspan="2"><input name="met_en_lang" type="checkbox" value="1" $met_en_lang1>选择后可以在后台添加英文内容，需要前台模板支持</td>

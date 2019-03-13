@@ -1,4 +1,8 @@
-<?php require_once('templates/header.htm');?>
+<!--<?php
+require_once template('header'); 
+$installinfo=creat_table($content);
+echo <<<EOT
+-->
 <body>
 <div class="body">
 <div class="head">
@@ -12,19 +16,34 @@
 <legend><strong>系统安装</strong></legend>
 <div class='section'>
 <ul class="inspect-list">
-<?php creat_table($content);?>  
+$installinfo
 </ul>
 </div>
 </fieldset>
 
 <br />
 <div class="center">
-<?php if($db_setup==1){?>
+<!--
+EOT;
+if($db_setup==1){
+echo <<<EOT
+-->
 <form name="myform" method="post" action="index.php?action=adminsetup" style="text-align:center;"><input type="submit" name="submit" class="btn2" value="点击进入管理设置" /></form>
-<?}else{?>
+<!--
+EOT;
+}else{
+echo <<<EOT
+-->
 <p>系统安装失败，请联系仔细检查您的mysql版本，和php版本，以及运行环境。</p>
-<?}?>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
 </div>
 </div>
 </div>
- <?php require_once('templates/footer.htm');?>
+<!--
+EOT;
+require_once template('footer'); 
+?>-->

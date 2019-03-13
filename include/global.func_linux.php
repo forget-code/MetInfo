@@ -14,6 +14,37 @@ function daddslashes($string, $force = 0) {
 			$string = addslashes($string);
 		}
 	}
+	if(inject_check($string)){
+	$reurl="http://".$_SERVER["HTTP_HOST"];
+	echo("<script type='text/javascript'> alert('请不要尝试非法注入！'); location.href='$reurl'; </script>");
+	die("请不要尝试非法注入！");
+	}
+	if($id!=""){
+	if(!is_numeric($id)){
+	$reurl="http://".$_SERVER["HTTP_HOST"];
+	echo("<script type='text/javascript'> alert('参数非法！'); location.href='$reurl'; </script>");
+	die("参数非法！");
+	}}
+	if($class1!=""){
+	if(!is_numeric($class1)){
+	$reurl="http://".$_SERVER["HTTP_HOST"];
+	echo("<script type='text/javascript'> alert('参数非法！'); location.href='$reurl'; </script>");
+	die("参数非法！");
+	}}
+	if($class2!=""){
+	if(!is_numeric($class2)){
+	$reurl="http://".$_SERVER["HTTP_HOST"];
+	echo("<script type='text/javascript'> alert('参数非法！'); location.href='$reurl'; </script>");
+	die("参数非法！");
+	}}
+	if($class3!=""){
+	if(!is_numeric($class3)){
+	$reurl="http://".$_SERVER["HTTP_HOST"];
+	echo("<script type='text/javascript'> alert('参数非法！'); location.href='$reurl'; </script>");
+	die("参数非法！");
+	}}
+	$string = str_replace("_", "\_", $string);     // 把 '_'过滤掉     
+    $string = str_replace("%", "\%", $string);     // 把 '%'过滤掉     
 	return $string;
 }
 
@@ -32,6 +63,7 @@ function template($template,$EXT="html"){
 function footer(){
 	$output = str_replace(array('<!--<!---->','<!---->','<!--fck-->','<!--fck','fck-->','',"\r",substr($admin_url,0,-1)),'',ob_get_contents());
     ob_end_clean();
+	if(!strstr($output,"MetInfo"))die("在未经授权前，请不要尝试去掉'Powered by MetInfo'版权标识！");
     echo $output; unset($output);
 	mysql_close();
 	exit;
@@ -183,6 +215,126 @@ return preg_replace('#^(?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,'.$from.'}'.
 '$1',$str); 
 }
 
+function inject_check($sql_str) {     
+  return eregi('select|insert|update|delete|\'|\/\*|\*|\.\.\/|\.\/|union|into|load_file|outfile', $sql_str);    // 进行过滤     
+}  
+
+function get_keyword_str($str,$keyword,$getstrlen)
+{
+	if(cnStrLen($str)> $getstrlen) 
+	{
+		$strlen = cnStrLen($keyword);
+		$strpos = cnStrPos($str,$keyword);
+		$halfStr = intval(($getstrlen-$strlen)/2);
+		if($strpos!=""){
+		 if($strpos>=$halfStr){
+		    $str = cnSubStr($str,($strpos - $halfStr),$halfStr).$keyword.cnSubStr($str,($strpos + $strlen),$halfStr);
+		 }else{
+		   $str = cnSubStr($str,($strpos - $halfStr),$strpos).$keyword.cnSubStr($str,($strpos + $strlen),($halfStr*2));
+		 }	
+		}else{
+		$str = cnSubStr($str,0,$getstrlen);
+		}
+		$str=str_replace('<p>','&nbsp;',$str);
+		$str=str_replace('</p>','&nbsp;',$str);
+		$str=str_replace('<br />','&nbsp;',$str);
+		$str=str_replace('<br>','&nbsp;',$str);
+		return str_replace($keyword,'<span style="font-size: 12px; color: #F30;">'.$keyword.'</span>',$str).'...';
+	}
+	else
+	{
+		return str_replace($keyword,'<span style="font-size: 12px; color: #F30;">'.$keyword.'</span>',$str);
+	}
+}
+
+/*
+	获取中英文混合字符串的长度
+*/
+function cnStrLen($str)
+{
+	$i = 0;
+	$tmp = 0;
+	while ($i < strlen($str))
+	{
+		if (ord(substr($str,$i,1)) >127)
+		{
+			$tmp = $tmp+1;
+			$i = $i + 3;
+		}
+		else
+		{
+			$tmp = $tmp + 1;;
+			$i = $i + 1;
+		}
+	}
+	return $tmp;
+}
+/*
+	获取中英文混合字符在字符串中的位置
+*/
+function cnStrPos($str,$keyword)
+{
+	$i = 0;
+	$tem = 0;
+	$temStr = strpos($str,$keyword);
+	while ($i < $temStr)
+	{
+		if (ord(substr($str,$i,1)) >127)
+		{
+			$tmp = $tmp+1;
+			$i = $i + 3;
+		}
+		else
+		{
+			$tmp = $tmp + 1;;
+			$i = $i + 1;
+		}
+	}
+	return $tmp;
+}
+//截取字符数
+//$str-字符串
+//$N-多少字符
+function cnSubStr($str, $start, $lenth)
+{
+	$len = strlen($str);
+	$r = array();
+	$n = 0;
+	$m = 0;
+	for($i = 0; $i < $len; $i++) {
+		$x = substr($str, $i, 1);
+		$a = base_convert(ord($x), 10, 2);
+		$a = substr('00000000'.$a, -8);
+		if ($n < $start){
+			if (substr($a, 0, 1) == 0) {
+			}elseif (substr($a, 0, 3) == 110) {
+				$i += 1;
+			}elseif (substr($a, 0, 4) == 1110) {
+				$i += 2;
+			}
+			$n++;
+		}else{
+			if (substr($a, 0, 1) == 0) {
+				$r[] = substr($str, $i, 1);
+			}elseif (substr($a, 0, 3) == 110) {
+				$r[] = substr($str, $i, 2);
+				$i += 1;
+			}elseif (substr($a, 0, 4) == 1110) {
+				$r[] = substr($str, $i, 3);
+				$i += 2;
+			}else{
+				$r[] = '';
+			}
+			if (++$m >= $lenth){
+				break;
+			}
+		}
+	}
+	return join('', $r);
+
+} // End subString_UTF8
+//去除HTML字符标记
+/*
 /*
 已采用函数
 */

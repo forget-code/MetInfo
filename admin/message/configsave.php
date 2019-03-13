@@ -1,4 +1,6 @@
 <?php
+$met_fd_content    =str_replace("\"","'",$met_fd_content);
+$met_fd_content    =str_replace(chr(13).chr(10),"",$met_fd_content);
 $config_save       = "<?php
 /*
 met_fd_time       = \"$met_fd_time\";

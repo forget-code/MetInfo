@@ -85,7 +85,7 @@ function link($url, $exc='')
   {
       global $lang;
 	 $text="<form method='POST' name='page1'  action='".$url."' target='_self'>";
-     $text.= "$lang[pag_total]<span>$this->pages</span>$lang[pags] $lang[pag_loction]<span>$this->_cur_page</span>$lang[pags] ";
+     $text.= "$lang[pag_total]<span>$this->pages</span>$lang[pags] $lang[pag_loction]<span style='color:#990000'>$this->_cur_page</span>$lang[pags] ";
       if ($this->_cur_page == 1 && $this->pages>1) 
         {
             //第一页

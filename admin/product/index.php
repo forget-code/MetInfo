@@ -12,6 +12,7 @@ require_once '../login/login_check.php';
 	$class2_listok=1;
 	}
     $serch_sql=" where class1=$class1 ";
+	if($admincp_ok[admin_issueok]==1)$serch_sql .= " and(issue='$metinfo_admin_name' or issue='')  ";
 	if($class2){
 	$serch_sql .= " and class2=$class2";
 	$query="select * from $met_column where bigclass='$class2'";

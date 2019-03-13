@@ -2,12 +2,12 @@
 header("Content-type: text/html;charset=utf-8");
 error_reporting(E_ERROR | E_PARSE);
 @set_time_limit(0);
-//ȡĿ 
+
 define('ROOTPATH', substr(dirname(__FILE__), 0, -7));
 
 PHP_VERSION >= '5.1' && date_default_timezone_set('Asia/Shanghai');
 session_cache_limiter('private, must-revalidate'); 
-@ini_set('session.auto_start',0); //Զر
+@ini_set('session.auto_start',0); 
 if(PHP_VERSION < '4.1.0') {
 	$_GET         = &$HTTP_GET_VARS;
 	$_POST        = &$HTTP_POST_VARS;
@@ -60,20 +60,20 @@ $db_settings = parse_ini_file(ROOTPATH.'config/config_db.php');
 
 require_once ROOTPATH.'config/tablepre.php';
 
-// ѡ
+
 if($en=="en"){
 @include_once ROOTPATH.'language/language_en.php';	
+$met_logo=($met_e_logo=="")?$met_logo:$met_e_logo;
 }
 else{
 @include_once ROOTPATH.'language/language_china.php';	
 }
-// MYSQLݿ
+
 require_once ROOTPATH.'include/mysql_class.php';
 $db = new dbmysql();
 $db->dbconn($con_db_host,$con_db_id,$con_db_pass,$con_db_name);
 
-//ʾת
-$metcms_v="1.3";
+$metcms_v="1.5";
 $met_e_seo=stripslashes($met_e_seo);
 $met_c_seo=stripslashes($met_c_seo);
 $met_c_foottext=stripslashes($met_c_foottext);

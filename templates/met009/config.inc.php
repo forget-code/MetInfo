@@ -1,6 +1,6 @@
 <?php
 /*
-met_c_webname     = "米特信息";
+met_c_webname     = "米拓信息";
 met_e_webname     = "MetInfo";
 met_weburl        = "http://www.metinfo.cn/metcms/";
 met_logo          = "../upload/200903/1237295542.gif";
@@ -63,7 +63,7 @@ met_e_flash_url   = "../upload/file/1232248102.swf";
 met_flash_back    = "../templates/met009/images/798-300-1.jpg";
 met_e_flash_back  = "../upload/200903/1237297824.jpg";
 met_online_type   = "0";
-met_c_footright   = "<a href='http://www.MetInfo.cn/' target='_blank'>米特信息</a> 版权所有 2008-2009 <a href='http://www.miibeian.gov.cn/chaxun/ggcx.jsp' target='_blank'>湘ICP备8888888</a>";
+met_c_footright   = "<a href='http://www.MetInfo.cn/' target='_blank'>米拓信息</a> 版权所有 2008-2009 <a href='http://www.miibeian.gov.cn/chaxun/ggcx.jsp' target='_blank'>湘ICP备8888888</a>";
 met_c_footaddress = "地址：长沙市天心区赤岭路348号 邮编：410076";
 met_c_foottel     = "电话：0731-3271060  QQ:426507856 Email:sales@metinfo.cn";
 met_c_footother   = "";

@@ -1,4 +1,7 @@
-<?php require_once('templates/header.htm');?>
+<!--<?php
+require_once template('header'); 
+echo <<<EOT
+-->
 <div class="body">
 <div class="head">
 <div class="logo"><img src="images/logosmall.gif" width="40" /></div>
@@ -38,7 +41,7 @@
 		<div class="section">
 		 <input type="text" id="db_name" name="db_name" class="inp" tabindex="6"  size="18" />
 		  <label for="db_name">数据库名 </label>
-		  <p>例如'met'或'my_met'</p>
+		  <p>例如'met'或'my_met',请确保用字母开头</p>
 		</div>
       </fieldset>
 	 <p align="right" ><input type="submit" name="submit" class="btn2" tabindex="15" value="保存数据库设置并继续" /></p>
@@ -46,4 +49,7 @@
     </form>
   </div>
   </div>
- <?php require_once('templates/footer.htm');?>
+<!--
+EOT;
+require_once template('footer'); 
+?>-->

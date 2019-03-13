@@ -9,7 +9,30 @@ if($admin_list2){
 okinfo('index.php',$lang[bigclass1]);
 }
 }
- $admin_list = $db->get_one("SELECT * FROM $met_column WHERE id='$val'");
+$admin_list = $db->get_one("SELECT * FROM $met_column WHERE id='$val'");
+$classtype="class".$admin_list[classtype];
+switch ($admin_list[module]){
+case 2;
+$listok=$db->get_one("SELECT * FROM $met_news WHERE $classtype='$admin_list[id]'");
+if($listok)okinfo('index.php',"请先删除【$admin_list[c_name]】栏目中的信息！");
+break;
+case 3;
+$listok=$db->get_one("SELECT * FROM $met_product WHERE $classtype='$admin_list[id]'");
+if($listok)okinfo('index.php',"请先删除【$admin_list[c_name]】栏目中的信息！");
+break;
+case 4;
+$listok=$db->get_one("SELECT * FROM $met_download WHERE $classtype='$admin_list[id]'");
+if($listok)okinfo('index.php',"请先删除【$admin_list[c_name]】栏目中的信息！");
+break;
+case 5;
+$listok=$db->get_one("SELECT * FROM $met_img WHERE $classtype='$admin_list[id]'");
+if($listok)okinfo('index.php',"请先删除【$admin_list[c_name]】栏目中的信息！");
+break;
+case 6;
+$listok=$db->get_one("SELECT * FROM $met_job WHERE $classtype='$admin_list[id]'");
+if($listok)okinfo('index.php',"请先删除【$admin_list[c_name]】栏目中的信息！");
+break;
+}
 $query = "delete from $met_column where id='$val'";
 $db->query($query);
  if($admin_list[module]==1){
@@ -26,6 +49,29 @@ else{
 $admin_list = $db->get_one("SELECT * FROM $met_column WHERE id='$id'");
 if(!$admin_list){
 okinfo('index.php',$lang[noid]);
+}
+$classtype="class".$admin_list[classtype];
+switch ($admin_list[module]){
+case 2;
+$listok=$db->get_one("SELECT * FROM $met_news WHERE $classtype='$admin_list[id]'");
+if($listok)okinfo('index.php',"请先删除【$admin_list[c_name]】栏目中的信息！");
+break;
+case 3;
+$listok=$db->get_one("SELECT * FROM $met_product WHERE $classtype='$admin_list[id]'");
+if($listok)okinfo('index.php',"请先删除【$admin_list[c_name]】栏目中的信息！");
+break;
+case 4;
+$listok=$db->get_one("SELECT * FROM $met_download WHERE $classtype='$admin_list[id]'");
+if($listok)okinfo('index.php',"请先删除【$admin_list[c_name]】栏目中的信息！");
+break;
+case 5;
+$listok=$db->get_one("SELECT * FROM $met_img WHERE $classtype='$admin_list[id]'");
+if($listok)okinfo('index.php',"请先删除【$admin_list[c_name]】栏目中的信息！");
+break;
+case 6;
+$listok=$db->get_one("SELECT * FROM $met_job WHERE $classtype='$admin_list[id]'");
+if($listok)okinfo('index.php',"请先删除【$admin_list[c_name]】栏目中的信息！");
+break;
 }
 $admin_list2=$db->get_one("SELECT * FROM $met_column WHERE bigclass='$admin_list[id]'");
 if($admin_list2){

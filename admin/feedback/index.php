@@ -1,8 +1,18 @@
 <?php
 require_once '../login/login_check.php';
+$settings = parse_ini_file('../../feedback/config.inc.php');
+@extract($settings);
+$fdclass1= $db->get_one("SELECT * FROM $met_fdparameter WHERE c_name='$met_fd_class'");
+$fdclass2="para".$fdclass1[id];
+$query = "SELECT * FROM $met_fdlist where bigid='$fdclass1[id]' order by no_order";
+$result = $db->query($query);
+while($list= $db->fetch_array($result)){
+$selectlist[]=$list;
+}
 
     $serch_sql=" where 1=1 ";
 	if($readok!="") $serch_sql.=" and readok='$readok' ";
+	if($met_fd_classname!="")$serch_sql.=" and $fdclass2='$met_fd_classname' ";
 	$order_sql=" order by id desc ";
     if($search == "detail_search") {
         

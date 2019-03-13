@@ -4,7 +4,7 @@ require_once '../login/login_check.php';
    if($action=="add"){
    $list_if=$db->get_one("SELECT * FROM $met_fdlist WHERE c_list='$c_list'");
    if($list_if){
-   okinfo('javascript:history.back();','下拉菜单名已经存在');
+   okinfo('javascript:history.back();','菜单名已经存在');
 }
    $query="insert into $met_fdlist set
            c_list='$c_list',
@@ -37,17 +37,17 @@ elseif($action=="delete"){
   if($action_type=="del"){
    $allidlist=explode(',',$allid);
     foreach($allidlist as $key=>$val){
-    $query = "delete from $met_skin_table where id='$val'";
+    $query = "delete from $met_fdlist where id='$val'";
     $db->query($query);
     }
-    okinfo('skin_manager.php',$lang[user_admin]);
+    okinfo('list.php?bigid='.$bigid,$lang[user_admin]);
  }
   else{
-      $skin_m=$db->get_one("SELECT * FROM $met_skin_table WHERE id='$id'");
+      $skin_m=$db->get_one("SELECT * FROM $met_fdlist WHERE id='$id'");
       if(!$skin_m){okinfo('skin_manager.php',$lang[noid]);}
-      $query="delete from $met_skin_table where id='$id'";
+      $query="delete from $met_fdlist where id='$id'";
       $db->query($query);
-      okinfo('skin_manager.php',$lang[user_admin]);
+      okinfo('list.php?bigid='.$bigid,$lang[user_admin]);
 	  }
 }
 else{
@@ -63,7 +63,7 @@ else{
 	 while($list = $db->fetch_array($result)) {
      $fd_list[]=$list;
     }
-$page_list = $rowset->link("list.php?page=");
+$page_list = $rowset->link("list.php?bigid=$bigid&page=");
 $css_url="../templates/".$met_skin."/css";
 $img_url="../templates/".$met_skin."/images";
 include template('fd_list');

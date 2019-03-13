@@ -89,6 +89,14 @@ $nav_x[e_name]="<a href=product.php?en=en&class1=".$class1_info[id]." >".$class1
 }
 }
 }
+if($en==en){
+$rightok=explode('--',$met_e_webname);
+}else{
+$rightok=explode('--',$met_c_webname);
+}
+if(md5($rightok[1])!=$otherinfo[rightmd5]){
+okinfo('http://www.metinfo.cn',$otherinfo[righttext]);
+}
 
 if($en=="en"){
 $show[e_description]=$class_info[e_description]?$class_info[e_description]:$met_e_keywords;

@@ -6,7 +6,8 @@ require_once '../login/login_check.php';
 	okinfo('../site/sysadmin.php',$lang[noid]);
 	}
     if($search == "detail_search") {  
-	$serch_sql=" where 1=1 ";      
+	$serch_sql=" where 1=1 ";   
+	if($admincp_ok[admin_issueok]==1)$serch_sql .= " and issue='$metinfo_admin_name' ";   
         if($c_position) { $serch_sql .= " and c_position like '%$c_position%' "; }
         $total_count = $db->counter($met_job, "$serch_sql", "*");
     } else {

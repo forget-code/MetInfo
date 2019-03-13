@@ -1,0 +1,160 @@
+<!--<?php
+require_once template('head'); 
+require_once template('flash'); 
+echo <<<EOT
+-->
+
+<div class="web">
+<!--左边开始-->
+<div class="web_left">
+<div class="nav_right">高级搜索</div>
+<div class="product_list1">
+<div class="searchnavright">
+<script language = "JavaScript">
+var onecount;
+subcat = new Array();
+<!--
+EOT;
+$j=0;
+foreach($nav_list_2 as $key=>$val){ 
+echo <<<EOT
+-->       
+subcat[$j] = new Array("$val[id]","$val[bigclass]","$val[c_name]");
+<!--
+EOT;
+$j++;
+}
+echo <<<EOT
+--> 
+onecount=$j;
+
+var onecount2;
+subcat2 = new Array();
+<!--
+EOT;
+$j=0;
+foreach($nav_list_3 as $key=>$val){ 
+echo <<<EOT
+-->       
+subcat2[$j] = new Array("$val[id]","$val[bigclass]","$val[c_name]");
+<!--
+EOT;
+$j++;
+}
+echo <<<EOT
+--> 
+onecount2=$j;
+
+function changelocation(locationid)
+    {
+    document.myform.class2.length = 1; 
+    var locationid=locationid;
+    var i;
+    for (i=0;i < onecount; i++)
+        {
+            if (subcat[i][1] == locationid)
+            { 
+                document.myform.class2.options[document.myform.class2.length] = new Option(subcat[i][2], subcat[i][0]);
+            }        
+        }
+    } 
+function changelocation2(locationid)
+    {
+    document.myform.class3.length = 1; 
+    var locationid=locationid;
+    var i;
+    for (i=0;i < onecount2; i++)
+        {
+            if (subcat2[i][1] == locationid)
+            { 
+                document.myform.class3.options[document.myform.class3.length] = new Option(subcat2[i][2], subcat2[i][0]);
+            }        
+        }
+    } 
+function select1(){
+document.myform.c_searchword.value="";
+}   
+
+function Checksearch(){
+if(document.myform.c_searchword.value=="关键字"){
+document.myform.c_searchword.value="";
+}
+}
+</script>
+<form method="Get" name="myform" onSubmit="return Checksearch();"  action="$searchurl">       
+<div class="search_input">       
+<select name="class1" onChange="changelocation(document.myform.class1.options[document.myform.class1.selectedIndex].value)" size="1">
+<option selected value="">所有一级栏目</option>
+<!--
+EOT;
+foreach($nav_search as $key=>$val){
+echo <<<EOT
+-->
+<option value='$val[id]'>$val[c_name]</option>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</select> 
+</div>
+<div class="search_input">         
+<select name="class2" onChange="changelocation2(document.myform.class2.options[document.myform.class2.selectedIndex].value)" size="1">
+<option selected value="">所有二级栏目</option>
+</select> 
+</div>
+<div class="search_input">         
+<select name="class3" >
+<option selected value="">所有三级栏目</option>
+</select> 
+</div>
+<div class="search_input"><select name="searchtype" size="1">
+          <option value="0" selected>标题和内容</option>
+          <option value="1">标题</option>
+		  <option value="2">内容</option>
+        </select> 
+ </div>
+<div class="search_input"><input id="c_searchword" style="margin:0px; padding:1px;" type="text" name="c_searchword"  size="12" value="关键字" maxlength="50" onmousedown="select1()"> 
+<input type="submit" class="searchgo" name="Submit"  value="搜索">
+</div>
+</form>
+</div></div>
+<div class="contact_left">
+
+<!--
+EOT;
+require_once template('online'); 
+echo <<<EOT
+-->
+</div>
+</div>
+<!--左边结束-->
+
+<div class="rightcontent">
+<div class="nav_left"><img src="$img_url/list1.gif" /><a href='$index_c_url'>首页</a> > $nav_x[c_name]</div>
+<div class="content">
+<!--
+EOT;
+foreach($search_list as $key=>$val){
+echo <<<EOT
+-->
+<div class="search_list_title">
+<div class="search_list_img"><img src="$img_url/list.gif" /></div><div class="news_list_title"><a href="$val[c_url]" target="_blank">$val[c_title]</a></div>
+</div>
+<div class="search_list" >$val[c_content]</div>
+<div class="search_link">$val[updatetime] <a href="$val[c_url]" target="_blank">查看详细</a></div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</div>
+$c_page_list
+</div>
+</div>
+</div>
+
+<!--
+EOT;
+require_once template('foot'); 
+?>

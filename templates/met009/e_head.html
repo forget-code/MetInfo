@@ -47,8 +47,9 @@ echo <<<EOT
 <div class="headright2"><b>$met_e_seo</b></div>
 <div class="headright2">
 <form method="POST" name="myform1" action="$searchurl"  target="_self">
-<input type="text" name="e_title" size="20"/>
+<input type="text" name="e_searchword" size="20"/>
 <select name="class1">
+<option value="">All Web</option>
 <!--
 EOT;
 foreach($nav_search as $key=>$val)

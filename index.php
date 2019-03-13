@@ -152,7 +152,7 @@ require_once 'include/head.php';
 	$listarray[imgurl]=explode("../",$list[imgurl]);
     $list[imgurl]=$listarray[imgurl][1];
 	$list[updatetime] = date('Y-m-d',strtotime($list[updatetime]));
-	if($list[new_ok] == 1)$news_list_new[]=$list;
+	if($list[img_ok] == 1)$news_list_new[]=$list;
 	if($list[com_ok] == 1)$news_list_com[]=$list;
     $news_list[]=$list;
      }
@@ -172,7 +172,7 @@ require_once 'include/head.php';
 	$listarray[imgurl]=explode("../",$list[imgurl]);
     $list[imgurl]=$listarray[imgurl][1];
 	$list[updatetime] = date('Y-m-d',strtotime($list[updatetime]));
-	if($list[new_ok] == 1)$news_listhits_new[]=$list;
+	if($list[img_ok] == 1)$news_listhits_new[]=$list;
 	if($list[com_ok] == 1)$news_listhits_com[]=$list;
     $news_listhits[]=$list;
     }

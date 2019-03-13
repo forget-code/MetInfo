@@ -9,6 +9,7 @@ $list_order[0]="checked='checked'";
 $list_order[$column_list[list_order]]="checked='checked'";
 $list_orderok="none";
 if($column_list[list_order]!=0)$list_orderok="";
+if($column_list[module]==2 || $column_list[module]==3 || $column_list[module]==4 || $column_list[module]==5)$list_orderok="";
 $module[$column_list[module]]="selected='selected'";
 $nav[$column_list[nav]]="checked='checked'";
 $if_in[$column_list[if_in]]="checked='checked'";

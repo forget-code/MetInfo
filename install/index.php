@@ -1,6 +1,6 @@
 <?php
 header("Content-type: text/html;charset=utf-8");
-error_reporting(E_ERROR | E_PARSE);
+error_reporting(E_ERROR | E_WARNING | E_PARSE);
 @set_time_limit(0);
 set_magic_quotes_runtime(0);
 define('VERSION','4.1.0');
@@ -82,11 +82,9 @@ switch ($action)
 				$check_msg[$i].='777属性检测不通过'; $check=0;
 				$class_chcek[$i] = 'WARN';
 			}
+		if($check!=1 and $disabled!='disabled'){$disabled = 'disabled';}
 		}
-		if($check!=1){
-			$disabled = 'disabled';
-		}
-		require('templates/inspect.htm');
+		include template('inspect');
 		break;
 	}
 	case 'db_setup':
@@ -120,14 +118,14 @@ switch ($action)
 			 mysql_query("set names utf8"); 
 			 $content=readover("install.sql");
 			}else {
-			  echo "<SCRIPT language=JavaScript>alert('您的mysql版本过低，虽然能完全安装不影响使用,但官方建议您升级到mysql4.1.0以上');</SCRIPT>";
+			  echo "<SCRIPT language=JavaScript>alert('您的mysql版本过低，请确保你的数据库编码为utf-8,官方建议您升级到mysql4.1.0以上');</SCRIPT>";
 			  $content=readover("install.sql");  
 			}
 			$content=preg_replace("/{#(.+?)}/eis",'$lang[\\1]',$content);
-			require('templates/db_setup.htm');
+			include template('db_setup');
 			exit();
 		}else {
-		require('templates/databasesetup.htm');
+		include template('databasesetup');
 		}
 		break;
 	}
@@ -169,15 +167,15 @@ switch ($action)
 			$spt .= '"></script>';
 			echo $spt;
 			@chmod('../config/install.lock',0554);
-			require('templates/finished.htm');
+			include template('finished');
 		}else {
-		require('templates/adminsetup.htm');
+		include template('adminsetup');
 		}
 		break;
 	}
 	default:
 	{
-		require('templates/index.htm');
+		include template('index');
 	}
 }
 
@@ -205,8 +203,7 @@ function creat_table($content) {
 			}else {
 			     
 				if(eregi("^CREATE",$query)){
-					$installinfo='<li class="OK"><font color="#0000EE">建立数据表'.$i.'</font>'.$c_name.' ... <font color="#0000EE">完成</font></li>';
-					echo $installinfo;
+					$installinfo=$installinfo.'<li class="OK"><font color="#0000EE">建立数据表'.$i.'</font>'.$c_name.' ... <font color="#0000EE">完成</font></li>';
 				}
 				$db_setup=1;
 			}
@@ -216,6 +213,7 @@ function creat_table($content) {
 		}
 		$j++;
 	}
+	return $installinfo;
 }
 function readover($filename,$method="rb"){
 	if($handle=@fopen($filename,$method)){
@@ -237,4 +235,10 @@ function daddslashes($string, $force = 0) {
 		}
 	}
 	return $string;
+}
+function template($template,$EXT="htm"){
+	global $met_skin_user,$skin;
+	unset($GLOBALS[con_db_id],$GLOBALS[con_db_pass],$GLOBALS[con_db_name]);
+	$path = "templates/$template.$EXT";
+	return  $path;
 }

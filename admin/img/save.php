@@ -18,6 +18,7 @@ $query = "INSERT INTO $met_img SET
 					  imgurls            = '$imgurls',
 				      com_ok             = '$com_ok',
 					  hits               = '$hits', 
+					  issue              = '$metinfo_admin_name',
 					  addtime            = '$addtime', 
 					  updatetime         = '$updatetime', 
 					  c_para1            = '$c_para1', 

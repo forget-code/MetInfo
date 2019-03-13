@@ -19,7 +19,15 @@ echo <<<EOT
           </tr>
 		   <tr bgcolor="#ECF5FF"> 
             <td width="120" height="25"><font color="#990000">前台调用方法：</font></td>
-            <td><font color="#990000">可在栏目配置中添加，访问地址为"$met_weburl/feedback/"</font></td>
+            <td><font color="#990000">可在栏目配置中添加，中文访问地址为"$met_weburl/feedback/index.php"<br>  英文访问地址为"$met_weburl/feedback/index.php?en=en"</font></td>
+          </tr>
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="120" height="25">反馈表单中文名称：</td>
+            <td><input name="met_c_fdtable" type="text" class="input" size="30" maxlength="250" value="$met_c_fdtable"></td>
+          </tr> 
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="120" height="25">反馈表单英文名称：</td>
+            <td><input name="met_e_fdtable" type="text" class="input" size="30" maxlength="250" value="$met_e_fdtable"></td>
           </tr> 
 		   <tr bgcolor="#ECF5FF"> 
             <td width="120" height="25">防刷新时间：</td>
@@ -28,6 +36,10 @@ echo <<<EOT
 		  <tr bgcolor="#ECF5FF"> 
             <td width="120" height="25">敏感字符过滤：</td>
             <td><textarea name="met_fd_word" cols="50" rows="3" >$met_fd_word</textarea>多个字符请用"|"隔开</td>
+          </tr>
+		   <tr bgcolor="#ECF5FF"> 
+            <td width="120" height="25">信息分类字段名：</td>
+            <td><input name="met_fd_class" type="text" class="input" size="20" maxlength="200" value="$met_fd_class">用于分类的下拉菜单中文名称，如“反馈类型”</td>
           </tr>
 		  <tr bgcolor="#ECF5FF"> 
             <td width="120" height="25">信息接受方式：</td>

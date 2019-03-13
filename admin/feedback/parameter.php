@@ -2,7 +2,7 @@
 require_once '../login/login_check.php';
 
 if($action=="Modify"){
-for($i=1;$i<21;$i=$i+1){
+for($i=1;$i<25;$i=$i+1){
 $c_name="c_name".$i;
 $e_name="e_name".$i;
 $use_ok="use_ok".$i;
@@ -43,6 +43,9 @@ $list1[type]="<font color='#ff0000'>下拉菜单</font> <a href='list.php?bigid=
 break;
 case "3";
 $list1[type]="文本字段";
+break;
+case "4";
+$list1[type]="<font color='#ff0000'>多选菜单</font> <a href='list.php?bigid=$list1[id]&listtype=2'>设置参数</a>";
 break;
 }
 	
