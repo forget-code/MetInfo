@@ -16,7 +16,11 @@ if(PHP_VERSION < '4.1.0') {
 	$_ENV         = &$HTTP_ENV_VARS;
 	$_FILES       = &$HTTP_POST_FILES;
 }
+if(PATH_SEPARATOR==':'){
+require_once dirname(__file__).'/global.func_linux.php';
+}else{
 require_once dirname(__file__).'/global.func.php';
+}
 define('MAGIC_QUOTES_GPC', get_magic_quotes_gpc());
 isset($_REQUEST['GLOBALS']) && exit('Access Error');
 
@@ -33,7 +37,6 @@ $REQUEST_URI  = $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'];
 $t_array = explode(' ',microtime());
 $P_S_T	 = $t_array[0] + $t_array[1];
 $met_obstart == 1 && function_exists('ob_gzhandler') ? ob_start('ob_gzhandler') :ob_start();
-//if (!$m_check_referer) $_SESSION['mvm_sess_referer'] = getenv('HTTP_REFERER');
 $referer?$forward=$referer:$forward=$_SERVER['HTTP_REFERER'];
 $char_key=array("\\",'&',' ',"'",'"','/','*',',','<','>',"\r","\t","\n",'#','%','?');
 $m_now_time     = time();
@@ -50,7 +53,6 @@ if($_SERVER['HTTP_X_FORWARDED_FOR']){
 }
 $m_user_ip  = preg_match('/^([0-9]{1,3}\.){3}[0-9]{1,3}$/',$m_user_ip) ? $m_user_ip : 'Unknown';
 $PHP_SELF = $_SERVER['PHP_SELF'] ? $_SERVER['PHP_SELF'] : $_SERVER['SCRIPT_NAME'];
-//$m_mall_skin_dir    = ROOTPATH."templates";
 
 $db_settings = parse_ini_file(ROOTPATH.'config/config_db.php');
 @extract($db_settings);

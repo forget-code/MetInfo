@@ -8,7 +8,7 @@ $$_key = daddslashes($_value);
 }
 $SERVER_SIGNATURE1=$_SERVER['SERVER_SIGNATURE'];
 $mysql1=mysql_get_server_info();
-$jmail =( new COM('JMail.Message') )?'<b>√</b>':'<font color=red><b>×</b></font>' ;
+if(PATH_SEPARATOR!=':')$jmail =( new COM('JMail.Message') )?'<b>√</b>':'<font color=red><b>×</b></font>' ;
 $feedback = $db->counter($met_feedback, " where readok=0 ", "*");
 $message = $db->counter($met_message, " where readok=0 ", "*"); 
 $link = $db->counter($met_link, " where show_ok=0 ", "*");

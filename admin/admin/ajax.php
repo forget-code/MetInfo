@@ -22,3 +22,6 @@ if($action=='admin'){
         exit;
     }
 } 
+
+
+?>

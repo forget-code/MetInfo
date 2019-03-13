@@ -82,14 +82,33 @@ $body=$body."<b>反馈产品</b>：".$fdtitle."<br>";
 $body=$body."<b>来源IP</b>：".$ip."<br>";
 $body=$body."<b>提交时间</b>：".$addtime."<br>";
 $body=$body."<b>来源页面</b>：".$fromurl;
+if(PATH_SEPARATOR==':'){
+$toarray=explode("|",$to);
+$to_no=count($toarray);
+for($i=0;$i<$to_no;$i++){
+$toemail.=$toarray[$i].", ";
+}
+$headers  = 'MIME-Version: 1.0' . "\r\n";
+$headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
+$headers .= 'From: '.$fromname.' <'.$from.'>' . "\r\n";
+mail("$toemail", "$title", "$body", "$headers");
+}else{
 jmailsend($from,$fromname,$to,$title,$body,$usename,$usepassword,$smtp);
+}
 }
 
 if($met_fd_back==1){
 $fdemail= $db->get_one("SELECT * FROM $met_fdparameter WHERE c_name='$met_fd_email'");
 $fdto="para".$fdemail[id];
 $fdto=$$fdto;
+if(PATH_SEPARATOR==':'){
+$headers  = 'MIME-Version: 1.0' . "\r\n";
+$headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
+$headers .= 'From: '.$fromname.' <'.$from.'>' . "\r\n";
+mail("$toemail", "$met_fd_title", "$met_fd_content", "$headers");
+}else{
 jmailsend($from,$fromname,$fdto,$met_fd_title,$met_fd_content,$usename,$usepassword,$smtp);
+}
 }
 if($met_fd_type!=0){
 $query = "INSERT INTO $met_feedback SET

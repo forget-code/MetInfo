@@ -25,7 +25,14 @@ $db->query($query);
 
 $title=$met_c_webname."管理员密码通知";
 $body="您在[".$met_c_webname."]".$met_weburl."的用户密码已随机更改为:".$getpass."<br>请您及时登陆管理后台并更改密码！";
+if(PATH_SEPARATOR==':'){
+$headers  = 'MIME-Version: 1.0' . "\r\n";
+$headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
+$headers .= 'From: '.$fromname.' <'.$from.'>' . "\r\n";
+mail("$to", "$title", "$body", "$headers");
+}else{
 jmailsend($from,$fromname,$to,$title,$body,$usename,$usepassword,$smtp);
+}
 okinfo('../index.php','请您登陆邮箱收取最新密码');
 }
 }else{

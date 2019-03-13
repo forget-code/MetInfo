@@ -27,10 +27,7 @@ $fdstr = $met_fd_word;
 $fdarray=explode("|",$fdstr);
 $fdarrayno=count($fdarray);
 $fdok=false;
-for($j=1;$j<=20;$j++){
-$para="para".$j;
-$content=$content."-".$$para;
-}
+$content=$content."-".$name."-".$tel."-".$email."-".$contact."-".$info;
 for($i=0;$i<$fdarrayno;$i++){ 
 if(strstr($content, $fdarray[$i])){
 $fdok=true;
@@ -61,11 +58,30 @@ $body=$body."<b>其他联系方式</b>：".$contact."<br>";
 $body=$body."<b>留言内容</b>：".$info."<br>";
 $body=$body."<b>来源IP</b>：".$ip."<br>";
 $body=$body."<b>提交时间</b>：".$addtime."<br>";
+if(PATH_SEPARATOR==':'){
+$toarray=explode("|",$to);
+$to_no=count($toarray);
+for($i=0;$i<$to_no;$i++){
+$toemail.=$toarray[$i].", ";
+}
+$headers  = 'MIME-Version: 1.0' . "\r\n";
+$headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
+$headers .= 'From: '.$fromname.' <'.$from.'>' . "\r\n";
+mail("$toemail", "$title", "$body", "$headers");
+}else{
 jmailsend($from,$fromname,$to,$title,$body,$usename,$usepassword,$smtp);
+}
 }
 
 if($met_fd_back==1 and $email!=""){
+if(PATH_SEPARATOR==':'){
+$headers  = 'MIME-Version: 1.0' . "\r\n";
+$headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
+$headers .= 'From: '.$fromname.' <'.$from.'>' . "\r\n";
+mail("$toemail", "$met_fd_title", "$met_fd_content", "$headers");
+}else{
 jmailsend($from,$fromname,$email,$met_fd_title,$met_fd_content,$usename,$usepassword,$smtp);
+}
 }
 $query = "INSERT INTO $met_message SET
 					  ip                 = '$ip',

@@ -1,4 +1,4 @@
-﻿<!--<?php
+<!--<?php
 echo <<<EOT
 -->
 <html>
@@ -33,7 +33,7 @@ echo <<<EOT
           </tr> 
 		  <tr bgcolor="#ECF5FF"> 
             <td width="119" height="25">网站LOGO：</td>
-            <td colspan="2"><input name="met_logo" type="text" class="input" size="30" maxlength="200" value="$met_logo"><iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_Photo.php?returnid=logo" frameborder=0 scrolling=no width="280" height="25"></iframe>
+            <td colspan="2"><input name="met_logo" type="text" class="input" size="30" maxlength="200" value="$met_logo"><iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_photo.php?returnid=logo" frameborder=0 scrolling=no width="280" height="25"></iframe>
 			</td>
           </tr>
 		  <tr bgcolor="#ECF5FF"> 
@@ -62,14 +62,17 @@ echo <<<EOT
 		  <tr bgcolor="#ECF5FF"> 
             <td width="120" height="25">发件人姓名：</td>
             <td><input name="met_fd_fromname" type="text" class="input" size="30" maxlength="200" value="$met_fd_fromname">所显示的发件人姓名</td>
-          </tr>  
+          </tr> 
+		  <tr bgcolor="#ECF5FF"> 
+            <td width="120" height="25">邮箱账号：</td>
+            <td><input name="met_fd_usename" type="text" class="input" size="30" maxlength="200" value="$met_fd_usename">用于发送邮件的邮箱账号</td>
+          </tr> 
+		   <tr bgcolor="#ECF5FF"> 
+            <td height="25" colspan="2" style="color:#CC0000">以下信息仅在Windows平台下有效，Linux平台可以为空</td>
+          </tr> 
 		  <tr bgcolor="#ECF5FF"> 
             <td width="120" height="25">邮件SMTP服务器：</td>
             <td><input name="met_fd_smtp" type="text" class="input" size="30" maxlength="200" value="$met_fd_smtp">如163邮箱为stmp.163.com</td>
-          </tr> 
-		   <tr bgcolor="#ECF5FF"> 
-            <td width="120" height="25">邮箱账号：</td>
-            <td><input name="met_fd_usename" type="text" class="input" size="30" maxlength="200" value="$met_fd_usename">用于发送邮件的邮箱账号</td>
           </tr> 
 		  <tr bgcolor="#ECF5FF"> 
             <td width="120" height="25">邮箱密码：</td>

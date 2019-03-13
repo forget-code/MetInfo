@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 $lang[yes]                      = '是';
 $lang[no]                       = '否';
 // 登陆信息提示

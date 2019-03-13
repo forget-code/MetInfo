@@ -18,13 +18,13 @@ function daddslashes($string, $force = 0) {
 }
 
 function template($template,$EXT="html"){
-	global $met_skin_name,$skin;
+	global $met_skin_user,$skin;
 	if(empty($skin)){
-	    $skin = $met_skin_name;
+	    $skin = $met_skin_user;
 	}
 	unset($GLOBALS[con_db_id],$GLOBALS[con_db_pass],$GLOBALS[con_db_name]);
-	$path = ROOTPATH_ADMIN."templates/$skin/$template.$EXT";
-	!file_exists($path) && $path=ROOTPATH_ADMIN."templates/met/$template.$EXT";
+	$path = ROOTPATH."templates/$skin/$template.$EXT";
+	!file_exists($path) && $path=ROOTPATH."templates/met/$template.$EXT";
 	return  $path;
 }
 
@@ -112,26 +112,33 @@ function file_unlink($file_name) {
 	}
 	return $area_lord;
 }
+
 //静态页面生成
 function createhtm($fromurl,$filename){
-//ob_start(); 
-$content = file_get_contents( $fromurl); 
-//$content = ob_get_contents();
-//ob_end_clea();
-//$fp        = fopen ($fromurl,"rb");
-//$content   = fread ($fp,filesize ($fromurl));
+$fp        = fopen ($fromurl,"r");
+$content   = fread ($fp,filesize ($fromurl));
 $handle = fopen ($filename,"w"); //打开文件指针，创建文件
 /*
 检查文件是否被创建且可写
 */
 if (!is_writable ($filename)){
-echo "<font color='#FF9900'>文件：".$filename."不可写，请检查其属性后重试！</font><br>";
+okinfo('javascript:history.go(-1)',"文件：".$filename."不可写，请检查其属性后重试！");
 }
 if (!fwrite ($handle,$content)){   //将信息写入文件
-echo "<font color='#FF0000'>生成文件".$filename."失败！</font><br>";
+   die ("生成文件".$filename."失败！");
 } 
 fclose ($handle); //关闭指针
-echo "<font color='#00CC00'>生成文件".$filename."成功！</font><br>";
+
+die ("创建文件".$filename."成功！");
+}
+
+// 热门标签函数
+function contentshow($content) {
+require_once ROOTPATH.'config/str.inc.php';
+foreach($str as $key=>$val){
+$content = str_replace($val[0],$val[1],$content);
+}
+return $content;
 }
 
 //读取数据排序
@@ -169,23 +176,13 @@ break;
 }
 }
 
-// 删除HTML 中攻击标记
-function dhtmlchars($string) {
-	if(is_array($string)) {
-		foreach($string as $key => $val) {
-			$string[$key] = dhtmlchars($val);
-		}
-	} else {
-		$string = preg_replace('/&amp;((#(\d{3,5}|x[a-fA-F0-9]{4})|[a-zA-Z][a-z0-9]{2,5});)/', '&\\1',
-		str_replace(array('&', '"', '<', '>'), array('&amp;', '&quot;', '&lt;', '&gt;'), $string));
-	}
-	return $string;
+function utf8Substr($str, $from, $len) 
+{ 
+return preg_replace('#^(?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,'.$from.'}'. 
+'((?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,'.$len.'}).*#s', 
+'$1',$str); 
 }
 
-function isblank($str) {
-	if(eregi("[^[:space:]]",$str)) { return 0; } else { return 1; }
-	return 0;
-}
 /*
 已采用函数
 */
