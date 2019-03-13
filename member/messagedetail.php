@@ -7,6 +7,9 @@ $message_list=$db->get_one("select * from $met_message where id='$id'");
 if(!$message_list){
 okinfo('message.php?lang='.$lang,$lang_js1);
 }
+if($metinfo_member_name!=$message_list[customerid]){
+	okinfo('javascript:history.back();',$lang_js1);
+}
 $mfname='message_detail';
 include template('member');
 footermember();

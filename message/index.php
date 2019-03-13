@@ -26,7 +26,7 @@ require_once '../include/head.php';
 	$navtitle=$message_column[name];
     $serch_sql=" where lang='$lang' ";
 	if($met_fd_type==1) $serch_sql.=" and readok='1' ";
-	if($met_member_use==2)$serch_sql .= " and access<=$metinfo_member_type";
+	if($met_member_use==2)$serch_sql .= " and access<='$metinfo_member_type'";
 	$order_sql=" order by id desc ";
     $total_count = $db->counter($met_message, "$serch_sql", "*");
     require_once '../include/pager.class.php';
@@ -35,6 +35,7 @@ require_once '../include/head.php';
     $list_num = $met_message_list;
     $rowset = new Pager($total_count,$list_num,$page);
     $from_record = $rowset->_offset();
+	$page = $page?$page:1;
     $query = "SELECT * FROM $met_message $serch_sql $order_sql LIMIT $from_record, $list_num";
 
     $result = $db->query($query);
@@ -46,14 +47,17 @@ require_once '../include/head.php';
 	  }}
     $message_list[]=$list;
     }
-
 if($met_webhtm==2){
 $met_pagelist=$met_htmlistname?"message_list_":"index_list_";
 $met_pagelist=$message_column['filename']<>''?$message_column['filename'].'_':$met_pagelist;
 $met_ahtmtype = $message_column['filename']<>''?$met_chtmtype:$met_htmtype;
 $page_list = $rowset->link($met_pagelist,$met_ahtmtype);
-}else{			
-$page_list = $rowset->link("index.php?lang=".$lang."&page=");	
+}else{
+	if($met_pseudo){
+		$page_list = $rowset->link('list-'.$class1.'-','-'.$lang.'.html');
+	}else{
+		$page_list = $rowset->link("index.php?lang=".$lang."&page=");	
+	}
 }
 
 $class2=$class_list[$class1][releclass]?$class1:$class2;
@@ -90,6 +94,7 @@ $methtml_messagelist.="<li class='message_list_info'><span ><b>".$lang_SubmitCon
 $methtml_messagelist.="<li class='message_list_reinfo'><span ><b>".$lang_Reply."</b>:".$val[useinfo]."</span></li>\n";
 }
 $methtml_messagelist.="</ul>\n";
+$pageall=$rowset->pages;
 include template('message_index');
 footer();
 }

@@ -1,9 +1,10 @@
 <!--<?php
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
-$boxwidth=$met_kzqie?'100%':'1000px';
+$boxwidth=$met_kzqie?'99%':'1000px';
 $qietext =$met_kzqie?$lang_indexnarrowver1:$lang_indexwidever1;
 $qietext_title =$met_kzqie?$lang_indexnarrowver2:$lang_indexwidever2;
+$jsrand=str_replace('.','',$metcms_v).$met_patch;
 echo <<<EOT
 -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -11,15 +12,17 @@ echo <<<EOT
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>{$lang_metinfo}</title>
-<link href="$img_url/css/metinfo.css" rel="stylesheet" />
+<link href="../favicon.ico" rel="shortcut icon" />
+<link href="{$img_url}/css/metinfo_box.css?$jsrand" rel="stylesheet" />
 </head>
-<script type="text/javascript" src="../public/js/jQuery1.7.2.js"></script>
-<script type="text/javascript" src="{$img_url}/js/cookie.js"></script>
+<script type="text/javascript" src="../public/js/jQuery1.7.2.js?$jsrand"></script>
+<script type="text/javascript" src="{$img_url}/js/cookie.js?$jsrand"></script>
 <script type="text/javascript">
-var lang='$lang';
+var lang='{$lang}';
 var atop='{$lang_authTip13}';
 var user_msg = new Array();
 	user_msg['jsx1']='{$lang_jsx1}';
+	user_msg['langtips1']='{$lang_langtips1}';
 $(function(){
 	var clang = $.cookie('clang');
 	if(clang){
@@ -27,57 +30,83 @@ $(function(){
 		$.cookie('clang', null);
 	}
 });
-function kzqie(my){
-	if(my.text()=='{$lang_indexwidever1}'){
-		$('#metcmsbox').css('width','100%');
-		$.ajax({url : 'include/config.php?lang={$lang}&met_kzqie=1',type: "POST"});
-		my.attr('title','{$lang_indexnarrowver2}');
-		my.text('{$lang_indexnarrowver1}');
-	}else{
-		$('#metcmsbox').css('width','1000px');
-		$.ajax({url : 'include/config.php?lang={$lang}&met_kzqie=0',type: "POST"});
-		my.attr('title','{$lang_indexwidever1}');
-		my.text('{$lang_indexwidever1}');
-	}
-}
+//宽窄版切换
+$(document).ready(function() {
+	$("#kzqie").click(function(){
+		var my=$(this);
+		if(my.text()=='{$lang_indexwidever1}'){
+			$('#content,#top .topnbox').animate({ width: '99%'}, 80);
+			$.ajax({url : 'include/config.php?lang={$lang}&met_kzqie=1',type: "POST"});
+			my.attr('title','{$lang_indexnarrowver2}');
+			my.text('{$lang_indexnarrowver1}');
+			setTimeout("topwidth(100)",100);
+		}else{
+			$('#content,#top .topnbox').animate({ width: '1000px'}, 80);
+			$.ajax({url : 'include/config.php?lang={$lang}&met_kzqie=0',type: "POST"});
+			my.attr('title','{$lang_indexwidever1}');
+			my.text('{$lang_indexwidever1}');
+			setTimeout("topwidth(100)",100);
+		}
+	});
+});
 </script>
 <style>
-#metcmsbox{ width:$boxwidth;}
+#content,#top .topnbox{ width:$boxwidth;}
 #top .floatr li a span{ behavior: url({$img_url}/iepngfix.htc); }
 </style>
 <body id="indexid">
 <div id="metcmsbox">
 <div id="top"> 
+	<div class="topnbox">
     <div class="floatr">
 		<div class="top-r-box">
 		<div class="top-right-boxr">
 			<div class="top-r-t">
-				{$lang_indexwelcom} <a href="index.php?lang={$lang}" id="mydata" title="{$lang_editor} {$metinfo_admin_name} {$lang_indexpeople}" class='tui' style="text-decoration:underline;">{$metinfo_admin_name}</a><span>-</span><a target="_top" href="login/login_out.php" id="outhome" title="{$lang_indexloginout}" class='tui'>{$lang_indexloginout}</a><span>|</span><a href="javascript:;" onclick="kzqie($(this))" title="{$qietext_title}">{$qietext}</a>
-			</div>
-		    <div class="langs">
+				<ol class="rnav">
 <!--
 EOT;
-if(count($met_langok)>1 and (count($adminlang)>3 or $langadminok=="metinfo" or $langadminok=='metinfo')){
-$langname=utf8substr($met_langok[$lang][name], 0, 9);
+$metinfo_admin_name=$metinfo_admin_name;
+$metinfo_admin_name_r=utf8substr($metinfo_admin_name, 0, 3);
 echo <<<EOT
 -->
-        <div class="langtxt">
-			<div class="langkkkbox">
-				<div id="langcig">
-					<span id="langcion" title="{$lang}">{$langname}</span>
-					<span class="langqie">{$lang_indexlang}</span>
-				</div>
-				<div class="langlist shadow" style="display:none;"></div>
-			</div>
-			<div class="webyy">{$lang_langweb}：</div>
-		</div>
+					<li class="list">{$lang_indexwelcom} <a href="index.php?lang={$lang}" id="mydata" title="{$lang_editor} {$metinfo_admin_name} {$lang_indexpeople}" class='tui'>{$metinfo_admin_name_r}</a></li>
+					<li class="line">|</li>
+					<li class="list"><a target="_top" href="login/login_out.php" id="outhome" title="{$lang_indexloginout}" class='tui'>{$lang_indexloginout}</a></li>
+					<li class="line">|</li>
+					<li class="list"><a href="javascript:;" id="kzqie" title="{$qietext_title}">{$qietext}</a></li>
+<!--
+EOT;
+//count($met_langok)>1 and (count($adminlang)>3 or $langadminok=="metinfo" or $langadminok=='metinfo')
+if(0){
+$langname=$met_langok[$lang][name];
+$langname_r=utf8substr($met_langok[$lang][name], 0, 4);
+echo <<<EOT
+-->
+					<li id="langcig" class="list langli">
+						<span class="title" title="{$lang_langtips1}{$langname}" lang="{$lang}"><img src="../public/images/flag/{$met_langok[$lang][flag]}" />{$langname_r}</span>
+						<div class="langlist" style="display:none;"></div>
+					</li>
+<!--
+EOT;
+}else{
+$langname=$met_langok[$lang][name];
+$langname_r=utf8substr($met_langok[$lang][name], 0, 4);
+echo <<<EOT
+-->
+					<li id="langcig" class="list langli">
+						<span class="title" title="{$lang_langtips1}{$langname}" lang="{$lang}"><img src="../public/images/flag/{$met_langok[$lang][flag]}" />{$langname_r}</span>
+						<div class="langlist" style="display:none;"></div>
+					</li>
 <!--
 EOT;
 }
 echo <<<EOT
 -->
+				</ol>
+				<div class="clear"></div>
 			</div>
 		</div>
+		<div></div>
 		<div class="nav">
             <ul id="topnav">
 <!--
@@ -93,8 +122,8 @@ echo <<<EOT
 -->
                 <li id="metnav_{$val[id]}" class="list">
 					<a href="javascript:;" id="nav_{$i}" {$onnav} hidefocus="true">
-					<span class="c$i"></span>
-					{$val[name]}
+					<span class="c{$i}"></span>
+					<p>{$val[name]}</p>
 					</a>
 				</li>
 <!--
@@ -110,15 +139,15 @@ echo <<<EOT
     <div class="floatl">
 	    <a href="index.php?lang={$lang}" hidefocus="true" id="met_logo"><img src="{$met_agents_logo_index}" alt="{$lang_metinfo}" title="{$lang_metinfo}" /></a>
 	</div>
+	</div>
 </div>
 <div id="content">
     <div class="floatl" id="metleft">
-        <div class="fast">
-	        <a target="_blank" href="../" id="qthome" title="{$lang_indexhome}">{$lang_indexhome}</a>
-			<span></span>
-			<a href="index.php?lang={$lang}" id="hthome" title="{$lang_indexadmin}">{$lang_indexadmin}</a>
-		</div>
+		<div class="floatl_box">
 	    <div class="nav_list" id="leftnav">
+			<div class="fast">
+				<a target="_blank" href="../" id="qthome" title="{$lang_indexhome}">{$lang_indexhome}</a>
+			</div>
 <!--
 EOT;
 $k=0;
@@ -159,18 +188,19 @@ EOT;
 if($met_agents_type<=1){
 echo <<<EOT
 -->	
-		<div class="left_footer">{$lang_indexthanks} <a href="http://www.metinfo.cn/" target="_blank">MetInfo</a><span class="none">{$foot}</span></div>
+		<div class="left_footer"><div class="left_footer_box"><a href="http://www.metinfo.cn/proposal/index.php?ver=$metcms_v" target="_blank">{$lang_proposal}</a></div></div>
 <!--
 EOT;
 }else{
 echo <<<EOT
 -->	
-	<div class="left_footer">{$lang_indexthanks}</div>
+	<div class="left_footer"><div class="left_footer_box">{$lang_indexthanks}</div></div>
 <!--
 EOT;
 }
 echo <<<EOT
 -->		
+		</div>
 	</div>
     <div class="floatr" id="metright">
         <div class="iframe">
@@ -180,9 +210,11 @@ echo <<<EOT
 	<div class="clear"></div>
 	</div>
 </div>
-<script src="{$img_url}/js/metinfo.js" type="text/javascript"></script>
+<div class="footer">{$foot}</div>
+<script src="{$img_url}/js/metinfo.js?$jsrand" type="text/javascript"></script>
 <script type="text/javascript">
-if(!$.cookie('upgraderemind')){
+
+if(!$.cookie('upgraderemind')&&$met_automatic_upgrade){
 	var src=$("#main").attr("src");
 	if(src.substring(0,15)=='system/sysadmin'){
 		$.ajax({
@@ -197,7 +229,7 @@ if(!$.cookie('upgraderemind')){
 				}
 				if(data.metpatch==1){
 					$.ajax({
-						url: './system/olupdate.php?action=patch',
+						url: '../include/interface/patch.php?action=patch',
 						type: 'GET',
 						success: function(data) {
 						}
@@ -208,6 +240,7 @@ if(!$.cookie('upgraderemind')){
 	}
 	$.cookie('upgraderemind', '1');
 }
+
 if(!$.cookie('appsynchronous')|| {$appaddok} == 0){
 	$.ajax({
 		url: 'app/dlapp/upapp.php',
@@ -217,6 +250,8 @@ if(!$.cookie('appsynchronous')|| {$appaddok} == 0){
 	});	
 	$.cookie('appsynchronous', '1');
 }
+
+//$(window).unload(function () { alert("Bye now!"); });
 </script>
 </body>
 </html>

@@ -50,7 +50,7 @@ if($action=="editor"){
 	$newslit.= "<td class='list-text'><input type='text' name='newwords_new$lp' class='text max' /></td>\n";
 	$newslit.= "<td class='list-text'><input type='text' name='newtitle_new$lp' class='text max' /></td>\n";
 	$newslit.= "<td class='list-text'><input type='text' name='url_new$lp' class='text max' /></td>\n";
-	$newslit.= "<td class='list-text'><input type='text' name='num_new$lp' class='text max' value='99' /></td>\n";
+	$newslit.= "<td class='list-text'><input type='text' name='num_new$lp' class='text max' value='1' /></td>\n";
 	$newslit.= "<td class='list-text'><a href='javascript:;' style='padding:0px 5px;' onclick='delettr($(this));'>$lang_js49</a></td>\n";
 	$newslit.= "</tr>";
 	echo $newslit;

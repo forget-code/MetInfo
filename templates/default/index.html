@@ -23,7 +23,7 @@ $val['desc']=utf8substr($val['description'],0,30);
 echo <<<EOT
 -->
 		<dl class="ind">
-            <dt><a href="{$val[url]}" {$metblank}><img src="{$val[imgurls]}" alt="{$met_alt}" title="{$met_alt}" style="width:{$val[img_x]}px; height:{$val[img_y]}px;" /></a></dt>
+            <dt><a href="{$val[url]}" {$metblank}><img src="{$val[imgurls]}" alt="{$met_alt}" title="{$met_alt}" width="{$lang_indeximgwidth}" /></a></dt>
 			<dd>
 			    <h4><a href="{$val[url]}" {$metblank} title="{$val[title]}">{$val[title]}</a></h4>
 				<p class="desc" title="{$val[description]}">{$val[desc]}</p>

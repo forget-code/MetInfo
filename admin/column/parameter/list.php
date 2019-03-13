@@ -48,6 +48,10 @@ if($action=="add"){
 			$list_if=$db->get_one("SELECT * FROM $met_list WHERE info='$info' and bigid='$bigid' ");
 			if($list_if)metsave('-1',$lang_parameternameexist,$depth);
 		}
+		if($tpif){
+			$query="update $met_plist set info='$info' where paraid='$skin_m[bigid]' and info='$skin_m[info]' and lang='$lang'";
+			$db->query($query);
+		}
 		$uptp = $tpif?"update":"insert into";
 		$upbp = $tpif?"where id='$allidlist[$i]'":",lang='$lang'";
 		$query="$uptp $met_list set

@@ -9,6 +9,7 @@ $authpass=trim($authpass);
 $cs=isset($cs)?$cs:1;
 $listclass[$cs]='class="now"';
 $rurls='../system/authcode.php?anyid='.$anyid.'&cs='.$cs.'&lang='.$lang;
+if($sysadmin)$rurls='../system/sysadmin.php?anyid='.$anyid.'&cs='.$cs.'&lang='.$lang;
 if($action=="modify"){
 	$authurl=authcode($authcode, 'DECODE', $authpass);
 	$authurl=explode("|",$authurl);
@@ -26,13 +27,15 @@ if($action=="modify"){
 				$db->query($query);
 				$db->query("update $met_config set value='0.06' where name='met_smsprice'");
 				$db->query("update $met_otherinfo set info1='',info2='' where id=1");
+				$db->query("update $met_config set value='0' where name='met_apptime'");
 				echo "<script type=\"text/javascript\">location.href='{$rurls}';parent.window.location.reload();</script>";
 				die();
 			}else{
 				$db->query("update $met_otherinfo set info1='',info2='',authpass='',authcode='',authtext='' where id=1");
 				if($re['re']=='DISREAD'){metsave($rurls,$lang_updaterr18);}
+				if($re['re']=='FAIL'){metsave($rurls,$lang_updaterr23);}
 				elseif($re['re']=='nohost'){metsave($rurls,$lang_updaterr20);}
-				else{metsave($rurls,$lang_authTip2);}
+				else{metsave($rurls,$lang_authTip14);}
 			}
 		}
 	}
@@ -45,7 +48,7 @@ if($action=="modify"){
 	}
 	if($authinfo[authcode]=='')$authinfo[authcode]="{$lang_authTip4}";
 }
-if($cs==1){
+if($cs==1&&$autcod){
 	if($met_agents_type>1){
 		echo '&nbsp';
 		die();

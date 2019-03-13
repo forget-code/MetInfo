@@ -74,9 +74,24 @@ if(isset($metid) && $met_pseudo){
 	}
 }else{
 	$modulelang=$lang?$lang:$met_index_type;
-	$query="SELECT * FROM $met_column WHERE foldername='$filpy' and (bigclass='0' or releclass!='0') and module<100 and lang='$modulelang'";
+	if($class1){
+		$query="SELECT * FROM $met_column WHERE id='$class1' and lang='$modulelang'";
+	}else{
+		$query="SELECT * FROM $met_column WHERE foldername='$filpy' and (bigclass='0' or releclass!='0') and module<100 and lang='$modulelang'";
+	}
 	$anyone = $db->get_one($query);	
-	$class1 = $anyone['id'];
+	if(!$anyone['isshow'] && $anyone['module'] == 1 && ($anyone['classtype']==1||$anyone['releclass']!=0)){
+		$anytwo = $db->get_one("SELECT * FROM $met_column WHERE foldername='$filpy' and bigclass='$anyone[id]' and lang='$modulelang' order by no_order");
+		$id = $anytwo['id'];
+		$lang = $anytwo['lang'];
+		$class1 = 0;
+		if(!$anytwo['isshow']){
+			$anysry = $db->get_one("SELECT * FROM $met_column WHERE foldername='$filpy' and bigclass='$id' and lang='$modulelang' order by no_order");
+			$id = $anysry['id'];
+		}
+	}else{
+		$class1 = $anyone['id'];
+	}
 	$mdle = $anyone['module'];
 	$mdtp = '0';
 }

@@ -4,6 +4,7 @@
 require_once '../login/login_check.php';
 $infofile="../../templates/".$met_skin_user."/info.html";
 if(!file_exists($infofile)){
+	if($skin_file_s)$met_skin_user=$skin_file_s;
 	if($met_skin_user=='default')$met_skin_user='metv5';
 	header("location:http://www.metinfo.cn/course/peizhi/{$met_skin_user}-cn.html");exit;
 }

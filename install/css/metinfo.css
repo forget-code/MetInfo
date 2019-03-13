@@ -1,18 +1,18 @@
 body,html{ font:12px/1.8 Tahoma,'Microsoft Yahei','Simsun'; color:#333; background:#f9f9f9; -webkit-text-size-adjust:none; text-align:center;}
-a{ color:#4275A5; }
-a:hover{ color:#4275A5;}
+a{ color:#1c57c4; }
+a:hover{ color:#1c57c4;}
 input.submit{ height:28px; line-height:20px; font-size:12px; padding:0px 20px;}
 input.text{ color:#333; border:1px solid #eee; border-top-color:#999; border-left-color:#999; padding:2px; padding:0px 2px 3px\9; vertical-align:middle; height:22px; line-height:22px; width:150px;}
 input.metfocus{ border:1px solid #09f;}
 .clear{ clear:both; font-size:0px; height:0px; overflow:hidden;}
 #metcontent{ width:860px; height:500px; margin:0px auto; text-align:left; }
-.top{ padding-top:10px; background:#1F75B7; height:70px;}
+.top{ padding-top:5px; background:#1F75B7; height:63px; box-shadow: 0 1px 2px #999;}
 .topcont{ width:860px; margin:0px auto; height:63px; overflow:hidden; text-align:left;}
 .logo{ float:left;}
-.headright{ color:#fff; padding-top:42px; *padding-top:38px; padding-right:15px; float:right; text-align:right; font-size:12px; }
+.headright{ color:#fff; padding-top:38px; *padding-top:34px; padding-right:15px; float:right; text-align:right; font-size:12px; }
 .headright font{ padding-left:10px; font-size:13px;}
 .bodyleft ul{ margin:5px 0px 0px; padding-left:80px;}
-.bodyleft li{ line-height:40px; width:150px; float:left; height:40px; font-size:14px;}
+.bodyleft li{ line-height:40px; width:150px; float:left; height:40px; font-size:15px;}
 .bodyleft li span{ float:left; margin-right:8px; font-family:Georgia,"Times New Roman","Bitstream Charter",Times,serif; font-size:30px; color:#999; position:relative; bottom:5px;}
 .bodyleft li.stepnow{ color:#45b00f; font-weight:bold; border-right-color:#fff;}
 .bodyleft li.stepnow span{ color:#999; font-weight:normal;}
@@ -27,9 +27,9 @@ input.metfocus{ border:1px solid #09f;}
 	border-radius: 3px;
 }
 
-.contenttext{ text-align:left; padding:10px 15px; margin-bottom:10px; font-size:13px; line-height:2; border:1px solid #ccc; background:#fcfcfc; }
+.contenttext{ text-align:left; padding:10px 15px; margin-bottom:10px; font-size:13px; line-height:2.2; border:1px solid #ccc; background:#fcfcfc; }
 .contenttext ul.license{ padding-left:25px; margin:5px 0px; list-style-type:decimal;}
-.contenttext .title{ font-size:16px; margin:0px 0px 6px; text-align:center; }
+.contenttext .title{ font-size:22px; margin:0px 0px 6px; text-align:center; }
 .contenttext .titleok{ font-size:16px; margin:0px 0px 6px; color:#390; border-bottom:1px solid #ccc; }
 .contenttext address{ display:inline;}
 
@@ -38,7 +38,7 @@ input.metfocus{ border:1px solid #09f;}
 .center{ width:500px; height:30px; margin:0px auto; line-height:30px; font-size:14px; font-weight:bold;}
 .center a{ color:#003399;}
 fieldset { margin: 0; padding: 10px; border: 1px solid #eee; background:#fafafa; }
-legend { margin: 0; padding: 0 4px; color:#4275A5; font-size:14px; }
+legend { margin: 0; padding: 0 4px; color:#1c57c4; font-size:14px; }
 input, select, textarea { margin: 10px 5px 0; padding: 0; }
 label, span.label { margin: 0; padding: 0; font-weight: bold; }
 div.section { clear: both; }

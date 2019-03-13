@@ -27,92 +27,95 @@ echo <<<EOT
 		return false;
 	}
 </script>
-<table cellpadding="2" cellspacing="1" class="table">
-	<tr>
-		<td class="text" style="color:#390;">{$lang_databackup1}{$lang_marks}</td>
-		<td class="input">
+<div class="v52fmbx_tbmax">
+<div class="v52fmbx_tbbox">
+<div class="v52fmbx">
+	<h3 class="v52fmbx_hr metsliding">{$lang_dataexplain5}</h3>
+	<div class="v52fmbx_dlbox v52fmbx_detabes">
+	<dl>
+		<dt>{$lang_dataexplain10}{$lang_marks}</dt>
+		<dd class="detabes">
 			<input type="submit" url="index.php?anyid={$anyid}&lang={$lang}&action=allbase&tbl=1&cs={$cs}" class="submit" value="{$lang_databackup4}" onclick="return metdatabase($(this))" />
 			<span class="tips"></span>
-			<a href="index.php?anyid={$anyid}&lang={$lang}&labtype=2&cs={$cs}" title="{$lang_databackup5}" style="margin-left:10px;">{$lang_databackup5}</a>&nbsp;&nbsp;
-			<span class="tips">{$lang_dataexplain5}</span>&nbsp;&nbsp;
-		</td>
-	</tr>
-	<tr>
-		<td class="text">{$lang_databackup6}{$lang_marks}</td>
-		<td class="input">
+			<a href="index.php?anyid={$anyid}&lang={$lang}&labtype=2&cs={$cs}" title="{$lang_databackup5}" style="margin-left:10px;">{$lang_databackup5}</a>
+		</dd>
+	</dl>
+	</div>
+	<h3 class="v52fmbx_hr metsliding">{$lang_dataexplain6}</h3>
+	<div class="v52fmbx_dlbox v52fmbx_detabes">
+	<dl>
+		<dt>{$lang_databackup6}{$lang_marks}</dt>
+		<dd class="detabes">
 			<input type="submit" url="index.php?anyid={$anyid}&lang={$lang}&action=uploadimg&cs={$cs}" class="submit" value="{$lang_databackup4}" onclick="return metdatabase($(this))" />
-			<span class="tips"></span>&nbsp;&nbsp;
-			<span class="tips">{$lang_dataexplain6}</span>
-		</td>
-	</tr>
-	<tr>
-		<td class="text">{$lang_databackup7}{$lang_marks}</td>
-		<td class="input">
+			<span class="tips"></span>
+		</dd>
+	</dl>
+	</div>
+	<h3 class="v52fmbx_hr metsliding">{$lang_dataexplain7}</h3>
+	<div class="v52fmbx_dlbox v52fmbx_mo v52fmbx_detabes">
+	<dl>
+		<dt>{$lang_databackup7}{$lang_marks}</dt>
+		<dd class="detabes">
 			<input type="submit" url="index.php?anyid={$anyid}&lang={$lang}&action=allfile&cs={$cs}" class="submit" value="{$lang_databackup8}" onclick="return metdatabase($(this))" />
-			<span class="tips"></span>&nbsp;&nbsp;
-			<span class="tips">{$lang_dataexplain7}</span>
-		</td>
-	</tr>
-		  <tr> 
-				<td class="text"></td>
-				<td class="input color390">
-				{$lang_langshuom}{$lang_marks}
-				<ol>
-					<li>{$lang_dataexplain8}</li>
-					<li>{$lang_dataexplain9}</li>
-<!--
-EOT;
-if($met_agents_type<=1){
-echo <<<EOT
--->	
-					<li>{$lang_dataexplain10}<a href="http://www.metinfo.cn/course/webmove/" target="_blank">{$lang_dataexplain11}</a>{$lang_dataexplain12}</li>
-<!--
-EOT;
-}
-echo <<<EOT
--->					
-				</ol>
-				</td>
-		  </tr>
-</table>
+			<span class="tips"></span>
+		</dd>
+	</dl>
+	</div>
+</div>
+</div>
+</div>
 <!--
 EOT;
 }elseif($labtype==2){
 echo <<<EOT
 -->
 <form method="POST" name="myform" action="index.php?anyid={$anyid}&action=allbase&lang={$lang}" target="_self">
-<table cellpadding="2" cellspacing="1" class="table datadisplay">
+<div class="v52fmbx_tbmax">
+<div class="v52fmbx_tbbox">
+<table cellpadding="2" cellspacing="1" class="table">
 	<tr> 
-        <td width="50" class="list">{$lang_selected}</td>
+        <td width="40" class="list">{$lang_selected}</td>
 		<td width="60" class="list">{$lang_setdbItems}</td>
-		<td width="150" class="list">{$lang_setdbSize} [{$lang_setdbAll} $totalsize M]</td>
-        <td class="list">{$lang_setdbTable}</td>
+		<td width="90" class="list">{$lang_setdbSize}<br/><span class="color390">[{$lang_setdbAll} {$totalsize} M]</span></td>
+        <td class="list list_left">{$lang_setdbTable}</td>
 	</tr>
 <!--
 EOT;
 foreach($tables as $k => $val){
 echo <<<EOT
 -->
-	<tr class="mouse click"> 
+	<tr class="mouse click">
         <td class="list-text"><input type="checkbox" name="tables[]" value="$val" checked /></td>
         <td class="list-text">$bkresults[$k]</td>
 		<td class="list-text">$size[$k] M</td>
-        <td class="list-text">$val</td>
+        <td class="list-text list_left">$val</td>
 	</tr>
 <!--
 EOT;
 }
 echo <<<EOT
 -->
+	<tr class="mouse click"> 
+        <td class="list-text"></td>
+        <td class="list-text list_left" colspan="3">
+			{$lang_setdbEveryoneSize}
+			<select name="sizelimit">
+				<option value="2048">2 Mb</optioin>
+				<option value="4096">4 Mb</optioin>
+				<option value="8192">8 Mb</optioin>
+			</select>
+			<span class="tips">{$lang_setdbTip4}</span>
+		</td>
+	</tr>
 	<tr>
-		<td class="all"><input name='chkAll' type='checkbox' onclick="CheckAllx($(this),'myform','tables[]')" value='check' checked /></td>
-		<td class="input all-submit" colspan="3">
-			<input type="submit" name="dosubmit" value=" {$lang_setdbStart}" class="submit" onclick="return Smit($(this),'myform')" />
-			&nbsp;&nbsp;{$lang_setdbEveryoneSize}&nbsp;<input type=text name="sizelimit" value="2048" style="width:40px;" />&nbsp;Kb
-			&nbsp;&nbsp;<span class="tips">{$lang_setdbTip4}</span>
+		<td class="list"><input name='chkAll' type='checkbox' onclick="CheckAllx($(this),'myform','tables[]')" value='check' checked /></td>
+		<td class="list list_left" colspan="3">
+			<input type="submit" name="dosubmit" value="{$lang_setdbStart}" class="submit" onclick="return Smit($(this),'myform')" />
 		</td>
 	</tr>
 </table>
+</div>
+</div>
 <!--
 EOT;
 }

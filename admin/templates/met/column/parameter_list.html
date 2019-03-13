@@ -13,19 +13,41 @@ if($bigid_info[module]==8)$title="{$lang_fdincTitle}({$met_class[$class1][name]}
 $rurl='parameter.php?anyid='.$anyid.'&lang='.$lang.'&module='.$bigid_info[module].'&class1='.$class1;
 if($bigid_info[module]==6){
 $title="<a href='../../content/job/index.php?anyid={$anyid}&lang={$lang}&class1={$class1}'>{$met_class[$class1][name]}</a>";
-$listclass[2]='class="now"';
+$listclass='';
+$listclass[3]='class="now"';
 require_once template('content/job/top');
 }
 if($bigid_info[module]==8){
 $title="<a href='../../content/feedback/index.php?anyid={$anyid}&lang={$lang}&class1={$class1}'>{$met_class[$class1][name]}</a>";
+$listclass='';
 $listclass[2]='class="now"';
 require_once template('content/feedback/top');
+}
+
+if($bigid_info[module]==3){
+$title=$class1?"<a href='../../content/product/index.php?anyid={$anyid}&lang={$lang}&class1={$class1}'>{$met_class[$class1][name]}</a>":"<a href='../../content/product/index.php?anyid={$anyid}&lang={$lang}'>{$lang_modulemanagement3}</a>";$listclass='';
+$listclass[2]='class="now"';
+require_once template('content/product/top');
+}
+if($bigid_info[module]==4){
+$title=$class1?"<a href='../../content/download/index.php?anyid={$anyid}&lang={$lang}&class1={$class1}'>{$met_class[$class1][name]}</a>":"<a href='../../content/download/index.php?anyid={$anyid}&lang={$lang}'>{$lang_modulemanagement4}</a>";
+$listclass='';
+$listclass[2]='class="now"';
+require_once template('content/download/top');
+}
+if($bigid_info[module]==5){
+$title=$class1?"<a href='../../content/img/index.php?anyid={$anyid}&lang={$lang}&class1={$class1}'>{$met_class[$class1][name]}</a>":"<a href='../../content/img/index.php?anyid={$anyid}&lang={$lang}'>{$lang_modulemanagement4}</a>";
+$listclass='';
+$listclass[2]='class="now"';
+require_once template('content/img/top');
 }
 if($bigid_info[module]!=6&&$bigid_info[module]!=8){
 require_once template('metlangs');
 }
 echo <<<EOT
 --> 	
+<div class="v52fmbx_tbmax">
+<div class="v52fmbx_tbbox">
 		<table cellpadding="0" cellspacing="0" class="table">
 <!--
 EOT;
@@ -94,7 +116,7 @@ echo <<<EOT
 		<tr>
 		<td colspan="2">
 		<form name="del" method="Post" action="list.php?anyid={$anyid}&lang={$lang}&class1={$class1}">
-		 <table cellpadding="0" cellspacing="0" class="table neitable" style="margin:0px; border:none;">
+		 <table cellpadding="0" cellspacing="1" class="table neitable">
 <!--
 EOT;
 if($listmarknow<>'metinfo'){
@@ -190,10 +212,9 @@ EOT;
 }
 echo <<<EOT
 --> 
-		<tr>
-			<td class="footer" colspan="4">$foot</td>
-		</tr>
 		</table>
+</div>
+<div class="footer">{$foot}</div>
 </body>
 </html>
 <!--

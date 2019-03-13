@@ -26,7 +26,15 @@ function metgenthml(hml,nxt){
 		generatehtm(json,nxt,'',2);
 }
 function metgent(gent){
-	$.ajax({ url : gent,type: "POST" });
+	$.ajax({ 
+		url : gent,
+		type: "POST" ,
+		cache : false,
+		async : false,
+		error: function(XMLHttpRequest,textStatus,errorThrown) {
+			alert('$lang_');
+        }
+	});
 }
 function methistory(rf){
 	if(rf==1 && $.browser.msie && hml=='') {

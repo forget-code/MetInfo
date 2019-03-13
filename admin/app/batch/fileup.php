@@ -47,6 +47,7 @@ if($action=="do"){
 	$from_record_2=$from_record+$list_num;
 }
 require_once 'index.php';
+$listclass='';
 $listclass[2]='class="now"';
 $css_url=$depth."../templates/".$met_skin."/css";
 $img_url=$depth."../templates/".$met_skin."/images";

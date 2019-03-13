@@ -83,7 +83,7 @@ class upfile {
 	  if($met_img_rename||$file){
 		$this->set_savename($file); //Save the settings file name
 	  }else{
-		$this->savename = str_replace(array(":", "*", "?", "|", "/" ,"！！"," "),'_',$filear["name"]);
+		$this->savename = str_replace(array(":", "*", "?", "|", "/" , "\\" , "\"" , "<" , ">" , "！！" , " " ),'_',$filear["name"]);
 	  }
 	  if(stristr(PHP_OS,"WIN")){
 		$this->savename = @iconv("utf-8","GBK",$this->savename);
@@ -123,7 +123,7 @@ class upfile {
     }
 	if(!$this->format)$this->format.='|';
     if ($this->format != "" && !in_array(strtolower($this->ext), explode($this->separator,
-        strtolower($this->format)))) {  	
+        strtolower($this->format))) && $filear) {  	
        return $this->halt($this->ext." $lang_upfileTip3");
     }
 	if(strtolower($this->ext)=='php'||strtolower($this->ext)=='aspx'||strtolower($this->ext)=='asp'||strtolower($this->ext)=='jsp'||strtolower($this->ext)=='js'||strtolower($this->ext)=='asa'){
@@ -148,7 +148,7 @@ class upfile {
 			$lang_upfileOver4=$lang_upfileOver5;
 		}
 		unlink($this->savepath.'test.txt');
-		$errors = array(0 => $lang_upfileOver4, 1 =>$lang_upfileOver, 2 => $lang_upfileOver1, 3 => $lang_upfileOver2, 4 => $lang_upfileOver3);
+		$errors = array(0 => $lang_upfileOver4, 1 =>$lang_upfileOver, 2 => $lang_upfileOver1, 3 => $lang_upfileOver2, 4 => $lang_upfileOver3, 6=> $lang_upfileOver5, 7=> $lang_upfileOver5);
 		$filear["error"]=$filear["error"]?$filear["error"]:0;
 		return $this->halt($errors[$filear["error"]]);
     } else {

@@ -11,7 +11,7 @@ $menber_array[$val['id']]=$val['array_name'];
 $menber_array[3]='管理员';
 $admin_list = $db->get_one("SELECT * FROM $met_admin_table WHERE admin_id='$metinfo_member_name' ");
 if(!$admin_list){
-	session_unset();
+	met_cooike_unset();
 	$returnurl="login.php?lang=".$lang;
 	header("Location: $returnurl");
 	exit();

@@ -7,7 +7,7 @@ if($action=="add"){
 $settings = parse_ini_file('../config/job_'.$lang.'.inc.php');
 @extract($settings);
 if($met_memberlogin_code==1){
- require_once 'captcha.class.php';
+ require_once '../member/captcha.class.php';
  $Captcha= new  Captcha();
  if(!$Captcha->CheckCode($code)){
  echo("<script type='text/javascript'> alert('$lang_membercode');window.history.back();</script>");
@@ -62,8 +62,9 @@ setcookie('submit',$time2);
 require_once '../include/jmail.php';	 
 require_once 'uploadfile_save.php';
 $customerid=$metinfo_member_name!=''?$metinfo_member_name:0;
+if(!is_numeric($jobid))okinfo('javascript:history.back();',$lang_js1);
 if($met_cv_type==1 or $met_cv_type==2){
-$query = "INSERT INTO $met_cv SET addtime = '$m_now_date', customerid = '$customerid',jobid=$jobid,lang='$lang',ip='$ip' ";
+$query = "INSERT INTO $met_cv SET addtime = '$m_now_date', customerid = '$customerid',jobid='$jobid',lang='$lang',ip='$ip' ";
 $db->query($query);
 $later_cv=$db->get_one("select * from $met_cv where lang='$lang' order by addtime desc");
 $id=$later_cv[id];

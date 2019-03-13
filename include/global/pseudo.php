@@ -63,7 +63,7 @@ while($columnid=current($cache_column)){
 	}
 	$urltop = $weburly.$listc['foldername'].'/';
 	if($langnums==1&&($listc['classtype']==1||$listc['releclass'])){
-		if($listc['url']==NULL){
+		if($listc['url']==NULL||$listc['url']=='isshow'){
 			if($listc['module']==0){$listc['url'] = (strstr($listc['out_url'],"http://"))?$listc['out_url']:$navurl.$listc['out_url'];}
 			else{$listc['url']=$urltop;}
 		}
@@ -207,8 +207,12 @@ while($columnid=current($cache_column)){
 	}
 	if($listc['if_in'])$listc['url'] = $listc['out_url'];
 	//===============================简介栏目只做栏目*/
+	//当只做栏目的时候，取下级栏目地址
 	if($cache_column[$listc['bigclass']]['isshow']==0&&$cache_column[$listc['bigclass']]['url']==NULL&&$listc['classtype']!=1){
 		$cache_column[$listc['bigclass']]['url']=$listc['url'];
+		if($langnums==1&&$cache_column[$listc['bigclass']][foldername]==$listc[foldername]){
+			$cache_column[$listc['bigclass']]['url']='isshow';
+		}
 	}
 	next($cache_column);	
 }
@@ -217,34 +221,45 @@ foreach($cache_column as $key=>$val){
 	$column_no_order[$key]=$val['no_order'];
 }
 array_multisort($column_no_order,SORT_ASC,SORT_NUMERIC,$cache_column);
-foreach($cache_column as $key=>$list){			
-	$nav_listall[]=$list;
-	$class_list[$list['id']]=$list;
-	$module_listall[$list['module']][]=$list;
-	if($list['classtype']==1){
-		$nav_list_1[]=$list;
-		$module_list1[$list['module']][]=$list;
-		$class1_list[$list['id']]=$list;
-		if($list['module']==2 or $list['module']==3 or $list['module']==4 or $list['module']==5)$nav_search[]=$list; 
-	} 
-	if($list['classtype']==2){
-		$nav_list_2[]=$list;
-		$module_list2[$list['module']][]=$list;
-		$nav_list2[$list['bigclass']][]=$list;
-		$class2_list[$list['id']]=$list;
+foreach($cache_column as $key=>$list){
+	$column_moblie_ok=1;
+	if($met_mobileok&&$met_wap&&$met_wapshowtype){
+		if($list[wap_ok]){
+			$column_moblie_ok=1;
+			$list['nav'] = $list[wap_nav_ok]?1:0;
+		}else{
+			$column_moblie_ok=0;
+		}
 	}
-	if($list['classtype']==3){
-		$nav_list_3[]=$list;
-		$module_list3[$list['module']][]=$list;
-		$nav_list3[$list['bigclass']][]=$list;
-		$class3_list[$list['id']]=$list;
-	}
-	if($list['nav']==1 or $list['nav']==3)$nav_list[]=$list;
-	if($list['nav']==2 or $list['nav']==3)$navfoot_list[]=$list;
-	if($list['classtype']==1&&$list['module']==1&&$list['isshow']==1){$nav_listabout[]=$list;}
-	if($list['index_num']!="" and $list['index_num']!=0){
-		$list['classtype']=$list['releclass']?"class1":"class".$list['classtype'];
-		$class_index[$list['index_num']]=$list;
+	if($column_moblie_ok){
+		$nav_listall[]=$list;
+		$class_list[$list['id']]=$list;
+		$module_listall[$list['module']][]=$list;
+		if($list['classtype']==1){
+			$nav_list_1[]=$list;
+			$module_list1[$list['module']][]=$list;
+			$class1_list[$list['id']]=$list;
+			if($list['module']==2 or $list['module']==3 or $list['module']==4 or $list['module']==5)$nav_search[]=$list; 
+		} 
+		if($list['classtype']==2){
+			$nav_list_2[]=$list;
+			$module_list2[$list['module']][]=$list;
+			$nav_list2[$list['bigclass']][]=$list;
+			$class2_list[$list['id']]=$list;
+		}
+		if($list['classtype']==3){
+			$nav_list_3[]=$list;
+			$module_list3[$list['module']][]=$list;
+			$nav_list3[$list['bigclass']][]=$list;
+			$class3_list[$list['id']]=$list;
+		}
+		if($list['nav']==1 or $list['nav']==3)$nav_list[]=$list;
+		if($list['nav']==2 or $list['nav']==3)$navfoot_list[]=$list;
+		if($list['classtype']==1&&$list['module']==1&&$list['isshow']==1){$nav_listabout[]=$list;}
+		if($list['index_num']!="" and $list['index_num']!=0){
+			$list['classtype']=$list['releclass']?"class1":"class".$list['classtype'];
+			$class_index[$list['index_num']]=$list;
+		}
 	}
 }
 

@@ -14,11 +14,45 @@ if($action=='copy'){
 	$allidlist=explode(',',$allid);
 	$k=count($allidlist)-1;
 	for($i=0;$i<$k; $i++){
-		$query="select * from {$met_download} where id='{$allidlist[$i]}'";
-		$copy=$db->get_one($query);
-		$copy[content]=str_replace('\'','\'\'',$copy[content]);
-		$query = "insert into {$met_download} set title='$copy[title]',ctitle='$copy[ctitle]',keywords='$copy[keywords]',description='$copy[description]',content='$copy[content]',class1='{$copyclass1}',class2='{$copyclass2}',class3='{$copyclass3}',no_order='$copy[no_order]',new_ok='$copy[new_ok]',wap_ok='$copy[wap_ok]',downloadurl='$copy[downloadurl]',filesize='$copy[filesize]',com_ok='$copy[com_ok]',hits='$copy[hits]',updatetime='$copy[updatetime]',addtime='$copy[addtime]',issue='$copy[issue]',access='$copy[access]',top_ok='$copy[top_ok]',downloadaccess='$copy[downloadaccess]',lang='{$copylang}',recycle='$copy[recycle]'";
+		$query = "select * from {$met_download} where id='{$allidlist[$i]}'";
+		$original[]=$db->get_one($query);
+	}
+	foreach($original as $key=>$val){
+		$originalclass1[]=$val['class1'];
+	}
+	$para2id=$result1[id];
+	foreach($originalclass1 as $key=>$val){
+		if($lang==$copylang&&$result1[id]!=$val){
+			$query = "update $met_parameter set class1='0' where class1='$val' and lang='$lang'";
+			$db->query($query);
+		}
+	}
+	foreach($originalclass1 as $key=>$val){
+		$sql=" or class1='$val' ";
+	}
+	$query = "select * from $met_parameter where module='$result1[module]' and ( class1='0' $sql ) and lang='$lang' order by no_order ASC,id ASC";
+	$para1=$db->get_all($query);
+
+	$query = "select * from $met_parameter where module='$result1[module]' and ( class1='0' or class1='$para2id' ) and lang='$copylang' order by no_order ASC,id ASC";
+	$para2=$db->get_all($query);	
+
+	$paralist=array();
+	foreach($para1 as $key=>$val){
+		$paralist[$val[id]]=$para2[$key][id];
+	}
+	foreach($original as $key=>$val){
+		$val[content]=str_replace('\'','\'\'',$val[content]);
+		$query = "insert into {$met_download} set title='$val[title]',ctitle='$val[ctitle]',keywords='$val[keywords]',description='$val[description]',content='$val[content]',class1='{$copyclass1}',class2='{$copyclass2}',class3='{$copyclass3}',no_order='$val[no_order]',new_ok='$val[new_ok]',wap_ok='$val[wap_ok]',downloadurl='$val[downloadurl]',filesize='$val[filesize]',com_ok='$val[com_ok]',hits='$val[hits]',updatetime='$val[updatetime]',addtime='$val[addtime]',issue='$val[issue]',access='$val[access]',top_ok='$val[top_ok]',downloadaccess='$val[downloadaccess]',lang='{$copylang}',recycle='$val[recycle]'";
 		$db->query($query);
+		$insert_id=$db->insert_id();
+		$query="select * from {$met_plist} where listid='{$val[id]}'";
+		$plist=$db->get_all($query);
+		foreach($plist as $key2=>$val2){
+			if($paralist[$val2[paraid]]){
+				$query="insert into {$met_plist} set listid='{$insert_id}',paraid='{$paralist[$val2[paraid]]}',info='$val2[info]',lang='$copylang',imgname='$val2[imgname]',module='$val2[module]'";
+				$db->query($query);
+			}
+		}
 	}
 	metsave($backurl,'',$depth);
 }elseif($action=="moveto"){
@@ -31,18 +65,45 @@ if($action=='copy'){
 		exit();
 	}
 	for($i=0;$i<$k; $i++){
+		$query = "select * from {$met_download} where id='{$allidlist[$i]}'";
+		$original[]=$db->get_one($query);
+	}
+	foreach($original as $key=>$val){
+		$originalclass1[]=$val['class1'];
+	}
+	$para2id=$result1[id];
+	foreach($originalclass1 as $key=>$val){
+		if($lang==$movelang&&$result1[id]!=$val){
+			$query = "update $met_parameter set class1='0' where class1='$val' and lang='$lang'";
+			$db->query($query);
+		}
+	}
+	foreach($originalclass1 as $key=>$val){
+		$sql=" or class1='$val' ";
+	}
+	$query = "select * from $met_parameter where module='$result1[module]' and ( class1='0' $sql ) and lang='$lang' order by no_order ASC,id ASC";
+	$para1=$db->get_all($query);
+
+	$query = "select * from $met_parameter where module='$result1[module]' and ( class1='0' or class1='$result1[id]' ) and lang='$movelang' order by no_order ASC,id ASC";
+	$para2=$db->get_all($query);	
+	$paralist=array();
+	foreach($para1 as $key=>$val){
+		$paralist[$val[id]]=$para2[$key][id];
+	}
+	foreach($original as $key=>$val){
 		$filname= '';
 		if($movelang!=$lang)$filname = "filename = '',";
-		$query = "update {$met_download} SET";
-		$query = $query."
-						  class1             = '$moveclass1',
-						  class2             = '$moveclass2',
-						  class3             = '$moveclass3',
-						  access             = '$access',
-						  {$filname}
-						  lang               = '$movelang'";
-		$query = $query." where id='$allidlist[$i]'";
+		$query = "update {$met_download} SET class1='$moveclass1',class2='$moveclass2',class3='$moveclass3',access='$access',{$filname}lang='$movelang' where id='$val[id]'";
 		$db->query($query);
+		$query="select * from {$met_plist} where listid='{$val[id]}'";
+		$plist=$db->get_all($query);
+		foreach($plist as $key2=>$val2){
+			if($paralist[$val2[paraid]]){
+				$query="update {$met_plist} set paraid='{$paralist[$val2[paraid]]}',lang='$movelang' where id='{$val2[id]}'";
+				$db->query($query);
+			}
+		}
+		
 	}
 	metsave($backurl,'',$depth);
 }else{
@@ -67,8 +128,7 @@ if($action=='copy'){
 	}
 	$query = $query."id='$id' where id='$id'";
 	$db->query($query);
-	if($top_ok==1)$page=0;
-	metsave("../content/download/index.php?anyid={$anyid}&lang=$lang&class1=$class1&class2=$class2&class3=$class3".'&modify='.$id.'&page='.$page,'',$depth);
+	metsave("../content/download/index.php?anyid={$anyid}&lang=$lang&class1=$class1&class2=$class2&class3=$class3&page=$page".'&modify='.$id.'&page='.$page,'',$depth);
 }
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.

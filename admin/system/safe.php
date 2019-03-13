@@ -32,13 +32,13 @@ if($action=="delete"){
 	metsave('../system/safe.php?anyid='.$anyid.'&lang='.$lang);
 }
 if($action=="modify"){
-	require_once $depth.'../include/config.php';
 	if($met_adminfile!=""&&$met_adminfile!=$adminfile){
-		$robots=file_get_contents('../../robots.txt');
-		$robots=str_replace(": /$adminfile/",": /admin/",$robots);
-		file_put_contents('../../robots.txt',$robots);
-		Header("Location: ../index.php?lang=".$lang."&action=renameadmin&met_adminfile=".$met_adminfile);
+		$met_adminfile_temp=$met_adminfile;
+		$met_adminfile_code=authcode($met_adminfile,'ENCODE', $met_webkeys);
+		require_once $depth.'../include/config.php';
+		Header("Location: ../index.php?lang=".$lang."&action=renameadmin&adminmodify=1&met_adminfile=".$met_adminfile_temp);
 	}else{
+		require_once $depth.'../include/config.php';
 		metsave('../system/safe.php?anyid='.$anyid.'&lang='.$lang);
 	}
 }else{
@@ -54,8 +54,9 @@ if(!is_dir('../../install'))$installstyle="display:none;";
 if(!is_dir('../../update'))$updatestyle="display:none;";
 $met_login_code1[$met_login_code]="checked='checked'";
 $met_memberlogin_code1[$met_memberlogin_code]="checked='checked'";
-$met_recycle1[$met_recycle]="checked='checked'";
-$met_smspass1[$met_smspass]="checked='checked'";
+$met_automatic_upgrade1[$met_automatic_upgrade]="checked";
+
+
 $css_url="../templates/".$met_skin."/css";
 $img_url="../templates/".$met_skin."/images";
 include template('system/set_safe');

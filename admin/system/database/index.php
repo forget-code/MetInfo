@@ -12,6 +12,7 @@ $css_url=$depth."../templates/".$met_skin."/css";
 $img_url=$depth."../templates/".$met_skin."/images";
 $rurls='../system/database/filedown.php?anyid='.$anyid.'&lang='.$lang.'&cs=6';
 if($action=='allfile'){
+	echo "<span id=\"tips\">$lang_setdbArchiveNo</span>";
 	$localurl="http://";
 	$localurl.=$_SERVER['HTTP_HOST'].$_SERVER["PHP_SELF"];
 	$localurl_a=explode("/",$localurl);
@@ -24,7 +25,7 @@ if($action=='allfile'){
 	$tables=tableprearray($tablepre);
 	$sizelimit=2048;
 	if($fileid==1){
-		$random = mt_rand(1000,9999);
+		$random = met_rand(6);
 		cache_write('bakup_tables.php', $tables);
 	}
 	$sqldump = '';
@@ -51,23 +52,28 @@ if($action=='allfile'){
 		$archive = new PclZip($sqlzip);
 		$zip_list = $archive->create('../../databack/'.$filename,PCLZIP_OPT_REMOVE_PATH,'../../databack/');
 		if($zip_list == 0){
-			die("Error : ".$archive->errorInfo(true));
+			//die("Error : ".$archive->errorInfo(true));
+			metsave($rurls,$lang_setdbArchiveNo,$depth);
 		}
 		header('location:index.php?lang='.$lang.'&data_msg='.$data_msg.'&action='.$action.'&sizelimit='.$sizelimit.'&tableid='.$tableid.'&fileid='.$fileid.'&startfrom='.$startrow.'&random='.$random.'&anyid='.$anyid.'&cs='.$cs);
 	}else{
 		cache_delete('bakup_tables.php');
 		$adminfile=$url_array[count($url_array)-2];
 		if(!file_exists('../../databack/web'))@mkdir ('../../databack/web', 0777);  
-		$sqlzip='../../databack/web/'.$met_agents_backup.'_web_'.date('YmdHis',time()).'.zip';
+		
+		$sqlzip='../../databack/web/'.$met_agents_backup.'_web_'.$con_db_name.'_'.date('YmdHis',time()).'_'.met_rand(6).'.zip';
 		$zipfile="../../../";
 		$archive = new PclZip($sqlzip);
 		$zip_list = $archive->create($zipfile,PCLZIP_OPT_REMOVE_PATH,'../../../',PCLZIP_CB_PRE_ADD,'myPreAddCallBack');
 		if($zip_list==0){
-			die("Error : ".$archive->errorInfo(true));
+			//die("Error : ".$archive->errorInfo(true));
+			metsave($rurls,$lang_setdbArchiveNo,$depth);
 		}
+		echo "<script type=\"text/javascript\">document.getElementById('tips').style.display = \"none\";</script>";
 		metsave($rurls,$lang_setdbArchiveOK,$depth);
 	}
 }elseif($action=='uploadimg'){
+	echo "<span id=\"tips\">$lang_setdbArchiveNo</span>";
 	include "../../include/pclzip.lib.php";
 	if(!file_exists('../../databack/upload'))@mkdir ('../../databack/upload', 0777);  
 	$sqlzip='../../databack/upload/'.$met_agents_backup.'_upload_'.date('YmdHis',time()).'.zip';
@@ -75,7 +81,8 @@ if($action=='allfile'){
 	$archive = new PclZip($sqlzip);
 	$zip_list = $archive->create($zipfile,PCLZIP_OPT_REMOVE_PATH,'../../../');
 	if ($zip_list == 0) {
-		die("Error : ".$archive->errorInfo(true));
+		//die("Error : ".$archive->errorInfo(true));
+		metsave($rurls,$lang_setdbArchiveNo,$depth);
 	}
 	metsave($rurls,$lang_setdbArchiveOK,$depth);
 }elseif($action=='config'){
@@ -94,8 +101,10 @@ if($action=='allfile'){
 	$archive = new PclZip($sqlzip);
 	$zip_list = $archive->create($zipfile,PCLZIP_OPT_REMOVE_PATH,'../../../');
 	if ($zip_list == 0) {
-		die("Error : ".$archive->errorInfo(true));
+		//die("Error : ".$archive->errorInfo(true));
+		metsave($rurls,$lang_setdbArchiveNo,$depth);
 	}
+	echo "<script type=\"text/javascript\">document.getElementById('tips').style.display = \"none\";</script>";
 	metsave($rurls,$lang_setdbArchiveOK,$depth);
 }elseif($action=='allbase'){
 	$localurl="http://";
@@ -116,7 +125,7 @@ if($action=='allfile'){
 		}
 	}
 	if($fileid==1){
-		$random = mt_rand(1000,9999);
+		$random =met_rand(6);
 		cache_write('bakup_tables.php', $tables);
 	}elseif(!$tbl){
 		$allidlist=explode('|',$tablestx);
@@ -148,7 +157,8 @@ if($action=='allfile'){
 		$archive = new PclZip($sqlzip);
 		$zip_list = $archive->create('../../databack/'.$filename,PCLZIP_OPT_REMOVE_PATH,'../../databack/');
 		if($zip_list == 0){
-			die("Error : ".$archive->errorInfo(true));
+			//die("Error : ".$archive->errorInfo(true));
+			metsave($rurls,$lang_setdbArchiveNo,$depth);
 		}
 		header('location:index.php?lang='.$lang.'&data_msg='.$data_msg.'&action='.$action.'&sizelimit='.$sizelimit.'&tableid='.$tableid.'&fileid='.$fileid.'&startfrom='.$startrow.'&random='.$random.'&anyid='.$anyid.'&tablestx='.$tablestx.'&tbl='.$tbl);
 	}else{

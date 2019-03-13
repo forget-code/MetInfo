@@ -725,11 +725,10 @@ switch($met_flasharray[$classnow][type]){
 		}
 	break;
 }
-
 //loop array 
 function methtml_getarray($mark,$type,$order,$module,$listmx=-1,$para=0,$categoryname=0,$marktype=0,$txtmax=0,$descmax=0){
 	global $met_member_use,$class_index,$met_listtime,$metinfo_member_type,$db,$met_news,$met_product,$met_download,$met_img,$met_job,$met_parameter,$met_plist,$class_list,$metpara,$module_list2;
-	global $index_news_no,$index_product_no,$index_download_no,$index_img_no,$index_job_no;
+	global $index_news_no,$index_product_no,$index_download_no,$index_img_no,$index_job_no,$mobilesql;
 	global $index,$navurl,$weburly,$lang,$pagename,$langmark,$met_htmpagename,$met_chtmtype,$met_htmtype,$met_pseudo,$met_webhtm;
 	global $dataoptimize,$pagemark,$img_url,$met_hot,$m_now_date,$met_newsdays,$metmemberforce,$met_alt,$metblank,$met_agents_img;
 	if($mark&&strstr($mark,"-")){
@@ -751,7 +750,7 @@ function methtml_getarray($mark,$type,$order,$module,$listmx=-1,$para=0,$categor
 	$listitem['download']=array(0=>$numname.'downloadurl,filesize,downloadaccess',1=>$met_download,2=>'showdownload');
 	$listitem['img']=array(0=>$numname.'new_ok,imgurls,imgurl,displayimg',1=>$met_img,2=>'showimg');
 	$listitem['job']=array(0=>'*',1=>$met_job,2=>'showjob');
-	$sqlorder=$order=='hits'?' order by top_ok desc,hits desc,id desc':' order by top_ok desc,updatetime desc,id desc';
+	$sqlorder=$order=='hits'?' order by top_ok desc,com_ok desc,no_order desc,hits desc,id desc':' order by top_ok desc,com_ok desc,no_order desc,updatetime desc,id desc';
 	switch($type){
 		default:
 			$sqltype="";
@@ -790,7 +789,7 @@ function methtml_getarray($mark,$type,$order,$module,$listmx=-1,$para=0,$categor
 			$class1sql=" $listnowclass='$listnowid' ";
 			foreach($module_list2[$class_list[$listnowid]['module']] as $key=>$val){
 				if($val['releclass']==$listnowid){
-					$class1re.=" or $listnowclass=$val[id] ";
+					$class1re.=" or $listnowclass='$val[id]' ";
 				}
 			}
 			if($class1re){
@@ -850,10 +849,10 @@ function methtml_getarray($mark,$type,$order,$module,$listmx=-1,$para=0,$categor
 	$select=$listitem[$module][0];
 	$table=$listitem[$module][1];
 	if($modulenunm==6){
-		$query = "SELECT $select FROM $table where lang='$lang' and ((TO_DAYS(NOW())-TO_DAYS(`addtime`)< useful_life) OR useful_life=0) $access_sql order by top_ok desc,no_order desc,addtime desc limit 0, $listmx";	
+		$query = "SELECT $select FROM $table where lang='$lang' {$mobilesql} and ((TO_DAYS(NOW())-TO_DAYS(`addtime`)< useful_life) OR useful_life=0) $access_sql order by top_ok desc,no_order desc,addtime desc limit 0, $listmx";	
 	}
 	else{
-		$query = "SELECT $select FROM $table where lang='$lang' $sqlclounm $access_sql $sqltype and (recycle='0' or recycle='-1') $sqlorder limit 0, $listmx";
+		$query = "SELECT $select FROM $table where lang='$lang' {$mobilesql} $sqlclounm $access_sql $sqltype and (recycle='0' or recycle='-1') $sqlorder limit 0, $listmx";
 	}
 	$result = $db->query($query);
 	while($list= $db->fetch_array($result)){
@@ -1062,7 +1061,7 @@ function methtml_online(){
 	return $metinfo;
 }
 
-function methtml_hits($module){
+function methtml_hits($module,$mobile){
 global $news,$product,$img,$download,$job,$lang_Hits,$lang_Printing,$lang_Printing,$lang_UpdateTime,$lang_Close,$met_tools_ok,$met_tools_code;
 global $met_pageclick,$met_pagetime,$met_pageprint,$met_pageclose;
 	$listnow=$$module;
@@ -1072,23 +1071,62 @@ global $met_pageclick,$met_pagetime,$met_pageprint,$met_pageclose;
 	if($met_pagetime)$metinfo.='&nbsp;&nbsp;'.$lang_UpdateTime.'：'.$listnow['updatetime'];
 	if($met_pageprint)$metinfo.='&nbsp;&nbsp;【<a href="javascript:window.print()">'.$lang_Printing.'</a>】';
 	if($met_pageclose)$metinfo.='&nbsp;&nbsp;【<a href="javascript:self.close()">'.$lang_Close.'</a>】';
+	if($mobile){
+		$metinfo="{$lang_Hits}：<script language='javascript' src='../include/hits.php?type={$module}&id={$listnow[id]}'></script>";
+	}
 	return $metinfo;
 }
 
 function methtml_prenextinfo($type=0){
-global $lang_Previous,$lang_Next,$lang_Noinfo,$preinfo,$nextinfo;
- if($type==1){
-  $metinfo=$lang_Previous."：";
-  $metinfo.=$preinfo?"<a href='".$preinfo[url]."' >".$preinfo[title]."</a>":$lang_Noinfo;
-  $metinfo.="&nbsp;&nbsp;".$lang_Next."：";
-  $metinfo.=$nextinfo?"<a href='".$nextinfo[url]."' >".$nextinfo[title]."</a>":$lang_Noinfo;
- }else{
-  $metinfo=$lang_Previous."：";
-  $metinfo.=$preinfo?"<a href='".$preinfo[url]."' >".$preinfo[title]."</a>":$lang_Noinfo;
-  $metinfo.="<br>".$lang_Next."：";
-  $metinfo.=$nextinfo?"<a href='".$nextinfo[url]."' >".$nextinfo[title]."</a>":$lang_Noinfo;
- }
- return $metinfo;
+	global $lang_Previous,$lang_Next,$lang_Noinfo,$preinfo,$nextinfo;
+	switch($type){
+		case 0:
+			if($preinfo[url] !=""){
+				$metinfo=$lang_Previous."：";
+				$metinfo.=$preinfo?"<a href='".$preinfo[url]."' >".$preinfo[title]."</a>":$lang_Noinfo;
+			}
+			if($nextinfo[url] !=""){
+				$metinfo.="<br>".$lang_Next."：";
+				$metinfo.=$nextinfo?"<a href='".$nextinfo[url]."' >".$nextinfo[title]."</a>":$lang_Noinfo;
+			}
+		break;
+		case 1:
+			if($preinfo[url] !=""){
+				$metinfo=$lang_Previous."：";
+				$metinfo.=$preinfo?"<a href='".$preinfo[url]."' >".$preinfo[title]."</a>":$lang_Noinfo;
+			}
+			if($nextinfo[url] !=""){
+				$metinfo.="&nbsp;&nbsp;".$lang_Next."：";
+				$metinfo.=$nextinfo?"<a href='".$nextinfo[url]."' >".$nextinfo[title]."</a>":$lang_Noinfo;
+			}
+		break;
+		case 2:
+			$metinfo="<ul class='preul'>";
+			//preinfo
+			if($preinfo){
+				$metinfo.="<li class='preinfo'>";
+				$metinfo.="<a href='{$preinfo[url]}'><p class='pret'>{$lang_Previous}</p><p class='pres'>{$preinfo[title]}</p></a>";
+				$metinfo.="</li>";
+			}else{
+				$metinfo.="<li class='preinfo nor'>";
+				$metinfo.="<p class='pret'>{$lang_Previous}</p><p class='pres'>{$lang_Noinfo}</p>";
+				$metinfo.="</li>";
+			}
+			//nextinfo
+			if($nextinfo){
+				$nextinfonor='';
+				$metinfo.="<li class='nextinfo'>";
+				$metinfo.="<a href='{$nextinfo[url]}'><p class='pret'>{$lang_Next}</p><p class='pres'>{$nextinfo[title]}</p></a>";
+				$metinfo.="</li>";
+			}else{
+				$metinfo.="<li class='nextinfo nor'>";
+				$metinfo.="<p class='pret'>{$lang_Next}</p><p class='pres'>{$lang_Noinfo}</p>";
+				$metinfo.="</li>";
+			}
+			$metinfo.="</ul>";
+		break;
+	}
+	return $metinfo;
 }
 
 function methtml_login($type=1){

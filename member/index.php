@@ -9,10 +9,9 @@ if($metid!='index'){
 require_once $metid.'.php';
 }else{
 require_once ROOTPATH.'member/index_member.php';
-//
 $admin_list = $db->get_one("SELECT * FROM $met_admin_table WHERE admin_id='$metinfo_member_name' ");
 if(!$admin_list){
-    session_unset();
+    met_cooike_unset();
     $returnurl="login.php?lang=".$lang.'&referer='.$referer;
 	header("Location: $returnurl");
 	exit();

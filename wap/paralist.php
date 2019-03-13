@@ -18,4 +18,4 @@
 	$show['imgurl']=($show['imgurl']<>"")?$show['imgurl']:'../'.$met_agents_img;
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
-?>
+?> 

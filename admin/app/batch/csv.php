@@ -29,6 +29,7 @@ if($classcsv['module']!=2){
 	}
 }
 $csvarray[]=iconv($codeold,$codenew,$lang_columnhtmlname);
+$csvarray[]=iconv($codeold,$codenew,$lang_columnmtitle);
 $csvarray[]=iconv($codeold,$codenew,$lang_keywords);
 $csvarray[]=iconv($codeold,$codenew,$lang_description);
 

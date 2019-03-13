@@ -6,7 +6,7 @@ require_once $depth.'../login/login_check.php';
 if($action=="modify"){
 $met_onlinenameok=$met_onlinenameok2;
 require_once $depth.'../include/config.php';
-$rurl='../interface/online/online.php?anyid='.$anyid.'&lang='.$lang;
+$rurl='../interface/online/online.php?anyid='.$anyid.'&lang='.$lang.'&cs='.$cs;
 metsave($rurl,'',$depth);
 }else{
 $cs=2;

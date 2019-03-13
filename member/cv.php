@@ -8,10 +8,10 @@ require_once ROOTPATH.'member/index_member.php';
     require_once '../include/pager.class.php';
     $page = (int)$page;
 	if($page_input){$page=$page_input;}
-    $list_num = 20;
+    $list_num = 1;
     $rowset = new Pager($total_count,$list_num,$page);
     $from_record = $rowset->_offset();	
-	
+	$page = $page?$page:1;
 	$query = "SELECT * FROM $met_job where lang='$lang'";
     $result = $db->query($query);
 	while($list = $db->fetch_array($result)){
@@ -28,7 +28,7 @@ require_once ROOTPATH.'member/index_member.php';
     }
 	
 $page_list = $rowset->link("cv.php?search=$search&page=");
-
+$pageall=$rowset->pages;
 $mfname='cv';
 include template('member');
 footermember();

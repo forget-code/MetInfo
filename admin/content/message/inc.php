@@ -20,6 +20,7 @@ if($action=="modify"){
 	$met_fd_back1=($met_fd_back)?"checked":"";
 	$m_list = $db->get_one("SELECT * FROM $met_column WHERE module='7' and lang='$lang'");
 	$class1 = $m_list['id'];
+	$listclass='';
 	$listclass[2]='class="now"';
 	$css_url=$depth."../templates/".$met_skin."/css";
 	$img_url=$depth."../templates/".$met_skin."/images";

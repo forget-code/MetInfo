@@ -13,72 +13,88 @@ echo <<<EOT
 -->
 <div class="stat_list">
 	<ul>
-		<li {$listclass[1]}><a href="sethtm.php?anyid={$anyid}&lang={$lang}&cs=1" title="{$lang_seotips2}">{$lang_seotips2}</a></li>
+		<li {$listclass[1]}><a href="sethtm.php?anyid={$anyid}&lang={$lang}&cs=1&sethtm=1" title="{$lang_seotips2}">{$lang_seotips2}</a></li>
 		<li {$listclass[2]}><a href="htm.php?anyid={$anyid}&lang={$lang}&cs=2" title="{$lang_seotips3}">{$lang_seotips3}</a></li>
-		<li {$listclass[3]}><a href="sethtm.php?anyid={$anyid}&lang={$lang}&cs=3" title="{$lang_seotips4}">{$lang_seotips4}</a></li>
 	</ul>
 </div>
+<div class="clear"></div>
         <form method="POST" name="myform" action="sethtm.php?anyid={$anyid}&lang={$lang}&cs={$cs}" target="_self">
 		<input name="action" type="hidden" value="modify" />
 		<input name="met_webhtming" type="hidden" value="{$met_webhtm}" />
 		<input name="dehtm" type="hidden" value="" />
 		<input name="depsdo" type="hidden" value="" />
-<table cellpadding="2" cellspacing="1" class="table">
+<div class="v52fmbx_tbmax">
+<div class="v52fmbx_tbbox">
+<div class="v52fmbx">
 <!--
 EOT;
 if($cs==1){
 echo <<<EOT
--->
-    <tr> 
-        <td class="text">{$lang_sethtmok}{$lang_marks}</td>
-        <td class="input">
-		    <label><input name="met_webhtm" type="radio" value="0" {$met_webhtm1[0]} />&nbsp;{$lang_close}</label>&nbsp;&nbsp;&nbsp;
-			<label><input name="met_webhtm" type="radio" value="1" {$met_webhtm1[1]} />&nbsp;{$lang_setbasicTip3}</label>&nbsp;&nbsp;&nbsp;
-			<label><input name="met_webhtm"  type="radio" value="2" {$met_webhtm1[2]} />&nbsp;{$lang_sethtmall}</label>&nbsp;&nbsp;&nbsp;
-			<span class="tips">{$lang_setbasicTip4}</span>
-		</td>
-        </tr> 
-	<tr> 
-        <td class="text">{$lang_sethtmway}{$lang_marks}</td>
-        <td class="input">
-		    <label><input name="met_htmway" type="radio" id="label4" value="0" {$met_htmway1[0]} />&nbsp;{$lang_sethtmway1}</label>&nbsp;&nbsp;&nbsp;
-			<label><input name="met_htmway" type="radio" id="label5" value="1" {$met_htmway1[1]} />&nbsp;{$lang_sethtmway2}</label>&nbsp;&nbsp;&nbsp;
-			<span class="tips">{$lang_sethtmway3}</span>
-		</td>
-    </tr>
-	<tr> 
-        <td class="text"></td>
-        <td class="input color390">{$lang_sethtmpage4}</td>
-    </tr>
-	<tr> 
-        <td class="text">{$lang_sethtmtype}{$lang_marks}</td>
-        <td class="input">
-		    <label><input name="met_htmtype" type="radio" value="htm" {$met_htmtype1[0]} />&nbsp;htm</label>&nbsp;&nbsp;&nbsp;
-			<label><input name="met_htmtype" type="radio" value="html" {$met_htmtype1[1]} />&nbsp;html</label>&nbsp;&nbsp;&nbsp;
-		</td>
-    </tr>
-	<tr> 
-        <td class="text">{$lang_sethtmpage}{$lang_marks}</td>
-        <td class="input" style="line-height:2.3;">
-		    <label><input name="met_htmpagename" type="radio" value="0" {$met_htmpagename1[0]} />&nbsp;{$lang_sethtmpage1}</label><br/>
-			<label><input name="met_htmpagename" type="radio" value="1" {$met_htmpagename1[1]} />&nbsp;{$lang_sethtmpage2}</label><br/>
-			<label><input name="met_htmpagename"  type="radio" value="2"  {$met_htmpagename1[2]} />&nbsp;{$lang_sethtmpage3}</label>
-		</td>
-    </tr>
-		<tr> 
-        <td class="text">{$lang_setlisthtmltype}{$lang_marks}</td>
-        <td class="input" style="line-height:2.3;">
-		    <label><input name="met_listhtmltype" type="radio" value="0" {$met_listhtmltype1[0]} />&nbsp;{$lang_setlisthtmltype1}</label><br/>
-			<label><input name="met_listhtmltype" type="radio" value="1" {$met_listhtmltype1[1]} />&nbsp;{$lang_setlisthtmltype2}</label>
-		</td>
-    </tr>
-	<tr> 
-        <td class="text">{$lang_sethtmlist}{$lang_marks}</td>
-        <td class="input" style="line-height:2.3;">
-		    <label><input name="met_htmlistname" type="radio" value="0" {$met_htmlistname1[0]} />&nbsp;{$lang_sethtmlist1}</label><br/>
-			<label><input name="met_htmlistname" type="radio" value="1" {$met_htmlistname1[1]} />&nbsp;{$lang_sethtmlist2}</label>
-		</td>
-    </tr>
+-->	
+	<h3 class="v52fmbx_hr metsliding" sliding="0">{$lang_unitytxt_1}</h3>
+	<div class="metsliding_box metsliding_box_0">
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_sethtmok}{$lang_marks}</dt>
+			<dd>
+				<label><input name="met_webhtm" type="radio" value="0" {$met_webhtm1[0]} />{$lang_close}</label>
+				<label><input name="met_webhtm" type="radio" value="1" {$met_webhtm1[1]} />{$lang_setbasicTip3}</label>
+				<label><input name="met_webhtm"  type="radio" value="2" {$met_webhtm1[2]} />{$lang_sethtmall}</label>
+				<span class="tips">{$lang_setbasicTip4}</span>
+			</dd>
+		</dl>
+		</div>
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_sethtmway}{$lang_marks}</dt>
+			<dd>
+				<label><input name="met_htmway" type="radio" id="label4" value="0" {$met_htmway1[0]} />{$lang_sethtmway1}</label>
+				<label><input name="met_htmway" type="radio" id="label5" value="1" {$met_htmway1[1]} />{$lang_sethtmway2}</label>
+				<span class="tips">{$lang_sethtmway3}</span>
+			</dd>
+		</dl>
+		</div>
+	</div>
+	<h3 class="v52fmbx_hr metsliding" sliding="1">{$lang_sethtmpage4}</h3>
+	<div class="metsliding_box metsliding_box_1">
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_sethtmtype}{$lang_marks}</dt>
+			<dd>
+				<label><input name="met_htmtype" type="radio" value="htm" {$met_htmtype1[0]} />htm</label>
+				<label><input name="met_htmtype" type="radio" value="html" {$met_htmtype1[1]} />html</label>
+			</dd>
+		</dl>
+		</div>
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_sethtmpage}{$lang_marks}</dt>
+			<dd>
+				<label><input name="met_htmpagename" type="radio" value="0" {$met_htmpagename1[0]} />{$lang_sethtmpage1}</label>
+				<label><input name="met_htmpagename" type="radio" value="1" {$met_htmpagename1[1]} />{$lang_sethtmpage2}</label>
+				<label><input name="met_htmpagename"  type="radio" value="2"  {$met_htmpagename1[2]} />{$lang_sethtmpage3}</label>
+			</dd>
+		</dl>
+		</div>
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_setlisthtmltype}{$lang_marks}</dt>
+			<dd>
+				<label><input name="met_listhtmltype" type="radio" value="0" {$met_listhtmltype1[0]} />{$lang_setlisthtmltype1}</label>
+				<label><input name="met_listhtmltype" type="radio" value="1" {$met_listhtmltype1[1]} />{$lang_setlisthtmltype2}</label>
+			</dd>
+		</dl>
+		</div>
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_sethtmlist}{$lang_marks}</dt>
+			<dd>
+				<label><input name="met_htmlistname" type="radio" value="0" {$met_htmlistname1[0]} />{$lang_sethtmlist1}</label>
+				<label><input name="met_htmlistname" type="radio" value="1" {$met_htmlistname1[1]} />{$lang_sethtmlist2}</label>
+			</dd>
+		</dl>
+		</div>
+	</div>
 <!--
 EOT;
 }elseif($cs==3){
@@ -130,13 +146,12 @@ EOT;
 }
 echo <<<EOT
 -->
-	<tr>
-        <td class="text"></td>
-	    <td class="submit">
-		    <input type="submit" name="Submit" value="{$lang_Submit}" class="submit" onclick="return sethtmsub()" />
-		</td>
-    </tr>
-</table>
+	<div class="v52fmbx_submit">
+		<input type="submit" name="Submit" value="{$lang_Submit}" class="submit" onclick="return sethtmsub()" />
+	</div>
+</div>
+</div>
+</div>
 </form>
 <script type="text/javascript">
 function sethtmsub(){

@@ -28,6 +28,7 @@ echo <<<EOT
 		<li {$listclass[3]}><a href="advanced.php?lang={$lang}&anyid={$anyid}&cs=3" title="{$lang_physicaltips4}">{$lang_physicaltips4}</a></li>
 	</ul>
 </div>
+<div class="clear"></div>
 <!--
 EOT;
 if($cs==2){
@@ -38,31 +39,28 @@ EOT;
 if(!$phy){
 echo <<<EOT
 -->
-<table cellpadding="2" cellspacing="1" class="table">
-		<tr>
-			<td class="input color390" colspan="2" style="padding:5px 40px;">
-			{$lang_physicaltips23}
-			</td>
-		</tr>
-		<tr> 
-		<td class="input" colspan="2" style="padding:5px 40px;">
-<input type="submit" name="submit" value="{$lang_physicaltips24}" class="submit" href="physical.php?lang={$lang}&anyid={$anyid}&action=dangerfundo" onclick="return physicalsub($(this))" /><span class="tips"></span>
-		</td>
-        </tr>
-		<tr>
-			<td class="input color999" colspan="2" style="padding:5px 40px;">
-			<a href="advanced.php?lang={$lang}&anyid={$anyid}&cs=2&phy=1">{$lang_physicaltips25}</a>
-			</td>
-		</tr>
-</table>
+<div class="v52fmbx_tbmax">
+<div class="v52fmbx_tbbox">
+<div class="v52fmbx">
+	<h3 class="v52fmbx_hr metsliding">{$lang_physicaltips23}</h3>
+	<div class="v52fmbx_submit">
+		<input type="submit" name="submit" value="{$lang_physicaltips24}" class="submit" href="physical.php?lang={$lang}&anyid={$anyid}&action=dangerfundo" onclick="return physicalsub($(this))" />
+		<span class="tips"></span>
+		<br/>
+		<a href="advanced.php?lang={$lang}&anyid={$anyid}&cs=2&phy=1">{$lang_physicaltips25}</a>
+	</div>
+</div>
+</div>
+</div>
 <!--
 EOT;
 }else{
 echo <<<EOT
 -->
-<table cellpadding="2" cellspacing="1" class="table">
-		<tr>
-			<td class="input color390" colspan="2" style="padding:5px 40px;">
+<div class="v52fmbx_tbmax">
+<div class="v52fmbx_tbbox">
+<div class="v52fmbx">
+	<h3 class="v52fmbx_hr metsliding">
 <!--
 EOT;
 if($kyfile!=0){
@@ -75,12 +73,18 @@ EOT;
 echo <<<EOT
 -->			
 			&nbsp;&nbsp;<a href="physical.php?lang={$lang}&anyid={$anyid}&action=dangerfundo" onclick="return physicalsub($(this))">{$lang_physicaltips30}</a>
-			</td>
-        </tr>
-		<tr>
-			<td class="input" colspan="2" style="padding:0px 40px;">{$lang_physicaltips31}<br/>$physical_function</td>
-        </tr>
-</table>
+	</h3>
+	<div class="v52fmbx_dlbox">
+	<dl>
+		<dt>{$lang_physicaltips31}{$lang_marks}</dt>
+		<dd>
+			$physical_function
+		</dd>
+	</dl>
+	</div>
+</div>
+</div>
+</div>
 <!--
 EOT;
 }
@@ -91,7 +95,9 @@ EOT;
 }else{
 echo <<<EOT
 -->
-<table cellpadding="2" cellspacing="1" class="table">
+<div class="v52fmbx_tbmax">
+<div class="v52fmbx_tbbox">
+<div class="v52fmbx">
 <!--
 EOT;
 if(!$phy){
@@ -115,71 +121,76 @@ array_multisort($top_time,SORT_NUMERIC,SORT_DESC,$fileilst);
 $fileilst[0]['checked']="checked='checked'";
 echo <<<EOT
 -->
-		<tr>
-			<td class="input color390" colspan="2" style="padding:5px 40px;">
-			{$lang_physicaltips32} <a href="physical.php?lang={$lang}&anyid={$anyid}&action=fingerprint" onclick="return physicalsub($(this),'{$lang_physicaltips33}')">{$lang_physicaltips34}</a><span class="tips"></span><br/>
-			{$lang_physicaltips35}
-			</td>
-		</tr>
-		<tr>
-			<td class="input color999" colspan="2" style="padding:5px 40px;">
-			<label><input name="f_filename" type="radio" class="radio" value="fingerprint_metinfo.php">{$metcms_v}标准指纹文件</label>
+	<span class="xtips">{$lang_physicaltips35}</span>
+	<h3 class="v52fmbx_hr metsliding">
+			{$lang_physicaltips32} <a href="physical.php?lang={$lang}&anyid={$anyid}&action=fingerprint" onclick="return physicalsub($(this),'{$lang_physicaltips33}')">{$lang_physicaltips34}</a><span class="tips"></span>
+	</h3>
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt></dt>
+			<dd>
+			<label><input name="f_filename" type="radio" class="radio" value="fingerprint_metinfo.php">{$metcms_v}{$lang_unitytxt_16}</label>
 <!--
 EOT;
-	foreach($fileilst as $key=>$val){
-		if($val[filename]){
+foreach($fileilst as $key=>$val){
+if($val[filename]){
 echo <<<EOT
 -->
-			<br /><label><input name="f_filename" type="radio" class="radio" value="{$val[filename]}" {$val[checked]}/>{$val[ver]}指纹文件,{$val[time]}备份</label>
-			<a href="physical.php?lang={$lang}&anyid={$anyid}&action=fingerprintdel&f_filename={$val[filename]}">删除</a>
+			<label>
+				<input name="f_filename" type="radio" class="radio" value="{$val[filename]}" {$val[checked]}/>{$val[ver]}{$lang_unitytxt_17} {$val[time]} {$lang_unitytxt_18}
+				<a href="physical.php?lang={$lang}&anyid={$anyid}&action=fingerprintdel&f_filename={$val[filename]}">{$lang_delete}</a>
+			</label>
+			
 <!--
 EOT;
-		}
-	}
+}
+}
 echo <<<EOT
 -->
-			</td>
-		</tr>
-		<tr>
-			<td class="input color390" colspan="2" style="padding:5px 40px;">
-<input type="submit" name="submit" value="{$lang_physicaltips36}" class="submit" href="physical.php?lang={$lang}&anyid={$anyid}&action=fingerprintdo" onclick="return physicalsub($(this),'{$lang_physicaltips37}')" /><span class="tips"></span>
-			</td>
-		</tr>
-		<tr>
-			<td class="input color999" colspan="2" style="padding:5px 40px;">
-			<a href="advanced.php?lang={$lang}&anyid={$anyid}&cs=3&phy=1">{$lang_physicaltips38}</a>
-			</td>
-		</tr>
+			</dd>
+		</dl>
+		</div>
+		<div class="v52fmbx_submit">
+			<input type="submit" name="submit" value="{$lang_physicaltips36}" class="submit" href="physical.php?lang={$lang}&anyid={$anyid}&action=fingerprintdo" onclick="return physicalsub($(this),'{$lang_physicaltips37}')" /><span class="tips"></span>
+		</div>
+		<div class="v52fmbx_submit">
+		<a href="advanced.php?lang={$lang}&anyid={$anyid}&cs=3&phy=1">{$lang_physicaltips38}</a>
+		</div>
 <!--
 EOT;
 }else{
 echo <<<EOT
 -->
-		<tr>
-			<td class="input color390" colspan="2" style="padding:5px 40px;">
+		<h3 class="v52fmbx_hr metsliding">
 <!--
 EOT;
 if($zwnum!=0){
 echo <<<EOT
 -->			
-			共 <span class="red">{$zwnum}</span> {$lang_physicaltips39}
+			{$lang_setdbAll} <span class="red">{$zwnum}</span> {$lang_physicaltips39}
 <!--
 EOT;
 }
 echo <<<EOT
 -->			
 			&nbsp;&nbsp;<a href="advanced.php?lang={$lang}&anyid={$anyid}&cs=3" onclick="return physicalsub($(this))">{$lang_physicaltips40}</a>
-			</td>
-        </tr>
-		<tr>
-			<td class="input" colspan="2" style="padding:0px 40px;">{$lang_physicaltips41}<br/>$physical_fingerprint</td>
-        </tr>
+		</h3>
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_physicaltips41}{$lang_marks}</dt>
+			<dd>
+				$physical_fingerprint
+			</dd>
+		</dl>
+		</div>
 <!--
 EOT;
 }
 echo <<<EOT
 -->
-</table>
+</div>
+</div>
+</div>
 <!--
 EOT;
 }

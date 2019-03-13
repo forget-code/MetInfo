@@ -3,7 +3,7 @@
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 $depth='../';
 require_once $depth.'../login/login_check.php';
-$rurl='../interface/flash/flash.php?anyid='.$anyid.'&lang='.$lang.'&module='.$module;
+$rurl='../interface/flash/flash.php?anyid='.$anyid.'&lang='.$lang.'&module='.$module."&kuaijieskin={$kuaijieskin}";
 if($action=="del"){
 	$allidlist=explode(',',$allid);
 	foreach($allidlist as $key=>$val){

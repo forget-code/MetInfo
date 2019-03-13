@@ -4,6 +4,7 @@
 $depth='../';
 require_once $depth.'../login/login_check.php';
 require_once 'global.func.php';
+$listclass='';
 $listclass[2]='class="now"';
 $rurls='../system/database/recovery.php?anyid='.$anyid.'&lang='.$lang;
 if($action=='delete'){
@@ -29,13 +30,14 @@ if($action=='delete'){
 		$sql = file_get_contents($filepath);
 		if(substr($sql,28,5)!=$metcms_v)metsave($rurls,$lang_dataerr1,$depth);
 		sql_execute($sql);
-		$fileid++;
-		metsave($rurls."&pre=".$pre."&fileid=".$fileid."&dosubmit=1","{$lang_setdbDBFile} {$filename} {$lang_setdbImportOK}{$lang_setdbImportcen}",$depth,'','',1);
-	}else{
-		require_once '../../seo/404.php';	
+		$fileid++;	
+		save_met_cookie();
+		metsave($rurls."&pre=".$pre."&fileid=".$fileid."&dosubmit=1&adminmodify=1&database_met=1","{$lang_setdbDBFile} {$filename} {$lang_setdbImportOK}{$lang_setdbImportcen}",$depth,'','',1);
+	}else{	
 		require_once '../../column/global.func.php';
 		$query="select * from $met_column where ((module<=5 and module>0) or (module=8)) and (classtype=1 or releclass!=0)";
 		$result= $db->get_all($query);
+		sitemap_robots();
 		$sysflie=array(1=>'about',2=>'news',3=>'product',4=>'download',5=>'img',6=>'job',7=>'message',8=>'feedback');
 		foreach($result as $key=>$val){
 			if(array_search($val[foldername],$sysflie)===false){
@@ -44,7 +46,21 @@ if($action=='delete'){
 			}
 		}
 		deldir(ROOTPATH.'cache');	
-		metsave($rurls,$lang_setdbDBRestoreOK,$depth,'','',2);
+		//met_cooike_unset($metinfo_admin_name);
+		$adminfile=$url_array[count($url_array)-2];
+		if($met_adminfile!=""&&$met_adminfile!=$adminfile){
+			$oldname='../../../'.$adminfile;
+			$newname='../../../'.$met_adminfile;
+			if(rename($oldname,$newname)){
+				echo "<script type='text/javascript'> alert('{$lang_setdbDBRestoreOK}'); document.write('{$lang_authTip12}'); top.location.href='{$newname}'; </script>";
+				die();
+			}else{
+				echo "<script type='text/javascript'> alert('{$lang_setdbDBRestoreOK}.{$lang_adminwenjian}'); top.location.reload(); </script>";
+				die();
+			}
+		}
+		$gent='../../include/404.php?lang='.$lang.'&metinfonow='.$met_member_force;
+		metsave($rurls,$lang_setdbDBRestoreOK,$depth,'','',2,$gent);
 	}
 }else{
 	$sqlfiles = glob('../../databack/*.sql');
@@ -52,7 +68,7 @@ if($action=='delete'){
 		 $prepre = '';
 		 $info = $infos = array();
 		 foreach($sqlfiles as $id=>$sqlfile){
-			preg_match("/([a-z0-9_]+_[0-9]{8}_[0-9a-z]{4}_)([0-9]+)\.sql/i",basename($sqlfile),$num);
+			preg_match("/([a-z0-9_]+_[0-9]{8}_[0-9a-zA-Z]{6}_)([a-z0-9]+)\.sql/i",basename($sqlfile),$num);
 			$info['filename'] = basename($sqlfile);
 			$info['filesize'] = round(filesize($sqlfile)/(1024*1024), 2);
 			$info['maketime'] = date('Y-m-d H:i:s', filemtime($sqlfile));

@@ -53,6 +53,8 @@ foreach($modclumlist as $key=>$list){
 }
 $css_url=$depth."../templates/".$met_skin."/css";
 $img_url=$depth."../templates/".$met_skin."/images";
+$listclass='';
+$listclass[2]="class='now'";
 include template('interface/flash/flashedit');
 footer();
 

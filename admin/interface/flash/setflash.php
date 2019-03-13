@@ -96,7 +96,7 @@ if($action=="modify"){
 			$db->query($query);
 		}
 	}
-	$rurl='../interface/flash/setflash.php?anyid='.$anyid.'&lang='.$lang;
+	$rurl='../interface/flash/setflash.php?anyid='.$anyid.'&lang='.$lang."&kuaijieskin={$kuaijieskin}";
 	metsave($rurl,'',$depth);
 }else{
 $css_url=$depth."../templates/".$met_skin."/css";

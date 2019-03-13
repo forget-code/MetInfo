@@ -63,8 +63,7 @@ if($action=='copy'){
 	}
 	$query = $query." where id='$id'";
 	$db->query($query);
-	if($top_ok==1)$page=0;
-	metsave("../content/article/index.php?anyid={$anyid}&lang=$lang&class1=$class1&class2=$class2&class3=$class3".'&modify='.$id.'&page='.$page,'',$depth);
+	metsave("../content/article/index.php?anyid={$anyid}&lang=$lang&class1=$class1&class2=$class2&class3=$class3&page=$page".'&modify='.$id.'&page='.$page,'',$depth);
 }
 
 # This program is an open source system, commercial use, please consciously to purchase commercial license.

@@ -1,12 +1,28 @@
 <?php
 $depth='../';
 require_once $depth.'../login/login_check.php';
+//$action='dimensional';
+if($action == 'dimensional'){
+	require_once ROOTPATH.'include/export.func.php';
+	$met_file='/dimensional.php';
+	//$met_dimensional_logo=$met_weburl.str_replace('../','',$met_dimensional_logo);
+	$met_dimensional_logo_file=file_get_contents(ROOTPATH.str_replace('../','',$met_dimensional_logo));
+	$met_dimensional_logo_file=urlencode($met_dimensional_logo_file);
+	if(str_replace(array('http',':','/'),$met_wap_url))$met_weburl=$met_wap_url;
+	$post=array('text'=>$met_weburl,'w'=>$wap_dimensional_size,'logo'=>$met_dimensional_logo_file);
+	$re=curl_post($post,30);
+	file_put_contents('../../../upload/files/dimensional.png',$re);
+	require_once $depth.'../include/config.php';
+	echo '../../../upload/files/dimensional.png';
+	die();
+}
 if($action == 'modify'){
 	if(!$met_wap_tpa)$met_wap_tpa=0;
 	if(!$met_wap_tpb)$met_wap_tpb=0;
 	$met_wap_url = ereg_replace(" ","",$met_wap_url);
 	if(substr($met_wap_url,-1,1)!="/")$met_wap_url.="/";
 	if(!strstr($met_wap_url,"http://"))$met_wap_url="http://".$met_wap_url;
+	if($met_wap_url=='http://'||$met_wap_url=='http:///')$met_wap_url='';
 	require_once $depth.'../include/config.php';
 	metsave('../app/wap/wap.php?lang='.$lang.'&anyid='.$anyid,'',$depth);
 }else{

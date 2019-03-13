@@ -26,11 +26,12 @@ $met_js_ac='document.write("'.authcode($listinfo, 'DECODE', $met_member_force).'
 if(intval($metinfo_member_type)>=intval($metaccess)){
     $met_js_ac="";
   }else{
-session_unset();
-$_SESSION['metinfo_member_name']=$metinfo_member_name;
-$_SESSION['metinfo_member_pass']=$metinfo_member_pass;
-$_SESSION['metinfo_member_type']=$metinfo_member_type;
-$_SESSION['metinfo_admin_name']=$metinfo_admin_name;
+	met_cooike_unset();
+	change_met_cookie('metinfo_member_name',$metinfo_member_name);
+	change_met_cookie('metinfo_member_pass',$metinfo_member_pass);
+	change_met_cookie('metinfo_member_type',$metinfo_member_type);
+	change_met_cookie('metinfo_admin_name',$metinfo_admin_name);
+	save_met_cookie();
   }
 }
 }

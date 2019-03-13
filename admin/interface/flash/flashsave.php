@@ -3,7 +3,7 @@
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 $depth='../';
 require_once $depth.'../login/login_check.php';
-$rurl='../interface/flash/flash.php?anyid='.$anyid.'&lang='.$lang.'&module='.$module;
+$rurl='../interface/flash/flash.php?anyid='.$anyid.'&lang='.$lang.'&module='.$module."&kuaijieskin={$kuaijieskin}";
 $path=($met_flash_type==2)?"flash_path":"img_path";
 if($$path=='')metsave('-1',$lang_js27,$depth);
 if($action=="add"){
@@ -18,6 +18,7 @@ if($action=="add"){
 		no_order           = '$no_order',
 		width			   = '$width',
 		height			   = '$height',
+		wap_ok			   = '0',
 		lang               = '$lang'";
 	$db->query($query);
 	metsave($rurl,'',$depth);
@@ -33,6 +34,7 @@ if($action=="add"){
 		no_order           = '$no_order',
 		width			   = '$width',
 		height			   = '$height',
+		wap_ok			   = '0',
 		lang               = '$lang'
 		where id='$id'";
 	$db->query($query);

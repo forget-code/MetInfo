@@ -10,6 +10,7 @@ echo <<<EOT
 <body>
 <!--
 EOT;
+$listclass='';
 $listclass[1]='class="now"';
 require_once template('app/stat/top');
 echo <<<EOT
@@ -19,6 +20,8 @@ EOT;
 if($action=='all'){
 echo <<<EOT
 -->
+<div class="v52fmbx_tbmax">
+<div class="v52fmbx_tbbox">
 <table cellpadding="0" cellspacing="1" class="stat_table">
 <!--
 EOT;
@@ -32,7 +35,7 @@ echo <<<EOT
 			<a href="index.php?lang={$lang}&anyid={$anyid}&action=all&st={$ztime}&et={$ztime}&cs=2" {$dancs[2]} title="{$lang_statips11}">{$lang_statips11}</a>
 			<a href="index.php?lang={$lang}&anyid={$anyid}&action=all&st={$xtime}&et={$dtime}&cs=3" {$dancs[3]} title="{$lang_statips12}">{$lang_statips12}</a>
 			<a href="index.php?lang={$lang}&anyid={$anyid}&action=all&st={$timeq30}&et={$dtime}&cs=4" {$dancs[4]} title="{$lang_statips13}">{$lang_statips13}</a>
-			<a href="index.php?lang={$lang}&anyid={$anyid}&action=all&st={$timed1}&et={$dtime}&cs=5" {$dancs[5]} title="{$lang_statips14}">{$lang_statips14}</a>&nbsp;-&nbsp;{$lang_statips15}
+			<a href="index.php?lang={$lang}&anyid={$anyid}&action=all&st={$timed1}&et={$dtime}&cs=5" {$dancs[5]} title="{$lang_statips14}">{$lang_statips14}</a>&nbsp;&nbsp;{$lang_statips15}
 			<form name="myform" action="index.php?lang={$lang}&anyid={$anyid}&action=all" method="POST" target="_self" class="stet">
 				<input type="text" name="stt" value="{$tmst}" class="txt Wdate" onclick="WdatePicker()" /> {$lang_columnmove2}
 				<input type="text" name="ett" value="{$tmet}" class="txt Wdate" onclick="WdatePicker()" />
@@ -159,6 +162,8 @@ EOT;
 echo <<<EOT
 --> 
 </table>
+</div>
+</div>
 <script language="JavaScript" src="{$img_url}/Chart/js/FusionCharts.js"></script>
 <script type="text/javascript">
 	var wdth = $('#charttd').width()-20;
@@ -189,6 +194,8 @@ EOT;
 }else{
 echo <<<EOT
 -->
+<div class="v52fmbx_tbmax">
+<div class="v52fmbx_tbbox">
 <table cellpadding="0" cellspacing="1" class="stat_table">
 <tr>
 	<td colspan='5' class="title">
@@ -249,6 +256,8 @@ echo <<<EOT
 <td><div style="height:270px;" id="charttd"><div id='chartContainer'></div></div></td>
 </tr>
 </table>
+</div>
+</div>
 <script language="JavaScript" src="{$img_url}/Chart/js/FusionCharts.js"></script>
 <script type="text/javascript">
 	var wdth = $('#charttd').width()-20;

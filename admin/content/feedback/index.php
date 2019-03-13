@@ -43,6 +43,7 @@ while($list= $db->fetch_array($result)){
 }
 $page_list = $rowset->link("index.php?lang=$lang&class1=$class1&search=$search&readok=$readok&useinfo=$useinfo&met_fd_classname=$met_fd_classname&customerid={$customerid}&page=");
 	$cs=3;
+	$listclass='';
 	$listclass[$cs]='class="now"';
 $css_url=$depth."../templates/".$met_skin."/css";
 $img_url=$depth."../templates/".$met_skin."/images";

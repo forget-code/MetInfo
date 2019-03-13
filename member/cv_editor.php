@@ -3,6 +3,13 @@
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 require_once 'login_check.php';
 require_once ROOTPATH.'member/index_member.php';
+$cv_list=$db->get_one("select * from $met_cv where id='$id'");
+if(!$cv_list){
+okinfo('cv.php?lang='.$lang,$lang_NoidJS);
+}
+if($metinfo_member_name!=$cv_list[customerid]){
+	okinfo('javascript:history.back();',$lang_js1);
+}
 if($action=="edit"){
 	//code
      if($met_memberlogin_code==1){
@@ -27,7 +34,7 @@ $fd_time="{$lang_Feedback1} 20 {$lang_Feedback2}";
 okinfo('javascript:history.back();',$fd_time);
 }
 $query = "SELECT * FROM $met_parameter where lang='$lang' and module=6 order by no_order";
-if($met_member_use)$query = "SELECT * FROM $met_parameter where lang='$lang' and  module=6  and access<=$metinfo_member_type order by no_order";
+if($met_member_use)$query = "SELECT * FROM $met_parameter where lang='$lang' and  module=6  and access<='$metinfo_member_type' order by no_order";
 $result = $db->query($query);
 while($list= $db->fetch_array($result)){
  if($list[type]==4){
@@ -41,7 +48,7 @@ require_once '../job/uploadfile_save.php';
 if(!is_numeric($jobid))okinfo('cv.php?lang='.$lang,$lang_js1);
 $customerid=$metinfo_member_name!=''?$metinfo_member_name:0;
 $query = "update $met_cv SET ";
-$query = $query." addtime = '$m_now_date',jobid=$jobid ";			  
+$query = $query." addtime = '$m_now_date',jobid='$jobid' ";			  
 $query = $query." where id='$id' ";
 $db->query($query);
 foreach($cv_para as $key=>$val){
@@ -60,19 +67,15 @@ foreach($cv_para as $key=>$val){
     $query = "update $met_plist SET
 					  paraid   ='$val[id]',
 					  info     ='$para'
-					  where listid=$id and paraid=$val[id]";
+					  where listid='$id' and paraid=$val[id]";
 	if($val[type]==5 and $para=='')$query='';
     $db->query($query);
  }
 okinfo('cv.php?lang='.$lang,$lang_js21);
 }else{
-$cv_list=$db->get_one("select * from $met_cv where id='$id'");
-if(!$cv_list){
-okinfo('cv.php?lang='.$lang,$lang_NoidJS);
-}
 if($cv_list[readok]==1) okinfo('cv.php?lang='.$lang,$lang_js24);
 $query = "SELECT * FROM $met_parameter where lang='$lang' and module=6  order by no_order";
-if($met_member_use)$query = "SELECT * FROM $met_parameter where lang='$lang' and  module=6  and access<=$metinfo_member_type order by no_order";
+if($met_member_use)$query = "SELECT * FROM $met_parameter where lang='$lang' and  module=6  and access<='$metinfo_member_type' order by no_order";
 $result = $db->query($query);
 while($list= $db->fetch_array($result)){
  if($list[type]==2 or $list[type]==4 or $list[type]==6){
@@ -81,7 +84,7 @@ while($list= $db->fetch_array($result)){
   while($list1 = $db->fetch_array($result1)){
   $paravalue[$list[id]][]=$list1;
   }}
-$value_list=$db->get_one("select * from $met_plist where paraid=$list[id] and listid=$id "); 
+$value_list=$db->get_one("select * from $met_plist where paraid='$list[id]' and listid='$id' "); 
 $list[content]=$value_list[info];
 $list[mark]=$list[name];
 $list[para]="para".$list[id];
@@ -118,7 +121,7 @@ $fdjs=$fdjs."}</script>";
 $selectjob = "";
 	$serch_sql=" where lang='$lang' ";
 	$metinfo_member_type=intval($metinfo_member_type);
-	$query = "SELECT id,position FROM $met_job $serch_sql and  access <= $metinfo_member_type and ((TO_DAYS(NOW())-TO_DAYS(`addtime`)< useful_life) OR useful_life=0)";
+	$query = "SELECT id,position FROM $met_job $serch_sql and  access <= '$metinfo_member_type' and ((TO_DAYS(NOW())-TO_DAYS(`addtime`)< useful_life) OR useful_life=0)";
     
 	$result = $db->query($query);
 	 while($list= $db->fetch_array($result)){

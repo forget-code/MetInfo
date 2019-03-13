@@ -4,6 +4,7 @@
 require_once template('head');
 echo <<<EOT
 -->
+<script type="text/javascript" src="../../ckeditor/ckeditor.js"></script>
 </head>
 <body>
 <!--
@@ -29,60 +30,62 @@ echo <<<EOT
 		<input name="lang" type="hidden" value="$lang">
 		<input name="filenameold" type="hidden"  value="$about[filename]">
 		<input name="updatetimeold" type="hidden"  value="$about[updatetime]">
-		<table cellpadding="2" cellspacing="1" class="table">
-		  <tr> 
-            <td class="text">{$lang_title}：</td>
-            <td class="input">{$about[name]}</td>
-          </tr>
-		<tr> 
-			<td class="text"></td>
-			<td class="input color390">{$lang_columnSEO}</td>
-		</tr>
-		<tr> 
-            <td class="text">{$lang_columnmtitle}：</td>
-            <td class="input"><input name="ctitle" type="text" class="text" maxlength="200" value="$about[ctitle]" /><span class="tips">{$lang_ctitleinfo}</span></td>
-        </tr>
-		  <tr> 
-            <td  class="text">{$lang_keywords}：</td>
-            <td  class="input"><input name="keywords" type="text" size="40" class="text" value="$about[keywords]"><span class="tips">{$lang_descriptioninfo},{$lang_keywordsinfo}</span>
-			</td>
-			</tr>
-		<tr> 
-            <td class="text">{$lang_description}：
-			</td>
-            <td class="input"><textarea name="description" cols="60" class="textarea" rows="5">$about[description]</textarea></td>
-		</tr>
-		<tr> 
-            <td class="text">{$lang_columnhtmlname}：</td>
-            <td class="input">
+<div class="v52fmbx_tbmax">
+<div class="v52fmbx_tbbox">
+<div class="v52fmbx">
+	<h3 class="v52fmbx_hr metsliding">{$lang_contentdetail}</h3>
+		<div class="v52fmbx_dlbox_content">
+			<textarea class="ckeditor" name="content">$about[content]</textarea>
+		</div>
+	<h3 class="v52fmbx_hr metsliding" sliding="2">{$lang_columnSEO}</h3>
+	<div class="metsliding_box metsliding_box_2">
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_columnmtitle}{$lang_marks}</dt>
+			<dd>
+				<input name="ctitle" type="text" class="text" maxlength="200" value="$about[ctitle]" />
+				<span class="tips">{$lang_ctitleinfo}</span>
+			</dd>
+		</dl>
+		</div>
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_keywords}{$lang_marks}</dt>
+			<dd>
+				<input name="keywords" type="text" size="40" class="text" value="$about[keywords]" />
+				<span class="tips">{$lang_descriptioninfo},{$lang_keywordsinfo}</span>
+			</dd>
+		</dl>
+		</div>
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_description}{$lang_marks}</dt>
+			<dd>
+				<textarea name="description" cols="60" class="textarea" rows="5">$about[description]</textarea>
+			</dd>
+		</dl>
+		</div>
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_columnhtmlname}{$lang_marks}</dt>
+			<dd>
 			    <input name="filename" type="text" class="text med" value="$about[filename]" />
 				<span class="tips">{$lang_columntip14}</span>
-			</td>
-        </tr>
-		  <tr> 
-				<td class="text"></td>
-				<td class="input color390">{$lang_contentdetail}</td>
-		  </tr>
-		<tr>
-            <td class="input" colspan="2">
-			<script type="text/javascript" src="../../ckeditor/ckeditor.js"></script>
-					<textarea class="ckeditor" name="content">$about[content]</textarea>
+			</dd>
+		</dl>
+		</div>
+	</div>
+		<div class="v52fmbx_submit">
+			<input type="submit" name="Submit" value="{$lang_Submit}" class="submit" onclick="return Smit($(this),'myform')" />
+		</div>
+</div>
+</div>
+</div>
+</form>
+<div class="footer">{$foot}</div>
 <script type="text/javascript">
 met_ckeditor('$depth','content');
 </script>
-			</td>
-		</tr>
-		<tr>
-			<td class="text"></td>
-			<td class="submit">
-				<input type="submit" name="Submit" value="{$lang_Submit}" class="submit" onclick="return Smit($(this),'myform')" />
-			</td>
-        </tr>
-        <tr>
-		  <td class="footer" colspan="2">$foot</td>
-		</tr>
-</table>
-        </form>
 </body>
 </html>
 <!--

@@ -26,7 +26,8 @@ if($action=="del"){
 		}
 	}
 	file_unlink("../../cache/column_$lang.inc.php");
-	metsave('../column/index.php?anyid='.$anyid.'&lang='.$lang);
+	$gent='../../sitemap/index.php?lang='.$lang.'&htmsitemap='.$met_member_force;
+	metsave('../column/index.php?anyid='.$anyid.'&lang='.$lang,'','','',$gent);
 }elseif($action=="editor"){
 	$tesumods[6] = 'job';
 	$tesumods[7] = 'message';
@@ -199,7 +200,7 @@ if($action=="del"){
 			$upbp";
 		$db->query($query);
 		$upid=$val['tpif']?$val[id]:mysql_insert_id();
-		if(($val['classtype']==1 || $val['releclass']) && !$val['tpif'])$metinfo_admin_pop1.=$upid.'-';
+		if(($val['classtype']==1 || $val['releclass']) && !$val['tpif'])$metinfo_admin_pop1.='c'.$upid.'-';
 		column_copyconfig($val['foldername'],$val['module'],$upid);
 	}
 	if($metinfo_admin_pop1!=''){
@@ -221,7 +222,8 @@ if($action=="del"){
 	echo 0;
 }
 elseif($action=="editorok"){
-metsave('../column/index.php?anyid='.$anyid.'&lang='.$lang);
+$gent='../../sitemap/index.php?lang='.$lang.'&htmsitemap='.$met_member_force;
+metsave('../column/index.php?anyid='.$anyid.'&lang='.$lang,'','','',$gent);
 }else{
 	$admin_list = $db->get_one("SELECT * FROM {$met_column} WHERE id='$id'");
 	if(!$admin_list)metsave('../column/index.php?anyid='.$anyid.'&lang='.$lang,$lang_dataerror);
@@ -242,7 +244,8 @@ metsave('../column/index.php?anyid='.$anyid.'&lang='.$lang);
 	}
 	delcolumn($admin_list);
 	file_unlink("../../cache/column_$lang.inc.php");
-	metsave('../column/index.php?anyid='.$anyid.'&lang='.$lang);
+	$gent='../../sitemap/index.php?lang='.$lang.'&htmsitemap='.$met_member_force;
+	metsave('../column/index.php?anyid='.$anyid.'&lang='.$lang,'','','',$gent);
 }
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.

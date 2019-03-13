@@ -2,7 +2,6 @@
 $depth='../';
 require_once $depth.'../login/login_check.php';
 setlocale(LC_ALL,array('zh_CN.gbk','zh_CN.gb2312','zh_CN.gb18030'));
-session_start();
 $codeold='gbk';
 $codenew='utf-8';
 $classflie=explode('_',$fileField);
@@ -87,6 +86,8 @@ if($classcsv['module']!=2){
 }
 $filename=iconv($codeold,$codenew,$val[$items]);
 $items+=1;
+$columnmtitle=iconv($codeold,$codenew,$val[$items]);
+$items+=1;
 $keywords=iconv($codeold,$codenew,$val[$items]);
 $items+=1;
 $description=iconv($codeold,$codenew,$val[$items]);
@@ -114,12 +115,13 @@ $addtime=$updatetime=date('Y-m-d H:i:s');
 $query = "INSERT INTO $table SET
 					  title              = '$title',
 					  description        = '$description',
+					  ctitle       		 = '$columnmtitle',
 					  keywords           = '$keywords',
 					  content            = '$content',
 					  class1             = '$class1',
 					  class2             = '$class2',
 					  class3             = '$class3',
-					  issue              = '$_SESSION[metinfo_admin_name]',
+					  issue              = '$metinfo_admin_name',
 					  addtime            = '$addtime', 
 					  updatetime         = '$updatetime',
 					  filename           = '$filename',

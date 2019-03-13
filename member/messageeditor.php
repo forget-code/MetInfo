@@ -3,6 +3,13 @@
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 require_once 'login_check.php';
 require_once ROOTPATH.'member/index_member.php';
+$message_list=$db->get_one("select * from $met_message where id='$id'");
+if(!$message_list){
+okinfo('message.php?lang='.$lang, $lang_js1);
+}
+if($metinfo_member_name!=$message_list[customerid]){
+	okinfo('javascript:history.back();',$lang_js1);
+}
 if($action=="editor"){
 	//code
      if($met_memberlogin_code==1){
@@ -24,10 +31,6 @@ $query = "update $met_message SET
 $db->query($query);
 okinfo('message.php?lang='.$lang,$lang_js21);
 }else{
-$message_list=$db->get_one("select * from $met_message where id='$id'");
-if(!$message_list){
-okinfo('message.php?lang='.$lang, $lang_js1);
-}
 if($message_list[readok]==1 || $message_list[useinfo]!='') okinfo('message.php?lang='.$lang,$lang_js24);
 
 if(!$message_list){

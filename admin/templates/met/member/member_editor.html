@@ -66,131 +66,214 @@ echo <<<EOT
 -->
 <form method="POST" name="myform" action="save.php?action=editor&id=$id&lang=$lang&anyid={$anyid}" target="_self">
 		<input name="useid" type="hidden" value="$admin_list[admin_id]">
-<table cellpadding="2" cellspacing="1" class="table">
-          <tr> 
-            <td class="text">{$lang_memberUserName}{$lang_marks}</td>
-            <td colspan="2" class="input"> <input name="useid" type="text" class="text" autocomplete="off" value="{$admin_list[admin_id]}" disabled="disabled"></td>
-          </tr> 
-          <tr> 
-            <td class="text">{$lang_membertips1}{$lang_marks}</td>
-            <td colspan="2" class="input">{$admin_list[admin_register_date]}</td>
-          </tr>
-          <tr> 
-            <td class="text">{$lang_adminLastIP}{$lang_marks}</td>
-            <td colspan="2" class="input">{$admin_list[admin_modify_ip]}</td>
-          </tr> 		  
-          <tr> 
-            <td class="text">{$lang_adminLastLogin}{$lang_marks}</td>
-            <td colspan="2" class="input">{$admin_list[admin_modify_date]}</td>
-          </tr> 
-		  <tr> 
-            <td class="text">{$lang_memberPs}{$lang_marks}</td>
-            <td colspan="2" class="input"> <input name="pass1" type="password" class="text" autocomplete="off" maxlength="20">{$lang_memberTip}<span id='pass1'></span></td>
-          </tr> 
-		   <tr> 
-            <td class="text">{$lang_memberPs1}{$lang_marks}</td>
-            <td colspan="2" class="input"> <input name="pass2" type="password" class="text" autocomplete="off" maxlength="20">{$lang_memberTip}<span id='pass2'></span></td>
-          </tr> 
-		  <tr> 
-            <td class="text">{$lang_memberName}{$lang_marks}</td>
-            <td colspan="2" class="input"> <input name="name" type="text" class="text" value="$admin_list[admin_name]"></td>
-          </tr> 
-		  <tr> 
-            <td class="text">{$lang_memberSex}{$lang_marks}</td>
-            <td colspan="2" class="input">
+<div class="v52fmbx_tbmax v52fmbx_tbmaxmt">
+<div class="v52fmbx_tbbox">
+<div class="v52fmbx">
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_memberUserName}{$lang_marks}</dt>
+			<dd>
+				<input name="useid" type="text" class="text" autocomplete="off" value="{$admin_list[admin_id]}" disabled="disabled" />
+			</dd>
+		</dl>
+		</div>
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_membertips1}{$lang_marks}</dt>
+			<dd>
+				{$admin_list[admin_register_date]}
+			</dd>
+		</dl>
+		</div>
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_adminLastIP}{$lang_marks}</dt>
+			<dd>
+				{$admin_list[admin_modify_ip]}
+			</dd>
+		</dl>
+		</div>
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_adminLastLogin}{$lang_marks}</dt>
+			<dd>
+				{$admin_list[admin_modify_date]}
+			</dd>
+		</dl>
+		</div>
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_memberPs}{$lang_marks}</dt>
+			<dd>
+				<input name="pass1" type="password" class="text" autocomplete="off" maxlength="20" />
+				<span class="tips">{$lang_memberTip}</span><span id='pass1'></span>
+			</dd>
+		</dl>
+		</div>
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_memberPs1}{$lang_marks}</dt>
+			<dd>
+				<input name="pass2" type="password" class="text" autocomplete="off" maxlength="20" />
+				<span class="tips">{$lang_memberTip}</span><span id='pass2'></span>
+			</dd>
+		</dl>
+		</div>
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_memberName}{$lang_marks}</dt>
+			<dd>
+				<input name="name" type="text" class="text" value="$admin_list[admin_name]" />
+			</dd>
+		</dl>
+		</div>
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_memberSex}{$lang_marks}</dt>
+			<dd>
 <!--
 EOT;
 if($admin_list[admin_sex]==0){
 echo <<<EOT
 -->	
-		<label><input name="sex" type="radio" value="0" checked="checked"> {$lang_memberMan}</label>&nbsp;&nbsp;
+		<label><input name="sex" type="radio" value="0" checked="checked"> {$lang_memberMan}</label>
 		<label><input name="sex" type="radio" class="radio" value="1"> {$lang_memberWoman}</label>
 <!--
 EOT;
 }else{
 echo <<<EOT
 -->	
-		<label><input name="sex" type="radio" value="0" > {$lang_memberMan}</label>&nbsp;&nbsp;
+		<label><input name="sex" type="radio" value="0" > {$lang_memberMan}</label>
 		<label><input name="sex" type="radio" value="1" class="radio" checked="checked"> {$lang_memberWoman}</label>
 <!--
 EOT;
 }echo <<<EOT
 -->
-			</td>
-          </tr> 
-		  <tr> 
-            <td class="text">{$lang_memberTel}{$lang_marks}</td>
-            <td colspan="2" class="input"> <input name="tel" type="text" class="text" value="$admin_list[admin_tel]"></td>
-          </tr> 
-		  <tr> 
-            <td class="text">{$lang_memberCell}{$lang_marks}</td>
-            <td colspan="2" class="input"> <input name="mobile" type="text" class="text" value="$admin_list[admin_mobile]"></td>
-          </tr> 
-		  <tr> 
-            <td class="text">Email{$lang_marks}</td>
-            <td colspan="2" class="input"> <input name="email" type="text" class="text" value="$admin_list[admin_email]">{$lang_memberTip1}</td>
-          </tr> 
-		  <tr> 
-            <td class="text">QQ{$lang_marks}</td>
-            <td colspan="2" class="input"> <input name="qq" type="text" class="text" value="$admin_list[admin_qq]"></td>
-          </tr> 
-		  <tr> 
-            <td class="text">MSN{$lang_marks}</td>
-            <td colspan="2" class="input"> <input name="msn" type="text" class="text" value="$admin_list[admin_msn]"></td>
-          </tr> 
-		  <tr> 
-            <td class="text">{$lang_memberTaoBao}{$lang_marks}</td>
-            <td colspan="2" class="input"> <input name="taobao" type="text" class="text" value="$admin_list[admin_taobao]"></td>
-          </tr> 
-          <tr> 
-          <td class="text" valign="middle">{$lang_memberIntro}{$lang_marks}</td>
-          <td colspan="2" class="input" valign="top"> <textarea name="admin_introduction" class="textarea gen" cols="60" rows="5" >$admin_list[admin_introduction]</textarea></td>
-          </tr>
-		  <tr> 
-          <td class="text" valign="middle">{$lang_memberCompanyName}{$lang_marks}</td>
-          <td colspan="2" class="input" valign="top"> <input name="companyname" type="text" class="text" value="$admin_list[companyname]"></td>
-          </tr>
-		  <tr> 
-          <td class="text" valign="middle">{$lang_memberCompanyFax}{$lang_marks}</td>
-          <td colspan="2" class="input" valign="top"> <input name="companyfax" type="text" class="text" value="$admin_list[companyfax]"></td>
-          </tr>
-		  <tr> 
-          <td class="text" valign="middle">{$lang_memberCompanyCode}{$lang_marks}</td>
-          <td colspan="2" class="input" valign="top"> <input name="companycode" type="text" class="text" value="$admin_list[companycode]"></td>
-          </tr>
-		  <tr> 
-          <td class="text" valign="middle">{$lang_memberCompanyAddress}{$lang_marks}</td>
-          <td colspan="2" class="input" valign="top"> <input name="companyaddress" type="text" class="text" value="$admin_list[companyaddress]"></td>
-          </tr>
-		  <tr> 
-          <td class="text" valign="middle">{$lang_memberCompanyWebsite}{$lang_marks}</td>
-          <td colspan="2" class="input" valign="top"> <input name="companywebsite" type="text" class="text" value="$admin_list[companywebsite]"></td>
-          </tr>
-		  <tr> 
-         <tr> 
-          <td class="text" valign="middle">{$lang_memberType}{$lang_marks}</td>
-          <td colspan="2" class="input" valign="top">
-		  <select name="usertype" id="usertype" >
-			 $level
-            </select>
-		  </td>
-          </tr>
-		  <tr>
-		  <td class="text" valign="middle">{$lang_memberCheck}{$lang_marks}</td>
-          <td colspan="2" class="input" valign="top"><input name="checkid" type="checkbox" value="1" $checkid>
-		  </td>
-          </tr>
-		  <tr> 
-            <td class="text"></td>
-			<td class="submit">
-				<input type="submit" name="submit" value="{$lang_Submit}" class="submit" onclick="return Smit($(this),'myform')" />
-		  </td>
-          </tr>
-         <tr>
-		  <td class="footer" colspan="2">$foot</td>
-	  </tr>
-</table>
+			</dd>
+		</dl>
+		</div>
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_memberTel}{$lang_marks}</dt>
+			<dd>
+				<input name="tel" type="text" class="text" value="$admin_list[admin_tel]" />
+			</dd>
+		</dl>
+		</div>
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_memberCell}{$lang_marks}</dt>
+			<dd>
+				<input name="mobile" type="text" class="text" value="$admin_list[admin_mobile]" />
+			</dd>
+		</dl>
+		</div>
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>Email{$lang_marks}</dt>
+			<dd>
+				<input name="email" type="text" class="text" value="$admin_list[admin_email]" />{$lang_memberTip1}
+			</dd>
+		</dl>
+		</div>
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>QQ{$lang_marks}</dt>
+			<dd>
+				<input name="qq" type="text" class="text" value="$admin_list[admin_qq]" />
+			</dd>
+		</dl>
+		</div>
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>MSN{$lang_marks}</dt>
+			<dd>
+				<input name="msn" type="text" class="text" value="$admin_list[admin_msn]" />
+			</dd>
+		</dl>
+		</div>
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_memberTaoBao}{$lang_marks}</dt>
+			<dd>
+				<input name="taobao" type="text" class="text" value="$admin_list[admin_taobao]" />
+			</dd>
+		</dl>
+		</div>
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_memberIntro}{$lang_marks}</dt>
+			<dd>
+				<textarea name="admin_introduction" class="textarea gen">{$admin_list[admin_introduction]}</textarea>
+			</dd>
+		</dl>
+		</div>
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_memberCompanyName}{$lang_marks}</dt>
+			<dd>
+				<input name="companyname" type="text" class="text" value="$admin_list[companyname]" />
+			</dd>
+		</dl>
+		</div>
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_memberCompanyFax}{$lang_marks}</dt>
+			<dd>
+				<input name="companyfax" type="text" class="text" value="$admin_list[companyfax]" />
+			</dd>
+		</dl>
+		</div>
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_memberCompanyCode}{$lang_marks}</dt>
+			<dd>
+				<input name="companycode" type="text" class="text" value="$admin_list[companycode]" />
+			</dd>
+		</dl>
+		</div>
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_memberCompanyAddress}{$lang_marks}</dt>
+			<dd>
+				<input name="companyaddress" type="text" class="text" value="$admin_list[companyaddress]" />
+			</dd>
+		</dl>
+		</div>
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_memberCompanyWebsite}{$lang_marks}</dt>
+			<dd>
+				<input name="companywebsite" type="text" class="text" value="$admin_list[companywebsite]" />
+			</dd>
+		</dl>
+		</div>
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_memberType}{$lang_marks}</dt>
+			<dd>
+				<select name="usertype" id="usertype" >
+				{$level}
+				</select>
+			</dd>
+		</dl>
+		</div>
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_memberCheck}{$lang_marks}</dt>
+			<dd>
+				<input name="checkid" type="checkbox" value="1" $checkid />
+			</dd>
+		</dl>
+		</div>
+		<div class="v52fmbx_submit">
+			<input type="submit" name="submit" value="{$lang_Submit}" class="submit" onclick="return Smit($(this),'myform')" />
+		</div>
+</div>
+</div>
+</div>
         </form>
+<div class="footer">{$foot}</div>
 </body>
 </html>
 <!--

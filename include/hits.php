@@ -31,4 +31,4 @@ $hits=$hits_list[hits];
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>
 $hits="<?php echo $hits; ?>";
-document.write($hits)
+document.write($hits) 

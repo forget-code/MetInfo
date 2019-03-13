@@ -4,6 +4,7 @@
 require_once $depth.'../login/login_check.php';
 $columnid=$columnid?$columnid:0;
 !defined('MAGIC_QUOTES_GPC') && define('MAGIC_QUOTES_GPC', get_magic_quotes_gpc());
+$met_adminfile=$met_adminfile_code;
 foreach($settings_arr as $key=>$val){
 	if($val['columnid']==$columnid){
 		$name = $val['name'];

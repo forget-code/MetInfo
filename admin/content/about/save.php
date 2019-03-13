@@ -6,8 +6,7 @@ require_once $depth.'../login/login_check.php';
 $filename=preg_replace("/\s/","_",trim($filename)); 
 if($filename_okno){
 	$metinfo=1;
-	$filename=str_replace("\\",'',$filename);
-	$filename=unescape($filename);
+	$filename=namefilter($filename);
 	if($filename!=''){
 		$id=$class1;
 		$foldername=$met_class[$id]['foldername'];

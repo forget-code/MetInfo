@@ -48,7 +48,6 @@ switch($top){
 	case '0':$top2="selected='selected'";break;
 	default:$top0="selected='selected'";break;
 }
-$listclass[4]='class="now"';
 $css_url=$depth."../templates/".$met_skin."/css";
 $img_url=$depth."../templates/".$met_skin."/images";
 include template('content/job/job');

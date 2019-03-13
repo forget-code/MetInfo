@@ -28,6 +28,8 @@ while($list= $db->fetch_array($result)){
 }
 $m_list = $db->get_one("SELECT * FROM $met_column WHERE module='6' and lang='$lang'");
 $class1 = $m_list['id'];
+$listclass='';
+$listclass[2]='class="now"';
 $css_url=$depth."../templates/".$met_skin."/css";
 $img_url=$depth."../templates/".$met_skin."/images";
 include template('content/job/cv_editor');

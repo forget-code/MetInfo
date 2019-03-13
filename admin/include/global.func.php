@@ -80,6 +80,7 @@ function metdetrim($str){
     $str = ereg_replace("\r","",$str);
     $str = ereg_replace("\n","",$str);
     $str = ereg_replace(" ","",$str);
+	$str = strtolower($str);
     return trim($str);
 }
 /*验证邮箱地址*/
@@ -122,6 +123,7 @@ function is_utf8($liehuo_net){
 }
 /*截取字符串长度*/
 function utf8Substr($str, $from, $len){
+	$len = preg_match("/[\x7f-\xff]/", $str)?$len:$len*2;
 	if(mb_strlen($str,'utf-8')>intval($len)){
 		return preg_replace('#^(?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,'.$from.'}'. 
 		'((?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,'.$len.'}).*#s', 
@@ -133,7 +135,7 @@ function utf8Substr($str, $from, $len){
 	}
 }
 /*POST变量转换*/
-function daddslashes($string, $force = 0 ,$sql_injection =0){
+function daddslashes($string, $force = 0 ,$sql_injection =0,$url =0){
 	!defined('MAGIC_QUOTES_GPC') && define('MAGIC_QUOTES_GPC', get_magic_quotes_gpc());
 	if(!MAGIC_QUOTES_GPC || $force) {
 		if(is_array($string)) {
@@ -144,22 +146,41 @@ function daddslashes($string, $force = 0 ,$sql_injection =0){
 			$string = addslashes($string);
 		}
 	}
-	if((SQL_DETECT!=1 || $sql_injection==1)&&!is_array($string)){
-		$string = str_ireplace("\"","/",$string);
-		$string = str_ireplace("'","/",$string);
-		$string = str_ireplace("*","/",$string);
-		$string = str_ireplace("~","/",$string);
-		$string = str_ireplace("select", "\sel\ect", $string);
-		$string = str_ireplace("insert", "\ins\ert", $string);
-		$string = str_ireplace("update", "\up\date", $string);
-		$string = str_ireplace("delete", "\de\lete", $string);
-		$string = str_ireplace("union", "\un\ion", $string);
-		$string = str_ireplace("into", "\in\to", $string);
-		$string = str_ireplace("load_file", "\load\_\file", $string);
-		$string = str_ireplace("outfile", "\out\file", $string);
-		$string = strip_tags($string);
-		$string = str_replace("%", "\%", $string);     //   
+	if(is_array($string)){
+		if($url){
+			//$string='';
+			foreach($string as $key => $val) {
+				$string[$key] = daddslashes($val, $force);
+			}
+		}else{
+			foreach($string as $key => $val) {
+				$string[$key] = daddslashes($val, $force);
+			}
+		}
+	}else{
+		if(SQL_DETECT!=1 || $sql_injection==1){
+			$string = str_ireplace("\"","/",$string);
+			$string = str_ireplace("'","/",$string);
+			$string = str_ireplace("*","/",$string);
+			$string = str_ireplace("~","/",$string);
+			$string = str_ireplace("select", "\sel\ect", $string);
+			$string = str_ireplace("insert", "\ins\ert", $string);
+			$string = str_ireplace("update", "\up\date", $string);
+			$string = str_ireplace("delete", "\de\lete", $string);
+			$string = str_ireplace("union", "\un\ion", $string);
+			$string = str_ireplace("into", "\in\to", $string);
+			$string = str_ireplace("load_file", "\load\_\file", $string);
+			$string = str_ireplace("outfile", "\out\file", $string);
+			$string = str_ireplace("sleep", "\sle\ep", $string);
+			$string_html=$string;
+			$string = strip_tags($string);
+			if($string_html!=$string){
+				$string='';
+			}
+			$string = str_replace("%", "\%", $string);     //   
+		}
 	}
+
 	return $string;
 }
 /*模板加载*/
@@ -203,17 +224,18 @@ function delnull($htm){
 }
 /*页面跳转*/
 function metsave($url,$text,$depth,$htm,$gent,$prent){
-global $db,$met_config,$lang;
+global $db,$met_config,$lang,$met_sitemap_auto,$adminmodify;
 	$htm=$htm!=''?delnull($htm):'';
 	$url=$url=='-1'?$url:urlencode($url);
 	$text=urlencode($text);
 	$gent=urlencode($gent);
+	if($met_sitemap_auto==0)$gent='';
 	if($htm){
 		$query = "INSERT INTO $met_config SET name='metsave_html_list',value='{$htm}',lang='{$lang}'";
 		$db->query($query);
 		$htm=mysql_insert_id();
 	}
-	$url=$depth."../include/turnover.php?geturl={$url}&text={$text}&gent={$gent}&hml={$htm}&prent={$prent}";
+	$url=$depth."../include/turnover.php?geturl={$url}&adminmodify={$adminmodify}&text={$text}&gent={$gent}&hml={$htm}&prent={$prent}";
 	echo("<script type='text/javascript'>location.href='{$url}';</script>");
 	exit;
 }
@@ -502,7 +524,7 @@ $php_text=explode('|',$php_text[data]);
 /*模块HTML代码生成*/
 function classhtm($class1,$class2,$class3,$htmway=0,$classtype=0,$htmpack=0){
 	global $lang,$met_webhtm,$met_listhtmltype,$met_htmlistname,$m_now_time,$db,$met_class,$met_module,$metadmin,$met_index_type;
-	global $met_column,$met_news,$met_product,$met_download,$met_img,$met_job,$met_message,$met_feedback,$met_htmway;
+	global $met_config,$met_column,$met_news,$met_product,$met_download,$met_img,$met_job,$met_message,$met_feedback,$met_htmway;
 	global $met_news_list,$met_product_list,$met_download_list,$met_img_list,$met_job_list,$met_message_list,$met_feedback_list,$met_product_page;
 	$met_htmway=$htmway?0:$met_htmway;
 	if($met_webhtm==2 && $met_htmway==0){
@@ -554,11 +576,15 @@ function classhtm($class1,$class2,$class3,$htmway=0,$classtype=0,$htmpack=0){
 				break;
 		}
 		if($class1_info[module]<6){
-			$total_count = $db->counter($tablename, " where lang='".$lang."' and class1=".$class1." and (recycle='0' or recycle='-1')", "*");
+			if($class1_info[module]==3){
+				$total_count = $db->counter($tablename, " where lang='".$lang."' and (class1=".$class1." or classother REGEXP '/|-{$class1}-[0-9]*-[0-9]*-|/') and (recycle='0' or recycle='-1')", "*");
+			}else{
+				$total_count = $db->counter($tablename, " where lang='".$lang."' and class1=".$class1." and (recycle='0' or recycle='-1')", "*");
+			}
 		}elseif($class1_info[module]==7){
-			$settings = parse_ini_file('../../config/message_'.$lang.'.inc.php');
-			@extract($settings);
-			$sqls=($met_fd_type==1)?" where lang='".$lang."' and readok='1'":"";
+			$query="select * from $met_config where name='met_fd_type' and columnid=$class1_info[id]";
+			$met_fd_type=$db->get_one($query);
+			$sqls=($met_fd_type[value]==1)?" where lang='".$lang."' and readok='1'":"";
 			$total_count = $db->counter($tablename, $sqls, "*");
 		}else{
 			$total_count = $db->counter($tablename, "where lang='".$lang."' ", "*");
@@ -655,7 +681,11 @@ function classhtm($class1,$class2,$class3,$htmway=0,$classtype=0,$htmpack=0){
 			}
 		}
 		if($class2!=0 and ($classtype==0 or $classtype==2)){
-			$total_count = $db->counter($tablename, " where lang='".$lang."' and class1=".$class1." and class2=".$class2." and (recycle='0' or recycle='-1')", "*");
+			if($class1_info[module]==3){
+				$total_count = $db->counter($tablename, " where lang='".$lang."' and ((class1=".$class1." and class2=".$class2.") or classother REGEXP '/|-{$class1}-{$class2}-[0-9]*-|/') and (recycle='0' or recycle='-1')", "*");
+			}else{
+				$total_count = $db->counter($tablename, " where lang='".$lang."' and class1=".$class1." and class2=".$class2." and (recycle='0' or recycle='-1')", "*");
+			}
 			$page_count=ceil($total_count/$pagesize);
 			$page_count=$page_count?$page_count:1;
 			if($class1_info[module]==3 && $met_product_page && $class3)$page_count=1;
@@ -673,7 +703,11 @@ function classhtm($class1,$class2,$class3,$htmway=0,$classtype=0,$htmpack=0){
 			}
 		}
 		if($class3!=0 and ($classtype==0 or $classtype==3)){
-			$total_count = $db->counter($tablename, " where lang='".$lang."' and class1=".$class1." and class2=".$class2." and class3=".$class3." and (recycle='0' or recycle='-1')", "*");
+			if($class1_info[module]==3){
+				$total_count = $db->counter($tablename, " where lang='".$lang."' and ((class1=".$class1." and class2=".$class2." and class3=".$class3.") or classother REGEXP '/|-{$class1}-{$class2}-{$class3}-|/') and (recycle='0' or recycle='-1')", "*");
+			}else{
+				$total_count = $db->counter($tablename, " where lang='".$lang."' and class1=".$class1." and class2=".$class2." and class3=".$class3." and (recycle='0' or recycle='-1')", "*");
+			}
 			$page_count=ceil($total_count/$pagesize);
 			$page_count=$page_count?$page_count:1;
 			for($i=1;$i<=$page_count;$i++){
@@ -1192,7 +1226,7 @@ function metver($verold,$vernow,$sysver){
 	$nownum=strripos($sysver,'|'.$vernow.'|');
 	if($oldnum<$nownum)return 1;
 	if($oldnum==$nownum)return 2;
-	if($oldnum>$nownum)return 3;	
+	if($oldnum>$nownum)return 3;
 }
 /*替换admin文件*/
 function readmin($dir,$adminfile,$type){
@@ -1259,6 +1293,7 @@ function morenfod($foldername,$module){
 	}
 	return $metinfo;
 }
+/*文件浏览*/
 function met_scandir($directory, $sorting_order = 0) {   
  $dh  = opendir($directory);   
  while( false !== ($filename = readdir($dh)) ) {   
@@ -1271,6 +1306,132 @@ function met_scandir($directory, $sorting_order = 0) {
  }   
  return($files);   
 }  
+/*robots修改*/
+function sitemap_robots(){
+global $db,$met_config,$met_index_type,$met_sitemap_xml,$met_sitemap_html,$met_sitemap_txt;
+	$met_weburl_de=$db->get_one("select * from $met_config where name='met_weburl' and lang='$met_index_type'");
+	$met_weburl_de=$met_weburl_de[value];
+	$robots=file_get_contents(ROOTPATH.'robots.txt');
+	$suffix=$met_sitemap_xml?'xml':($met_sitemap_html?'html':($met_sitemap_txt?'txt':0));
+	if($suffix){
+		if(stripos($robots,'Sitemap: ')===false){
+			$robots.="\nSitemap: {$met_weburl_de}sitemap.xml";
+		}else{
+			$robots=preg_replace('/Sitemap:.*/',"Sitemap: {$met_weburl_de}sitemap.{$suffix}",$robots);
+		}
+	}else{
+		$robots=preg_replace("/Sitemap:.*/","",$robots);
+	}
+	$robots=str_replace("\n\n","\n",$robots);
+	file_put_contents(ROOTPATH.'robots.txt',$robots);
+}
+/*随机函数*/
+function met_rand($length){
+	$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+	$password = '';
+	for ( $i = 0; $i < $length; $i++ ) {
+		$password .= $chars[ mt_rand(0, strlen($chars) - 1) ];
+	}
+	return $password;
+}
+/*COOKIE*/
+function met_cooike_start(){
+	global $met_cookie,$db,$met_webkeys,$met_admin_table;
+	$met_cookie=array();
+	list($username,$password)=explode("\t",authcode($_COOKIE[met_auth],'DECODE', $met_webkeys.$_COOKIE[met_key]));
+	$username=daddslashes($username,0,1);
+	$query="select * from $met_admin_table where admin_id='$username'";
+	$user=$db->get_one($query);
+	$usercooike=json_decode($user['cookie']);
+	if(md5($user['admin_pass'])==$password&&time()-$usercooike->time<3600){
+		foreach($usercooike as $key=>$val){
+			$met_cookie[$key]=$val;
+		}
+		$met_cookie['time']=time();
+		$json=json_encode($met_cookie);
+		$query="update $met_admin_table set cookie='$json' where admin_id='$username'";
+		$user=$db->get_one($query);
+	}
+}
+function login_met_cookie($userid){
+	global $met_cookie,$metinfo_admin_name,$metinfo_admin_pass,$met_webkeys,$db,$met_admin_table;
+	$met_cookie=array();
+	$met_cookie['time']=time();
+	$json=json_encode($met_cookie);
+	$userid=daddslashes($userid,0,1);
+	$db->query("update $met_admin_table set cookie='$json' WHERE admin_id='$userid' and usertype='3'");
+	$query="select * from $met_admin_table WHERE admin_id='$userid' and usertype='3'";
+	$user=$db->get_one($query);
+	$met_key=met_rand(7);
+	$user[admin_pass]=md5($user[admin_pass]);
+	$auth=authcode("$user[admin_id]\t$user[admin_pass]",'ENCODE', $met_webkeys.$met_key,86400);
+	met_setcookie("met_auth",$auth,0);
+	met_setcookie("met_key",$met_key,0);
+}
+function met_cooike_unset($userid){
+	global $met_cookie,$db,$met_admin_table;
+	$userid=daddslashes($userid,0,1);
+	$db->query("update $met_admin_table set cookie='' WHERE admin_id='$userid' and usertype='3'");
+	met_setcookie("met_auth",'',time()-3600);
+	met_setcookie("met_key",'',time()-3600);
+	met_setcookie("appsynchronous",0,time()-3600,'');
+	unset($met_cookie);
+}
+function change_met_cookie($key,$val){
+	global $met_cookie;
+	if($key=='metinfo_admin_name'){
+		$val=daddslashes($val,0,1);
+		$val=urlencode($val);
+	}
+	$met_cookie[$key]=$val;
+}
+function get_met_cookie($key){
+	global $met_cookie;
+	if($key=='metinfo_admin_name'){
+		$val=urldecode($met_cookie[$key]);
+		$val=daddslashes($val,0,1);
+		return $val;
+	}
+	return $met_cookie[$key];
+}
+function save_met_cookie(){
+	global $met_cookie,$db,$met_admin_table;
+	$met_cookie['time']=time();
+	$json=json_encode($met_cookie);
+	$username=$met_cookie[metinfo_admin_id]?$met_cookie[metinfo_admin_id]:$met_cookie[metinfo_member_id];
+	$username=daddslashes($username,0,1);
+	$query="update $met_admin_table set cookie='$json' where id='$username'";
+	$user=$db->query($query);
+}
+if(!function_exists('json_encode')){
+    include ROOTPATH.'include/JSON.php';
+    function json_encode($val){
+        $json = new Services_JSON();
+		$json=$json->encode($val);
+        return $json;
+    }
+    function json_decode($val){
+        $json = new Services_JSON();
+        return $json->decode($val);
+    }
+}
+function met_setcookie($var,$value='',$life=0,$path= '/',$httponly=true) {
+	$path = $httponly && PHP_VERSION < '5.2.0' ? $path.'; HttpOnly' : $path;
+	$secure = $_SERVER['SERVER_PORT'] == 443 ? 1 : 0;
+	if(PHP_VERSION < '5.2.0') {
+		setcookie($var, $value, $life, $path, '', $secure);
+	} else {
+		setcookie($var, $value, $life, $path, '', $secure, $httponly);
+	}
+}
+/*静态页面文件名称验证*/
+function namefilter($filename){
+	$filename=str_replace('/','_',$filename);
+	$filename=str_replace('\\','_',$filename);
+	$filename=preg_replace("/\s/","_",trim($filename));
+	$filename=unescape($filename);
+	return $filename;
+}
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

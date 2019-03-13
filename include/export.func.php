@@ -107,21 +107,27 @@ function link_error($str){
 /*远程下载*/
 /*/URLFROM 远程文件地址 URLTO 本地文件地址，为空表示直接输出*/
 function dlfile($urlfrom,$urlto,$timeout=30){
-	global $checksum;
-	$post_data = array('urlfrom'=>$urlfrom,'checksum'=>$checksum);
+	global $checksum,$metcms_v;
+	$post_data = array('urlfrom'=>$urlfrom,'checksum'=>$checksum,'metcms_v'=>$metcms_v);
 	$result=curl_post($post_data,$timeout);
 	$link=link_error($result);
 	if($link!=1){
 		return $link;
 	}
-	if($urlto){
-		$return=file_put_contents($urlto,$result);
-		if(!$return){return link_error('No filepower');}
-		else{return 1;}
+	if(substr($result,-7)=='metinfo'){	
+		$result=substr($result,0,-7);	
+		if($urlto){
+			$return=file_put_contents($urlto,$result);		
+			if(!$return){return link_error('No filepower');}
+			else{return 1;}
+		}
+		else{
+			return $result;
+		}
+	}else{
+		return link_error('Timeout');
 	}
-	else{
-		return $result;
-	}
+
 }
 /*文件下载错误返回*/
 function dlerror($error){
@@ -319,7 +325,7 @@ function maxnurse(){
 	global $db,$met_sms;
 	$ct=strtotime(date("Y/m/d 00:00:00",time()));	
 	$et=strtotime(date("Y/m/d 23:59:59",time()));	
-	$maxnurse = $db->get_all("SELECT * FROM $met_sms WHERE time>={$ct} and time<='{$et}' and type='4' and remark='SUCCESS'");
+	$maxnurse = $db->get_all("SELECT * FROM $met_sms WHERE time>='{$ct}' and time<='{$et}' and type='4' and remark='SUCCESS'");
 	return count($maxnurse);
 }
 function strdomain($url){

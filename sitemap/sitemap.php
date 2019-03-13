@@ -30,13 +30,13 @@ foreach($nav_list_1 as $key=>$val){
 									<h3 style='font-weight:normal; font-size:12px;'>
 										<a href='".$val2[url]."'  title='".$val2[name]."' >".$val2[name]."</a>
 									</h3>\n";
-			$methtml_sitemap.="<div>";
+			if($nav_list3[$val2[id]])$methtml_sitemap.="<div>";
 			foreach($nav_list3[$val2[id]] as $key=>$val3){
 				$methtml_sitemap.="<h4 class='sitemapclass3' style='font-weight:normal; font-size:12px;'>
 									<a href='".$val3[url]."' title='".$val3[name]."' >".$val3[name]."</a>
 									</h4>\n";
 			}
-			$methtml_sitemap.="</div></dd>\n";
+			if($nav_list3[$val2[id]])$methtml_sitemap.="</div></dd>\n";
 		}
 		$methtml_sitemap.="</dl>\n";
 	}

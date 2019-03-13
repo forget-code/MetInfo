@@ -7,6 +7,7 @@ if($met_member_login==0){
 	exit();
 }
 require_once ROOTPATH.'member/index_member.php';
+$member_index_url="index.php?lang=".$lang;
 if($met_member_login==2 && isset($username) && isset($code)){
 	$username=daddslashes($username);
 	$admin_list=$db->get_one("SELECT * FROM $met_admin_table WHERE admin_id='$username'");

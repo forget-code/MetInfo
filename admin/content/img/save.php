@@ -3,12 +3,10 @@
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 $depth='../';
 require_once $depth.'../login/login_check.php';
-$filename=preg_replace("/\s/","_",trim($filename)); 
-$filenameold=preg_replace("/\s/","_",trim($filenameold)); 
+$filename=namefilter($filename);
+$filenameold=namefilter($filenameold);
 if($filename_okno){
 	$metinfo=1;
-	$filename=str_replace("\\",'',$filename);
-	$filename=unescape($filename);
 	if($filename!=''){
 		$sql="class1='$class1'";
 		foreach($column_pop as $key=>$val){
@@ -57,10 +55,12 @@ if($imgnum>0){
 		$displayimg = "displayimg".$i;
 		$displayname = "displayname".$i;
 		$$displayname=str_replace(array('|','*'),'_',$$displayname);
-		if($i==0){
-			$displayimglist=$$displayname.'*'.$$displayimg;
-		}else{
-			$displayimglist=$displayimglist.'|'.$$displayname.'*'.$$displayimg;
+		if($$displayname||$$displayimg){
+			if($i==0){
+				$displayimglist=$$displayname.'*'.$$displayimg;
+			}else{
+				$displayimglist=$displayimglist.'|'.$$displayname.'*'.$$displayimg;
+			}
 		}
 	}
 } 
@@ -135,8 +135,9 @@ if($action=="add"){
 	$htmjs =contenthtm($class1,$id,'showimg',$filename,0,'',$addtime).'$|$';
 	$htmjs.=indexhtm().'$|$';
 	$htmjs.=classhtm($class1,$class2,$class3);
-	$turl  ="../content/img/index.php?anyid=$anyid&lang=$lang&class1=$class1&class2=$class2&class3=$class3";
-	metsave($turl,'',$depth,$htmjs);
+	$turl  ="../content/img/index.php?anyid=$anyid&lang=$lang&class1=$reclass1&class2=$reclass2&class3=$reclass3";
+	$gent='../../sitemap/index.php?lang='.$lang.'&htmsitemap='.$met_member_force;
+	metsave($turl,'',$depth,$htmjs,$gent);
 }
 if($action=="editor"){
 	$query = "update $met_img SET 
@@ -224,9 +225,10 @@ if($action=="editor"){
 	$htmjs.=classhtm($class1,$class2,$class3);
 	if($filenameold<>$filename and $metadmin[pagename])deletepage($met_class[$class1][foldername],$id,'showimg',$updatetimeold,$filenameold);
 	$classnow=$class3?$class3:($class2?$class2:$class1);
-	if(($addtime != $updatetime && $met_class[$classnow]['list_order']<2) || $top_ok==1)$page=0;
-	$turl  ="../content/img/index.php?anyid=$anyid&lang=$lang&class1=$class1&class2=$class2&class3=$class3&modify=$id&pcage=$page";
-	metsave($turl,'',$depth,$htmjs);
+	//if(($addtime != $updatetime && $met_class[$classnow]['list_order']<2) || $top_ok==1)$page=0;
+	$turl  ="../content/img/index.php?anyid=$anyid&lang=$lang&class1=$reclass1&class2=$reclass2&class3=$reclass3&modify=$id&page=$page";
+	$gent='../../sitemap/index.php?lang='.$lang.'&htmsitemap='.$met_member_force;
+	metsave($turl,'',$depth,$htmjs,$gent);
 }
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.

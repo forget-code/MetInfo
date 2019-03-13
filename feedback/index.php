@@ -54,7 +54,7 @@ $fd_time="{$lang_Feedback1}".$met_fd_time."{$lang_Feedback2}";
 okinfo('javascript:history.back();',$fd_time);
 }
 $query = "SELECT * FROM $met_parameter where lang='$lang' and module=8 and class1='$id' order by no_order";
-if($met_member_use)$query = "SELECT * FROM $met_parameter where lang='$lang' and  module=8 and class1='$id' and access<=$metinfo_member_type order by no_order";
+if($met_member_use)$query = "SELECT * FROM $met_parameter where lang='$lang' and  module=8 and class1='$id' and access<='$metinfo_member_type' order by no_order";
 $result = $db->query($query);
 while($list= $db->fetch_array($result)){
 $list[para]="para".$list[id];
@@ -182,7 +182,7 @@ else{
 
 
 $query = "SELECT * FROM $met_parameter where lang='$lang' and  module=8 and class1='$id' order by no_order";
-if($met_member_use)$query = "SELECT * FROM $met_parameter where lang='$lang' and  module=8 and class1='$id'  and access<=$metinfo_member_type order by no_order";
+if($met_member_use)$query = "SELECT * FROM $met_parameter where lang='$lang' and  module=8 and class1='$id'  and access<='$metinfo_member_type' order by no_order";
 $result = $db->query($query);
 while($list= $db->fetch_array($result)){
  if($list[type]==2 or $list[type]==4 or $list[type]==6){
@@ -293,8 +293,8 @@ require_once '../public/php/methtml.inc.php';
     foreach($fd_para as $key=>$val){
      $methtml_feedback.="<tr class=feedback_tr bgcolor='#FFFFFF'    height='25'  >\n";
      $methtml_feedback.="<td class=feedback_td1 align='right' width='20%'>".$val[name]."&nbsp;</td>\n";
-     $methtml_feedback.="<td class=feedback_input width='70%'>".$val[input]."</td>\n";
-     $methtml_feedback.="<td class=feedback_info style='color:#990000'>".$val[wr_must]."</td>\n";
+     $methtml_feedback.="<td class=feedback_input width='70%'>".$val[input]."<span>{$val[description]}</span></td>\n";
+     $methtml_feedback.="<td class=feedback_info><span style='color:#990000'>".$val[wr_must]."</span></td>\n";
      $methtml_feedback.="</tr>\n";
     }
 if($met_memberlogin_code==1){  

@@ -7,10 +7,13 @@ $cv_list=$db->get_one("select * from $met_cv where id='$id'");
 if(!$cv_list){
 okinfo('cv.php',$lang_NoidJS);
 }
+if($metinfo_member_name!=$cv_list[customerid]){
+	okinfo('javascript:history.back();',$lang_js1);
+}
 $query = "SELECT * FROM $met_parameter where lang='$lang' and module=6  order by no_order";
 $result = $db->query($query);
 while($list= $db->fetch_array($result)){
-$value_list=$db->get_one("select * from $met_plist where paraid=$list[id] and listid=$id ");
+$value_list=$db->get_one("select * from $met_plist where paraid='$list[id]' and listid='$id' ");
 if($list[type]==5)
 {
 	$value_list[info]="<a href='$value_list[info]'>$value_list[info]</a>";

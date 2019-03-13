@@ -13,24 +13,23 @@ $listclass[4]='class="now"';
 require_once template('app/sms/top');
 echo <<<EOT
 -->
+<div class="v52fmbx_tbmax">
+<div class="v52fmbx_tbbox">
+	<h3 class="v52fmbx_hr">
+		<a href="smsnotes.php?anyid={$anyid}&lang={$lang}&action=deqing&cs={$cs}" onclick="return linkSmit('',1,'{$lang_smstips53}');">{$lang_setsafesq3text}</a>
+		<span id="msg" style="font-weight:normal; color:#FF0000; padding:15px 0px 0px 20px;"></span>
+		<div class="formright">
+		<form method="POST" name="search" action="smsnotes.php?anyid={$anyid}&lang={$lang}&search=detail_search" target="_self">
+			<input name="title" type="text" class="text" style="width:150px!important;" id="searchtext" value="{$lang_smstips54}" />				
+			<input type="submit" name="searchsubmit" value="{$lang_search}" class="submitmi" />
+		</form>
+		</div>
+	</h3>
 	<table cellpadding="2" cellspacing="1" class="table">
-		<tr>
-			<td colspan="7" class="centle" style="font-weight:normal; color:#999; padding:5px 0px;">
-				<form method="POST" name="deqing" action="smsnotes.php?anyid={$anyid}&lang={$lang}&action=deqing&cs={$cs}" target="_self" style="float:left; margin:5px 0px 0px 5px;">
-					<input type="submit" name="searchsubmit" value="{$lang_setsafesq3text}" class="submitmi" onclick="return linkSmit('',1,'{$lang_smstips53}');" />
-				</form>
-				<div class="formright">
-				<form method="POST" name="search" action="smsnotes.php?anyid={$anyid}&lang={$lang}&search=detail_search" target="_self">
-					<input name="title" type="text" class="text" id="searchtext" value="{$lang_smstips54}" />				
-					<input type="submit" name="searchsubmit" value="{$lang_search}" class="submitmi" />
-				</form>
-				</div>
-			</td>
-		</tr>
 		<tr id="list-top">
                 <td class="list" width="110">{$lang_smstips55}</td>
                 <td class="list" width="60">
-				<form method="POST" name="filterform" action="smsnotes.php?anyid={$anyid}&lang={$lang}&search=type_search" target="_self">
+				<form method="POST" name="filterform" action="smsnotes.php?anyid={$anyid}&lang={$lang}&search=type_search&cs={$cs}" target="_self">
 					<select name="notes_type" onChange="handle_form('filterform')">
 						<option value="0" {$selec_notes_type[0]}>{$lang_smstips56}</option>
 						<option value="1" {$selec_notes_type[1]}>{$lang_smstips57}</option>
@@ -44,7 +43,7 @@ echo <<<EOT
 				<td class="list">{$lang_smstips62}</td>
 				<td class="list">{$lang_smstips63}</td>
 				<td class="list">{$lang_smstips64}</td>
-				<td class="list" width="60" style="padding:0px; text-align:center;">{$lang_smstips65}</td>
+				<td class="list" width="60">{$lang_smstips65}</td>
         </tr>
 <!--
 EOT;
@@ -67,15 +66,42 @@ echo <<<EOT
    	   <tr> 
 			 <td class="page_list" colspan="6">$page_list</td>
         </tr>
-	<tr>
-		<td class="footer" colspan="6">$foot</td>
-	</tr>
 </table>
+</div>
+</div>
+<div class="footer">{$foot}</div>
 <script type="text/javascript">
 seachinput($('#searchtext'),'{$lang_smstips54}');
+$(document).ready(function(){
+	$.ajax({
+		url: 'http://{$met_host}/sms/smsnotes.php?md5={$total_pass[authpass]}&action=json',
+		type: 'GET',
+		dataType: 'jsonp',
+		jsonp: 'jsoncallback',
+		success: function(data) {
+			if(data.msg=='yes'){
+					$('#msg').html('{$lang_smstips85}');
+					$.ajax({
+						url: 'smsnotes.php?action=getdate',
+						type: 'GET',
+						success: function(data) {
+							if(data=='ok'){
+								$('#msg').html('{$lang_smstips86}');
+								setTimeout(function (){window.location.reload();},3000);
+							}
+						}
+					});
+			}
+		}
+	});
+});
 </script>
 </body>
 </html>
+<!--
+EOT;
+echo <<<EOT
+-->
 <!--
 EOT;
 # This program is an open source system, commercial use, please consciously to purchase commercial license.

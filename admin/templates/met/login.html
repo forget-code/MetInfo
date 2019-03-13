@@ -51,7 +51,23 @@ function metfocus(intext){
 <div class="login-min">
 			<div class="login-left">
 				<div style=" border-right:1px solid #fff; padding:0px 0px 20px;">
-				<a href="http://www.metinfo.cn" style="font-size:0px;" target="_blank" title="{$lang_metinfo}" class="img">
+<!--
+EOT;
+                if($met_agents_type >= 3){
+echo <<<EOT
+-->
+				<a href="$met_agents_linkurl" style="font-size:0px;" target="_blank" title="{$lang_metinfo}" class="img">
+<!-- 
+EOT;
+                }else{
+echo <<<EOT
+-->
+                <a href="http://www.metinfo.cn" style="font-size:0px;" target="_blank" title="{$lang_metinfo}" class="img">
+<!--
+EOT;
+                }
+echo <<<EOT
+-->
 					<img src="../{$met_agents_logo_login}" alt="{$lang_metinfo}" title="{$lang_metinfo}" />
 				</a>
 				<p>{$lang_loginmetinfo}</p>
@@ -117,7 +133,7 @@ echo <<<EOT
 			</div>
 		<div class="clear"></div>
 </div>
-<div class="footer" style="margin-top:80px;">$foot</div>
+<div class="footer" style="margin-top:80px; display:block!important;">$foot</div>
 <!--[if IE 6]>
 <script src="{$img_url}/js/IE6-png.js" type="text/javascript"></script>
 <script type="text/javascript">DD_belatedPNG.fix('.bg,img');</script>

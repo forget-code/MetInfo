@@ -4,6 +4,7 @@
 require_once template('head');
 echo <<<EOT
 -->
+<script type="text/javascript" src="../../ckeditor/ckeditor.js"></script>
 </head>
 $listjs
 <body>
@@ -19,6 +20,9 @@ echo <<<EOT
 -->
 <form  method="POST" name="myform" action="save.php?anyid={$anyid}&action=$action" target="_self">
 		<input name="id" type="hidden" value="$id">
+		<input name="reclass1" type="hidden" value="$reclass1">
+		<input name="reclass2" type="hidden" value="$reclass2">
+		<input name="reclass3" type="hidden" value="$reclass3">
 		<input name="lang" type="hidden" value="$lang">
 		<input name="module" type="hidden" value="$module">
 		<input id="acesss_contents" type="hidden"   value="$download_list[access]">
@@ -28,17 +32,20 @@ echo <<<EOT
 		<input name="page" type="hidden"  value="$page">
 		<input type="hidden" name="no_order" value="$download_list[no_order]" />
 		<input type="hidden" name="cengci" value="$cengci" />
-<table cellpadding="2" cellspacing="1" class="table">
-			<tr>
-		<td class="text"><span class="bi_tian">*</span>{$lang_category}：</td>
-		<td class="input">
+<div class="v52fmbx_tbmax">
+<div class="v52fmbx_tbbox">
+<div class="v52fmbx">	
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_category}{$lang_marks}</dt>
+			<dd>
 		<select name="class1" id="class1select" class="noselect" onChange="changelocation_contents(document.myform.class1.options[document.myform.class1.selectedIndex].value,1)" $class1style>		
 		<option value="">{$lang_modClass1}</option>
 <!--
 EOT;
 foreach($met_classindex[$module] as $key=>$val1){
 $k=$val1['id'];
-$admin_column_power="admin_pop".$val1[id];
+$admin_column_power="admin_popc".$val1[id];
 if(!($metinfo_admin_pop=='metinfo'||$$admin_column_power=='metinfo'))continue;
 echo <<<EOT
 -->			
@@ -103,21 +110,44 @@ EOT;
 echo <<<EOT
 -->		
 		</select>
-		</td>			
-    </tr> 
-		  <tr> 
-            <td class="text"><span class="bi_tian">*</span>{$lang_title}：</td>
-            <td class="input"> <input name="title" type="text" class="text nonull" value="$download_list[title]"></td>
-          </tr>
-		  <tr>
-			<td class="text">{$lang_article1}</td>
-			<td class="input">
+			</dd>
+		</dl>
+		</div>
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_title}{$lang_marks}</dt>
+			<dd>
+				<input name="title" type="text" class="text nonull" value="$download_list[title]" />
+			</dd>
+		</dl>
+		</div>
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_modpublish}{$lang_marks}</dt>
+			<dd>
+				<input name="issue" type="text" class="text mid" value="$download_list[issue]" />
+			</dd>
+		</dl>
+		</div>
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_hits}{$lang_marks}</dt>
+			<dd>
+				<input name="hits" type="text" class="text mid" value="$download_list[hits]" />
+				<span class="tips">{$lang_modhits}</span>
+			</dd>
+		</dl>
+		</div>
+		<div class="v52fmbx_dlbox v52fmbx_inline">
+		<dl>
+			<dt>{$lang_article1}{$lang_marks}</dt>
+			<dd>
 <!--
 EOT;
 if($metadmin['downloadnew']){
 echo <<<EOT
 -->
-				<label><input name="new_ok" type="checkbox" class="checkbox" value="1" {$new_ok}>{$lang_newest}</label>&nbsp;&nbsp;&nbsp;
+				<label><input name="new_ok" type="checkbox" class="checkbox" value="1" {$new_ok}>{$lang_newest}</label>
 <!--
 EOT;
 }
@@ -128,13 +158,13 @@ EOT;
 if($metadmin['downloadcom']){
 echo <<<EOT
 -->
-				<label><input name="com_ok" type="checkbox" class="checkbox" value="1" {$com_ok}>{$lang_recom}</label>&nbsp;&nbsp;&nbsp;
+				<label><input name="com_ok" type="checkbox" class="checkbox" value="1" {$com_ok}>{$lang_recom}</label>
 <!--
 EOT;
 }
 echo <<<EOT
 -->	
-				<label><input name="top_ok" type="checkbox" class="checkbox" value="1" {$top_ok}>{$lang_top}</label>&nbsp;&nbsp;&nbsp;
+				<label><input name="top_ok" type="checkbox" class="checkbox" value="1" {$top_ok}>{$lang_top}</label>
 <!--
 EOT;
 echo <<<EOT
@@ -144,145 +174,171 @@ EOT;
 if($met_wap && $met_wap_ok){
 echo <<<EOT
 -->	
-				<label><input name="wap_ok" type="checkbox" class="checkbox" value="1" {$wap_ok}>{$lang_article3}</label>&nbsp;&nbsp;&nbsp;
+				<label><input name="wap_ok" type="checkbox" class="checkbox" value="1" {$wap_ok}>{$lang_article3}</label>
 <!--
 EOT;
 }
 echo <<<EOT
 -->
-			</td>
-		  </tr>
-		  <tr> 
-            <td class="text">{$lang_downloadurl}：</td>
-            <td class="input upload">
+			</dd>
+		</dl>
+		</div>
+	<h3 class="v52fmbx_hr metsliding" sliding="1">{$lang_unitytxt_34}</h3>
+	<div class="metsliding_box metsliding_box_1">  
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_downloadurl}{$lang_marks}</dt>
+			<dd>
 			<input name="downloadurl" type="text" class="text" value="$download_list[downloadurl]">
 			<input name="met_upsql" type="file" id="file_upload" />
-<script type="text/javascript" src="{$img_url}/js/uploadify/swfobject.js"></script>
-<script type="text/javascript" src="{$img_url}/js/uploadify/jquery.uploadify.v2.1.4.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	metuploadify('#file_upload','upfile','downloadurl-filesize',4);
 });
 </script>
-			</td>
-          </tr>
-			<tr> 
-            <td class="text">{$lang_downloadsize}：</td>
-            <td class="input"><input name="filesize" type="text" class="text mid" value="$download_list[filesize]">KB</td>
-          </tr>
-		  <tr> 
-            <td class="text">{$lang_modpublish}：</td>
-            <td class="input"><input name="issue" type="text" class="text mid" value="$download_list[issue]"></td>
-          </tr>
-		  <tr> 
-            <td class="text">{$lang_hits}：</td>
-            <td class="input"><input name="hits" type="text" class="text mid" value="$download_list[hits]" />
-			<span class="tips">{$lang_modhits}</span></td>
-          </tr>
-		  <tr> 
-            <td class="text">{$lang_addtime}：</td>
-            <td class="input"><input name="addtime" type="text" class="text" value="$download_list[addtime]">
-			<span class="tips">{$lang_modtimenow}$m_now_date {$lang_modtimenow1}</span>
-			</td>
-          </tr>
-		  <tr> 
-            <td class="text">{$lang_updatetime}：</td>
-            <td class="input"><input name="updatetime" type="text" class="text" value="$m_now_date">
-			<span class="tips">{$lang_modtimenow}$m_now_date {$lang_modtimenow1}</span></td>
-          </tr>
+			</dd>
+		</dl>
+		</div>
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_downloadsize}{$lang_marks}</dt>
+			<dd>
+				<input name="filesize" type="text" class="text mid" value="$download_list[filesize]" />
+				KB
+			</dd>
+		</dl>
+		</div>
+	</div>
+	<h3 class="v52fmbx_hr metsliding" sliding="2">{$lang_article6}</h3>
+	<div class="metsliding_box metsliding_box_2" id='parastart'>
+<!--
+EOT;
+foreach($para_list as $key=>$val){
+echo <<<EOT
+-->
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$val[name]}{$lang_marks}</dt>
+			<dd>
+				{$val[inputcont]}
+			</dd>
+		</dl>
+		</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+	</div>
+	<h3 class="v52fmbx_hr metsliding" sliding="0">{$lang_contentdetail}</h3>
+	<div class="metsliding_box metsliding_box_0">
+		<div class="v52fmbx_dlbox_content">
+			<textarea class="ckeditor" name="content">$download_list[content]</textarea>
+<script type="text/javascript">
+met_ckeditor('$depth','content');
+</script>
+		</div>
+	</div>
+	<h3 class="v52fmbx_hr metsliding" sliding="3">{$lang_columnSEO}</h3>
+	<div class="metsliding_box metsliding_box_3">
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_columnmtitle}{$lang_marks}</dt>
+			<dd>
+				<input name="ctitle" type="text" class="text" value="{$download_list[ctitle]}" />
+				<span class="tips">{$lang_ctitleinfo}</span>
+			</dd>
+		</dl>
+		</div>
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_keywords}{$lang_marks}</dt>
+			<dd>
+				<input name="keywords" type="text" class="text" value="{$download_list[keywords]}">
+				<span class="tips">{$lang_descriptioninfo},{$lang_keywordsinfo}</span>
+			</dd>
+		</dl>
+		</div>
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_description}{$lang_marks}</dt>
+			<dd>
+				<textarea name="description" cols="60" class="textarea gen" rows="5" >{$download_list[description]}</textarea>
+			</dd>
+		</dl>
+		</div>
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_columnhtmlname}{$lang_marks}</dt>
+			<dd>
+				<input name="filename" type="text" class="text med" value="$download_list[filename]">
+				<span class="tips">{$lang_columntip14}</span>
+			</dd>
+		</dl>
+		</div>
+	</div>
+	<h3 class="v52fmbx_hr metsliding" sliding="4">{$lang_unitytxt_28}</h3>
+	<div class="metsliding_box metsliding_box_4">
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_addtime}{$lang_marks}</dt>
+			<dd>
+				<input name="addtime" type="text" class="text" value="$download_list[addtime]" />
+				<span class="tips">{$lang_modtimenow}$m_now_date {$lang_modtimenow1}</span>
+			</dd>
+		</dl>
+		</div>
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_updatetime}{$lang_marks}</dt>
+			<dd>
+				<input name="updatetime" type="text" class="text" value="$m_now_date" />
+				<span class="tips">{$lang_modtimenow}$m_now_date {$lang_modtimenow1}</span>
+			</dd>
+		</dl>
+		</div>
+	</div>
 <!--
 EOT;
 if($met_member_use){
 echo <<<EOT
 -->		  
-
-		  <tr> 
-            <td class="text">{$lang_webaccess}{$lang_marks}</td>
-            <td class="input" ><select name="access" id="access" >
-             $level
-            </select></td>
-          </tr>
-		  <tr> 
-            <td class="text">{$lang_downloadaccess}{$lang_marks}</td>
-            <td class="input" colspan="2" ><select name="downloadaccess" id="downloadaccess" >
-             $leve2
-            </select></td>
-          </tr>
-<!--
-EOT;
-}
-echo <<<EOT
--->	 
-		  <tr id='parastart'> 
-				<td class="text"></td>
-				<td class="input color390">{$lang_article6}</td>
-		  </tr>
-<!--
-EOT;
-foreach($para_list as $key=>$val){
-$upcs='';
-if($val['type']==5)$upcs='upload';
-echo <<<EOT
--->
-        <tr name='paralist'> 
-			<td class="text">{$val[name]}{$lang_marks}</td>
-			<td class="input {$upcs}">{$val[inputcont]}</td>
-        </tr>
+	<h3 class="v52fmbx_hr metsliding" sliding="5">{$lang_unitytxt_33}</h3>
+	<div class="metsliding_box metsliding_box_5">  
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_webaccess}{$lang_marks}</dt>
+			<dd>
+				<select name="access" id="access" >
+				$level
+				</select>
+			</dd>
+		</dl>
+		</div>
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_downloadaccess}{$lang_marks}</dt>
+			<dd>
+				<select name="downloadaccess" id="downloadaccess" >
+				$leve2
+				</select>
+			</dd>
+		</dl>
+		</div>
+	</div>
 <!--
 EOT;
 }
 echo <<<EOT
 -->
-		  <tr> 
-				<td class="text"></td>
-				<td class="input color390">{$lang_columnSEO}</td>
-		  </tr>
-		  <tr> 
-            <td class="text">{$lang_columnmtitle}{$lang_marks}</td>
-            <td class="input">
-				<input name="ctitle" type="text" class="text" value="{$download_list[ctitle]}"><span class="tips">{$lang_ctitleinfo}</span>
-			</td>
-          </tr>
-		  <tr> 
-            <td class="text">{$lang_keywords}{$lang_marks}</td>
-            <td class="input">
-				<input name="keywords" type="text" class="text" value="{$download_list[keywords]}">
-				<span class="tips">{$lang_descriptioninfo},{$lang_keywordsinfo}</span>
-			</td>
-          </tr>
-		  <tr> 
-            <td class="text">{$lang_description}{$lang_marks}</td>
-            <td class="input" colspan="2"><textarea name="description" cols="60" class="textarea gen" rows="5" >{$download_list[description]}</textarea></td>
-			</tr> 
-		  <tr> 
-            <td class="text">{$lang_columnhtmlname}{$lang_marks}</td>
-            <td class="input"><input name="filename" type="text" class="text med" value="$download_list[filename]">
-			<span class="tips">{$lang_columntip14}</span></td>
-          </tr>
-		  <tr> 
-				<td class="text"></td>
-				<td class="input color390">{$lang_contentdetail}</td>
-		  </tr>
-
-		<tr> 
-            <td class="input" colspan="2">
-<script type="text/javascript" src="../../ckeditor/ckeditor.js"></script>
-			<textarea class="ckeditor" name="content">$download_list[content]</textarea>
-<script type="text/javascript">
-met_ckeditor('$depth','content');
-</script>
-</td>
-</tr>
-		  <tr> 
-            <td class="text"></td>
-	      <td class="submit"><input type="submit" name="Submit" value="{$lang_Submit}" class="submit" onclick="return Smit($(this),'myform')" />
-		  </td>
-          </tr>
-		<tr>
-		  <td class="footer" colspan="2">$foot</td>
-	  </tr>
-</table>        
+	<div class="v52fmbx_submit">
+		<input type="submit" name="Submit" value="{$lang_Submit}" class="submit" onclick="return Smit($(this),'myform')" />
+	</div>
+</div>
+</div>
+</div>        
 </form>
+<div class="footer">{$foot}</div>
 </body>
 </html>
 <!--

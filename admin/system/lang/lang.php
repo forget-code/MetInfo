@@ -4,6 +4,11 @@
 $depth='../';
 require_once $depth.'../login/login_check.php';
 require_once 'lang.func.php';
+if($addlang==1){
+	header("location:lang.php?anyid=10&langaction=add&lang=cn&cs=1");
+	met_setcookie("addlang",0,time()-3600,'/');
+	die();
+}
 if($action=="modify"){
 	$lancount=count($met_langok);
 	$thisurl = 'lang.php?lang='.$lang;
@@ -19,13 +24,6 @@ if($action=="modify"){
 	}
 	switch($langsetaction){
 		case 'set':  
-			$met_ch_lang=$met_ch_lang1;
-			$met_ch_mark=$met_ch_mark1;
-			$met_index_type=$met_index_type1;
-			$met_admin_type=$met_admin_type1;
-			$met_admin_type_ok=$met_admin_type_ok1;
-			$met_url_type=$met_url_type1;
-			$met_lang_mark=$met_lang_mark1;
 			require_once $depth.'../include/config.php';
 		break;
 		case 'add':
@@ -52,6 +50,13 @@ if($action=="modify"){
 			$met_webhtm =$met_langok[$langfile]['met_webhtm'];
 			$met_htmtype=$met_langok[$langfile]['met_htmtype'];
 			$met_weburl =$met_langok[$langfile]['met_weburl'];
+			$re=copyconfig();
+			if($re!=1){
+				$langdlok=0;
+				$langfile=$met_index_type;
+				copyconfig();
+				$retxt=$lang_jsok.'<br/>'.$lang_langadderr6;
+			}
 			$query = "INSERT INTO $met_lang SET
 				name          = '$langname',
 				useok         = '$languseok',
@@ -71,10 +76,13 @@ if($action=="modify"){
 			$db->query($query);
 			$query="INSERT INTO $met_admin_array set array_name='$lang_access2',admin_type='',admin_ok='0',admin_op='',admin_issueok='0',admin_group='0',user_webpower='2',array_type='1',lang='$langmark',langok=''";
 			$db->query($query);
-			$re=copyconfig();
-			if($re!=1){
-				metsave('../system/lang/lang.php?anyid='.$anyid.'&lang='.$lang.'&cs='.$cs,$lang_langadderr4.dlerror($re),$depth,'','',$prent);
-				die();
+			if($met_index_type1){
+				if($languseok){
+					$met_index_type=$langmark;
+					require_once $depth.'../include/config.php';
+				}else{
+					$retxt=$retxt?$retxt.'<br/>'.$lang_langexplain12:$lang_jsok.$lang_langexplain12;
+				}
 			}
 		break;
 		case 'edit':
@@ -107,22 +115,19 @@ if($action=="modify"){
 				newwindows    = '$langnewwindows'
 			    where lang='$langmark'";
 			$db->query($query);
-			if($synchronous!=$synchronous1&&$synchronous){
-				$post=array('newlangmark'=>$synchronous,'metcms_v'=>$metcms_v);
-				$file_basicname=$depth.'../update/lang/lang_'.$synchronous.'.ini';
-				$re=syn_lang($post,$file_basicname,$langmark,0,0);
-				unlink('../../../cache/lang_'.$langmark.'.php');
-				if($re==1){
-					metsave('../system/lang/lang.php?anyid='.$anyid.'&lang='.$lang.'&cs='.$cs,$lang_success,$depth);
+			if($met_index_type1){
+				if($languseok){
+					$met_index_type=$langmark;
+					require_once $depth.'../include/config.php';
 				}else{
-					metsave('../system/lang/lang.php?anyid='.$anyid.'&lang='.$lang.'&cs='.$cs,$lang_langadderr4.dlerror($re),$depth);
+					$retxt=$lang_jsok.$lang_langexplain12;
 				}
-				die();
 			}
 		break;
 		case 'delete':
 			if(count($met_langok)==1)metsave('-1',$lang_langone,$depth);
 			if($langeditor==$lang)metsave('-1',$lang_langadderr2,$depth);
+			if($langeditor==$met_index_type)metsave('-1',$lang_langadderr5,$depth);
 			$query = "delete from $met_language where site='0' and lang='$langeditor'";
 			$db->query($query);
 			$query = "delete from $met_config where lang='$langeditor'";
@@ -169,6 +174,14 @@ if($action=="modify"){
 				$query = "insert into $met_language set name='$val[name]',value='$val[value]',site='1',no_order='$val[no_order]',array='$val[array]',lang='$langmark'";
 				$db->query($query);
 			}
+			if($met_admin_type1){
+				if($languseok){
+					$met_admin_type=$langmark;
+					require_once $depth.'../include/config.php';
+				}else{
+					$retxt=$lang_jsok.$lang_langexplain12;
+				}
+			}
 		break;
 		case 'editadmin':
 			if($langname=="")metsave('-1',$lang_langnamenull,$depth);
@@ -185,6 +198,14 @@ if($action=="modify"){
 				mark          = '$langmark'
 			    where lang='metinfo' and mark='$langmark'";
 			$db->query($query);
+			if($met_admin_type1){
+				if($languseok){
+					$met_admin_type=$langmark;
+					require_once $depth.'../include/config.php';
+				}else{
+					$retxt=$lang_jsok.$lang_langexplain12;
+				}
+			}
 		break;
 		case 'deleteadmin':
 			if(count($met_langadmin)==1)metsave('-1',$lang_langone,$depth);
@@ -198,6 +219,7 @@ if($action=="modify"){
 	unlink('../../../cache/lang_'.$langmark.'.php');
 	$prent=$langsetaction=='add'&&$lancount==1?2:'';
 	$txt=$isaddlang?$lang_langadderr3:'';
+	if($retxt)$txt=$retxt;
 	metsave('../system/lang/lang.php?anyid='.$anyid.'&lang='.$lang.'&cs='.$cs,$txt,$depth,'','',$prent);
 }elseif($action=='flag'){
     $dir = $depth.'../../public/images/flag';
@@ -224,31 +246,18 @@ if($action=="modify"){
 		metsave('../system/lang/lang.php?anyid='.$anyid.'&lang='.$lang.'&cs='.$cs,$lang_langadderr4.dlerror($re),$depth);
 	}
 }else{
-	if($met_ch_lang==1)$met_ch_lang1="checked";
-	if($met_ch_lang==0)$met_ch_lang2="checked";
-	if($met_admin_type_ok==1)$met_admin_type_yes="checked";
-	if($met_admin_type_ok==0)$met_admin_type_no="checked";
-	if($met_url_type==1)$met_url_type_yes="checked";
-	if($met_url_type==0)$met_url_type_no="checked";
-	if($met_lang_mark==1)$met_lang_mark_yes="checked";
-	if($met_lang_mark==0)$met_lang_mark_no="checked";
-	foreach($met_langok as $key=>$val){
-		if($val[link]==''){
-		$met_indextype.="<label><input name='met_index_type1' type='radio' class='radio' value='".$val[mark]."'";
-		if($met_index_type==$val[mark])$met_indextype.=" checked ";
-		$met_indextype.="/>".$val[name]."</label>&nbsp;&nbsp;"; 
-		}
-	}
-	foreach($met_langadmin as $key=>$val){
-		$met_admintype.="<label><input name='met_admin_type1' id='met_admin_type1_$i' type='radio' class='radio' value='".$val[mark]."'";
-		if($met_admin_type==$val[mark])$met_admintype.=" checked ";
-		$met_admintype.=">".$val[name]."</label>&nbsp;&nbsp;";
-	}
 	$cs=isset($cs)?$cs:3;
 	$listclass[$cs]='class="now"';
 	if($cs==3&&$langadminok!="metinfo"){
 		header('location:lang.php?lang='.$lang.'&anyid='.$anyid.'&cs=1');
 	}
+	
+	if($met_admin_type_ok==1)$met_admin_type_yes="checked";
+	if($met_admin_type_ok==0)$met_admin_type_no="checked";
+	if($met_lang_mark==1)$met_lang_mark_yes="checked";
+	if($met_lang_mark==0)$met_lang_mark_no="checked";
+	if($met_ch_lang==1)$met_ch_lang1="checked";
+	if($met_ch_lang==0)$met_ch_lang2="checked";
 	$css_url=$depth."../templates/".$met_skin."/css";
 	$img_url=$depth."../templates/".$met_skin."/images";
 	include template('system/lang/lang');

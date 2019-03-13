@@ -40,6 +40,8 @@ if($action=='modify'){
 			metsave('../seo/sitemap.php?lang='.$lang.'&anyid='.$anyid,$lang_otherinfocache2);
 		}
 	}
+	sitemap_robots();
+	$met_sitemap_auto=1;
 	$gent='../../sitemap/index.php?lang='.$lang.'&htmsitemap='.$met_member_force;
 	metsave('../seo/sitemap.php?lang='.$lang.'&anyid='.$anyid,'','','',$gent);
 }else{
@@ -49,6 +51,7 @@ if($action=='modify'){
 	$met_sitemap_not11[$met_sitemap_not1]='checked';
 	$met_sitemap_not21[$met_sitemap_not2]='checked';
 	$met_sitemap_lang1[$met_sitemap_lang]='checked';
+	$met_sitemap_auto1[$met_sitemap_auto]='checked';
 	$css_url="../templates/".$met_skin."/css";
 	$img_url="../templates/".$met_skin."/images";
 	include template('seo/sitemap');

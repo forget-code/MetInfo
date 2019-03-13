@@ -34,7 +34,7 @@ if($action=='delete'){
 	function getDir($dir){
 		$fileArr = array();
 		$dp = opendir($dir);
-		while(($file = readdir($dp)) !== false) {
+		while(($file = readdir($dp)) != false) {
 			if($file !="." AND $file !=".." AND $file !="") {   
 				if(is_dir($dir."/".$file)) {   
 					$fileArr = array_merge($fileArr, getDir($dir."/".$file));   
@@ -82,7 +82,7 @@ if($action=='delete'){
 	$page=$page?$page:1;
 	$startnum=($page-1)*$list_num;
 	$endnum=$page*$list_num;
-	$page_list = $rowset->link("uploadfile.php?anyid={$anyid}&lang=$lang&fileurl=$fileurl2&file_classnow=$file_classnow&page=");
+	$page_list = $rowset->link("uploadfile.php?anyid={$anyid}&lang=$lang&fileurl=$fileurl2&file_classnow=$file_classnow&cs=$cs&page=");
 	$cs=isset($cs)?$cs:1;
 	$listclass[$cs]='class="now"';
 	$css_url="../templates/".$met_skin."/css";

@@ -9,7 +9,7 @@ foreach($met_langok as $key=>$val){
 	$val[met_htmtype]=$val[met_htmtype]<>""?$val[met_htmtype]:$met_htmtype;
 	if($val[useok]){
 		$met_index_url[$val[mark]]=$val[met_webhtm]?$val[met_weburl].$indexmark.$val[met_htmtype]:$val[met_weburl]."index.php?lang=".$val[mark];
-		if($met_pseudo)$met_index_url[$val['mark']] = $val['met_weburl'].'index-'.$val['mark'].'.html';
+		if($val[met_webhtm]==3)$met_index_url[$val['mark']] = $val['met_weburl'].'index-'.$val['mark'].'.html';
 		if($htmpack){
 			$navurls = $index=='index'?'':'../';
 			$met_index_url[$val['mark']]=$navurls.$indexmark.$val['met_htmtype'];
@@ -39,7 +39,9 @@ $searchurl           =$met_weburl."search/search.php?lang=".$lang;
 $file_basicname      =ROOTPATH."lang/language_".$lang.".ini";
 $file_name           =ROOTPATH."templates/".$met_skin_user."/lang/language_".$lang.".ini";
 $str="";
-if(!file_exists(ROOTPATH.'cache/lang_'.$lang.'.php')){
+//
+
+if(!file_get_contents(ROOTPATH.'cache/lang_'.$lang.'.php')){
 	$query="select * from $met_language where lang='$lang' and site='0' and array!='0'";
 	$result= $db->query($query);
 	while($listlang= $db->fetch_array($result)){

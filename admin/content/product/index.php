@@ -16,14 +16,20 @@ if($class1){
 	if(!$class1_info)metsave('-1',$lang_dataerror,$depth);
 	$sqlclass1=" and class1=$class1  ";
 }else{
-	foreach($met_classindex[$module] as $key=>$val){
-		$admin_column_power="admin_pop".$val[id];
-		if(!($metinfo_admin_pop=='metinfo'||$$admin_column_power=='metinfo'))continue;
-		$sqlclass1.=$sqlclass1?" or class1=$val[id] ":" class1=$val[id] ";
+	if(count($met_classindex[$module])==1){
+		$class1=$met_classindex[$module][0]['id'];
+		$class1_info=$met_class[$class1];	
+		$sqlclass1=" and class1=$class1  ";
+	}else{
+		foreach($met_classindex[$module] as $key=>$val){
+			$admin_column_power="admin_popc".$val[id];
+			if(!($metinfo_admin_pop=='metinfo'||$$admin_column_power=='metinfo'))continue;
+			$sqlclass1.=$sqlclass1?" or class1=$val[id] ":" class1=$val[id] ";
+		}
+		$sqlclass1="and ($sqlclass1) ";
+		$class2=0;
+		$class3=0;
 	}
-	$sqlclass1="and ($sqlclass1) ";
-	$class2=0;
-	$class3=0;
 }
 $serch_sql=" where lang='$lang' and (recycle='0' or recycle='-1') $sqlclass1 ";
 if($admincp_ok[admin_issueok]==1)$serch_sql .= " and(issue='$metinfo_admin_name' or issue='') ";
@@ -57,8 +63,8 @@ while($list= $db->fetch_array($result)){
 	$list[top_ok1] = $list[top_ok] ? $lang_yes : $lang_no;
 	$list[wap_ok1] = $list[wap_ok] ? $lang_yes : $lang_no;
 	$list[updatetime] = date('Y-m-d',strtotime($list[updatetime]));
-	$num = 38;
-	if (preg_match("/[\x7f-\xff]/",$list['title']))$num=20;
+	$num = 48;
+	if (preg_match("/[\x7f-\xff]/",$list['title']))$num=30;
 	$list['titles']=utf8substr($list['title'],0,$num);
 	$product_list[]=$list;
 }

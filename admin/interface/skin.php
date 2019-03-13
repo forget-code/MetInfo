@@ -13,7 +13,19 @@ if($action=="modify"){
 			$txt=$lang_metadmintext1;
 		}
 	}
-	metsave('../interface/skin.php?anyid='.$anyid.'&lang='.$lang.'&cs='.$cs,$txt);
+	if($cs==3){
+		$txt='';
+		if($met_productimg_x!=$moren_productimg_x || $met_productimg_y!=$moren_productimg_y){
+			$txt=$lang_metadmintext1;
+		}
+		if($met_imgs_x!=$moren_imgs_x || $met_imgs_y!=$moren_imgs_y){
+			$txt=$lang_metadmintext1;
+		}
+		if($met_newsimg_x!=$moren_newsimg_x || $met_newsimg_y!=$moren_newsimg_y){
+			$txt=$lang_metadmintext1;
+		}
+	}
+	metsave('../interface/skin.php?anyid='.$anyid.'&lang='.$lang.'&cs='.$cs."&kuaijieskin={$kuaijieskin}",$txt);
 }else{
 $cs=isset($cs)?$cs:2;
 switch($cs){

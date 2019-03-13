@@ -8,7 +8,9 @@ $commonpath=$admin_index?$commonpath:'../'.$commonpath;
 define('SQL_DETECT',1);
 require_once $commonpath;
 $turefile=$url_array[count($url_array)-2];
-if($met_adminfile!=$turefile){
+if($met_adminfile!=$turefile&&$adminmodify!=1){
+	$met_adminfile=$turefile;
+	$turefile=authcode($turefile,'ENCODE',$met_webkeys);
 	$query="update $met_config set value='$turefile' where name='met_adminfile' and lang='metinfo'";
 	$db->query($query);
 }
@@ -26,8 +28,8 @@ if($action=="login"){
 			echo("<script type='text/javascript'>alert('$lang_logincodeerror');location.href='login.php?langset=$langset';</script>");
 			exit;
 		}
-	}
-	$admincp_list = $db->get_one("SELECT * FROM $met_admin_table WHERE admin_id='$metinfo_admin_name' and usertype='3' ");
+	}	
+	$admincp_list = $db->get_one("SELECT * FROM $met_admin_table WHERE admin_id='$metinfo_admin_name' and usertype='3' ");	
 	if (!$admincp_list){
 	    echo("<script type='text/javascript'> alert('{$lang_loginname}');location.href='login.php';</script>");
 	    exit;
@@ -35,14 +37,22 @@ if($action=="login"){
 		echo("<script type='text/javascript'> alert('$lang_loginpass');location.href='login.php';</script>");
 		exit;
 	}else{
-		session_start();
-		$_SESSION['metinfo_admin_name'] = $metinfo_admin_name;
-		$_SESSION['metinfo_admin_pass'] = $metinfo_admin_pass;
-		$_SESSION['metinfo_admin_id'] = $admincp_list[id];
-		$_SESSION['metinfo_admin_type']  = $admincp_list['usertype'];
-		$_SESSION['metinfo_admin_pop']  = $admincp_list['admin_type'];
-		$_SESSION['metinfo_admin_time'] = $m_now_time;
-		$_SESSION['metinfo_admin_lang'] = $admincp_list[langok];
+		login_met_cookie($metinfo_admin_name);
+		met_cooike_start();		
+		change_met_cookie('metinfo_admin_name',$metinfo_admin_name);
+		change_met_cookie('metinfo_admin_pass',$metinfo_admin_pass);
+		change_met_cookie('metinfo_admin_id',$admincp_list['id']);
+		change_met_cookie('metinfo_admin_type',$admincp_list['usertype']);
+		change_met_cookie('metinfo_admin_pop',$admincp_list['admin_type']);
+		change_met_cookie('metinfo_admin_time',$m_now_time);
+		change_met_cookie('metinfo_admin_lang',$admincp_list['langok']);
+		change_met_cookie('metinfo_admin_shortcut',json_decode($admincp_list['admin_shortcut']));
+		if($_GET[langset]!=''){
+			$_GET[langset]=daddslashes($_GET[langset],0,1);
+			change_met_cookie('languser',$_GET[langset]);
+			save_met_cookie();
+		}
+		save_met_cookie();
 		$query="update $met_admin_table set 
 		admin_modify_date='$m_now_date',
 		admin_login=admin_login+1,
@@ -56,8 +66,7 @@ if($action=="login"){
 	$strlen = file_put_contents($filejs, $js);
 	if($metinfo_mobile){
 		Header("Location: ../index.php");
-	}
-	else{
+	}else{
 		$flag=0;
 		$re_urls=explode('?',$re_url);
 		$re_urlss=explode('/',$re_urls[0]);
@@ -71,19 +80,18 @@ if($action=="login"){
 		}
 		if($re_url&&file_exists('../..'.$filedir)&&$filedir){
 			Header("Location: $re_url");
-			setcookie("re_url",$re_url,time()-3600,'/');
+			met_setcookie("re_url",$re_url,time()-3600);
 			exit;
-		}
-		else{
-			if($re_url)setcookie("re_url",$re_url,time()-3600,'/');
+		}else{
+			if($re_url)met_setcookie("re_url",$re_url,time()-3600);
 			echo "<script type='text/javascript'> var nowurl=parent.location.href; var metlogin=(nowurl.split('login')).length-1; if(metlogin==0)location.href='../system/sysadmin.php?anyid=8&lang=$lang'; if(metlogin!=0)location.href='../index.php?lang=$lang';</script>";
 		}	
 	}
-}else{ 
+}else{
 	if(!$metinfo_admin_name||!$metinfo_admin_pass){
 		if($admin_index){
-			session_unset();
-			setcookie("re_url",$re_url,time()-3600,'/');
+			met_cooike_unset();
+			met_setcookie("re_url",$re_url,time()-3600);
 			Header("Location: login/login.php");
 		}else{
 			if(!$re_url){
@@ -95,17 +103,17 @@ if($action=="login"){
 					$re_url="http://$_SERVER[SERVER_NAME]$_SERVER[REQUEST_URI]";
 				}
 			}
-			if(!$_COOKIE[re_url])setcookie("re_url",$re_url,time()+3600,'/');
-			session_unset();
+			if(!$_COOKIE[re_url])met_setcookie("re_url",$re_url,time()+3600);
+			met_cooike_unset();
 			Header("Location: ".$depth."../login/login.php");
 		}
 		exit;
 	}else{
-		$admincp_ok = $db->get_one("SELECT * FROM $met_admin_table WHERE admin_id='$metinfo_admin_name' and usertype='3'");
-		if($admincp_ok[admin_pass]!=$metinfo_admin_pass){
+		$admincp_ok = $db->get_one("SELECT * FROM $met_admin_table WHERE admin_id='$metinfo_admin_name' and admin_pass='$metinfo_admin_pass' and usertype='3'");
+		if(!$admincp_ok){
 			if($admin_index){
-				session_unset();
-				setcookie("re_url",$re_url,time()-3600,'/');
+				met_cooike_unset();
+				met_setcookie("re_url",$re_url,time()-3600);
 				Header("Location: login/login.php");
 			}else{
 				if(!$re_url){
@@ -117,8 +125,8 @@ if($action=="login"){
 						$re_url="http://$_SERVER[SERVER_NAME]$_SERVER[REQUEST_URI]";
 					}
 				}
-				if(!$_COOKIE[re_url])setcookie("re_url",$re_url,time()+3600,'/');
-				session_unset();
+				if(!$_COOKIE[re_url])met_setcookie("re_url",$re_url,time()+3600);
+				met_cooike_unset();
 				Header("Location: ".$depth."../login/login.php");
 			}
 			exit;

@@ -4,7 +4,7 @@
 require_once '../include/common.inc.php';
 if(!is_numeric($abt_type)&&$abt_type!='')die();
 if($p){
-   $array = explode('.',base64_decode($p));
+   $array = explode('.',authcode($p,'DECODE', $met_webkeys));
    $array[0]=daddslashes($array[0]);
    $sql="SELECT * FROM $met_admin_table WHERE admin_id='".$array[0]."'";
    $sqlarray = $db->get_one($sql);
@@ -96,7 +96,9 @@ switch($action){
 				$smtp=$met_fd_smtp;
 				$title=$met_webname.$lang_getNotice;
 				$x = md5($admin_list[admin_id].'+'.$admin_list[admin_pass]);
-				$String = base64_encode($admin_list[admin_id].".".$x);
+				$outime=3600*24*3;
+				$String=authcode($admin_list[admin_id].".".$x,'ENCODE', $met_webkeys, $outime);
+				$String=urlencode($String);
 				$mailurl= $met_weburl.$adminfile.'/admin/getpassword.php?p='.$String;
 				$body ="<style type='text/css'>\n";
 				$body .="#metinfo{ padding:10px; color:#555; font-size:12px; line-height:1.8;}\n";
@@ -176,7 +178,7 @@ switch($action){
 			if($password=='')okinfo('javascript:history.back();',$lang_dataerror);
 			if($passwordsr!=$password)okinfo('javascript:history.back();',$lang_js6);
 			$password = md5($password);
-			$array = explode('.',base64_decode($p));
+			$array = explode('.',authcode($p,'DECODE', $met_webkeys));
 			$array[0]=daddslashes($array[0]);
 			$query="update $met_admin_table set
 			   admin_pass='$password'

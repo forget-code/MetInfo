@@ -1,11 +1,11 @@
 <?php
-# MetInfo Enterprise Content Management System 
+# MetInfo Enterprise Content Management System ceshi
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 header("Content-type: text/html;charset=utf-8");
-error_reporting(E_ERROR | E_WARNING | E_PARSE);
+error_reporting(E_ERROR | E_PARSE);
 @set_time_limit(0);
 set_magic_quotes_runtime(0);
-define('VERSION','5.1.7');
+define('VERSION','5.2.1');
 if(PHP_VERSION < '4.1.0') {
 	$_GET         = &$HTTP_GET_VARS;
 	$_POST        = &$HTTP_POST_VARS;
@@ -102,7 +102,6 @@ switch ($action)
 			$fstr.="<li class='WARN'>空间不支持session，无法登陆后台。</li>";
 		}
 		$w_check=array(
-		'../',
 		'../about/',
 		'../download/',
 		'../product/',
@@ -117,6 +116,7 @@ switch ($action)
 		'../upload/',
 		'../config/',
 		'../config/config_db.php',
+		'../config/config_safe.php',
 		'../cache/',
 		'../upload/file/',
 		'../upload/image/',
@@ -172,7 +172,12 @@ switch ($action)
 				mysql_query("CREATE DATABASE $db_name ") or die('创建数据库失败'.mysql_error());
 			}
 			mysql_select_db($db_name);
-			//
+			if(mysql_get_server_info()>4.1){
+			 mysql_query("set names utf8"); 
+			}
+			if(mysql_get_server_info()>'5.0.1'){
+			 mysql_query("SET sql_mode=''",$link);
+			}
 			if(mysql_get_server_info()>='4.1'){
 				mysql_query("set names utf8"); 
 				$content=readover("sql.sql");
@@ -205,10 +210,41 @@ switch ($action)
 					$content=preg_replace("/{#(.+?)}/eis",'$lang[\\1]',$content);	
 					$installinfo.=creat_table($content);	
 				}
+				$img_file="<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+require_once '../img/img.php';
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>";
+				$index_file="<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+\$filpy = basename(dirname(__FILE__));
+\$fmodule=5;
+require_once '../include/module.php'; 
+require_once \$module; 
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>";
+				$showimg_file="<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+require_once '../img/showimg.php';
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>";
+				mkdir('../case');
+				file_put_contents('../case/img.php',$img_file);
+				file_put_contents('../case/index.php',$index_file);
+				file_put_contents('../case/showimg.php',$showimg_file);
+			}else{
+				deldir('../case');
 			}
 			$content=readover("lang.sql"); 
 			$content=preg_replace("/{#(.+?)}/eis",'$lang[\\1]',$content);	
 			$installinfo.=creat_table($content);
+			file_put_contents('../config/config_safe.php','<?php/*'.met_rand_i(32).'*/?>');
 			header("location:index.php?action=adminsetup&cndata={$cndata}&endata={$endata}");exit;
 		}else {
 			include template('databasesetup');
@@ -238,6 +274,7 @@ switch ($action)
 			$met_admin_table = "{$tablepre}admin_table";
 			$met_config      = "{$tablepre}config";
 			$met_column      = "{$tablepre}column";
+			$met_lang      = "{$tablepre}lang";
 			 $query = " INSERT INTO $met_admin_table set
                       admin_id           = '$regname',
                       admin_pass         = '$regpwd',
@@ -247,6 +284,7 @@ switch ($action)
 					  admin_email        = '$email',
 					  admin_mobile       = '$tel',
 					  admin_register_date= '$m_now_date',
+					  admin_shortcut='[{\"name\":\"lang_skinbaseset\",\"url\":\"system/basic.php?anyid=9&lang=cn\",\"bigclass\":\"1\",\"field\":\"s1001\",\"type\":\"2\",\"list_order\":\"10\",\"protect\":\"1\",\"hidden\":\"0\",\"lang\":\"lang_skinbaseset\"},{\"name\":\"lang_indexcolumn\",\"url\":\"column/index.php?anyid=25&lang=cn\",\"bigclass\":\"1\",\"field\":\"s1201\",\"type\":\"2\",\"list_order\":\"0\",\"protect\":\"1\",\"hidden\":\"0\",\"lang\":\"lang_indexcolumn\"},{\"name\":\"lang_unitytxt_75\",\"url\":\"interface/skin_editor.php?anyid=18&lang=cn\",\"bigclass\":\"1\",\"field\":\"s1101\",\"type\":\"2\",\"list_order\":\"0\",\"protect\":\"1\",\"hidden\":\"0\",\"lang\":\"lang_unitytxt_75\"},{\"name\":\"lang_tmptips\",\"url\":\"interface/info.php?anyid=24&lang=cn\",\"bigclass\":\"1\",\"field\":\"\",\"type\":\"2\",\"list_order\":\"0\",\"protect\":\"1\",\"hidden\":\"0\",\"lang\":\"lang_tmptips\"},{\"name\":\"lang_mod2add\",\"url\":\"content/article/content.php?action=add&lang=cn&anyid=29\",\"bigclass\":\"1\",\"field\":\"\",\"type\":\"2\",\"list_order\":\"0\",\"protect\":\"0\",\"hidden\":\"0\",\"lang\":\"lang_mod2add\"},{\"name\":\"lang_mod3add\",\"url\":\"content/product/content.php?action=add&lang=cn&anyid=29\",\"bigclass\":\"1\",\"field\":\"\",\"type\":2,\"list_order\":\"0\",\"protect\":0}]',
 					  usertype        	 = '3',
 					  admin_ok           = '1'";
 			mysql_query($query) or die('写入数据库失败: ' . mysql_error());
@@ -263,6 +301,8 @@ switch ($action)
 			mysql_query($query) or die('写入数据库失败: ' . mysql_error());
 			$install_url=str_replace("install/index.php","",$install_url);
 			$query = " UPDATE $met_config set value='$install_url' where name='met_weburl'";
+			mysql_query($query) or die('写入数据库失败: ' . mysql_error());
+			$query = " UPDATE $met_lang set met_weburl='$install_url' where lang!='metinfo'";
 			mysql_query($query) or die('写入数据库失败: ' . mysql_error());
 			$adminurl=$install_url.'admin/';
 			$query = " UPDATE $met_column set out_url='$adminurl' where module='0'";
@@ -304,6 +344,10 @@ switch ($action)
 				include './agents.php';
 				unlink('./agents.php');
 			}
+			unlink('../cache/langadmin_cn.php');
+			unlink('../cache/langadmin_en.php');
+			unlink('../cache/lang_cn.php');
+			unlink('../cache/lang_en.php');
 			$webname=$webname_cn?$webname_cn:($webname_en?$webname_en:'');
 			$webkeywords=$webkeywords_cn?$webkeywords_cn:($webkeywords_en?$webkeywords_en:'');
 			$spt = '<script type="text/javascript" src="http://api.metinfo.cn/record_install.php?';
@@ -402,7 +446,8 @@ a:visited {color: #0240a3;}
 }
 
 function creat_table($content) {
-	global $installinfo,$db_prefix,$db_setup;
+	global $installinfo,$db_prefix,$db_setup,$install_url;
+	$install_url2=str_replace("install/index.php","",$install_url);
 	$sql=explode("\n",$content);
 	$query='';
 	$j=0;
@@ -418,6 +463,7 @@ function creat_table($content) {
 			}
 			$query = str_replace('met_',$db_prefix,$query);
 			$query = str_replace('metconfig_','met_',$query);
+			$query = str_replace('web_metinfo_url',$install_url2,$query);
 			if(!mysql_query($query)){
 				$db_setup=0;
 				if($j!='0'){
@@ -576,6 +622,36 @@ global $met_weburl,$met_host,$met_file;
 	else{
 		return 'nohost';
 	}
+}
+function met_rand_i($length){
+	$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+	$password = '';
+	for ( $i = 0; $i < $length; $i++ ) {
+		$password .= $chars[ mt_rand(0, strlen($chars) - 1) ];
+	}
+	return $password;
+}
+function deldir($dir,$dk=1) {
+  $dh=opendir($dir);
+  while ($file=readdir($dh)) {
+    if($file!="." && $file!="..") {
+      $fullpath=$dir."/".$file;
+      if(!is_dir($fullpath)) {
+          unlink($fullpath);
+      } else {
+          deldir($fullpath);
+      }
+    }
+  }
+  closedir($dh);
+  if($dk==0 && $dir!='../../upload')$dk=1;
+  if($dk==1){
+	  if(rmdir($dir)){
+		return true;
+	  }else{
+		return false;
+	  }
+  }
 }
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.

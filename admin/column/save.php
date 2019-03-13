@@ -7,8 +7,8 @@ if($action=="editor"){
 	if($name=='')metsave('-1',$lang_js11);
 	if($if_in==1 and $out_url=='')metsave('-1',$lang_modOuturl);
 	if($module==1 &&$isshow==0 && !($met_class2[$id]||$met_class3[$id]))metsave('-1',$lang_columnerr8);
-	$filename=preg_replace("/\s/","_",trim($filename)); 
-	$filenameold=preg_replace("/\s/","_",trim($filenameold));
+	$filename=namefilter($filename);
+	$filenameold=namefilter($filenameold);
 	$indeximg =$metadmin[categorymarkimage]?$indeximg:'';
 	$columnimg=$metadmin[categoryimage]?$columnimg:'';
 	if($if_in==0){
@@ -81,7 +81,8 @@ if($action=="editor"){
 		require_once $depth.'../include/config.php';
 	}
 	file_unlink("../../cache/column_$lang.inc.php");
-	metsave('../column/index.php?anyid='.$anyid.'&lang='.$lang);	
+	$gent='../../sitemap/index.php?lang='.$lang.'&htmsitemap='.$met_member_force;
+	metsave('../column/index.php?anyid='.$anyid.'&lang='.$lang,'','','',$gent);	
 }
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.

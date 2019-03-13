@@ -209,4 +209,4 @@ ul.searchnavlist li{ padding:5px 0px;}
 .metpager_9 a:hover { border:1px solid #85bd1e; color:#638425; background-color:#f1ffd6; } 
 .metpager_9 a:hover { border:1px solid #85bd1e; color:#638425; background-color:#f1ffd6; } 
 .metpager_9 span.current {border:1px solid #b2e05d; padding:2px 5px 2px 5px; margin:2px; color:#fff; background-color:#b2e05d; text-decoration:none;} 
-.metpager_9 span.disabled { border:1px solid #f3f3f3; padding:2px 5px 2px 5px; margin:2px; color:#ccc;}
+.metpager_9 span.disabled { border:1px solid #f3f3f3; padding:2px 5px 2px 5px; margin:2px; color:#ccc;} 

@@ -9,15 +9,7 @@ $member_index_url="login.php?lang=".$lang;
 $member_index_url="login".$met_htmtype;
 }
 require_once 'login_check.php';
-session_start();
-$_SESSION['metinfo_admin_name'] ='';
-$_SESSION['metinfo_admin_pass'] ='';
-$_SESSION['metinfo_admin_time'] ='';
-$_SESSION['metinfo_admin_type'] ='';
-$_SESSION['metinfo_admin_pop']  ='';
-$_SESSION['metinfo_member_name'] ='';
-$_SESSION['metinfo_member_pass'] ='';		  
-$_SESSION['metinfo_member_type'] ='';
+met_cooike_unset($metinfo_member_name);
 if(isset($_COOKIE['ps'])) setcookie("ps", "", mktime()-86400*7, "/");
 Header("Location: $member_index_url");
 exit;

@@ -3,6 +3,13 @@
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 require_once 'login_check.php';
 require_once ROOTPATH.'member/index_member.php';
+$feedback_list=$db->get_one("select * from $met_feedback where id='$id'");
+if(!$feedback_list){
+okinfo('feedback.php?lang='.$lang,$lang_NoidJS);
+}
+if($metinfo_member_name!=$feedback_list[customerid]){
+	okinfo('javascript:history.back();',$lang_js1);
+}
 if($action=="edit"){
 	//code
      if($met_memberlogin_code==1){
@@ -28,7 +35,7 @@ $fd_time="{$lang_Feedback1}".$met_fd_time."{$lang_Feedback2}";
 okinfo('javascript:history.back();',$fd_time);
 }
 $query = "SELECT * FROM $met_parameter where lang='$lang' and  module=8 order by no_order";
-if($met_member_use)$query = "SELECT * FROM $met_parameter where lang='$lang' and  module=8  and access<=$metinfo_member_type order by no_order";
+if($met_member_use)$query = "SELECT * FROM $met_parameter where lang='$lang' and  module=8  and access<='$metinfo_member_type' order by no_order";
 $result = $db->query($query);
 while($list= $db->fetch_array($result)){
 $list[para]="para".$list[id];
@@ -84,19 +91,15 @@ foreach($feedback_para as $key=>$val){
     $query = "update $met_flist SET
 					  paraid   ='$val[id]',
 					  info     ='$para'
-					  where listid=$id and paraid=$val[id]";
+					  where listid='$id' and paraid=$val[id]";
 	if($val[type]==5 and $para=='')$query='';
     $db->query($query);
  }
 okinfo('feedback.php?lang='.$lang,$lang_js21);
 }else{
-$feedback_list=$db->get_one("select * from $met_feedback where id='$id'");
-if(!$feedback_list){
-okinfo('feedback.php?lang='.$lang,$lang_NoidJS);
-}
 if($feedback_list[readok]==1 || $feedback_list[useinfo]!='') okinfo('feedback.php?lang='.$lang,$lang_js24);
 $query = "SELECT * FROM $met_parameter where lang='$lang' and module=8  order by no_order";
-if($met_member_use)$query = "SELECT * FROM $met_parameter where lang='$lang' and  module=8  and access<=$metinfo_member_type order by no_order";
+if($met_member_use)$query = "SELECT * FROM $met_parameter where lang='$lang' and  module=8  and access<='$metinfo_member_type' order by no_order";
 $result = $db->query($query);
 while($list= $db->fetch_array($result)){
  if($list[type]==2 or $list[type]==4 or $list[type]==6){

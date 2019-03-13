@@ -12,6 +12,8 @@ EOT;
 require_once template('metlangs');
 echo <<<EOT
 -->
+<div class="v52fmbx_tbmax">
+<div class="v52fmbx_tbbox">
 	<table cellpadding="0" cellspacing="0" class="table">
 		<tr>
 <!--
@@ -31,16 +33,16 @@ echo <<<EOT
 			 <tr>
 			 <td colspan="3">
 			  <form name="del" method="Post" action="delete.php?anyid={$anyid}&lang=$lang">
-			  <table cellpadding="0" cellspacing="0" class="table neitable columntables" style="margin:0px; border:none;">
+			  <table cellpadding="0" cellspacing="1" class="table neitable columntables">
 		<tr id="list-top"> 
-			<td width="40" class="list" style="padding:0px; text-align:center;">{$lang_selected}</td>
-			<td width="40" class="list" style="padding:0px; text-align:center;">{$lang_sort}</td>
+			<td width="30" class="list">{$lang_selected}</td>
+			<td width="30" class="list">{$lang_sort}</td>
 			<td class="list">{$lang_columnname}</td>
-			<td class="list" width="130" style="padding:0px 5px; text-align:center;">{$lang_columnnav}</td>
-			<td class="list" width="100" style="padding:0px; text-align:center;">{$lang_columnmodule}</td>
-			<td class="list" width="100" style="padding:0px; text-align:center;">{$lang_columndocument}</td>
-			<td class="list" width="70" style="padding:0px; text-align:center;">{$lang_columnmark1}</td>			
-			<td width="60" class="list">{$lang_operate}</td>
+			<td class="list" width="110">{$lang_columnnav}</td>
+			<td class="list" width="60">{$lang_columnmodule}</td>
+			<td class="list" width="60">{$lang_columndocument}</td>
+			<td class="list" width="30">{$lang_columnmark1}</td>			
+			<td class="list">{$lang_operate}</td>
 		</tr>
 <!--
 EOT;
@@ -73,9 +75,9 @@ echo <<<EOT
 			<td class="list-text color999">$val[modulename]</td>
 			<td class="list-text color999" title="$val[foldername]">$valfoldername</td>
 			<td class="list-text"><input type="text" class="text no_order" value="$val[index_num]" name="index_num_$val[id]" /></td>	
-			<td class="list-text">
-				<div style=" position:relative;">
-				<a href="editor.php?anyid={$anyid}&lang=$lang&id=$val[id]" style="float:left; margin-left:10px;">{$lang_editor}</a>
+			<td width="100" class="list-text">
+				<div style=" position:relative; z-index:1;">
+				<a href="editor.php?anyid={$anyid}&lang=$lang&id=$val[id]" style="float:left; margin-left:10px;">{$lang_unitytxt_39}</a>
 				<div class="columnmore">
 					<span class="text">{$lang_columnmore}&nbsp;<img src="$img_url/metcolumn12.gif" style="position:relative; bottom:2px;" /></span>
 					<div class="none columnmorediv">
@@ -146,7 +148,7 @@ echo <<<EOT
 			<td class="list-text2"><input type="text" class="text no_order" value="$val2[index_num]" name="index_num_$val2[id]" /></td>
 			<td class="list-text2" style="text-align:center;">
 				<div style=" position:relative;">
-				<a href="editor.php?anyid={$anyid}&lang=$lang&id=$val2[id]" style="float:left; margin-left:10px;">{$lang_editor}</a>
+				<a href="editor.php?anyid={$anyid}&lang=$lang&id=$val2[id]" style="float:left; margin-left:10px;">{$lang_unitytxt_39}</a>
 				<div class="columnmore">
 					<span class="text">{$lang_columnmore}&nbsp;<img src="$img_url/metcolumn12.gif" style="position:relative; bottom:2px;" /></span>
 					<div class="none columnmorediv">
@@ -207,7 +209,7 @@ echo <<<EOT
 			<td class="list-text3"><input type="text" class="text no_order" value="$val3[index_num]" name="index_num_$val3[id]" /></td>
 			<td class="list-text3">
 				<div style=" position:relative;">
-				<a href="editor.php?anyid={$anyid}&lang=$lang&id=$val3[id]" style="float:left; margin-left:10px;">{$lang_editor}</a>
+				<a href="editor.php?anyid={$anyid}&lang=$lang&id=$val3[id]" style="float:left; margin-left:10px;">{$lang_unitytxt_39}</a>
 				<div class="columnmore">
 					<span class="text">{$lang_columnmore}&nbsp;<img src="$img_url/metcolumn12.gif" style="position:relative; bottom:2px;" /></span>
 					<div class="none columnmorediv">
@@ -249,16 +251,41 @@ echo <<<EOT
    	   </tr>
 		<tr> 
 			<td class="all" width="40"><input name="chkAll" type="checkbox" id="chkAll" title="{$lang_selectall}" onclick="CheckAllx($(this),'del')" value="checkbox" /></td>
-			<td class="all-submit" colspan="2" style="text-align:left; padding: 5px 10px;">
+			<td class="all-submit" colspan="1" style="text-align:left; padding: 5px 10px;">
 				<input name="saveorder" type='submit' value='{$lang_Submit}' class="submit" onclick="return columneditoradd($(this));" />&nbsp;&nbsp;
 				<input name="submit" type='submit' value='{$lang_deleteselected}' class="submit" style="margin-right:20px;" onclick="return met_modify($(this),'del','del');" /> 
+			</td>
+			<td class="all-submit" colspan="1" style="text-align:right; padding: 5px 10px;">
+				<div>
+				<form method="POST" name="myform" action="./copycolumn.php?lang=$lang&action=copy&table=1" target="_self">
+					{$lang_copyotherlang1}<input name="allid" type="hidden" id="allid" value="" />
+					<select name="copylang">
+						<option value="">{$lang_Copytitle}</option>
+<!--
+EOT;
+foreach($met_langok as $key=>$val){
+if($val[mark]==$lang)continue;
+echo <<<EOT
+-->
+							<option value="$val[mark]">$val[name]</option>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+					</select>
+					&nbsp;<input name="copycontent" type='checkbox' value='1' id="copycontent" class="checkbox">&nbsp;<label for="copycontent">{$lang_copyotherlang2}</label>
+				</form>
+				<input name="submit" type='submit' value='{$lang_Copy}'  onclick="return met_modify($(this),'myform','editor','columncook');" /> 
+				</div>
 			</td>
         </tr>
 		<tr>
 			<td class="footer" colspan="3">$foot</td>
 		</tr>
 </table>
-		
+</div>
+</div>
 <script type="text/javascript">
 function newmodule(my,module,type){
 	var mtd = my.parent('td').next();

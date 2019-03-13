@@ -10,7 +10,7 @@ if($action=='deqing'){
 	metsave('../app/sms/smsnotes.php?lang='.$lang.'&anyid='.$anyid.'&cs='.$cs,'',$depth);
 }
 $total_pass = $db->get_one("SELECT * FROM $met_otherinfo WHERE lang='met_sms'");
-if($total_pass){
+if($total_pass&&$action=="getdate"){
 	$met_file='/sms/smsnotes.php';
 	$post=array('md5'=>$total_pass['authpass']);
 	$json = curl_post($post,30);
@@ -28,6 +28,8 @@ if($total_pass){
 			}
 		}
 	}
+	echo 'ok';
+	die();
 }
 
 $serch_sql=" where time!='' ";

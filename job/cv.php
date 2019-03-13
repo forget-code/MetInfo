@@ -14,7 +14,7 @@ $guanlian=$class_list[$class1][releclass];
 	$class2_info=$class_list[$class1][releclass]?$class_list[$class1]:$class_list[$class2];	
 	
 $query = "SELECT * FROM $met_parameter where lang='$lang' and module=6  order by no_order";
-if($met_member_use)$query = "SELECT * FROM $met_parameter where lang='$lang' and  module=6  and access<=$metinfo_member_type order by no_order";
+if($met_member_use)$query = "SELECT * FROM $met_parameter where lang='$lang' and  module=6  and access<='$metinfo_member_type' order by no_order";
 $result = $db->query($query);
 while($list= $db->fetch_array($result)){
  if($list[type]==2 or $list[type]==4 or $list[type]==6){
@@ -63,7 +63,7 @@ $fdjs=$fdjs."}</script>";
 	$selectjob = "";
 	$serch_sql=" where lang='$lang' ";
 	$metinfo_member_type=intval($metinfo_member_type);
-	$query = "SELECT id,position FROM $met_job $serch_sql and  access <= $metinfo_member_type and ((TO_DAYS(NOW())-TO_DAYS(`addtime`)< useful_life) OR useful_life=0)";
+	$query = "SELECT id,position FROM $met_job $serch_sql and  access <= '$metinfo_member_type' and ((TO_DAYS(NOW())-TO_DAYS(`addtime`)< useful_life) OR useful_life=0)";
     
 	$result = $db->query($query);
 	 while($list= $db->fetch_array($result)){
@@ -91,7 +91,6 @@ if(!$guanlian){
 }
      require_once '../public/php/methtml.inc.php';
 	 $nav_x[name]=$lang_cvtitle;
-		 
      $methtml_cv.="<script type='text/javascript'>function pressCaptcha(obj){obj.value = obj.value.toUpperCase();}</script>\n";
      $methtml_cv.=$fdjs;
      $methtml_cv.="<form  enctype='multipart/form-data' method='POST' onSubmit='return Checkcv();' name='myform' action='save.php?action=add' target='_self'>\n";
@@ -108,7 +107,7 @@ if(!$guanlian){
      $methtml_cv.="<tr class='cv_tr'> \n";
      $methtml_cv.="<td class='cv_td1' align='right'>".$val[name]."&nbsp;</td>\n";
      $methtml_cv.="<td class='cv_input' align='left'><input name='".$val[para]."' type='text' class='input' size='40'></td>\n";
-     $methtml_cv.="<td class='cv_info' align='left' style='color:#990000'>".$val[wr_must]."</td>\n";
+     $methtml_cv.="<td class='cv_info' align='left'><span  style='color:#990000'>".$val[wr_must]."</span><span>{$val[description]}</span></td>\n";
      $methtml_cv.="</tr>\n";
 	 break;
 	 case 2:
@@ -121,14 +120,14 @@ if(!$guanlian){
      $methtml_cv.="<tr class='cv_tr'> \n";
      $methtml_cv.="<td class='cv_td1' align='right'>".$val[name]."&nbsp;</td>\n";
      $methtml_cv.="<td class='cv_input' align='left'>".$tmp."</td>\n";
-     $methtml_cv.="<td class='cv_info' align='left' style='color:#990000'>".$val[wr_must]."</td>\n";
+     $methtml_cv.="<td class='cv_info' align='left'><span  style='color:#990000'>".$val[wr_must]."</span><span>{$val[description]}</span></td>\n";
      $methtml_cv.="</tr>\n";
 	 break;
 	 case 3:
 	 $methtml_cv.="<tr class='cv_tr'> \n";
      $methtml_cv.="<td class='cv_td1' align='right'>".$val[name]."&nbsp;</td>\n";
      $methtml_cv.="<td class='cv_input' align='left'><textarea name='".$val[para]."' cols='60' rows='5'></textarea></td>\n";
-     $methtml_cv.="<td class='cv_info' align='left' style='color:#990000'>".$val[wr_must]."</td>\n";
+     $methtml_cv.="<td class='cv_info' align='left'><span  style='color:#990000'>".$val[wr_must]."</span><span>{$val[description]}</span></td>\n";
      $methtml_cv.="</tr>\n";
      break;
 	 case 4:
@@ -141,14 +140,14 @@ if(!$guanlian){
 	 $methtml_cv.="<tr class='cv_tr'> \n";
      $methtml_cv.="<td class='cv_td1' align='right'>".$val[name]."&nbsp;</td>\n";
      $methtml_cv.="<td class='cv_input' align='left'>".$tmp1."</td>\n";
-     $methtml_cv.="<td class='cv_info' align='left' style='color:#990000'>".$val[wr_must]."</td>\n";
+     $methtml_cv.="<td class='cv_info' align='left'><span  style='color:#990000'>".$val[wr_must]."</span><span>{$val[description]}</span></td>\n";
      $methtml_cv.="</tr>\n";
      break;
 	 case 5:
      $methtml_cv.="<tr class='cv_tr'> \n";
      $methtml_cv.="<td class='cv_td1' align='right'>".$val[name]."&nbsp;</td>\n";
      $methtml_cv.="<td class='cv_input' align='left'><input name='".$val[para]."' type='file' class='input' size='20' ></td>\n";
-     $methtml_cv.="<td class='cv_info' align='left' style='color:#990000'>".$val[wr_must]."</td>\n";
+     $methtml_cv.="<td class='cv_info' align='left'><span  style='color:#990000'>".$val[wr_must]."</span><span>{$val[description]}</span></td>\n";
      $methtml_cv.="</tr>\n";
 	 break;
 	 case 6:
@@ -163,7 +162,7 @@ if(!$guanlian){
      $methtml_cv.="<tr class='cv_tr'> \n";
      $methtml_cv.="<td class='cv_td1' align='right'>".$val[name]."&nbsp;</td>\n";
      $methtml_cv.="<td class='cv_input' align='left'>".$tmp2."</td>\n";
-     $methtml_cv.="<td class='cv_info' align='left' style='color:#990000'>".$val[wr_must]."</td>\n";
+     $methtml_cv.="<td class='cv_info' align='left'><span  style='color:#990000'>".$val[wr_must]."</span><span>{$val[description]}</span></td>\n";
      $methtml_cv.="</tr>\n";
 	 break;
     }
@@ -173,7 +172,7 @@ if($met_memberlogin_code==1){
      $methtml_cv.="<tr class='cv_tr'> \n";   
      $methtml_cv.="<td class='cv_td1' align='right'>".$lang_memberImgCode.":</b></td>\n";
      $methtml_cv.="<td class='cv_code' colspan='2' align='left'><input name='code' onKeyUp='pressCaptcha(this)' type='text' class='code' id='code' size='6' maxlength='8' style='width:50px' />";
-     $methtml_cv.="<img align='absbottom' src='ajax.php?action=code'  onclick=this.src='ajax.php?action=code&'+Math.random() style='cursor: pointer;' title='".$lang_memberTip1."'/>";
+     $methtml_cv.="<img align='absbottom' src='../member/ajax.php?action=code'  onclick=this.src='../member/ajax.php?action=code&'+Math.random() style='cursor: pointer;' title='".$lang_memberTip1."'/>";
      $methtml_cv.="</td>\n";
      $methtml_cv.="</tr>\n";
 }	 

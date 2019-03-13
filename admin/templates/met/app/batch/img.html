@@ -61,9 +61,13 @@ function batchone(num,dofile){
 <form  method="POST" name="myform" action="watermark.php?anyid={$anyid}lang=$lang" target="_self">
 <input type="hidden" name="action" value="do"/>
 <input type="hidden" id="idlist" value=""/>
-<table cellpadding="2" cellspacing="1" class="table">
-            <td class="text">{$lang_batchtips5}{$lang_marks}</td>
-            <td class="input">
+<div class="v52fmbx_tbmax">
+<div class="v52fmbx_tbbox">
+<div class="v52fmbx">
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_batchtips5}{$lang_marks}</dt>
+			<dd>
 			<select name="class1" id="class1select" class="noselect" onChange="changelocation1(document.myform.class1.options[document.myform.class1.selectedIndex].value,1)" size="1">		
 			<option value="-1">{$lang_settopcolumns}</option>
 <!--
@@ -84,51 +88,45 @@ echo <<<EOT
             </select>
 			<select name="class3" id="class3select" onChange=""> 
 			<option value=0>{$lang_modClass3}</option>
-            </select></td>
-			<td></td>
-			<td></td>			
-          </tr> 
-		  <tr>
-			<td class="text">{$lang_batchtips46}{$lang_marks}</td>
-			<td class="input"><span id="schedule">0/0</span></td>
-			<td></td>
-			<td></td>
-		  </tr>
-		  </table>
-</form>	
+            </select>
+			</dd>
+		</dl>
+		</div>
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_batchtips46}{$lang_marks}</dt>
+			<dd>
+				<span id="schedule">0/0</span>
+			</dd>
+		</dl>
+		</div>
 <!--
 EOT;
 if($cs==3){
 echo <<<EOT
--->		  
-<table cellpadding="2" cellspacing="1" class="table">
-		 <tr> 
-            <td class="text">{$lang_batchtips6}{$lang_marks}</td>
-		<td class="submit">
-		<input type="button" id="submit" name="button" value="{$lang_batchtips7}" class="submit" onclick="return batch('watermark')"/>
-		<span class="tips">{$lang_batchtips8}</span>
-		</td>
-          </tr>
-</table>
+-->	
+		<div class="v52fmbx_submit">
+			<input type="button" id="submit" name="button" value="{$lang_batchtips7}" class="submit" onclick="return batch('watermark')"/>
+			<span class="tips color999">{$lang_batchtips8}</span>
+		</div>
 <!--
 EOT;
 }else{
 echo <<<EOT
--->	
-<table cellpadding="2" cellspacing="1" class="table">
-		 <tr> 
-            <td class="text">{$lang_batchtips9}{$lang_marks}</td>
-		<td class="submit">
-		<input type="button" id="submit" name="button" value="{$lang_batchtips10}" class="submit" onclick="return batch('thumb')"/>
-		<span class="tips">{$lang_batchtips11}</span>
-		</td>
-          </tr>
-</table>
+-->
+		<div class="v52fmbx_submit">
+			<input type="button" id="submit" name="button" value="{$lang_batchtips10}" class="submit" onclick="return batch('thumb')"/>
+			<span class="tips color999">{$lang_batchtips11}</span>
+		</div>
 <!--
 EOT;
 }
 echo <<<EOT
--->	
+-->
+</div>
+</div>
+</div>
+</form>
 <div class="footer">$foot</div>
 </body>
 </html>

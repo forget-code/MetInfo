@@ -36,18 +36,19 @@
 	if(!isset($met_flasharray[$classnow]['type']))$met_flasharray[$classnow]=$met_flasharray[10000];
 	if($met_flasharray[$classnow]['type']){
 		$query_x=$met_flasharray[$classnow]['type']==2?"and flash_path!=''":"and img_path!=''";
-		$query="select * from $met_flash where lang='$lang' and (module like '%,{$classnow},%' or module='metinfo') {$query_x} order by no_order";
+		$qsql=$met_mobileok?"and wap_ok='1'":"and wap_ok='0'";//mobile
+		$query="select * from $met_flash where lang='$lang' {$qsql} and (module like '%,{$classnow},%' or module='metinfo') {$query_x} order by no_order";
 		$result= $db->query($query);
 		if(mysql_affected_rows()==0){
 			$superior=$class_list[$classnow]['bigclass'];
 			$query_x=$met_flasharray[$superior]['type']==2?"and flash_path!=''":"and img_path!=''";
-			$query="select * from $met_flash where lang='$lang' and (module like '%,{$superior},%' or module='metinfo') {$query_x} order by no_order";
+			$query="select * from $met_flash where lang='$lang' {$qsql} and (module like '%,{$superior},%' or module='metinfo') {$query_x} order by no_order";
 			$result= $db->query($query);			
 		}
 		if(mysql_affected_rows()==0){
 			$superior=$class_list[$superior]['bigclass'];
 			$query_x=$met_flasharray[$superior]['type']==2?"and flash_path!=''":"and img_path!=''";
-			$query="select * from $met_flash where lang='$lang' and (module like '%,{$superior},%' or module='metinfo') {$query_x} order by no_order";
+			$query="select * from $met_flash where lang='$lang' {$qsql} and (module like '%,{$superior},%' or module='metinfo') {$query_x} order by no_order";
 			$result= $db->query($query);			
 		}
 		while($list = $db->fetch_array($result)){
@@ -262,11 +263,12 @@ document.getElementsByTagName('head').item(0).appendChild(jsFile);
 			$query="select * from $met_admin_array where id='$metaccess'";
 			$metaccess=$db->get_one($query);
 			if(intval($metinfo_member_type)<intval($metaccess)){
-				session_unset();
-				$_SESSION['metinfo_member_name']=$metinfo_member_name;
-				$_SESSION['metinfo_member_pass']=$metinfo_member_pass;
-				$_SESSION['metinfo_member_type']=$metinfo_member_type;
-				$_SESSION['metinfo_admin_name']=$metinfo_admin_name;
+				met_cooike_unset();
+				change_met_cookie('metinfo_member_name',$metinfo_member_name);
+				change_met_cookie('metinfo_member_pass',$metinfo_member_pass);
+				change_met_cookie('metinfo_member_type',$metinfo_member_type);
+				change_met_cookie('metinfo_admin_name',$metinfo_admin_name);
+				save_met_cookie();
 				okinfo('../member/'.$member_index_url.'&referer='.urlencode(request_uri()),$lang_access);
 			}
 		}

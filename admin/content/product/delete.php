@@ -33,10 +33,11 @@ if($action=="del"){
 			}
 		}
 	}
+	$gent='../../sitemap/index.php?lang='.$lang.'&htmsitemap='.$met_member_force;
 	if($met_webhtm==2){
-		metsave($backurl,'',$depth,$htmjs);
+		metsave($backurl,'',$depth,$htmjs,$gent);
 	}else{
-		metsave($backurl,'',$depth);
+		metsave($backurl,'',$depth,'',$gent);
 	}
 }elseif($action=="editor"){
 	$allidlist=explode(',',$allid);
@@ -51,7 +52,8 @@ if($action=="del"){
 	}
 	$htmjs =indexhtm().'$|$';
 	$htmjs.=classhtm($class1,$class2,$class3);
-	metsave($backurl,'',$depth,$htmjs);
+	$gent='../../sitemap/index.php?lang='.$lang.'&htmsitemap='.$met_member_force;
+	metsave($backurl,'',$depth,$htmjs,$gent);
 }else{
 	$product_list = $db->get_one("SELECT * FROM $met_product WHERE id='$id'");
 	if(!$product_list)metsave('-1',$lang_dataerror,$depth);
@@ -71,7 +73,8 @@ if($action=="del"){
 	$class2=$product_list[class2];
 	$class3=$product_list[class3];
 	$htmjs.=classhtm($class1,$class2,$class3);
-	metsave($backurl,'',$depth,$htmjs);
+	$gent='../../sitemap/index.php?lang='.$lang.'&htmsitemap='.$met_member_force;
+	metsave($backurl,'',$depth,$htmjs,$gent);
 }
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.

@@ -62,6 +62,8 @@ $met_flash_type[$met_flasharray[10000][type]]="checked='checked'";
 $style1=$met_flasharray[10000][type]==1?"style='display:block;'":"style='display:none;'";
 $css_url=$depth."../templates/".$met_skin."/css";
 $img_url=$depth."../templates/".$met_skin."/images";
+$listclass='';
+$listclass[2]="class='now'";
 include template('interface/flash/flashadd');
 footer();
 

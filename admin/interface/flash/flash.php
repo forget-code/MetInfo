@@ -9,15 +9,15 @@ $listclass[$cs]='class="now"';
 $page = (int)$page;
 if($page_input){$page=$page_input;}
 $list_num = 15;
-$where ="where lang='$lang' order by no_order";
+$where ="where lang='$lang' and wap_ok='0' order by no_order";
 if($search=='detail_search' && $ftype!='all'){
 	$tp = $ftype==1?"and img_path!=''":"and flash_path!=''";
-	$where ="where lang='$lang' {$tp} order by no_order";
+	$where ="where lang='$lang' and wap_ok='0' {$tp} order by no_order";
 }
 $ftype1[$ftype]='selected';
 if($module<>""){
 	$dule = $met_flasharray[$module]['type']==2?"(flash_path !='' and module = 'metinfo')":"(img_path !='' and module = 'metinfo')";
-	$where ="where lang='$lang' and (module like '%,{$module},%' or {$dule}) order by no_order";
+	$where ="where lang='$lang' and wap_ok='0' and (module like '%,{$module},%' or {$dule}) order by no_order";
 	$module1[$module]='selected';
 }
 $total_count = $db->counter($met_flash, "$where", "*");
@@ -46,7 +46,7 @@ while($list = $db->fetch_array($result)){
 	}
 	$flashrec[]=$list;
 }
-$page_list = $rowset->link("flash.php?lang={$lang}&page=");
+$page_list = $rowset->link("flash.php?lang={$lang}&kuaijieskin={$kuaijieskin}&page=");
 $query1="select * from $met_column where if_in='0' and lang='$lang' order by no_order";
 $result1= $db->query($query1);
 $mod1[0]=$mod[10001]=array(
@@ -66,6 +66,8 @@ $mod[$list['id']]=$list;
 }
 $css_url=$depth."../templates/".$met_skin."/css";
 $img_url=$depth."../templates/".$met_skin."/images";
+$listclass='';
+$listclass[2]="class='now'";
 include template('interface/flash/flash');
 footer();
 # This program is an open source system, commercial use, please consciously to purchase commercial license.

@@ -129,10 +129,6 @@ if($type=='all'){
      $j++;
     $listtext.="<li class='info_para".$j."' ><b>".$val[name].":</b>".$img[$val[para]]."</li>";
  }
- foreach($imgpara[3] as $key=>$val){  
-    $k++;
-    $listtext.="<li class='info_bigpara".$k."' ><b>".$val[name].":</b>".$img[$val[para]]."</li>";
-   }
   $listtext.="</ul>\n"; 
  if($desription==1 && $val[description]){
  $listtext.="<span class='info_description' >".$val[description]."</span>"; 
@@ -146,10 +142,6 @@ if($type=='all'){
  foreach($img_paralist as $key=>$val){
      $j++;
     $listtext.="<li class='info_para".$j."' ><b>".$val[name].":</b>".$img[$val[para]]."</li>";
-   }
- foreach($imgpara[3] as $key=>$val){
-     $k++;
-    $listtext.="<li class='info_bigpara".$k."' ><b>".$val[name].":</b>".$img[$val[para]]."</li>";
    }
   $listtext.="</ul>\n"; 
 } 

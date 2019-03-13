@@ -42,23 +42,35 @@ $lang=$_GET['lang']<>""?$_GET['lang']:$_POST['lang'];
 $lang=daddslashes($lang,0,1);
 $metinfoadminok=1;
 require_once ROOTPATH.'config/config.inc.php';
-session_start();
+met_cooike_start();
 if(!is_array($met_langadmin[$_GET[langset]])&&$_GET[langset]!='')die('not have this language');
-if($_GET[langset]!='')$_SESSION['languser'] = $_GET[langset];
-$metinfo_admin_name     = $_SESSION['metinfo_admin_name'];
-$metinfo_admin_pass     = $_SESSION['metinfo_admin_pass'];
-$metinfo_admin_pop      = $_SESSION['metinfo_admin_pop'];
-$languser               = $_SESSION['languser'];
-$langadminok            = $_SESSION['metinfo_admin_lang'];
+if($_GET[langset]!=''){
+	$_GET[langset]=daddslashes($_GET[langset],0,1);
+	change_met_cookie('languser',$_GET[langset]);
+	save_met_cookie();
+}
+$metinfo_admin_name     = get_met_cookie('metinfo_admin_name');
+$metinfo_admin_pass     = get_met_cookie('metinfo_admin_pass');
+$metinfo_admin_pop      = get_met_cookie('metinfo_admin_pop');
+$metinfo_admin_shortcut = get_met_cookie('metinfo_admin_shortcut');
+$languser               = get_met_cookie('languser');
+$langadminok            = get_met_cookie('metinfo_admin_lang');
 $langusenow=$languser;
 if($langadminok<>"" and $langadminok<>'metinfo')$adminlang=explode('-',$langadminok);
 require_once ROOTPATH_ADMIN.'include/lang.php';
 isset($_REQUEST['GLOBALS']) && exit('Access Error');
+unset($_POST['met_webkeys']);
+unset($_GET['met_webkeys']);
+unset($_POST['metinfo_admin_name']);
+unset($_GET['metinfo_admin_name']);
+$met_cookie_filter=$met_cookie;
 foreach(array('_COOKIE', '_POST', '_GET') as $_request) {
 	foreach($$_request as $_key => $_value) {
-		$_key{0} != '_' && $$_key = daddslashes($_value);
+		$_key{0} != '_' && $$_key = daddslashes($_value,0,0,1);
 	}
 }
+$met_cookie=array();
+$met_cookie=$met_cookie_filter;
 $db_settings = parse_ini_file(ROOTPATH.'config/config_db.php');
 @extract($db_settings);
 $query="select * from {$tablepre}config where name='met_tablename' and lang='metinfo'";
@@ -68,7 +80,6 @@ foreach($mettables as $key=>$val){
 	$tablename='met_'.$val;	
 	$$tablename=$tablepre.$val;
 }
-require_once ROOTPATH_ADMIN.'include/pubilc.php';
 (!MAGIC_QUOTES_GPC) && $_FILES = daddslashes($_FILES);
 $REQUEST_URI  = $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'];
 $t_array = explode(' ',microtime());
@@ -109,6 +120,10 @@ require_once $metinfoadminfile;
 require_once ROOTPATH.'config/metinfo.inc.php';
 }
 $metadmin[pagename]=1;
+$metadmin[newscom]=1;
+$metadmin[productcom]=1;
+$metadmin[imgcom]=1;
+$metadmin[downloadcom]=1;
 $met_htmtypeadmin=($lang==$met_index_type)?".".$met_htmtype:"_".$lang.".".$met_htmtype;
 if(!function_exists('ob_phpintan')) {
 	function ob_phpintan($content){return htmlspecialchars($content);}
@@ -136,6 +151,7 @@ if($metinfo_admin_pop!="metinfo"){
 		$$admin_poptext1="metinfo";
 	}
 }
+require_once ROOTPATH_ADMIN.'include/pubilc.php';
 require_once 'metlist.php';
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.

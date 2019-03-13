@@ -6,25 +6,25 @@ require_once $depth.'../login/login_check.php';
 if($action=='add'){
 	$num = $lp+1;
     $newlist = "
-			<tr class='newlist'>		
-				<td class='text'>
-					{$lang_displayimg}{$num}<br/>
-					<a href='javascript:;' onclick='imgnumfu();delettr($(this));' style='font-weight:normal; margin-right:5px;'>{$lang_delete}</a>
-				</td>
-				<td class='input upload'>
-					<div style='height:30px;'>
+		<div class=\"v52fmbx_dlbox newlist\">
+			<dl>
+				<dt class='addimgdt'>
+					<p>{$lang_setflashName}{$lang_marks}</p>
+					<p>{$lang_modimgurl}{$lang_marks}</p>
+				</dt>
+				<dd style='position:relative;'>
+					<div style='margin-bottom:10px;'>
 						<input name='displayname{$lp}' type='text' class='text med' value='' />
-						<span class='tips'>{$lang_imagename}</span>
 					</div>
 					<input name='displayimg{$lp}' type='text' class='text' value='' />
 					<input name='met_upsql{$lp}' type='file' id='displayimg_upload{$lp}' />
 					<script type='text/javascript'>
-					$(document).ready(function(){
 						metuploadify('#displayimg_upload{$lp}','big_wate_img','displayimg{$lp}','','3');
-					});
 					</script>
-				</td>
-			</tr>
+					<a href='javascript:;' onclick='imgnumfu();deletdisplayimg($(this));' class='displayimg_del'>{$lang_delete}</a>
+				</dd>
+			</dl>
+		</div>
 			";
 	echo $newlist;
 }

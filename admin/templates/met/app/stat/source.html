@@ -10,10 +10,13 @@ echo <<<EOT
 <body>
 <!--
 EOT;
+$listclass='';
 $listclass[4]='class="now"';
 require_once template('app/stat/top');
 echo <<<EOT
 -->
+<div class="v52fmbx_tbmax">
+<div class="v52fmbx_tbbox">
 <div class="lablelist">
 	<ul>
 		<li class="round {$labtypeclass[1]}"><a href="source.php?lang={$lang}&anyid={$anyid}&labtype=1&st={$st}&et={$et}&cs={$cs}" title="{$lang_statips59}">{$lang_statips59}</a></li>
@@ -80,9 +83,19 @@ EOT;
 }
 echo <<<EOT
 -->
+<!--
+EOT;
+if($page_list){
+echo <<<EOT
+-->
 	<tr>
 		<td colspan='9' align='center' class="page_list">{$page_list}</td>
 	</tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
 </table>
 <!--
 EOT;
@@ -178,6 +191,8 @@ EOT;
 }
 echo <<<EOT
 -->
+</div>
+</div>
 <div class="clear"></div>
 <div class="footer">$foot</div>
 </body>

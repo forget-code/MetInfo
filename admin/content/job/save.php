@@ -3,12 +3,10 @@
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 $depth='../';
 require_once $depth.'../login/login_check.php';
-$filename=preg_replace("/\s/","_",trim($filename)); 
-$filenameold=preg_replace("/\s/","_",trim($filenameold)); 
+$filename=namefilter($filename);
+$filenameold=namefilter($filenameold);
 if($filename_okno){
 	$metinfo=1;
-	$filename=str_replace("\\",'',$filename);
-	$filename=unescape($filename);
 	if($filename!=''){
 		$filenameok = $db->get_one("SELECT * FROM $met_job WHERE filename='$filename'");
 		if($filenameok)$metinfo=0;
@@ -46,7 +44,8 @@ if($action=="add"){
 	$htmjs =indexhtm().'$|$';
 	$htmjs.=contenthtm($class1,$id,'showjob',$filename,0,'job',$addtime).'$|$';
 	$htmjs.=classhtm($class1,0,0);
-	metsave('../content/job/index.php?anyid='.$anyid.'&lang='.$lang.'&class1='.$class1,'',$depth,$htmjs);
+	$gent='../../sitemap/index.php?lang='.$lang.'&htmsitemap='.$met_member_force;
+	metsave('../content/job/index.php?anyid='.$anyid.'&lang='.$lang.'&class1='.$class1,'',$depth,$htmjs,$gent);
 }
 
 if($action=="editor"){
@@ -76,9 +75,10 @@ if($action=="editor"){
 	$htmjs.=contenthtm($class1,$id,'showjob',$filename,0,'job',$addtime).'$|$';
 	$htmjs.=classhtm($class1,0,0);
 	if($filenameold<>$filename and $metadmin[pagename])deletepage($met_class[$class1][foldername],$id,'showjob',$updatetimeold,$filenameold);
-	if($top_ok==1)$page=0;
+	//if($top_ok==1)$page=0;
 	$turl='../content/job/index.php?anyid='.$anyid.'&lang='.$lang.'&class1='.$class1.'&modify='.$id.'&page='.$page;
-	metsave($turl,'',$depth,$htmjs);
+	$gent='../../sitemap/index.php?lang='.$lang.'&htmsitemap='.$met_member_force;
+	metsave($turl,'',$depth,$htmjs,$gent);
 }
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.

@@ -27,7 +27,7 @@ function cache_str(){
 	return cache_page("str_".$lang.".inc.php",$str_list);
 }
 function cache_column(){
-	global $db,$met_column,$lang;
+	global $db,$met_column,$lang;//mobile
 	$query="select * from $met_column where lang='$lang' order by classtype desc,no_order";
 	$result= $db->query($query);
 	while($list = $db->fetch_array($result)){

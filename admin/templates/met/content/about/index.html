@@ -15,6 +15,8 @@ require_once template('metlangs');
 if(!$class1)$style="style='color:#f00'";
 echo <<<EOT
 -->
+<div class="v52fmbx_tbmax">
+<div class="v52fmbx_tbbox">
 <div class="contc3 classlist1">
 <span class="color999 left classlist2">{$lang_modClass1}：</span> 
 <a href="index.php?anyid={$anyid}&lang={$lang}&module={$module}" title="{$lang_allcategory}" {$style}>{$lang_allcategory}</a>-
@@ -22,7 +24,7 @@ echo <<<EOT
 EOT;
 $i=0;
 foreach($met_classindex[$module] as $key=>$val){
-$admin_column_power="admin_pop".$val[id];
+$admin_column_power="admin_popc".$val[id];
 if(!($metinfo_admin_pop=='metinfo'||$$admin_column_power=='metinfo'))continue;
 $i++;$style='';$qn=$i==1?'':'-';
 if($val[id]==$class1)$style="style='color:#f00'";
@@ -94,10 +96,9 @@ EOT;
 echo <<<EOT
 -->	
 	<table cellpadding="2" cellspacing="1" class="table">
-		<tr>
-              <tr id="list-top">
-				<td width="40" class="list" style="padding:0px; text-align:center;" >{$lang_sort}</td>
-                <td class="list">{$lang_title}</td>				
+        <tr id="list-top">
+				<td width="40" class="list" >{$lang_sort}</td>
+                <td class="list list_left">{$lang_title}</td>				
 	           <td width="50" class="list" >{$lang_operate}</td>
         </tr>
 <!--
@@ -105,10 +106,9 @@ EOT;
 foreach($about_list as $key=>$val){
 echo <<<EOT
 -->  
-		<tr>
-              <tr class="mouse click">
+        <tr class="mouse click">
 				<td class="list-text">$val[no_order]</td>
-                <td class="list-text alignleft">&nbsp;&nbsp;$val[name]</td>				
+                <td class="list-text list_left"><a href="about.php?anyid={$anyid}&action=editor&lang=$lang&id=$val[id]&page={$page}&cengci={$cengci}">$val[name]</a></td>				
 	            <td class="list-text  color999">
 					<a href="about.php?anyid={$anyid}&action=editor&lang=$lang&id=$val[id]&page={$page}&cengci={$cengci}">{$lang_editor}</a>
 				</td>
@@ -118,11 +118,11 @@ EOT;
 }
 echo <<<EOT
 --> 
-		<tr><td colspan="{$colspan}" class="page_list" style="padding:5px 0px;">{$page_list}</td></tr>
-	<tr>
-		<td class="footer" colspan="$colspan">$foot</td>
-	</tr>
+		<tr><td colspan="{$colspan}" class="page_list">{$page_list}</td></tr>
 </table>
+</div>
+</div>
+<div class="footer">{$foot}</div>
 <script type="text/javascript">
 $(document).ready(function(){
 	seachinput($('#searchtext'),'{$lang_modsearch}');

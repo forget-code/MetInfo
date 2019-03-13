@@ -3,6 +3,8 @@
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 $depth='../';
 require_once $depth.'../login/login_check.php';
+$css_url=$depth."../templates/".$met_skin."/css";
+$img_url=$depth."../templates/".$met_skin."/images";
 $mytype[0]=$lang_usertype1;
 $mytype[1]=$lang_usertype2;
 $mytype[2]=$lang_usertype3;
@@ -37,13 +39,22 @@ $info=$met_app_info;
 			if(metver($metcms_v,$valapps[7],$sysver)>=2){
 				if($app[$valapps[1]]['download']==0){
 					$typetxt123=$valapps[6]>0?'':$mytype[$valapps[6]];
-					$valapps['xtype']="<a href=\"http://$met_host/dl/app.php\" onclick=\"return olupdate('$valapps[1]','0','testc');\">".$typetxt123."{$lang_appinstall}</a>";
+					$valapps['xtype']="<a href=\"http://$met_host/dl/app.php\" onclick=\"return olupdate('$valapps[1]','0','testc');\"><img src='{$img_url}/dwn.png' /><p>".$typetxt123."{$lang_appinstall}</p></a>";
 					if($valapps[6]>0)$valapps['xtype']="{$lang_dlapptips10}{$mytype[$valapps[6]]}{$lang_dlapptips9}&nbsp;".$valapps['xtype'];
 					$valapps['ver_now']=0;
 				}else{
 					$valapps['ver_now']=$app[$valapps[1]]['ver'];
 					if($valapps['ver_now']==$valapps[2]){
-						$valapps['xtype']="{$lang_appdl2}</a>";
+						if(file_exists("../{$app[$valapps[1]][file]}/delapp.php")){ $del_url="../{$app[$valapps[1]][file]}/delapp.php?action=del"; }
+						else{ $del_url="delapp.php?action=del"; }
+						$valapps['xtype']="
+							<span id=\"del_{$app[$valapps[1]]['id']}\">
+								<a href=\"{$del_url}&lang={$lang}&id={$app[$valapps[1]]['id']}&anyid={$anyid}\" onclick=\"return appdel($(this),'{$app[$valapps[1]]['id']}');\">
+									<img src='{$img_url}/del.png' />
+									<p>{$lang_dlapptips6}</p>
+								</a>
+							</span>
+						";
 					}else{
 						$valapps['xtype']="<a href='http://$met_host/dl/app.php' onclick=\"return olupdate('$valapps[1]','$valapps[ver_now]','testc');\">{$lang_appupgrade}</a>";
 					}
@@ -52,7 +63,7 @@ $info=$met_app_info;
 				$valapps['xtype']="{$lang_appdl3}{$valapps[7]}{$lang_appdl4}";
 			}
 		}else{
-			$valapps['xtype']="{$lang_dlapptips10}<a href='http://www.metinfo.cn/web/product.htm' target='_blank'>{$mytype[$valapps[6]]}</a>{$lang_dlapptips9}";
+			$valapps['xtype']="<a href='http://www.metinfo.cn/web/product.htm' target='_blank'><img src='{$img_url}/dwn.png' /><p>{$mytype[$valapps[6]]}</p></a>";
 		}
 		$newapplist[]=$valapps;
 	}
@@ -75,8 +86,6 @@ function multi_array_sort($multi_array,$sort_key,$sort=SORT_ASC){
 	$str_apps=multi_array_sort($str_apps,'9',SORT_DESC);
 $authinfo=$db->get_one("SELECT * FROM $met_otherinfo where id=1");
 $listclass[2]='class="now"';
-$css_url=$depth."../templates/".$met_skin."/css";
-$img_url=$depth."../templates/".$met_skin."/images";
 include template('app/dlapp/dlapp');
 footer();
 # This program is an open source system, commercial use, please consciously to purchase commercial license.

@@ -15,7 +15,6 @@ echo <<<EOT
 	
 	    $('.viewbanner').hover(
 			function(){
-				alert('awefawe');
 				//viewbanner($(this));
 			},
 			function(){
@@ -28,31 +27,29 @@ echo <<<EOT
 <body>
 <!--
 EOT;
-require_once template('metlangs');
+if($kuaijieskin){
+$ffwegitl = $listclass;
+$listclass='';
+$listclass[5]='class="now"';
+require_once template('interface/skin_top');
+$listclass=$ffwegitl;
+}
+require_once template('interface/flash/top');
 echo <<<EOT
 -->
-<div class="stat_list">
-	<ul>
-		<li {$listclass[1]}><a href="setflash.php?anyid={$anyid}&lang={$lang}&cs=1" title="{$lang_indexflashset}">{$lang_indexflashset}</a></li>
-		<li {$listclass[2]}><a href="flash.php?anyid={$anyid}&lang={$lang}&cs=2" title="{$lang_indexflash}">{$lang_indexflash}</a></li>
-	</ul>
-</div>
-<div class="clear"></div>
-        <form method="POST" name="myform" action="setflash.php?anyid={$anyid}&lang=$lang" target="_self">
+        <form method="POST" name="myform" action="setflash.php?anyid={$anyid}&lang=$lang&kuaijieskin={$kuaijieskin}" target="_self">
 		<input name="action" type="hidden" value="modify">
+<div class="v52fmbx_tbmax">
+<div class="v52fmbx_tbbox">
+<span class="xtips">{$lang_indexflashexplain1}</span>
 <table cellpadding="2" cellspacing="1" class="table">
-		<tr>
-			<td colspan="6" class="centle color999" style="font-weight:normal; padding-left:10px;">
-				{$lang_indexflashexplain1}
-			</td>
-		</tr>
               <tr> 
-                <td class="list">{$lang_setflashcolumn}</td>
-                <td width="150" style="overflow:hidden;" class="list">{$lang_flashMode}</td>
+                <td width="100" class="list">{$lang_setflashcolumn}</td>
+                <td width="150" class="list">{$lang_flashMode}</td>
                 <td width="70" class="list">{$lang_setflashWidth}({$lang_setflashPixel})</td>
 				<td width="70" class="list">{$lang_setflashHeight}({$lang_setflashPixel})</td>
-				<td class="list" width="50" style="padding:0px; text-align:center;">{$lang_preview}</td>
-				<td class="list" width="40" style="padding:0px; text-align:center;">{$lang_default}</td>
+				<td class="list" width="50">{$lang_preview}</td>
+				<td class="list list_left">{$lang_unitytxt_2}</td>
               </tr>
 <!--
 EOT;
@@ -76,8 +73,8 @@ $val[url_txt]=$val[url]==''?'':"<a href='{$val[url]}' target='_blank' onclick='r
 echo <<<EOT
 -->	
               <tr class="mouse"> 
-                <td class="list-text alignleft">{$nowimg[$val[id]]}<b>$val[name]</b></td>
-                <td class="list-text" align="left" style="padding:0px 10px;">
+                <td class="list-text list_left">{$nowimg[$val[id]]}<b>$val[name]</b></td>
+                <td class="list-text">
 				<select name="met_flash_{$val[id]}_type" onChange="flashselect($(this))">
 				<option value="0" {$met_flash_type[0]}>{$lang_close}</option>
 				<option value="1" {$met_flash_type[1]} style="color:#FF0000">{$lang_flashMode1}</option>
@@ -100,13 +97,13 @@ echo <<<EOT
 -->		
 				</select>
 				</td>
-                <td class="list-text" align="left" style="padding-left:10px;">
+                <td class="list-text">
 				<input name="met_flash_$val[id]_x" type="text" class="text mid" value="{$met_flasharray[$val[id]][x]}"></td>
 				<td class="list-text" align="left" style="padding-left:10px;">
 				<input name="met_flash_$val[id]_y" type="text" class="text mid" value="{$met_flasharray[$val[id]][y]}">
 				</td>
-				<td class="list-text" align="center">{$val[url_txt]}</td>
-				<td class="list-text" align="center">
+				<td class="list-text">{$val[url_txt]}</td>
+				<td class="list-text list_left">
 				<input name="met_flash_{$val[id]}_all" type="checkbox" {$met_flash_all[$val[id]]} value="1" $checked id="select_{$val[id]}" {$diyi}>
 				</td>
               </tr>
@@ -126,8 +123,8 @@ $val2[url_txt]=$val2[url]==''?'':"<a href='{$val2[url]}' target='_blank' onclick
 echo <<<EOT
 -->	  
                 <tr id="class_{$val[id]}_{$val2[id]}" class="mouse" style="display:none;"> 
-                <td style="padding-left:10px;" class="list-text alignleft">{$nowimg[$val2[id]]}{$val2[name]}</td>
-                <td class="list-text" align="left" style="padding:0px 10px;">
+                <td class="list-text list_left">{$nowimg[$val2[id]]}{$val2[name]}</td>
+                <td class="list-text">
 				<select name="met_flash_$val2[id]_type" onChange="flashselect($(this))">
 				<option value="0" $met_flash_type[0]>{$lang_close}</option>
 				<option value="1" $met_flash_type[1] style="color:#FF0000">{$lang_flashMode1}</option>
@@ -150,13 +147,13 @@ echo <<<EOT
 -->		
 				</select>
 				</td>
-                <td  class="list-text" align="left" style="padding-left:10px;">
+                <td  class="list-text">
 				<input name="met_flash_$val2[id]_x" type="text" class="text mid" value="{$met_flasharray[$val2[id]][x]}" onMouseDown="flashselect('$val2[id]')"></td>
-				<td  class="list-text" align="left" style="padding-left:10px;">
+				<td  class="list-text">
 				<input name="met_flash_$val2[id]_y" type="text" class="text mid" value="{$met_flasharray[$val2[id]][y]}" onMouseDown="flashselect('$val2[id]')">
 				</td>
-				<td class="list-text" align="center">{$val2[url_txt]}</td>
-				<td  class="list-text" align="center"><input name="met_flash_$val2[id]_all" type="checkbox" {$met_flash_all[$val[id]]} value="1" $checked id="select_{$val2[id]}"></td>
+				<td class="list-text">{$val2[url_txt]}</td>
+				<td class="list-text list_left"><input name="met_flash_$val2[id]_all" type="checkbox" {$met_flash_all[$val[id]]} value="1" $checked id="select_{$val2[id]}"></td>
               </tr>
 <!--
 EOT;
@@ -172,10 +169,10 @@ echo <<<EOT
 -->	
     			  
                 <tr id="class_{$val2[id]}_{$val3[id]}" class="mouse" style="display:none;"> 
-                <td align="left" style="padding-left:10px;" class="list-text alignleft">
+                <td class="list-text list_left">
 				<img src="$img_url/bg_column1.gif" style="float:left; margin-right:3px;">
 				{$val3[name]}</td>
-                <td class="list-text" align='left' style="padding:0px 10px;"><select name="met_flash_$val3[id]_type" onChange="flashselect($(this))">
+                <td class="list-text"><select name="met_flash_$val3[id]_type" onChange="flashselect($(this))">
 				<option value="0" $met_flash_type[0]>{$lang_close}</option>
 				<option value="1" $met_flash_type[1] style="color:#FF0000">{$lang_flashMode1}</option>
 				<option value="2" $met_flash_type[2] style="color:#003399">{$lang_flashMode2}</option>
@@ -197,13 +194,13 @@ echo <<<EOT
 -->		
 				</select>
 				</td>
-                <td  class="list-text" align='left' style="padding-left:10px;">
+                <td  class="list-text">
 				<input name="met_flash_$val3[id]_x" type="text" class="text mid" value="{$met_flasharray[$val3[id]][x]}" onMouseDown="flashselect('$val3[id]')"></td>
-				<td  class="list-text" align='left' style="padding-left:10px;">
+				<td  class="list-text">
 				<input name="met_flash_$val3[id]_y" type="text" class="text mid" value="{$met_flasharray[$val3[id]][y]}" onMouseDown="flashselect('$val3[id]')">
 				</td>
-				<td class="list-text" align="center">{$val3[url_txt]}</td>
-				<td class="list-text" align="center"><input name="met_flash_$val3[id]_all" type="checkbox" {$met_flash_all[$val[id]]} value="1" $checked id="select_{$val3[id]}"></td>
+				<td class="list-text">{$val3[url_txt]}</td>
+				<td class="list-text list_left"><input name="met_flash_$val3[id]_all" type="checkbox" {$met_flash_all[$val[id]]} value="1" $checked id="select_{$val3[id]}"></td>
               </tr>
 
 
@@ -213,15 +210,15 @@ EOT;
 echo <<<EOT
 -->		
 	      <tr> 
-	    <td class="all-submit" colspan="6" align="left" style="padding:3px 10px;">
+	    <td class="list list_left" colspan="6">
 			<input type="submit" name="Submit" value="{$lang_Submit}" class="submit" onclick="return Smit($(this),'myform')"></td>
         </tr>
-		<tr>
-			<td class="footer" colspan="6">$foot</td>
-		</tr>
 </table>
+</div>
+</div>
 <input type="hidden" name="nofocu" value="1" />
         </form>
+<div class="footer">$foot</div>
 <script type="text/javascript">
 function viewflash(my,id){
 	var tp = '&metview_flash_type='+$("select[name='met_flash_"+id+"_type']").val();

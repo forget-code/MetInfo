@@ -10,10 +10,13 @@ echo <<<EOT
 <body>
 <!--
 EOT;
+$listclass='';
 $listclass[5]='class="now"';
 require_once template('app/stat/top');
 echo <<<EOT
 -->
+<div class="v52fmbx_tbmax">
+<div class="v52fmbx_tbbox">
 <table cellpadding="0" cellspacing="1" class="stat_table stat_mingxi">
 <tr>
 	<td colspan='8' class="title">
@@ -76,6 +79,8 @@ echo <<<EOT
 		<td colspan='8' class="page_list">{$page_list}</td>
 	</tr>
 </table>
+</div>
+</div>
 <div class="footer">{$foot}</div>
 </body>
 </html>

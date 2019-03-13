@@ -2,29 +2,52 @@
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 //Head部分
-function metlabel_html5($closure=1,$iehack=1){
-	global $met_title,$show,$m_now_year,$navurl,$met_js_access,$met_skin_css,$img_url,$met_webname,$metcms_v,$appscriptcss,$met_ch_lang,$lang,$met_ch_mark,$met_url,$metinfouiok,$classnow,$class_list;
+function metlabel_html5($closure=1,$iehack=1,$mobile=0){
+	global $met_title,$show,$m_now_year,$navurl,$met_js_access,$met_skin_css,$img_url,$met_webname,$metcms_v,$appscriptcss,$met_ch_lang,$lang,$met_ch_mark,$met_url,$metinfouiok,$classnow,$class_list,$met_headstat;
+	global $met_wap,$met_wap_tpa,$met_wap_tpb,$met_webhtm,$met_wap_url,$module,$metinfonow,$met_member_force,$met_weburl,$met_wapshowtype;
 	$metinfo="<!DOCTYPE HTML>\n";
 	$metinfo.="<html>\n";
 	$metinfo.="<head>\n";
-	$metinfo.="<meta charset=\"utf-8\" />\n";
-	$metinfo.="<title>".$met_title."</title>\n";
-	$metinfo.="<meta name=\"description\" content=\"".$show['description']."\" />\n";
-	$metinfo.="<meta name=\"keywords\" content=\"".$show['keywords']."\" />\n";
-	$metinfo.="<meta name=\"generator\" content=\"MetInfo {$metcms_v}\" />\n";
-	$metinfo.="<link href=\"".$navurl."favicon.ico\" rel=\"shortcut icon\" />\n";
-	if($met_js_access)$metinfo.=$met_js_access."\n";
-	if($met_skin_css=='')$met_skin_css='metinfo.css';
-	if($metinfouiok==1)$metinfo.="<link rel=\"stylesheet\" type=\"text/css\" href=\"{$navurl}public/ui/met/css/metinfo_ui.css\" id=\"metuimodule\" data-module =\"{$class_list[$classnow][module]}\" />\n";
-	$metinfo.="<link rel=\"stylesheet\" type=\"text/css\" href=\"".$img_url."css/".$met_skin_css."\" />\n";
-	$metinfo.="<script src=\"{$navurl}public/js/jQuery1.7.2.js\" type=\"text/javascript\"></script>\n";
-	if($metinfouiok==1)$metinfo.="<script src=\"{$navurl}public/ui/met/js/metinfo_ui.js\" type=\"text/javascript\"></script>\n";
-	if($met_ch_lang and $lang==$met_ch_mark)$metinfo.="<script src=\"".$met_url."js/ch.js\" type=\"text/javascript\"></script>\n";
-	if($appscriptcss)$metinfo.="{$appscriptcss}\n";
-	if($iehack){
-	$metinfo.="<!--[if IE]>\n";
-	$metinfo.="<script src=\"{$navurl}public/js/html5.js\" type=\"text/javascript\"></script>\n";
-	$metinfo.="<![endif]-->";
+	if($mobile){
+        $metinfo.="<meta content='text/html; charset=utf-8' http-equiv='Content-Type' />\n";
+        $metinfo.="<meta charset='utf-8' />\n";
+        $metinfo.="<title>{$met_title}</title>\n";
+        $metinfo.="<meta content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0\" name=\"viewport\" />\n";
+        $metinfo.="<meta content=\"yes\" name=\"apple-mobile-web-app-capable\" />\n";
+        $metinfo.="<meta content=\"black\" name=\"apple-mobile-web-app-status-bar-style\" />\n";
+        $metinfo.="<meta content=\"telephone=no\" name=\"format-detection\" />\n";
+        $metinfo.="<link href=\"{$navurl}favicon.ico\" rel=\"apple-touch-icon-precomposed\" />\n";
+        $metinfo.="<link href=\"{$navurl}favicon.ico\" rel=\"shortcut icon\" type=\"image/x-icon\" />\n";
+		if($metinfouiok==1)$metinfo.="<link rel=\"stylesheet\" type=\"text/css\" href=\"{$navurl}public/ui/mobile/css/metinfo.css\" id=\"metuimodule\" data-module =\"{$class_list[$classnow][module]}\" />\n";
+	}else{
+		$metinfo.="<meta charset=\"utf-8\" />\n";
+		if($metinfonow==$met_member_force&&$met_webhtm&&$met_wap&&($met_wap_tpa||$met_wap_tpb)&&isset($met_wapshowtype)){
+			$mobile_prefix=request_uri();
+			$allidlist=explode('&metmemberforce=',$mobile_prefix);
+			$mobile_prefix=$allidlist[0];
+			if($met_wap_tpb&&$met_wap_url)$mobile_prefix=str_replace($met_weburl,$met_wap_url,$mobile_prefix);
+			$metinfo.="<script type=\"text/javascript\">var met_wap_tpa={$met_wap_tpa},met_wap_tpb={$met_wap_tpb},met_wap_url='{$met_wap_url}',mobile_lang='{$lang}',mobile_prefix='{$mobile_prefix}';</script>\n";
+			$metinfo.="<script src=\"{$navurl}public/js/mobile.js\" type=\"text/javascript\"></script>\n";
+		}
+		$metinfo.="<title>".$met_title."</title>\n";
+		$metinfo.="<meta name=\"description\" content=\"".$show['description']."\" />\n";
+		$metinfo.="<meta name=\"keywords\" content=\"".$show['keywords']."\" />\n";
+		$metinfo.="<meta name=\"generator\" content=\"MetInfo {$metcms_v}\" />\n";
+		$metinfo.="<link href=\"".$navurl."favicon.ico\" rel=\"shortcut icon\" />\n";
+		if($met_js_access)$metinfo.=$met_js_access."\n";
+		if($met_skin_css=='')$met_skin_css='metinfo.css';
+		if($metinfouiok==1)$metinfo.="<link rel=\"stylesheet\" type=\"text/css\" href=\"{$navurl}public/ui/met/css/metinfo_ui.css\" id=\"metuimodule\" data-module =\"{$class_list[$classnow][module]}\" />\n";
+		$metinfo.="<link rel=\"stylesheet\" type=\"text/css\" href=\"".$img_url."css/".$met_skin_css."\" />\n";
+		$metinfo.="<script src=\"{$navurl}public/js/jQuery1.7.2.js\" type=\"text/javascript\"></script>\n";
+		if($metinfouiok==1)$metinfo.="<script src=\"{$navurl}public/ui/met/js/metinfo_ui.js\" type=\"text/javascript\"></script>\n";
+		if($met_ch_lang and $lang==$met_ch_mark)$metinfo.="<script src=\"".$met_url."js/ch.js\" type=\"text/javascript\"></script>\n";
+		if($appscriptcss)$metinfo.="{$appscriptcss}\n";
+		if($iehack){
+		$metinfo.="<!--[if IE]>\n";
+		$metinfo.="<script src=\"{$navurl}public/js/html5.js\" type=\"text/javascript\"></script>\n";
+		$metinfo.="<![endif]-->";
+		if(!$met_headstat=="")$metinfo.="\n$met_headstat";
+		}
 	}
 	if($closure)$metinfo.="\n</head>";
 	return $metinfo;
@@ -112,7 +135,7 @@ function metlabel_foot(){
 	return $metinfo;
 }
 //顶部导航函数
-function metlabel_nav($type=1,$label='',$z,$l){
+function metlabel_nav($type=1,$label='',$z,$l,$home=1){
 	global $index_url,$lang_home,$nav_list,$nav_list2,$nav_list3,$navdown,$lang;
 	if($z){
 		$navnum=count($nav_list)+1;
@@ -140,9 +163,11 @@ function metlabel_nav($type=1,$label='',$z,$l){
 	switch($type){
 		case 1:
 			$metinfo ='<ul class="list-none">';
+			if($home){
 			$metinfo.="<li id=\"nav_10001\" {$style0} {$cdown}>";
 			$metinfo.="<a href='{$index_url}' title='{$lang_home}' class='nav'><span>{$lang_home}</span></a>";
 			$metinfo.="</li>";
+			}
 			$p=0;
 			foreach($nav_list as $key=>$val){
 			$p++;
@@ -157,9 +182,11 @@ function metlabel_nav($type=1,$label='',$z,$l){
 			break;
 		case 2:
 			$metinfo ='<ul class="list-none">';
+			if($home){
 			$metinfo.="<li id=\"nav_10001\" {$style0} {$cdown}>";
 			$metinfo.="<a href='{$index_url}' title='{$lang_home}' class='nav'><span>{$lang_home}</span></a>";
 			$metinfo.="</li>";
+			}
 			$p=0;
 			foreach($nav_list as $key=>$val){
 			$p++;
@@ -181,9 +208,11 @@ function metlabel_nav($type=1,$label='',$z,$l){
 			break;
 		case 3:
 			$metinfo ='<ul class="list-none">';
+			if($home){
 			$metinfo.="<li id=\"nav_10001\" {$style0}>";
 			$metinfo.="<a href='{$index_url}' title='{$lang_home}' class='nav'><span>{$lang_home}</span></a>";
 			$metinfo.="</li>";
+			}
 			$p=0;
 			foreach($nav_list as $key=>$val){
 			$p++;
@@ -378,7 +407,7 @@ function metlabel_navnow($type=1,$label='',$indexnum,$listyy=0,$listmax=8,$msow=
 	}
 }
 //模块列表信息调用函数
-function metlabel_list($listtype='text',$mark,$type,$order,$module,$time=0,$titleok=1,$bian=1,$listmx,$txtmax){
+function metlabel_list($listtype='text',$mark,$type,$order,$module,$time=0,$titleok=1,$bian=1,$listmx,$txtmax,$imgwidth){
 	global $class_index,$index,$lang,$class_list,$metblank;
 	global $index_news_no,$index_product_no,$index_download_no,$index_img_no,$index_job_no;
 	$modules=$mark?$class_index[$mark]['module']:$module;
@@ -406,8 +435,13 @@ function metlabel_list($listtype='text',$mark,$type,$order,$module,$time=0,$titl
 			$i=0;
 			foreach($listarray as $key=>$val){
 			$i++;
+			$val[img_y] = "height='{$val[img_y]}'";
+			if($imgwidth){
+				$val[img_x]=$imgwidth;
+				$val[img_y]='';
+			}
 			$metinfo.="<li class='list'>";
-			$metinfo.="<a href='{$val[url]}' title='{$val[title]}' {$metblank} class='img'><img src='{$val[imgurls]}' alt='{$val[title]}' title='{$val[title]}' width='{$val[img_x]}' height='{$val[img_y]}' /></a>";
+			$metinfo.="<a href='{$val[url]}' title='{$val[title]}' {$metblank} class='img'><img src='{$val[imgurls]}' alt='{$val[title]}' title='{$val[title]}' width='{$val[img_x]}' {$val[img_y]} /></a>";
 if($titleok)$metinfo.="<h3 style='width:{$val[img_x]}px;'><a href='{$val[url]}' title='{$val[title]}' {$metblank}>{$val[title]}</a></h3>";
 			$metinfo.="</li>";
 			}
@@ -503,6 +537,15 @@ function metlabel_product($z,$w,$l,$n=0){
 			$listarray=$nav_list2[$class1];
 			$metok=1;
 		}
+		if($class_list[$class1]['module']=='100'){
+			$listarray=array();
+			foreach($module_listall[3] as $key=>$val){
+				if($val['classtype']==1||$val['releclass']!=0){
+					$listarray[]=$val;
+				}
+			}
+			$metok=1;
+		}
 	}
 	if($z){
 		$l=$l?$l:floor($z/$w);
@@ -560,6 +603,15 @@ function metlabel_img($z,$w,$l,$n=0){
 		}
 		if(!$class2 && count($nav_list2[$class1]) && $class1 && !$class3){
 			$listarray=$nav_list2[$class1];
+			$metok=1;
+		}
+		if($class_list[$class1]['module']=='101'){
+			$listarray=array();
+			foreach($module_listall[3] as $key=>$val){
+				if($val['classtype']==1||$val['releclass']!=0){
+					$listarray[]=$val;
+				}
+			}
 			$metok=1;
 		}
 	}
@@ -722,31 +774,34 @@ if($met_memberlogin_code==1){
 }
 //留言列表函数
 function metlabel_messagelist(){
-	global $lang,$message_list,$lang_SubmitContent,$lang_Reply;
-	$i=count($message_list);
+	global $lang,$message_list,$lang_SubmitContent,$lang_Reply,$total_count,$from_record;
+	$c=$total_count-$from_record;
 	foreach($message_list as $key=>$val){
 	$metinfo.="<dl class='list-none metlist'>\n";
-	$metinfo.="<dt class='title'><span class='tt'>{$i}<sup>#</sup></span><span class='name'>{$val[name]}</span><span class='time'>{$lang_Publish} {$val[addtime]}</span></dt>\n";
+	$metinfo.="<dt class='title'><span class='tt'>{$c}<sup>#</sup></span><span class='name'>{$val[name]}</span><span class='time'>{$lang_Publish} {$val[addtime]}</span></dt>\n";
 	$metinfo.="<dd class='info'><span class='tt'>{$lang_SubmitContent}</span><span class='text'>{$val[info]}</span></dd>\n";
 	$metinfo.="<dd class='reinfo'><span class='tt'>{$lang_Reply}</span><span class='text'>{$val[useinfo]}</span></dd>\n";
 	$metinfo.="</dl>\n";
 	$i--;
+	$c--;
 	}
 	return $metinfo;
 }
 //反馈提交表单函数
-function metlabel_feedback($fid){
-	global $lang,$message_list,$lang_Submit,$lang_Reset,$lang_Publish,$lang_Reply,$fromurl,$m_user_ip,$id;
+function metlabel_feedback($fid,$mobile){
+	global $lang,$message_list,$lang_Submit,$lang_Reset,$lang_Publish,$lang_Reply,$fromurl,$m_user_ip,$id,$title;
 	global $met_memberlogin_code,$lang_memberImgCode,$lang_memberTip1,$met_adminfile,$navurl,$settings_arr;
 	global $db,$met_parameter,$met_member_use,$metinfo_member_type,$met_list,$met_class,$class_list,$met_product,$lang_Choice,$lang_Empty;
 	if($fid)$id=$fid;
-	foreach($settings_arr as $key=>$val){
-		if($val['columnid']==$id && $val['name']=='met_fdtable'){
-			$title=$val['value'];
+	if(!$title){
+		foreach($settings_arr as $key=>$val){
+			if($val['columnid']==$id && $val['name']=='met_fdtable'){
+				$title=$val['value'];
+			}
 		}
 	}
 	$query = "SELECT * FROM $met_parameter where lang='$lang' and  module=8 and class1='$id' order by no_order";
-	if($met_member_use)$query = "SELECT * FROM $met_parameter where lang='$lang' and  module=8 and class1='$id'  and access<=$metinfo_member_type order by no_order";
+	if($met_member_use)$query = "SELECT * FROM $met_parameter where lang='$lang' and  module=8 and class1='$id'  and access<='$metinfo_member_type' order by no_order";
 	$result = $db->query($query);
 	while($list= $db->fetch_array($result)){
 	 if($list[type]==2 or $list[type]==4 or $list[type]==6){
@@ -834,13 +889,64 @@ function metlabel_feedback($fid){
 	$fdjs=$fdjs."}</script>";
 	$lujin='';
 	if($fid)$lujin=$navurl.'feedback/';
+	if($mobile){
+		$metinfo1 =array();
+		foreach($fd_para as $key=>$val){
+			$wr_ok = $val[wr_ok]?'required':'';
+			$metinfo='';
+			switch($val[type]){
+				case 1:
+					$val[type_class]='input';
+					$val[type_html]="<input name='para{$val[id]}' type='text' class='input-text {$wr_ok}' placeholder='{$val[name]}' />";
+				break;
+				case 2:
+					$val[type_class]='select';
+					$metinfo.="<span class='name'>{$val[name]}</span>";
+					$metinfo.="<select name='para{$val[id]}'><option value=''>{$lang_Choice}</option>";
+					foreach($paravalue[$val[id]] as $key=>$val1){
+					$metinfo.="<option value='{$val1[info]}'>{$val1[info]}</option>";
+					}
+					$metinfo.="</select>";
+					$val[type_html]=$metinfo;
+				break;
+				case 3:
+					$val[type_class]='textarea';
+					$val[type_html]="<textarea name='para{$val[id]}' class='textarea-text' placeholder='{$val[name]}'></textarea>";
+				break;
+				case 4:
+					$val[type_class]='radio';
+					$metinfo.="<span class='name'>{$val[name]}</span>";
+					$i=0;
+					foreach($paravalue[$val[id]] as $key=>$val1){
+					$i++;
+					$metinfo.="<label><input name='para{$val[id]}_{$i}' type='checkbox' value='{$val1[info]}' />{$val1[info]}</label>";
+					}
+					$metinfo.="<input name='para{$val[id]}' type='hidden' value='{$i}' />";
+					$val[type_html]=$metinfo;
+				break;
+				case 6:
+					$val[type_class]='radio';
+					$metinfo.="<span class='name'>{$val[name]}</span>";
+					$i=0;
+					foreach($paravalue[$val[id]] as $key=>$val2){
+					$i++;
+					$checked=$i==1?'checked':'';
+					$metinfo.="<label><input name='para{$val[id]}' type='radio' value='{$val2[info]}' {$checked} />{$val2[info]}</label>";
+					}
+					$val[type_html]=$metinfo;
+				break;
+			}
+			$metinfo1[]=$val;
+		}
+		$metinfo = $metinfo1;
+	}else{
      $metinfo =$fdjs;
      $metinfo.="<form enctype='multipart/form-data' method='POST' name='myform' onSubmit='return Checkfeedback();' action='{$lujin}index.php?action=add&lang=".$lang."' target='_self'>\n";
      $metinfo.="<table class='feedback_table' >\n";
     foreach($fd_para as $key=>$val){
      $metinfo.="<tr>\n";
      $metinfo.="<td class='text'>".$val[name]."</td>\n";
-     $metinfo.="<td class='input'>".$val[input]."<span class='info'>{$val[wr_must]}</span></td>\n";
+     $metinfo.="<td class='input'>".$val[input]."<span class='info'>{$val[wr_must]}</span><span>{$val[description]}</span></td>\n";
      $metinfo.="</tr>\n";
     }
 if($met_memberlogin_code==1){  
@@ -861,6 +967,7 @@ if($met_memberlogin_code==1){
      $metinfo.="<input type='submit' name='Submit' value='".$lang_Submit."' class='submit button orange'></td></tr>\n";
      $metinfo.="</table>\n";
      $metinfo.="</form>\n";
+	}
 	return $metinfo;
 }
 //友情链接提交表单函数
@@ -906,8 +1013,57 @@ if($met_memberlogin_code==1){
 	return $metinfo;
 }
 //在线应聘提交表单函数
-function metlabel_cv(){
+function metlabel_cv($mobile=0){
 	global $fdjs,$lang,$lang_Nolimit,$lang_memberPosition,$selectjob,$cv_para,$paravalue,$met_memberlogin_code,$lang_memberImgCode,$lang_memberTip1,$lang_Submit,$lang_Reset,$met_adminfile;
+	if($mobile){
+		$cv_para1=array();
+		foreach($cv_para as $key=>$val){
+			$metinfo="";
+			switch($val[type]){
+				case 1:
+					$val[type_class]='input';
+					$val[type_html]="<input name='{$val[para]}' type='text' class='input-text {$wr_ok}' placeholder='{$val[name]}' />";
+				break;
+				case 2:
+					$val[type_class]='select';
+					$metinfo.="<span class='name'>{$val[name]}</span>";
+					$metinfo.="<select name='para{$val[id]}'><option value=''>{$lang_Nolimit}</option>";
+					foreach($paravalue[$val[id]] as $key=>$val1){
+					$metinfo.="<option value='{$val1[info]}'>{$val1[info]}</option>";
+					}
+					$metinfo.="</select>";
+					$val[type_html]=$metinfo;
+				break;
+				case 3:
+					$val[type_class]='textarea';
+					$val[type_html]="<textarea name='{$val[para]}' class='textarea-text' placeholder='{$val[name]}'></textarea>";
+				break;
+				case 4:
+					$val[type_class]='radio';
+					$metinfo.="<span class='name'>{$val[name]}</span>";
+					$i=0;
+					foreach($paravalue[$val[id]] as $key=>$val1){
+					$i++;
+					$metinfo.="<label><input name='para{$val[id]}_{$i}' type='checkbox' value='{$val1[info]}' />{$val1[info]}</label>";
+					}
+					$val[type_html]=$metinfo;
+				break;
+				case 6:
+					$val[type_class]='radio';
+					$metinfo.="<span class='name'>{$val[name]}</span>";
+					$i=0;
+					foreach($paravalue[$val[id]] as $key=>$val2){
+					$i++;
+					$checked=$i==1?'checked':'';
+					$metinfo.="<label><input name='para{$val[id]}' type='radio' value='{$val2[info]}' {$checked} />{$val2[info]}</label>";
+					}
+					$val[type_html]=$metinfo;
+				break;
+			}
+			$cv_para1[]=$val;
+		}
+		$metinfo = $cv_para1;
+	}else{
      $metinfo.=$fdjs;
      $metinfo.="<form  enctype='multipart/form-data' method='POST' onSubmit='return Checkcv();' name='myform' action='save.php?action=add' target='_self'>\n";
      $metinfo.="<input type='hidden' name='lang' value='".$lang."' />\n";
@@ -916,9 +1072,9 @@ function metlabel_cv(){
      $metinfo.="<td class='input'><select name='jobid' id='jobid'>".$selectjob."</select><span class='info'>*</span></td></tr>\n";
     foreach($cv_para as $key=>$val){
      switch($val[type]){
-	 case 1:;
+	 case 1:
      $metinfo.="<tr><td class='text'>".$val[name]."</td>\n";
-     $metinfo.="<td class='input'><input name='".$val[para]."' type='text' class='input-text' size='40'><span class='info'>".$val[wr_must]."</span></td></tr>\n";
+     $metinfo.="<td class='input'><input name='".$val[para]."' type='text' class='input-text' size='40'><span class='info'>".$val[wr_must]."<span>{$val[description]}</span></span></td></tr>\n";
 	 break;
 	 case 2:
 	 $tmp="<select name='para$val[id]'>";
@@ -928,11 +1084,11 @@ function metlabel_cv(){
       }
      $tmp=$tmp."</select>";;
      $metinfo.="<tr><td class='text'>".$val[name]."</td>\n";
-     $metinfo.="<td class='input'>".$tmp."<span class='info'>".$val[wr_must]."</span></td></tr>\n";
+     $metinfo.="<td class='input'>".$tmp."<span class='info'>".$val[wr_must]."<span>{$val[description]}</span></span></td></tr>\n";
 	 break;
 	 case 3:
      $metinfo.="<tr><td class='text'>".$val[name]."</td>\n";
-     $metinfo.="<td class='input'><textarea name='".$val[para]."' class='textarea-text' cols='60' rows='5'></textarea><span class='info'>".$val[wr_must]."</span></td></tr>\n";
+     $metinfo.="<td class='input'><textarea name='".$val[para]."' class='textarea-text' cols='60' rows='5'></textarea><span class='info'>".$val[wr_must]."<span>{$val[description]}</span></span></td></tr>\n";
      break;
 	 case 4:
 	 $tmp1="";
@@ -942,11 +1098,11 @@ function metlabel_cv(){
      $tmp1=$tmp1."<input name='para$val[id]_$i' type='checkbox' id='para$val[id]_$i' value='$val1[info]' ><label for='para$val[id]_$i'>{$val1[info]}</label>  ";
      }
      $metinfo.="<tr><td class='text'>".$val[name]."</td>\n";
-     $metinfo.="<td class='input'>".$tmp1."<span class='info'>".$val[wr_must]."</span></td></tr>\n";
+     $metinfo.="<td class='input'>".$tmp1."<span class='info'>".$val[wr_must]."<span>{$val[description]}</span></span></td></tr>\n";
      break;
 	 case 5:
      $metinfo.="<tr><td class='text'>".$val[name]."</td>\n";
-     $metinfo.="<td class='input'><input name='".$val[para]."' type='file' class='input-file' size='20' /><span class='info'>".$val[wr_must]."</span></td></tr>\n";
+     $metinfo.="<td class='input'><input name='".$val[para]."' type='file' class='input-file' size='20' /><span class='info'>".$val[wr_must]."<span>{$val[description]}</span></span></td></tr>\n";
 	 break;
 	 case 6:
 	 $tmp2="";
@@ -958,7 +1114,7 @@ function metlabel_cv(){
      $tmp2=$tmp2."<input name='para$val[id]' type='radio' id='para$val[id]_$i' value='$val2[info]' $checked /><label for='para$val[id]_$i'>$val2[info]</label>  ";
      }
      $metinfo.="<tr><td class='text'>".$val[name]."</td>\n";
-     $metinfo.="<td class='input'>".$tmp2."<span class='info'>".$val[wr_must]."</span></td></tr>\n";
+     $metinfo.="<td class='input'>".$tmp2."<span class='info'>".$val[wr_must]."</span><span>{$val[description]}</span></td></tr>\n";
 	 break;
     }
    }
@@ -974,12 +1130,49 @@ if($met_memberlogin_code==1){
      $metinfo.="</tr>";		
      $metinfo.="</table>";
      $metinfo.="</form>";
-	 return $metinfo;
+	}
+	return $metinfo;
 }
 //网站地图
 function sitemaplist(){
 	global $db,$nav_listall,$m_now_date,$met_sitemap_not1,$met_sitemap_not2,$lang,$met_langok,$met_index_url,$met_webname,$met_weburl;
+	global $met_config,$langmark,$class_list,$met_index_type,$met_pseudo,$met_webhtm,$met_htmtype,$met_htmpagename,$met_listhtmltype,$met_htmlistname,$met_chtmtype,$metadmin;
+	
+	$met_webname=$db->get_one("select * from $met_config where name='met_webname' and lang='$lang'");
+	$met_webname=$met_webname[value];
+	
+	$met_weburl=$db->get_one("select * from $met_config where name='met_weburl' and lang='$lang'");
+	$met_weburl=$met_weburl[value];
+	
+	$met_pseudo=$db->get_one("select * from $met_config where name='met_pseudo' and lang='$lang'");
+	$met_pseudo=$met_pseudo[value];
+	
+	$met_webhtm=$db->get_one("select * from $met_config where name='met_webhtm' and lang='$lang'");
+	$met_webhtm=$met_webhtm[value];
+	
+	$met_htmtype=$db->get_one("select * from $met_config where name='met_htmtype' and lang='$lang'");
+	$met_htmtype=$met_htmtype[value];
+	
+	$met_htmpagename=$db->get_one("select * from $met_config where name='met_htmpagename' and lang='$lang'");
+	$met_htmpagename=$met_htmpagename[value];
+	
+	$met_listhtmltype=$db->get_one("select * from $met_config where name='met_listhtmltype' and lang='$lang'");
+	$met_listhtmltype=$met_listhtmltype[value];
+	
+	$met_htmlistname=$db->get_one("select * from $met_config where name='met_htmlistname' and lang='$lang'");
+	$met_htmlistname=$met_htmlistname[value];
+	if($met_index_type==$lang){
+		$met_chtmtype='.'.$met_htmtype;
+		$met_htmtype='.'.$met_htmtype;
+	}else{
+		$met_chtmtype='_'.$lang.'.'.$met_htmtype;
+		$met_htmtype='_'.$lang.'.'.$met_htmtype;
+	}
+	$langmark="lang=$lang";
+	include ROOTPATH.'include\lang.php';
 	$indexar=array('title'=>$met_webname,'url'=>$met_index_url[$lang],'updatetime'=>date("Y-m-d"),'priority'=>1);
+	$nav_listall=array();
+	include ROOTPATH.'include/global/pseudo.php';
 	$sitemaplist[]=$indexar;
 	foreach($nav_listall as $key=>$val){
 		$no1ok=$val[nav]?1:($met_sitemap_not1 && !$val['bigclass']?0:1);
@@ -993,30 +1186,35 @@ function sitemaplist(){
 		}
 	}
 	foreach(methtml_getarray('','all','time','news',50000) as $key=>$val){
+		$val[url]=str_replace('..//','',$val[url]);
 		$val[url]=str_replace('../','',$val[url]);
 		$val[url]=$met_weburl.$val[url];
 		$val['updatetime']=$val['updatetime_original'];
 		$sitemaplist[]=$val;
 	}
 	foreach(methtml_getarray('','all','time','product',50000) as $key=>$val){
+		$val[url]=str_replace('..//','',$val[url]);
 		$val[url]=str_replace('../','',$val[url]);
 		$val[url]=$met_weburl.$val[url];
 		$val['updatetime']=$val['updatetime_original'];
 		$sitemaplist[]=$val;
 	}
 	foreach(methtml_getarray('','all','time','download',50000) as $key=>$val){
+		$val[url]=str_replace('..//','',$val[url]);
 		$val[url]=str_replace('../','',$val[url]);
 		$val[url]=$met_weburl.$val[url];
 		$val['updatetime']=$val['updatetime_original'];
 		$sitemaplist[]=$val;
 	}
 	foreach(methtml_getarray('','all','time','img',50000) as $key=>$val){
+		$val[url]=str_replace('..//','',$val[url]);
 		$val[url]=str_replace('../','',$val[url]);
 		$val[url]=$met_weburl.$val[url];
 		$val['updatetime']=$val['updatetime_original'];
 		$sitemaplist[]=$val;
 	}
 	foreach(methtml_getarray('','all','time','job',50000) as $key=>$val){
+		$val[url]=str_replace('..//','',$val[url]);
 		$val[url]=str_replace('../','',$val[url]);
 		$val[url]=$met_weburl.$val[url];
 		$val[title]=$val[position];

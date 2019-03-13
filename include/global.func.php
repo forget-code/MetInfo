@@ -39,8 +39,8 @@ function metdetrim($str){
   }     
 } 
 /*post和get变量变成普通变量，防注入。*/
-function daddslashes($string, $force = 0,$metinfo) {
-global $met_sqlinsert;
+function daddslashes($string, $force = 0,$metinfo,$url = 0) {
+global $met_sqlinsert,$id,$class1,$class2,$class3;
 	!defined('MAGIC_QUOTES_GPC') && define('MAGIC_QUOTES_GPC', get_magic_quotes_gpc());
 	if(!MAGIC_QUOTES_GPC || $force) {
 		if(is_array($string)) {
@@ -51,7 +51,15 @@ global $met_sqlinsert;
 			$string = addslashes($string);
 		}
 	}
-	if(!is_array($string)){
+	if(is_array($string)){
+		if($url){
+			$string='';
+		}else{
+			foreach($string as $key => $val) {
+				$string[$key] = daddslashes($val, $force);
+			}
+		}
+	}else{
 		$string_old = $string;
 		$string = str_ireplace("\"","/",$string);
 		$string = str_ireplace("'","/",$string);
@@ -65,6 +73,9 @@ global $met_sqlinsert;
 		$string = str_ireplace("into", "\in\to", $string);
 		$string = str_ireplace("load_file", "\load\_\file", $string);
 		$string = str_ireplace("outfile", "\out\file", $string);
+		$string = str_ireplace("sleep", "\sle\ep", $string);
+		//$string = str_ireplace("(", "\\", $string);
+		//$string = str_ireplace(")", "\\", $string);
 		$string_html=$string;
 		$string = strip_tags($string);
 		if($string_html!=$string){
@@ -87,41 +98,33 @@ global $met_sqlinsert;
 	}
 	if($id!=""){
 	if(!is_numeric($id)){
-	$reurl="http://".$_SERVER["HTTP_HOST"];
-	echo("<script type='text/javascript'> alert('Parameter Error！'); location.href='$reurl'; </script>");
-	die("Parameter Error！");
+		$id='';
 	}}
 	if($class1!=""){
-	if(!is_numeric($class1)){
-	$reurl="http://".$_SERVER["HTTP_HOST"];
-	echo("<script type='text/javascript'> alert('Parameter Error！'); location.href='$reurl'; </script>");
-	die("Parameter Error！");
+	if(!is_numeric($class1)&&$class1!='list'){
+		$class1='';
 	}}
 	if($class2!=""){
 	if(!is_numeric($class2)){
-	$reurl="http://".$_SERVER["HTTP_HOST"];
-	echo("<script type='text/javascript'> alert('Parameter Error！'); location.href='$reurl'; </script>");
-	die("Parameter Error！");
+		$class2='';
 	}}
 	if($class3!=""){
 	if(!is_numeric($class3)){
-	$reurl="http://".$_SERVER["HTTP_HOST"];
-	echo("<script type='text/javascript'> alert('Parameter Error！'); location.href='$reurl'; </script>");
-	die("Parameter Error！");
+		$class3='';
 	}}   
 	return $string;
 }
 /*载入模板*/
 function template($template,$EXT="html"){
-	global $met_skin_user,$skin,$dataoptimize_html;
+	global $met_skin_user,$skin,$dataoptimize_html,$met_mobileok;
 	$EXT=($dataoptimize_html=="")?$EXT:$dataoptimize_html;
 	if(empty($skin)){
 	    $skin = $met_skin_user;
 	}
 	unset($GLOBALS[con_db_id],$GLOBALS[con_db_pass],$GLOBALS[con_db_name]);
-	$path = ROOTPATH."templates/$skin/$template.$EXT";
-	
-	!file_exists($path) && $path=ROOTPATH."public/ui/met/$template.html";
+	$path = ROOTPATH."templates/{$skin}/{$template}.$EXT";
+	$utype = $met_mobileok?'mobile':'met';
+	!file_exists($path) && $path=ROOTPATH."public/ui/{$utype}/{$template}.html";
 	return  $path;
 }
 /*全站静态页面打包时，文件保存地址。*/
@@ -223,7 +226,7 @@ function okinfo($url = '../site/sysadmin.php',$langinfo){
 	if($langinfo){
 		echo("<script type='text/javascript'> alert('$langinfo'); location.href='$url'; </script>");
 	}
-	else{	
+	else{
 		header('HTTP/1.1 404 Not Found');	    
 		echo("<script type='text/javascript'>location.href='$url'; </script>");
 	}
@@ -335,7 +338,7 @@ foreach ($str as $key=>$val){
 		foreach ($tmp1 as $key=>$item){
 			$tmp2 = explode(">",$item);
 			if (sizeof($tmp2)>1&&strlen($tmp2[1])>0) {
-				if (substr($tmp2[0],0,1)!="a" && substr($tmp2[0],0,1)!="A"){
+				if (substr($tmp2[0],0,1)!="a" && substr($tmp2[0],0,1)!="A" && substr($tmp2[0],0,6)!='script' && substr($tmp2[0],0,6)!='SCRIPT'){
 					$valnum=substr_count($tmp2[1],$val[0]);
 					if($num-$valnum>=0){
 						$num=$num-$valnum;
@@ -489,17 +492,17 @@ break;
 }
 }
 /*转UTF-8码*/
-function utf8Substr($str, $from, $len) 
-{
-if(mb_strlen($str,'utf-8')>intval($len)){
-return preg_replace('#^(?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,'.$from.'}'. 
-'((?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,'.$len.'}).*#s', 
-'$1',$str).".."; 
-}else{
-return preg_replace('#^(?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,'.$from.'}'. 
-'((?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,'.$len.'}).*#s', 
-'$1',$str); 
-}
+function utf8Substr($str, $from, $len) {
+	$len = preg_match("/[\x7f-\xff]/", $str)?$len:$len*2;
+	if(mb_strlen($str,'utf-8')>intval($len)){
+		return preg_replace('#^(?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,'.$from.'}'. 
+		'((?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,'.$len.'}).*#s', 
+		'$1',$str).".."; 
+	}else{
+		return preg_replace('#^(?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,'.$from.'}'. 
+		'((?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,'.$len.'}).*#s', 
+		'$1',$str); 
+	}
 }
 /*搜索关键词*/
 function get_keyword_str($str,$keyword,$getstrlen,$searchtype,$type){
@@ -630,6 +633,37 @@ function met_imgxy($xy,$module){
 	}
 	return $met_imgxy;
 }
+/*手机跳转*/
+function wapjump($tp){
+	global $met_wap_tpa,$met_wap_tpb,$met_wap_url,$met_wap,$met_mobileok,$lang;
+	$met_mobileok=$tp?$met_mobileok:0;
+	if($met_wap&&!$met_mobileok){
+		$Loaction = 'wap/index.php?lang='.$lang;
+		if($met_wap_tpa==1){
+			$ua = strtolower($_SERVER['HTTP_USER_AGENT']);
+			if($_SERVER['HTTP_USER_AGENT']){
+				$uachar = "/(nokia|sony|ericsson|mot|samsung|sgh|lg|philips|panasonic|alcatel|lenovo|cldc|midp|mobile|wap|Android|ucweb)/i";
+				if(($ua == '' || preg_match($uachar, $ua))&& !strpos(strtolower($_SERVER['REQUEST_URI']),'wap')){
+					if (!empty($Loaction)){
+						//if
+						header("Location: $Loaction\n");
+						exit;
+					}
+				}
+			}
+		}
+		if($met_wap_tpb==1){
+			$localurl="http://";
+			$localurl.=$_SERVER['HTTP_HOST'].$_SERVER["PHP_SELF"];
+			$localurl=dirname($localurl);
+			if(substr($localurl,-1,1)!="/")$localurl.="/";
+			if(strstr($localurl,$met_wap_url)){
+				header("Location: $Loaction\n");
+				exit;
+			}
+		}
+	}
+}
 /*更具模块编号返回表名称*/
 function metmodname($module){
 	$metmodname='';
@@ -660,33 +694,6 @@ function metmodname($module){
 		    break;
 	}
 	return $metmodname;
-}
-/*手机跳转*/
-function wapjump(){
-	global $met_wap_tpa,$met_wap_tpb,$met_wap_url,$met_wap;
-	$Loaction = 'wap/';
-	if($met_wap_tpa==1){
-		$ua = strtolower($_SERVER['HTTP_USER_AGENT']);
-		if($_SERVER['HTTP_USER_AGENT']){
-			$uachar = "/(nokia|sony|ericsson|mot|samsung|sgh|lg|philips|panasonic|alcatel|lenovo|cldc|midp|mobile|wap|Android|ucweb)/i";
-			if(($ua == '' || preg_match($uachar, $ua))&& !strpos(strtolower($_SERVER['REQUEST_URI']),'wap')){
-				if (!empty($Loaction)){
-					header("Location: $Loaction\n");
-					exit;
-				}
-			}
-		}
-	}
-	if($met_wap_tpb==1){
-		$localurl="http://";
-		$localurl.=$_SERVER['HTTP_HOST'].$_SERVER["PHP_SELF"];
-		$localurl=dirname($localurl);
-		if(substr($localurl,-1,1)!="/")$localurl.="/";
-		if(strstr($localurl,$met_wap_url)){
-			header("Location: $Loaction\n");
-			exit;
-		}
-	}
 }
 function imgxytype($list,$type){
 	global $met_newsimg_x,$met_newsimg_y,$met_productimg_x,$met_productimg_y,$met_imgs_x,$met_imgs_y;
@@ -735,6 +742,317 @@ function tmpcentarr($cd){
 	if($hngy5[1]=='cm')$metinfo=$class_list[$hngy5[0]];
 	if($hngy5[1]=='md')$metinfo=$module_listall[$hngy5[0]][0];
 	return $metinfo;
+}
+function met_rand($length){
+	$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+	$password = '';
+	for ( $i = 0; $i < $length; $i++ ) {
+		$password .= $chars[ mt_rand(0, strlen($chars) - 1) ];
+	}
+	return $password;
+}
+/*替换admin文件*/
+function readmin($dir,$adminfile,$type){
+	if($adminfile!="admin"){
+		$dirs=explode('/',$dir);
+		if($type==1){
+			if($dirs[0]==$adminfile){
+				$dirs[0]='admin';
+			}
+		}
+		else{
+			if($dirs[0]=='admin'){
+				$dirs[0]=$adminfile;
+			}
+		}
+
+		$dir=implode('/',$dirs);	
+	}
+	return $dir;
+}
+/*COOKIE*/
+function met_cooike_start(){
+	global $met_cookie,$db,$met_webkeys,$met_admin_table;
+	$met_cookie=array();
+	list($username,$password)=explode("\t",authcode($_COOKIE[met_auth],'DECODE', $met_webkeys.$_COOKIE[met_key]));
+	$username=daddslashes($username,0,1);
+	$query="select * from $met_admin_table where admin_id='$username'";
+	$user=$db->get_one($query);
+	$usercooike=json_decode($user['cookie']);
+	if(md5($user['admin_pass'])==$password&&time()-$usercooike->time<3600){
+		foreach($usercooike as $key=>$val){
+			$met_cookie[$key]=$val;
+		}
+		$met_cookie['time']=time();
+		$json=json_encode($met_cookie);
+		$query="update $met_admin_table set cookie='$json' where admin_id='$username'";
+		$user=$db->get_one($query);
+	}
+}
+function login_met_cookie($userid){
+	global $met_cookie,$metinfo_admin_name,$metinfo_admin_pass,$met_webkeys,$db,$met_admin_table;
+	$met_cookie=array();
+	$met_cookie['time']=time();
+	$json=json_encode($met_cookie);
+	$userid=daddslashes($userid,0,1);
+	$db->query("update $met_admin_table set cookie='$json' WHERE admin_id='$userid'");
+	$query="select * from $met_admin_table WHERE admin_id='$userid'";
+	$user=$db->get_one($query);
+	$met_key=met_rand(7);
+	$user[admin_pass]=md5($user[admin_pass]);
+	$auth=authcode("$user[admin_id]\t$user[admin_pass]",'ENCODE', $met_webkeys.$met_key,86400);
+	met_setcookie("met_auth",$auth,0);
+	met_setcookie("met_key",$met_key,0);
+}
+function met_cooike_unset($userid){
+	global $met_cookie,$db,$met_admin_table;
+	$userid=daddslashes($userid,0,1);
+	$db->query("update $met_admin_table set cookie='' WHERE admin_id='$userid' and usertype='3'");
+	met_setcookie("met_auth",'',time()-3600);
+	met_setcookie("met_key",'',time()-3600);
+	met_setcookie("appsynchronous",0,time()-3600,'');
+	unset($met_cookie);
+}
+function change_met_cookie($key,$val){
+	global $met_cookie;
+	if($key=='metinfo_admin_name'||$key=='metinfo_member_name'){
+		$val=daddslashes($val,0,1);
+		$val=urlencode($val);
+	}
+	$met_cookie[$key]=$val;
+}
+function get_met_cookie($key){
+	global $met_cookie;
+	if($key=='metinfo_admin_name'||$key=='metinfo_member_name'){
+		$val=urldecode($met_cookie[$key]);
+		$val=daddslashes($val,0,1);
+		return $val;
+	}
+	return $met_cookie[$key];
+}
+function save_met_cookie(){
+	global $met_cookie,$db,$met_admin_table;
+	$met_cookie['time']=time();
+	$json=json_encode($met_cookie);
+	$username=$met_cookie[metinfo_admin_id]?$met_cookie[metinfo_admin_id]:$met_cookie[metinfo_member_id];
+	$username=daddslashes($username,0,1);
+	$query="update $met_admin_table set cookie='$json' where id='$username'";
+	$user=$db->get_one($query);	
+}
+if(!function_exists('json_encode')){
+    include ROOTPATH.'include/JSON.php';
+    function json_encode($val){
+        $json = new Services_JSON();
+		$json=$json->encode($val);
+        return $json;
+    }
+    function json_decode($val){
+        $json = new Services_JSON();
+        return $json->decode($val);
+    }
+}
+function met_setcookie($var,$value='',$life=0,$path= '/',$httponly=true) {
+	global $_G;
+	$path = $httponly && PHP_VERSION < '5.2.0' ? $path.'; HttpOnly' : $path;
+	$secure = $_SERVER['SERVER_PORT'] == 443 ? 1 : 0;
+	if(PHP_VERSION < '5.2.0') {
+		setcookie($var, $value, $life, $path, '', $secure);
+	} else {
+		setcookie($var, $value, $life, $path, '', $secure, $httponly);
+	}
+}
+/*静态页面跳转*/
+function jump_pseudo(){
+	global $db,$met_skin_user,$pseudo_jump;
+	global $met_column,$met_news,$met_product,$met_download,$met_img,$met_job;
+	global $class1,$class2,$class3,$id,$lang,$page,$selectedjob;
+	global $met_index_type,$index,$met_pseudo;
+	if($met_pseudo){
+		$metadmin[pagename]=1;
+		$pseudo_url=$_SERVER[HTTP_X_REWRITE_URL]?$_SERVER[HTTP_X_REWRITE_URL]:$_SERVER[REQUEST_URI];
+		$pseudo_jump=@strstr($_SERVER['SERVER_SOFTWARE'],'IIS')&&$_SERVER[HTTP_X_REWRITE_URL]==''?1:$pseudo_jump;
+		$dirs=explode('/',$pseudo_url);
+		$dir_dirname=$dirs[count($dirs)-2];
+		$dir_filename=$dirs[count($dirs)-1];
+		if($pseudo_jump!=1){
+			$dir_filenames=explode('?',$dir_filename);
+			switch($dir_filenames[0]){
+				case 'index.php':
+					if(!$class1&&!$class2&&!$class3){
+						if($index=='index'){
+							if($lang==$met_index_type){
+								$jump['url']='./';
+							}else{
+								$jump['url']='index-'.$lang.'.html';
+							}
+						}else{
+							if($lang==$met_index_type){
+								$jump['url']='./';
+							}else{
+								$id=$class3?$class3:($class2?$class2:$class1);
+								if($id){
+									$query="select * from $met_column where id='$id'";
+								}else{
+									$query="select * from $met_column where foldername='$dir_dirname' and lang='$lang' and (classtype='1' or releclass!='0') order by id asc";
+								}
+								$jump=$db->get_one($query);
+								$psid= ($jump['filename']<>"" and $metadmin['pagename'])?$jump['filename']:$jump['id'];
+								if($jump[module]==1){
+									$jump['url']='./'.$psid.'-'.$lang.'.html';
+								}else if($jump[module]==8){
+									$jump['url']='./'.'index-'.$lang.'.html';
+								}
+								else{
+									if($page&&$page!=1)$psid.='-'.$page;
+									$jump['url']='./'.'list-'.$psid.'-'.$lang.'.html';
+								}
+							}
+						}
+					}else{
+						if($dir_dirname=='job.php'){
+							$query="select * from $met_column where lang='$lang' and module='6'";
+						}else{
+							$id=$class3?$class3:($class2?$class2:$class1);
+							$query="select * from $met_column where id='$id'";
+						}
+						$jump=$db->get_one($query);
+						$dir_filenames[0]=metmodname($jump[module]).'.php';
+						if($jump){
+							$psid=($jump['filename']<>"" and $metadmin['pagename'])?$jump['filename']:$jump['id'];
+							if($page&&$page!=1)$psid.='-'.$page;
+							$jump['url']='./'.'list-'.$psid.'-'.$lang.'.html';
+						}else{
+							if(!$psid){
+								if($dir_filenames[0]=='product.php'){
+									$psid='product';
+								}
+								if($dir_filenames[0]=='img.php'){
+									$psid='img';
+								}
+							}
+							$jump['url']='./'.$psid.'-list-'.$lang.'.html';
+						}
+					}
+					break;
+				case 'show.php':
+					$query="select * from $met_column where id='$id'";
+					$jump=$db->get_one($query);
+					$psid= ($jump['filename']<>"" and $metadmin['pagename'])?$jump['filename']:$jump['id'];
+					$jump['url']='./'.$psid.'-'.$lang.'.html';
+				break;			
+				case 'news.php':
+				case 'product.php':
+				case 'download.php':
+				case 'img.php':
+				case 'job.php':
+					if($dir_filenames[0]=='job.php'){
+						$query="select * from $met_column where lang='$lang' and module='6'";
+					}else{
+						$id=$class3?$class3:($class2?$class2:$class1);
+						$query="select * from $met_column where id='$id'";
+					}
+					$jump=$db->get_one($query);
+					if($jump){
+						$psid=($jump['filename']<>"" and $metadmin['pagename'])?$jump['filename']:$jump['id'];
+						if($page&&$page!=1)$psid.='-'.$page;
+						$jump['url']='./'.'list-'.$psid.'-'.$lang.'.html';
+					}else{
+						if(!$psid){
+							if($dir_filenames[0]=='product.php'){
+								$psid='product';
+							}
+							if($dir_filenames[0]=='img.php'){
+								$psid='img';
+							}
+						}
+						$jump['url']='./'.$psid.'-list-'.$lang.'.html';
+					}	
+				break;
+				case 'shownews.php':
+				case 'showproduct.php':
+				case 'showdownload.php':
+				case 'showimg.php':	
+				case 'showjob.php':
+					switch($dir_filenames[0]){
+						case 'shownews.php':
+						$query="select * from $met_news where id='$id'";
+						break;
+						case 'showproduct.php':
+						$query="select * from $met_product where id='$id'";
+						break;
+						case 'showdownload.php':
+						$query="select * from $met_download where id='$id'";
+						break;
+						case 'showimg.php':	
+						$query="select * from $met_img where id='$id'";
+						break;
+						case 'showjob.php':
+						$query="select * from $met_job where id='$id'";
+						break;
+					}
+					$jump=$db->get_one($query);
+					$panyid=($jump['filename']<>"" and $metadmin['pagename'])?$jump['filename']:$jump['id'];
+					$jump['url']='./'.$panyid.'-'.$lang.'.html';		
+				break;
+				case 'message.php':
+					$jump['url']='./'.'message-'.$lang.'.html';		
+				break;
+				case 'cv.php':
+					$selectedjob=$selectedjob?$selectedjob:0;
+					$jump['url']='./'.'jobcv-'.$selectedjob.'-'.$lang.'.html';	
+				break;
+			}
+			if($jump['url']){
+				$jump['url']=str_replace('./','',$jump['url']);
+				$jump['url']='http://'.$_SERVER[HTTP_HOST].str_replace($dir_filename,$jump['url'],$_SERVER[REQUEST_URI]);
+				Header("HTTP/1.1 301 Moved Permanently"); 
+				Header("Location: $jump[url]");	
+			}
+		}
+	}
+}
+/*文件权限检测*/
+function filetest($dir){
+	@clearstatcache();
+	if(file_exists($dir)){
+		//@chmod($dir,0777);
+		$str=file_get_contents($dir);
+		if(strlen($str)==0)return 0;
+		$return=file_put_contents($dir,$str);
+	}
+	else{
+		$filedir='';
+		$filedir=explode('/',dirname($dir));
+		$flag=0;
+		foreach($filedir as $key=>$val){
+			if($val=='..'){
+				$fileexist.="../";
+			}
+			else{
+				if($flag){
+					$fileexist.='/'.$val;
+				}
+				else{
+					$fileexist.=$val;
+					$flag=1;
+				}
+				if(!file_exists($fileexist)){
+						@mkdir ($fileexist, 0777);
+				}	
+			}
+		}
+		$filename=$fileexist.'/'.basename($dir);
+		if(strstr(basename($dir),'.')){
+			$fp=@fopen($filename, "w+");
+			@fclose($fp);
+			//@chmod($filename,0777);
+		}
+		else{
+			@mkdir ($filename, 0777);
+		}
+		$return=file_put_contents($dir,'metinfo');
+	}
+	return $return;
 }
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.

@@ -11,8 +11,9 @@ if($action=="add"){
 		exit;
 	 }
  } 
+$yhid=metdetrim($yhid);
 $admin_if=$db->get_one("SELECT * FROM $met_admin_table WHERE admin_id='$yhid'");
-if($admin_if&&$yhid){
+if($admin_if||!$yhid){
 okinfo('javascript:history.back();',$lang_js15);
 }
 require_once '../include/jmail.php';
@@ -58,6 +59,7 @@ sendsms($met_nurse_member_tel,$message,4);
 /**/
 $query="select * from $met_admin_array where lang='$lang' order by user_webpower asc";
 $usertypes=$db->get_all($query);
+if($usertypes[0][id]==3)die();
 $pass1=md5($mm);
  $query = "INSERT INTO $met_admin_table SET
                       admin_id           = '$yhid',

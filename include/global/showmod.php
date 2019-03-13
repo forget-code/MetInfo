@@ -58,10 +58,10 @@ if($dataoptimize[$pagemark]['nextlist']){
 		$cpnorder=$class3?$class_list[$class3]['list_order']:($class2?$class_list[$class2]['list_order']:$class_list[$class1]['list_order']);
 	}
 	else{
-		$csql="class1=$class1";
+		$csql="class1='$class1'";
 		$cpnorder=$class_list[$class1]['list_order'];
 	}
-	$acc_sql=$met_member_use==2?"(access<=$metinfo_member_type) and":" ";
+	$acc_sql=$met_member_use==2?"(access<='$metinfo_member_type') and":" ";
 	$pn_sql=pn_order($cpnorder,$news);
 	if($cpnorder<4){
 		$allnews=$db->get_all("select * from $dbname where $csql and lang='$lang' and (recycle='0' or recycle='-1') and $acc_sql $pn_sql[2]");
@@ -212,5 +212,31 @@ if($metinfonow==$met_member_force and $met_webhtm){
 	$html_filenamex=unescape($html_filenamex);
 	$news['url']=$met_weburl.$class_list[$class1]['foldername'].'/'.$html_filenamex.$met_htmtype;
 }
+if($pagemark==3||$pagemark==5){
+	if($news['displayimg']!=''){
+		$displayimg=explode('|',$news['displayimg']);
+		$pg=count($displayimg);
+		for($i=0;$i<$pg;$i++){
+			$newdisplay=explode('*',$displayimg[$i]);
+			$displaylist[$i]['title']=$newdisplay[0];
+			$displaylist[$i]['imgurl']=$newdisplay[1];
+			$imgurl_diss=explode('/',$displaylist[$i]['imgurl']);
+			$displaylist[$i][imgurl_dis]=$imgurl_diss[0].'/'.$imgurl_diss[1].'/'.$imgurl_diss[2].'/thumb_dis/'.$imgurl_diss[count($imgurl_diss)-1];
+			$filename=stristr(PHP_OS,"WIN")?@iconv("utf-8","gbk",$displaylist[$i][imgurl_dis]):$displaylist[$i][imgurl_dis];
+			$displaylist[$i][imgurl_dis]=file_exists($filename)?$displaylist[$i][imgurl_dis]:$displaylist[$i]['imgurl'];
+		}
+	}
+}
+if($news['classother']){
+	$met_pnorder=0;
+	//$lang_sidebarjstype=1;
+	$csnow='x';
+	$class3='x';
+	$class_list[$classnow][name]=$class1_info[name];
+	$navdown='';
+}
 require_once '../public/php/methtml.inc.php';
+if($news['classother']){
+	$nav_x[name]="<a href=".$news['url']." >".$news['title']."</a>";
+}
 ?>

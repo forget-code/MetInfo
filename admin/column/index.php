@@ -10,7 +10,7 @@ if($action=='modify'){
 }
 /*一级栏目处理*/
 foreach($met_class1 as $key=>$val){
-	$purview='admin_pop'.$val['id'];
+	$purview='admin_popc'.$val['id'];
 	$purview=$$purview;
 	$metcmspr=$metinfo_admin_pop=="metinfo" || $purview=='metinfo'?1:0;
 	$metcmspr1=$val[classtype]==1 || $val[releclass]?1:0;
@@ -38,7 +38,7 @@ foreach($met_class1 as $key=>$val){
 		foreach($met_class2[$val['id']] as $key=>$val2){
 			$metcmspr2=1;
 			if($val2[releclass]){
-				$purview2='admin_pop'.$val2['id'];
+				$purview2='admin_popc'.$val2['id'];
 				$purview2=$$purview2;
 				$metcmspr2=$metinfo_admin_pop=="metinfo" || $purview2=='metinfo'?1:0;
 			}

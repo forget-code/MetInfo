@@ -3,17 +3,6 @@
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 @set_time_limit(0);
 require_once '../login/login_check.php';
-if(!function_exists('json_encode')){
-    include('JSON.php');
-    function json_encode($val){
-        $json = new Services_JSON();
-        return $json->encode($val);
-    }
-    function json_decode($val){
-        $json = new Services_JSON();
-        return $json->decode($val);
-    }
-}
 if($action=="all"){
 	/*全站静态打包*/
 	if($htmpack){
@@ -52,7 +41,7 @@ if($action=="all"){
 	$methtm[]= indexhtm(1,$htmpack);
 	//module 1
 	foreach($met_classindex[1] as $key=>$val){
-		if($val[isshow])$methtm[]= showhtm($val[id],1,$htmpack);
+		$methtm[]= showhtm($val[id],1,$htmpack);
 		if($val['releclass']){
 			foreach($met_class3[$val[id]] as $key=>$val3){
 				if($val3[isshow])$methtm[]= showhtm($val3[id],1,$htmpack);
@@ -225,7 +214,7 @@ if($action=="all"){
 	}
 	if($module==1){
 		$folder=$met_class[$class1];
-		if($met_class[$class1][isshow])$methtm[]=showhtm($class1,1);
+		$methtm[]=showhtm($class1,1);
 		if($met_class[$class1]['releclass']){
 			foreach($met_class3[$class1] as $key=>$val1){
 				if($val1[isshow])$methtm[]=showhtm($val1[id],1);
@@ -337,7 +326,7 @@ if($action=="all"){
 		echo json_encode($methtm);
 		die();
 	}
-	$cs=2;
+	$listclass='';
 	$listclass[2]='class="now"';
 	$css_url="../templates/".$met_skin."/css";
 	$img_url="../templates/".$met_skin."/images";

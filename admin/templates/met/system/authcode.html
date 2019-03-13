@@ -22,36 +22,12 @@ echo <<<EOT
 <!--
 EOT;
 if($cs==1){
-	if($usertemp[0]!='NOUSER'){
+	if($authinfo['authcode']&&$authinfo['authpass']){
 echo <<<EOT
 -->
 		<tr>
 			<td colspan="2" style="padding:0px 10px;">
-				<table cellpadding="2" cellspacing="1" class="table authcode">
-					<tr>
-						<td class="text">{$lang_authTip5}</td>
-						<td class="input">{$user[domain]}</td>
-					</tr>
-					<tr>
-						<td class="text">{$lang_authTip6}</td>
-						<td class="input">{$user[webname]}</td>
-					</tr>
-					<tr>
-						<td class="text">{$lang_authTip7}</td>
-						<td class="input">{$user[type]}</td>
-					</tr>
-					<tr>
-						<td class="text">{$lang_authTip8}</td>
-						<td class="input">{$user[service]}</td>
-					</tr>
-					<tr>
-						<td class="text">{$lang_authTip9}</td>
-						<td class="input">{$user[buytime]}</td>
-					</tr>
-					<tr>
-						<td class="text">{$lang_authTip10}</td>
-						<td class="input">{$user[lifetime]}</td>
-					</tr>
+				<table cellpadding="2" cellspacing="1" class="table authcode" id="authcode">
 				</table>
 		    </td>
 		<tr>
@@ -144,6 +120,63 @@ echo <<<EOT
 		    <td class="footer" colspan="2">$foot</td>
 	    </tr>
 </table>
+<!--
+EOT;
+if($authinfo['authcode']&&$authinfo['authpass']){
+$authinfo['authcode']=urlencode($authinfo['authcode']);
+$authinfo['authpass']=urlencode($authinfo['authpass']);
+echo <<<EOT
+-->
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#authcode').html("<tr><td id=\"loading\">$lang_jsx1</td></tr>");
+	$.ajax({
+		url: 'http://{$met_host}/authorize.php?action=json&met_code={$authinfo[authcode]}&met_key={$authinfo[authpass]}&url=$met_weburl',
+		type: 'GET',
+		dataType: 'jsonp',
+		jsonp: 'jsoncallback',
+		success: function(data) {
+			$('#loading').remove();
+			var langarray=new Array();
+			langarray[0]=new Array();
+			langarray[0][0]=/lang_authTip5/g;
+			langarray[0][1]='$lang_authTip5';
+			langarray[1]=new Array();
+			langarray[1][0]=/lang_authTip6/g;
+			langarray[1][1]='$lang_authTip6';
+			langarray[2]=new Array();
+			langarray[2][0]=/lang_authTip7/g;
+			langarray[2][1]='$lang_authTip7';
+			langarray[3]=new Array();
+			langarray[3][0]=/lang_authTip8/g;
+			langarray[3][1]='$lang_authTip8';
+			langarray[4]=new Array();
+			langarray[4][0]=/lang_authTip9/g;
+			langarray[4][1]='$lang_authTip9';
+			langarray[5]=new Array();
+			langarray[5][0]=/lang_authTip10/g;
+			langarray[5][1]='$lang_authTip10';
+			var i;
+			for(i=0;i<=5;i++){
+				data.msg=data.msg.replace(langarray[i][0],langarray[i][1]);
+			}
+			$('#authcode').html(data.msg);
+			ifreme_methei();
+		}
+	});
+	setTimeout(function() {
+		if($('#loading').html()=='$lang_jsx1'){
+			$('#loading').html('$lang_jsx21');
+		}
+	},
+	30000);
+});
+</script>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
 </body>
 </html>
 <!--

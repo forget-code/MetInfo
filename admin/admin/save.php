@@ -21,7 +21,7 @@ if($admin_pop=="yes"){
 	foreach($metinfocolumn as $key=>$val){
 		foreach($sidebarcolumn as $key=>$val2){
 			if($val2[bigclass]==$val[id] && $val2[field]){
-				$admin_pop="admin_pop".$val2[field];
+				$admin_pop="admin_pops".$val2[field];
 				if($$admin_pop!="")$admin_type.=$$admin_pop."-";
 			}
 		}
@@ -29,10 +29,20 @@ if($admin_pop=="yes"){
 	foreach($met_langok as $key=>$val4){
 		foreach($column_pop[$val4[lang]] as $key=>$val){
 			if($val['module']<9 && !$val['if_in']){
-				$admin_pop="admin_pop".$val[id];
+				$admin_pop="admin_popc".$val[id];
 				if($$admin_pop!="")$admin_type.=$$admin_pop."-";
 			}
 		}
+	}
+	foreach($ad_navlist3[44] as $key=>$val5){
+		$admin_pop="admin_pops".$val5[field];
+		if($$admin_pop!="")$admin_type.=$$admin_pop."-";
+	}
+	$query="select * from $met_app where download=1";
+	$app=$db->get_all($query);
+	foreach($app as $key=>$val6){
+		$admin_pop="admin_popa".$val6[no];
+		if($$admin_pop!="")$admin_type.=$$admin_pop."-";
 	}
 	if($admin_pop9999)$admin_type.=$admin_pop9999.'-';
 }
@@ -68,42 +78,53 @@ if($action=="add"){
 }
 
 if($action=="editor"){
-	$query = "select * from $met_admin_table where id='$id'";
-	$modify = $db->get_one($query);
-	if(($admincp_ok['admin_group']=='10000')||($admincp_ok['admin_group']=='3'&&$admincp_ok['admin_group']>$modify['admin_group'])||$modify['id']==$admincp_ok['id']){
-		$query = "update $met_admin_table SET admin_ok = '$admin_ok'";
-		if($edtp!=1){
-		$query.= ", admin_name   = '$name',
-			admin_sex          = '$sex',
-			admin_tel          = '$tel',
-			admin_mobile       = '$mobile',
-			admin_email        = '$email',
-			admin_qq           = '$qq',
-			admin_msn          = '$msn',
-			admin_taobao       = '$taobao',
-			admin_introduction = '$admin_introduction'";
+	if($edtp==2){
+		if($admincp_ok['admin_group']=='10000'){
+			$query="update $met_admin_table set admin_id='$change_admin_id' where admin_group='10000' and admin_id='admin'";
+			$db->query($query);
 		}
-		if(($admincp_ok['admin_group']=='10000'&&$admincp_ok['id']!=$modify['id'])||($admincp_ok['admin_group']=='3'&&$admincp_ok['admin_group']>$modify['admin_group'])||$modify['id']==$admincp_ok['id']){
-			if($editorpass!=1 && $edtp==1 && $modify['id']!=$admincp_ok['id']){
-				$query .=", langok         = '$langok'";
-				$query .=", admin_type     = '$admin_type'";
-				$query .=", admin_issueok  = '$admin_issueok'";
-				$query .=", admin_group    = '$admin_group'";
-				$query .=", admin_op       = '$admin_op'";
-			}
-			if($pass1){
-				$pass1  =md5($pass1);
-				$query .=", admin_pass         = '$pass1'";
-			}
-		}
-		$query .="  where id='$id'";
-		if($nosql)$db->query($query);
-	}
-	if($editorpass!=1){
 		metsave('../admin/index.php?lang='.$lang.'&anyid='.$anyid);
 	}else{
-		metsave('../admin/editor_pass.php?lang='.$lang.'&id='.$id.'&anyid='.$anyid);
+		$query = "select * from $met_admin_table where id='$id'";
+		$modify = $db->get_one($query);
+		if(($admincp_ok['admin_group']=='10000')||($admincp_ok['admin_group']=='3'&&$admincp_ok['admin_group']>$modify['admin_group'])||$modify['id']==$admincp_ok['id']){
+			$query = "update $met_admin_table SET admin_ok = '$admin_ok'";
+			if($edtp!=1){
+			$query.= ", admin_name   = '$name',
+				admin_sex          = '$sex',
+				admin_tel          = '$tel',
+				admin_mobile       = '$mobile',
+				admin_email        = '$email',
+				admin_qq           = '$qq',
+				admin_msn          = '$msn',
+				admin_taobao       = '$taobao',
+				admin_introduction = '$admin_introduction'";
+			}
+			if(($admincp_ok['admin_group']=='10000'&&$admincp_ok['id']!=$modify['id'])||($admincp_ok['admin_group']=='3'&&$admincp_ok['admin_group']>$modify['admin_group'])||$modify['id']==$admincp_ok['id']){
+				if($editorpass!=1 && $edtp==1 && $modify['id']!=$admincp_ok['id']){
+					$query .=", langok         = '$langok'";
+					$query .=", admin_type     = '$admin_type'";
+					$query .=", admin_issueok  = '$admin_issueok'";
+					$query .=", admin_group    = '$admin_group'";
+					$query .=", admin_op       = '$admin_op'";
+				}
+				if($pass1){
+					$pass1  =md5($pass1);
+					$query .=", admin_pass         = '$pass1'";
+				}
+			}
+			$query .="  where id='$id'";
+			if($nosql)$db->query($query);
+		}
+		if($editorpass!=1){
+			metsave('../admin/index.php?lang='.$lang.'&anyid='.$anyid);
+		}else{
+			metsave('../admin/editor_pass.php?lang='.$lang.'&id='.$id.'&anyid='.$anyid);
+		}
 	}
+}
+if($action=='change'){
+
 }
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.

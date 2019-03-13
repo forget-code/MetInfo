@@ -15,8 +15,9 @@ if ( ! function_exists('jmailsend'))
 		
 		//system
 		if(stripos($smtp,'.gmail.com')===false){
-			$mail->Port       = 25;
+			$mail->Port       = $met_fd_port;
 			$mail->Host       = $smtp; // SMTP server
+			$mail->SMTPSecure = "{$met_fd_way}";
 		}
 		else{
 			$mail->Port       = 465;

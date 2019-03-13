@@ -114,6 +114,13 @@ function fingerprint($jkdir,$fileback){
 		unset($filenow['config/config_db.php']);
 		unset($filenow["$adminfile/app/physical/fingerprint_metinfo.php"]);
 		unset($filenow["$adminfile/app/physical/standard.php"]);
+		unset($filenow["$adminfile/app/wap/wap.php"]);
+		unset($filenow["$adminfile/templates/met/app/wap/wap.html"]);
+		
+		unset($filenow["install/index.php"]);
+		unset($filenow["install/js/IE6-png.js"]);
+		unset($filenow["install/js/install.js"]);
+		unset($filenow["install/phpinfo.php"]);
 	}
 	foreach($fileback as $key=>$val){
 		if(stripos($key,'admin/add.php')!==false){
@@ -194,6 +201,7 @@ function dangerfun($jkdir,$danger,$suffix,$trust){
 			if($trust['encryption'][$dir]!=1&&!preg_match_all ("/authtemp/i",$str,$out)){$physical_function.="1|$key,";}
 		}
 		if($val[filesize]<100&&$val[filesize]>0){
+			$dir=readmin($key,$adminfile,1);
 			if(substr($key,0,6)=='cache/'){
 				unlink('../../../'.$key);
 			}else{

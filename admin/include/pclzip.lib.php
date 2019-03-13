@@ -5805,7 +5805,7 @@
   }
   // --------------------------------------------------------------------------------
   function myPreAddCallBack($p_event, &$p_header){
-  global $adminfile;
+	global $adminfile;
 	$info=pathinfo($p_header['stored_filename'],PATHINFO_DIRNAME);
 	if($info=="$adminfile/databack/web"){return 0;}
 	return 1;

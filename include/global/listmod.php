@@ -3,10 +3,17 @@ require_once substr(dirname(__FILE__), 0, -6).'common.inc.php';
 require_once '../include/global/pseudo.php';
 if($dbname!=$met_download&&$dbname!=$met_img&&$dbname!=$met_news&&$dbname!=$met_product){okinfo('../404.html');exit();}
 if($class_list[$class1]['module']>=100||($class1==0&&$class2==0&&$class3==0)){
-	if($imgproduct){
-		$ipmd = $imgproduct=='product'?100:101;
-		if($imgproduct=='product'){$class1=$productlistid;}
-		else{$class1=$imglistid;}
+	if($search=="search"){
+		$search_module=$imgproduct=='product'?3:5;
+		$query="select * from $met_column where module='$search_module' and (classtype=1 or releclass!=0) and lang='$lang' order by no_order ASC,id ASC";
+		$search_coloumn=$db->get_all($query);
+		$class1=$search_coloumn[0]['id'];
+	}else{
+		if($imgproduct){
+			$ipmd = $imgproduct=='product'?100:101;
+			if($imgproduct=='product'){$class1=$productlistid;}
+			else{$class1=$imglistid;}
+		}
 	}
 }
 else{
@@ -50,7 +57,7 @@ $class1sql=" class1='$class1' ";
 if($class1&&!$class2&&!$class3){
 	foreach($module_list2[$class_list[$class1]['module']] as $key=>$val){
 		if($val['releclass']==$class1){
-			$class1re.=" or class1=$val[id] ";
+			$class1re.=" or class1='$val[id]' ";
 		}
 	}
 	if($class1re){
@@ -59,14 +66,29 @@ if($class1&&!$class2&&!$class3){
 }
 if($imgproduct){
 	$ipcom = $imgproduct=='product'?$productcom:$imgcom;
-	$serch_sql .=" where lang='$lang' and (recycle='0' or recycle='-1')";
+	$serch_sql .=" where lang='$lang' {$mobilesql} and (recycle='0' or recycle='-1')";
 	if($ipcom=='com')$serch_sql .= " and com_ok=1";
-    if($class1 && $class_list[$class1]['module']<>$ipmd&&$class1!=10001)$serch_sql .= ' and '.$class1sql;
+    if($class1 && $class_list[$class1]['module']<>$ipmd&&$class1!=10001){
+		$serch_sql .= ' and (('.$class1sql;
+	}else{
+		$serch_sql .= ' and ((1=1';
+	}
 }else{
-	$serch_sql=" where lang='$lang' and (recycle='0' or recycle='-1')  and $class1sql ";
+	$serch_sql=" where lang='$lang' {$mobilesql} and (recycle='0' or recycle='-1')  and (( $class1sql ";
 }
 if($class2)$serch_sql .= " and class2='$class2'";
-if($class3)$serch_sql .= " and class3='$class3'"; 
+if($class3)$serch_sql .= " and class3='$class3'";
+$serch_sql .= " )"; 
+
+if($imgproduct=='product'){
+$serch_sql .= " or ("; 
+$serch_sql .= " classother REGEXP '/|-{$class1}-"; 
+$serch_sql .= $class2?"{$class2}-":"[0-9]*-";
+$serch_sql .= $class3?"{$class3}-|/'":"[0-9]*-|/'";
+$serch_sql .= " )"; 
+}
+$serch_sql .= " )"; 
+
 if($search=="search" && $mdmendy){ 
 	$dbparaname = $mdname=='product'?$product_paralist:($mdname=='download'?$download_paralist:$img_paralist);
 	if($searchtype){
@@ -85,7 +107,7 @@ if($search=="search" && $mdmendy){
 				if(trim($paratitle)<>'')$paratitle=substr($paratitle, 0, -1);
 			}
 			if(trim($paratitle)<>''){
-				$serch_sql .= " and exists(select * from $met_plist where module=3 and $met_plist.listid=$dbname.id and $met_plist.info='".trim($paratitle)."') "; 
+				$serch_sql .= " and exists(select * from $met_plist where module=3 and $met_plist.listid='$dbname.id and' $met_plist.info='".trim($paratitle)."') "; 
 				$serchpage .= "&".$val['para']."=".trim($paratitle);
 			}
 		}
@@ -285,5 +307,6 @@ $show['keywords']=$class_info['keywords']?$class_info['keywords']:$met_keywords;
 $met_title=$met_title?$class_info['name'].'-'.$met_title:$class_info['name'];
 if($class_info['ctitle']!='')$met_title=$class_info['ctitle'];
 if($page>1)$met_title.='-'.$lang_Pagenum1.$page.$lang_Pagenum2;
+$pageall=$rowset->pages;
 require_once '../public/php/methtml.inc.php';
 ?>

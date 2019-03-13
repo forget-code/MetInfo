@@ -13,11 +13,11 @@ while($list_config= $db->fetch_array($result)){
 	}
 }
 /*域名跳转判断*/
-$met_url_type = $db->get_one("SELECT * FROM $met_config WHERE name='met_url_type' and lang='metinfo'");
-$met_url_type = $met_url_type['value'];
-if($met_url_type and $lang==""){
+if($lang==""){
 	foreach($met_langok as $key=>$val){
-		if(strstr($val[met_weburl],"http://".$_SERVER["HTTP_HOST"].'/'))$lang=$val[mark];
+		if($val[link]){
+			if(strstr($val[link],"http://".$_SERVER["HTTP_HOST"].'/'))$lang=$val[mark];
+		}
 	}
 }
 /*默认语言*/
@@ -45,10 +45,19 @@ while($list_config= $db->fetch_array($result)){
 		$falshval['x']=$list_config['value'][1];
 		$falshval['y']=$list_config['value'][2];
 		$falshval['imgtype']=$list_config['value'][3];
+		$list_config['mobile_value']=explode('|',$list_config['mobile_value']);
+		$falshval['wap_type']=$list_config['mobile_value'][0];
+		$falshval['wap_y']=$list_config['mobile_value'][1];
 		$met_flasharray[$list_config['flashid']]=$falshval;
 	}
 }
 @extract($settings);
+/*系统安全密钥*/
+$met_webkeys=file_get_contents(ROOTPATH.'/config/config_safe.php');
+$met_webkeys=str_replace('<?php/*','',$met_webkeys);
+$met_webkeys=str_replace('*/?>','',$met_webkeys);
+$met_adminfile_code=$met_adminfile;
+$met_adminfile=authcode($met_adminfile,'DECODE', $met_webkeys);
 /*app引用*/
 $query="select * from $met_app where site is not null and download=1";
 $app_file_temp = $db->get_all($query);

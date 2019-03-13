@@ -21,7 +21,8 @@ if($action=="modify"){
 	$db->query($query);
 	$html = showhtm($id);
 	if($filenameold<>$filename and $metadmin[pagename])deletepage($met_class[$id][foldername],$id,'about',$updatetimeold,$filenameold);
-	metsave('../content/about/about.php?anyid='.$anyid.'&lang='.$lang.'&id='.$id,'',$depth,$html);
+	$gent='../../sitemap/index.php?lang='.$lang.'&htmsitemap='.$met_member_force;
+	metsave('../content/about/about.php?anyid='.$anyid.'&lang='.$lang.'&id='.$id,'',$depth,$html,$gent);
 }else{
 	$about = $db->get_one("SELECT * FROM $met_column WHERE id='$id'");
 	if(!$about)metsave('-1',$lang_dataerror,$depth);

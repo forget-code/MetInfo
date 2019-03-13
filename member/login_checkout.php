@@ -36,12 +36,13 @@ if($action=="login"){
 		   exit;
 		  }
 		  else{ 
-		  session_start();
-		  $_SESSION['metinfo_member_name'] = $metinfo_member_name;
-          $_SESSION['metinfo_member_pass'] = $metinfo_member_pass;
-		  $_SESSION['metinfo_member_id'] = $membercp_list[id];
-		  $_SESSION['metinfo_member_type']  = $membercp_list['usertype'];
-		  $_SESSION['metinfo_member_time'] = $m_now_time;
+		  met_cooike_start();
+		  change_met_cookie('metinfo_member_name',$metinfo_member_name);
+		  change_met_cookie('metinfo_member_pass',$metinfo_member_pass);
+		  change_met_cookie('metinfo_member_id',$membercp_list[id]);
+		  change_met_cookie('metinfo_member_type',$membercp_list['usertype']);
+		  change_met_cookie('metinfo_member_time',$m_now_time);
+		  save_met_cookie();
 		  $query="update $met_admin_table set 
 		  admin_modify_date='$m_now_date',
 		  admin_login=admin_login+1,
@@ -63,14 +64,14 @@ else{
 if ($memberindex!="metinfo"){
     $returnurl="login_member.php?lang=".$lang;
   if(!$metinfo_member_name||!$metinfo_member_pass){
-     session_unset();
+     met_cooike_unset();
      Header("Location:$returnurl");
      exit;
   }else{
   $membercp_ok = $db->get_one("SELECT * FROM $met_admin_table WHERE admin_id='$metinfo_member_name' and admin_pass='$metinfo_member_pass'");
     
 	 if (!$membercp_ok){
-	 	session_unset();
+	 	met_cooike_unset();
         Header("Location: $returnurl");
         exit;
      }

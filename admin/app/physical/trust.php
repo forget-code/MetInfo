@@ -37,8 +37,10 @@ fckeditor/editor/dialog/fck_spellerpages/spellerpages/server-scripts/spellchecke
 admin/app/shop/admin/app/shop/setapp.php="1";
 admin/app/website/admin/app/website/setapp.php="1";
 admin/app/share/admin/app/share/share.php="1";
+config/config_safe.php="1";
 [encryption]
 admin/app/shop/include/alipay/return_url.php="1";
 admin/app/shop/include/alipay/notify_url.php="1";
+config/config_safe.php="1";
 */
 ?>

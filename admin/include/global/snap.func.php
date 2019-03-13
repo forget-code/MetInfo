@@ -135,9 +135,9 @@ function delet_estat_cr($type,$value){
 				$db->query($query);
 			break;
 		}
-		if(!file_exists("../../databack/stat/"))mkdir("../../databack/stat/",0777);
-		if(!file_exists("../../databack/"))mkdir("../../databack/",0777);
-		if($string)file_put_contents("../../databack/stat/$time.sql",$string,FILE_APPEND);
+		if(!file_exists(ROOTPATH."$met_adminfile/databack/stat/"))mkdir(ROOTPATH."$met_adminfile/databack/stat/",0777);
+		if(!file_exists(ROOTPATH."$met_adminfile/databack/"))mkdir(ROOTPATH."$met_adminfile/databack/",0777);
+		if($string)file_put_contents(ROOTPATH."$met_adminfile/databack/stat/$time.sql",$string,FILE_APPEND);
 	}
 }
 # This program is an open source system, commercial use, please consciously to purchase commercial license.

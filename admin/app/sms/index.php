@@ -19,35 +19,18 @@ if($action=='code'){
 	}
 	metsave("../app/sms/index.php?lang=$lang&anyid=$anyid&cs=$cs",$lang_re,$depth);
 }
-$firstcharge=1;
 $total_passok = $db->get_one("SELECT * FROM $met_otherinfo WHERE lang='met_sms'");
-$met_file='/sms/remain.php';
-$post=array('total_pass'=>$total_passok['authpass'],'metcms_v'=>$metcms_v);
-$balance = curl_post($post,30);
-if($total_passok['authpass']!=''){
-	$total_pass=$total_passok['authpass'];
-	if($balance=='Error'){
-		$post=array('total_pass'=>'');
-		$balance = curl_post($post,30);
-		$total_pass = $balance;
-		$balance = 0;
-	}elseif($balance=='no_user'){
-		$balance = '0.00';
+if($total_passok['authpass']==''){
+	if($action=='savedata'){
+		$query = "delete from $met_otherinfo where lang='met_sms'";
+		$db->query($query);
+		$query = "INSERT INTO $met_otherinfo SET 
+							  authpass = '$total_pass',
+							  lang     = 'met_sms'";				  
+		$db->query($query);
+		echo 'ok';
+		die();
 	}
-	elseif(!is_numeric($balance)){
-		$balance = '';
-	}else{
-		$firstcharge=0;
-	}
-}else{
-	$query = "delete from $met_otherinfo where lang='met_sms'";
-	$db->query($query);
-	$query = "INSERT INTO $met_otherinfo SET 
-						  authpass = '$balance',
-						  lang     = 'met_sms'";				  
-	$db->query($query);
-	$total_pass=$balance;
-	$balance=0;
 }
 if(!function_exists('fsockopen')&&!function_exists('pfsockopen')&&!get_extension_funcs('curl')){
 	$disable="disabled=disabled";

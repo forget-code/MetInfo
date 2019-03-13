@@ -22,19 +22,34 @@ $other_op.="<a href=\"content.php?anyid={$anyid}&lang={$lang}&met_content_type=2
 require_once template('metlangs');
 echo <<<EOT
 -->
+<div class="v52fmbx_tbmax v52fmbx_tbmaxmt">
+<div class="v52fmbx_tbbox">
+<!--
+EOT;
+if($met_content_type==2){
+echo <<<EOT
+--> 
+	<h3 class="v52fmbx_hr metsliding">{$lang_unitytxt_27}</h3>
+<!--
+EOT;
+}
+echo <<<EOT
+--> 
 <div class="metv5box">
 	<ul class="columnlist">
 <!--
 EOT;
 foreach ($contentlist as $key=>$val){
+$vimgurl = 'tubiao_'.$val[module].'.png';
 echo <<<EOT
 --> 
 		<li class="contlist">
 			<div class="box">
-				<div class="img" style="text-align:center;"><a href='{$val[conturl]}'><img src="{$img_url}/metv5/tubiao_{$val[module]}.png" /></a></div>
-			<h2 class="title"><a href='{$val[conturl]}'>{$val['name']}</a></h2>
+				<a href='{$val[conturl]}'>
+					<img src="{$img_url}/metv5/{$vimgurl}" width='64' height='64' />
+					<h2>{$val['name']}</h2>
+				</a>
 			</div>
-			<div class="text">{$val['set']}<div class="clear" style="height:2px;"></div></div>
 		</li>
 <!--
 EOT;
@@ -42,6 +57,9 @@ EOT;
 echo <<<EOT
 --> 
 </ul>
+</div>
+<div class="clear"></div>
+</div>
 </div>
 <script type="text/javascript">
 $('.contmorehver').hover(

@@ -13,7 +13,7 @@ require_once '../include/head.php';
 	if(!class1_info){
 	okinfo('../',$lang_error);
 	}
-    $serch_sql=" where lang='$lang' and ((TO_DAYS(NOW())-TO_DAYS(`addtime`)< useful_life) OR useful_life=0) ";
+    $serch_sql=" where lang='$lang' {$mobilesql} and ((TO_DAYS(NOW())-TO_DAYS(`addtime`)< useful_life) OR useful_life=0) ";
 	if($met_member_use==2)$serch_sql .= " and access<=$metinfo_member_type";
 	$order_sql="order by no_order desc,addtime desc";
     $total_count = $db->counter($met_job, "$serch_sql", "*");
@@ -104,6 +104,7 @@ if(!$guanlian){
 	}
 }
 $csnow=$cvidnow?$cvidnow:$classnow;
+$pageall=$rowset->pages;
 require_once '../public/php/methtml.inc.php';
 require_once '../public/php/jobhtml.inc.php';
 include template('job');

@@ -9,7 +9,7 @@ if($hml){
 	$hml=$hlist['value'];
 }
 $text = $text==''?$lang_jsok:$text;
-$gettime=2000;
+$gettime=5000;
 $text1=urlencode($text);
 $geturl=$geturl!='-1'?$geturl.'&turnovertext='.$text1:$geturl;
 $getjs = "location.href='{$geturl}'";

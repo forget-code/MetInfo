@@ -6,65 +6,83 @@ $colspan=($langnowok=='metinfo')?3:2;
 $colspan1=$colspan-1;
 echo <<<EOT
 -->
+<link rel="stylesheet" media="screen" type="text/css" href="{$img_url}/colorpicker/css/colorpicker.css" />
+<script type="text/javascript" src="{$img_url}/colorpicker/js/colorpicker.js"></script>
+<script type="text/javascript" src="{$depth}../ckeditor/ckeditor.js"></script>
 </head>
 <body>
 <!--
 EOT;
-$title="{$lang_skintypeset}";
+$title="{$lang_skintypeset}({$skin_list[skin_name]})";
 $rurl="skin_manager.php?anyid={$anyid}&lang={$lang}";
+if($kuaijieskin){
+require_once template('interface/skin_top');
+}else{
 require_once template('metlangs');
+}
 echo <<<EOT
 -->
-<style>
-	td.input select{ font-size:14px;}
-	td.input select option.c0{ color:red;}
-	td.input select option.c1{ color:#000;}
-	td.input select option.c2{ color:blue;}
-	td.input select option.c3{ color:green;}
-</style>
-<div class="stat_list">
-	<ul>
-		<li {$listclass[2]}><a href="?anyid={$anyid}&lang={$lang}&cs=2&skin_file={$skin_file}&id={$id}" title="{$lang_skinset}">{$lang_skinset}</a></li>
-		<li {$listclass[1]}><a href="?anyid={$anyid}&lang={$lang}&cs=1&skin_file={$skin_file}&id={$id}" title="{$lang_skinbaseset}">{$lang_skinbaseset}</a></li>	
-	</ul>
-</div>
-<form method="POST" name="myform" action="?anyid={$anyid}&lang={$lang}&id={$id}&skin_file={$skin_file}&cs={$cs}" target="_self">
+<form method="POST" name="myform" action="?anyid={$anyid}&lang={$lang}&id={$id}&skin_file={$skin_file}&cs={$cs}&kuaijieskin={$kuaijieskin}" target="_self">
 <input name="action" type="hidden" value="modify">
 <input name="skin_file" type="hidden" value="{$skin_file}">
-<table cellpadding="2" cellspacing="1" class="table">
+<div class="v52fmbx_tbmax">
+<div class="v52fmbx_tbbox">
+<div class="v52fmbx">
+<span class="xtips">{$lang_xtips}</span>
+<div class="skedtype" id="skedtype">
 <!--
 EOT;
-if($cs==1){
+$i=0;
+foreach($langtextf as $key=>$val){
+$i++;
 echo <<<EOT
 -->
-<tr>
-	<td class="text">{$lang_skinDocument}{$lang_marks}</td>
-	<td class="input">{$skin_list[skin_file]}</td>
-</tr>
-<tr>
-	<td class="text">{$lang_skintemplatename}{$lang_marks}</td>
-	<td class="input"><input name="skin_name" type="text" class="text" value="{$skin_list[skin_name]}" /></td>
-</tr>
-<tr>
-	<td class="text">{$lang_skintemplatedescription}{$lang_marks}</td>
-	<td class="input"><textarea name="skin_info" type="text" class="textarea" rows='5' style="width:300px;">{$skin_list[skin_info]}</textarea></td>
-</tr>
+	<div><span sliding='{$i}'>{$val[inputhtm]}</span></div>
 <!--
 EOT;
-}elseif($cs==2){
+}
 echo <<<EOT
 -->
-<script type="text/javascript" src="{$img_url}/js/uploadify/swfobject.js"></script>
-<script type="text/javascript" src="{$img_url}/js/uploadify/jquery.uploadify.v2.1.4.min.js"></script>
+</div>
 <!--
 EOT;
+$i=0;
+$k=0;
 foreach($langtext as $key=>$val){
+$k++;
+$cm='';
+$sliding='';
+$boxdibk='';
+$boxdibt='';
 echo <<<EOT
 -->
-<tr class="gexing">
-	<td class="text">{$val[valueinfo]}</td>
-	<td class="input">{$val[inputhtm]}</td>
-</tr>
+<!--
+EOT;
+if($val[sliding]){
+$i++;
+if($i!=1)$boxdibk="</div>";
+$boxdibt="<div class='metsliding_box metsliding_box_{$i}'>";
+echo <<<EOT
+-->
+	{$boxdibk}
+	<h3 class="v52fmbx_hr metsliding" sliding='{$i}'>{$val[inputhtm]}</h3>
+	{$boxdibt}
+<!--
+EOT;
+}else{
+$divw='';
+if(count($langtext)==$k)$divw='</div>';
+echo <<<EOT
+-->
+	<div class="v52fmbx_dlbox v52fmbx_skined">
+	<dl>
+		<dt>{$val[valueinfo]}</dt>
+		<dd>
+			{$val[inputhtm]}
+		</dd>
+	</dl>
+	</div>
+	{$divw}
 <!--
 EOT;
 }
@@ -73,19 +91,44 @@ echo <<<EOT
 <!--
 EOT;
 }
+$i++;
 echo <<<EOT
 -->
-	<tr>
-		<td class="text"></td>
-		<td class="submit">
-			<input type="submit" name="Submit" value="{$lang_Submit}" class="submit" onclick="return Smit($(this),'myform')" />
-		</td>
-	</tr>
-	<tr>
-		<td class="footer" colspan="2" align="center">{$foot}</td>
-	</tr>
-</table>
-</form>
+	<h3 class="v52fmbx_hr metsliding" sliding='{$i}'>{$lang_skinbaseset}</h3>
+	<div class='metsliding_box metsliding_box_{$i}'>
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_skinDocument}{$lang_marks}</dt>
+			<dd>
+				{$skin_list[skin_file]}
+			</dd>
+		</dl>
+		</div>
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_skintemplatename}{$lang_marks}</dt>
+			<dd>
+				<input name="skin_name" type="text" class="text" value="{$skin_list[skin_name]}" />
+			</dd>
+		</dl>
+		</div>
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$lang_skintemplatedescription}{$lang_marks}</dt>
+			<dd>
+				<textarea name="skin_info" type="text" class="textarea" rows='5' style="width:300px;">{$skin_list[skin_info]}</textarea>
+			</dd>
+		</dl>
+		</div>
+	</div>
+	<div class="v52fmbx_submit">
+		<input type="submit" name="Submit" value="{$lang_Submit}" class="submit" onclick="return Smit($(this),'myform')" />
+	</div>
+</div>
+</div>
+</div>
+        </form>
+<div class="footer">$foot</div>
 </body>
 </html>
 <!--

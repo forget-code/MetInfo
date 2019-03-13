@@ -20,7 +20,7 @@ require_once '../login/login_check.php';
     $result = $db->query($query);
 	$admin_list1=array();
 	 while($list = $db->fetch_array($result)) {
-		$admin_list1[]=$list;
+		if($list[admin_group]!=10000||$admin_list[admin_group]==10000)$admin_list1[]=$list;
     }
 foreach($admin_list1 as $key=>$val){
 	$val[admin_grouptd]=admin_grouptp($val[admin_group]);

@@ -13,47 +13,47 @@ echo <<<EOT
 <body>
 <!--
 EOT;
-require_once template('metlangs');
+if($kuaijieskin){
+$ffwegitl = $listclass;
+$listclass='';
+$listclass[5]='class="now"';
+require_once template('interface/skin_top');
+$listclass=$ffwegitl;
+}
+require_once template('interface/flash/top');
 echo <<<EOT
 -->
-<div class="stat_list">
-	<ul>
-		<li {$listclass[1]}><a href="setflash.php?anyid={$anyid}&lang={$lang}&cs=1" title="{$lang_indexflashset}">{$lang_indexflashset}</a></li>
-		<li {$listclass[2]}><a href="flash.php?anyid={$anyid}&lang={$lang}&cs=2" title="{$lang_indexflash}">{$lang_indexflash}</a></li>
-	</ul>
-</div>
-<div class="clear"></div>
-<table cellpadding="2" cellspacing="1" class="table">
-	<tr>
-		<td class="centle color999" colspan="7">
-			<div style="float:left;"><a href="flashadd.php?anyid={$anyid}&lang={$lang}" title="{$lang_indexflashaddimg}">+{$lang_indexflashaddflash}</a></div>
+<div class="v52fmbx_tbmax">
+<div class="v52fmbx_tbbox">
+<h3 class="v52fmbx_hr">
+	<a href="flashadd.php?anyid={$anyid}&lang={$lang}&kuaijieskin={$kuaijieskin}" title="{$lang_indexflashaddimg}" class="addmenu">+{$lang_indexflashaddflash}</a>
 			<div class="formright">
-				<form method="POST" style="position:relative; top:2px;" name="filterform" action="flash.php?anyid={$anyid}&lang=$lang&search=detail_search" target="_self">
+				<form method="POST" style="position:relative; top:2px;" name="filterform" action="flash.php?anyid={$anyid}&lang=$lang&search=detail_search&kuaijieskin={$kuaijieskin}" target="_self">
 				<input name="class1" type="hidden" value="250">
 				<input name="class2" type="hidden" value="">
 				<input name="class3" type="hidden" value="">
 	
 				&nbsp;{$lang_category}
 				<select name="modulex" style="margin:3px 0px;" onchange='javascript:window.location.href=$(this).val();'>
-				<option value='flash.php?anyid={$anyid}&lang=$lang'>{$lang_setflashBelong}</option>
+				<option value='flash.php?anyid={$anyid}&lang=$lang&kuaijieskin={$kuaijieskin}'>{$lang_setflashBelong}</option>
 <!--
 EOT;
 foreach($mod1 as $key=>$val){
 echo <<<EOT
 -->	
-	<option value='flash.php?anyid={$anyid}&lang=$lang&module=$val[id]' {$module1[$val[id]]}>$val[name]</option>
+	<option value='flash.php?anyid={$anyid}&lang=$lang&module=$val[id]&kuaijieskin={$kuaijieskin}' {$module1[$val[id]]}>$val[name]</option>
 <!--
 EOT;
 foreach($mod2[$val[id]] as $key=>$val2){
 echo <<<EOT
 -->	
-    <option value='flash.php?anyid={$anyid}&lang=$lang&module=$val2[id]' {$module1[$val2[id]]}>&nbsp;&nbsp;-- $val2[name]</option>
+    <option value='flash.php?anyid={$anyid}&lang=$lang&module=$val2[id]&kuaijieskin={$kuaijieskin}' {$module1[$val2[id]]}>&nbsp;&nbsp;-- $val2[name]</option>
 <!--
 EOT;
 foreach($mod3[$val2[id]] as $key=>$val3){
 echo <<<EOT
 -->	
-    <option value='flash.php?anyid={$anyid}&lang=$lang&module=$val3[id]' {$module1[$val3[id]]}>&nbsp;&nbsp;&nbsp;&nbsp;-- $val3[name]</option>		
+    <option value='flash.php?anyid={$anyid}&lang=$lang&module=$val3[id]&kuaijieskin={$kuaijieskin}' {$module1[$val3[id]]}>&nbsp;&nbsp;&nbsp;&nbsp;-- $val3[name]</option>		
 <!--
 EOT;
 }}}  
@@ -69,18 +69,18 @@ echo <<<EOT
 				</select>
 				</form>
 			</div>
-		</td>
-	</tr>
+</h3>
+<table cellpadding="2" cellspacing="1" class="table">
 	<tr>
-		<td width="40" class="list" style="padding:0px; text-align:center;">{$lang_selected}</td>
-		<td width="40" class="list" style="padding:0px; text-align:center;">{$lang_sort}</td>
-		<td width="12%" class="list">{$lang_setflashBelong}</td>
-		<td class="list">{$lang_type}</td>
-		<td class="list">{$lang_setflashName}</td>
-		<td class="list">{$lang_setflashImgUrl}/{$lang_setflashUrl}</td>
-		<td width="12%" class="list">{$lang_operate}</td>
+		<td width="30" class="list">{$lang_selected}</td>
+		<td width="30" class="list">{$lang_sort}</td>
+		<td width="60" class="list">{$lang_setflashBelong}</td>
+		<td width="40" class="list">{$lang_type}</td>
+		<td width="80" class="list list_left">{$lang_setflashName}</td>
+		<td width="100" class="list">{$lang_setflashUrl}</td>
+		<td class="list list_left">{$lang_operate}</td>
 	</tr>
-<form name="del" method="Post" action="flashdelete.php?anyid={$anyid}&lang={$lang}">
+<form name="del" method="Post" action="flashdelete.php?anyid={$anyid}&lang={$lang}&kuaijieskin={$kuaijieskin}">
 	<input name="module" type="hidden" value="$module">
 <!--
 EOT;
@@ -97,6 +97,7 @@ if(count($valmdy)==3){
 $valmname=utf8substr($val[modulename],0,6);
 $val[ftype]=$val['img_path']!=''?$lang_image:$lang_flashMode2;
 $val[img_path]=$val['img_path']!=''?$val['img_path']:$val['flash_path'];
+$val[img_path]="<a href='../../{$val[img_path]}' target='_blank'>{$lang_clickview}</a>";
 echo <<<EOT
 -->
 		<tr class="mouse">
@@ -104,11 +105,11 @@ echo <<<EOT
 			<td width="30" class="list-text">{$val[no_order]}</td>
 			<td class="list-text" title="{$val[modulename]}">{$valmname}</td>
 			<td class="list-text">{$val[ftype]}</td>
-			<td class="list-text">{$val[img_title]}</td>
+			<td class="list-text list_left">{$val[img_title]}</td>
 			<td class="list-text">{$val[img_path]}</td>
-			<td class="list-text" style="color:#0066FF;">
-				<a href="flashedit.php?anyid={$anyid}&lang=$lang&id=$val[id]&module={$module}" >{$lang_editor}</a>&nbsp;&nbsp;
-				<a href="flashdelete.php?anyid={$anyid}&lang=$lang&module={$module}&id={$val[id]}" onClick="return linkSmit($(this),1);" >{$lang_delete}</a>
+			<td class="list-text list_left">
+				<a href="flashedit.php?anyid={$anyid}&lang=$lang&id=$val[id]&module={$module}&kuaijieskin={$kuaijieskin}" >{$lang_editor}</a>&nbsp;&nbsp;
+				<a href="flashdelete.php?anyid={$anyid}&lang=$lang&module={$module}&id={$val[id]}&kuaijieskin={$kuaijieskin}" onClick="return linkSmit($(this),1);" >{$lang_delete}</a>
 			</td>
 		</tr>
 <!--
@@ -117,7 +118,7 @@ EOT;
 echo <<<EOT
 -->
 		<tr class="mouse">
-			<td class="list-text" colspan="6">{$lang_indexflashexplain8}</td>
+			<td class="list-text" colspan="7">{$lang_csvnodata}</td>
 		</tr>
 <!--
 EOT;
@@ -128,16 +129,18 @@ echo <<<EOT
 			  <input name="allid" type="hidden" id="allid" value="">			
 			</form> 
    	   <tr> 
-            <td width="40" class="all"><input name="chkAll" type="checkbox" id="chkAll" onclick="CheckAllx($(this),'del')" value="checkbox" /></td>
-			<td class="all-submit" colspan="6">
+            <td class="list"><input name="chkAll" type="checkbox" id="chkAll" onclick="CheckAllx($(this),'del')" value="checkbox" /></td>
+			<td class="list list_left" colspan="6">
 				<input name="submit" type='submit' value='{$lang_deleteselected}' class="submit li-submit" onclick="return met_modify($(this),'del','del');" />
-				<div class="page_list">{$page_list}</div>
 			 </td>
           </tr>
-		<tr>
-		  <td class="footer" colspan="10">$foot</td>
-	  </tr>
+   	    <tr> 
+			<td class="list list_normal" colspan="7">{$page_list}</td>
+        </tr>
 </table>
+</div>
+</div>
+<div class="footer">$foot</div>
 </body>
 </html>
 <!--

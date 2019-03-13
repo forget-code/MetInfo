@@ -4,7 +4,7 @@
 require_once '../include/common.inc.php';
 if($class1)$id=$class1;
 if(!is_numeric($id)){okinfo('../404.html');exit();}
-$job=$db->get_one("select * from $met_job where id=$id and lang='$lang'");
+$job=$db->get_one("select * from $met_job where id='$id' and lang='$lang'");
 if(!$job){
 	okinfo('../404.html');exit();
 }
@@ -22,16 +22,16 @@ $class1_info=$class_list[$class1][releclass]?$class_list[$class_list[$class1][re
 $class2_info=$class_list[$class1][releclass]?$class_list[$class1]:$class_list[$class2];	
 if($dataoptimize[$pagemark][nextlist]){
 if($met_member_use==2){
-    $prejob=$db->get_one("select * from $met_job where lang='$lang' and (access<=$metinfo_member_type) and id > $id limit 0,1");
-    $nextjob=$db->get_one("select * from $met_job where lang='$lang' and (access<=$metinfo_member_type) and id < $id order by id desc limit 0,1");
+    $prejob=$db->get_one("select * from $met_job where lang='$lang' and (access<='$metinfo_member_type') and id > '$id' limit 0,1");
+    $nextjob=$db->get_one("select * from $met_job where lang='$lang' and (access<='$metinfo_member_type') and id < '$id' order by id desc limit 0,1");
 }else{
-    $prejob=$db->get_one("select * from $met_job where lang='$lang' and id > $id limit 0,1");
-    $nextjob=$db->get_one("select * from $met_job where lang='$lang' and id < $id order by id desc limit 0,1");
+    $prejob=$db->get_one("select * from $met_job where lang='$lang' and id > '$id' limit 0,1");
+    $nextjob=$db->get_one("select * from $met_job where lang='$lang' and id < '$id' order by id desc limit 0,1");
 }
 }
 if($dataoptimize[6][otherlist]){
 	$serch_sql=" where lang='$lang' ";
-	if($met_member_use==2)$serch_sql .= " and access<=$metinfo_member_type";
+	if($met_member_use==2)$serch_sql .= " and access<='$metinfo_member_type'";
 	$order_sql="order by addtime desc ";
     $query = "SELECT * FROM $met_job $serch_sql $order_sql";
     $result = $db->query($query);

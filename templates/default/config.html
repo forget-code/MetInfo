@@ -10,6 +10,10 @@ $met_foot_txt=metlabel_foot();//底部信息标签
 $metonline=methtml_online();//在线交流漂浮框标签
 if($lang_bgdcolor!=''){//顶部背景
 	if(strstr($lang_bgdcolor,"/")){
+		if($classnow==10001){
+			$lang_bgdcolor=explode('../',$lang_bgdcolor);
+			$lang_bgdcolor=$lang_bgdcolor[1];
+		}
 		$lang_bgdcolor ='background-image:url('.$lang_bgdcolor.');';
 		$lang_bgdcolor.='background-repeat:no-repeat;';
 		$lang_bgdcolor.='background-position:center center;';
@@ -29,7 +33,7 @@ if($classnow==10001){//首页标签
 	$index_list_1=metlabel_list('text',$lang_Column3,'','','',1,'',0);//信息列表标签
 	$index_list_2=metlabel_list('text',$lang_Column4,'','','',1,'',0);//信息列表标签
 	$index_list_3=metlabel_list('text',$lang_Column5,'','','job',1,'',0);//信息列表标签
-	$index_product=metlabel_list('img',$lang_Column6,'com','','product');//信息列表标签
+	$index_product=metlabel_list('img',$lang_Column6,'com','','product','','','','','',$lang_indexprowidth);//信息列表标签
 	$metlinkimg=methtm_link('img','com');//图片友情链接标签
 	$metlinktxt=methtm_link('text','com');//文字友情链接标签
 }else{//内页标签

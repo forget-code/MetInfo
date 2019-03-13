@@ -12,21 +12,23 @@ EOT;
 require_once template('interface/online/top');
 echo <<<EOT
 -->
-<table cellpadding="2" cellspacing="1" class="table">
-			 <tr>
-			 <td colspan="2">
+<style type="text/css">
+.table td.list-text{ white-space:normal;}
+</style>
+<div class="v52fmbx_tbmax">
+<div class="v52fmbx_tbbox">
 <form name="del" method="Post" action="delete.php?anyid={$anyid}&lang=$lang&class1=$class1">
 <input name="allid" type="hidden" id="allid" value=""><input name="action" type="hidden" id="allid" value="del">
-<table cellpadding="0" cellspacing="0" class="table neitable" style="margin:0px; border:none;">
+<table cellpadding="0" cellspacing="1" class="table neitable">
               <tr id="list-top">
-                <td class="list" width="40" style="padding:0px; text-align:center;">{$lang_selected}</td>
+                <td class="list" width="30">{$lang_selected}</td>
 				<td class="list" width="30">{$lang_sort}</td>
-                <td class="list">{$lang_onlineName}</td>
+                <td class="list" width="80">{$lang_onlineName}</td>
                 <td class="list">{$lang_onlieqq}</td>
-				<td class="list">{$lang_onliemsn}</td>
-                <td class="list">{$lang_onlinetaobao}</td>
-                <td class="list">{$lang_onlinealibaba}</td>
-				<td class="list">{$lang_onlineskype}</td>
+				<td class="list" width="80">{$lang_onliemsn}</td>
+                <td class="list" width="80">{$lang_onlinetaobao}</td>
+                <td class="list" width="80">{$lang_onlinealibaba}</td>
+				<td class="list" width="80">{$lang_onlineskype}</td>
 				<td class="list">{$lang_operate}</td>
               </tr>
 <!--
@@ -52,25 +54,23 @@ echo <<<EOT
 -->
 		<tr>
 			<td class="list-text"></td>
-			<td class="list-text" colspan="9" style="padding-left:10px; text-align:left;"><a href="save.php?anyid={$anyid}&lang=$lang&action=add" onclick="return addsave($(this),0);">+{$lang_onlineAdd}</a></td>
+			<td class="list-text" colspan="8" style="padding-left:10px; text-align:left;"><a href="save.php?anyid={$anyid}&lang=$lang&action=add" onclick="return addsave($(this),0);">+{$lang_onlineAdd}</a></td>
 		</tr>
+   	   <tr> 
+            <td class="list" width="40"><input name="chkAll" type="checkbox" id="chkAll" title="{$lang_selectall}" onclick="CheckAllx($(this),'del')" value="checkbox" /></td>
+			  <td class="list list_left" colspan="8">
+				<input name="saveorder" type='submit' value='{$lang_Submit}' class="submit li-submit" onclick="return met_modify($(this),'del','editor');" /> 
+				&nbsp;
+				<input name="submit" type='submit' value='{$lang_deleteselected}' class="submit li-submit" onclick="return met_modify($(this),'del','del');" /> 
+				</td>
+          </tr>
 		</table>
 			<input name="action_type" type="hidden" id="action_type" value="del" />
 			<input name="allid" type="hidden" id="allid" value="" /> 	
 </form>
-		</td> 
-		</tr>
-   	   <tr> 
-            <td class="all" width="40" style="padding:0px; text-align:center;"><input name="chkAll" type="checkbox" id="chkAll" title="{$lang_selectall}" onclick="CheckAllx($(this),'del')" value="checkbox" /></td>
-			  <td class="all-submit" align="left" style="padding-left:10px;">
-				<input name="saveorder" type='submit' value='{$lang_Submit}' class="submit li-submit" onclick="return met_modify($(this),'del','editor');" /> 
-				<input name="submit" type='submit' value='{$lang_deleteselected}' class="submit li-submit" onclick="return met_modify($(this),'del','del');" /> 
-				</td>
-          </tr>
-		<tr>
-		  <td class="footer" colspan="2">$foot</td>
-	  </tr>
-</table>
+</div>
+</div>
+<div class="footer">$foot</div>
 </body>
 </html>
 <!--

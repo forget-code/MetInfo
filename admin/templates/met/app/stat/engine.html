@@ -10,10 +10,13 @@ echo <<<EOT
 <body>
 <!--
 EOT;
+$listclass='';
 $listclass[2]='class="now"';
 require_once template('app/stat/top');
 echo <<<EOT
 -->
+<div class="v52fmbx_tbmax">
+<div class="v52fmbx_tbbox">
 <div class="lablelist">
 	<ul>
 		<li class="round {$labtypeclass[1]}"><a href="engine.php?lang={$lang}&anyid={$anyid}&labtype=1&st={$st}&et={$et}&cs={$cs}" title="{$lang_keywords}">{$lang_keywords}</a></li>
@@ -181,6 +184,8 @@ EOT;
 }
 echo <<<EOT
 -->
+</div>
+</div>
 <div class="footer">$foot</div>
 </body>
 </html>

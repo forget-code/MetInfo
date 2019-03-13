@@ -54,7 +54,11 @@ if(!$id){
     $rowset = new Pager($total_count,$list_num,$page);
     $from_record = $rowset->_offset();
 	$page = $page?$page:1;
-	$query = "SELECT * FROM $dbname $serch_sql and top_ok='1' and access='0' and (recycle='0' or recycle='-1') $order_sql LIMIT $from_record, $list_num";
+	if($module==6){
+		$query = "SELECT * FROM $dbname $serch_sql and access='0' $order_sql LIMIT $from_record, $list_num";
+	}else{
+		$query = "SELECT * FROM $dbname $serch_sql and top_ok='1' and access='0' and (recycle='0' or recycle='-1') $order_sql LIMIT $from_record, $list_num";
+	}
 	$result = $db->query($query);
 	while($list= $db->fetch_array($result)){
 		$modlistnow[]=$list;
@@ -103,4 +107,4 @@ if(!$id){
 }
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
-?>
+?> 

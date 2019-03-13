@@ -1,7 +1,8 @@
 <?php
 # MetInfo Enterprise Content Management System 
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserve. 
 $depth=$_GET['depth']==1?'':$depth;
+if($depth!=''&&$depth!='../'&&$depth!='../../'){die();}
 require_once $depth.'../login/login_check.php';
 $lev2=$lev;
 //$query="select * from $met_admin_array where array_type='1' and user_webpower='$lev' and lang='$lang'";

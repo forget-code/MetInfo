@@ -13,17 +13,24 @@ echo <<<EOT
 -->
 <div class="stat_list">
 	<ul>
-		<li {$listclass[1]}><a href="uploadfile.php?anyid={$anyid}&lang={$lang}&cs=1" title="{$lang_upfiletips1}">{$lang_upfiletips1}</a></li>
-		<li {$listclass[2]}><a href="uploadfile.php?anyid={$anyid}&lang={$lang}&cs=2&Type=upload" title="{$lang_upfiletips2}">{$lang_upfiletips2}</a></li>
+		<li {$listclass[1]}><a href="uploadfile.php?anyid={$anyid}&lang={$lang}&cs=1&Type=upload" title="{$lang_upfiletips2}">{$lang_upfiletips2}</a></li>
+		<li {$listclass[2]}><a href="uploadfile.php?anyid={$anyid}&lang={$lang}&cs=2" title="{$lang_upfiletips1}">{$lang_upfiletips1}</a></li>
 	</ul>
 </div>
+<div class='clear'></div>
 <!--
 EOT;
-if($cs==2){
+if($cs==1){
 echo <<<EOT
 -->
 <script type="text/javascript" src="../ckfinder/ckfinder.js"></script>
+<div class="v52fmbx_tbmax">
+<div class="v52fmbx_tbbox">
+<div class="v52fmbx">	
 <div id="ckfinder"></div>
+</div>
+</div>
+</div>
 	<script type="text/javascript">
 (function()
 {
@@ -127,7 +134,14 @@ echo <<<EOT
 		config.height = '500';
 		var ckfinder = new CKFinder( config );
 		ckfinder.replace( 'ckfinder', config );
+		ifreme_methei();
 })();
+			setTimeout("ifreme_methei()",100);
+			setTimeout("ifreme_methei()",500);
+			setTimeout("ifreme_methei()",1000);
+			setTimeout("ifreme_methei()",2000);
+			setTimeout("ifreme_methei()",5000);
+			setTimeout("ifreme_methei()",10000);
 	</script>
 	<div class="footer">$foot</div>
 <!--
@@ -135,22 +149,18 @@ EOT;
 }else{
 echo <<<EOT
 -->
+<div class="v52fmbx_tbmax">
+<div class="v52fmbx_tbbox">
+<h3 class="v52fmbx_hr">
+	<a href="?anyid={$anyid}&lang=$lang&filename={$metnowdir}&file_classnow=$file_classnow&action=deletefolder" onClick="return linkSmit($(this),1);" title="{$lang_setsafesq3text}">{$lang_setsafesq2text}{$lang_setsafesq3text}</a>
+	<span class="tips">({$metnowdir}){$lang_setfiletext4}</span>
+	<span class="formright">({$metnowdir}){$lang_setfiletext2} {$total_count} {$lang_setfiletext3}</span>
+</h3>
 <table cellpadding="2" cellspacing="1" class="table uploadfile">
-	<tr> 
-        <td colspan="8" class="input" style="padding:2px 5px;">
-			<div style="float:left;">
-			<a  href="?anyid={$anyid}&lang=$lang&filename={$metnowdir}&file_classnow=$file_classnow&action=deletefolder" 
-			    onClick="return linkSmit($(this),1);"
-             	title="{$lang_setsafesq3text}">{$lang_setsafesq2text}{$lang_setsafesq3text}</a>
-			 <span class="tips">({$metnowdir}){$lang_setfiletext4}</span>
-			</div>
-			 <span class="tips" style="float:right;">({$metnowdir}){$lang_setfiletext2} {$total_count} {$lang_setfiletext3}</span>
-		</td>
-    </tr>
 	<tr>	
         <td width="120" class="list">{$lang_setsafesq4text}</td>	
-        <td width="40" class="list" style="padding:0px; text-align:center;">{$lang_selected}</td>	
-        <td width="60" class="list" style="padding:0px; text-align:center;">{$lang_setfiletype}</td>
+        <td width="40" class="list">{$lang_selected}</td>	
+        <td width="60" class="list">{$lang_setfiletype}</td>
 		<td class="list">{$lang_skinDocument}</td>
         <td class="list">{$lang_setfilename}</td>
         <td width="60" class="list">{$lang_setfilesize}</td>
@@ -166,7 +176,7 @@ echo <<<EOT
 	<tr>
         <td class="files" id="files" valign="top">
 		    <dl>
-			    <dt {$nowclas}><img class="small" src="{$img_url}/botton/File.png" /> <a href="?anyid={$anyid}&lang=$lang&fileurl=upload" title="upload">upload</a></dt>
+			    <dt {$nowclas}><img class="small" src="{$img_url}/botton/File.png" /> <a href="?anyid={$anyid}&lang=$lang&fileurl=upload&cs=$cs" title="upload">upload</a></dt>
 				<dd>
 				<ul>
 <!--
@@ -178,7 +188,7 @@ if($metnowdir==$fileurl1)$nowclas='class="now"';
 echo <<<EOT
 -->
                 <li {$nowclas}>
-				<img class="small" src="$img_url/botton/Filey.png" /> <a href="?anyid={$anyid}&lang=$lang&fileurl={$fileurl1}&file_classnow=2" title="$val[name]">$val[name]</a>				
+				<img class="small" src="$img_url/botton/Filey.png" /> <a href="?anyid={$anyid}&lang=$lang&fileurl={$fileurl1}&file_classnow=2&cs=$cs" title="$val[name]">$val[name]</a>				
 <!--
 EOT;
 if($file_classnow>=2){
@@ -189,7 +199,7 @@ $nowclas='';
 if($metnowdir==$fileurl2)$nowclas='class="now"';
 echo <<<EOT
 -->
-            <p {$nowclas}><img src="$img_url/botton/Filey.png" /> <a href="?anyid={$anyid}&lang=$lang&fileurl={$fileurl2}&file_classnow=3" title="$val2[name]">$val2[name]</a>
+            <p {$nowclas}><img src="$img_url/botton/Filey.png" /> <a href="?anyid={$anyid}&lang=$lang&fileurl={$fileurl2}&file_classnow=3&cs=$cs" title="$val2[name]">$val2[name]</a>
 			</p>
 <!--
 EOT;
@@ -232,7 +242,7 @@ echo <<<EOT
 		<td class="list-text">20$val[uploadtime]</td>
 		<td class="list-text">
 		    <a href="{$val[folder]}/$val[file]" target="_blank" >{$lang_setfileview}</a>&nbsp;&nbsp; 
-			<a href="?anyid={$anyid}&lang=$lang&filename={$val[folder]}/{$val[file]}&fileurl={$metnowdir}&file_classnow=$file_classnow&page=$page&action=delete" onClick="return linkSmit($(this),1);" title="{$lang_delete}">{$lang_delete}</a>
+			<a href="?anyid={$anyid}&lang=$lang&filename={$val[folder]}/{$val[file]}&fileurl={$metnowdir}&file_classnow=$file_classnow&page=$page&action=delete&cs=$cs" onClick="return linkSmit($(this),1);" title="{$lang_delete}">{$lang_delete}</a>
 		</td>
     </tr> 
 <!--
@@ -262,23 +272,23 @@ echo <<<EOT
 <input name="action_type" type="hidden" value="del">
 <input name="allid" type="hidden" id="allid" value="">
 			  </form>
-   	   <tr> 
-			<td class="all"></td>
-            <td width="40" class="all"><input name="chkAll" type="checkbox" id="chkAll" onclick="CheckAllx($(this),'del')" value="checkbox" /></td>
-			  <td class="all-submit" align="left" colspan="7">
-			  <input name="submit" type='submit' value='{$lang_deleteselected}' class="submit li-submit" onclick="met_modify($(this),'del','delete');" /> 
-			  <div class="page_list">
-			  {$page_list}
-			  </div>
-              </td>
-          </tr>
+   	    <tr> 
+			<td class="list"></td>
+            <td width="40" class="list"><input name="chkAll" type="checkbox" id="chkAll" onclick="CheckAllx($(this),'del')" value="checkbox" /></td>
+			<td class="list list_left" colspan="7">
+			  <input name="submit" type='submit' value='{$lang_deleteselected}' class="submit li-submit" onclick="met_modify($(this),'del','delete');" />
+            </td>
+        </tr>
+   	    <tr> 
+			<td class="list list_normal" colspan="8">$page_list</td>
+        </tr>
 	<tr>
-	    <td class="input" colspan="8" style="text-align:center;"><span class="tips">{$lang_setfiletext1}</span></td>
-	</tr>
-	<tr>
-		<td class="footer" colspan="8">$foot</td>
+	    <td class="list list_left list_normal" colspan="8"><span class="tips">{$lang_setfiletext1}</span></td>
 	</tr>
 </table>
+</div>
+</div>
+<div class="footer">$foot</div>
 <script type="text/javascript">
     var tdfile = $("#files");
 	    tdfile.attr("rowspan",$('tr.click').length+1);

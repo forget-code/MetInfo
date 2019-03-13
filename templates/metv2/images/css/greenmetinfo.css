@@ -37,7 +37,7 @@ a:hover{  color:#0099FF; }
 #head  .navdown{ background:url(../green/navspanleft.gif) no-repeat left top;}
 #head  .navdown span{ background:url(../green/navspanright.gif) no-repeat 100% top; color:#333;}
 
-#head  .nav ul ul{ position:absolute; top:37px; left:0px; text-align:center; background:#fff; height:auto; padding-left:0px;  }
+#head  .nav ul ul{ position:absolute; top:37px; left:0px; text-align:center; background:#fff; height:auto; padding-left:0px; z-index:9999;  }
 #head  .nav ul ul li{ height:22px; line-height:22px; margin:3px; overflow:hidden; }
 #head  .nav ul ul li a{ color:#333; display:block;}
 #head  .nav ul ul li a:hover{ background:#1D9D31; color:#fff;}

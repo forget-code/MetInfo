@@ -42,6 +42,8 @@ if($admin_listed[admin_group]==0){
 $sexx[$admin_listed[admin_sex]]="checked='checked'";
 $admin_groupx[$admin_listed[admin_group]]="checked='checked'";
 $metmanager=1;
+$query="select * from $met_app where download=1";
+$app=$db->get_all($query);
 require_once '../include/metlist.php';
 $css_url="../templates/".$met_skin."/css";
 $img_url="../templates/".$met_skin."/images";

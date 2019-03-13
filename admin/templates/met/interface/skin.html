@@ -9,97 +9,114 @@ echo <<<EOT
 <body>
 <!--
 EOT;
-if($cs==2)$title="{$lang_setskinAdd}";
-require_once template('metlangs');
+if($cs==12)$title="{$lang_setskinAdd}";
+require_once template('interface/skin_top');
 echo <<<EOT
 -->
 <!--
 EOT;
-if($cs==2){
+if($cs==12){
 echo <<<EOT
 -->
 			    <form enctype="multipart/form-data" method="POST" name="myform" action="?anyid={$anyid}&action=add&lang={$lang}" target="_self">
 				<input name="met_skin_user" type="hidden" value="0" />
-			    <table cellpadding="0" cellspacing="1" class="table">
-				    <tr>
-				        <td class="text"><span class="bi_tian">*</span>{$lang_skinname}{$lang_marks}</td>
-			            <td class="input" colspan="7"><input name="skin_name" type="text" class="text t1 nonull" /></td>
-					</tr>
-                    <tr>
-					    <td class="text">{$lang_skinup}{$lang_marks}</td>
-						<td class="input" colspan="7">
-							<span class="tips">{$lang_skinexplain1}</span>
-<script type="text/javascript" src="{$img_url}/js/uploadify/swfobject.js"></script>
-<script type="text/javascript" src="{$img_url}/js/uploadify/jquery.uploadify.v2.1.4.min.js"></script>
+<div class="v52fmbx_tbmax v52fmbx_tbmaxmt">
+<div class="v52fmbx_tbbox">
+<div class="v52fmbx">
+	<div class="v52fmbx_dlbox">
+	<dl>
+		<dt>{$lang_skinname}{$lang_marks}</dt>
+		<dd>
+			<input name="skin_name" type="text" class="text t1 nonull" />
+		</dd>
+	</dl>
+	</div>
+	<div class="v52fmbx_dlbox">
+	<dl>
+		<dt>{$lang_skinup}{$lang_marks}</dt>
+		<dd>
+			<span class="tips">{$lang_skinexplain1}</span>
 			<input name="met_upsql" type="file" id="file_upload" />
 			<script type='text/javascript'>
 				$(document).ready(function(){
 					metuploadify('#file_upload','skin','skin_file','','','*.zip','{$lang_js68}');
 				});
 			</script>
-						</td>
-                    </tr>
-				    <tr>
-					    <td class="text"><span class="bi_tian">*</span>{$lang_skinDocument}{$lang_marks}</td>
-					    <td class="input" colspan="7">
-							    <input name="skin_file" type="text" class="text t1 med nonull" value="" />
-								<span class="tips-text color390">{$lang_skinaddinfo1}</span>
-						</td>
-					</tr>
-					<tr>
-				        <td class="text">{$lang_skinIntroduce}{$lang_marks}</td>
-					    <td class="input" colspan="7">   
-						    <textarea name="skin_info" type="textarea" class="textarea t1" cols='25' rows='4' style="width:300px;"></textarea>
-					    </td>
-                    </tr>
-					<tr>
-				        <td class="text">{$lang_skinuse}{$lang_marks}</td>
-					    <td class="input" colspan="7">   
-						    <label><input name="met_skin_user" type="checkbox" class="radio" value="1" />&nbsp;{$lang_skinexplain2}</label>
-					    </td>
-                    </tr>
-                    <tr>
-					    <td class="text"></td>
-						<td class="input" colspan="7">
-						    <input type="submit" name="Submit2" value="{$lang_Submit}" class="submit"  onclick="return Smit($(this),'myform')" />
-							&nbsp;&nbsp;&nbsp;&nbsp;
-							<a href="http://www.metinfo.cn/product/" target="_blank" title="{$lang_skinmore}">{$lang_skinmore}</a>
-						</td>
-                    </tr>
-		<tr>
-		  <td class="footer" colspan="7">$foot</td>
-	  </tr>
-			    </table>
-	            </form>
-				
-<!--
-EOT;
-}else{
-echo <<<EOT
--->
-<table cellpadding="2" cellspacing="1" class="table skin_manager">
-		<tr>
-			<td colspan="8" class="centle" style="font-weight:normal;">
+		</dd>
+	</dl>
+	</div>
+	<div class="v52fmbx_dlbox">
+	<dl>
+		<dt>{$lang_skinDocument}{$lang_marks}</dt>
+		<dd>
+			<input name="skin_file" type="text" class="text t1 med nonull" value="" />
+			<span class="tips">{$lang_skinaddinfo1}</span>
+		</dd>
+	</dl>
+	</div>
+	<div class="v52fmbx_dlbox">
+	<dl>
+		<dt>{$lang_skinIntroduce}{$lang_marks}</dt>
+		<dd>
+			<textarea name="skin_info" type="textarea" class="textarea t1" cols='25' rows='4'></textarea>
+		</dd>
+	</dl>
+	</div>
+	<div class="v52fmbx_dlbox v52fmbx_mo">
+	<dl>
+		<dt>{$lang_skinuse}{$lang_marks}</dt>
+		<dd>
+			<label><input name="met_skin_user" type="checkbox" class="radio" value="1" />&nbsp;{$lang_skinexplain2}</label>
+		</dd>
+	</dl>
+	</div>
+	<div class="v52fmbx_submit">
+		<input type="submit" name="submit1" value="{$lang_Submit}" class="submit" onClick="return Smit($(this),'myform')" />
 <!--
 EOT;
 if($met_agents_type<=1){
 echo <<<EOT
 -->	
-			<span style="float:right;"><a href="http://www.metinfo.cn/product/" title="{$lang_skinerr2}" target="_blank" class="color390">{$lang_skinerr2}</a></span>
+		&nbsp;&nbsp;<a href="http://www.metinfo.cn/product/" target="_blank" title="{$lang_skinmore}">{$lang_skinmore}</a>
+<!--
+EOT;
+}
+echo <<<EOT
+-->	
+	</div>
+</div>
+</div>
+</div>
+</form>
+<div class="footer">$foot</div>
+<!--
+EOT;
+}else{
+echo <<<EOT
+-->
+<div class="v52fmbx_tbmax v52fmbx_tbmaxmt">
+<div class="v52fmbx_tbbox">
+<h3 class="v52fmbx_hr">
+<!--
+EOT;
+if($met_agents_type<=1){
+echo <<<EOT
+-->	
+			<span style="float:right;"><a href="http://www.metinfo.cn/product/" title="{$lang_skinerr2}" target="_blank">{$lang_skinerr2}</a></span>
 <!--
 EOT;
 }
 echo <<<EOT
 -->			
-			<a href="?anyid={$anyid}&lang={$lang}&cs=2">+{$lang_skinAddNew}</a><br/>
-			</td>
-		</tr>
+			<a href="?anyid={$anyid}&lang={$lang}&cs=12">+{$lang_skinAddNew}</a>
+</h3>
+<table cellpadding="2" cellspacing="1" class="table skin_manager">
         <tr>
-            <td width="50" class="list" style="padding:0px; text-align:center;">{$lang_skinusenow}</td>
-			<td width="100" class="list">{$lang_preview}</td>
-            <td class="list">{$lang_skininfo}</td>
-            <td width="60" class="list">{$lang_skinstyle}</td>
-			<td class="list">{$lang_operate}</td>
+            <td width="30" class="list">{$lang_skinusenow}</td>
+			<td width="40" class="list">{$lang_preview}</td>
+            <td width="40" class="list list_left">{$lang_skininfo}</td>
+            <td width="40" class="list">{$lang_skinstyle}</td>
+			<td class="list list_left">{$lang_operate}</td>
         </tr>
 <!--
 EOT;
@@ -117,15 +134,17 @@ $selects="onchange=\"fenggeok('{$val[id]}','{$val[skin_file]}',1);\"";
 echo <<<EOT
 -->          
         <tr>
-            <td class="list-text"><input name='id' id="sklist_{$val[id]}" value='' type='radio' {$skinok} onclick="fenggeok('{$val[id]}','{$val[skin_file]}');" /></td>
+            <td class="list-text">
+				<input name='id' id="sklist_{$val[id]}" value='' type='checkbox' {$skinok} onclick="fenggeok('{$val[id]}','{$val[skin_file]}');" />
+			</td>
 			<td class="list-text">
 				<img src="../../templates/{$val[skin_file]}/view.jpg" width="120" height="120" style="margin:5px; border:1px solid #ddd; padding:3px;" />
 			</td>
-            <td class="list-text alignleft" style="padding-left:10px;">
-			<span style="font-size:14px;">{$val[skin_name]}</span>&nbsp;&nbsp;&nbsp;&nbsp;{$val[open]}
-			<p style="color:#666;">{$lang_skindescription}{$lang_marks}{$val[skin_info]}<br/>
-			{$lang_skinnumber}{$lang_marks}{$val[skin_file]}<br/>
-			</p>
+            <td class="list-text list_left">
+				<span style="font-size:16px;">{$val[skin_name]}</span>&nbsp;&nbsp;&nbsp;&nbsp;{$val[open]}
+				<p class="color999">{$lang_skindescription}{$lang_marks}{$val[skin_info]}<br/>
+				{$lang_skinnumber}{$lang_marks}{$val[skin_file]}<br/>
+				</p>
 			</td>
 			<td class="list-text">
 		    <select name="met_skin_css_{$val[id]}" {$selects}>
@@ -144,7 +163,10 @@ echo <<<EOT
 -->		
 		    </select>
 			</td>
-			<td class="list-text"><a href="skin_editor.php?anyid={$anyid}&lang={$lang}&skin_file={$val[skin_file]}&id={$val[id]}&cs=2" title="{$lang_skinsetup}">{$lang_skinsetup}</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="skin_manager.php?anyid={$anyid}&id=$val[id]&action=delete&lang=$lang" onClick="return linkSmit($(this),1);" title="{$lang_delete}">{$lang_delete}</a>
+			<td class="list-text list_left">
+				<a href="skin_editor.php?anyid={$anyid}&lang={$lang}&skin_file={$val[skin_file]}&id={$val[id]}" title="{$lang_skinsetup}">{$lang_skinsetup}</a>
+				&nbsp;
+				<a href="skin_manager.php?anyid={$anyid}&id=$val[id]&action=delete&lang=$lang" onClick="return linkSmit($(this),1);" title="{$lang_delete}">{$lang_delete}</a>
 			</td>
         </tr>
 <!--
@@ -154,15 +176,15 @@ echo <<<EOT
 -->
    	    <tr> 
 			<td class="list-text"></td>
-			<td class="list-text" colspan="5" style="text-align:left; padding-left:10px;"><a href="?anyid={$anyid}&lang={$lang}&cs=2">+{$lang_skinAddNew}</a></td>
+			<td class="list-text list_left" colspan="4"><a href="?anyid={$anyid}&lang={$lang}&cs=2">+{$lang_skinAddNew}</a></td>
         </tr>		
    	    <tr> 
-			<td class="page_list" colspan="5">$page_list</td>
+			<td class="list list_normal" colspan="5">$page_list</td>
         </tr>
-		<tr>
-		  <td class="footer" colspan="7">$foot</td>
-	  </tr>
 </table>
+</div>
+</div>
+<div class="footer">$foot</div>
 <script type="text/javascript">
 	var d=$("input[name='id']:checked");
 function fenggeok(id,file,type){

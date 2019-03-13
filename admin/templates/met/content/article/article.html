@@ -17,6 +17,12 @@ EOT;
 $title=$class1?"<a href='index.php?anyid={$anyid}&lang={$lang}&class1={$class1}'>{$class1_info[name]}</a>":"<a href='index.php?anyid={$anyid}&lang={$lang}'>{$lang_modulemanagement2}</a>";
 $rurl="../content.php?anyid={$anyid}&lang={$lang}";
 require_once template('metlangs');
+echo <<<EOT
+-->
+<div class="v52fmbx_tbmax">
+<div class="v52fmbx_tbbox">
+<!--
+EOT;
 if($met_content_type==2){
 if(!$class1)$style="style='color:#f00'";
 echo <<<EOT
@@ -28,7 +34,7 @@ echo <<<EOT
 EOT;
 $i=0;
 foreach($met_classindex[$module] as $key=>$val){
-$admin_column_power="admin_pop".$val[id];
+$admin_column_power="admin_popc".$val[id];
 if(!($metinfo_admin_pop=='metinfo'||$$admin_column_power=='metinfo'))continue;
 $i++;$style='';$qn=$i==1?'':'-';
 if($val[id]==$class1)$style="style='color:#f00'";
@@ -137,7 +143,7 @@ echo <<<EOT
 				</select>
 				</form>
 				<form method="POST" name="search" action="index.php?anyid={$anyid}&lang={$lang}&search=detail_search&class1={$class1}&class2={$class2}&class3={$class3}" target="_self">
-					<input name="title" type="text" class="text" id="searchtext" value="{$lang_modsearch}" />				
+					<input name="title" type="text" class="text" id="searchtext" style="width:150px!important;" value="{$lang_modsearch}" />				
 					<input type="submit" name="searchsubmit" value="{$lang_search}" class="submitmi" />
 					<input name="top" type="hidden" id="se-top" value="{$top}">
 					<input name="recommend" type="hidden" id="se-recommend" value="{$recommend}">
@@ -146,45 +152,45 @@ echo <<<EOT
 			</td>
 		</tr>
               <tr id="list-top">
-                <td width="40" class="list" style="padding:0px; text-align:center;">{$lang_selected}</td>
-				<td width="50" class="list" style="padding:0px; text-align:center;">{$lang_sort}</td>
-                <td class="list">{$lang_title}</td>
+                <td width="30" class="list">{$lang_selected}</td>
+				<td width="30" class="list">{$lang_sort}</td>
+                <td class="list list_left">{$lang_title}</td>
 <!--
 EOT;
 if($metadmin[newscom]){
 echo <<<EOT
 -->	
-                <td width="50" style="padding:0px; text-align:center;" class="list" >{$lang_recom}</td>
+                <td width="30" class="list" >{$lang_recom}</td>
 <!--
 EOT;
 }
 echo <<<EOT
 -->	
-				<td width="50" style="padding:0px; text-align:center;" class="list" >{$lang_top}</td>
+				<td width="30" class="list" >{$lang_top}</td>
 <!--
 EOT;
 if($met_wap && $met_wap_ok){
 echo <<<EOT
 -->	
-				<td width="50" style="padding:0px; text-align:center;" class="list" >{$lang_wap}</td>
+				<td width="30" class="list" >{$lang_wap}</td>
 <!--
 EOT;
 }
 echo <<<EOT
--->	
+-->
                 <td width="60" class="list" >{$lang_updatetime}</td>	
 <!--
 EOT;
 if($met_member_use){
 echo <<<EOT
 -->				
-				<td width="70" style="padding:0px; text-align:center;" class="list" >{$lang_webaccess}</td>
+				<td width="60" class="list" >{$lang_webaccess}</td>
 <!--
 EOT;
 }
 echo <<<EOT
 -->					
-	           <td width="50" class="list" >{$lang_operate}</td>
+	           <td class="list list_left" >{$lang_operate}</td>
               </tr>
 			  <form name="del" method="Post" action="delete.php?anyid={$anyid}&lang=$lang&class1=$class1&class2=$class2&class3=$class3">
 <!--
@@ -195,25 +201,25 @@ echo <<<EOT
               <tr class="mouse click">
               <td class="list-text"><input name='id' type='checkbox' id="id" value='$val[id]' /></td>
                 <td class="list-text"><input type="text" name="no_order_$val[id]" class="text no_order" value="$val[no_order]" /></td>
-			    <td class="list-text alignleft">&nbsp;&nbsp;<a href="../../../{$met_class[$val[class1]][foldername]}/shownews.php?lang={$lang}&id={$val[id]}" title='{$lang_preview}：{$val[title]}' target="_blank">{$val[titles]}</a></td>
+			    <td class="list-text list_left"><a href="../../../{$met_class[$val[class1]][foldername]}/shownews.php?lang={$lang}&id={$val[id]}" title='{$lang_preview}：{$val[title]}' target="_blank">{$val[titles]}</a></td>
 <!--
 EOT;
 if($metadmin[newscom]){
 echo <<<EOT
--->	
-                <td class="list-text"><a href="changeState.php?anyid={$anyid}&lang=$lang&com_ok=$val[com_ok]&id=$val[id]&class1=$class1&class2=$class2&class3=$class3" onClick="return linkSmit($(this));">$val[com_ok1]</a></td>
+-->
+                <td class="list-text"><a href="changeState.php?anyid={$anyid}&lang=$lang&com_ok=$val[com_ok]&id=$val[id]&class1=$class1&class2=$class2&class3=$class3&page=$page" onClick="return linkSmit($(this));" com_ok="$val[id]" com_ok_val="$val[com_ok]">$val[com_ok1]</a></td>
 <!--
 EOT;
 }
 echo <<<EOT
 -->					
-				<td class="list-text"><a href="changeState.php?anyid={$anyid}&lang=$lang&top_ok=$val[top_ok]&id=$val[id]&class1=$class1&class2=$class2&class3=$class3" onClick="return linkSmit($(this));">$val[top_ok1]</a></td>
+				<td class="list-text"><a href="changeState.php?anyid={$anyid}&lang=$lang&top_ok=$val[top_ok]&id=$val[id]&class1=$class1&class2=$class2&class3=$class3&page=$page" onClick="return linkSmit($(this));" top_ok="$val[id]" top_ok_val="$val[top_ok]">$val[top_ok1]</a></td>
 <!--
 EOT;
 if($met_wap && $met_wap_ok){
 echo <<<EOT
 -->	
-				<td class="list-text"><a href="changeState.php?anyid={$anyid}&lang=$lang&wap_ok=$val[wap_ok]&id=$val[id]&class1=$class1&class2=$class2&class3=$class3" onClick="return linkSmit($(this));">$val[wap_ok1]</a></td>
+				<td class="list-text"><a href="changeState.php?anyid={$anyid}&lang=$lang&wap_ok=$val[wap_ok]&id=$val[id]&class1=$class1&class2=$class2&class3=$class3&page=$page" onClick="return linkSmit($(this));" wap_ok="$val[id]" wap_ok_val="$val[wap_ok]">$val[wap_ok1]</a></td>
 <!--
 EOT;
 }
@@ -231,8 +237,8 @@ EOT;
 }
 echo <<<EOT
 -->	
-				<td class="list-text">
-					<a href="content.php?anyid={$anyid}&action=editor&lang=$lang&id=$val[id]&page={$page}&cengci={$cengci}">{$lang_editor}</a>&nbsp;&nbsp;<a href="delete.php?anyid={$anyid}&lang=$lang&id=$val[id]&class1=$class1&class2=$class2&class3=$class3&cengci={$cengci}" {$met_del}>{$lang_delete}</a></td>
+				<td class="list-text list_left">
+					<a href="content.php?anyid={$anyid}&action=editor&lang=$lang&id=$val[id]&class1=$class1&class2=$class2&class3=$class3&page={$page}&cengci={$cengci}">{$lang_editor}</a>&nbsp;&nbsp;<a href="delete.php?anyid={$anyid}&lang=$lang&id=$val[id]&class1=$class1&class2=$class2&class3=$class3&page={$page}&cengci={$cengci}" {$met_del}>{$lang_delete}</a></td>
               </tr>
 <!--
 EOT;
@@ -243,10 +249,47 @@ echo <<<EOT
 </form>
    	   <tr> 
             <td class="all"><input name="chkAll" type="checkbox" id="chkAll" onclick="CheckAllx($(this),'del')" value="checkbox"></td>
-			 <td class="all-submit" colspan="$colspanj" style="padding:5px 10px;">
+			 <td class="all-submit" colspan="$colspanj" style="padding:5px;">
 				<input name="recycle" type="hidden" value="{$met_recycle}" />
 				<input name="submit" type='submit' value='{$lang_deleteselected}' class="submit li-submit" onclick="return met_modify($(this),'del','del');" /> 
 				<input name="saveorder" type='submit' value='{$lang_Submit}{$lang_sort}' class="submit li-submit" onclick="return met_modify($(this),'del','editor');" />
+			<div class="li-submit">
+<!--
+EOT;
+if($metadmin[newscom]){
+echo <<<EOT
+-->
+	<select name="liscom" ltype="com_ok">
+		<option value="">{$lang_recom}</option>
+		<option value="1">{$lang_yes}</option>
+		<option value="0">{$lang_no}</option>
+	</select>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+	<select name="listop" ltype="top_ok">
+		<option value="">{$lang_top}</option>
+		<option value="1">{$lang_yes}</option>
+		<option value="0">{$lang_no}</option>
+	</select>
+<!--
+EOT;
+if($met_wap && $met_wap_ok){
+echo <<<EOT
+-->
+	<select name="liswap" ltype="wap_ok">
+		<option value="">{$lang_wap}</option>
+		<option value="1">{$lang_yes}</option>
+		<option value="0">{$lang_no}</option>
+	</select>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+			</div>
 			  <div class="li-submit">
 <form method="POST" name="mycopy" action="changeState.php?anyid={$anyid}&lang={$lang}&action=copy" target="_self">
 	<input name="allid" type="hidden" value="" />
@@ -324,11 +367,11 @@ echo <<<EOT
 -->
 			  </td>
           </tr>
-		<tr><td colspan="{$colspan}" class="page_list" style="padding:5px 0px;">{$page_list}</td></tr>
-	<tr>
-		<td class="footer" colspan="$colspan">$foot</td>
-	</tr>
+		<tr><td colspan="{$colspan}" class="page_list">{$page_list}</td></tr>
 </table>
+</div>
+</div>
+<div class="footer">{$foot}</div>
 <script type="text/javascript">
 var cplang = new Array();
 var cpar   = new Array('copylang','copyclass1','copyclass2','copyclass3');
@@ -339,6 +382,7 @@ EOT;
 $i=0;
 foreach($column_lang[2] as $key=>$val){
 if($val['bigclass']>0 && $val['releclass']==0)$val['lang']=$val['bigclass'];
+$val[name]=str_replace("'","\\'",$val[name]);
 echo <<<EOT
 -->
     cplang[$i]=new Array('{$val[name]}','{$val[lang]}','{$val[id]}','{$val[access]}');
@@ -353,6 +397,8 @@ echo <<<EOT
 	modifyview('{$modify}');
 	seachinput($('#searchtext'),'{$lang_modsearch}');
 });
+
+
 </script>
 </body>
 </html>

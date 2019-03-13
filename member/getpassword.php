@@ -4,7 +4,7 @@
 require_once '../include/common.inc.php';
 require_once ROOTPATH.'member/index_member.php';
 if($p){
-   $array = explode('.',base64_decode($p));
+   $array = explode('.',authcode($p,'DECODE', $met_webkeys));
    $array[0]=daddslashes($array[0]);
    $sql="SELECT * FROM $met_admin_table WHERE admin_id='".$array[0]."'";
    $sqlarray = $db->get_one($sql);
@@ -17,7 +17,6 @@ if($p){
    if($action == "MembersAction"){
         if($password=='' || $passworda!=$password)okinfo('javascript:history.back();',$lang_NewPassJS2);
         $password = md5($password);
-		$array[0]=daddslashes($array[0]);
         $query="update $met_admin_table set
 		   admin_pass='$password'
 		   where admin_id='$array[0]'";
@@ -41,7 +40,9 @@ if($p){
 		$adminfile=$url_array[count($url_array)-2];
 		$title=$met_webname1.$lang_getNotice;
 		$x = md5($admin_name.'+'.$admin_list[admin_pass]);
-		$String = base64_encode($admin_name.".".$x);
+		$outime=3600*24*3;
+		$String=authcode($admin_list[admin_id].".".$x,'ENCODE', $met_webkeys, $outime);
+		$String=urlencode($String);
 		$mailurl= $met_weburl.$adminfile.'member/getpassword.php?lang='.$lang.'&p='.$String;
 		$body  ="<style type='text/css'>\n";
 		$body .="#metinfo{ padding:10px; color:#555; font-size:12px; line-height:1.8;}\n";

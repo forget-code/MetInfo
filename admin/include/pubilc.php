@@ -4,6 +4,8 @@
 $query="select * from $met_column where lang='$lang' order by no_order";
 $result= $db->query($query);
 while($list = $db->fetch_array($result)){
+$admin_column_power="admin_popc".$list[id];
+if(!($metinfo_admin_pop=='metinfo'||$$admin_column_power=='metinfo')&&($list[classtype]==1||$list[releclass]!=0))continue;
 if($list[classtype]==1){
     $met_class1[$list['id']]=$list;
 }

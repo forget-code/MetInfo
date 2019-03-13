@@ -31,10 +31,10 @@ if($met_img_style==1)$met_img_style1="checked='checked'";
 if($met_big_wate==1)$met_big_wate1="checked='checked'";
 if($met_thumb_wate==1)$met_thumb_wate1="checked='checked'";
 if($met_autothumb_ok==1)$met_autothumb_ok1="checked='checked'";
-if($met_img_rename==1)$met_img_rename1="checked='checked'";
+
 if($met_wate_class==1)$met_wate_class1="checked='checked'";
 if($met_wate_class==2)$met_wate_class2="checked='checked'";
-if($met_deleteimg==1)$met_deleteimg1="checked='checked'";
+
 $metthumbkind[$met_thumb_kind]='checked';
 switch($met_watermark){
 case 0:

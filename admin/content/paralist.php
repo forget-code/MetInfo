@@ -19,11 +19,13 @@ if($id){
 $str='';
 $para_list=para_list_with($contentslist);
 foreach($para_list as $key=>$val){
-	if($val['type']==5)$upcs='upload';
-	$str.="<tr name='paralist'>
-		<td class=\"text\">{$val[name]}{$lang_marks}</td>
-		<td colspan=\"2\" class=\"input {$upcs}\">{$val[inputcont]}</td>
-	</tr>
+	$str.="
+	<div class='v52fmbx_dlbox' name='paralist'>
+	<dl>
+			<dt>{$val[name]}{$lang_marks}</dt>
+			<dd>{$val[inputcont]}</dd>
+	</dl>
+	</div>
 	";
 }
 echo $str;

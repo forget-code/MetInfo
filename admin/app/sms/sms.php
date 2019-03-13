@@ -16,9 +16,9 @@ if($action=='modify'){
 		die();
 	}
 	if($price[price]!=$met_smsprice){
-		$re.='当前短信发送价格和服务器设定价格不一致，点击<a href=\'\'>此处</a>刷新页面，重新获取发送价格';
+		$re.=$lang_smstips94;
 		if($price['re']!='SUC'){
-			$re.='错误原因：'.powererr($price['re']);
+			$re.=$lang_smstips95.powererr($price['re']);
 		}
 		$query="update $met_config set value='$price[price]' where name='met_smsprice'";
 		$db->query($query);
@@ -40,15 +40,8 @@ if($action=='modify'){
 		}
 	}
 	echo substr($member_list, 0, -1);
-}elseif($action=='balance'){
-	$re='';
-	$balance=smsremain();
-	if($balance['re']=='nohost'){
-		echo $lang_hosterror;
-		die();
-	}
-	echo number_format($balance[balance],2);
 }else{
+	$total_passok = $db->get_one("SELECT * FROM $met_otherinfo WHERE lang='met_sms'");
 	$met_smsprice=number_format($met_smsprice,2);
 	$css_url=$depth."../templates/".$met_skin."/css";
 	$img_url=$depth."../templates/".$met_skin."/images";

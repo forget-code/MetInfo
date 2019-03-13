@@ -12,12 +12,12 @@ $listclass[5]='class="now"';
 require_once template('app/sms/top');
 echo <<<EOT
 -->
-	<table cellpadding="2" cellspacing="1" class="table">
-		<tr>
-			<td colspan="6" class="centle" style="font-weight:normal; color:#999; padding:5px 0px;">
-				&nbsp;&nbsp;{$lang_smstips16}
-			</td>
-		</tr>
+<div class="v52fmbx_tbmax">
+<div class="v52fmbx_tbbox">
+	<h3 class="v52fmbx_hr">
+		{$lang_smstips16}
+	</h3>
+<table cellpadding="2" cellspacing="1" class="table">
 		<tr id="list-top">
                 <td class="list" width="60" style="padding:0px; text-align:center;">{$lang_smstips17}</td>
                 <td class="list" width="60">
@@ -34,33 +34,58 @@ echo <<<EOT
                 <td class="list">{$lang_smstips23}</td>
                 <td class="list" width="120">{$lang_smstips24}</td>
         </tr>
-<!--
-EOT;
-$i=0;
-foreach ($record_list as $key=>$val){
-$i++;
-echo <<<EOT
--->          
-              <tr class="mouse click">
-                <td class="list-text color666">{$val[order]}</td>
-                <td class="list-text color666">{$val[type]}</td>
-                <td class="list-text color666">￥{$val[cost]}</td>
-                <td class="list-text color666">￥{$val[balance]}</td>
-			    <td class="list-text color666 alignleft">&nbsp;&nbsp;{$val[remark]}</td>
-			    <td class="list-text color666">{$val[time]}</td>
-              </tr>
-<!--
-EOT;
-}
-echo <<<EOT
--->
-   	   <tr> 
-			 <td class="page_list" colspan="6">$page_list</td>
-        </tr>
-	<tr>
-		<td class="footer" colspan="6">$foot</td>
-	</tr>
 </table>
+</div>
+</div>
+<div class="footer">{$foot}</div>
+<script type="text/javascript">
+$(document).ready(function(){
+	$("<tr><td colspan=\"6\" class=\"footer\" id=\"loading\">$lang_jsx1</td></tr>").insertAfter("#list-top");
+	$.ajax({
+		url: 'http://{$met_host}/sms/recharge.php?action=json&md5={$total_pass[authpass]}&userlang={$lang}&useranyid={$anyid}&notes_type={$notes_type}&userpage=$page',
+		type: 'GET',
+		dataType: 'jsonp',
+		jsonp: 'jsoncallback',
+		success: function(data) {
+			$('#loading').remove();
+			var langarray=new Array();
+			langarray[0]=new Array();
+			langarray[0][0]=/lang_smsrecharge/g;
+			langarray[0][1]='$lang_smsrecharge';
+			langarray[1]=new Array();
+			langarray[1][0]=/lang_smschargeback/g;
+			langarray[1][1]='$lang_smschargeback';
+			langarray[2]=new Array();
+			langarray[2][0]=/lang_smstips1/g;
+			langarray[2][1]='$lang_smstips1';
+			langarray[3]=new Array();
+			langarray[3][0]=/lang_smstips58/g;
+			langarray[3][1]='$lang_smstips58';
+			langarray[4]=new Array();
+			langarray[4][0]=/lang_smstips59/g;
+			langarray[4][1]='$lang_smstips59';
+			langarray[5]=new Array();
+			langarray[5][0]=/lang_smstips60/g;
+			langarray[5][1]='$lang_smstips60';
+			langarray[6]=new Array();
+			langarray[6][0]=/lang_smstips61/g;
+			langarray[6][1]='$lang_smstips61';
+			var i;
+			for(i=0;i<=6;i++){
+				data.msg=data.msg.replace(langarray[i][0],langarray[i][1]);
+			}
+			$(data.msg).insertAfter("#list-top");
+			ifreme_methei();
+		}
+	});
+	setTimeout(function() {
+		if($('#loading').html()=='$lang_jsx1'){
+			$('#loading').html('$lang_jsx21');
+		}
+	},
+	30000);
+});
+</script>
 </body>
 </html>
 <!--

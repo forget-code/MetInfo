@@ -29,8 +29,12 @@ if($action=="editor"){
 	$result = $db->query($query);
 	while($list= $db->fetch_array($result)){
 	$info_list=$db->get_one("select * from $met_flist where listid='$id' and paraid='$list[id]' and lang='$lang'");
-	$list[content]=$list[type]==5?((file_exists("../../../file/$info_list[info]")&&!is_dir("../../../file/$info_list[info]"))?"<a href='../../../file/".$info_list[info]."' target='_blank'>{$lang_clickview}</a>":$lang_filenomor):$info_list[info];
+	$list[content]=$list[type]==5?(($info_list[info]!='../upload/file/')?"<a href='../../".$info_list[info]."' target='_blank'>{$lang_clickview}</a>":$lang_filenomor):$info_list[info];
 	$feedback_para[]=$list;
+	}
+	$fnam=$db->get_one("SELECT * FROM $met_column WHERE id='$class1' and lang='$lang'");
+	foreach($settings_arr as $key=>$val){
+		if($val['columnid']==$fnam['id'])$$val['name']=$val['value'];
 	}
 	$css_url=$depth."../templates/".$met_skin."/css";
 	$img_url=$depth."../templates/".$met_skin."/images";

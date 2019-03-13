@@ -4,6 +4,9 @@
 $depth='../';
 require_once $depth.'../login/login_check.php';
 require_once $depth.'global.func.php';
+$reclass1=$class1;
+$reclass2=$class2;
+$reclass2=$class2;
 if($action=="editor"){
 	$news_list=$db->get_one("select * from $met_news where id='$id'");
 	$news_list['title']=str_replace('"', '&#34;', str_replace("'", '&#39;',$news_list['title']));

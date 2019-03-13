@@ -2,7 +2,7 @@
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 require_once template('head');
-$colspan=11;
+$colspan=10;
 if(!$met_wap && !$met_wap_ok)$colspan=$colspan-1;
 if(!$met_member_use)$colspan=$colspan-1;
 $colspanj=$colspan-1;
@@ -16,6 +16,8 @@ $title="<a href='index.php?anyid={$anyid}&lang={$lang}&class1={$class1}'>{$class
 require_once template('content/job/top');
 echo <<<EOT
 -->
+<div class="v52fmbx_tbmax">
+<div class="v52fmbx_tbbox">
     <table cellpadding="2" cellspacing="1" class="table">
 		<tr>
 			<td colspan="$colspan" class="centle" style=" height:20px; line-height:30px; font-weight:normal; padding-left:10px;">
@@ -42,37 +44,36 @@ echo <<<EOT
 			</td>
 		</tr>
         <tr>
-            <td width="40" class="list" style="padding:0px; text-align:center;">{$lang_selected}</td>
-			<td width="50" class="list" style="padding:0px; text-align:center;">{$lang_sort}</td>
-            <td class="list">{$lang_jobposition}</td>
-            <td width="70" class="list" style="padding:0px; text-align:center;">{$lang_jobnum}</td>
-			<td width="70" class="list" style="padding:0px; text-align:center;">{$lang_jobaddress}</td>
-            <td width="80" class="list" style="padding:0px; text-align:center;">{$lang_joblife}</td>
-			<td width="50" style="padding:0px; text-align:center;" class="list">{$lang_top}</td>
+            <td width="30" class="list">{$lang_selected}</td>
+			<td width="30" class="list">{$lang_sort}</td>
+            <td class="list list_left">{$lang_jobposition}</td>
+            <td width="60" class="list">{$lang_jobnum}</td>
+            <td width="60" class="list">{$lang_joblife}</td>
+			<td width="30" class="list">{$lang_top}</td>
 <!--
 EOT;
 if($met_wap && $met_wap_ok){
 echo <<<EOT
 -->	
-				<td width="50" style="padding:0px; text-align:center;" class="list">{$lang_wap}</td>
+				<td width="30" class="list">{$lang_wap}</td>
 <!--
 EOT;
 }
 echo <<<EOT
 -->	
-            <td width="90" style="padding:0px; text-align:center;" class="list">{$lang_jobpublish}</td>
+            <td width="60" class="list">{$lang_jobpublish}</td>
 <!--
 EOT;
 if($met_member_use){
 echo <<<EOT
 -->	
-			<td width="70" style="padding:0px; text-align:center;" class="list" >{$lang_webaccess}</td>
+			<td width="60" class="list" >{$lang_webaccess}</td>
 <!--
 EOT;
 }
 echo <<<EOT
 -->	
-			<td width="70"  class="list" >{$lang_operate}</td>
+			<td class="list list_left">{$lang_operate}</td>
         </tr>
 		<form name="del" method="Post" action="delete.php?anyid={$anyid}&lang=$lang&class1=$class1">
 <!--
@@ -85,19 +86,18 @@ echo <<<EOT
             <td class="list-text">
 			    <input type="text" name="no_order_$val[id]" value="$val[no_order]" class="text no_order" />
 			</td>
-			<td class="list-text alignleft">&nbsp;&nbsp;<a href="../../../job/showjob.php?lang=$lang&id=$val[id]" title="{$lang_preview}" target="_blank">$val[position]</a></td>
+			<td class="list-text list_left"><a href="../../../job/showjob.php?lang=$lang&id=$val[id]" title="{$lang_preview}" target="_blank">$val[position]</a></td>
             <td class="list-text color999">$val[count]</td>
-			<td class="list-text color999">$val[place]</td>
             <td class="list-text color999">$val[useful_life]</td>
 			<td class="list-text">
-			    <a href="changeState.php?anyid={$anyid}&lang=$lang&top_ok=$val[top_ok]&id=$val[id]&class1=$class1" onClick="return linkSmit($(this));">$val[top_ok1]</a>
+			    <a href="changeState.php?anyid={$anyid}&lang=$lang&top_ok=$val[top_ok]&id=$val[id]&class1=$class1&class2=$class2&class3=$class3&page=$page" onClick="return linkSmit($(this));" top_ok="$val[id]" top_ok_val="$val[top_ok]">$val[top_ok1]</a>
 			</td>
 <!--
 EOT;
 if($met_wap && $met_wap_ok){
 echo <<<EOT
 -->	
-				<td class="list-text"><a href="changeState.php?anyid={$anyid}&lang=$lang&wap_ok=$val[wap_ok]&id=$val[id]&class1=$class1&class2=$class2&class3=$class3" onClick="return linkSmit($(this));">$val[wap_ok1]</a></td>
+				<td class="list-text"><a href="changeState.php?anyid={$anyid}&lang=$lang&wap_ok=$val[wap_ok]&id=$val[id]&class1=$class1&class2=$class2&class3=$class3&page=$page" onClick="return linkSmit($(this));" wap_ok="$val[id]" wap_ok_val="$val[wap_ok]">$val[wap_ok1]</a></td>
 <!--
 EOT;
 }
@@ -115,8 +115,8 @@ EOT;
 }
 echo <<<EOT
 -->	
-			<td class="list-text">
-			    <a href="content.php?anyid={$anyid}&lang=$lang&id=$val[id]&class1=$class1&action=editor&page={$page}" title="{$lang_editor}">{$lang_editor}</a>&nbsp;&nbsp;<a href="cv.php?anyid={$anyid}&lang=$lang&search=detail_search&jobid=$val[id]&class1={$class1}" title="查看{$lang_jobCV}">{$lang_jobCV}</a>&nbsp;&nbsp;<a href="delete.php?anyid={$anyid}&lang=$lang&id=$val[id]&class1=$class1" onClick="return linkSmit($(this),1);" title="{$lang_delete}">{$lang_delete}</a>
+			<td class="list-text list_left">
+			    <a href="content.php?anyid={$anyid}&lang=$lang&id=$val[id]&class1=$class1&action=editor&page={$page}" title="{$lang_editor}">{$lang_editor}</a>&nbsp;&nbsp;<a href="cv.php?anyid={$anyid}&lang=$lang&search=detail_search&jobid=$val[id]&class1={$class1}&page={$page}" title="{$lang_jobCV}">{$lang_jobCV}</a>&nbsp;&nbsp;<a href="delete.php?anyid={$anyid}&lang=$lang&id=$val[id]&class1=$class1&page={$page}" onClick="return linkSmit($(this),1);" title="{$lang_delete}">{$lang_delete}</a>
 			</td>
         </tr>
 <!--
@@ -131,6 +131,28 @@ echo <<<EOT
 			 <td class="all-submit" colspan="$colspanj" style="padding:5px 10px;">
 				<input name="submit" type='submit' value='{$lang_deleteselected}' class="submit li-submit" onclick="return met_modify($(this),'del','del');" /> 
 				<input name="saveorder" type='submit' value='{$lang_Submit}{$lang_sort}' class="submit li-submit" onclick="return met_modify($(this),'del','editor');" />
+			<div class="li-submit">
+	<select name="listop" ltype="top_ok">
+		<option value="">{$lang_top}</option>
+		<option value="1">{$lang_yes}</option>
+		<option value="0">{$lang_no}</option>
+	</select>
+<!--
+EOT;
+if($met_wap && $met_wap_ok){
+echo <<<EOT
+-->
+	<select name="liswap" ltype="wap_ok">
+		<option value="">{$lang_wap}</option>
+		<option value="1">{$lang_yes}</option>
+		<option value="0">{$lang_no}</option>
+	</select>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+			</div>
 			  <div class="li-submit">
 <form method="POST" name="mycopy" action="changeState.php?anyid={$anyid}&lang={$lang}&action=copy" target="_self">
 	<input name="allid" type="hidden" value="" />
@@ -208,11 +230,11 @@ echo <<<EOT
 -->
 			  </td>
 		</tr>
-		<tr><td colspan="{$colspan}" class="page_list" style="padding:5px 0px;">{$page_list}</td></tr>
-		<tr>
-		  <td class="footer" colspan="$colspan" >$foot</td>
-	  </tr>
+		<tr><td colspan="{$colspan}" class="page_list">{$page_list}</td></tr>
 </table>
+</div>
+</div>
+<div class="footer">{$foot}</div>
 <script type="text/javascript">
 var cplang = new Array();
 var cpar   = new Array('copylang','copyclass1','copyclass2','copyclass3');

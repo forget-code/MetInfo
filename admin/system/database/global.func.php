@@ -175,6 +175,28 @@ global $met_tablename;
 	}
 	return $tables;
 }
+function traversal($jkdir)
+{
+	global $allfileunm,$filenamearray;
+	$hand=opendir($jkdir);
+	if(!isset($allfileunm))$allfileunm=0;	
+	while ($file=readdir($hand))
+	{	
+		$filename=$jkdir.'/'.$file;
+		if(@is_dir($filename) && $file != '.' && $file!= '..'&& $file!='./..'){ 
+			$allfileunm++;
+			traversal($filename,$cache,0);
+		}
+		else{
+			if($file != '.' && $file!= '..'&& $file!='./..'){
+				$allfileunm++;
+				$filenamearray[]=$filename;
+			}
+
+		}	
+	}
+	return $allfileunm;
+}
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

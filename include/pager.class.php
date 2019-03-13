@@ -90,16 +90,10 @@ function link($url, $exc='')
   {
       global $lang_PageTotal,$lang_Page,$lang_PageLocation,$lang_PageHome,$lang_PageEnd,$lang_PagePre,$lang_PageNext,$lang_PageGo,$met_pageskin,$total_count;
 	  global $lang_Total,$lang_Pagenum,$met_url,$langnums,$metinfouiok,$class1,$class2,$class3,$class_list,$classnow,$met_pseudo;
-	  if(!$exc&&($class_list[$classnow][module]<6)){
-		$urlx=explode('&',$url);
-		if($class3){
-			$url = $urlx[0].'&'.$urlx[3].'&'.$urlx[4];
-		}elseif($class2){
-			$url = $urlx[0].'&'.$urlx[2].'&'.$urlx[4];
-		}else{
-			$url = $urlx[0].'&'.$urlx[1].'&'.$urlx[4];
+		if(!$exc&&($class_list[$classnow][module]<6)){
+			$url=str_replace('&class2=0','',$url);
+			$url=str_replace('&class3=0','',$url);
 		}
-	  }
  if($met_pageskin=='' or $met_pageskin==0 or $met_pageskin>9)$met_pageskin=1;
  $firestpage=$langnums==1?'../'.$this->SELF.'/':$url.'1'.$exc;
 if($class_list[$classnow][module]==11)$firestpage=$url.'1'.$exc;
@@ -129,7 +123,6 @@ case 1:
         } 
         elseif($this->_cur_page == $this->pages && $this->pages>1) 
         {
-		echo 1;
             //last page
 			 $pageurl=$this->_cur_page-1==1?$firestpage:$url.($this->_cur_page-1).$exc;
              $text.= "<a href=".$firestpage.">$lang_PageHome</a> <a href=".$pageurl.">$lang_PagePre</a> $lang_PageNext $lang_PageEnd";

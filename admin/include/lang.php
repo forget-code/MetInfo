@@ -1,6 +1,6 @@
 <?php
 # MetInfo Enterprise Content Management System 
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserv. 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 function daddslashes1($string, $force = 0) {
 	!defined('MAGIC_QUOTES_GPC') && define('MAGIC_QUOTES_GPC', get_magic_quotes_gpc());
 	if(!MAGIC_QUOTES_GPC || $force) {
@@ -18,8 +18,7 @@ if($_GET[langset]!="" and $met_admin_type_ok==1){
 $languser = $_GET[langset];
 }
 $langset=($languser!="")?$languser:$met_admin_type;
-$langset=daddslashes($langset,0,1);
-if(!file_exists(ROOTPATH.'cache/langadmin_'.$langset.'.php')){
+if(!file_get_contents(ROOTPATH.'cache/langadmin_'.$langset.'.php')){
 	$js="var user_msg = new Array();\n";
 	$query="select * from $met_language where lang='$langset' and site='1' and array!='0'";
 	$result= $db->query($query);
@@ -38,7 +37,6 @@ if(!file_exists(ROOTPATH.'cache/langadmin_'.$langset.'.php')){
 }else{
 	require_once ROOTPATH.'cache/langadmin_'.$langset.'.php';
 }
-
 $query = "SELECT * FROM $met_config WHERE lang='{$langset}-metinfo'";
 $result = $db->query($query);
 while($list_config= $db->fetch_array($result)){

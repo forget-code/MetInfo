@@ -12,39 +12,37 @@ EOT;
 require_once template('metlangs');
 echo <<<EOT
 -->
-<div class="stat_list">
-	<ul>
-		<li {$listclass[1]}><a href="index.php?anyid={$anyid}&lang={$lang}&cs=1" title="{$lang_dlapptips1}">{$lang_dlapptips1}</a></li>
-		<li {$listclass[2]}><a href="dlapp.php?anyid={$anyid}&lang={$lang}&cs=2" title="{$lang_dlapptips2}">{$lang_dlapptips2}</a></li>
-	</ul>
-</div>
-<div style="clear:both;"></div>
+<div class="v52fmbx_tbmax v52fmbx_tbmaxmt">
+<div class="v52fmbx_tbbox">
+<div class="v52fmbx">	
 <div class='metv5'>
-<span class="color390" style="padding-left:15px;">{$lang_appdl1}</span>
+<h3 class="v52fmbx_hr metsliding" style="margin-top:5px;">{$lang_appdl1}</h3>
 <ul class="applist">	
 <!--
 EOT;
 foreach ($str_apps as $keyapps=>$valapps){
 $rrr=metver($metcms_v,$valapps[7]);
 $valapps[3]=$valapps[3]==''?'../../../../'.$met_agents_img:$valapps[3];
+$textdesc = utf8substr($valapps[4],0,35);
 echo <<<EOT
 --> 
 		<li>
 		<div class='img'><img src="img/{$valapps[3]}"></div>
 		<div class='text'>
-		<div class='name'>
-		<span id="oltest_$valapps[1]" style="float:right; text-align:right;">{$valapps[xtype]}</span>
-		<span class="title">{$valapps[0]}</span></div>
-		<div class='info'> 
-			<dl>
-			<dd>{$valapps[4]}</dd>
-			<dd style="color:#999;">{$lang_dlapptips4}{$valapps[2]}</dd>
-			</dl>
-		</div>
-		<input id="ver_now_$valapps[1]" type="hidden" value="{$valapps[ver_now]}"/>
-		<input id="ver_to_$valapps[1]" type="hidden" value=""/>
-		<input id="addr_$valapps[1]" type="hidden" value=""/>
-		<input id="checksum_$valapps[1]" type="hidden" value=""/>
+			<span id="oltest_$valapps[1]" class="downbox">
+				{$valapps[xtype]}
+			</span>
+			<div class='name'>
+			<span class="title">{$valapps[0]}</span></div>
+			<div class='info'> 
+				<dl>
+				<dd title="{$valapps[4]}">{$textdesc}</dd>
+				</dl>
+			</div>
+			<input id="ver_now_$valapps[1]" type="hidden" value="{$valapps[ver_now]}"/>
+			<input id="ver_to_$valapps[1]" type="hidden" value=""/>
+			<input id="addr_$valapps[1]" type="hidden" value=""/>
+			<input id="checksum_$valapps[1]" type="hidden" value=""/>
 		</div>
 		</li>
 <!--
@@ -58,8 +56,22 @@ echo <<<EOT
 		<input id="met_key" type="hidden" value="$authinfo[authpass]"/>
 </ul>
 </div>
+</div>
+</div>
+</div>
 <div class="clear"></div>
 <div class="footer">$foot</div>
+<script type="text/javascript">
+function dplistjs(){
+	var	wdth   = ($('.applist').width() - 10)/2;
+	$('.applist li').width(wdth);
+	$('.applist li div.text').width(wdth-96);
+}
+dplistjs();
+$(window).resize(function() {
+	dplistjs();
+});
+</script>
 </body>
 </html>
 <!--

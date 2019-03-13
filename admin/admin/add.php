@@ -17,6 +17,8 @@ if($admin_list[langok]!='metinfo'){
 }
 $css_url="../templates/".$met_skin."/css";
 $img_url="../templates/".$met_skin."/images";
+$query="select * from $met_app where download=1";
+$app=$db->get_all($query);
 include template('admin/admin_add');
 footer();
 # This program is an open source system, commercial use, please consciously to purchase commercial license.

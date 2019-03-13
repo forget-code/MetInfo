@@ -19,8 +19,8 @@ if($action=="modify"){
 	$met_cv_back1=($met_cv_back)?"checked":"";
 	$m_list = $db->get_one("SELECT * FROM $met_column WHERE module='6' and lang='$lang'");
 	$class1 = $m_list['id'];
-	$cs=3;
-	$listclass[$cs]='class="now"';
+	$listclass='';
+	$listclass[4]='class="now"';
 	$css_url=$depth."../templates/".$met_skin."/css";
 	$img_url=$depth."../templates/".$met_skin."/images";
 	include template('content/job/inc');

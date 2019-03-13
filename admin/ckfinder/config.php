@@ -18,9 +18,9 @@
  *
  * @return boolean
  */
-session_start();
-$metinfo_admin_name=$_SESSION['metinfo_admin_name'];
-$metinfo_admin_pass=$_SESSION['metinfo_admin_pass'];
+met_cooike_start();
+$metinfo_admin_name=get_met_cookie('metinfo_admin_name');
+$metinfo_admin_pass=get_met_cookie('metinfo_admin_pass');
 $admincp_ok = $db->get_one("SELECT * FROM $met_admin_table WHERE admin_id='$metinfo_admin_name' and admin_pass='$metinfo_admin_pass' and usertype='3'");
 
 function CheckAuthentication(){

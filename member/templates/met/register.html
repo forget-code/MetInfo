@@ -39,7 +39,14 @@ var str="";
 		   document.theform.yhid.select(); 
            return false;
          }
-		        
+
+	   if(trim(document.theform.yhid.value).length >15)
+	   {	alert("{$lang_js26}");
+			document.theform.yhid.focus();
+			document.theform.yhid.select();
+			return false; 
+	   }
+		 
         else if(trim(document.theform.mm.value)=="")
          { alert("{$lang_memberPassword}");
            document.theform.mm.focus();

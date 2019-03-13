@@ -24,36 +24,36 @@ EOT;
 require_once template('metlangs');
 echo <<<EOT
 -->
+<div class="v52fmbx_tbmax v52fmbx_tbmaxmt">
+<div class="v52fmbx_tbbox">
+<h3 class="v52fmbx_hr">
+	<span class="formleft">
+		<a href="content.php?action=add&lang={$lang}&anyid={$anyid}" title="{$lang_add}{$lang_indexlink}">+{$lang_add}{$lang_indexlink}</a>
+	</span>
+	<span class="formright">
+		{$lang_linkType}
+		<select name="new" id="new" onChange="changes($(this));" style="position:relative; top:2px;">
+			<option value="index.php?lang=$lang&anyid={$anyid}&show_ok=0" $style1>{$lang_linkType1}</option>
+			<option value="index.php?lang=$lang&anyid={$anyid}&com_ok=1" $style2>{$lang_linkType2}</option>
+			<option value="index.php?lang=$lang&anyid={$anyid}" $style3>{$lang_linkType3}</option>
+			<option value="index.php?lang=$lang&anyid={$anyid}&link_type=0" $style4>{$lang_linkType4}</option>
+			<option value="index.php?lang=$lang&anyid={$anyid}&link_type=1" $style5>{$lang_linkType5}</option>
+		</select>
+		<form method="POST" name="myform" action="index.php?search=detail_search&lang=$lang&anyid={$anyid}" target="_self">
+			<input name="webname" type="text" value="{$lang_linkTip2}" class="text" style="width:150px!important;" id="searchtext" />
+			<input type="submit" name="Submit2" value="{$lang_search}" class="submitmi" /> 
+			<input name="show_ok" type="hidden" id="show_ok" value="$show_ok">
+			<input name="com_ok" type="hidden" id="com_ok" value="$com_ok">
+			<input name="link_type" type="hidden" id="link_type" value="$link_type">
+			<input name="link_type" type="hidden" id="link_type" value="$link_type">
+		</form>
+	</span>
+</h3>
 <table cellpadding="2" cellspacing="1" class="table">
-       <tr>
-	        <td class="centle" colspan="3" style=" height:20px; line-height:30px; font-weight:normal; padding-left:10px;">
-			<div style="float:left;">
-			<a href="content.php?action=add&lang={$lang}&anyid={$anyid}" title="{$lang_add}{$lang_indexlink}">+{$lang_add}{$lang_indexlink}</a>
-			</div>
-			<div class="formright">
-			    &nbsp;{$lang_linkType}
-				<select name="new" id="new" onChange="changes($(this));" style="position:relative; top:2px;">
-					<option value="index.php?lang=$lang&anyid={$anyid}&show_ok=0" $style1>{$lang_linkType1}</option>
-					<option value="index.php?lang=$lang&anyid={$anyid}&com_ok=1" $style2>{$lang_linkType2}</option>
-					<option value="index.php?lang=$lang&anyid={$anyid}" $style3>{$lang_linkType3}</option>
-					<option value="index.php?lang=$lang&anyid={$anyid}&link_type=0" $style4>{$lang_linkType4}</option>
-					<option value="index.php?lang=$lang&anyid={$anyid}&link_type=1" $style5>{$lang_linkType5}</option>
-				</select>
-			<form method="POST" name="myform" action="index.php?search=detail_search&lang=$lang&anyid={$anyid}" target="_self">
-			    <input name="webname" type="text" value="{$lang_linkTip2}" class="text" id="searchtext" />
-				<input type="submit" name="Submit2" value="{$lang_search}" class="submitmi" /> 
-				<input name="show_ok" type="hidden" id="show_ok" value="$show_ok">
-				<input name="com_ok" type="hidden" id="com_ok" value="$com_ok">
-				<input name="link_type" type="hidden" id="link_type" value="$link_type">
-				<input name="link_type" type="hidden" id="link_type" value="$link_type">
-			</form>
-			</div>
-			</td>		
-</tr>
 			 <tr>
 			 <td colspan="3">
 			  <form name="del" method="Post" action="delete.php?lang=$lang&anyid={$anyid}">
-			  <table cellpadding="0" cellspacing="0" class="table neitable" style="margin:0px; border:none;">
+			  <table cellpadding="0" cellspacing="1" class="table neitable" style="margin:0px; border:none;">
               <tr>
                 <td width="40" class="list" style="padding:0px; text-align:center;">{$lang_selected}</td>
 				<td width="50" class="list" style="padding:0px; text-align:center;">ID</td>
@@ -108,11 +108,11 @@ echo <<<EOT
 			</div>
 			</td>
           </tr>
-		  <tr><td colspan="7" class="page_list" style="padding:5px 0px;">{$page_list}</td></tr>
-		<tr>
-		  <td class="footer" colspan="3">$foot</td>
-	  </tr>
+		  <tr><td colspan="7" class="page_list">{$page_list}</td></tr>
 </table>
+</div>
+</div>
+<div class="footer">{$foot}</div>
 <script type="text/javascript">
 function safesq(){
 	var vl = $("#deltype").val();

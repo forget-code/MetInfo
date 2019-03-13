@@ -3,12 +3,10 @@
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 $depth='../';
 require_once $depth.'../login/login_check.php';
-$filename=preg_replace("/\s/","_",trim($filename)); 
-$filenameold=preg_replace("/\s/","_",trim($filenameold));  
+$filename=namefilter($filename);
+$filenameold=namefilter($filenameold);
 if($filename_okno){
 	$metinfo=1;
-	$filename=str_replace("\\",'',$filename);
-	$filename=unescape($filename);
 	if($filename!=''){
 		$sql="class1='$class1'";
 		foreach($column_pop as $key=>$val){
@@ -44,6 +42,7 @@ if($filename!='' && $save_type){
 }
 if($action=="add"){
 $access=$access<>""?$access:"0";
+//link               = '$link',
 $query = "INSERT INTO $met_news SET
                       title              = '$title',
                       ctitle             = '$ctitle',
@@ -73,11 +72,13 @@ $id=$later_news[id];
 $htmjs = contenthtm($class1,$id,'shownews',$filename,0,'',$addtime).'$|$';
 $htmjs.= indexhtm().'$|$';
 $htmjs.= classhtm($class1,$class2,$class3);
-$turl  ="../content/article/index.php?anyid=$anyid&lang=$lang&class1=$class1&class2=$class2&class3=$class3";
-metsave($turl,'',$depth,$htmjs);
+$turl  ="../content/article/index.php?anyid=$anyid&lang=$lang&class1=$reclass1&class2=$reclass2&class3=$reclass3";
+$gent='../../sitemap/index.php?lang='.$lang.'&htmsitemap='.$met_member_force;
+metsave($turl,'',$depth,$htmjs,$gent);
 }
 
 if($action=="editor"){
+//link               = '$link',
 $query = "update $met_news SET 
                       title              = '$title',
                       ctitle             = '$ctitle',
@@ -114,9 +115,10 @@ $htmjs.= indexhtm().'$|$';
 $htmjs.= classhtm($class1,$class2,$class3);
 if($filenameold<>$filename and $metadmin[pagename])deletepage($met_class[$class1][foldername],$id,'shownews',$updatetimeold,$filenameold);
 $classnow=$class3?$class3:($class2?$class2:$class1);
-if(($addtime != $updatetime && $met_class[$classnow]['list_order']<2) || $top_ok==1)$page=0;
-$turl  ="../content/article/index.php?anyid=$anyid&lang=$lang&class1=$class1&class2=$class2&class3=$class3&modify=$id&pcage=$page";
-metsave($turl,'',$depth,$htmjs);
+//if(($addtime != $updatetime && $met_class[$classnow]['list_order']<2) || $top_ok==1)$page=0;
+$turl  ="../content/article/index.php?anyid=$anyid&lang=$lang&class1=$reclass1&class2=$reclass2&class3=$reclass3&modify=$id&page=$page";
+$gent='../../sitemap/index.php?lang='.$lang.'&htmsitemap='.$met_member_force;
+metsave($turl,'',$depth,$htmjs,$gent);
 }
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.

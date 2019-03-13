@@ -31,9 +31,10 @@ $title="{$lang_feedbackview}";
 require_once template('content/feedback/top');
 echo <<<EOT
 -->
-<table cellpadding="2" cellspacing="1" class="table">
-      <tr>
-     <td class="centle" colspan="7" align="left" style="color:#666;">
+<div class="v52fmbx_tbmax">
+<div class="v52fmbx_tbbox">
+<h3 class="v52fmbx_hr">
+	<div class="formleft">
 <!--
 EOT;
 if(!$customerid){
@@ -52,7 +53,8 @@ EOT;
 }
 echo <<<EOT
 -->	
-			<div style="float:right; margin-right:5px; font-weight:normal;" >
+	</div>
+	<div class="formright">
 			    {$lang_feedbackClass}
 				<select name="new" id="new" onChange="changes($(this));">
 					<option value="index.php?anyid={$anyid}&search=$search&useinfo=$useinfo&lang=$lang&class1=$class1&customerid={$customerid}" $style1>{$lang_feedbackClass1}</option>
@@ -91,17 +93,18 @@ EOT;
 }
 echo <<<EOT
 -->	
-</div>
-</td> 
-      </tr>
+	</div>
+	<div class="clear"></div>
+</h3>
+<table cellpadding="2" cellspacing="1" class="table">
 		  <tr>
-			<td width="40" class="list" style="padding:0px; text-align:center;">{$lang_selected}</td>
-			<td width="50" class="list" style="padding:0px; text-align:center;">ID</td>
-			<td class="list">{$lang_title}</td>
-			<td width="50" class="list" style="padding:0px; text-align:center;">{$lang_read}</td>
+			<td width="30" class="list">{$lang_selected}</td>
+			<td width="30" class="list">ID</td>
+			<td class="list list_left">{$lang_title}</td>
+			<td width="30" class="list">{$lang_read}</td>
 			<td width="100" class="list" >{$lang_feedbackID}</td>
-			<td class="list" width="120" >{$lang_feedbackTime}</td>
-			<td width="10%" class="list" >{$lang_operate}</td>
+			<td class="list" width="60" >{$lang_feedbackTime}</td>
+			<td class="list list_left" >{$lang_operate}</td>
 		  </tr>
 <form name="del" method="Post" action="delete.php?anyid={$anyid}&lang=$lang&class1=$class1&customerid={$customerid}">
 <!--
@@ -112,11 +115,11 @@ echo <<<EOT
               <tr class="mouse click">
               <td class="list-text"><input name='id' type='checkbox' id="id" value='$val[id]' /></td>
                 <td class="list-text color999">$val[id]</td>
-			    <td class="list-text alignleft">&nbsp;&nbsp;<a href="editor.php?anyid={$anyid}&id=$val[id]&lang=$lang&class1=$class1&customerid={$customerid}" title="{$lang_detail}">$val[fdtitle]</a></td>
+			    <td class="list-text list_left"><a href="editor.php?anyid={$anyid}&id=$val[id]&lang=$lang&class1=$class1&customerid={$customerid}" title="{$lang_detail}">$val[fdtitle]</a></td>
                 <td class="list-text color999">$val[readok]</td>
 				<td class="list-text color999">$val[customerid]</td>
                 <td class="list-text color999">$val[addtime]</td>
-				<td class="list-text"><a href="editor.php?anyid={$anyid}&id=$val[id]&lang=$lang&class1=$class1&customerid={$customerid}" >{$lang_View}</a>&nbsp;&nbsp;<a href="delete.php?anyid={$anyid}&id=$val[id]&lang=$lang&class1=$class1&customerid={$customerid}" onClick="return linkSmit($(this),1);" >{$lang_delete}</a></td>
+				<td class="list-text list_left"><a href="editor.php?anyid={$anyid}&id=$val[id]&lang=$lang&class1=$class1&customerid={$customerid}" >{$lang_View}</a>&nbsp;&nbsp;<a href="delete.php?anyid={$anyid}&id=$val[id]&lang=$lang&class1=$class1&customerid={$customerid}" onClick="return linkSmit($(this),1);" >{$lang_delete}</a></td>
               </tr>
 <!--
 EOT;
@@ -128,8 +131,8 @@ echo <<<EOT
 			  <input name="class1" type="hidden" id="class1" value="$class1" />
 </form>	
    	   <tr> 
-            <td class="all" width="40"><input name="chkAll" type="checkbox" id="chkAll" onclick="CheckAllx($(this),'del')" value="checkbox" /></td>
-			<td class="all-submit" align="left" colspan="6" style="padding:5px 10px;">
+            <td class="list" width="40"><input name="chkAll" type="checkbox" id="chkAll" onclick="CheckAllx($(this),'del')" value="checkbox" /></td>
+			<td class="all-submit" colspan="6" style="padding:5px 10px;">
 			<input name="submit" type='submit' value='{$lang_deleteselected}' class="submit li-submit" onclick="return met_modify($(this),'del','del');" />
 <!--
 EOT;
@@ -164,11 +167,13 @@ echo <<<EOT
 -->
 			</td>
           </tr>
-		  <tr><td colspan="7" class="page_list" style="padding:5px 0px;">{$page_list}</td></tr>
 		<tr>
-		  <td class="footer" colspan="7">$foot</td>
-	  </tr>
+		  <td class="page_list" colspan="7">{$page_list}</td>
+	    </tr>
 </table>
+</div>
+</div>
+<div class="footer">$foot</div>
 <script type="text/javascript">
 function safesq(){
 	var vl = $("#deltype").val();

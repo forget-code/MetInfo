@@ -7,6 +7,9 @@ $feedback_list=$db->get_one("select * from $met_feedback where id='$id'");
 if(!$feedback_list){
 okinfo('index.php?lang='.$lang,$lang_dataerror);
 }
+if($metinfo_member_name!=$feedback_list[customerid]){
+	okinfo('javascript:history.back();',$lang_js1);
+}
 $feedback_list['customerid']=$feedback_list['customerid']==0?$lang_feedbackAccess0:$list['customerid'];
 $query = "SELECT * FROM $met_parameter where module=8 and lang='$lang' and class1='$feedback_list[class1]' order by no_order";
 $result = $db->query($query);

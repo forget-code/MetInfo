@@ -3,7 +3,7 @@
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 
 function methtml_imgdisplay($type='img'){
-global $img_paraimg,$img,$product,$product_paraimg,$lang_BigPicture,$met_url,$met_img_x,$met_img_y,$met_imgdetail_x,$met_imgdetail_y,$met_img_detail,$met_productdetail_x,$met_productdetail_y,$met_product_detail,$lang_displayimg,$lang_defualt,$navurl;
+global $img_paraimg,$img,$product,$product_paraimg,$lang_BigPicture,$met_url,$met_img_x,$met_img_y,$met_imgdetail_x,$met_imgdetail_y,$met_img_detail,$met_productdetail_x,$met_productdetail_y,$met_product_detail,$lang_displayimg,$lang_defualt,$navurl,$displaylist;
 
 if($type=='product'){
 $img_paraimg=$product_paraimg;
@@ -12,27 +12,11 @@ $met_imgdetail_x=$met_productdetail_x;
 $met_imgdetail_y=$met_productdetail_y;
 $met_img_detail=$met_product_detail;
 }
- $metinfoimglist=0;
-$pg=0;
-if($img['displayimg']!=''){
-	$displayimg=explode('|',$img['displayimg']);
-	$pg=count($displayimg);
-	for($i=0;$i<$pg;$i++){
-		$newdisplay=explode('*',$displayimg[$i]);
-		$displaylist[$i]['title']=$newdisplay[0];
-		$displaylist[$i]['imgurl']=$newdisplay[1];
-		$imgurl_diss=explode('/',$displaylist[$i]['imgurl']);
-		$displaylist[$i][imgurl_dis]=$imgurl_diss[0].'/'.$imgurl_diss[1].'/'.$imgurl_diss[2].'/thumb_dis/'.$imgurl_diss[count($imgurl_diss)-1];
-		$filename=stristr(PHP_OS,"WIN")?@iconv("utf-8","gbk",$displaylist[$i][imgurl_dis]):$displaylist[$i][imgurl_dis];
-		$displaylist[$i][imgurl_dis]=file_exists($filename)?$displaylist[$i][imgurl_dis]:$displaylist[$i]['imgurl'];
-	}
-	if($pg)$metinfoimglist=1;
-}
 $imgurl_diss=explode('/',$img[imgurl]);
 $img[imgurl_dis]=$imgurl_diss[0].'/'.$imgurl_diss[1].'/'.$imgurl_diss[2].'/thumb_dis/'.$imgurl_diss[count($imgurl_diss)-1];
 $filename=stristr(PHP_OS,"WIN")?@iconv("utf-8","gbk",$img[imgurl_dis]):$img[imgurl_dis];
 $img[imgurl_dis]=file_exists($filename)?$img[imgurl_dis]:$img[imgurl];
-if($metinfoimglist){
+if($displaylist){
 if($met_img_detail>2)$met_img_detail=1;
 switch($met_img_detail){
 case 1:
@@ -47,6 +31,8 @@ case 1:
    $metinfo.="<script  LANGUAGE='JavaScript'>\n";
    $metinfo.="function metseeBig(nowimg,mgrc) {\n";
    $metinfo.="document.getElementById('view_img').src=document.getElementById(nowimg).src;\n";
+   $metinfo.="document.getElementById('view_img').alt=document.getElementById(nowimg).alt;\n";
+   $metinfo.="document.getElementById('view_img').title=document.getElementById(nowimg).title;\n";
    $metinfo.="$('#view_bigimg').attr('href',mgrc);\n";
    $metinfo.="}\n";
    $metinfo.="</script>\n";

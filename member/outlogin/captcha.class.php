@@ -26,10 +26,11 @@ class Captcha
 
 function CreateCheckCode()
  {
-  session_start();
+  met_cooike_start();
   $this->mCheckCode = strtoupper(substr(md5(rand()),0,$this->mCheckCodeNum));
-   unset($_SESSION['met_capcha_member1']);
-  $_SESSION['met_capcha_member1'] = $this->mCheckCode;
+  change_met_cookie('met_capcha','');
+  change_met_cookie('met_capcha',$this->mCheckCode);
+  save_met_cookie();
   return $this->mCheckCode;
  }
 
@@ -101,10 +102,10 @@ function WriteCheckCodeToImage()
  */
  function CheckCode($code)
  {
-  session_start();
+  met_cooike_start();
   if(empty($code)){
       return false;
-  }elseif($_SESSION['met_capcha_member1']===$code){
+  }elseif(get_met_cookie('met_capcha_member1')===$code){
      return true; 
   }else {
      return false;

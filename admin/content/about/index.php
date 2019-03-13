@@ -34,7 +34,7 @@ if($class1){
 }else{
 	$sqlclass1="and module=1 ";
 }
-$serch_sql=" where lang='$lang' $sqlclass1 ";
+$serch_sql=" where lang='$lang' and isshow=1 $sqlclass1 ";
 if($search == "detail_search"){	
 	if($title)$serch_sql .= " and name like '%$title%' "; 
 	$total_count = $db->counter($met_column, "$serch_sql", "*");
@@ -59,7 +59,7 @@ while($list= $db->fetch_array($result)){
 			$aboutid=$met_class[$met_class[$list[id]][bigclass]][bigclass];
 		}
 	}
-	$admin_column_power="admin_pop".$aboutid;
+	$admin_column_power="admin_popc".$aboutid;
 	if(!($metinfo_admin_pop=='metinfo'||$$admin_column_power=='metinfo'))continue;
 	$list[updatetime] = date('Y-m-d',strtotime($list[updatetime]));
 	$num = 38;

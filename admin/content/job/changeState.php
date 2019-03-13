@@ -3,7 +3,7 @@
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 $depth='../';
 require_once $depth.'../login/login_check.php';
-$backurl="../content/job/index.php?anyid={$anyid}&lang=$lang&class1=$class1";
+$backurl="../content/job/index.php?anyid={$anyid}&lang=$lang&class1=$class1&page=$page";
 if($action=='copy'){
 	$query= "select * from $met_column where id='$copyclass1'";
 	$result1=$db->get_one($query);
@@ -50,9 +50,12 @@ if($action=='copy'){
 		$top_ok=$top_ok==1?0:1;
 		$query = $query."top_ok             = '$top_ok',";
 	}
+	if(isset($wap_ok)){
+		$wap_ok=$wap_ok==1?0:1;
+		$query = $query."wap_ok             = '$wap_ok',";
+	}
 	$query = $query."id='$id' where id='$id'";
 	$db->query($query);
-	if($top_ok==1)$page=0;
 	metsave($backurl.'&modify='.$id.'&page='.$page,'',$depth);
 }
 # This program is an open source system, commercial use, please consciously to purchase commercial license.

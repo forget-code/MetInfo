@@ -3,24 +3,24 @@
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 $depth='../';
 require_once $depth.'../login/login_check.php';
-$cs=isset($cs)?$cs:2;
+$cs=isset($cs)?$cs:1;
 $listclass[$cs]='class="now"';
 if($action=='modify'){
 	switch($cs){
-		case 2:
+		case 1:
 			$met_nurse_stat_tel = str_replace(chr(13).chr(10),",",$met_nurse_stat_tel);
 			$type               = 2;
 			$met_nurse_tel      = $met_nurse_stat_tel;
 			$met_nurse_ok       = $met_nurse_stat;
 		break;
-		case 3:
+		case 2:
 			$met_nurse_monitor_tel = str_replace(chr(13).chr(10),",",$met_nurse_monitor_tel);
 			$type = 3;
 			$met_nurse_ok = $met_nurse_monitor;
 			$met_nurse_tel= $met_nurse_monitor_tel;
 			$noun=$met_nurse_monitor_fre;
 		break;
-		case 4:
+		case 3:
 			$met_nurse_member_tel = str_replace(chr(13).chr(10),",",$met_nurse_member_tel);
 			$met_nurse_feed_tel   = str_replace(chr(13).chr(10),",",$met_nurse_feed_tel);
 			$met_nurse_massge_tel = str_replace(chr(13).chr(10),",",$met_nurse_massge_tel);
@@ -28,7 +28,7 @@ if($action=='modify'){
 			$met_nurse_link_tel   = str_replace(chr(13).chr(10),",",$met_nurse_link_tel);
 		break;
 	}
-	if($cs==2||$cs==3){
+	if($cs==1||$cs==2){
 		require_once ROOTPATH.'include/export.func.php';
 		$total_passok = $db->get_one("SELECT * FROM $met_otherinfo WHERE lang='met_sms'");
 		$met_file='/timing/record.php';
@@ -58,14 +58,14 @@ if($action=='modify'){
 	}
 }else{
 	switch($cs){
-		case 2:
+		case 1:
 			$met_nurse_statx[$met_nurse_stat]='checked';
 			$met_nurse_stat_tel = str_replace(",",chr(13).chr(10),$met_nurse_stat_tel);
 			$met_nurse_statfreax[$met_nurse_statfrea]='checked';
 			$met_nurse_statfrebx[$met_nurse_statfreb]='checked';
 			$met_nurse_statfrecx[$met_nurse_statfrec]='checked';
 		break;
-		case 3:
+		case 2:
 			$met_nurse_monitorx[$met_nurse_monitor]='checked';
 			$met_nurse_monitor_frex[$met_nurse_monitor_fre]='checked';
 			$met_nurse_monitor_peax[$met_nurse_monitor_pea]='checked';
@@ -94,7 +94,7 @@ if($action=='modify'){
 				break;
 			}
 		break;
-		case 4:
+		case 3:
 			$met_nurse_memberx[$met_nurse_member]='checked';
 			$met_nurse_feedx[$met_nurse_feed]='checked';
 			$met_nurse_massgex[$met_nurse_massge]='checked';

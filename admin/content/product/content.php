@@ -4,6 +4,9 @@
 $depth='../';
 require_once $depth.'../login/login_check.php';
 require_once $depth.'global.func.php';
+$reclass1=$class1;
+$reclass2=$class2;
+$reclass2=$class2;
 if($action=="editor"){
 	$product_list=$db->get_one("select * from $met_product where id='$id'");
 	$product_list['title']=str_replace('"', '&#34;', str_replace("'", '&#39;',$product_list['title']));
@@ -25,6 +28,7 @@ if($action=="editor"){
 	if($product_list[com_ok]==1)$com_ok="checked";
 	if($product_list[top_ok]==1)$top_ok="checked";
 	if($product_list[wap_ok]==1)$wap_ok="checked";
+	if($product_list[classother])$class_other="checked";
 	$class2[$product_list[class2]]="selected";
 	$class3[$product_list[class3]]="selected";
 	$displaylist='';
@@ -72,6 +76,14 @@ if(!count($met_class22[$class1])||!$class1)$class2style="style='display:none'";
 if(!count($met_class3[$class2])||!$class2)$class3style="style='display:none'";
 $para_list=para_list_with($product_list);
 $imgnum=$displaylist?count($displaylist):0;
+$feditlists=explode('|',$product_list[classother]);
+foreach($feditlists as $key=>$val){
+	$val=trim($val,'-');
+	$vals=explode('-',$val);
+	$feditlist[$vals[0]]=1;
+	$feditlist[$vals[1]]=1;
+	$feditlist[$vals[2]]=1;
+}
 $css_url=$depth."../templates/".$met_skin."/css";
 $img_url=$depth."../templates/".$met_skin."/images";
 include template('content/product/content');

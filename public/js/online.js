@@ -87,6 +87,21 @@ function olne_domx(type,onlinex){
 	}
 	return onlinex;
 }
+function olne_domx_op(type,onlinex){
+	var zwd = document.documentElement.clientWidth;
+	var oboxw = $('#onlinebox').width();
+		oboxw = oboxw==0?$('#onlinebox .onlinebox-conbox').width():oboxw;
+	var maxr=zwd-oboxw;
+	if(type>1){
+		onlinex=zwd-oboxw-onlinex;
+	}
+	if(onlinex<0)onlinex=0;
+	if(onlinex > maxr){
+		onlinex=maxr;
+		if($.browser.msie && parseInt($.browser.version)==6)onlinex=maxr-18;
+	}
+	return onlinex;
+}
 function olne_dd_wd(d){
 	var w=0;
 	d.each(function(){
@@ -102,10 +117,7 @@ function olne_mouse_on(t,my,nex,type){
 		var dt=olne_dd_wd($('div.onlinebox-conbox dd'));
 			dt=dt>dmk?dt:$('div.onlinebox-conbox .online-tbox').outerWidth(true);
 		if(dt<=0)dt=100;
-		var wd=type<2?0:my.width()-dt+4;
 		nex.css({
-			'position':'absolute',
-			'left':wd+'px',
 			'width':dt+'px'
 		});
 	}else{
@@ -115,6 +127,20 @@ function olne_mouse_on(t,my,nex,type){
 		});
 		nex.hide();	
 		my.show();	
+	}
+	olne_resize();
+}
+/*页面尺寸变化*/
+function olne_resize(){
+	var t=olne_para(0);x=olne_para(2);y=olne_para(3);
+	mx=Number(olne_domx_op(t,x));
+	my=Number(y);
+	if(t>0 && t<3){//0固左1滚左2滚右3关闭4固右
+		var floatDivr=document.getElementById('onlinebox');
+		Floaters.addItem(floatDivr,mx,my);
+		Floaters.sPlay();
+	}else{
+		$('#onlinebox').PositionFixed({x:mx,y:my});  
 	}
 }
 function olne_mouse(dom,type){
@@ -127,10 +153,10 @@ function olne_mouse(dom,type){
 	$('#onlinebox .onlinebox-top').click(function(){ if(!nex.is(':hidden'))olne_mouse_on(0,dom,nex,type); });
 	textWrap($(".onlinebox-showbox span"));
 }
-function olne_app(msg,type,mx,my){
+function olne_app(msg,type,mxq,myq){
 	$('body').append(msg);
-	mx=Number(olne_domx(type,mx));
-	my=Number(my);
+	mx=Number(olne_domx_op(type,mxq));
+	my=Number(myq);
 	if(type>0 && type<3){//0固左1滚左2滚右3关闭4固右
 		var floatDivr=document.getElementById('onlinebox');
 		Floaters.addItem(floatDivr,mx,my);
@@ -138,6 +164,9 @@ function olne_app(msg,type,mx,my){
 	}else{
 		$('#onlinebox').PositionFixed({x:mx,y:my});  
 	}
+	$(window).resize(function() {
+			olne_resize();
+	});
 	$('#onlinebox').show();
 	if($('div.onlinebox-showbox').size()>0)olne_mouse($('div.onlinebox-showbox'),type);
 }
@@ -170,4 +199,6 @@ function metonline(){
 		}
 	}
 }
-metonline();
+$(document).ready(function() {
+	metonline();
+});

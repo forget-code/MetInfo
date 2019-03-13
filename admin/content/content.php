@@ -46,7 +46,7 @@ if($met_content_type!=2){
 			}
 		}
 		foreach($contentlistes as $key=>$val){
-			$purview='admin_pop'.$val['id'];
+			$purview='admin_popc'.$val['id'];
 			$purview=$$purview;
 			$metcmspr=$metinfo_admin_pop=="metinfo" || $purview=='metinfo'?1:0;
 			$metcmspr1=$val[classtype]==1 || $val[releclass]?1:0;
@@ -125,7 +125,6 @@ if($met_content_type!=2){
 		}
 	}
 }else{
-//dump($met_classindex);
 	if($module){
 		if($class1){
 			if($met_class1[$class1]['isshow']){
@@ -169,58 +168,68 @@ if($met_content_type!=2){
 				$md1[]=$val;
 			}
 		}
-		$contentlist[1]['name']=$lang_modulemanagement1;
-		$contentlist[1]['module']='1';
-		$contentlist[1]['conturl']="about/index.php?module=1&lang=$lang&anyid=$anyid";
-
-		$contentlist[2]['name']=$lang_modulemanagement2;
-		$contentlist[2]['module']='2';
-		$contentlist[2]['conturl']="article/index.php?module=2&lang=$lang&anyid=$anyid";
-		$contentlist[2]['url']="article/content.php?action=add&lang=$lang&anyid=$anyid";	
-		$contentlist[2]['set']="<div>
-			<p class='lt'><a href='{$contentlist[2][url]}'>{$lang_addinfo}</a></p><span>-</span><p class='rt'><a href='{$contentlist[2][conturl]}'>{$lang_manager}</a></p>
-			</div>";
-		
-		$contentlist[3]['name']=$lang_modulemanagement3;
-		$contentlist[3]['module']='3';
-		$contentlist[3]['conturl']="product/index.php?module=3&lang=$lang&anyid=$anyid";
-		$contentlist[3]['url']="product/content.php?action=add&lang=$lang&anyid=$anyid";	
-		$contentlist[3]['set']="<div>
-			<p class='lt'><a href='{$contentlist[3][url]}'>{$lang_addinfo}</a></p><span>-</span><p class='rt'><a href='{$contentlist[3][conturl]}'>{$lang_manager}</a></p>
-			</div>";
-		
-		$contentlist[4]['name']=$lang_modulemanagement4;
-		$contentlist[4]['module']='4';
-		$contentlist[4]['conturl']="download/index.php?module=4&lang=$lang&anyid=$anyid";
-		$contentlist[4]['url']="download/content.php?action=add&lang=$lang&anyid=$anyid";	
-		$contentlist[4]['set']="<div>
-			<p class='lt'><a href='{$contentlist[4][url]}'>{$lang_addinfo}</a></p><span>-</span><p class='rt'><a href='{$contentlist[4][conturl]}'>{$lang_manager}</a></p>
-			</div>";
-		
-		$contentlist[5]['name']=$lang_modulemanagement5;
-		$contentlist[5]['module']='5';
-		$contentlist[5]['conturl']="img/index.php?module=5&lang=$lang&anyid=$anyid";
-		$contentlist[5]['url']="img/content.php?action=add&lang=$lang&anyid=$anyid";	
-		$contentlist[5]['set']="<div>
-			<p class='lt'><a href='{$contentlist[5][url]}'>{$lang_addinfo}</a></p><span>-</span><p class='rt'><a href='{$contentlist[5][conturl]}'>{$lang_manager}</a></p>
-			</div>";
-		
-		$contentlist[6]['name']=$lang_modulemanagement6;
-		$contentlist[6]['module']='6';
-		$contentlist[6]['conturl']="job/index.php?class1={$met_classindex[6][0][id]}&lang={$lang}&anyid={$anyid}";
-		$contentlist[6]['cvurl']="job/cv.php?class1={$met_classindex[6][0][id]}&lang={$lang}&anyid={$anyid}";
-		$contentlist[6]['set']="<div>
-			<p class='lt'><a href='{$contentlist[6]['conturl']}'>{$lang_manager}</a></p><span>-</span>
-			<p class='rt'><a href='{$contentlist[6]['cvurl']}'>{$lang_cveditorTitle}</a></p>
-			</div>
-			";
-		$contentlist[7]['name']=$lang_modulemanagement7;
-		$contentlist[7]['module']='7';
-		$contentlist[7]['conturl']="message/index.php?class1={$met_classindex[7][0][id]}&lang={$lang}&anyid={$anyid}";
-
+		if(count($met_classindex[1])!=0){
+			$contentlist[1]['name']=$lang_modulemanagement1;
+			$contentlist[1]['module']='1';
+			$contentlist[1]['conturl']="about/index.php?module=1&lang=$lang&anyid=$anyid";
+		}
+		if(count($met_classindex[2])!=0){
+			$contentlist[2]['name']=$lang_modulemanagement2;
+			$contentlist[2]['module']='2';
+			$contentlist[2]['conturl']="article/index.php?module=2&lang=$lang&anyid=$anyid";
+			$contentlist[2]['url']="article/content.php?action=add&lang=$lang&anyid=$anyid";	
+			$contentlist[2]['set']="<div>
+				<p class='lt'><a href='{$contentlist[2][url]}'>{$lang_addinfo}</a></p><span>-</span><p class='rt'><a href='{$contentlist[2][conturl]}'>{$lang_manager}</a></p>
+				</div>";
+		}
+		if(count($met_classindex[3])!=0){
+			$contentlist[3]['name']=$lang_modulemanagement3;
+			$contentlist[3]['module']='3';
+			$contentlist[3]['conturl']="product/index.php?module=3&lang=$lang&anyid=$anyid";
+			$contentlist[3]['url']="product/content.php?action=add&lang=$lang&anyid=$anyid";	
+			$contentlist[3]['set']="<div>
+				<p class='lt'><a href='{$contentlist[3][url]}'>{$lang_addinfo}</a></p><span>-</span><p class='rt'><a href='{$contentlist[3][conturl]}'>{$lang_manager}</a></p>
+				</div>";
+		}
+		if(count($met_classindex[4])!=0){
+			$contentlist[4]['name']=$lang_modulemanagement4;
+			$contentlist[4]['module']='4';
+			$contentlist[4]['conturl']="download/index.php?module=4&lang=$lang&anyid=$anyid";
+			$contentlist[4]['url']="download/content.php?action=add&lang=$lang&anyid=$anyid";	
+			$contentlist[4]['set']="<div>
+				<p class='lt'><a href='{$contentlist[4][url]}'>{$lang_addinfo}</a></p><span>-</span><p class='rt'><a href='{$contentlist[4][conturl]}'>{$lang_manager}</a></p>
+				</div>";
+		}
+		if(count($met_classindex[5])!=0){
+			$contentlist[5]['name']=$lang_modulemanagement5;
+			$contentlist[5]['module']='5';
+			$contentlist[5]['conturl']="img/index.php?module=5&lang=$lang&anyid=$anyid";
+			$contentlist[5]['url']="img/content.php?action=add&lang=$lang&anyid=$anyid";	
+			$contentlist[5]['set']="<div>
+				<p class='lt'><a href='{$contentlist[5][url]}'>{$lang_addinfo}</a></p><span>-</span><p class='rt'><a href='{$contentlist[5][conturl]}'>{$lang_manager}</a></p>
+				</div>";
+		}
+		if(count($met_classindex[6])!=0){
+			$contentlist[6]['name']=$lang_modulemanagement6;
+			$contentlist[6]['module']='6';
+			$contentlist[6]['conturl']="job/index.php?class1={$met_classindex[6][0][id]}&lang={$lang}&anyid={$anyid}";
+			$contentlist[6]['cvurl']="job/cv.php?class1={$met_classindex[6][0][id]}&lang={$lang}&anyid={$anyid}";
+			$contentlist[6]['set']="<div>
+				<p class='lt'><a href='{$contentlist[6]['conturl']}'>{$lang_manager}</a></p><span>-</span>
+				<p class='rt'><a href='{$contentlist[6]['cvurl']}'>{$lang_cveditorTitle}</a></p>
+				</div>
+				";
+		}	
+		if(count($met_classindex[7])!=0){
+			$contentlist[7]['name']=$lang_modulemanagement7;
+			$contentlist[7]['module']='7';
+			$contentlist[7]['conturl']="message/index.php?class1={$met_classindex[7][0][id]}&lang={$lang}&anyid={$anyid}";
+		}
+		if(count($met_classindex[8])!=0){
 		$contentlist[8]['name']=$lang_modulemanagement8;
 		$contentlist[8]['module']='8';
 		$contentlist[8]['conturl']="feedback/index.php?class1={$met_classindex[8][0][id]}&lang={$lang}&anyid={$anyid}";
+		}
 	}
 }
 include template('content/content');

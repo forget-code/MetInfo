@@ -1,39 +1,27 @@
 <?php
 # MetInfo Enterprise Content Management System 
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
+header("Expires: Mon, 26 Jul 1970 05:00:00 GMT");
+header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+header("Cache-Control: no-cache, must-revalidate");
+header("Pragma: no-cache");
+
 if($htmsitemap==$met_member_force && ($met_sitemap_html||$met_sitemap_xml||$met_sitemap_txt)){
-	$sitemaplist=sitemaplist();
-	if($met_sitemap_lang_return){
-		echo 'metinfo';
-		$return = count($sitemaplist)?json_encode($sitemaplist):'not';
-		echo $return;
-		die;
-	}
 	if($met_sitemap_lang){
-		require_once ROOTPATH.'include/export.func.php';
-		$met_host = str_replace("http://","",$met_weburl);
-		if(substr($met_host,-1,1)=="/")$met_host=substr($met_host, 0, -1);
-		$sitqz='';
-		if(strstr($met_host,"/")){
-			$met_host=explode("/",$met_host);
-			$sitqz='/'.$met_host[1];
-			$met_host=$met_host[0];
+		$lang_now=$lang;
+		$met_weburl_now=$met_weburl;
+		$met_webname_now=$met_webname;
+		$sitemaplist=array();
+		foreach($met_langok as $key=>$val){
+			$lang=$val[mark];
+			$sitemaplist_temp=sitemaplist();
+			$sitemaplist=array_merge($sitemaplist,$sitemaplist_temp);
 		}
-		$met_file =$sitqz.'/sitemap/index.php';
-		if(count($met_langok)>1){
-			foreach($met_langok as $key=>$val){
-				if($val[mark]!=$lang && $val[link]==''){
-					$post=array('lang'=>$val[mark],'met_sitemap_lang_return'=>1,'htmsitemap'=>$met_member_force);
-					$json=curl_post($post,30);
-					if($json!='not'){
-						$list = json_decode($json,true);
-						foreach($list as $key=>$val){
-							$sitemaplist[]=$val;
-						}
-					}
-				}
-			}
-		}
+		$lang=$lang_now;
+		$met_weburl=$met_weburl_now;
+		$met_webname=$met_webname_now;
+	}else{
+		$sitemaplist=sitemaplist();
 	}
 	$met_sitemap_max=50000;
 	/*htmlÍøÕ¾µØÍ¼*/

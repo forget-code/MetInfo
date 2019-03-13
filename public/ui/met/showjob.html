@@ -3,7 +3,6 @@ require_once template('head');
 require_once template('sidebar');
 $methits=methtml_hits('job');
 $met_next=methtml_prenextinfo(1);
-$mp=dump($job);
 if($job[useful_life_a]==0)$lang_Job2='';
 echo <<<EOT
 -->

@@ -1,6 +1,6 @@
 <?php
 # MetInfo Enterprise Content Management System 
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserve. 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 require_once '../login/login_check.php';
 require_once ROOTPATH.'include/export.func.php';
 if($type==1){
@@ -46,7 +46,7 @@ global $checksum,$met_host,$met_file,$db,$url_array,$lang_retested,$lang_redownl
 		echo "<a href=\"http://$met_host/dl/olupdate.php\" onclick=\"return olupdate('cms','new','test');\">{$lang_retested}</a>"; 
 	}
 	if($type==2){
-		deldir("../app/$addr/");
+		if($addr)deldir("../app/$addr/");
 		$query="select * from $met_app where no=$olid and download=1";
 		$appver=$db->get_one($query);
 		$verold=is_array($appver)?$appver['ver']:0;
@@ -65,7 +65,7 @@ global $checksum,$met_host,$met_file,$db,$url_array,$lang_retested,$lang_redownl
 	checksumdel($type);
 	unlink("../../update.php");
 	unlink("../../sql.sql");
-	deldir("../update/$addr/");
+	if($addr)deldir("../update/$addr/");
 	die();
 }
 @clearstatcache();
@@ -90,6 +90,14 @@ if($action=="check"){
 		$results=explode('|',$result);
 		if($results[2]=='noaddr'){
 			delcodeb($return['md5']);
+			$results[1]="<a href=\"http://$met_host/dl/app.php\" onclick=\"return olupdate('$olid','0','testc');\"><img src=\"../../templates/met/images/dwn.png\"><p>{$lang_usertype1}{$lang_appinstall}</p></a><script type=\"text/javascript\">alert('$results[1]')</script>";
+			$result="$results[0]|$results[1]|$results[2]|$results[3]";
+		}
+		if($results[2]=='ok'){
+			$query="select * from $met_app where no='$olid' and download=1";
+			$appdownload=$db->get_one($query);
+			$results[1]="<span id=\"del_{$appdownload[id]}\"><a href=\"delapp.php?action=del&lang=cn&id={$appdownload[id]}&anyid=61\" onclick=\"return appdel($(this),'{$appdownload[id]}');\"><img src=\"../../templates/met/images/del.png\"><p>{$lang_dlapptips6}</p></a></span><script type=\"text/javascript\">alert('{$lang_appdl1}')</script>";
+			$result="$results[0]|$results[1]|$results[2]|$results[3]";
 		}
 		echo $result;
 	}
@@ -306,7 +314,7 @@ else if($action=='sql'){/*数据库更新，注：如建立新表，升级SQL文
 				if(trim($sqldump)){
 					$sqlfile[]=$bakfile = "../update/$addr/{$con_db_name}_{$date}_{$random}_{$num}.sql";
 					$version='version:'.$metcms_v;
-					$sqldump = "#MetInfo.cn Created {$version} \n#{$met_weburl}\n#{$tablepre}\n# --------------------------------------------------------\n\n\n".$sqldump;
+					$sqldump = "#MetInfo.cn Created {$version} \n#{$met_weburl}\n#{$tablepre}\n#{$met_webkeys}\n# --------------------------------------------------------\n\n\n".$sqldump;
 					if(!file_put_contents($bakfile, $sqldump)){
 						dl_error($lang_updaterr2."({$adminfile}/update/$addr/{$con_db_name}_{$date}_{$random}_{$num}.sql)",$type,$olid,$ver,$addr,$action);
 					}
@@ -419,6 +427,16 @@ else if($action=='update'){/*文件更新 注升级包中admin文件不需要改
 			$query="insert into $met_app set name='$app[name]',no='$app[no]',ver='$app[ver]',img='$app[img]',info='$app[info]',file='$app[file]',power='$app[power]',sys='$app[sys]',site='$app[site]',url='$app[url]',download=1";	
 			$db->query($query);
 		}
+		$query="select * from $met_admin_table where usertype=3";
+		$result=$db->query($query);
+		while($list=$db->fetch_array($result)){
+			$list[admin_type_tmp]='-'.$list[admin_type].'-';
+			if(stripos($list[admin_type_tmp],'-s142-')!==false){
+				$list[admin_type]=$list[admin_type].'-a'.$app[no];
+				$query="update $met_admin_table set admin_type='$list[admin_type]' where id='$list[id]'";
+				$db->query($query);
+			}
+		}
 		$met_file='/dl/record_dl.php';
 		$post_data = array('cmd'=>'app','addr'=>$addr);
 		curl_post($post_data,10);
@@ -430,32 +448,6 @@ else if($action=='update'){/*文件更新 注升级包中admin文件不需要改
 	echo $lang_updaterr15."<script type=\"text/javascript\">setTimeout(function (){olupdate('$olid','$ver','testc');},500);</script>";	
 }else if($action=='error'){
 	dl_error('',$type,$olid,$ver,$addr,$action);
-}else if($action=='patch'){
-	$adminfile=$url_array[count($url_array)-2];
-	$met_file='/dl/patch.php';
-	$post_data = array('ver'=>$metcms_v,'patch'=>$met_patch);
-	$difilelist=curl_post($post_data,10);
-	$difilelists=explode('*',$difilelist);
-	$met_file='/dl/olupdate_curl.php';
-	foreach($difilelists as $key=>$val){
-		$difilelistss=explode('|',$val);
-		$met_patch=$difilelistss[0];
-		unset($difilelistss[0]);
-		foreach($difilelistss as $key1=>$val1){
-			$val2=readmin($val1,$adminfile,2);
-			$re=dlfile("v$metcms_v/$val1","../../$val2");
-			if($re!=1){
-				die();
-			}
-		}
-		if(file_exists("../update/v{$metcms_v}_{$met_patch}.php")){
-			require_once "../update/v{$metcms_v}_{$met_patch}.php";
-		}
-		@unlink("../update/v{$metcms_v}_{$met_patch}.php");
-		$query="update $met_config set value='$met_patch' where name='met_patch'";
-		$db->query($query);
-	}
-	die();
 }
 
 # This program is an open source system, commercial use, please consciously to purchase commercial license.

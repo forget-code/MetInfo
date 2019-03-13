@@ -61,7 +61,7 @@ if(($class1=="" || $class1==10000 || $class1==10001 || $class1==0) and (intval($
    break;
    }
 $serch_sql.= "and lang='$lang' "; 
-if($met_member_use==2)$serch_sql.= " and access<=$metinfo_member_type";
+if($met_member_use==2)$serch_sql.= " and access<='$metinfo_member_type'";
 $searchitem="id,title,top_ok,com_ok,content,updatetime,addtime,filename,hits,imgurls,class1";
 $searchitem1="id,title,top_ok,com_ok,content,updatetime,addtime,filename,hits,class1";
 switch($met_htmpagename){
@@ -212,6 +212,7 @@ break;
     $list_num=$met_search_list;
     $rowset = new Pager($total_count,$list_num,$page);
     $from_record = $rowset->_offset();
+	$page = $page?$page:1;
 	$searchok=$search_list;
 	foreach($search_list as $key=>$val){
 		if(stripos($val['title'],$searchword)!==false){
@@ -272,7 +273,7 @@ break;
   } 
     $module_name=intval($module)?$module:$class1_info[module];
 	$module_name=intval($module_name);
-	if($module_name<2||$module_name>9)okinfo('javascript:history.back();',$lang_js1);	
+	if($module_name<2||$module_name>9)okinfo('javascript:history.back();',$lang_js1);
   	$table_name="met_".$modulename[$module_name][0];
 	$table_name=$$table_name;
     $total_count = $db->counter($table_name, "$serch_sql", "*");
@@ -282,12 +283,13 @@ break;
     $list_num=$met_search_list;
     $rowset = new Pager($total_count,$list_num,$page);
     $from_record = $rowset->_offset();
+	$page = $page?$page:1;
     $query = "SELECT * FROM $table_name $serch_sql $order_sql LIMIT $from_record, $list_num";
     $result = $db->query($query);
 	$pagename=$modulename[$module_name][0];
 	while($list= $db->fetch_array($result)){
     $filename=$navurl.$class_list[$list[class1]][foldername];
-	$filenamenow=($met_htmpagename==2)?$filename:($met_htmpagename?date('Ymd',strtotime($list[addtime])):$modulename[$module_name][1]);
+	$filenamenow=($met_htmpagename==2)?$class_list[$list[class1]][foldername]:($met_htmpagename?date('Ymd',strtotime($list[addtime])):$modulename[$module_name][1]);
     require 'searchlist.php';
 	}
     $page_list = $rowset->link("search.php?lang=$lang&class1=$class1&class2=$class2&class3=$class3&searchword=$searchword&searchtype=$searchtype&page=");
@@ -355,6 +357,7 @@ $nav_x[name]="<a href='$class_info[url]'>{$class_info[name]}</a> > {$lang_Search
 if($searchword<>''){
 $nav_x[name]=$nav_x[name]."&nbsp&nbsp<font color=red>'".$lang_Keywords.":&nbsp".$searchword."'</font>";
 }
+$pageall=$rowset->pages;
 include template('search');
 footer();
 # This program is an open source system, commercial use, please consciously to purchase commercial license.

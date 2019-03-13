@@ -9,6 +9,8 @@ if($action=="editor"){
 	for($i=0;$i<$adnum;$i++){
 		$name     = "name_".$allidlist[$i];	
 		$name     = $$name;
+		$description     = "description_".$allidlist[$i];	
+		$description     = $$description;
 		$no_order = "no_order_".$allidlist[$i];
 		$no_order = $$no_order;
 		$type     = "type_".$allidlist[$i];
@@ -27,6 +29,7 @@ if($action=="editor"){
 		$upbp = $tpif?"where id='$allidlist[$i]'":",lang='$lang'";
 		$query="$uptp $met_parameter set
 				name               = '$name',
+				description        = '$description',
 				no_order           = '$no_order',
 				type               = '$type',
 				access             = '$access',
@@ -84,6 +87,9 @@ if($action=="editor"){
 	$newslit.= "<td class='list-text'><input name='id' type='checkbox' value='new$lp' checked='checked' /></td>\n";
 	$newslit.= "<td class='list-text'><input name='no_order_new$lp' type='text' class='text no_order' /></td>\n";
 	$newslit.= "<td class='list-text' style='padding-left:15px; text-align:left;'><input name='name_new$lp' type='text' class='text nonull' /></td></td>\n";
+	if($module==6||$module==8){
+		$newslit.= "<td class='list-text' style='padding-left:15px; text-align:left;'><input name='description_new$lp' type='text' class='text' /></td></td>\n";
+	}
 	if($module<6){		
 	$newslit.= "<td class='list-text'>\n";
 	$newslit.= "<select name='class1_new$lp' >\n";
