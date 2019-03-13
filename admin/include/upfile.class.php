@@ -29,15 +29,16 @@ class upfile {
    * $over 复盖参数
    */
   function upfile($format = '',$path = '',$maxsize = 0, $over = 0) {
+	global $lang_upfileFail,$lang_upfileFail1,$lang_upfileFail2;
       if (empty($path)) {
           $path = $this->savepath.'/'.date('Ym').'/';
           $water = $this->savepath.'/'.date('Ym').'/watermark/';
           $thumb = $this->savepath.'/'.date('Ym').'/thumb/';
           if (!file_exists($water)){
-              !$this->make_dir($water)&& $this->halt('创建水印目录失败');
+              !$this->make_dir($water)&& $this->halt($lang_upfileFail);
           }
           if (!file_exists($thumb)) {
-              !$this->make_dir($thumb)&&$this->halt('创建缩图目录失败');
+              !$this->make_dir($thumb)&&$this->halt($lang_upfileFail1);
           }
           $this->waterpath = $water;
       } else {
@@ -45,7 +46,7 @@ class upfile {
     }
     if (!file_exists($path)) {
       if (!$this->make_dir($path)) {
-        return $this->halt('创建图片目录失败');
+        return $this->halt($lang_upfileFail2);
       }
     }
     $this->savepath = $path;
@@ -60,13 +61,14 @@ class upfile {
    * $file 上传文件保存名称，为空或者上传多个文件时由系统自动生成名称
    */
   function upload($form, $file = "") {
+	global $lang_upfileFail3;
     if (is_array($form)) {
       $filear = $form;
     } else {
       $filear = $_FILES[$form];
     }
     if (!is_writable($this->savepath)) {
-      $this->halt("指定的路径不可写，或者没有此路径!");
+      $this->halt($lang_upfileFail3);
     }
       $this->getext($filear["name"]); //取得扩展名
       $this->set_savename($file); //设置保存文件名
@@ -81,23 +83,24 @@ class upfile {
  
  
   function copyfile($filear) {
-
+	global $lang_upfileFile,$lang_upfileMax,$lang_upfileByte,$lang_upfileTip1,$lang_upfileTip2,$lang_upfileTip3,
+			$lang_upfileOK,$lang_upfileOver,$lang_upfileOver1,$lang_upfileOver2,$lang_upfileOver3;
     if ($filear["size"] > $this->maxsize) {
-      $this->halt("上传文件 ".$filear["name"]." 大小超出系统限定值[".$this->maxsize." 字节]，不能上传。");
+      $this->halt("$lang_upfileFile ".$filear["name"]." $lang_upfileMax [".$this->maxsize." $lang_upfileByte] $lang_upfileTip1");
     }
 
     if (!$this->overwrite && file_exists($this->savename)) {
-      $this->halt($this->savename." 文件名已经存在。");
+      $this->halt($this->savename." $lang_upfileTip2");
     }
 
     if ($this->format != "" && !in_array(strtolower($this->ext), explode(",",
         strtolower($this->format)))) {    
-      $this->halt($this->ext." 文件格式不允许上传。");
+      $this->halt($this->ext." $lang_upfileTip3");
     }
 
     if (!copy($filear["tmp_name"], $this->savepath.$this->savename)) {
-      $errors = array(0 => "文件上传成功", 1 =>
-                      "上传的文件超过了 php.ini 中 upload_max_filesize 选项限制的值。 ", 2 => "上传文件的大小超过了 HTML 表单中 MAX_FILE_SIZE 选项指定的值。 ", 3 => "文件只有部分被上传。 ", 4 => "没有文件被上传。 ");
+      $errors = array(0 => $lang_upfileOK, 1 =>
+                      $lang_upfileOver, 2 => $lang_upfileOver1, 3 => $lang_upfileOver2, 4 => $lang_upfileOver3);
       $this->halt($errors[$filear["error"]]);
     } else {
       @unlink($filear["tmp_name"]); //删除临时文件
@@ -140,8 +143,9 @@ class upfile {
    * $msg 为输出信息
    */
   function halt($msg) {
+	global $lang_upfileNotice;
     //admin_msg($msg);
-    echo"<strong>注意：</strong>".$msg;
+    echo"<strong>$lang_upfileNotice</strong>".$msg;
     exit;
   }
   /**缩图图片宽高判断处理**/
@@ -203,12 +207,14 @@ class upfile {
    * @return  resource    如果成功则返回完整路径文件名
    */
   function createthumb($img,$constrainw,$constrainh) {
-    $oldsize = getimagesize($img);
-    $newsize = $this->setWidthHeight($oldsize[0], $oldsize[1], $constrainw,
-                                     $constrainh);
+    global $met_img_x,$met_img_y,$lang_upfileFail4,$lang_upfileFail5;
+    $oldsize = getimagesize($img);	
+    //$newsize = $this->setWidthHeight($oldsize[0], $oldsize[1], $constrainw,$constrainh);
+	$newsize=array(0=>intval($met_img_x),1=>intval($met_img_y));
     $exp = explode(".", $img);
 	$count_exp = count($exp);
 	$count_exp = $count_exp-1;
+	$exp[$count_exp]=strtolower($exp[$count_exp]);
     if ($exp[$count_exp] == "gif") {
       $src = imagecreatefromgif($img);
     } elseif ($exp[$count_exp] == "png") {
@@ -216,16 +222,21 @@ class upfile {
     } else {
       $src = imagecreatefromjpeg($img);
     }
-    $dst = imagecreatetruecolor($newsize[0], $newsize[1]);
+    $dst = imagecreatetruecolor($newsize[0], $newsize[1]);	 
+	//$black = imagecolorallocate ($dst, 0, 0, 0);
+	//imagecolortransparent($dst,$black);	
     imagecopyresampled($dst, $src, 0, 0, 0, 0, $newsize[0], $newsize[1],
                        $oldsize[0], $oldsize[1]);
+				
     $path = $this->savepath.'thumb/';
      if (!file_exists($path)) {
         if (!$this->make_dir($path)) {
-         return $this->halt('创建目录失败');
+         return $this->halt($lang_upfileFail4);
          }
     }
+
 	$thumbname = $path.$this->savename;
+	
     if ($exp[$count_exp] == "gif") {
       imagegif($dst, $thumbname);
     }else if ($exp[$count_exp] == "png") {
@@ -233,7 +244,7 @@ class upfile {
     }else if ($exp[$count_exp] == "jpg") {
       imagejpeg($dst, $thumbname);
     } else {
-      return $this->halt('bmp的格式无法自动生成缩图');
+      return $this->halt($lang_upfileFail5);
     }
     imagedestroy($dst);
     imagedestroy($src);

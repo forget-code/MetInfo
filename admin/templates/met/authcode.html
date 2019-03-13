@@ -1,70 +1,71 @@
 <!--<?php
+# 文件名称:authcode.html 2009-08-03 15:54:57
+# MetInfo企业网站管理系统 
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+
+require_once template('head'); 
 echo <<<EOT
 -->
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-<link rel="stylesheet" type="text/css" href="$css_url/metinfo_admin.css">
-<title>商业授权</title>
+<title>{$lang_authLicense}</title>
 </head>
 <body>
 
-<table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td align="center" valign="top"><table width="95%" border="0" cellpadding="2" cellspacing="1" class="table_southidc">
+<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
           <tr> 
-            <td class="back_southidc" height="30" colspan="3" align="center">商业授权</td>
+            <td colspan="3" align="center" class="list1_title">{$lang_authLicense}</td>
           </tr>
-		  <tr bgcolor="#ECF5FF"> 
-           <td height="30" colspan="3" >欢迎参加米拓官方【<a href="http://www.metinfo.cn/web/promotion.htm" target="_blank" style="color:#CC0000; font-weight:bold;">商业授权免费赠送促销活动</a>】详情请登录官方网站<a href="http://www.metinfo.cn/" target="_blank">http://www.metinfo.cn/</a></td>
+		  <tr> 
+           <td colspan="3" class="au">{$lang_authWelcome1}【<a href="http://www.metinfo.cn/web/promotion.htm" target="_blank" style="color:#ff0000; font-weight:bold;">{$lang_authWelcome2}</a>】{$lang_authWelcome3}<a href="http://www.metinfo.cn/" target="_blank">http://www.metinfo.cn/</a></td>
           </tr>
-		   <tr bgcolor="#ECF5FF"> 
-           <td height="100" colspan="3" style="line-height:20px;" ><b>商业版和免费版区别：</b><br>
-		   1、如您将程序用于商业用途，请自觉购买商业授权，否则我们将保留追究法律责任的权利；<br>
-		   2、免费版和商业版在网站功能上没有任何区别，商业用户可以获取专业的技术支持服务；<br>
-		   3、免费版如去除【Powered by MetInfo】版权标识将不能正常运行！米拓官方并将追求相应的法律责任！<br>
-		   4、查看免费版与商业版的详细功能及服务对比：<a href="http://www.metinfo.cn/web/product.htm" target="_blank"  style="color:#CC0000; ">查看详细</a></td>
+		   <tr> 
+           <td colspan="3" class="au_text"><b>{$lang_authDifferentLicense}</b><br>
+		   {$lang_authDifferent1}；<br>
+		   {$lang_authDifferent2}；<br>
+		   {$lang_authDifferent3}<br>
+		   {$lang_authDifferent4}：<a href="http://www.metinfo.cn/web/product.htm" target="_blank"  style="color:#ff0000; ">{$lang_authDetail}</a></td>
           </tr>
-		  <tr bgcolor="#ECF5FF"> 
-           <td height="100" colspan="3" style="line-height:20px;"><b>获取商业授权步骤：</b><br>
-		   第一步、通过了解或试用后明确计划购买MetInfo企业网站系统商业授权；<br>
-		   第二步、联系米拓信息或各地代理商获取最优化的授权方案，并缴纳费用；<br>
-		   第三步、添加米拓技术支持QQ、MSN等，注册米拓官方技术论坛并向官方提交用户名，以便官方进行论坛商业用户认证；<br>
-		   第四步、联系米拓技术提交需要授权的域名，米拓官方生成商业授权码及密钥；<br>
-		   第五步、使用官方提供的授权文件替换系统相关文件，并在此输入授权码和密钥；<br>
+		  <tr> 
+           <td colspan="3" class="au_text"><b>{$lang_authGetLicense}：</b><br>
+		   {$lang_authGet1}；<br>
+		   {$lang_authGet2}；<br>
+		   {$lang_authGet3}；<br>
+		   {$lang_authGet4}；<br>
+		   {$lang_authGet5}；<br>
 		   </td>
           </tr>
-		  <tr bgcolor="#ECF5FF"> 
-           <td height="50" colspan="3" ><form method="POST" name="myform"  action="http://www.metinfo.cn/code/code.php" target="_blank"><b>域名授权查询：</b>
-<input name="url" type="text" size="30" style="border:1px solid #000033" value="$authurlself" /> <input type="submit" name="Submit" value="查询授权情况" style="background-color:#0000CC; color:#FFFFFF">
+		  <tr bgcolor="#e3f5ff"> 
+           <td colspan="3"  class="au_text"><form method="POST" name="myform"  action="http://www.metinfo.cn/code/code.php" target="_blank"><b>{$lang_authQuery}：</b>
+<input name="url" type="text" size="30" style="border:1px solid #000033" value="$authurlself" /> <input type="submit" name="Submit" value="{$lang_authSubmitQuery}" style="background-color:#279cd8; color:#FFFFFF">
 </form></td>
           </tr>
 		   <tr bgcolor="#ECF5FF"> 
-           <td height="50" colspan="3" ><b style="color:#990000">授权信息录入</b></td>
+           <td colspan="3" class="au1"><b style="color:#ffffff;">{$lang_authImport}</b></td>
           </tr>
 		  
 		  <form method="POST" name="myform"  action="authcode.php?action=modify" target="_self">
 		  <input name="id" type="hidden" value="$authinfo[id]">
-			<tr bgcolor="#ECF5FF"> 
-            <td width="20%" height="25"><b>授权域名：</b></td>
-            <td width="80%" ><input name="authurlself" type="text" size="30" value="$authurlself" disabled="disabled"></td></tr>
-			<tr bgcolor="#ECF5FF">
-			<td width="20%" height="25"><b>密钥：</b></td>
-            <td width="80%" ><input name="authpass" type="text" size="30" value="$authinfo[authpass]"></td></tr>
-			<tr bgcolor="#ECF5FF"> 
-            <td width="20%" height="25"><b>授权码：</b><br>请联系官方获取授权码</td>
-            <td width="80%" ><textarea name="authcode" cols="60" rows="5">$authinfo[authcode]</textarea></td></tr>
+			<tr> 
+            <td class="list1_text"><b>{$lang_authDomain}</b>：</td>
+            <td class="list1_input" ><input name="authurlself" type="text" size="30" value="$authurlself" disabled="disabled"></td></tr>
+			<tr>
+			<td class="list1_text"><b>{$lang_authKey}</b>：</td>
+            <td class="list1_input"><input name="authpass" type="text" size="30" value="$authinfo[authpass]"></td></tr>
+			<tr> 
+            <td class="list1_text"><b>{$lang_authAuthorizedCode}</b>({$lang_authTip1})：</td>
+            <td class="list1_input"><textarea name="authcode" cols="60" rows="5" style="font-size:12px; color:#333333;">$authinfo[authcode]</textarea></td></tr>
 		  
-<tr> <td height="30" colspan="2" align="center" bgcolor="#ECF5FF"> <input type="submit" name="Submit" value="提交" class="tj">
-              　 
-              <input type="reset" name="Submit" value="重置" class="tj"> </td>
+<tr><td class="list1_text"></td>
+	      <td class="list1_submit"><input type="submit" name="Submit" value="{$lang_Submit}" class="tj" style="*padding-top:2px; *height:22px;"><input type="reset" name="Submit" value="{$lang_Reset}" class="tj" style="*padding-top:2px; *height:22px;"> </td>
           </tr>
         </form>
-    </table></td>
-  </tr>
+		<tr>
+		  <td class="list1_footer" colspan="2" align="center">$foot</td>
+	  </tr>
 </table>
 </body>
 </html>
 <!--
 EOT;
+# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
 ?>-->

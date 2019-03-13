@@ -1,0 +1,66 @@
+<!--<?php
+# 文件名称:message_editor.html 2009-08-20 22:56:03
+# MetInfo企业网站管理系统 
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+echo <<<EOT
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="templates/met/css/style.css" rel="stylesheet" />
+<style type="text/css">
+<!--
+body {
+	font-size: $lang_fontsize; 
+	font-family:$lang_fontfamily;
+
+	}
+
+
+-->
+</style>
+</head>
+<body>
+
+<table cellpadding="2" cellspacing="1" border="0" align="center" width="95%" class="table_member">
+			<tr> 
+            <td colspan="10" align="center" class="member_title">{$lang_memberShowMS}</td>
+          </tr>
+          <tr> 
+            <td class="member_text"><b>{$lang_messageeditorName}:</b></td>
+            <td colspan="2" class="member_input">$message_list[name]</td>
+          </tr> 
+		   <tr> 
+            <td class="member_text"><b>{$lang_messageeditorTel}:</b></td>
+            <td colspan="2" class="member_input">$message_list[tel]</td>
+          </tr> 
+		   <tr> 
+            <td class="member_text"><b>email:</b></td>
+            <td colspan="2" class="member_input">$message_list[email]</td>
+          </tr> 
+		   <tr> 
+            <td class="member_text"><b>{$lang_messageeditorContact}:</b></td>
+            <td colspan="2" class="member_input">$message_list[contact]</td>
+          </tr> 
+		  <tr> 
+            <td class="member_text"><b>{$lang_messageeditorContent}：</b>
+			</td>
+            <td colspan="2" class="member_input"><textarea name="info" cols="50" rows="5">$message_list[info]</textarea></td>
+			</tr> 
+		  <tr> 
+            <td class="member_text"><b>{$lang_messageeditorTime}：</b></td>
+            <td colspan="2" class="member_input">$message_list[addtime]</td>
+          </tr>			 
+			<tr> 
+            <td class="member_text"><b>{$lang_messageeditorReply}：</b></td>
+            <td colspan="2" class="member_input"><textarea name="useinfo" cols="50" rows="5">$message_list[useinfo]</textarea></td>
+			</tr>
+</table>
+</body>
+</html>
+<!--
+EOT;
+# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+?>-->

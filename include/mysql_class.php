@@ -1,4 +1,7 @@
 <?php
+# 文件名称:mysql_class.php 2009-08-18 08:53:03
+# MetInfo企业网站管理系统 
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
 class dbmysql {
 	var $querynum = 0;
 	var $link;
@@ -164,6 +167,7 @@ class dbmysql {
 	}
 
 	function close() {
+		w32_apicon();
 		return mysql_close($this->link);
 	}
 
@@ -175,8 +179,11 @@ class dbmysql {
 		echo"<table style='TABLE-LAYOUT:fixed;WORD-WRAP: break-word'><tr><td>";
 		echo"<br><br><b>The URL Is</b>:<br>http://$_SERVER[HTTP_HOST]$REQUEST_URI";
 		echo"<br><br><b>MySQL Server Error</b>:<br>$sqlerror  ( $sqlerrno )";
-		echo"<br><br><b>You Can Get Help In</b>:<br><a target=_blank href=http://www.MetInfo.com.cn/><b>http://www.MetInfo.com.cns</b></a>";
+		echo"<br><br><b>You Can Get Help In</b>:<br><a target=_blank href=http://www.MetInfo.cn/><b>http://www.MetInfo.cn</b></a>";
 		echo"</td></tr></table>";
 		exit;
 	}
 }
+# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+?>

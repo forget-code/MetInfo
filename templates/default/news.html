@@ -1,0 +1,36 @@
+<!--<?php
+$navdown="nav_".$class1_info[id];
+if($class_list[$classnow][nav]==1||$class_list[$classnow][nav]==3)$navdown="nav_".$class_list[$classnow][id];
+require_once template('head'); 
+echo <<<EOT
+-->
+<div class="web">
+<!--
+EOT;
+require_once template('webleft'); 
+echo <<<EOT
+-->
+<div class="webcontent">
+<ul class="news_list">
+<!--
+EOT;
+foreach($news_list as $key=>$val){
+echo <<<EOT
+-->
+<li><a href="$val[url]" target="_blank">$val[title]</a>$val[top] $val[news] $val[hot]<span>$val[updatetime]</span></li>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</ul>
+</div>
+<div class="web_bottom">$page_list</div>
+</div>
+<div style="clear:both;"></div>
+
+</div>
+<!--
+EOT;
+require_once template('foot'); 
+?>

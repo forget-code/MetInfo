@@ -1,0 +1,53 @@
+<!--<?php
+# 文件名称:view.html 2009-08-29 09:21:57
+# MetInfo企业网站管理系统 
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved
+require_once template('head');
+echo <<<EOT
+-->
+<title>{$lang_viewtitle}</title>
+</head>
+<style type='text/css'>
+.flash{ width:auto; height:auto; overflow:hidden;}
+.flash 
+</style>
+<body>
+<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1" >
+         <tr> 
+            <td colspan="3" align="center" class="list1_title">{$nowtitle}{$lang_viewtitle}</td>
+          </tr>
+<!--
+EOT;
+foreach($met_view as $key=>$val){
+$i++;
+echo <<<EOT
+-->
+		  <tr> 
+<!--
+EOT;
+if($type!='flash'){
+echo <<<EOT
+-->
+            <td class="list1_text"><b>{$val[title]}：</b></td>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+            <td class="list1_input">{$val[out]}</td></tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+		<tr>
+		  <td class="list1_footer" colspan="2" align="center">$foot</td>
+	  </tr>	
+</table>
+</body>
+</html>
+<!--
+EOT;
+# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+?>-->

@@ -1,0 +1,26 @@
+<!--<?php
+require_once template('head'); 
+$met_img=methtml_showimg('all');
+$methits=methtml_hits('img');
+echo <<<EOT
+-->
+<div class="web">
+<div class="webleft">
+<div class="nav_x1"><span><a href='$index_url'>{$lang_home}</a> > $nav_x[name]</span></div>
+<div class="content">
+<h1>$img[title]</h1>
+<div class='img_content' >{$met_img}</div>
+</div>
+<div class="content">
+<div class="content">$img[content]</div>
+
+<div class="hits" style="float:left; display:block; position:relative; border-bottom:20px; width:100%;">$methits</div>
+</div>
+
+</div>
+
+
+<!--
+EOT;
+require_once template('foot'); 
+?>

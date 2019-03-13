@@ -1,82 +1,113 @@
 <!--<?php
+# 文件名称:job.html 2009-08-12 08:28:57
+# MetInfo企业网站管理系统 
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+require_once template('head');
 echo <<<EOT
 -->
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-<link rel="stylesheet" type="text/css" href="$css_url/metinfo_admin.css">
-<title>招聘信息管理</title>
-<script type="text/javascript" src="../language/zh_cn.js"></script>
-<script type="text/javascript" src="../include/metinfo.js"></script>
+<title>{$lang_jobTitle}</title>
 </head>
 <body>
-<br>
-<table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td align="center" valign="top"><table width="95%" border="0" cellpadding="2" cellspacing="1" class="table_southidc">
+<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
           <tr> 
-            <td class="back_southidc" height="30" align="center">$class1_info[c_name]管理</td>
-          </tr>   
-          <tr> 
-            <td valign="top"><table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#003366" class="border" style="word-break:break-all">
-              <tr class="back_southidc2">
-                <td width="5%" height="25" align="center">选中</td>
-				<td width="5%" height="25" align="center">ID</td>
-                <td width="30%" height="25" align="center">招聘职位</td>
-                <td width="10%" align="center" >招聘人数</td>
-				<td width="15%" align="center" >工作地点</td>
-                <td width="10%" align="center" >有效天数</td>
-                <td width="15%" align="center" >发布日期</td>
-				<td width="10%" align="center" >操作</td>
+            <td colspan="10" align="center" class="list1_title">$class1_info[name]{$lang_jobManage}</td>
+          </tr>  
+			<tr align="right">
+			<form method="POST" name="filterform"  action="index.php?search=detail_search" target="_self">
+			<input name="class1" type="hidden" size="30" value="$class1">
+			<td colspan="10">				
+				<b>{$lang_jobTop}{$lang_jobTitle}:</b>	
+				<select name="top" id="top" onChange="autosubmit()">
+					<option value="all" $top0>{$lang_jobAll}</option>
+					<option value="1" $top1>{$lang_YES}</option>
+					<option value="0" $top2>{$lang_NO}</option>
+				</select>
+				<b>{$lang_jobLang}:</b>
+				<select name="langtype" id="langtype" onChange="autosubmit()">
+					<option value="all" $langtype0>{$lang_jobLang}</option>
+					$selectlang
+				</select>
+			</td>	
+			</form>
+		</tr>
+              <tr>
+                <td width="5%" class="list1_top" align="center">{$lang_jobSelect}</td>
+				<td width="5%" class="list1_top" align="center">ID</td>
+                <td width="10%" class="list1_top" align="center">{$lang_jobPosition}</td>
+                <td width="4%" class="list1_top" align="center" >{$lang_jobNum}</td>
+				<td width="15%" class="list1_top" align="center" >{$lang_jobAddress}</td>
+                <td width="8%" class="list1_top" align="center" >{$lang_jobLife}</td>
+				<td width="4%"  class="list1_top" align="center" >{$lang_jobTop}</td>
+                <td width="13%" class="list1_top" align="center" >{$lang_jobPublish}</td>
+				<td width="14%"  class="list1_top" align="center" >{$lang_jobAccess}</td>
+				<td width="18%" class="list1_top" align="center" >{$lang_jobOperate}</td>
               </tr>
 			  <form name="del" method="Post" action="delete.php?class1=$class1" onSubmit="return ConfirmDelall();">
 <!--
 EOT;
 foreach ($job_list as $key=>$val){
+$val['position']=$langusenow=="en"?$val['e_position']:($langusenow=="other"?$val['o_position']:$val['c_position']);
+if($langusenow=="en" && $met_e_lang_ok!=1) $val['position']=$met_c_lang_ok==1?$val['c_position']:$val['o_position'];
+if($langusenow=="cn" && $met_c_lang_ok!=1) $val['position']=$met_e_lang_ok==1?$val['e_position']:$val['o_position'];
+if($langusenow=="other" && $met_o_lang_ok!=1) $val['position']=$met_c_lang_ok==1?$val['c_position']:$val['e_position'];
+if($val['position']=='') $val['position']=$val['e_position']!=''?$val['e_position']:($val['o_position']!=''?$val['o_position']:$val['c_position']);
+if(isset($langtype) && $langtype!='all') 
+{
+	$item = $langtype."_position";
+	if($val[$item]=='') continue;
+	$val['position'] = $val[$item];
+}
 echo <<<EOT
 -->          
-              <tr class="tdbg">
-              <td height="22" align="center" class="left1"><input name='id' type='checkbox' onClick="unselectall()" id="id" value='$val[id]' class="xz"></td>
-                <td  bgcolor="#ECF5FF" align="center">$val[id]</td>
-			    <td align="left" bgcolor="#ECF5FF"><a href="../../job/job.php" title="查看详细" target="_blank">$val[c_position]</a></td>
-                <td  bgcolor="#ECF5FF" align="center">$val[count]</td>
-				<td  bgcolor="#ECF5FF" align="center">$val[c_place]</td>
-                <td  bgcolor="#ECF5FF" align="center">$val[useful_life]</td>
-                <td  bgcolor="#ECF5FF" align="center">$val[addtime]</td>
-				<td align="center" bgcolor="#ECF5FF" ></a> <a href="editor.php?id=$val[id]" >编辑</a> | <a href="delete.php?id=$val[id]&class1=$class1" onClick="return ConfirmDel();" >删除</a></td>
+              <tr>
+              <td align="center"class="list1_content_titile"><input name='id' type='checkbox' onClick="unselectall()" id="id" value='$val[id]' class="xz"></td>
+                <td  align="center" class="list1_content">$val[id]</td>
+			    <td align="left" class="list1_content"><a href="../../job/showjob.php?lang=$urllang&id=$val[id]" title="{$lang_jobDetail}" target="_blank">$val[position]</a></td>
+                <td class="list1_content" align="center">$val[count]</td>
+				<td   class="list1_content" align="center">$val[place]</td>
+                <td   class="list1_content" align="center">$val[useful_life]</td>
+				<td   class="list1_content" align="center"><a href="changeState.php?top_ok=$val[top_ok]&id=$val[id]&class1=$class1" onClick="return ConfirmChange();">$val[top_ok1]</a></td>
+                <td   class="list1_content" align="center">$val[addtime]</td>
+				<td   class="list1_content" align="center">$val[access]</td>
+				<td align="center"  class="list1_content" style="color:#0066FF;"></a> <a href="editor.php?id=$val[id]&class1=$class1" >{$lang_jobEdit}</a> | <a href="cv.php?search=detail_search&jobid=$val[id]" >{$lang_jobCV}</a> | <a href="delete.php?id=$val[id]&class1=$class1" onClick="return ConfirmDel();" >{$lang_jobDelete}</a></td>
               </tr>
 <!--
 EOT;
 }
 echo <<<EOT
 -->
-       
-            </table></td>
-          </tr> 
-		   
+
    	   <tr> 
-            <td height="20" align="left" bgcolor="#ECF5FF"><input name="chkAll" class="xz" type="checkbox" id="chkAll" onclick=CheckAll(this.form) value="checkbox">
-              选中本页显示的所有招聘 <input name="submit" type='submit' value='删除选定的条目'> 
-              <input name="action" type="hidden" id="action" value="del">
-			  <input name="allid" type="hidden" id="allid" value=""></form></td>
+            <td class="input_bottom" align="center"><input name="chkAll" class="xz" type="checkbox" id="chkAll" onclick=CheckAll(this.form) value="checkbox"></td>
+             <td class="input_bottom" align="center">{$lang_jobSelectAll}</td>
+              <td class="input_bottom" align="left" colspan="10"><input name="submit" type='submit' value='{$lang_jobDelSelected}'><input name="action" type="hidden" id="action" value="del"><input name="allid" type="hidden" id="allid" value=""></form></td>
           </tr>
-		  <tr  bgcolor="#ECF5FF">
-            <td  height="20" align="left">
-			<form method="POST" name="myform"  action="index.php?search=detail_search" target="_self">
-			       <b>当前栏目招聘信息查找：</b> 
+		  <tr>
+            <td align="left" colspan="10"  class="input_search">
+			<form method="POST" name="search"  action="index.php?search=detail_search" target="_self">
+			       <span><b>{$lang_jobSearch}：</b></span> 
 				  <input name="class1" type="hidden" size="30" value="$class1">
-			    <input name="c_position" type="text" size="30">
-  <input type="submit" name="Submit2" value="查询" class="tj">  
-	        请输入招聘信息标题关键字。如果为空，则查找所有招聘信息。</form></td>
+			    <input name="position" type="text" size="30">
+  <input type="submit" name="Submit2" value="{$lang_jobDo}" class="tj">  
+	        {$lang_jobTip1}</form></td>
           </tr>
    	   <tr>
-   	     <td height="0" align="center" bgcolor="#ECF5FF">$page_list</td>
+   	     <td height="0" align="center" colspan="10" class="list1_input">$page_list</td>
         </tr>
-    </table></td>
-  </tr>
+		<tr>
+		  <td class="list1_footer" colspan="11" align="center">$foot</td>
+	  </tr>
 </table>
+<script type='text/javascript'>
+	function autosubmit()
+	{
+		document.filterform.submit();
+	}
+</script>
 </body>
 </html>
 <!--
 EOT;
+# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
 ?>-->

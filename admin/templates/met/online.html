@@ -1,40 +1,31 @@
 <!--<?php
+# 文件名称:online.html 2009-08-15 14:34:57
+# MetInfo企业网站管理系统 
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+require_once template('head');
 echo <<<EOT
 -->
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-<link rel="stylesheet" type="text/css" href="$css_url/metinfo_admin.css">
-<title>在线交流管理</title>
-<script type="text/javascript" src="../language/zh_cn.js"></script>
-<script type="text/javascript" src="../include/metinfo.js"></script>
+<title>{$lang_onlineTitle}</title>
 </head>
 <body>
 <br>
-<table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td align="center" valign="top"><table width="95%" border="0" cellpadding="2" cellspacing="1" class="table_southidc">
+<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
           <tr> 
-            <td class="back_southidc" height="30" align="center">在线交流管理</td>
+            <td colspan="9" align="center" class="list1_title">{$lang_onlineTitle}</td>
           </tr> 
 		  <tr>
-            <td class="title_add" height="20" colspan="2" align="left"><a href="add.php">添加新客服</a></td>
-          </tr>
-		  <tr> 
-            <td valign="top">
-			</td></tr>  
-          <tr> 
-            <td valign="top"><table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#003366" class="border" style="word-break:break-all">
-              <tr class="back_southidc2">
-                <td width="5%" height="25" align="center">选中</td>
-				<td width="5%" height="25" align="center">排序</td>
-                <td width="15%" height="25" align="center">客服名称</td>
-                <td width="10%" align="center" >QQ</td>
-				<td width="20%" align="center" >MSN</td>
-                <td width="10%" align="center" >淘宝旺旺</td>
-                <td width="10%" align="center" >阿里旺旺</td>
-				<td width="15%" align="center" >SKYPE</td>
-				<td width="10%" align="center" >操作</td>
+            <td class="list1_text_title" colspan="9" align="left">&nbsp;&nbsp;<a href="add.php">{$lang_onlineAdd}</a></td>
+          </tr>  
+              <tr>
+                <td class="list1_lm" width="30" align="center">{$lang_onlineSelect}</td>
+				<td class="list1_lm" width="30" align="center">{$lang_onlineSort}</td>
+                <td class="list1_lm" width="60" align="center">{$lang_onlineName}</td>
+                <td class="list1_lm" width="30" align="center" >QQ</td>
+				<td class="list1_lm" width="30" align="center" >MSN</td>
+                <td class="list1_lm" width="60" align="center" >{$lang_onlineWangWang1}</td>
+                <td class="list1_lm" width="60" align="center" >{$lang_onlineWangWang2}</td>
+				<td class="list1_lm" width="30" align="center" >SKYPE</td>
+				<td class="list1_lm" width="110" align="center" >{$lang_onlineOperate}</td>
               </tr>
 			  <form name="del" method="Post" action="delete.php?class1=$class1" onSubmit="return ConfirmDelall();">
 <!--
@@ -43,47 +34,49 @@ foreach ($online_list as $key=>$val){
 echo <<<EOT
 -->          
               <tr class="tdbg">
-              <td height="22" align="center" class="left1"><input name='id' type='checkbox' onClick="unselectall()" id="id" value='$val[id]' class="xz"></td>
-                <td  bgcolor="#ECF5FF" align="center">$val[no_order]</td>
-			    <td  bgcolor="#ECF5FF" align="center">$val[c_name]</td>
-                <td  bgcolor="#ECF5FF" align="center">$val[qq]</td>
-				<td  bgcolor="#ECF5FF" align="center">$val[msn]</td>
-                <td  bgcolor="#ECF5FF" align="center">$val[taobao]</td>
-                <td  bgcolor="#ECF5FF" align="center">$val[alibaba]</td>
-				<td  bgcolor="#ECF5FF" align="center">$val[skype]</td>
-				<td align="center" bgcolor="#ECF5FF" ></a> <a href="editor.php?id=$val[id]" >编辑</a> | <a href="delete.php?id=$val[id]" onClick="return ConfirmDel();" >删除</a></td>
+              <td align="center" class="list1_content_titile"><input name='id' type='checkbox' onClick="unselectall()" id="id" value='$val[id]' class="xz"></td>
+                <td class="list1_content" align="center">$val[no_order]</td>
+			    <td class="list1_content" align="center">$val[name]</td>
+                <td class="list1_content" align="center">$val[qq]</td>
+				<td class="list1_content" align="center">$val[msn]</td>
+                <td class="list1_content" align="center">$val[taobao]</td>
+                <td class="list1_content" align="center">$val[alibaba]</td>
+				<td class="list1_content" align="center">$val[skype]</td>
+				<td align="center" class="list1_content" style="color:#0066FF;"></a> <a href="editor.php?id=$val[id]" >{$lang_onlineEdit}</a> | <a href="delete.php?id=$val[id]" onClick="return ConfirmDel();" >{$lang_onlineDelete}</a></td>
               </tr>
 <!--
 EOT;
 }
 echo <<<EOT
 -->
-       
-            </table></td>
-          </tr> 
 		   
    	   <tr> 
-            <td height="20" align="left" bgcolor="#ECF5FF"><input name="chkAll" class="xz" type="checkbox" id="chkAll" onclick=CheckAll(this.form) value="checkbox">
-              选中本页显示的所有客服 <input name="submit" type='submit' value='删除选定的条目'> 
+            <td  class="input_bottom" align="center"><input name="chkAll" class="xz" type="checkbox" id="chkAll" onclick=CheckAll(this.form) value="checkbox">
+              </td>
+			  <td  class="input_bottom" align="center">{$lang_onlineSelectAll}</td>
+			  <td  class="input_bottom" align="left" colspan="7"><input name="submit" type='submit' value='{$lang_onlineDeleteSelected}' style="color:#333333;"> 
               <input name="action" type="hidden" id="action" value="del">
 			  <input name="allid" type="hidden" id="allid" value=""></form></td>
           </tr>
-		  <tr  bgcolor="#ECF5FF">
-            <td  height="20" align="left">
+		  <tr>
+            <td class="input_search" align="left" colspan="9">
 			<form method="POST" name="myform"  action="index.php?search=detail_search" target="_self">
-			       <b>按客服名称查找：</b> 
-			    <input name="c_name" type="text" size="30">
-  <input type="submit" name="Submit2" value="查询" class="tj">  
-	        请输入客服名称关键字。如果为空，则查找所有信息。</form></td>
+			       <b>{$lang_onlineSearchByName}：</b> 
+			    <input name="name" type="text" size="30">
+  <input type="submit" name="Submit2" value="{$lang_onlineSearch}" class="tj" style="color:#333333;">  
+	        {$lang_onlineTip1}</form></td>
           </tr>
    	   <tr>
-   	     <td height="0" align="center" bgcolor="#ECF5FF">$page_list</td>
+   	     <td align="center" class="input_search" colspan="9">$page_list</td>
         </tr>
-    </table></td>
-  </tr>
+		<tr>
+		  <td class="list1_footer" colspan="9" align="center">$foot</td>
+	  </tr>
 </table>
 </body>
 </html>
 <!--
 EOT;
+# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
 ?>-->

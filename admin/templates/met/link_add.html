@@ -1,78 +1,95 @@
 <!--<?php
+# 文件名称:link_add.html 2009-08-15 14:34:57
+# MetInfo企业网站管理系统 
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+require_once template('head');
 echo <<<EOT
 -->
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-<link rel="stylesheet" type="text/css" href="$css_url/metinfo_admin.css">
-<title>添加友情链接</title>
-<script type="text/javascript" src="../language/zh_cn.js"></script>
-<script type="text/javascript" src="../include/metinfo.js"></script>
+<title>{$lang_linkaddTitle}</title>
 </head>
 <body>
-
-<table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td align="center" valign="top"><table width="95%" border="0" cellpadding="2" cellspacing="1" class="table_southidc">
-        <form  method="POST" name="myform" onSubmit="return CheckFormlink();" action="save.php?action=add" target="_self">
+<form  method="POST" name="myform" onSubmit="return CheckFormlink();" action="save.php?action=add" target="_self">
+<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
           <tr> 
-            <td class="back_southidc" height="30" colspan="3" align="center">添加友情链接</td>
+            <td colspan="9" align="center" class="list1_title">{$lang_linkaddTitle}</td>
           </tr>
-		  <tr bgcolor="#ECF5FF"> 
-            <td width="120" height="25"><font color="#FF0000">*</font><b>链接类型：</b></td>
-            <td colspan="2"> <input name="link_type" type="radio" class="input" value="0" checked="checked">文字链接  <input name="link_type" type="radio" class="input" value="1" >图片链接</td>
+		  <tr> 
+            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_linkaddType}：</b></td>
+            <td colspan="2" class="list1_input"> <input name="link_type" type="radio" class="input" value="0" checked="checked">{$lang_linkaddType1}  <input name="link_type" type="radio" class="input" value="1" >{$lang_linkaddType2}</td>
+          </tr>           
+		   <tr> 
+            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_linkaddUrl}：</b></td>
+            <td colspan="2" class="list1_input"> <input name="weburl" type="text" class="input" size="50" maxlength="200" value="http://"></td>
           </tr> 
-          <tr bgcolor="#ECF5FF"> 
-            <td width="120" height="25"><font color="#FF0000">*</font><b>网站标题：</b></td>
-            <td colspan="2"> <input name="c_webname" type="text" class="input" size="50" maxlength="200"></td>
-          </tr> 
-		   <tr bgcolor="#ECF5FF"> 
-            <td width="120" height="25"><font color="#FF0000">*</font><b>网站地址：</b></td>
-            <td colspan="2"> <input name="weburl" type="text" class="input" size="50" maxlength="200" value="http://"></td>
-          </tr> 
-		   <tr bgcolor="#ECF5FF"> 
-            <td width="120" height="25"><b>网站LOGO：</b></td>
-            <td colspan="2"> <input name="weblogo" type="text" class="input" size="50" maxlength="200" value="http://"></td>
-          </tr> 
-		  <tr bgcolor="#ECF5FF"> 
-            <td width="120" height="25"><b>网站关键词：</b></td>
-            <td colspan="2"> <input name="c_info" type="text" class="input" size="50" maxlength="250"></td>
-          </tr> 
-		  <tr bgcolor="#ECF5FF"> 
-            <td width="20%" height="25"><b>联系方式：</b>
+		   <tr> 
+            <td class="list1_text"><b>{$lang_linkaddLOGO}：</b></td>
+            <td colspan="2" class="list1_input"> <input name="weblogo" type="text" class="input" size="50" maxlength="200" value="http://"></td>
+          </tr> 		  
+		  <tr> 
+            <td class="list1_text"><b>{$lang_linkaddContact}：</b>
 			</td>
-            <td width="80%" ><textarea name="contact" cols="60" rows="5"></textarea></td>
+            <td class="list1_input"><textarea name="contact" cols="60" rows="5"></textarea></td>
 			</tr> 
-			<tr bgcolor="#ECF5FF"> 
-			<td width="120" height="25"><b>显示排序：</b></td>
-            <td colspan="2"> <input name="orderno" type="text" class="input" size="5" maxlength="250">数字越大排序越靠前</td>
+			<tr> 
+			<td class="list1_text"><b>{$lang_linkaddSort}：</b></td>
+            <td colspan="2" class="list1_input"> <input name="orderno" type="text" class="input" size="5" maxlength="250">{$lang_linkaddTip1}</td>
           </tr> 
-		  <tr bgcolor="#ECF5FF"> 
-			<td width="120" height="25"><b>审核通过：</b></td>
-            <td colspan="2"> <input name="show_ok" type="checkbox" class="input" value="1" checked="checked">是</td>
+		  <tr> 
+			<td class="list1_text"><b>{$lang_linkaddPass}：</b></td>
+            <td colspan="2" class="list1_input"> <input name="show_ok" type="checkbox" class="input" value="1" checked="checked">{$lang_linkaddYes}</td>
           </tr> 
-		   <tr bgcolor="#ECF5FF"> 
-			<td width="120" height="25"><b>推荐站点：</b></td>
-            <td colspan="2"> <input name="com_ok" type="checkbox" class="input" value="1">是</td>
+		   <tr> 
+			<td class="list1_text"><b>{$lang_linkaddRecommend}：</b></td>
+            <td colspan="2" class="list1_input"> <input name="com_ok" type="checkbox" class="input" value="1">{$lang_linkaddYes}</td>
+          </tr> 
+		  <tr> 
+            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_linkaddShow}：</b></td>
+            <td colspan="2" class="list1_input"> <input name="link_lang" type="radio" class="input" value="1" checked="checked">{$lang_linkaddShow1} <input name="link_lang" type="radio" class="input" value="2" >{$lang_linkaddShow2}  </td>
           </tr> 
 			 
 <!--
 EOT;
-if($met_en_lang==1){
+if($met_c_lang_ok==1){
+echo <<<EOT
+-->			
+		  <tr> <td colspan="9" align="center" class="list1_title"><b>{$lang_linkaddContent}[$met_c_lang]</b></td></tr>
+		  <tr> 
+            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_linkaddName}：</b></td>
+            <td colspan="2" class="list1_input"> <input name="c_webname" type="text" class="input" size="50" maxlength="200"></td>
+          </tr> 
+		  <tr> 
+            <td class="list1_text"><b>{$lang_linkaddKeys}：</b></td>
+            <td colspan="2" class="list1_input"> <input name="c_info" type="text" class="input" size="50" maxlength="250"></td>
+          </tr> 
+<!--
+EOT;
+}
+if($met_e_lang_ok==1){
 echo <<<EOT
 -->
-          <tr bgcolor="#999999"> <td  height="25" colspan="2"><b>英文内容</b></td></tr>
-		  <tr bgcolor="#ECF5FF"> 
-            <td width="120" height="25"><font color="#FF0000">*</font><b>链接显示：</b></td>
-            <td colspan="2"> <input name="link_lang" type="radio" class="input" value="ch" >仅在中文版显示  <input name="link_lang" type="radio" class="input" value="en" >仅在英文版显示  <input name="link_lang" type="radio" class="input" value="all" checked="checked" >中英文版都显示 </td>
+          <tr> <td colspan="9" align="center" class="list1_title"><b>{$lang_linkaddContent}[$met_e_lang]</b></td></tr>		  
+		  <tr> 
+            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_linkaddName}：</b></td>
+            <td colspan="2" class="list1_input"> <input name="e_webname" type="text" class="input" size="50" maxlength="200"></td>
           </tr> 
-		  <tr bgcolor="#ECF5FF"> 
-            <td width="120" height="25"><font color="#FF0000">*</font><b>英文标题：</b></td>
-            <td colspan="2"> <input name="e_webname" type="text" class="input" size="50" maxlength="200"></td>
+		  <tr> 
+            <td class="list1_text"><b>{$lang_linkaddKeys}：</b></td>
+            <td colspan="2" class="list1_input"><input name="e_info" type="text" class="input" size="50" maxlength="250"></td>
+          </tr>
+<!--
+EOT;
+}
+if($met_o_lang_ok==1){
+echo <<<EOT
+-->
+          <tr> <td colspan="9" align="center" class="list1_title"><b>{$lang_linkaddContent}[$met_o_lang]</b></td></tr>		  
+		  <tr> 
+            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_linkaddName}：</b></td>
+            <td colspan="2" class="list1_input"> <input name="o_webname" type="text" class="input" size="50" maxlength="200"></td>
           </tr> 
-		  <tr bgcolor="#ECF5FF"> 
-            <td width="119" height="25"><b>英文关键词：</b></td>
-            <td colspan="2"><input name="e_info" type="text" class="input" size="50" maxlength="250"></td>
+		  <tr> 
+            <td class="list1_text"><b>{$lang_linkaddKeys}：</b></td>
+            <td colspan="2" class="list1_input"><input name="o_info" type="text" class="input" size="50" maxlength="250"></td>
           </tr>
 <!--
 EOT;
@@ -80,16 +97,18 @@ EOT;
 echo <<<EOT
 -->
 		  <tr> 
-            <td height="30" colspan="3" align="center" bgcolor="#ECF5FF"> <input type="submit" name="Submit" value="提交" class="tj">
-              　 
-              <input type="reset" name="Submit" value="重置" class="tj"> </td>
+            <td class="list1_text"></td>
+	      <td class="list1_submit"><input type="submit" name="Submit" value="{$lang_Submit}" class="tj" style="*padding-top:2px; *height:22px;"><input type="reset" name="Submit" value="{$lang_Reset}" class="tj" style="*padding-top:2px; *height:22px;"></td>
           </tr>
         </form>
-    </table></td>
-  </tr>
+    <tr>
+		  <td class="list1_footer" colspan="2" align="center">$foot</td>
+	  </tr>
 </table>
 </body>
 </html>
 <!--
 EOT;
+# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
 ?>-->

@@ -1,0 +1,44 @@
+<!--<?php
+require_once template('head');
+$methits=methtml_hits('news'); 
+echo <<<EOT
+-->
+<div class="web">
+<div class="nav">&nbsp;<img height=17 src="$img_url/main.gif" width=18 />
+ {$lang_YouPosition}：<a href='$index_url'>{$lang_home}</a> > $nav_x[name]</div>
+<div class="webleft">
+<div class="content">
+<h1>$news[title]</h1>
+<div class="content">$news[content]</div>
+
+<div class="hits">$methits</div>
+<div class="nav_x">&nbsp;<img src="$img_url/other.gif" />&nbsp;{$lang_Article}</div>
+<!--
+EOT;
+$i=0;
+foreach($news_list as $key=>$val){
+$i=$i+1;
+echo <<<EOT
+-->
+<div class="newslist">
+<img src="$img_url/list1.gif" />&nbsp;<a href="$val[url]" target="_blank">$val[title]</a>($val[updatetime])&lt;{$lang_Hits}<font>$val[hits]</font>&gt;
+</div>
+<!--
+EOT;
+if($i>=8)break;
+}
+echo <<<EOT
+-->
+</div>
+</div>
+
+<div class="webright">
+<div class="nav_x">&nbsp;<img src="$img_url/right.gif" />&nbsp;$class1_info[name]</div>
+<div class="navright">$navlist_y1</div>
+$met_online
+</div>
+</div>
+<!--
+EOT;
+require_once template('foot'); 
+?>

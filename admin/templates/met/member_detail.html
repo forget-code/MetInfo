@@ -1,0 +1,137 @@
+<!--<?php
+# 文件名称:member_detail.html 2009-08-15 09:36:13
+# MetInfo企业网站管理系统
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+require_once template('head');
+echo <<<EOT
+-->
+<title>{$lang_memberdetailTitle}</title>
+</head>
+<body>
+<input name="useid" type="hidden"size="20" maxlength="20" value="$admin_list[admin_id]">
+<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
+          <tr> 
+            <td colspan="3" align="center" class="list1_title">{$lang_memberdetailTitle}</td>
+          </tr>
+          <tr> 
+            <td class="list1_text"><font color="#FF0000">*</font>{$lang_memberdetailUserName}：</td>
+            <td colspan="2" class="list1_input"> $admin_list[admin_id]</td>
+          </tr>  
+		  <tr> 
+            <td class="list1_text">{$lang_memberdetailReadlName}：</td>
+            <td colspan="2" class="list1_input">$admin_list[admin_name]</td>
+          </tr> 
+		  <tr> 
+            <td class="list1_text">{$lang_memberdetailSex}：</td>
+            <td colspan="2" class="list1_input">
+<!--
+EOT;
+if($admin_list[admin_sex]==0){
+echo <<<EOT
+-->	
+{$lang_memberdetailMan} 
+<!--
+EOT;
+}else{
+echo <<<EOT
+-->	
+{$lang_memberdetailWoman}
+<!--
+EOT;
+}echo <<<EOT
+-->
+			</td>
+          </tr> 
+		  <tr> 
+            <td class="list1_text">{$lang_memberdetailTel}：</td>
+            <td colspan="2" class="list1_input"> $admin_list[admin_tel]</td>
+          </tr> 
+		  <tr> 
+            <td class="list1_text">{$lang_memberdetailCell}：</td>
+            <td colspan="2" class="list1_input">$admin_list[admin_mobile]</td>
+          </tr> 
+		  <tr> 
+            <td class="list1_text">email：</td>
+            <td colspan="2" class="list1_input">$admin_list[admin_email]</td>
+          </tr> 
+		  <tr> 
+            <td class="list1_text">QQ：</td>
+            <td colspan="2" class="list1_input">$admin_list[admin_qq]</td>
+          </tr> 
+		  <tr> 
+            <td class="list1_text">MSN：</td>
+            <td colspan="2" class="list1_input">$admin_list[admin_msn]</td>
+          </tr> 
+		  <tr> 
+            <td class="list1_text">{$lang_memberdetailTaoBao}：</td>
+            <td colspan="2" class="list1_input">$admin_list[admin_taobao]</td>
+          </tr> 
+		  <tr> 
+            <td class="list1_text">{$lang_memberdetailLoginNum}：</td>
+            <td colspan="2" class="list1_input">$admin_list[admin_login]</td>
+          </tr> 
+		  <tr> 
+            <td class="list1_text">{$lang_memberdetailLastLogin}：</td>
+            <td colspan="2" class="list1_input">$admin_list[admin_modify_date]</td>
+          </tr> 
+		  <tr> 
+            <td class="list1_text">{$lang_memberdetailLastIP}：</td>
+            <td colspan="2" class="list1_input">$admin_list[admin_modify_ip]</td>
+          </tr> 
+		  <tr> 
+            <td class="list1_text">{$lang_memberdetailRegisterTime}：</td>
+            <td colspan="2" class="list1_input">$admin_list[admin_register_date]</td>
+          </tr>
+          <tr> 
+          <td class="list1_text" valign="middle">{$lang_memberdetailIntro}:</td>
+          <td colspan="2" class="list1_input" valign="top"> $admin_list[admin_introduction]</td>
+          </tr>
+		  <td class="list1_text" valign="middle">{$lang_memberdetailCompanyName}:</td>
+          <td colspan="2" class="list1_input" valign="top"> $admin_list[companyname] </td>
+          </tr>
+		  <tr> 
+          <td class="list1_text" valign="middle">{$lang_memberdetailCompanyFax}:</td>
+          <td colspan="2" class="list1_input" valign="top"> $admin_list[companyfax] </td>
+          </tr>
+		  <tr> 
+          <td class="list1_text" valign="middle">{$lang_memberdetailCompanyCode}:</td>
+          <td colspan="2" class="list1_input" valign="top"> $admin_list[companycode] </td>
+          </tr>
+		  <tr> 
+          <td class="list1_text" valign="middle">{$lang_memberdetailCompanyAddress}:</td>
+          <td colspan="2" class="list1_input" valign="top"> $admin_list[companyaddress] </td>
+          </tr>
+		  <tr> 
+          <td class="list1_text" valign="middle">{$lang_memberdetailCompanyWebsite}:</td>
+          <td colspan="2" class="list1_input" valign="top"> $admin_list[companywebsite] </td>
+          </tr>
+		  <tr> 
+          <td class="list1_text" valign="middle">{$lang_memberdetailType}:</td>
+          <td colspan="2" class="list1_input" valign="top">
+		  <select name="usertype" id="usertype" disabled=disabled>
+			 <option value="1" $access1>{$lang_memberdetailType1}</option>
+              <option value="2" $access2>{$lang_memberdetailType2}</option>
+            </select>
+		  </td>
+          </tr>
+		  <tr>
+		  <td class="list1_text" valign="middle">{$lang_memberdetailCheck}:</td>
+          <td colspan="2" class="list1_input" valign="top">$checkid</td>
+          </tr>
+		   
+		  <tr> 
+		  <td class="list1_text"></td>
+            <td class="list1_input" align="left" colspan="2"><a href="editor.php?id=$id" class="editormenu">{$lang_memberdetailModify}</a> &nbsp;&nbsp; <a href="index.php" class="editormenu" >{$lang_memberdetailBackup}</a>
+			</td>
+          </tr>
+            <tr>
+		  <td class="list1_footer" colspan="3" align="center">$foot</td>
+	  </tr>  
+</table>
+</body>
+</html>
+<!--
+EOT;
+# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+?>-->

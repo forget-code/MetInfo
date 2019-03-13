@@ -1,42 +1,82 @@
 <!--<?php
+# 文件名称:parameter.html 2009-08-07 08:43:03
+# MetInfo企业网站管理系统 
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+require_once template('head');
 echo <<<EOT
 -->
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-<link rel="stylesheet" type="text/css" href="$css_url/metinfo_admin.css">
-<title>添加参数</title>
-<script type="text/javascript" src="../language/zh_cn.js"></script>
-<script type="text/javascript" src="../include/metinfo.js"></script>
+
+<title>{$lang_parameterTitle}</title>
+
 </head>
 <body>
-
-<table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td align="center" valign="top"><table width="98%" border="0" cellpadding="2" cellspacing="1" class="table_southidc">
-        <form method="POST" name="myform"  action="parameter.php?action=Modify&type=$type" target="_self">
+<form method="POST" name="myform"  action="parameter.php?action=Modify&type=$type" target="_self">
+<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1" >
           <tr> 
-            <td class="back_southidc" height="25" colspan="6" align="center">$p_title</td>
-          <tr bgcolor="#ECF5FF"> 
-            <td width="10%" height="25" align="center">字段排序</td>
-            <td width="12%" align="center">调用代码</td>
-            <td width="26%">字段名称</td>
-			<td width="26%" >英文名称</td>
-			<td width="14%" align="center">最大字符数</td>
-            <td width="12%" align="center">是否启用</td>
-		  </tr>
+            <td colspan="8" align="center" class="list1_title">$p_title</td>
+		 </tr>
+          <tr> 
+            <td width="8%" class="list1_top" align="center">{$lang_parameterSort}</td>
+            <td width="8%" class="list1_top" align="center">{$lang_parameterCode}</td>
+            <td width="15%" class="list1_top" align="center">$met_c_lang{$lang_parameterName}</td>
+			<td width="15%" class="list1_top" align="center">$met_e_lang{$lang_parameterName}</td>
+			<td width="15%" class="list1_top" align="center">$met_o_lang{$lang_parameterName}</td>
+			<td width="16%" class="list1_top" align="center">{$lang_parameterMax}</td>
+<!--
+EOT;
+if($type!=10000)
+echo <<<EOT
+-->	
+			<td width="15%" class="list1_top" align="center">{$lang_parameterAccess}</td>
+<!--
+EOT;
+else
+echo <<<EOT
+-->	
+			<td width="15%" class="list1_top" align="center">{$lang_parameterMust}</td>
+<!--
+EOT;
+echo <<<EOT
+-->	
+            <td width="8%" class="list1_top" align="center">{$lang_parameterEnable}</td>
+          </tr>
 <!--
 EOT;
 foreach($list as $key=>$val){
+
 echo <<<EOT
--->		   
-			<tr bgcolor="#ECF5FF"> 
-			<td  height="25" align="center"><input name='no_order$val[id]' type="text" class="input" size="3" maxlength="10" value="$val[no_order]"></td>
-            <td align="center">$val[name]</td>
-            <td ><input name='c_mark$val[id]' type="text" class="input" size="25" maxlength="255" value="$val[c_mark]"></td>
-			<td ><input name='e_mark$val[id]' type="hidden" class="input" size="25" maxlength="255" value="$val[e_mark]"><input name='e_mark$val[id]' type="text" class="input" size="25" maxlength="255" value="$val[e_mark1]" $e_markok></td>
-			<td align="center">$val[maxsize]</td>
-            <td align="center"><input type="checkbox" name=use_ok$val[id] value=1 class="xz" $val[use_ok]/></td>
+-->		    <input name='id_$val[name]' type="hidden" value="$val[id]">
+			<tr align="center"> 
+			<td class="list1_content" align="center"><input name='no_order_$val[name]' type="text" class="input" size="3" maxlength="10" value="$val[no_order]"></td>
+            <td class="list1_content" align="center">$val[name]</td>
+            <td class="list1_content"><input name='c_mark_$val[name]' type="text" class="input" size="15" maxlength="255" value="$val[c_mark1]"  $c_markok></td>
+			<td class="list1_content"><input name='e_mark_$val[name]' type="text" class="input" size="15" maxlength="255" value="$val[e_mark1]" $e_markok></td>
+			<td class="list1_content"><input name='o_mark_$val[name]' type="text" class="input" size="15" maxlength="255" value="$val[o_mark1]" $o_markok></td>
+			<td class="list1_content" align="center">$val[maxsize]</td>
+<!--
+EOT;
+if($type!=10000)
+echo <<<EOT
+-->				
+			<td class="list1_content"><select name="access_$val[name]" id="access" >
+              <option value="all" $val[access0]>{$lang_parameterAccess0}</option>
+			  <option value="1" $val[access1]>{$lang_parameterAccess1}</option>
+              <option value="2" $val[access2]>{$lang_parameterAccess2}</option>
+              <option value="3" $val[access3]>{$lang_parameterAccess3}</option>
+            </select></td>
+<!--
+EOT;
+else
+echo <<<EOT
+-->				
+			<td class="list1_content">
+			<input type="checkbox" name=wr_ok_$val[name] value=1 $val[wr_ok]/>
+			</td>
+<!--
+EOT;
+echo <<<EOT
+-->	
+            <td class="list1_content" align="center"><input type="checkbox" name=use_ok_$val[name] value=1 class="xz" $val[use_ok]/></td>
 		  </tr>
 <!--
 EOT;
@@ -44,17 +84,21 @@ EOT;
 echo <<<EOT
 -->		   
         
-          <tr> 
-            <td height="30" colspan="6" align="center" bgcolor="#ECF5FF"> <input type="submit" name="Submit" value="提交" class="tj">
-              　 
-              <input type="reset" name="Submit" value="重置" class="tj"> </td>
+          <tr align="center"> 
+            <td class="list1_content"></td>
+			<td class="list1_content"></td>
+			<td class="list1_content"></td>
+			<td class="list1_submit" colspan="6"><input type="submit" name="Submit" value="{$lang_Submit}" class="tj" style="*padding-top:2px; *height:22px;">&nbsp;&nbsp;<input type="reset" name="Submit" value="{$lang_Reset}" class="tj" style="*padding-top:2px; *height:22px;"> </td>
           </tr>
         </form>
-    </table></td>
-  </tr>
+    <tr>
+		  <td class="list1_footer" colspan="7" align="center">$foot</td>
+	  </tr>
 </table>
 </body>
 </html>
 <!--
 EOT;
+# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
 ?>-->

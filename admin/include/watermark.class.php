@@ -52,7 +52,8 @@ if ($this->met_image_name){
 }
 
 if ($this->met_text){
-       $this->met_text = iconv("gb2312", "UTF-8", $this->met_text);
+	   $this->met_text = mb_convert_encoding($this->met_text, "UTF-8", 'gb2312'); 
+       //$this->met_text = iconv("gb2312", "UTF-8", $this->met_text);
        $temp_met_text = $this->getPos($src_image_w,$src_image_h,$this->met_text_pos);
        $met_text_x = $temp_met_text["dest_x"];
        $met_text_y = $temp_met_text["dest_y"];
@@ -104,6 +105,7 @@ function createImage($type,$img_name){
          if (!$type){
               $type = $this->get_type($img_name);
          }
+		 
           switch ($type){
                   case 'gif':
                         if (function_exists('imagecreatefromgif'))
@@ -225,7 +227,7 @@ $img_name：        图片文件名，可以包括路径名
 function get_type($img_name)//获取图像文件类型
 {
 $name_array = explode(".",$img_name);
-if (preg_match("/\.(jpg|jpeg|gif|png)$/", $img_name, $matches))
+if (preg_match("/\.(jpg|jpeg|gif|png)$/i", $img_name, $matches))
 {
   $type = strtolower($matches[1]);
 }

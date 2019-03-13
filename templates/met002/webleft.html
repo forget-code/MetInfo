@@ -1,0 +1,69 @@
+<!--<?php
+echo <<<EOT
+-->
+<!--左边开始-->
+<div class="web_left">
+<div class="nav_right">$class1_info[name]</div>
+<div class="product_list1">
+<div id="button">
+<ul>
+<!--
+EOT;
+$i=$class1_info[id];
+foreach($nav_list2[$i] as $key=>$val){
+echo <<<EOT
+-->
+
+<li onmousedown="showhide($val[id])" ><a href="$val[url]">$val[name]</a></li>
+<span id="$val[id]" style="padding-left:20px; display:none">
+<!--
+EOT;
+$j=$val[id];
+foreach($nav_list3[$j] as $key=>$val1){
+echo <<<EOT
+-->
+
+<li><a href="$val1[url]">--$val1[name]</a></li>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+
+</span>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+
+</ul>
+</div> 
+<script type="text/javascript">
+document.getElementById($class2).style.display="block";
+function showhide(d)
+{       
+        var d1=document.getElementById(d);
+        if(d1.style.display=="none")
+        {
+         d1.style.display="block";
+        }
+        else
+        {
+		d1.style.display="none";
+        }
+}
+
+</script>
+</div>
+<div class="contact_left">
+$met_online
+</div>
+</div>
+<!--左边结束-->
+
+<div class="rightcontent">
+<div class="nav_left"><img src="$img_url/list1.gif" />$class1_info[name]</div>
+<!--
+EOT;
+?>

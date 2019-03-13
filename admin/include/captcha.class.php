@@ -18,6 +18,9 @@ class Captcha
 
  //验证码的图片宽度
   var $mCheckImageHeight  = '20';
+  
+  //字体
+  var $FNT="../../font/arial.ttf";
 
  /**
  *
@@ -132,7 +135,6 @@ function WriteCheckCodeToImage()
   }else {
      return false;
   }
- }
- 
+ } 
 }
 ?>

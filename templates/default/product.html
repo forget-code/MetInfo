@@ -1,0 +1,29 @@
+<!--<?php
+$navdown="nav_".$class1_info[id];
+if($class_list[$classnow][nav]==1||$class_list[$classnow][nav]==3)$navdown="nav_".$class_list[$classnow][id];
+require_once template('head');
+$met_product=methtml_product('img','all','','4','1','0','0','0');
+echo <<<EOT
+-->
+<div class="web">
+<!--
+EOT;
+require_once template('webleft'); 
+echo <<<EOT
+-->
+<div class="webcontent"> 
+<div class="pro_content">
+$met_product
+</div>
+<div class="web_bottom">$page_list</div>
+</div>
+</div>
+<div style="clear:both;"></div>
+
+
+
+</div>
+<!--
+EOT;
+require_once template('foot'); 
+?>

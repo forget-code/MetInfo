@@ -1,5 +1,6 @@
+*{ padding:0px; margin:0px;}
 body {
-	font-family: "宋体" ; font-size:12px; margin:0px auto; padding:0px; padding-top:30px; background-color:#F0FFFF; text-align:center; color: #333333;
+	font-family: "宋体" ; font-size:12px; background-color:#F0FFFF; text-align:center; color: #333333;
 }
 
 td {
@@ -13,31 +14,36 @@ img{ border:0px;}
 ul{padding:0px; margin:0px;}
 table{border:0px; padding:0px; margin:0px;}
 a{ color:#CC0000; text-decoration:none; }
-h1{height:25px; font-size:16px; font-weight:bold;}
+h1{height:25px; font-size:20px; font-weight:bold;}
 h2{display:inline; font-size:12px; font-weight:bold; color:#990000;}
 h3{display:inline; font-size:12px; font-weight:bold;}
 .tj{ background-color:#EDEDED; color: #990000;border:0px; }
 .bq{ background-color:#FFFFFA; color:#000033; font-weight:bold; border:0px;}
 A:hover { COLOR:#FF6600}
-.body{ width:900px; height:auto !important; height:520px; overflow:auto; margin:auto; background-color:#1E90FF !important; filter:progid:DXImageTransform.Microsoft.Gradient 
-(startColorStr='#1E90FF', endColorStr='#87CEFA', gradientType='0'); overflow:auto !important; overflow:visible;}
-.head{ width:90%; height:50px; border-bottom:1px solid #CCCCCC; margin:auto;}
-.logo{ width:80px; height:40px; margin-top:10px; float:left;}
-.headtext{ width:500px; height:40px; margin-top:10px; float:left; text-align:left; line-height:50px; font-size:24px; font-weight:bold; color:#FFFFFF; }
-.headright{ width:230px; height:20px; margin-top:30px; float:left; line-height:20px; color:#FF6600;}
-.content{ width:90%; height:auto; margin:auto; line-height:18px; text-align:left; overflow:auto;}
-.center{ width:100%; height:30px; line-height:30px; margin-top:30px; font-size:14px; font-weight:bold;}
-.center a{ color:#FF6600;}
+.body{ width:100%;  margin:0px auto 0px auto; height:35px; line-height:35px;}
+.top{ width:1003px; height:50px; margin:0px auto;  }
+.logo{ width:40px; height:40px; padding-left:300px; float:left; }
+.logo img{ width:31px; height:31px; margin:4px 0px 0px 0px;}
+.headtext{ width:400px; height:30px;  padding-left:5px; float:left; text-align:left; font-size:18px;  font-weight:bold; color:#FFFF99;}
+.head{ width:1003px; height:40px; margin:0px auto; line-height:40px;  background:url(../images/navbg.gif); }
+.headright{color:#000066; width:600px; font-weight:bold; float:right; text-align:right; margin:10px 0px 0px 0px; padding-right:52px;}
+.content{ width:900px; height:auto; margin:auto; background:#FFFFFF; line-height:20px;text-align:left; color:#333333; border:1px solid #F1F1F1; margin-bottom:10px;}
+.content4{ padding:10px; height:auto !important; height:250px; min-height:250px;}
+ form{ width:100%; margin:0px auto; background:#FFFFFF;}
+.content a{ color:#FF0000;}
+.center{ width:900px; height:30px; background:#FFFFFF; margin:0px auto; line-height:30px; font-size:14px; font-weight:bold;}
+.center a{ color:#003399;}
 fieldset { margin: 0; padding: 15px; border: 1px solid #c4e6af; }
 legend { margin: 0; padding: 0 4px 6px 4px; color: #585858; font-size:14px; }
 input, select, textarea { margin: 10px 5px 0; padding: 0; }
 label, span.label { margin: 0; padding: 0; font-weight: bold; }
-div.section { margin: 0; padding: 0; clear: both; }
+div.section { margin:10px 0px 10px 0px; padding: 0; clear: both; }
 div.section input, div.section select, div.section div.input, div.section textarea { float: right; }
 div.section div.input input { float: none; }
 div#language input, div#language select { margin: 0; padding: 0; }
 
-div.section ul.inspect-list li  { list-style-type: none; }
+div.section ul.inspect-list{ padding:0px 10px;}
+div.section ul.inspect-list li  { list-style-type: none; padding-left:5px;}
 div.section ul.inspect-list li.OK { list-style-image: url(../images/greencheck.gif); color:#009933; }
 div.section ul.inspect-list li.FAIL { list-style-image: url(../images/redx.gif); color:#FF0000; }
 div.section ul.inspect-list li.WARN { list-style-image: url(../images/yellowcaution.gif); color:#FF9900; }
@@ -46,3 +52,10 @@ div#error ul li.WARN { list-style-image: url(../images/yellowcaution.gif); color
 div.section ul.inspect-list li.NA { list-style-type: none;  }
 
 div.progress {color:#CC6600;}
+.footer{ height:30px; line-height:30px; width:900px; margin:0px auto; text-align:center; background:#FFFFFF; color:#333333; margin-bottom:10px;}
+.footer a{ color:#333333;}
+.footer a:hover{ text-decoration:underline;}
+
+.content4 h1{ color:#FF0000; font-size:22px; line-height:40px; text-align:center; font-family:arial; margin:30px 0px 0px 0px;}
+.content4 h1 span{ color:#0066FF;}
+.btn2{color:#003399;}

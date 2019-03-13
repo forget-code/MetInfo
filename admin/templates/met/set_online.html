@@ -1,0 +1,228 @@
+<!--<?php
+# 文件名称:set_skin.html 2009-08-03 16:12:57
+# MetInfo企业网站管理系统 
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+require_once template('head');
+echo <<<EOT
+-->
+<title>{$lang_setskinUISet}</title>
+</head>
+<script language="javascript" type="text/javascript">
+function viewonline(onlinetype,color){
+document.getElementById('online').href="view.php?type=online&onlinetype="+onlinetype+"&color="+color;
+}
+function onlineposition(onlineid){
+   document.getElementById('onlineleft').style.display="none";
+   document.getElementById('onlineright').style.display="none";
+ if(onlineid==1){
+    document.getElementById('onlineleft').style.display="";
+  }else if(onlineid==2){
+    document.getElementById('onlineright').style.display=""; 
+  }else{
+   document.getElementById('onlineleft').style.display="none";
+   document.getElementById('onlineright').style.display="none";
+  }
+}
+</script>
+<body>
+
+<form method="POST" name="myform" action="" target="_self">
+		<input name="action" type="hidden" value="modify">
+<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1"> 
+   <tr> 
+            <td colspan="3" align="center" class="list1_title">{$lang_setskinUISet}</td>
+          </tr>
+	
+		  <tr> 
+            <td class="list1_text"><font color="#FF0000">*</font>{$lang_setskinOnline}：</td>
+            <td class="list1_input"><input name="met_online_type" type="radio" value="0" $met_online_type1[0] onClick="onlineposition(0);">{$lang_setskinOnline1}&nbsp;&nbsp;<input name="met_online_type" type="radio" value="1" $met_online_type1[1] onClick="onlineposition(1);">{$lang_setskinOnline2}&nbsp;&nbsp;<input name="met_online_type" type="radio" value="2" $met_online_type1[2] onClick="onlineposition(2);">{$lang_setskinOnline3}&nbsp;&nbsp;<input name="met_online_type" type="radio" value="3" $met_online_type1[3] onClick="onlineposition(3);">{$lang_setskinClose}</td>
+          </tr>
+<!--
+EOT;
+$displayleft='none';
+$displayright='none';
+if($met_online_type==1)$displayleft='';
+if($met_online_type==2)$displayright='';
+echo <<<EOT
+-->
+		  <tr id="onlineleft" style="display:$displayleft"> 
+            <td class="list1_text"><font color="#FF0000">*</font>{$lang_setskinOnline4}：</td>
+            <td class="list1_input">
+			{$lang_setskinOnline5}:<input type="text" size="3" name="met_onlineleft_left" value="$met_onlineleft_left">{$lang_setflashPixel}&nbsp;&nbsp; 
+			{$lang_setskinOnline6}:<input type="text" size="3" name="met_onlineleft_top" value="$met_onlineleft_top">{$lang_setflashPixel}</td>
+          </tr>
+          <tr id="onlineright" style="display:$displayright"> 
+            <td class="list1_text"><font color="#FF0000">*</font>{$lang_setskinOnline8}：</td>
+            <td class="list1_input">
+			{$lang_setskinOnline7}:<input type="text" size="3" name="met_onlineright_right" value="$met_onlineright_right">{$lang_setflashPixel}&nbsp;&nbsp; 
+			{$lang_setskinOnline6}:<input type="text" size="3" name="met_onlineright_top" value="$met_onlineright_top">{$lang_setflashPixel}</td>
+          </tr>
+
+		<tr> 
+            <td class="list1_text"><font color="#FF0000">*</font>{$lang_onlineskintype}：</td>
+            <td class="list1_input">
+<select name="met_online_skin" onChange="changeonline(document.myform.met_online_skin.options[document.myform.met_online_skin.selectedIndex].value); viewonline(this.options[this.selectedIndex].value,document.myform.met_online_color.options[document.myform.met_online_color.selectedIndex].value);">
+<!--
+EOT;
+for($i=1;$i<=count($met_online_count);$i++){
+echo <<<EOT
+-->
+<option value="$i" {$met_online_skin1[$i]} >{$lang_onlineskin}$i</option>		
+<!--
+EOT;
+}
+echo <<<EOT
+-->		
+</select>	
+		<select name="met_online_color" onChange="viewonline(document.myform.met_online_skin.options[document.myform.met_online_skin.selectedIndex].value,this.options[this.selectedIndex].value);">
+<!--
+EOT;
+foreach($met_online_skinarray1 as $key=>$val){
+echo <<<EOT
+-->
+		<option value="$val[2]" {$met_online_color1[$val[2]]}>$val[1]</option>
+<!--
+EOT;
+}
+echo <<<EOT
+-->	
+		</select>
+<a href='view.php?type=online&onlinetype=$met_online_skin&color=$met_online_color' id="online" target='_blank'>{$lang_onlineqq2}</a>
+</td>
+          </tr> 			  
+          <tr> 
+            <td class="list1_text"><font color="#FF0000">*</font>{$lang_onlineqq}：</td>
+            <td class="list1_input">
+		<select name="met_qq_type">
+<!--
+EOT;
+for($i=1;$i<=13;$i++){
+echo <<<EOT
+-->
+		<option value="$i"  {$met_qq_type1[$i]} >{$lang_onlineskin}$i</option>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+		</select>
+		{$lang_onlineqq1} <a href='http://imis.qq.com/webpresence/code.shtml' target='_blank'>{$lang_onlineqq2}</a></td>
+          </tr> 
+          <tr> 
+            <td class="list1_text"><font color="#FF0000">*</font>{$lang_onlinemsn}：</td>
+            <td class="list1_input">
+		<select name="met_msn_type">
+<!--
+EOT;
+for($i=1;$i<=13;$i++){
+echo <<<EOT
+-->
+		<option value="$i"  {$met_msn_type1[$i]}>{$lang_onlineskin}$i</option>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+		</select>
+		 <a href='view.php?type=msn&max=13' target='_blank'>{$lang_onlineqq2}</a></td>
+          </tr>
+          <tr> 
+            <td class="list1_text"><font color="#FF0000">*</font>{$lang_onlinetaobao}：</td>
+            <td class="list1_input">
+		<select name="met_taobao_type">
+<!--
+EOT;
+for($i=1;$i<=2;$i++){
+echo <<<EOT
+-->
+		<option value="$i"  {$met_taobao_type1[$i]}>{$lang_onlineskin}$i</option>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+		</select>
+		{$lang_onlinetaobao1} <a href='http://www.taobao.com/wangwang/tese/index.php' target='_blank'>{$lang_onlineqq2}</a></td>
+          </tr>
+          <tr> 
+            <td class="list1_text"><font color="#FF0000">*</font>{$lang_onlineskype}：</td>
+            <td class="list1_input">
+		<select name="met_skype_type">
+<!--
+EOT;
+for($i=1;$i<=24;$i++){
+echo <<<EOT
+-->
+		<option value="$i"  {$met_skype_type1[$i]}>{$lang_onlineskin}$i</option>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+		</select>
+		 <a href='view.php?type=skype&max=24' target='_blank'>{$lang_onlineqq2}</a></td>
+          </tr>		  
+		  <tr> 
+          <tr> 
+            <td class="list1_text"><font color="#FF0000">*</font>{$lang_onlinealibaba}：</td>
+            <td class="list1_input">
+		<select name="met_alibaba_type">
+		<option value="102"  {$met_alibaba_type1[102]}>{$lang_onlineskin}1</option>
+		<option value="101"  {$met_alibaba_type1[101]}>{$lang_onlineskin}2</option>
+		<option value="1"  {$met_alibaba_type1[1]}>{$lang_onlineskin}3</option>
+		<option value="2"  {$met_alibaba_type1[2]}>{$lang_onlineskin}4</option>
+		</select>
+		{$lang_onlinealibaba1} <a href='http://club.china.alibaba.com/club/block/alitalk/alitalkfire.html' target='_blank'>{$lang_onlineqq2}</a></td>
+          </tr>
+<!--
+EOT;
+if($met_c_lang_ok==1){
+echo <<<EOT
+-->	
+           <tr> 
+          <td class="list1_text" valign="middle">[{$met_c_lang}]<br>{$lang_onlinetel}:</td>
+          <td colspan="2" class="list1_input" valign="top"> <textarea name="met_c_onlinetel" cols="45" rows="5" >$met_c_onlinetel</textarea>{$lang_onlinetel1}</td>
+          </tr>
+	      <tr> 
+<!--
+EOT;
+}
+if($met_e_lang_ok==1){
+echo <<<EOT
+-->
+           <tr> 
+          <td class="list1_text" valign="middle">[{$met_e_lang}]<br>{$lang_onlinetel}:</td>
+          <td colspan="2" class="list1_input" valign="top"> <textarea name="met_e_onlinetel" cols="45" rows="5" >$met_e_onlinetel</textarea>{$lang_onlinetel1}</td>
+          </tr>
+	      <tr>
+<!--
+EOT;
+}
+if($met_o_lang_ok==1){
+echo <<<EOT
+-->
+           <tr> 
+          <td class="list1_text" valign="middle">[{$met_o_lang}]<br>{$lang_onlinetel}:</td>
+          <td colspan="2" class="list1_input" valign="top"> <textarea name="met_o_onlinetel" cols="45" rows="5" >$met_o_onlinetel</textarea>{$lang_onlinetel1}</td>
+          </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+	      <tr>
+            <td class="list1_text"></td>
+	      <td class="list1_submit"><input type="submit" name="Submit" value="{$lang_Submit}" class="tj" style="*padding-top:2px; *height:22px;"><input type="reset" name="Submit" value="{$lang_Reset}" class="tj" style="*padding-top:2px; *height:22px;"> </td>
+          </tr>
+        </form>
+		<tr>
+		  <td class="list1_footer" colspan="2" align="center">$foot</td>
+	  </tr>
+</table>
+</body>
+</html>
+<!--
+EOT;
+# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+?>-->

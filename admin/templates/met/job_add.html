@@ -1,111 +1,161 @@
 <!--<?php
+# 文件名称:job_add.html 2009-08-12 06:01:13
+# MetInfo企业网站管理系统 
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+require_once template('head');
 echo <<<EOT
 -->
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-<link rel="stylesheet" type="text/css" href="$css_url/metinfo_admin.css">
-<title>添加招聘信息</title>
-<script type="text/javascript" src="../language/zh_cn.js"></script>
-<script type="text/javascript" src="../include/metinfo.js"></script>
+<title>{$lang_jobaddTitle}</title>
 </head>
 <body>
-
-<table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td align="center" valign="top"><table width="95%" border="0" cellpadding="2" cellspacing="1" class="table_southidc">
         <form  method="POST" name="myform" onSubmit="return CheckFormjob();" action="save.php?action=add" target="_self">
 		<input name="class1" type="hidden" value="$class1">
+<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
           <tr> 
-            <td class="back_southidc" height="30" colspan="3" align="center">添加招聘信息</td>
+            <td colspan="10" align="center" class="list1_title">{$lang_jobaddTitle}</td>
           </tr>
-          <tr bgcolor="#ECF5FF"> 
-            <td width="120" height="25"><font color="#FF0000">*</font><b>招聘职位：</b></td>
-            <td colspan="2"> <input name="c_position" type="text" class="input" size="40" maxlength="200"></td>
-          </tr> 
-		  <tr bgcolor="#ECF5FF"> 
-            <td width="119" height="25"><b>招聘人数：</b></td>
-            <td colspan="2"><input name="count" type="text" class="input" size="5" maxlength="200">人 （留空为不限）</td>
+		  <tr> 
+            <td class="list1_text"><b>{$lang_jobaddAccess}：</b></td>
+            <td class="list1_input"><select name="access" id="access" >
+             $level
+            </select></td>
           </tr>
-		  <tr bgcolor="#ECF5FF"> 
-            <td width="119" height="25"><b>工作地点：</b></td>
-            <td colspan="2"><input name="c_place" type="text" class="input" size="40" maxlength="200"></td>
+		  <tr> 
+            <td class="list1_text"><b>{$lang_jobaddTop}：</b></td>
+            <td colspan="2" class="list1_input"><input name="top_ok" type="checkbox" value="1">{$lang_jobaddTip5}</td>
           </tr>
-		   <tr bgcolor="#ECF5FF"> 
-            <td width="119" height="25"><b>工资待遇：</b></td>
-            <td colspan="2"><input name="c_deal" type="text" class="input" size="40" maxlength="200"></td>
+		  <tr > 
+            <td class="list1_text"><b>{$lang_jobaddNum}：</b></td>
+            <td colspan="2" class="list1_input"><input name="count" type="text" class="input" size="5" maxlength="200">{$lang_jobaddTip1}</td>
           </tr>
-		   <tr bgcolor="#ECF5FF"> 
-            <td width="119" height="25"><b>发布日期：</b></td>
-            <td colspan="2"><input name="addtime" type="text" class="input" size="10" maxlength="200" value="$m_now_counter ">今天是$m_now_counter 注意不要改变格式。</td>
+		  <tr > 
+            <td class="list1_text"><b>{$lang_jobaddPublishDate}：</b></td>
+            <td colspan="2" class="list1_input"><input name="addtime" type="text" class="input" size="10" maxlength="200" value="$m_now_counter ">{$lang_jobaddNow}$m_now_counter {$lang_jobaddTip2}</td>
           </tr>
-		   <tr bgcolor="#ECF5FF"> 
-            <td width="119" height="25"><b>有效期限：</b></td>
-            <td colspan="2"><input name="useful_life" type="text" class="input" size="5" maxlength="200">天 （留空为不限）</td>
+		   <tr > 
+            <td class="list1_text"><b>{$lang_jobaddLife}：</b></td>
+            <td colspan="2" class="list1_input"><input name="useful_life" type="text" class="input" size="5" maxlength="200">{$lang_jobaddTip3}</td>
           </tr>
-			 <tr bgcolor="#ECF5FF"> 
-            <td width="20%" height="25"><b>职位描述：</b></td>
-            <td width="80%" >
+<!--
+EOT;
+if($met_c_lang_ok==1){
+echo <<<EOT
+-->
+			<tr> <td colspan="3" align="center" class="list1_title"><b>{$lang_jobaddContent}[$met_c_lang]</b></td></tr>
+          <tr > 
+            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_jobaddPosition}：</b></td>
+            <td colspan="2" class="list1_input"> <input name="c_position" type="text" class="input" size="40" maxlength="200"></td>
+          </tr> 		  
+		  <tr > 
+            <td class="list1_text"><b>{$lang_jobaddAddress}：</b></td>
+            <td colspan="2" class="list1_input"><input name="c_place" type="text" class="input" size="40" maxlength="200"></td>
+          </tr>
+		   <tr > 
+            <td class="list1_text"><b>{$lang_jobaddDeal}：</b></td>
+            <td colspan="2" class="list1_input"><input name="c_deal" type="text" class="input" size="40" maxlength="200"></td>
+          </tr>		   
+			 <tr > 
+            <td class="list1_text"><b>{$lang_jobaddIntro}：</b></td>
+            <td class="list1_input">
 <!--
 EOT;
 echo "-->";
 $oFCKeditor = new FCKeditor('c_content'); 
 $oFCKeditor->BasePath = '../../fckeditor/';
-$oFCKeditor->Value = $about[c_content];
+$oFCKeditor->Config['AutoDetectLanguage']	= false ;
+$oFCKeditor->Config['DefaultLanguage']		= $langusenow ;
+$oFCKeditor->Value = '';
 $oFCKeditor->Width = '100%';   
 $oFCKeditor->Height = '300';
 $oFCKeditor->Create();
+echo "<!--";
 echo <<<EOT
+-->
 </td></tr>
 		  
-		   <tr bgcolor="#ECF5FF"> 
-            <td width="119" height="25"><b>招聘信息排序：</b></td>
-            <td colspan="2">一般按发布时间的先后顺序排，因此可以修改“发布日期”来达到排序的目的。</td>
+		   <tr > 
+            <td class="list1_text"><b>{$lang_jobaddSort}：</b></td>
+            <td colspan="2" class="list1_input">{$lang_jobaddTip4}</td>
           </tr>
 <!--
 EOT;
-if($met_en_lang==1){
+}
+if($met_e_lang_ok==1){
 echo <<<EOT
--->         <tr bgcolor="#999999"> <td  height="25" colspan="2"><b>英文内容</b></td></tr>
-          <tr bgcolor="#ECF5FF"> 
-            <td width="120" height="25"><font color="#FF0000">*</font><b>招聘职位：</b></td>
-            <td colspan="2"> <input name="e_position" type="text" class="input" size="40" maxlength="200"></td>
+-->         <tr> <td colspan="3" align="center" class="list1_title"><b>{$lang_jobaddContent}[$met_e_lang]</b></td></tr>
+          <tr > 
+            <td  class="list1_text"><font color="#FF0000">*</font><b>{$lang_jobaddPosition}：</b></td>
+            <td colspan="2" class="list1_input"> <input name="e_position" type="text" class="input" size="40" maxlength="200"></td>
           </tr> 
-		  <tr bgcolor="#ECF5FF"> 
-            <td width="119" height="25"><b>工作地点：</b></td>
-            <td colspan="2"><input name="e_place" type="text" class="input" size="40" maxlength="200"></td>
+		  <tr > 
+            <td class="list1_text"><b>{$lang_jobaddAddress}：</b></td>
+            <td colspan="2" class="list1_input"><input name="e_place" type="text" class="input" size="40" maxlength="200"></td>
           </tr>
-		   <tr bgcolor="#ECF5FF"> 
-            <td width="119" height="25"><b>工资待遇：</b></td>
-            <td colspan="2"><input name="e_deal" type="text" class="input" size="40" maxlength="200"></td>
+		   <tr > 
+            <td class="list1_text"><b>{$lang_jobaddDeal}：</b></td>
+            <td colspan="2" class="list1_input"><input name="e_deal" type="text" class="input" size="40" maxlength="200"></td>
           </tr>
-			 <tr bgcolor="#ECF5FF"> 
-            <td width="20%" height="25"><b>职位描述：</b></td>
-            <td width="80%" >
+			 <tr > 
+            <td class="list1_text"><b>{$lang_jobaddIntro}：</b></td>
+            <td class="list1_input">
 <!--
 EOT;
 echo "-->";
 $oFCKeditor = new FCKeditor('e_content'); 
 $oFCKeditor->BasePath = '../../fckeditor/';
-$oFCKeditor->Value = $about[c_content];
+$oFCKeditor->Config['AutoDetectLanguage']	= false ;
+$oFCKeditor->Config['DefaultLanguage']		= $langusenow ;
+$oFCKeditor->Value = '';
 $oFCKeditor->Width = '100%';   
 $oFCKeditor->Height = '300';
 $oFCKeditor->Create();
-echo "</td></tr>";
+echo "</td></tr><!--";
+}
+if($met_o_lang_ok==1){
+echo <<<EOT
+-->         <tr> <td colspan="3" align="center" class="list1_title"><b>{$lang_jobaddContent}[$met_o_lang]</b></td></tr>
+          <tr > 
+            <td  class="list1_text"><font color="#FF0000">*</font><b>{$lang_jobaddPosition}：</b></td>
+            <td colspan="2" class="list1_input"> <input name="o_position" type="text" class="input" size="40" maxlength="200"></td>
+          </tr> 
+		  <tr > 
+            <td class="list1_text"><b>{$lang_jobaddAddress}：</b></td>
+            <td colspan="2" class="list1_input"><input name="o_place" type="text" class="input" size="40" maxlength="200"></td>
+          </tr>
+		   <tr > 
+            <td class="list1_text"><b>{$lang_jobaddDeal}：</b></td>
+            <td colspan="2" class="list1_input"><input name="o_deal" type="text" class="input" size="40" maxlength="200"></td>
+          </tr>
+			 <tr > 
+            <td class="list1_text"><b>{$lang_jobaddIntro}：</b></td>
+            <td class="list1_input">
+<!--
+EOT;
+echo "-->";
+$oFCKeditor = new FCKeditor('o_content'); 
+$oFCKeditor->BasePath = '../../fckeditor/';
+$oFCKeditor->Config['AutoDetectLanguage']	= false ;
+$oFCKeditor->Config['DefaultLanguage']		= $langusenow ;
+$oFCKeditor->Value = '';
+$oFCKeditor->Width = '100%';   
+$oFCKeditor->Height = '300';
+$oFCKeditor->Create();
+echo "</td></tr><!--";
 }
 echo <<<EOT
-
-		  <tr> 
-            <td height="30" colspan="3" align="center" bgcolor="#ECF5FF"> <input type="submit" name="Submit" value="提交" class="tj">
-              　 
-              <input type="reset" name="Submit" value="重置" class="tj"> </td>
+-->
+		  <tr><td class="list1_text"></td>
+	      <td class="list1_submit"><input type="submit" name="Submit" value="{$lang_Submit}" class="tj" style="*padding-top:2px; *height:22px;"><input type="reset" name="Submit" value="{$lang_Reset}" class="tj" style="*padding-top:2px; *height:22px;"> </td>
           </tr>
         </form>
-    </table></td>
-  </tr>
+		<tr>
+		  <td class="list1_footer" colspan="2" align="center">$foot</td>
+	  </tr>
 </table>
 </body>
 </html>
 <!--
 EOT;
+# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
 ?>-->

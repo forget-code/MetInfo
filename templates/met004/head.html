@@ -1,0 +1,107 @@
+<!--<?php
+$metlang=methtml_lang(' | ');
+$met_online=methtml_online();
+echo <<<EOT
+-->
+{$methtml_head}
+
+<body>
+<div class="head">
+<div class="logo"><A href="$index_url"><IMG alt="$met_alt" src="$met_logo" border="0"></A></div>
+<div class="headright">
+<div class="headright1">
+ &nbsp;&nbsp;{$methtml_sethome}&nbsp;|&nbsp;{$methtml_addfavorite}&nbsp;|&nbsp;{$metlang}
+</div>
+
+<div class="headright2"><b>$met_seo</b></div>
+<div class="headright2">
+<form method="POST" name="myform1" action="$searchurl"  target="_self">
+<input type="text" name="searchword" size="20"/>
+<select name="class1">
+<option value="">{$lang_searchall}</option>
+<!--
+EOT;
+foreach($nav_search as $key=>$val)
+{
+echo <<<EOT
+-->
+<option value="$val[id]">$val[name]</option>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</select>
+<input style="border:0px;" type="image" src="$img_url/search.gif" width="56" height="19" />
+</form>
+</div>
+<div class="headnav">
+<div class="menu">
+		<ul>
+		<li><a class="hide" href="$index_url">{$lang_home}</a></li>
+<!--
+EOT;
+$i=0;
+foreach($nav_list as $key=>$val){
+$i++;
+echo <<<EOT
+-->
+<li onMouseOver="show('$i');" onMouseOut="showout('$i')"><a href="$val[url]" $val[new_windows] title="$val[name]" class="hide">$val[name]</a>
+<ul id="div_$i" style="display:none; " class="spand">
+<!--
+EOT;
+$class=$val[id];
+foreach($nav_list2[$class] as $key=>$val2){
+echo <<<EOT
+-->	 
+		<li><a href="$val2[url]" $val2[new_windows] title="$val2[name]">$val2[name]</a></li>
+<!--
+EOT;
+}
+echo <<<EOT
+-->			 
+</ul>
+</li>
+<!--
+EOT;
+if($i>=8)break;
+}
+echo <<<EOT
+-->
+		</ul>
+<script type="text/javascript">
+		function show(id){
+			if (document.getElementById("div_"+id).style.display == "")
+			{
+				document.getElementById("div_"+id).style.display = "none";
+			}
+			else
+			{
+				document.getElementById("div_"+id).style.display = "";
+			}
+		}
+		function showout(id){
+		    if (document.getElementById("div_"+id).style.display == "none")
+			{
+				document.getElementById("div_"+id).style.display = "";
+			}
+			else
+			{
+				document.getElementById("div_"+id).style.display = "none";
+			}
+		}
+</script>
+</div>
+</div>
+</div>
+</div>
+<!--
+EOT;
+if($navurl=='../'){
+echo <<<EOT
+-->
+<div class="web">{$methtml_flash}</div>
+<!--
+EOT;
+}
+?>

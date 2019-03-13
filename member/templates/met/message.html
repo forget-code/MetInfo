@@ -1,0 +1,60 @@
+<!--<?php
+# 文件名称:message.html 2009-08-20 17:06:03
+# MetInfo企业网站管理系统 
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+echo <<<EOT
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="templates/met/css/style.css" rel="stylesheet" />
+<style type="text/css">
+<!--
+body {
+	font-size: $lang_fontsize; 
+	font-family:$lang_fontfamily;
+	}
+
+-->
+</style>
+</head>
+<body>
+<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_member">
+				<tr> 
+            <td colspan="10" align="center" class="member_title">{$lang_memberIndex6}</td>
+            </tr>
+              <tr  >
+			    <td align="center" width="50%" class="member_text1"  align="center" ><b>{$lang_memberinfo}</b></td> 
+				<td align="center" width="15%" class="member_text1"  align="center" ><b>{$lang_memberReply}</b></td>                
+                <td align="center" width="20%" class="member_text1"  align="center" ><b>{$lang_memberAddTime}</b></td>
+				<td align="center" width="15%" class="member_text1" align="center"  ><b>{$lang_memberOperate}</b></td>
+              </tr> 
+<!--
+EOT;
+foreach ($message_list as $key=>$val){
+echo <<<EOT
+-->          
+              <tr class="tdbg">
+			   <td align="center" class="member_text1" align="center" >$val[info]</td>
+                <td align="center" class="member_text1" align="center" >$val[readok]</td>				
+                <td align="center" class="member_text1" align="center" >$val[addtime]</td>
+				<td align="center" class="member_text1" style="color:#0066FF" align="center" ></a> <a href="messagedetail.php?lang=$lang&id=$val[id]" >{$lang_memberDetail}</a> | <a href="messageeditor.php?lang=$lang&id=$val[id]" >{$lang_memberEdit}</a></td>
+              </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->    
+   	   
+   	   <tr>
+   	     <td align="center" class="member_input" colspan="4">$page_list</td>
+        </tr>
+</table>
+</body>
+</html>
+<!--
+EOT;
+# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+?>-->

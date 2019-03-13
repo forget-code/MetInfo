@@ -1,0 +1,61 @@
+<!--<?php
+# 文件名称:set_safe.html 2009-08-12 21:01:57
+# MetInfo企业网站管理系统 
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+require_once template('head'); 
+echo <<<EOT
+-->
+<title>{$lang_setsafetitle}</title>
+</head>
+<body>
+        <form method="POST" name="myform" action="" target="_self">
+		<input name="action" type="hidden" value="modify">
+<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
+
+            <td colspan="3" align="center" class="list1_title">{$lang_setsafetitle}</td>
+   </tr>
+         <tr> 
+            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_setsafeadminname}:</b></td>
+            <td class="list1_input"><input name="met_adminfile" type="text" class="input" size="5" maxlength="200" value="$adminfile">{$lang_setsafeadminname1}</td>
+          </tr>
+		  <tr style="$installstyle"> 
+            <td class="list1_text"><font color="#FF0000"><b>{$lang_setsafeinstall}:</b></font></td>
+            <td class="list1_input"><font color="#FF0000">{$lang_setsafeinstall1}</font><a href="safe.php?action=delete&filename=install">【{$lang_skinDelete}】</a></td>
+          </tr>
+		  <tr style="$updatestyle"> 
+            <td class="list1_text"><font color="#FF0000"><b>{$lang_setsafeupdate}:</b></font></td>
+            <td class="list1_input"><font color="#FF0000">{$lang_setsafeupdate1}</font><a href="safe.php?action=delete&filename=update">【{$lang_skinDelete}】</a></td>
+          </tr>
+		  <tr> 
+            <td class="list1_text"><font color="#FF0000">*</font>{$lang_setsafeadmin}:</td>
+            <td class="list1_input"><input name="met_login_code" type="radio" value="1"  $met_login_code1[1] >{$lang_indexsetOpen} <input name="met_login_code" type="radio" value="0" $met_login_code1[0]>{$lang_indexsetClose}</td>
+          </tr>
+		    <tr> 
+            <td class="list1_text"><font color="#FF0000">*</font>{$lang_setsafemember}:</td>
+            <td class="list1_input"><input name="met_memberlogin_code" type="radio" value="1" $met_memberlogin_code1[1] >{$lang_indexsetOpen} <input name="met_memberlogin_code" type="radio" value="0" $met_memberlogin_code1[0]>{$lang_indexsetClose}</td>
+          </tr>
+		   <tr> 
+            <td class="list1_text"><font color="#FF0000">*</font>{$lang_setsafesubmit}:</td>
+            <td class="list1_input"><input name="met_submit_type" type="radio" value="1" $met_submit_type1[1] >{$lang_indexsetOpen} <input name="met_submit_type" type="radio" value="0" $met_submit_type1[0]>{$lang_indexsetClose}  {$lang_setsafesubmit1}</td>
+          </tr>
+		  <tr> 
+            <td class="list1_text"><font color="#FF0000">*</font>{$lang_setsafesql}:</td>
+            <td class="list1_input"><input name="met_sqlnum" type="text" class="input" size="5" maxlength="200" value="$met_sqlnum">{$lang_setsafesqltext}</td>
+          </tr> 
+
+	      <tr> 
+            <td class="list1_text"></td>
+	      <td class="list1_submit"><input type="submit" name="Submit" value="{$lang_Submit}" class="tj" style="*padding-top:2px; *height:22px;"><input type="reset" name="Submit" value="{$lang_Reset}" class="tj" style="*padding-top:2px; *height:22px;"></td>
+          </tr>
+        </form>
+		<tr>
+		  <td class="list1_footer" colspan="2" align="center">$foot</td>
+	  </tr>
+</table>
+</body>
+</html>
+<!--
+EOT;
+# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+?>-->

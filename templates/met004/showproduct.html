@@ -1,0 +1,34 @@
+<!--<?php
+require_once template('head'); 
+$met_product=methtml_showproduct('all');
+$met_productnext=methtml_prenextinfo();
+$methits=methtml_hits('product');
+echo <<<EOT
+-->
+<div class="web">
+<div class="nav">&nbsp;<img height=17 src="$img_url/main.gif" width=18 />
+ {$lang_YouPosition}：<a href='$index_url'>{$lang_home}</a> > $nav_x[name]</div>
+<div class="webleft">
+<div class="content" style="margin-bottom:10px; ">
+<div class="product_list2">
+$met_product
+</div>
+</div>
+<div class="content" >
+<div class="pcontent">$met_productnext</div>
+
+<div class="hits">$methits</div>
+
+</div>
+</div>
+
+<div class="webright">
+<div class="nav_x">&nbsp;<img src="$img_url/right.gif" />&nbsp;$class1_info[name]</div>
+<div class="navright">$navlist_y1</div>
+$met_online
+</div>
+</div>
+<!--
+EOT;
+require_once template('foot'); 
+?>

@@ -83,25 +83,25 @@
  //html连接的标签 
 function link($url, $exc='')
   {
-      global $lang;
+      global $lang_pageTotal,$lang_pages,$lang_pageLoction,$lang_pageHome,$lang_pageEnd,$lang_pageReturn,$lang_pageNext,$lang_pageGo;
 	 $text="<form method='POST' name='page1'  action='".$url."' target='_self'>";
-     $text.= "$lang[pag_total]<span>$this->pages</span>$lang[pags] $lang[pag_loction]<span>$this->_cur_page</span>$lang[pags] ";
+     $text.= "$lang_pageTotal<span>$this->pages</span>$lang_pages $lang_pageLoction<span>$this->_cur_page</span>$lang_pages ";
       if ($this->_cur_page == 1 && $this->pages>1) 
         {
             //第一页
-            $text.= "$lang[pag_home] $lang[pag_return] <a href=".$url.($this->_cur_page+1).$exc.">$lang[pag_next]</a>  <a href=".$url.$this->pages.$exc.">$lang[pag_end]</a>";
+            $text.= "$lang_pageHome $lang_pageReturn <a href=".$url.($this->_cur_page+1).$exc.">$lang_pageNext</a>  <a href=".$url.$this->pages.$exc.">$lang_pageEnd</a>";
         } 
         elseif($this->_cur_page == $this->pages && $this->pages>1) 
         {
             //最后一页
-             $text.= "<a href=".$url.'1'.$exc.">$lang[pag_home]</a> <a href=".$url.($this->_cur_page-1).$exc.">$lang[pag_return]</a> $lang[pag_next] $lang[pag_end]";
+             $text.= "<a href=".$url.'1'.$exc.">$lang_pageHome</a> <a href=".$url.($this->_cur_page-1).$exc.">$lang_pageReturn</a> $lang_pageNext $lang_pageEnd";
         } 
         elseif ($this->_cur_page > 1 && $this->_cur_page <= $this->pages) 
         {
             //中间
-             $text.= "<a href=".$url.'1'.$exc.">$lang[pag_home]</a> <a href=".$url.($this->_cur_page-1).$exc.">$lang[pag_return]</a> <a href=".$url.($this->_cur_page+1).$exc.">$lang[pag_next]</a>  <a href=".$url.$this->pages.$exc.">$lang[pag_end]</a>";
+             $text.= "<a href=".$url.'1'.$exc.">$lang_pageHome</a> <a href=".$url.($this->_cur_page-1).$exc.">$lang_pageReturn</a> <a href=".$url.($this->_cur_page+1).$exc.">$lang_pageNext</a>  <a href=".$url.$this->pages.$exc.">$lang_pageEnd</a>";
         }
-$text.="$lang[pag_go]<INPUT size='1' name='page_input'>$lang[pags] ";
+$text.=" $lang_pageGo<INPUT size='1' name='page_input'>$lang_pages ";
 $text.="<input type='submit' name='Submit3' value=' go ' class='tj'>  </form>";
         return $text;
   }

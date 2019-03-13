@@ -522,5 +522,20 @@ DlgAboutInfo		: "For further information go to",
 DlgDivGeneralTab	: "General",
 DlgDivAdvancedTab	: "Advanced",
 DlgDivStyle		: "Style",
-DlgDivInlineStyle	: "Inline Style"
+DlgDivInlineStyle	: "Inline Style",
+
+//paging
+Paging1				: "Paging",
+Paging2				: "New",
+Paging3				: "Del current",
+Paging4				: "Combined data",
+Paging5				: "Click here to perform data page",
+Paging6				: "Initialization failed.",
+Paging7				: "Parameter configuration error.",
+Paging8				: "Submit the form, be sure to 'Merge data'!",
+Paging9				: "At present there is only one page, can not delete!",
+Paging10			: "Confirm that you want to delete page ",
+Paging11			: " ？",
+Paging12			: " Data consolidation is successful, you can now submit the form!",
+Paging13			: "Please click on 'Merge data' button, and then submit the form."
 };

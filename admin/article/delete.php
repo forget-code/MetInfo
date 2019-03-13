@@ -1,86 +1,44 @@
 <?php
+# 文件名称:delete.php 2009-08-06 16:31:57
+# MetInfo企业网站管理系统 
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn)). All rights reserved.
 require_once '../login/login_check.php';
 $backurl="index.php?class1=$class1&class2=$class2&class3=$class3";
 $folder=$db->get_one("select * from $met_column where id='$class1'");
 if($action=="del"){
 $allidlist=explode(',',$allid);
-foreach($allidlist as $key=>$val){
-$filename="../../".$folder[foldername]."/"."shownews".$val.".htm";
-if(file_exists($filename))@unlink($filename);
-$filename="../../".$folder[foldername]."/"."shownews".$val."_en.htm";
-if(file_exists($filename))@unlink($filename);
-
-$query = "delete from $met_news where id='$val'";
+$k=count($allidlist)-1;
+for($i=0;$i<$k; $i++){
+if($met_htmpagename==1)$news_list=$db->get_one("select * from $met_news where id='$allidlist[$i]'");
+$updatetime=date('Ymd',strtotime($news_list[updatetime]));
+deletepage($folder[foldername],$allidlist[$i],'shownews',$updatetime);
+$query = "delete from $met_news where id='$allidlist[$i]'";
 $db->query($query);
 }
-
-if($met_index_type){
-
-if($met_webhtm==1){
-$fromurl=$met_weburl."/index.php?en=en";
-$filename="../../index.htm";
-createhtm($fromurl,$filename);
-if($met_en_lang==1){
-$fromurl=$met_weburl."/index.php?ch=ch";
-$filename="../../index_ch.htm";
-createhtm($fromurl,$filename);
-}}
-
-}else{
-if($met_webhtm==1){
-$fromurl=$met_weburl."/index.php";
-$filename="../../index.htm";
-createhtm($fromurl,$filename);
-if($met_en_lang==1){
-$fromurl=$met_weburl."/index.php?en=en";
-$filename="../../index_en.htm";
-createhtm($fromurl,$filename);
-}
-}
-}
-
-
-okinfo($backurl,$lang[user_admin]);
+indexhtm();
+classhtm($class1,$class2,$class3);
+  if($met_webhtm==2){
+   okinfo($backurl,$lang_delall);
+   }else{
+   okinfo($backurl,$lang_loginUserAdmin);
+   }
 }
 else{
 $admin_list = $db->get_one("SELECT * FROM $met_news WHERE id='$id'");
 if(!$admin_list){
-okinfo($backurl,$lang[noid]);
+okinfo($backurl,$lang_loginNoid);
 }
 $query = "delete from $met_news where id='$id'";
 $db->query($query);
-$filename="../../".$folder[foldername]."/"."shownews".$id.".htm";
-if(file_exists($filename))@unlink($filename);
-$filename="../../".$folder[foldername]."/"."shownews".$id."_en.htm";
-if(file_exists($filename))@unlink($filename);
-
-
-if($met_index_type){
-
-if($met_webhtm==1){
-$fromurl=$met_weburl."/index.php?en=en";
-$filename="../../index.htm";
-createhtm($fromurl,$filename);
-if($met_en_lang==1){
-$fromurl=$met_weburl."/index.php?ch=ch";
-$filename="../../index_ch.htm";
-createhtm($fromurl,$filename);
-}}
-
-}else{
-if($met_webhtm==1){
-$fromurl=$met_weburl."/index.php";
-$filename="../../index.htm";
-createhtm($fromurl,$filename);
-if($met_en_lang==1){
-$fromurl=$met_weburl."/index.php?en=en";
-$filename="../../index_en.htm";
-createhtm($fromurl,$filename);
+$updatetime=date('Ymd',strtotime($admin_list[updatetime]));
+deletepage($folder[foldername],$id,'shownews',$updatetime);
+indexhtm();
+$class1=$admin_list[class1];
+$class2=$admin_list[class2];
+$class3=$admin_list[class3];
+classhtm($class1,$class2,$class3);
+okinfo($backurl,$lang_loginUserAdmin);
 }
-}
-}
-
-
-okinfo($backurl,$lang[user_admin]);
-}
+# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
 ?>

@@ -57,9 +57,10 @@ FCKConfig.AutoGrowMax = 400 ;
 // FCKConfig.ProtectedSource.Add( /<%[\s\S]*?%>/g ) ;	// ASP style server side code <%...%>
 // FCKConfig.ProtectedSource.Add( /<\?[\s\S]*?\?>/g ) ;	// PHP style server side code
 // FCKConfig.ProtectedSource.Add( /(<asp:[^\>]+>[\s|\S]*?<\/asp:[^\>]+>)|(<asp:[^\>]+\/>)/gi ) ;	// ASP.Net style tags <asp:control>
+FCKConfig.ProtectedSource.Add( /<\s*sub[\s\S]*?\/sub\s*>/gi ) ;        // <sub> tags.
 
 FCKConfig.AutoDetectLanguage	= true ;
-FCKConfig.DefaultLanguage		= 'zh-cn' ;
+FCKConfig.DefaultLanguage		= 'cn' ;
 FCKConfig.ContentLangDirection	= 'ltr' ;
 
 FCKConfig.ProcessHTMLEntities	= true ;
@@ -72,7 +73,7 @@ FCKConfig.AdditionalNumericEntities = ''  ;		// Single Quote: "'"
 
 FCKConfig.FillEmptyBlocks	= true ;
 
-FCKConfig.FormatSource		= true ;
+FCKConfig.FormatSource		= false ;
 FCKConfig.FormatOutput		= true ;
 FCKConfig.FormatIndentator	= '    ' ;
 
@@ -97,7 +98,7 @@ FCKConfig.TemplateReplaceAll = true ;
 FCKConfig.TemplateReplaceCheckbox = true ;
 
 FCKConfig.ToolbarLocation = 'In' ;
-
+FCKConfig.PagingCode = '{0}' ;          //{0}：被替换成当“页码”
 FCKConfig.ToolbarSets["Default"] = [
 	['Source','-','Preview','-'],
 	['Cut','Copy','Paste','PasteText','PasteWord','-','SpellCheck'],
@@ -195,7 +196,7 @@ FCKConfig.DefaultLinkTarget = '' ;
 FCKConfig.CleanWordKeepsStructure = false ;
 
 // Only inline elements are valid.
-FCKConfig.RemoveFormatTags = 'b,big,code,del,dfn,em,font,i,ins,kbd,q,samp,small,span,strike,strong,sub,sup,tt,u,var' ;
+FCKConfig.RemoveFormatTags = 'b,big,code,del,dfn,em,font,i,ins,kbd,q,samp,small,strike,strong,sub,sup,tt,u,var,span' ;
 
 // Attributes that will be removed
 FCKConfig.RemoveAttributes = 'class,style,lang,width,height,align,hspace,valign' ;

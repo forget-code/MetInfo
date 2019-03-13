@@ -1,0 +1,29 @@
+<!--<?php
+$navdown="nav_".$class1_info[id];
+if($class_list[$classnow][nav]==1||$class_list[$classnow][nav]==3)$navdown="nav_".$class_list[$classnow][id];
+require_once template('head'); 
+$methits=methtml_hits('news');
+$met_newsnext=methtml_prenextinfo();
+echo <<<EOT
+-->
+<div class="web">
+<!--
+EOT;
+require_once template('webleft'); 
+echo <<<EOT
+-->
+<div class="webcontent">
+<h1>$news[title]</h1>
+<div class="news_content">$news[content]</div>
+$met_newsnext
+<div class="hits">$methits</div>
+</div>
+</div>
+<div style="clear:both;"></div>
+
+
+</div>
+<!--
+EOT;
+require_once template('foot'); 
+?>

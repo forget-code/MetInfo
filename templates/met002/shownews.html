@@ -1,0 +1,41 @@
+<!--<?php
+require_once template('head'); 
+require_once template('flash'); 
+$methits=methtml_hits('news');
+echo <<<EOT
+-->
+<div class="web">
+<!--
+EOT;
+require_once template('webleft'); 
+echo <<<EOT
+-->
+<h1>$news[title]</h1>
+<div class="content">$news[content]</div>
+<div class="hits">$methits</div>
+<div class="nav_left"><img src="$img_url/list1.gif" />&nbsp;{$lang_Article}</div>
+<div class="content">
+<!--
+EOT;
+$i=0;
+foreach($news_list as $key=>$val){
+$i=$i+1;
+echo <<<EOT
+-->
+<div class="newsline1">
+	<img src="$img_url/dot.gif" />
+<a href='$val[url]' target=_blank>$val[title]</a>($val[updatetime])
+	</div>	
+<!--
+EOT;
+if($i>=8)break;
+}
+echo <<<EOT
+-->
+</div>
+</div>
+</div>
+<!--
+EOT;
+require_once template('foot'); 
+?>

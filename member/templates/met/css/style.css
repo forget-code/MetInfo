@@ -1,0 +1,101 @@
+/* CSS Document */
+
+*{ margin:0px; padding:0px;}
+html,body{ font-size:12px;background-color:#FBFBFB; }
+
+
+/*--------------会员中心----------------------------------------*/
+.user_main{ width:900px;  margin:auto; }
+.memberhead{ width:100%; height:auto; min-height:80px; background:#F3F3F3; border-bottom:2px solid #000033;}
+.memberhead1{ width:1000px; height:auto; min-height:80px; margin:auto; position:relative;}
+.memberheadlogo{ width:auto; height:auto; float:left; margin:10px 0px 10px 50px;}
+.memberheadlogo img{border:0px;}
+.memberheadtext{ position:absolute; height:auto; right:50px; bottom:5px; font-size:14px; font-weight:bold; color:#000033;}
+.memberheadtext a{ margin:0px 8px 0px 8px; text-decoration:none;color:#000033; }
+.user_nav{ float:left; text-align:center; width:200px; height:500px; background-color:#F6F6F6; }
+.user_top{ width:150px; margin-top:10px; background:#D8D8D8 url(../images/title.gif) no-repeat 0px 0px; height:25px; line-height:25px; text-align:center; color:#666666; font-weight:bold;}
+.user_bottom{ width:150px; background:#D8D8D8 url(../images/title_bottom.gif) no-repeat bottom left; height:25px;}
+.user_nav ul{ 
+	  list-style-type:none;
+	  width:150px;
+}
+.user_nav li{
+      margin-bottom:1px;
+}
+.user_nav li a{height:30px; line-height:30px; display:block; background:#C7C7C7; text-align:center; color:#ffffff; text-decoration:none;}
+.user_nav li a:hover{ background:#E9E9E9; color:#0099FF;}
+
+
+.user_main_right{ width:698px; float:left; border-right:1px solid #CCCCCC;  border-left:1px solid #CCCCCC;}
+.user_main iframe{ width:96%; overflow:auto; height:auto !important; height:490px; margin:10px auto 0px 15px; min-height:490px;}
+.memberfoot{ width:900px; margin:auto; height:30px; line-height:30px; font-family:Arial, Helvetica, sans-serif; text-align:center; border-top:1px solid #CCCCCC; }
+
+/*---------注册---------------------------------------------------------*/
+.main_zhuce{ margin:15px auto 0px auto; ; text-align:left; width:600px; border:1px solid #CCCCCC;}
+.main_top{ width:100%; margin:0px auto 0px auto; padding:1px; padding-bottom:0px; font-weight:bold;}
+.main_top span{height:25px; line-height:25px; display:block; font-size:14px;  background:#e8e8e8; color:#333333; text-align:center; }
+.main_zhuce form{ margin:0px auto 0px auto; line-height:22px;}
+.input_text{ width:150px;}
+.main_zhuce table{ width:100%; margin:0px auto;}
+.main_zhuce table td.zhuce_text{ text-align:right; font-size:12px; width:150px; background:#e8e8e8; color:#333333; height:25px; line-height:25px; padding-right:3px;}
+.main_zhuce table td.zhuce_input{ padding-left:3px; width:155px; background:#f6f6f6;}
+.main_zhuce table td.zhuce_input input{ border:1px solid #E2E0E0;}
+.main_zhuce table td.zhuce_sm{ color:#FF0000; background:#F9F9F9; padding-left:3px;}
+.main_zhuce table td.zhuce_subimt input{ *padding-top:3px; *height:24px; color:#333333;}
+
+/*-----------------会员登录-------------------------------------------------*/
+.main_deng{
+   width:300px;
+   height:215px;
+   *height:215px; 
+   margin:60px auto;
+   text-align:left;
+   background:url(../images/bg.jpg) no-repeat -5px -5px; 
+}
+.login_top{ width:90%; 
+          height:25px; 
+		  line-height:25px; 
+		  margin:0px auto; 
+		  padding-top:7px; 
+		  text-align:center; 
+		  font-size:14px;
+		  border-bottom:1px solid #D7D6D4;
+		  font-weight:bold;
+		  color:#333333;
+		   }
+
+.main_deng form{
+   width:90%; margin:3px auto 0px auto; 
+}
+.main_deng form label{ font-size:12px; color:#888888; height:25px; line-height:25px; }
+.main_deng p{ margin:5px 5px 5px 5px;}
+.main_deng form label input.input_text{
+    width:150px; font-size:16px; color:#666666; border:1px solid #D7D6D4;
+}
+.forgetmenot{ margin:5px 0px; }
+.forgetmenot input{ position:relative; top:2px; }
+.submit{ _margin-top:5px;}
+.submit input{ padding-top:2px\9; *padding-top:2px; *height:22px;  margin-right:8px;}
+
+.submit span a{ font-size:12px; color:#2BBFF0;}
+.submit span a:hover{ color:#FF0000;}
+
+.zcm{ margin-bottom:2px;}
+.zcm input{border:1px solid #D7D6D4;}
+.zcm img{ position:relative; bottom:4px; *bottom:1px; }
+
+
+/*------------------会员信息--------------------------------------*/
+.table_member{ margin:0px 0px 0px 0px; text-align:left; width:600px; border:1px solid #CCCCCC;}
+.table_member{ width:100%; margin:0px auto;}
+.table_member td.member_text{ text-align:right; font-size:12px; width:20%; background:#F3F3F3; color:#333333; height:25px; line-height:25px; padding-right:3px;}
+.table_member td.member_input{ padding-left:3px; background:#FAFAFA; color:#333333;}
+.table_member td.member_input span{color:#FF6600; font-weight:600;}
+.table_member td.member_input input{ border:1px solid #E2E0E0;}
+.table_member td.member_input textarea{ background:#FFFFFF; border:1px solid #E2E0E0;}
+.table_member td.member_sm{ color:#FF0000; padding-left:3px;  background:#FAFAFA; }
+.table_member td.member_sy{ color:#0099FF; padding-left:3px;  background:#FAFAFA;}
+.table_member td.member_submit{ padding-left:3px; width:80%; background:#FAFAFA; color:#333333;}
+.table_member td.member_submit input{ margin-right:6px;}
+.table_member td.member_title{ text-align:center; height:25px; background-color:#E1E1E1; font-size:14px; font-weight:bold;}
+.table_member td.member_text1{text-align:center; font-size:12px; background:#F2F2F2; color:#333333; height:25px; line-height:25px; padding-right:3px;}

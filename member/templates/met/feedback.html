@@ -1,0 +1,90 @@
+<!--<?php
+# 文件名称:feedback.html 2009-08-20 10:44:03
+# MetInfo企业网站管理系统 
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+echo <<<EOT
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{$lang_memberIndex5}</title>
+<link href="templates/met/css/style.css" rel="stylesheet" />
+<style type="text/css">
+<!--
+body {
+	font-size: $lang_fontsize; 
+	font-family:$lang_fontfamily;
+	}
+
+-->
+</style>
+</head>
+<body>
+<br>
+<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_member">
+		<tr> 
+            <td colspan="10" align="center" class="member_title">{$lang_memberIndex5}</td>
+            </tr>
+      <tr>
+     <td colspan="3" align="left" class="member_input">
+         <script language="JavaScript">
+          <!--
+            function MM_jumpMenu(selObj){ 
+			var url=selObj.options[selObj.selectedIndex].value; 
+            location.href=url;
+            }
+          //-->
+          </script>
+<select name="met_fd_class" style="float:right;" onChange="MM_jumpMenu(this)">
+<option value="feedback.php?search=$search&met_fd_classname=">{$lang_memberShowAll}</option>
+<!--
+EOT;
+foreach ($selectlist as $key=>$val){
+if($met_fd_classname==$val['list']){
+echo <<<EOT
+-->
+<option value="feedback.php?search=$search&lang=$lang&met_fd_classname=$val[list]" selected="selected">$val[list]</option>
+<!--
+EOT;
+}else{
+echo <<<EOT
+-->
+<option value="feedback.php?search=$search&lang=$lang&met_fd_classname=$val[list]">$val[list]</option>
+<!--
+EOT;
+}}
+echo <<<EOT
+-->
+</select></td>
+      </tr>
+              <tr>
+                <td width="50%" class="member_text1" align="center"><b>{$lang_memberFeedbackName}</b></td>
+                <td width="30%" class="member_text1" align="center" ><b>{$lang_memberAddTime}</b></td>
+				<td width="20%" class="member_text1" align="center" ><b>{$lang_memberOperate}</b></td>
+              </tr>
+<!--
+EOT;
+foreach ($feedback_list as $key=>$val){
+echo <<<EOT
+-->          
+              <tr>
+			    <td align="center" class="member_text1" >$val[fdtitle]</td>
+                <td class="member_text1" align="center">$val[addtime]</td>
+				<td align="center" class="member_text1"  align="center" style="color:#0066FF;"></a> <a href="fddetail.php?lang=$lang&id=$val[id]" >{$lang_memberDetail}</a> | <a href="fdeditor.php?lang=$lang&id=$val[id]" >{$lang_memberEdit}</a></td>
+              </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+   	     <td class="member_input" colspan="3" align="center">$page_list</td>
+        </tr>		
+</table>
+</body>
+</html>
+<!--
+EOT;
+# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+?>-->

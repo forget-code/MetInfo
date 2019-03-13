@@ -1,0 +1,19 @@
+<!--<?php
+require_once template('head'); 
+$metnewslist=methtml_news('text','all','blue','','110');
+echo <<<EOT
+-->
+<div class="web">
+<div class="webleft">
+<div class="nav_x1"><span><a href='$index_url'>{$lang_home}</a> > $nav_x[name]</span></div>
+<div class="content">
+<div class="news_list">
+$metnewslist
+</div></div>
+<div class="page">$page_list</div>
+</div>
+
+<!--
+EOT;
+require_once template('foot'); 
+?>

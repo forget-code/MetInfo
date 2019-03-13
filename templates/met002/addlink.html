@@ -1,0 +1,81 @@
+﻿<!--<?php
+require_once template('head'); 
+require_once template('flash'); 
+echo <<<EOT
+-->
+$fdjs
+<div class="web">
+<!--
+EOT;
+require_once template('webleft'); 
+echo <<<EOT
+-->
+<div class="content">
+<table width="90%" cellpadding="2" cellspacing="1" bgcolor="#CCCCCC" align="center">
+<tr><td width="20%" height="25" align="left" bgcolor="#FFFFFF" colspan="3"><b>{$lang_Info4}</b></td></tr>
+<tr>
+<td width="20%" height="25" align="right" bgcolor="#FFFFFF">{$lang_OurWebName}</td>
+<td width="70%" bgcolor="#FFFFFF">$met_linkname</td>
+<td bgcolor="#FFFFFF" style="color:#990000"></td>
+</tr>
+<tr>
+<td width="20%" height="25" align="right" bgcolor="#FFFFFF">{$lang_OurWebUrl}</td>
+<td width="70%" bgcolor="#FFFFFF">$met_weburl</td>
+<td bgcolor="#FFFFFF" style="color:#990000"></td>
+</tr>
+<tr>
+<td width="20%" height="25" align="right" bgcolor="#FFFFFF">{$lang_OurWebLOGO}</td>
+<td width="70%" bgcolor="#FFFFFF"><img src="$met_logo" /></td>
+<td bgcolor="#FFFFFF" style="color:#990000"></td>
+</tr>
+<tr>
+<td width="20%" height="25" align="right" bgcolor="#FFFFFF">{$lang_OurWebKeywords}</td>
+<td width="70%" bgcolor="#FFFFFF">$title_keywords</td>
+<td bgcolor="#FFFFFF" style="color:#990000"></td>
+</tr>
+</table>
+
+<form method="POST" name="myform" onSubmit="return Checklink();" action="addlink.php?action=add" target="_self">
+<table width="90%" cellpadding="2" cellspacing="1" bgcolor="#CCCCCC" align="center">
+<tr>
+<td width="20%" height="25" align="right" bgcolor="#FFFFFF">{$lang_YourWebName}</td>
+<td width="70%" bgcolor="#FFFFFF"><input name="webname" type="text" size="30" /></td>
+<td bgcolor="#FFFFFF" style="color:#990000">*</td>
+</tr>
+<tr>
+<td width="20%" height="25" align="right" bgcolor="#FFFFFF">{$lang_YourWebUrl}</td>
+<td width="70%" bgcolor="#FFFFFF"><input name="weburl" type="text" size="30" value="http://" /></td>
+<td bgcolor="#FFFFFF" style="color:#990000">*</td>
+</tr>
+<tr>
+<td width="20%" height="25" align="right" bgcolor="#FFFFFF">{$lang_LinkType}</td>
+<td width="70%" bgcolor="#FFFFFF"><input name="link_type" type="radio" value="0"  checked="checked"/>{$lang_TextLink}<input name="link_type" type="radio" value="1" />{$lang_PictureLink}</td>
+<td bgcolor="#FFFFFF" style="color:#990000">*</td>
+</tr>
+<tr>
+<td width="20%" height="25" align="right" bgcolor="#FFFFFF">{$lang_YourWebLOGO}</td>
+<td width="70%" bgcolor="#FFFFFF"><input name="weblogo" type="text" size="30" value="http://"/></td>
+<td bgcolor="#FFFFFF" style="color:#990000"></td>
+</tr>
+<tr>
+<td width="20%" height="25" align="right" bgcolor="#FFFFFF">{$lang_YourWebKeywords}</td>
+<td width="70%" bgcolor="#FFFFFF"><input name="info" type="text" size="30" /></td>
+<td bgcolor="#FFFFFF" style="color:#990000"></td>
+</tr>
+<tr>
+<td width="20%" height="25" align="right" bgcolor="#FFFFFF">{$lang_Contact}</td>
+<td width="70%" bgcolor="#FFFFFF"><textarea name="contact" cols="50" rows="6"></textarea></td>
+<td bgcolor="#FFFFFF" style="color:#990000"></td>
+</tr>
+<tr><td colspan="3" bgcolor="#FFFFFF" align="center">
+<input type="submit" name="Submit" value="{$lang_Submit}" class="tj">
+<input type="reset" name="Submit" value="{$lang_Reset}" class="tj"></td></tr>
+</table>
+</form>
+</div>
+</div>
+</div>
+<!--
+EOT;
+require_once template('foot'); 
+?>

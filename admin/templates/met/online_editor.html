@@ -1,76 +1,91 @@
 <!--<?php
+# 文件名称:online_editor.html 2009-08-15 14:34:57
+# MetInfo企业网站管理系统 
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+require_once template('head');
 echo <<<EOT
 -->
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-<link rel="stylesheet" type="text/css" href="$css_url/metinfo_admin.css">
-<title>修改客服信息</title>
-<script type="text/javascript" src="../language/zh_cn.js"></script>
-<script type="text/javascript" src="../include/metinfo.js"></script>
+<title>{$lang_onlineeditorTitle}</title>
 </head>
 <body>
-
-<table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td align="center" valign="top"><table width="95%" border="0" cellpadding="2" cellspacing="1" class="table_southidc">
-        <form  method="POST" name="myform" action="save.php?action=editor" target="_self">
+<form  method="POST" name="myform" action="save.php?action=editor" target="_self">
+<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
           <tr> 
-            <td class="back_southidc" height="30" colspan="3" align="center">修改客服信息</td>
-          </tr>
-          <tr bgcolor="#ECF5FF"> 
-            <td width="120" height="25"><b>客服名称：</b></td>
-            <td colspan="2"> <input name="c_name" type="text" class="input" size="20" maxlength="200" value="$online_list[c_name]">如“在线销售”、“张三”等。</td>
+            <td colspan="3" align="center" class="list1_title">{$lang_onlineeditorTitle}</td>
           </tr>
 <!--
 EOT;
-if($met_en_lang==1){
+if($met_c_lang_ok==1){
 echo <<<EOT
 --> 
-		  <tr bgcolor="#ECF5FF"> 
-            <td width="120" height="25"><b>英文名称：</b></td>
-            <td colspan="2"> <input name="e_name" type="text" class="input" size="20" maxlength="200" value="$online_list[e_name]"></td>
+		<tr> 
+            <td class="list1_text"><b>{$lang_onlineeditorName}[$met_c_lang]：</b></td>
+            <td colspan="2" class="list1_input"> <input name="c_name" type="text" class="input" size="20" maxlength="200" value="$online_list[c_name]">{$lang_onlineeditorTip1}</td>
+          </tr>
+<!--
+EOT;
+}
+if($met_e_lang_ok==1){
+echo <<<EOT
+--> 
+		  <tr> 
+            <td class="list1_text"><b>{$lang_onlineeditorName}[$met_e_lang]：</b></td>
+            <td colspan="2" class="list1_input"> <input name="e_name" type="text" class="input" size="20" maxlength="200" value="$online_list[e_name]"></td>
+          </tr>
+<!--
+EOT;
+}
+if($met_o_lang_ok==1){
+echo <<<EOT
+--> 
+		  <tr> 
+            <td class="list1_text"><b>{$lang_onlineeditorName}[$met_o_lang]：</b></td>
+            <td colspan="2" class="list1_input"> <input name="o_name" type="text" class="input" size="20" maxlength="200" value="$online_list[o_name]"></td>
           </tr>
 <!--
 EOT;
 }
 echo <<<EOT
 --> 
-		  <tr bgcolor="#ECF5FF"> 
-            <td width="119" height="25"><b>显示排序：</b></td>
-            <td colspan="2"><input name="no_order" type="text" class="input" size="5" maxlength="20" value="$online_list[no_order]">数字越小排序越靠前</td>
-          </tr>
-		  <tr bgcolor="#ECF5FF"> 
-            <td width="119" height="25"><b>QQ：</b></td>
-            <td colspan="2"><input name="qq" type="text" class="input" size="20" maxlength="200" value="$online_list[qq]">请输入QQ号码，为空则不显示，需要前台模板支持</td>
-          </tr>
-		   <tr bgcolor="#ECF5FF"> 
-            <td width="119" height="25"><b>MSN：</b></td>
-            <td colspan="2"><input name="msn" type="text" class="input" size="20" maxlength="200" value="$online_list[msn]">请输入MSN账号，为空则不显示，需要前台模板支持</td>
-          </tr>
-		  <tr bgcolor="#ECF5FF"> 
-            <td width="119" height="25"><b>淘宝旺旺：</b></td>
-            <td colspan="2"><input name="taobao" type="text" class="input" size="20" maxlength="200" value="$online_list[taobao]">请输入淘宝旺旺账号，为空则不显示，需要前台模板支持</td>
-          </tr>
-		  <tr bgcolor="#ECF5FF"> 
-            <td width="119" height="25"><b>阿里旺旺：</b></td>
-            <td colspan="2"><input name="alibaba" type="text" class="input" size="20" maxlength="200" value="$online_list[alibaba]">请输入阿里旺旺账号，为空则不显示，需要前台模板支持</td>
-          </tr>
-		  <tr bgcolor="#ECF5FF"> 
-            <td width="119" height="25"><b>SKYPE：</b></td>
-            <td colspan="2"><input name="skype" type="text" class="input" size="20" maxlength="200" value="$online_list[skype]">请输入SKYPE账号，为空则不显示，需要前台模板支持</td>
+		  <tr> 
+            <td class="list1_text"><b>{$lang_onlineeditorSort}：</b></td>
+            <td colspan="2" class="list1_input"><input name="no_order" type="text" class="input" size="5" maxlength="20" value="$online_list[no_order]">{$lang_onlineeditorTip2}</td>
           </tr>
 		  <tr> 
-            <td height="30" colspan="3" align="center" bgcolor="#ECF5FF"> <input type="submit" name="Submit" value="提交" class="tj">
+            <td class="list1_text"><b>QQ：</b></td>
+            <td colspan="2" class="list1_input"><input name="qq" type="text" class="input" size="20" maxlength="200" value="$online_list[qq]">{$lang_onlineeditorTip3}</td>
+          </tr>
+		   <tr> 
+            <td class="list1_text"><b>MSN：</b></td>
+            <td colspan="2" class="list1_input"><input name="msn" type="text" class="input" size="20" maxlength="200" value="$online_list[msn]">{$lang_onlineeditorTip4}</td>
+          </tr>
+		  <tr> 
+            <td class="list1_text"><b>{$lang_onlineeditorWangWang1}：</b></td>
+            <td colspan="2" class="list1_input"><input name="taobao" type="text" class="input" size="20" maxlength="200" value="$online_list[taobao]">{$lang_onlineeditorTip5}</td>
+          </tr>
+		  <tr> 
+            <td class="list1_text"><b>{$lang_onlineeditorWangWang2}：</b></td>
+            <td colspan="2" class="list1_input"><input name="alibaba" type="text" class="input" size="20" maxlength="200" value="$online_list[alibaba]">{$lang_onlineeditorTip6}</td>
+          </tr>
+		  <tr> 
+            <td class="list1_text"><b>SKYPE：</b></td>
+            <td colspan="2" class="list1_input"><input name="skype" type="text" class="input" size="20" maxlength="200" value="$online_list[skype]">{$lang_onlineeditorTip7}</td>
+          </tr>
+		  <tr> 
+            <td class="list1_text"></td>
+	      <td class="list1_submit"><input type="submit" name="Submit" value="{$lang_Submit}" class="tj" style="*padding-top:2px; *height:22px;">
               　<input name="id" type="hidden" value="$id">
-              <input type="reset" name="Submit" value="重置" class="tj"> </td>
+              <input type="reset" name="Submit" value="{$lang_Reset}" class="tj" style="*padding-top:2px; *height:22px;"> </td>
           </tr>
         </form>
-    </table></td>
-  </tr>
+            <tr>
+		  <td class="list1_footer" colspan="2" align="center">$foot</td>
+	  </tr>
 </table>
 </body>
 </html>
 <!--
 EOT;
+# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
 ?>-->

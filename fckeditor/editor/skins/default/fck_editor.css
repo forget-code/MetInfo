@@ -462,3 +462,148 @@ body
     float: left;
     background-color: #c4cdd6;
 }
+
+
+/*·ÖÒ³ÑùÊ½*/
+
+#xPagingInfo
+
+{
+
+     font-size:12px;
+
+     padding: 2px 2px 2px 2px;
+
+     border: #efefde 1px outset;
+
+     background-color: #efefde;
+
+}
+
+#xPagingAnalyse
+
+{
+
+     background-color:#dfdfd8;
+
+     border-width:1px;
+
+     border-style:outset;
+
+     border-color:#f9f9f4 #474742 #474742 #f9f9f4;
+
+     cursor:default;
+
+     padding: 2px 5px 1px 5px;
+
+     float:left;
+
+}
+
+#xPagingCreate,#xPagingDelete,#xPagingDelete
+
+{
+
+     background-color:#dfdfd8;
+
+     border-width:1px;
+
+     border-style:outset;
+
+     border-color:#f9f9f4 #474742 #474742 #f9f9f4;
+
+     cursor:default;
+
+     padding: 2px 5px 1px 5px;
+
+     margin: 0px 5px 1px 0px;
+
+     float:left;
+
+}
+
+#xPagingUnite
+
+{
+
+     color:red;
+
+     background-color:#dfdfd8;
+
+     border-width:1px;
+
+     border-style:outset;
+
+     border-color:#f9f9f4 #474742 #474742 #f9f9f4;
+
+     cursor:default;
+
+     padding: 2px 5px 1px 5px;
+
+     margin: 0px 5px 1px 0px;
+
+     float:left;
+
+}
+
+#xPagingMessage
+
+{
+
+     float:left;
+
+     padding-left:5px;
+
+     padding-top:4px;
+
+     color:red;
+
+}
+
+.xPageNode1
+
+{
+
+     background-color:#dfdfd8;
+
+     border-width:1px;
+
+     border-style:outset;
+
+     border-color:#f9f9f4 #474742 #474742 #f9f9f4;
+
+     cursor:default;
+
+     padding: 0px 10px 2px 10px;
+
+     margin: 0px 5px 1px 0px;
+
+     float:left;
+
+}
+
+.xPageNode2
+
+{
+
+     font-weight:bold;
+
+     color: #ff0000;
+
+     background-color:#ffffff;
+
+     border-width:1px;
+
+     border-style:inset;
+
+     border-color:#f9f9f4 #474742 #474742 #f9f9f4;
+
+     cursor:default;
+
+     padding: 0px 10px 2px 10px;
+
+     margin: 0px 5px 1px 0px;
+
+     float:left;
+
+}

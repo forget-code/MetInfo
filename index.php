@@ -1,333 +1,131 @@
 <?php
+# 文件名称:show.php 2009-08-18 08:53:03
+# MetInfo企业网站管理系统 
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
 if(!file_exists('config/install.lock')){
  header("location:install/index.php");exit;
 }
-require_once 'include/common.inc.php';
-$css_url="templates/".$met_skin_user."/css/";
-$img_url="templates/".$met_skin_user."/images";
-$navurl=($rooturl=="..")?$rooturl."/":"";
 $index="index";
-
-if($met_index_type)$en="en";
-if($ch=="ch")$en="";
-
+require_once 'include/common.inc.php';
 require_once 'include/head.php';
-
-    foreach($nav_list_1 as $key=>$val){
-	switch($val[module]){
-	case 0;
-	$val[c_url]=$val[c_out_url];
-	$val[e_url]=$val[e_out_url];
-	break;
-	case 1;
-	$val[c_url]=$met_webhtm?$navurl.$val[foldername]."/".$val[filename].".htm":$navurl.$val[foldername]."/show.php?id=".$val[id];
-	$val[e_url]=$met_webhtm?$navurl.$val[foldername]."/".$val[filename]."_en.htm":$navurl.$val[foldername]."/show.php?en=en&id=".$val[id];
-	break;
-	case 2;
-	$val[c_url]=$navurl.$val[foldername]."/news.php?class1=".$val[id];
-	$val[e_url]=$navurl.$val[foldername]."/news.php?en=en&class1=".$val[id];
-	break;
-	case 3;
-	$val[c_url]=$navurl.$val[foldername]."/product.php?class1=".$val[id];
-	$val[e_url]=$navurl.$val[foldername]."/product.php?en=en&class1=".$val[id];
-	break;
-	case 4;
-	$val[c_url]=$navurl.$val[foldername]."/download.php?class1=".$val[id];
-	$val[e_url]=$navurl.$val[foldername]."/download.php?en=en&class1=".$val[id];
-	break;
-	case 5;
-	$val[c_url]=$navurl.$val[foldername]."/img.php?class1=".$val[id];
-	$val[e_url]=$navurl.$val[foldername]."/img.php?en=en&class1=".$val[id];
-	break;
-	case 6;
-	$val[c_url]=$navurl.$val[foldername]."/job.php";
-	$val[e_url]=$navurl.$val[foldername]."/job.php?en=en";
-	break;
-	case 7;
-	$val[c_url]=$navurl.$val[foldername]."/message.php";
-	$val[e_url]=$navurl.$val[foldername]."/message.php?en=en";
-	break;
-	}
-	$class1_list[$val[id]]=$val;
-	  if($val[index_num]!="" and $val[index_num]!=0){
-	   $val[classtype]="class".$val[classtype];
-	   $class_index[$val[index_num]]=$val;
-	   }
-    }
-	foreach($nav_list_2 as $key=>$val){
-	switch($val[module]){
-	case 0;
-	$val[c_url]=$val[c_out_url];
-	$val[e_url]=$val[e_out_url];
-	break;
-	case 1;
-	$val[c_url]=$met_webhtm?$navurl.$val[foldername]."/".$val[filename].".htm":$navurl.$val[foldername]."/show.php?id=".$val[id];
-	$val[e_url]=$met_webhtm?$navurl.$val[foldername]."/".$val[filename]."_en.htm":$navurl.$val[foldername]."/show.php?en=en&id=".$val[id];
-	break;
-	case 2;
-	$val[c_url]=$navurl.$val[foldername]."/news.php?class1=".$val[bigclass]."&class2=".$val[id];
-	$val[e_url]=$navurl.$val[foldername]."/news.php?en=en&class1=".$val[bigclass]."&class2=".$val[id];
-	break;
-	case 3;
-	$val[c_url]=$navurl.$val[foldername]."/product.php?class1=".$val[bigclass]."&class2=".$val[id];
-	$val[e_url]=$navurl.$val[foldername]."/product.php?en=en&class1=".$val[bigclass]."&class2=".$val[id];
-	break;
-	case 4;
-	$val[c_url]=$navurl.$val[foldername]."/download.php?class1=".$val[bigclass]."&class2=".$val[id];
-	$val[e_url]=$navurl.$val[foldername]."/download.php?en=en&class1=".$val[bigclass]."&class2=".$val[id];
-	break;
-	case 5;
-	$val[c_url]=$navurl.$val[foldername]."/img.php?class1=".$val[bigclass]."&class2=".$val[id];
-	$val[e_url]=$navurl.$val[foldername]."/img.php?en=en&class1=".$val[bigclass]."&class2=".$val[id];
-	break;
-	case 6;
-	$val[c_url]=$navurl.$val[foldername]."/job.php";
-	$val[e_url]=$navurl.$val[foldername]."/job.php?en=en";
-	break;
-	case 7;
-	$val[c_url]=$navurl.$val[foldername]."/message.php";
-	$val[e_url]=$navurl.$val[foldername]."/message.php?en=en";
-	break;
-	}
-	$class2_list[$val[id]]=$val;
-	  if($val[index_num]!="" and $val[index_num]!=0){
-	   $val[classtype]="class".$val[classtype];
-	   $class_index[$val[index_num]]=$val;
-	   }
-    }
-
-	foreach($nav_list_3 as $key=>$val){
-	switch($val[module]){
-	case 0;
-	$val[c_url]=$val[c_out_url];
-	$val[e_url]=$val[e_out_url];
-	break;
-	case 1;
-	$val[c_url]=$met_webhtm?$navurl.$val[foldername]."/".$val[filename].".htm":$navurl.$val[foldername]."/show.php?id=".$val[id];
-	$val[e_url]=$met_webhtm?$navurl.$val[foldername]."/".$val[filename]."_en.htm":$navurl.$val[foldername]."/show.php?en=en&id=".$val[id];
-	break;
-	case 2;
-	$val[c_url]=$navurl.$val[foldername]."/news.php?class1=".$val[bigclass]."&class2=".$val[id];
-	$val[e_url]=$navurl.$val[foldername]."/news.php?en=en&class1=".$val[bigclass]."&class2=".$val[id];
-	break;
-	case 3;
-	$val[c_url]=$navurl.$val[foldername]."/product.php?class1=".$val[bigclass]."&class2=".$val[id];
-	$val[e_url]=$navurl.$val[foldername]."/product.php?en=en&class1=".$val[bigclass]."&class2=".$val[id];
-	break;
-	case 4;
-	$val[c_url]=$navurl.$val[foldername]."/download.php?class1=".$val[bigclass]."&class2=".$val[id];
-	$val[e_url]=$navurl.$val[foldername]."/download.php?en=en&class1=".$val[bigclass]."&class2=".$val[id];
-	break;
-	case 5;
-	$val[c_url]=$navurl.$val[foldername]."/img.php?class1=".$val[bigclass]."&class2=".$val[id];
-	$val[e_url]=$navurl.$val[foldername]."/img.php?en=en&class1=".$val[bigclass]."&class2=".$val[id];
-	break;
-	case 6;
-	$val[c_url]=$navurl.$val[foldername]."/job.php";
-	$val[e_url]=$navurl.$val[foldername]."/job.php?en=en";
-	break;
-	case 7;
-	$val[c_url]=$navurl.$val[foldername]."/message.php";
-	$val[e_url]=$navurl.$val[foldername]."/message.php?en=en";
-	break;
-	}
-	$class3_list[$val[id]]=$val;
-	  if($val[index_num]!="" and $val[index_num]!=0){
-	   $val[classtype]="class".$val[classtype];
-	   $class_index[$val[index_num]]=$val;
-	   }
-    }	
-    $query = "SELECT * FROM $met_news order by updatetime desc";
-    $result = $db->query($query);
-	while($list= $db->fetch_array($result)){
-	$filename=$class1_list[$list[class1]][foldername];
-	$url1_c=$filename."/shownews.php?id=".$list[id];
-	$url2_c=$filename."/shownews".$list[id].".htm";
-	$url1_e=$filename."/shownews.php?en=en&id=".$list[id];
-	$url2_e=$filename."/shownews".$list[id]."_en.htm";	
-	$list[c_url]=$met_webhtm?$url2_c:$url1_c;
-	$list[e_url]=$met_webhtm?$url2_e:$url1_e;
-	$listarray[imgurls]=explode("../",$list[imgurls]);
-    $list[imgurls]=$listarray[imgurls][1];
-	$listarray[imgurl]=explode("../",$list[imgurl]);
-    $list[imgurl]=$listarray[imgurl][1];
-	$list[updatetime] = date('Y-m-d',strtotime($list[updatetime]));
-	if($list[img_ok] == 1)$news_list_new[]=$list;
-	if($list[com_ok] == 1)$news_list_com[]=$list;
-    $news_list[]=$list;
-     }
-
-    $query = "SELECT * FROM $met_news order by hits desc";
-    $result = $db->query($query);
-	while($list= $db->fetch_array($result)){
-	$filename=$class1_list[$list[class1]][foldername];
-	$url1_c=$filename."/shownews.php?id=".$list[id];
-	$url2_c=$filename."/shownews".$list[id].".htm";
-	$url1_e=$filename."/shownews.php?en=en&id=".$list[id];
-	$url2_e=$filename."/shownews".$list[id]."_en.htm";	
-	$list[c_url]=$met_webhtm?$url2_c:$url1_c;
-	$list[e_url]=$met_webhtm?$url2_e:$url1_e;
-	$listarray[imgurls]=explode("../",$list[imgurls]);
-    $list[imgurls]=$listarray[imgurls][1];
-	$listarray[imgurl]=explode("../",$list[imgurl]);
-    $list[imgurl]=$listarray[imgurl][1];
-	$list[updatetime] = date('Y-m-d',strtotime($list[updatetime]));
-	if($list[img_ok] == 1)$news_listhits_new[]=$list;
-	if($list[com_ok] == 1)$news_listhits_com[]=$list;
-    $news_listhits[]=$list;
-    }
+$news_list_new=$listimg[news];
+$news_list_com=$listcom[news];
+$news_list=$listall[news];
+$news_listhits_new=$hitslistimg[news];
+$news_listhits_com=$hitslistcom[news];
+$news_listhits=$hitslistall[news];
+$product_list_new=$listnew[product];
+$product_list_com=$listcom[product];
+$product_list=$listall[product];
+$product_listhits_new=$hitslistnew[product];
+$product_listhits_com=$hitslistcom[product];
+$product_listhits=$hitslistall[product];
+$download_list_new=$listnew[download];
+$download_list_com=$listcom[download];
+$download_list=$listall[download];
+$download_listhits_new=$hitslistnew[download];
+$download_listhits_com=$hitslistcom[download];
+$download_listhits=$hitslistall[download];	
+$img_list_new=$listnew[img];
+$img_list_com=$listcom[img];
+$img_list=$listall[img];
+$img_listhits_new=$hitslistnew[img];
+$img_listhits_com=$hitslistcom[img];
+$img_listhits=$hitslistall[img];
 	
-	$query = "SELECT * FROM $met_product order by updatetime desc";
-    $result = $db->query($query);
-	while($list= $db->fetch_array($result)){
-	$filename=$class1_list[$list[class1]][foldername];
-	$url1_c=$filename."/showproduct.php?id=".$list[id];
-	$url2_c=$filename."/showproduct".$list[id].".htm";
-	$url1_e=$filename."/showproduct.php?en=en&id=".$list[id];
-	$url2_e=$filename."/showproduct".$list[id]."_en.htm";	
-	$list[c_url]=$met_webhtm?$url2_c:$url1_c;
-	$list[e_url]=$met_webhtm?$url2_e:$url1_e;
-	$listarray[imgurls]=explode("../",$list[imgurls]);
-    $list[imgurls]=$listarray[imgurls][1];
-	$listarray[imgurl]=explode("../",$list[imgurl]);
-    $list[imgurl]=$listarray[imgurl][1];
-	$list[updatetime] = date('Y-m-d',strtotime($list[updatetime]));
-	if($list[new_ok] == 1)$product_list_new[]=$list;
-	if($list[com_ok] == 1)$product_list_com[]=$list;
-    $product_list[]=$list;
-    }
-
-	$query = "SELECT * FROM $met_product order by hits desc";
-    $result = $db->query($query);
-	while($list= $db->fetch_array($result)){
-	$filename=$class1_list[$list[class1]][foldername];
-	$url1_c=$filename."/showproduct.php?id=".$list[id];
-	$url2_c=$filename."/showproduct".$list[id].".htm";
-	$url1_e=$filename."/showproduct.php?en=en&id=".$list[id];
-	$url2_e=$filename."/showproduct".$list[id]."_en.htm";	
-	$list[c_url]=$met_webhtm?$url2_c:$url1_c;
-	$list[e_url]=$met_webhtm?$url2_e:$url1_e;
-	$listarray[imgurls]=explode("../",$list[imgurls]);
-    $list[imgurls]=$listarray[imgurls][1];
-	$listarray[imgurl]=explode("../",$list[imgurl]);
-    $list[imgurl]=$listarray[imgurl][1];
-	$list[updatetime] = date('Y-m-d',strtotime($list[updatetime]));
-	if($list[new_ok] == 1)$product_listhits_new[]=$list;
-	if($list[com_ok] == 1)$product_listhits_com[]=$list;
-    $product_listhits[]=$list;
-    }
-
-    $query = "SELECT * FROM $met_download order by updatetime desc";
-    $result = $db->query($query);
-	while($list= $db->fetch_array($result)){
-	$filename=$class1_list[$list[class1]][foldername];
-	$url1_c=$filename."/showdownload.php?id=".$list[id];
-	$url2_c=$filename."/showdownload".$list[id].".htm";
-	$url1_e=$filename."/showdownload.php?en=en&id=".$list[id];
-	$url2_e=$filename."/showdownload".$list[id]."_en.htm";	
-	$list[c_url]=$met_webhtm?$url2_c:$url1_c;
-	$list[e_url]=$met_webhtm?$url2_e:$url1_e;
-	$listarray[downloadurl]=explode("../",$list[downloadurl]);
-    $list[downloadurl]=$listarray[downloadurl][1];
-	$list[updatetime] = date('Y-m-d',strtotime($list[updatetime]));
-	if($list[new_ok] == 1)$download_list_new[]=$list;
-	if($list[com_ok] == 1)$download_list_com[]=$list;
-    $download_list[]=$list;
-     }
-
-    $query = "SELECT * FROM $met_download order by hits desc";
-    $result = $db->query($query);
-	while($list= $db->fetch_array($result)){
-	$filename=$class1_list[$list[class1]][foldername];
-	$url1_c=$filename."/showdownload.php?id=".$list[id];
-	$url2_c=$filename."/showdownload".$list[id].".htm";
-	$url1_e=$filename."/showdownload.php?en=en&id=".$list[id];
-	$url2_e=$filename."/showdownload".$list[id]."_en.htm";	
-	$list[c_url]=$met_webhtm?$url2_c:$url1_c;
-	$list[e_url]=$met_webhtm?$url2_e:$url1_e;
-	$listarray[downloadurl]=explode("../",$list[downloadurl]);
-    $list[downloadurl]=$listarray[downloadurl][1];
-	$list[updatetime] = date('Y-m-d',strtotime($list[updatetime]));
-	if($list[new_ok] == 1)$download_listhits_new[]=$list;
-	if($list[com_ok] == 1)$download_listhits_com[]=$list;
-    $download_listhits[]=$list;
-	}
-	
-	$query = "SELECT * FROM $met_img order by updatetime desc";
-    $result = $db->query($query);
-	while($list= $db->fetch_array($result)){
-	$filename=$class1_list[$list[class1]][foldername];
-	$url1_c=$filename."/showimg.php?id=".$list[id];
-	$url2_c=$filename."/showimg".$list[id].".htm";
-	$url1_e=$filename."/showimg.php?en=en&id=".$list[id];
-	$url2_e=$filename."/showimg".$list[id]."_en.htm";	
-	$list[c_url]=$met_webhtm?$url2_c:$url1_c;
-	$list[e_url]=$met_webhtm?$url2_e:$url1_e;
-	$listarray[imgurls]=explode("../",$list[imgurls]);
-    $list[imgurls]=$listarray[imgurls][1];
-	$listarray[imgurl]=explode("../",$list[imgurl]);
-    $list[imgurl]=$listarray[imgurl][1];
-	$list[updatetime] = date('Y-m-d',strtotime($list[updatetime]));
-	if($list[new_ok] == 1)$img_list_new[]=$list;
-	if($list[com_ok] == 1)$img_list_com[]=$list;
-    $img_list[]=$list;
-     }
-	 
-	$query = "SELECT * FROM $met_img order by hits desc";
-    $result = $db->query($query);
-	while($list= $db->fetch_array($result)){
-	$filename=$class1_list[$list[class1]][foldername];
-	$url1_c=$filename."/showimg.php?id=".$list[id];
-	$url2_c=$filename."/showimg".$list[id].".htm";
-	$url1_e=$filename."/showimg.php?en=en&id=".$list[id];
-	$url2_e=$filename."/showimg".$list[id]."_en.htm";	
-	$list[c_url]=$met_webhtm?$url2_c:$url1_c;
-	$list[e_url]=$met_webhtm?$url2_e:$url1_e;
-	$listarray[imgurls]=explode("../",$list[imgurls]);
-    $list[imgurls]=$listarray[imgurls][1];
-	$listarray[imgurl]=explode("../",$list[imgurl]);
-    $list[imgurl]=$listarray[imgurl][1];
-	$list[updatetime] = date('Y-m-d',strtotime($list[updatetime]));
-	if($list[new_ok] == 1)$img_listhits_new[]=$list;
-	if($list[com_ok] == 1)$img_listhits_com[]=$list;
-    $img_listhits[]=$list;
-    }
-		
 $index = $db->get_one("SELECT * FROM $met_index order by id desc");
 if($index[online_type]=="1" and $met_online_type=="0" )$met_online_type=2;
 if($index[online_type]=="0" )$met_online_type=3;
-	
+$index[content]=($lang=="en")?$index[e_content]:(($lang=="other")?$index[o_content]:$index[c_content]);	
 
-    
-	if($en=="en"){
-    $query = "SELECT * FROM $met_link where link_lang!='ch' and show_ok='1' order by orderno desc";
-	}else{
-	$query = "SELECT * FROM $met_link where link_lang!='en' and show_ok='1' order by orderno desc";
-	}
+    $query = "SELECT * FROM $met_job where top_ok='1' order by addtime desc";
     $result = $db->query($query);
 	while($list= $db->fetch_array($result)){
-	if($list[link_type]=="0"){
-	if($list[com_ok]=="1")$link_text_com[]=$list;
-	$link_text[]=$list;
+	$list[position]=($lang=="en")?$list[e_position]:(($lang=="other")?$list[o_position]:$list[c_position]);
+if($list[position]<>""){
+	$list[place]=($lang=="en")?$list[e_place]:(($lang=="other")?$list[o_place]:$list[c_place]);
+	$list[deal]=($lang=="en")?$list[e_deal]:(($lang=="other")?$list[o_deal]:$list[c_deal]);
+	$list[content]=($lang=="en")?$list[e_content]:(($lang=="other")?$list[o_content]:$list[c_content]);
+	$list[top]="<img src='".$navurl.$img_url."top.gif"."' />";
+	$list[news]="";
+	 switch($met_htmpagename){
+     case 0:
+	 $htmname="job/showjob".$list[id];
+	 $phpname="job/showjob.php?id=".$list[id];	
+	 break;
+	 case 1:
+	 $htmname="job/".date('Ymd',strtotime($list[addtime])).$list[id];
+	 $phpname="job/showjob.php?id=".$list[id];
+	 break;
+	 case 2:
+	 $htmname="job/job".$list[id];
+	 $phpname="job/showjob.php?id=".$list[id];	
+	 break;
+	 }
+	 $list[c_url]=$met_webhtm?$htmname.$met_c_htmtype:$phpname;
+	 $list[e_url]=$met_webhtm?$htmname.$met_e_htmtype:$phpname."&lang=en";
+	 $list[o_url]=$met_webhtm?$htmname.$met_o_htmtype:$phpname."&lang=other";
+	$list[url]=($lang=="en")?$list[e_url]:(($lang=="other")?$list[o_url]:$list[c_url]);
+	$list[addtime] = date($met_listtime,strtotime($list[addtime]));
+	$listall[job][]=$list;
 	}
-	
-	if($list[link_type]=="1"){
-	if($list[com_ok]=="1")$link_img_com[]=$list;
-	$link_img[]=$list;
-	}
-	if($list[com_ok]=="1")$link_com[]=$list;
-	$link[]=$list;
-	}
-if($en=="en"){
-$show[e_description]=$met_e_description;
-$show[e_keywords]=$met_e_keywords;
-include template('e_index');
-}
-else{
-$show[c_description]=$met_c_description;
-$show[c_keywords]=$met_c_keywords;
-include template('index');
 }
 
+if(!isset($dataoptimize[$pagemark][job]))$dataoptimize[$pagemark][job]=$dataoptimize[10000][job];
+if($dataoptimize[$pagemark][job]){
+    $query = "SELECT * FROM $met_job where top_ok='0' order by addtime desc";
+	nave1_1();
+    $result = $db->query($query);
+	while($list= $db->fetch_array($result)){
+	$list[position]=($lang=="en")?$list[e_position]:(($lang=="other")?$list[o_position]:$list[c_position]);
+if($list[position]<>""){
+	$list[place]=($lang=="en")?$list[e_place]:(($lang=="other")?$list[o_place]:$list[c_place]);
+	$list[deal]=($lang=="en")?$list[e_deal]:(($lang=="other")?$list[o_deal]:$list[c_deal]);
+	$list[content]=($lang=="en")?$list[e_content]:(($lang=="other")?$list[o_content]:$list[c_content]);
+	$list[top]="";
+	$list[news]=(((strtotime($m_now_date)-strtotime($list[addtime]))/86400)<$met_newsdays)?"<img src='".$navurl.$img_url."news.gif"."' />":"";
+	switch($met_htmpagename){
+     case 0:
+	 $htmname="job/showjob".$list[id];
+	 $phpname="job/showjob.php?id=".$list[id];	
+	 break;
+	 case 1:
+	 $htmname="job/".date('Ymd',strtotime($list[addtime])).$list[id];
+	 $phpname="job/showjob.php?id=".$list[id];
+	 break;
+	 case 2:
+	 $htmname="job/job".$list[id];
+	 $phpname="job/showjob.php?id=".$list[id];	
+	 break;
+	 }
+
+	 $list[c_url]=$met_webhtm?$htmname.$met_c_htmtype:$phpname;
+	 $list[e_url]=$met_webhtm?$htmname.$met_e_htmtype:$phpname."&lang=en";
+	 $list[o_url]=$met_webhtm?$htmname.$met_o_htmtype:$phpname."&lang=other";
+	$list[url]=($lang=="en")?$list[e_url]:(($lang=="other")?$list[o_url]:$list[c_url]);
+	$list[addtime] = date($met_listtime,strtotime($list[addtime]));
+	$listall[job][]=$list;
+	}
+}
+}
+$show[description]=$met_description;
+$show[keywords]=$met_keywords;
+if(file_exists("templates/".$met_skin_user."/e_index.html")){
+   if($lang=="en"){
+     $show[e_description]=$met_e_description;
+     $show[e_keywords]=$met_e_keywords;
+     include template('e_index');
+	}else{
+	 $show[c_description]=$met_c_description;
+     $show[c_keywords]=$met_c_keywords;
+	 include template('index');
+	 }
+}else{
+require_once 'public/php/methtml.inc.php';
+if($met_indexskin=="" or (!file_exists("templates/".$met_skin_user."/".$met_indexskin.".html")))$met_indexskin='index';
+include template($met_indexskin);
+}
 footer();
+# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
 ?>

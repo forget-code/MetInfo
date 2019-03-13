@@ -1,0 +1,39 @@
+<?php
+# 文件名称:access.php 2009-08-18 08:53:03
+# MetInfo企业网站管理系统 
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+     require_once '../include/common.inc.php';
+if($met_webhtm==0){
+$member_login_url="login.php?lang=".$lang;
+$member_register_url="register.php?lang=".$lang;
+}else{
+$member_login_url=($lang=="en")?"login".$met_e_htmtype:(($lang=="other")?"login".$met_o_htmtype:"login".$met_c_htmtype);
+$member_register_url=($lang=="en")?"register".$met_e_htmtype:(($lang=="other")?"register".$met_o_htmtype:"register".$met_c_htmtype);
+}
+     $query = "SELECT * FROM $met_message";
+     $result = $db->query($query);
+	 while($list= $db->fetch_array($result)){
+	 $message_list[$list[id]]=$list;
+     }
+switch($listinfo){
+case 'info':
+   if(intval($metinfo_member_type)<intval($metaccess)){
+       $met_js_ac=$lang_access;
+    }else{
+       $met_js_ac=$message_list[$id][info];
+    }
+break;
+case 'useinfo':
+   if(intval($metinfo_member_type)<intval($metaccess)){
+     $met_js_ac="【<a href='../member/$member_login_url'>$lang_login</a>】【<a href='../member/$member_register_url'>$lang_register</a>】";
+	 }else{
+       $met_js_ac=$message_list[$id][useinfo];
+    }
+break;
+}
+
+# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+?>
+$met_js="<?php echo $met_js_ac; ?>";
+document.write($met_js) 

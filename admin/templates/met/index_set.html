@@ -1,94 +1,90 @@
 <!--<?php
+# 文件名称:index_set.html 2009-08-05 09:21:57
+# MetInfo企业网站管理系统 
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved
+require_once template('head');
 echo <<<EOT
 -->
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-<link rel="stylesheet" type="text/css" href="$css_url/metinfo_admin.css">
-<title>首页配置</title>
+<title>{$lang_indexsetHomeSet}</title>
 </head>
 <body>
-
-<table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td align="center" valign="top"><table width="95%" border="0" cellpadding="2" cellspacing="1" class="table_southidc">
-        <form method="POST" name="myform"  action="index_set.php?action=modify" target="_self">
+<form method="POST" name="myform"  action="index_set.php?action=modify" target="_self">
 		<input name="id" type="hidden" value="$index[id]">
-          <tr> 
-            <td class="back_southidc" height="30" colspan="3" align="center">首页配置</td>
+<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
+         <tr> 
+            <td colspan="3" align="center" class="list1_title">{$lang_indexsetHomeSet}</td>
           </tr>
-		  <tr bgcolor="#ECF5FF"> 
-            <td width="20%" height="25"><b>是否开启在线交流：</b></td>
-            <td width="80%" ><input name="online_type" type="radio" value="1" $online_type1[1] >开启 <input name="online_type" type="radio" value="0" $online_type1[0]>关闭 </td></tr>
-			 <tr bgcolor="#ECF5FF"> 
-            <td width="20%" height="25"><b>文章栏目显示数：</b>
-			</td>
-            <td width="80%" ><input name="news_no" type="text" size="4" value="$index[news_no]">条</td></tr>
-			<tr bgcolor="#ECF5FF"> 
-            <td width="20%" height="25"><b>产品栏目显示数：</b>
-			</td>
-            <td width="80%" ><input name="product_no" type="text" size="4" value="$index[product_no]">条</td></tr>
-			<tr bgcolor="#ECF5FF"> 
-            <td width="20%" height="25"><b>图片栏目显示数：</b>
-			</td>
-            <td width="80%" ><input name="img_no" type="text" size="4" value="$index[img_no]">条</td></tr>
-			<tr bgcolor="#ECF5FF"> 
-            <td width="20%" height="25"><b>下载栏目显示数：</b>
-			</td>
-            <td width="80%" ><input name="download_no" type="text" size="4" value="$index[download_no]">条</td></tr>
-			<tr bgcolor="#ECF5FF"> 
-            <td width="20%" height="25"><b>是否开启友情链接：</b></td>
-            <td width="80%" ><input name="link_ok" type="radio" value="1" $link_ok1[1] >开启 <input name="link_ok" type="radio" value="0" $link_ok1[0]>关闭 </td></tr>
-            <tr bgcolor="#ECF5FF"> 
-            <td width="20%" height="25"><b>图片链接显示数：</b>
-			</td>
-            <td width="80%" ><input name="link_img" type="text" size="4" value="$index[link_img]">条</td></tr>
-			<tr bgcolor="#ECF5FF"> 
-            <td width="20%" height="25"><b>文字链接显示数：</b>
-			</td>
-            <td width="80%" ><input name="link_text" type="text" size="4" value="$index[link_text]">条</td></tr>
-            <td width="20%" height="25"><b>中文企业简介：</b></td>
-            <td width="80%" >
+		  <tr> 
+            <td class="list1_text"><b>{$lang_indexsetOnline}：</b></td>
+            <td class="list1_input"><input name="online_type" type="radio" value="1" $online_type1[1] >{$lang_indexsetOpen} <input name="online_type" type="radio" value="0" $online_type1[0]>{$lang_indexsetClose} </td></tr>
+			 <tr> 
+            <td class="list1_text"><b>{$lang_indexsetArticle}：</b></td>
+            <td class="list1_input"><input name="news_no" type="text" size="4" value="$index[news_no]">{$lang_indexsetItem}</td></tr>
+			<tr> 
+            <td class="list1_text"><b>{$lang_indexsetProduct}：</b></td>
+            <td class="list1_input"><input name="product_no" type="text" size="4" value="$index[product_no]">{$lang_indexsetItem}</td></tr>
+			<tr> 
+            <td class="list1_text"><b>{$lang_indexsetImg}：</b></td>
+            <td class="list1_input"><input name="img_no" type="text" size="4" value="$index[img_no]">{$lang_indexsetItem}</td></tr>
+			<tr> 
+            <td class="list1_text"><b>{$lang_indexsetDownload}：</b></td>
+            <td class="list1_input"><input name="download_no" type="text" size="4" value="$index[download_no]">{$lang_indexsetItem}</td></tr>
+			<tr> 
+            <td class="list1_text"><b>{$lang_indexsetjob}：</b></td>
+            <td class="list1_input"><input name="job_no" type="text" size="4" value="$index[job_no]">{$lang_indexsetItem}</td></tr>
+			<tr> 
+            <td class="list1_text"><b>{$lang_indexsetFriendly}：</b></td>
+            <td class="list1_input"><input name="link_ok" type="radio" value="1" $link_ok1[1] >{$lang_indexsetOpen} <input name="link_ok" type="radio" value="0" $link_ok1[0]>{$lang_indexsetClose} </td></tr>
+            <tr> 
+            <td class="list1_text"><b>{$lang_indexsetImgLink}：</b></td>
+            <td class="list1_input"><input name="link_img" type="text" size="4" value="$index[link_img]">{$lang_indexsetItem}</td></tr>
+			<tr> 
+            <td class="list1_text"><b>{$lang_indexsetWordLink}：</b></td>
+            <td class="list1_input"><input name="link_text" type="text" size="4" value="$index[link_text]">{$lang_indexsetItem}</td>
+			</tr>
 <!--
 EOT;
-echo "-->";
-$oFCKeditor = new FCKeditor('c_content'); 
-$oFCKeditor->BasePath = '../../fckeditor/';
-$oFCKeditor->Value = $index[c_content];
-$oFCKeditor->Width = '100%';   
-$oFCKeditor->Height = '300';
-$oFCKeditor->Create();
-echo "</td></tr>" ;
-if($met_en_lang==1){
+if(count($indexpage)){
 echo <<<EOT
-          <tr bgcolor="#ECF5FF"> 
-            <td width="20%" height="25"><b>英文企业简介</b>：</td>
-            <td width="80%" >
+-->
+			<tr> 
+            <td class="list1_text"><b>{$lang_indexsetskin}：</b></td>
+            <td class="list1_input">
+			<ul class="indexskin">
 <!--
 EOT;
-echo "-->";
-$oFCKeditor = new FCKeditor('e_content'); 
-$oFCKeditor->BasePath = '../../fckeditor/';
-$oFCKeditor->Value = $index[e_content];
-$oFCKeditor->Width = '100%';   
-$oFCKeditor->Height = '300';
-$oFCKeditor->Create();
-echo "</td></tr>" ; 
+foreach($indexpage as $key=>$val){
+if($met_indexskin==$val[1])$skinok="checked='checked'";
+echo <<<EOT
+-->
+<li style="width:100%; height:auto; margin:10px 0px 5px 0px; border-bottom:1px solid #F2F2F2; float:left;"><img style="float:left; margin:5px; border:1px solid #E7E7E7;" src="../../templates/{$met_skin_user}/{$val[3]}" width="100" height="100"><span style="display:block; float:left; margin:0px 0px 0px 10px;"><input name="met_indexskin" type="radio" value="$val[1]" $skinok ><b>$val[0]</b><br>$val[2]</span></li>
+<!--
+EOT;
+$skinok='';
 }
 echo <<<EOT
-		  <tr bgcolor="#ECF5FF"><td colspan="3" style="border:0px;">&nbsp;</td>
-		  </tr>
-		  
-<tr> <td height="30" colspan="2" align="center" bgcolor="#ECF5FF"> <input type="submit" name="Submit" value="提交" class="tj">
-              　 
-              <input type="reset" name="Submit" value="重置" class="tj"> </td>
+-->
+			</ul>
+			</td>
+			</tr>
+			
+<!--
+EOT;
+}
+echo <<<EOT
+-->		  
+<tr><td class="list1_text"></td>
+	      <td class="list1_submit"><input type="submit" name="Submit" value="{$lang_Submit}" class="tj"><input type="reset" name="Submit" value="{$lang_Reset}" class="tj"> </td>
           </tr>
         </form>
-    </table></td>
-  </tr>
+		<tr>
+		  <td class="list1_footer" colspan="2" align="center">$foot</td>
+	  </tr>
 </table>
 </body>
 </html>
 <!--
 EOT;
+# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
 ?>-->

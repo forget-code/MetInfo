@@ -1,4 +1,7 @@
 <?php
+# 文件名称:save.php 2009-08-15 16:34:57
+# MetInfo企业网站管理系统 
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
 $admin_power="metinfo";
 require_once '../login/login_check.php';
 $admin_ok = 1;
@@ -8,12 +11,38 @@ $admin_op=$admin_op0."-".$admin_op1."-".$admin_op2."-".$admin_op3;
 if($admin_pop=="yes"){
 $admin_type="metinfo";}
 else{
-for($i=1001;$i<=1019;$i++){
-$admin_pop="admin_pop".$i;
-if($$admin_pop!=""){
-$admin_type.=$$admin_pop."-";
-}
-}
+
+ for($i=1001;$i<=1007;$i++){
+  $admin_pop="admin_pop".$i;
+  if($$admin_pop!="")$admin_type.=$$admin_pop."-";
+  }
+  
+ for($i=1101;$i<=1105;$i++){
+  $admin_pop="admin_pop".$i;
+  if($$admin_pop!="")$admin_type.=$$admin_pop."-";
+  }
+  
+  for($i=1201;$i<=1205;$i++){
+  $admin_pop="admin_pop".$i;
+  if($$admin_pop!="")$admin_type.=$$admin_pop."-";
+  }
+  
+  for($i=1301;$i<=1301;$i++){
+  $admin_pop="admin_pop".$i;
+  if($$admin_pop!="")$admin_type.=$$admin_pop."-";
+  }
+  
+  for($i=1401;$i<=1404;$i++){
+  $admin_pop="admin_pop".$i;
+  if($$admin_pop!="")$admin_type.=$$admin_pop."-";
+  }
+  
+  for($i=1601;$i<=1603;$i++){
+  $admin_pop="admin_pop".$i;
+  if($$admin_pop!="")$admin_type.=$$admin_pop."-";
+  }
+  
+  
 $query = "select * from $met_column where bigclass=0 order by no_order";
 $result = $db->query($query);
 while($list = $db->fetch_array($result)){$column_list[]=$list;}
@@ -25,7 +54,7 @@ if($$column_pop!="")$admin_type=$admin_type."-".$$column_pop;
 if($action=="add"){
 $admin_if=$db->get_one("SELECT * FROM $met_admin_table WHERE admin_id='$useid'");
 if($admin_if){
-okinfo('javascript:history.back();',$lang[user_mudb1]);
+okinfo('javascript:history.back();',$lang_loginUserMudb1);
 }
 $pass1=md5($pass1);
  $query = "INSERT INTO $met_admin_table SET
@@ -45,9 +74,10 @@ $pass1=md5($pass1);
 					  admin_approval_date= '$m_now_date',
 					  admin_issueok      = '$admin_issueok',
 					  admin_op           = '$admin_op',
+					  usertype           = '3',
 					  admin_ok           = '$admin_ok'";
          $db->query($query);
-okinfo('index.php',$lang[user_admin]);
+okinfo('index.php',$lang_loginUserAdmin);
 }
 
 if($action=="editor"){
@@ -77,11 +107,13 @@ $query .=", admin_pass         = '$pass1'";
 $query .="  where id='$id'";
 $db->query($query);
 if($editorpass!=1){
-okinfo('index.php',$lang[user_admin]);
+okinfo('index.php',$lang_loginUserAdmin);
 }
 else
 {
-okinfo('editor_pass.php?id='.$id,$lang[user_admin]);
+okinfo('editor_pass.php?id='.$id,$lang_loginUserAdmin);
 }
 }
+# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
 ?>

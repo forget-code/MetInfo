@@ -1,0 +1,36 @@
+<!--<?php
+require_once template('head'); 
+$methtml_searchlist=methtml_searchlist();
+$metsearchadv=methtml_advsearch();
+echo <<<EOT
+-->
+<div class="web">
+<div class="webleft">
+<div class="webtitle"><span>{$lang_AdvancedSearch}</span></div>
+<div class="webnav">
+<div class="selist">
+$metsearchadv
+</div>
+</div>
+$met_online
+</div>
+
+<div class="webright">
+<div class="web_title"><span>{$lang_AdvancedSearch}</span></div>
+<div class="webcontent">
+<div class="searchul">
+$methtml_searchlist
+</div>
+<div class="web_bottom">$page_list</div>
+</div>
+
+
+</div>
+
+<div style="clear:both;"></div>
+
+</div>
+<!--
+EOT;
+require_once template('foot'); 
+?>

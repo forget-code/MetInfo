@@ -18,5 +18,7 @@
 				   $met_index = $tablepre."index";
 				   $met_link = $tablepre."link";
 				   $met_otherinfo = $tablepre."otherinfo";
+				   $met_flash = $tablepre."flash";
+				   $met_cv = $tablepre."cv";
 
  ?>

@@ -1,0 +1,64 @@
+<!--<?php
+# 文件名称:sethtm.html 2009-08-06 16:01:57
+# MetInfo企业网站管理系统 
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+require_once template('head'); 
+echo <<<EOT
+-->
+<title>{$lang_indexhtmset}</title>
+</head>
+<body>
+        <form method="POST" name="myform" action="" target="_self">
+		<input name="action" type="hidden" value="modify">
+<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
+
+            <td colspan="3" align="center" class="list1_title">{$lang_indexhtmset}</td>
+   </tr>
+		   
+		  <tr> 
+            <td class="list1_text">{$lang_sethtmok}:</td>
+            <td class="list1_input"><input name="met_webhtm" type="radio" value="0" $met_webhtm1[0]>{$lang_sethtmclose}&nbsp;&nbsp;&nbsp;<input name="met_webhtm" type="radio" value="1" $met_webhtm1[1]>{$lang_setbasicTip3}&nbsp;&nbsp;&nbsp;  <input name="met_webhtm"  type="radio" value="2"  $met_webhtm1[2]>{$lang_sethtmall}&nbsp;&nbsp;<span> <font color="#FF0000">{$lang_setbasicTip4}</font></span></td>
+          </tr> 
+		   <tr> 
+            <td class="list1_text">{$lang_sethtmway}:</td>
+            <td class="list1_input"><input name="met_htmway" type="radio" value="0" $met_htmway1[0]>{$lang_sethtmway1}&nbsp;&nbsp;&nbsp;<input name="met_htmway" type="radio" value="1" $met_htmway1[1]>{$lang_sethtmway2}&nbsp;&nbsp; <span> <font color="#FF0000">{$lang_sethtmway3}</font></span></td>
+          </tr>
+		  	<tr> 
+            <td class="list1_text">{$lang_sethtmtype}:</td>
+            <td class="list1_input"><input name="met_htmtype" type="radio" value="htm" $met_htmtype1[0]>htm&nbsp;&nbsp;&nbsp;&nbsp;<input name="met_htmtype" type="radio" value="html" $met_htmtype1[1]>html&nbsp;&nbsp;&nbsp;  <span> <font color="#FF0000">{$lang_sethtmtypetext}</font></span></td>
+          </tr>
+	      <tr> 
+            <td class="list1_text">{$lang_sethtmpage}:</td>
+            <td class="list1_input"><input name="met_htmpagename" type="radio" value="0" $met_htmpagename1[0]>{$lang_sethtmpage1}<br><input name="met_htmpagename" type="radio" value="1" $met_htmpagename1[1]>{$lang_sethtmpage2}<br><input name="met_htmpagename"  type="radio" value="2"  $met_htmpagename1[2]>{$lang_sethtmpage3}<br><span> <font color="#FF0000">{$lang_sethtmpage4}</font></span></td>
+          </tr>
+		  	      <tr> 
+            <td class="list1_text">{$lang_sethtmlist}:</td>
+            <td class="list1_input"><input name="met_htmlistname" type="radio" value="0" $met_htmlistname1[0]>{$lang_sethtmlist1}<br><input name="met_htmlistname" type="radio" value="1" $met_htmlistname1[1]>{$lang_sethtmlist2}<br><span> <font color="#FF0000">{$lang_sethtmpage4}</font></span></td>
+          </tr>
+		   <tr> 
+            <td class="list1_text">{$lang_sethtmpagepre}:</td>
+            <td class="list1_input">{$lang_sethtmpagepre1}<br>{$lang_sethtmpagepre2}<input name="met_htmpre_e" type="text" size="10" value="$met_htmpre_e"><br>{$lang_sethtmpagepre3}<input name="met_htmpre_o" type="text" size="10" value="$met_htmpre_o"> </td>
+          </tr>
+		     <tr> 
+            <td class="list1_text">{$lang_sethtmsitemap}:</td>
+            <td class="list1_input">{$lang_sethtmsitemap1}: <input name="met_sitemap_html" type="radio" value="0" $met_sitemap_html1[0]>{$lang_sethtmclose}&nbsp;<input name="met_sitemap_html" type="radio" value="1" $met_sitemap_html1[1]>{$lang_sethtmsitemap2}&nbsp; <input name="met_sitemap_html" type="radio" value="2" $met_sitemap_html1[2]>{$lang_sethtmsitemap3}&nbsp;<br>
+	{$lang_sethtmsitemap4}: <input name="met_sitemap_xml" type="radio" value="0" $met_sitemap_xml1[0]>{$lang_sethtmclose}&nbsp;&nbsp;<input name="met_sitemap_xml" type="radio" value="1" $met_sitemap_xml1[1]>{$lang_sethtmopen}&nbsp;<br>
+	{$lang_sethtmsitemap5}:<input name="met_sitemap_max" type="text" size="5" value="$met_sitemap_max"><span> <font color="#FF0000">{$lang_sethtmsitemap6}</font></span>
+			</td>
+          </tr>
+	      <tr> 
+            <td class="list1_text"></td>
+	      <td class="list1_submit"><input type="submit" name="Submit" value="{$lang_Submit}" class="tj" style="*padding-top:2px; *height:22px;"><input type="reset" name="Submit" value="{$lang_Reset}" class="tj" style="*padding-top:2px; *height:22px;"></td>
+          </tr>
+        </form>
+		<tr>
+		  <td class="list1_footer" colspan="2" align="center">$foot</td>
+	  </tr>
+</table>
+</body>
+</html>
+<!--
+EOT;
+# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+?>-->

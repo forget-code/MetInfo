@@ -1,4 +1,7 @@
 <!--<?php
+# 文件名称:inspect.htm 2009-08-18 08:53:03
+# MetInfo企业网站管理系统 
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
 require_once template('header'); 
 $SERVER_SIGNATURE=$_SERVER['SERVER_SIGNATURE'];
 $SERVER_NAME=$_SERVER['SERVER_NAME'];
@@ -7,15 +10,17 @@ $PHP_VERSION=PHP_VERSION;
 $errormsg_v=$errormsg['version'];
 echo <<<EOT
 -->
-<body >
-<div class="body">
-<div class="head">
-<div class="logo"><img src="images/logosmall.gif" width="40" /></div>
-<div class="headtext">MetInfo企业网站管理系统安装</div>
+<body>
+<div class="top">
 <div class="headright">第二步：系统检测</div>
 </div>
+
+<div class="head">
+<div class="logo"><img src="images/logosmall.gif" width="40" /></div>
+<div class="headtext"><font style="font-family:Arial, Helvetica, sans-serif">MetInfo</font>企业网站管理系统安装</div>
+</div>
 <div class="content">
-<br>
+<div class="content4">
 <p>请花些时间检查您的服务器是否支持安装MetInfo企业网站管理系统所需要的功能，请在继续安装前消除错误或警告信息，然后点击<b>安装</b>继续。</p>
 <form method="post" action="index.php?action=db_setup">
 <fieldset>
@@ -60,14 +65,14 @@ echo <<<EOT
 
 <fieldset>
 <legend><strong>开始安装?  (将删除已有数据，不是升级模式!!!)</strong></legend>
-<strong></strong>
-<p align="right"><input type="submit" name="submit" class="btn2" tabindex="8" value=" 安装 "  $disabled />
-<input type="button" name="refresh" class="btn2" tabindex="11" value="重新检查" onClick="history.go(0)" /></p>
+<div align="left" style="margin-top:-15px; *margin-top:0px;"><input type="submit" name="submit" class="btn2" tabindex="8" value=" 安装 "  $disabled style="*padding-top:4px;"/>
+<input type="button" name="refresh" class="btn2" tabindex="11" value="重新检查" onClick="history.go(0)" style="*padding-top:4px;" /></div>
 </fieldset>
 </form>
-</div>
-</div>
+
 <!--
 EOT;
 require_once template('footer'); 
+# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
 ?>-->

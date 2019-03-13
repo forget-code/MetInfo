@@ -1,27 +1,65 @@
 <!--<?php
+# 文件名称:feedback.html 2009-08-12 14:21:03
+# MetInfo企业网站管理系统 
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+require_once template('head');
+if($readok=="" && $langnow==""){
+   $style1="style='color:#FF0000'";
+ }elseif($readok==0  && $langnow==""){
+   $style2="style='color:#FF0000'";
+ }elseif($readok==1){
+   $style3="style='color:#FF0000'";
+  }elseif($langnow=="cn"){
+   $style4="style='color:#FF0000'";
+ }
+ elseif($langnow=="en"){
+   $style5="style='color:#FF0000'";
+ }
+ elseif($langnow=="other"){
+   $style6="style='color:#FF0000'";
+ }
 echo <<<EOT
 -->
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-<link rel="stylesheet" type="text/css" href="$css_url/metinfo_admin.css">
-<title>反馈信息管理</title>
-<script type="text/javascript" src="../language/zh_cn.js"></script>
-<script type="text/javascript" src="../include/metinfo.js"></script>
+<title>{$lang_feedbackTitle}</title>
 </head>
 <body>
 <br>
-<table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td align="center" valign="top"><table width="95%" border="0" cellpadding="2" cellspacing="1" class="table_southidc">
+<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
           <tr> 
-            <td height="30" colspan="2" align="center" class="back_southidc">反馈信息管理</td>
+            <td colspan="7" align="center" class="list1_title">{$lang_feedbackTitle}</td>
           </tr>
       <tr>
-     <td height="25" align="left" class="class2">反馈信息分类：&nbsp;&nbsp; <a href="index.php?search=$search&useinfo=$useinfo" >所有信息</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-<a href="index.php?search=$search&readok=0&useinfo=$useinfo" >未阅读信息</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="index.php?search=$search&readok=1&useinfo=$useinfo" >已阅读信息</a>
+     <td class="list1_input list9" colspan="6" align="left">{$lang_feedbackClass}:
+	 <a href="index.php?search=$search&useinfo=$useinfo"  $style1>{$lang_feedbackClass1}</a> |
+	 <a href="index.php?search=$search&readok=0&useinfo=$useinfo" $style2 >{$lang_feedbackClass2}</a> |
+	 <a href="index.php?search=$search&readok=1&useinfo=$useinfo" $style3 >{$lang_feedbackClass3}</a>
+<!--
+EOT;
+if($met_c_lang_ok){
+echo <<<EOT
+--> 
+| <a href="index.php?search=$search&useinfo=$useinfo&langnow=cn" $style4>[$met_c_lang]{$lang_messageClass1}</a>
+<!--
+EOT;
+}
+if($met_e_lang_ok){
+echo <<<EOT
+--> 
+| <a href="index.php?search=$search&useinfo=$useinfo&langnow=en" $style5>[$met_e_lang]{$lang_messageClass1}</a>
+<!--
+EOT;
+}
+if($met_o_lang_ok){
+echo <<<EOT
+--> 
+| <a href="index.php?search=$search&useinfo=$useinfo&langnow=other" $style6>[$met_o_lang]{$lang_messageClass1}</a>
+<!--
+EOT;
+}
+echo <<<EOT
+--> 
 </td> 
-     <td align="left" class="class2">
+     <td align="left" class="list1_input">
          <script language="JavaScript">
           <!--
             function MM_jumpMenu(selObj){ 
@@ -30,21 +68,21 @@ echo <<<EOT
             }
           //-->
           </script>
-<select name="met_fd_class" style="float:right;"onChange="MM_jumpMenu(this)">
-<option value="index.php?search=$search&readok=$readok&useinfo=$useinfo&met_fd_classname=">查看全部</option>
+<select name="met_fd_class" style="float:right;" onChange="MM_jumpMenu(this)">
+<option value="index.php?search=$search&readok=$readok&useinfo=$useinfo&met_fd_classname=">{$lang_feedbackShowAll}</option>
 <!--
 EOT;
 foreach ($selectlist as $key=>$val){
-if($met_fd_classname==$val[c_list]){
+if($met_fd_classname==$val['list']){
 echo <<<EOT
 -->
-<option value="index.php?search=$search&readok=$readok&useinfo=$useinfo&met_fd_classname=$val[c_list]" selected="selected">$val[c_list]</option>
+<option value="index.php?search=$search&readok=$readok&useinfo=$useinfo&met_fd_classname=$val[list]" selected="selected">$val[list]</option>
 <!--
 EOT;
 }else{
 echo <<<EOT
 -->
-<option value="index.php?search=$search&readok=$readok&useinfo=$useinfo&met_fd_classname=$val[c_list]">$val[c_list]</option>
+<option value="index.php?search=$search&readok=$readok&useinfo=$useinfo&met_fd_classname=$val[list]">$val[list]</option>
 <!--
 EOT;
 }}
@@ -52,16 +90,14 @@ echo <<<EOT
 -->
 </select></td>
       </tr>
-          <tr> 
-            <td colspan="2" valign="top"><table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#003366" class="border" style="word-break:break-all">
-              <tr class="back_southidc2">
-                <td width="5%" height="25" align="center">选中</td>
-				<td width="5%" height="25" align="center">ID</td>
-                <td width="40%" height="25" align="center">反馈信息标题</td>
-				<td width="5%" align="center" >阅读</td>
-                <td width="15%" align="center" >来源IP</td>
-                <td width="20%" align="center" >提交时间</td>
-				<td width="10%" align="center" >操作</td>
+              <tr>
+                <td width="5%" class="list1_top" align="center">{$lang_feedbackSelect}</td>
+				<td width="5%" class="list1_top" align="center">ID</td>
+                <td width="40%" class="list1_top" align="center">{$lang_feedbackName}</td>
+				<td width="5%" class="list1_top" align="center" >{$lang_feedbackRead}</td>
+                <td width="15%" class="list1_top" align="center" >{$lang_feedbackID}</td>
+                <td width="20%" class="list1_top" align="center" >{$lang_feedbackTime}</td>
+				<td width="10%" class="list1_top" align="center" >{$lang_feedbackOperate}</td>
               </tr>
 			  <form name="del" method="Post" action="delete.php" onSubmit="return ConfirmDelall();">
 <!--
@@ -69,14 +105,14 @@ EOT;
 foreach ($feedback_list as $key=>$val){
 echo <<<EOT
 -->          
-              <tr class="tdbg">
-              <td height="22" align="center" class="left1"><input name='id' type='checkbox' onClick="unselectall()" id="id" value='$val[id]' class="xz"></td>
-                <td  bgcolor="#ECF5FF" align="center">$val[id]</td>
-			    <td align="left" bgcolor="#ECF5FF"><a href="editor.php?id=$val[id]" title="查看详细">$val[fdtitle]</a></td>
-                <td  bgcolor="#ECF5FF" align="center">$val[readok]</td>
-				<td  bgcolor="#ECF5FF" align="center"><a href="http://www.123cha.com/ip/?q=$val[ip]" target="_blank">$val[ip]</a></td>
-                <td  bgcolor="#ECF5FF" align="center">$val[addtime]</td>
-				<td align="center" bgcolor="#ECF5FF" ></a> <a href="editor.php?id=$val[id]" >编辑</a> | <a href="delete.php?id=$val[id]" onClick="return ConfirmDel();" >删除</a></td>
+              <tr>
+              <td class="list1_content_titile" align="center"><input name='id' type='checkbox' onClick="unselectall()" id="id" value='$val[id]' class="xz"></td>
+                <td class="list1_content" align="center">$val[id]</td>
+			    <td align="left" class="list1_content"><a href="editor.php?id=$val[id]" title="{$lang_feedbackDetail}">$val[fdtitle]</a></td>
+                <td class="list1_content" align="center">$val[readok]</td>
+				<td class="list1_content" align="center">$val[customerid]</td>
+                <td class="list1_content" align="center">$val[addtime]</td>
+				<td align="center" class="list1_content" style="color:#0066FF;"></a> <a href="editor.php?id=$val[id]" >{$lang_feedbackEdit}</a> | <a href="delete.php?id=$val[id]" onClick="return ConfirmDel();" >{$lang_feedbackDel}</a></td>
               </tr>
 <!--
 EOT;
@@ -84,31 +120,56 @@ EOT;
 echo <<<EOT
 -->
        
-            </table></td>
-          </tr> 
-		   
+  
    	   <tr> 
-            <td height="20" colspan="2" align="left" bgcolor="#ECF5FF"><input name="chkAll" class="xz" type="checkbox" id="chkAll" onclick=CheckAll(this.form) value="checkbox">
-              选中本页显示的所有反馈信息 <input name="submit" type='submit' value='删除选定的条目'> 
-              <input name="action" type="hidden" id="action" value="del">
-			  <input name="allid" type="hidden" id="allid" value=""></form></td>
+            <td align="center"  class="input_bottom"><input name="chkAll" class="xz" type="checkbox" id="chkAll" onclick=CheckAll(this.form) value="checkbox"></td>
+            <td align="center"  class="input_bottom">{$lang_feedbackSelectAll}</td> 
+            <td align="left"  class="input_bottom" colspan="5"><input name="submit" type='submit' value='{$lang_feedbackDelSelected}'><input name="action" type="hidden" id="action" value="del"><input name="allid" type="hidden" id="allid" value=""></form></td>
           </tr>
-		  <tr  bgcolor="#ECF5FF">
-            <td  height="20" colspan="2" align="left">
+		  <tr>
+            <td colspan="7" align="left" class="input_search">
 			<form method="POST" name="myform"  action="index.php?search=detail_search" target="_self">
-			       <b>反馈信息查找：</b> 
+			       <span><b>{$lang_feedbackSearch}：</b></span>
 			    <input name="useinfo" type="text" size="30">
-  <input type="submit" name="Submit2" value="查询" class="tj">  
-	        请输入反馈信息用户编辑关键词。如果为空，则查找所有反馈信息。</form></td>
+  <input type="submit" name="Submit2" value="{$lang_feedbackGo}" class="tj">  
+	        {$lang_feedbackTip1}</form></td>
+          </tr>
+	   <tr >
+            <td  colspan="7" align="left" class="input_search">
+			<form method="POST" name="exportform"  action="export.php" target="_self">
+			       <span><b>{$lang_feedbackTip2}</b> </span>
+				   {$lang_feedbackTip3}
+				   <select name="met_fd_export" >
+				   <option value="-1">{$lang_feedbackTip4}</option>
+<!--
+EOT;
+
+foreach ($selectlist as $key=>$val){
+echo <<<EOT
+-->
+				   
+					<option value="$val[list]">$val[list]</option>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+					</select>				   
+					<input name="submit" type='submit' value='{$lang_feedbackExport}'>
+			</form>
+			</td>
           </tr>
    	   <tr>
-   	     <td height="0" colspan="2" align="center" bgcolor="#ECF5FF">$page_list</td>
+   	     <td class="list1_input" colspan="7" align="center">$page_list</td>
         </tr>
-    </table></td>
-  </tr>
+		<tr>
+		  <td class="list1_footer" colspan="6" align="center">$foot</td>
+	  </tr>
 </table>
 </body>
 </html>
 <!--
 EOT;
+# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
 ?>-->

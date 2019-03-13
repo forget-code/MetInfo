@@ -1,0 +1,240 @@
+<!--<?php
+# 文件名称:flashedit.html 2009-08-03 15:30:57
+# MetInfo企业网站管理系统 
+# Copyright (C)  长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+require_once template('head'); 
+echo <<<EOT
+-->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="$img_url/metinfo.css">
+<title>{$lang_setflashTitle}</title>
+<script type='text/javascript'>
+
+subcat = new Array();
+<!--
+EOT;
+foreach($mod as $key=>$val){
+echo <<<EOT
+-->	
+subcat[$val[id]] = new Array('{$val[id]}','{$met_flasharray[$val[id]][type]}','{$met_flasharray[$val[id]][x]}','{$met_flasharray[$val[id]][y]}');
+<!--
+EOT;
+}
+echo <<<EOT
+-->	
+function changeflashclass(classname,classid){
+var classname;
+var classid;
+var flashclose='{$lang_flashclosenow}';
+var met_flash_type_now='met_flash_type_'+subcat[classid][1];
+document.getElementById(met_flash_type_now).checked='checked';
+document.getElementById('met_flash_x').value=subcat[classid][2];
+document.getElementById('met_flash_y').value=subcat[classid][3];
+ if(subcat[classid][1]==2){
+ document.getElementById('flash2').style.display="block";
+ document.getElementById('flash1').style.display="none";
+ }else{
+ document.getElementById('flash1').style.display="block";
+ document.getElementById('flash2').style.display="none";
+ }
+if(subcat[classid][1]==3){
+ document.getElementById('no_order').style.display="none";
+ }else{
+ document.getElementById('no_order').style.display="";
+ }
+if(subcat[classid][1]==0){
+alert(flashclose);
+location.href='flash.php';
+ }
+}
+</script>
+</head>
+<body>
+<form method="POST" name="myform" action="flashsave.php" target="_self" onSubmit="return CheckFormflash();">
+		<input name="action" type="hidden" value="editor">
+		<input name="id" type="hidden" value="$id">
+		<input name="flash" type="hidden" value="$flashmode">
+<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
+      
+          <tr> 
+            <td colspan="4" align="center" class="list1_title">{$lang_setflashTitle}</td>
+          </tr>
+		  		  <tr> 
+            <td class="list1_text">{$lang_setflashBelong}：</td>
+            <td colspan="2" class="list1_input"><select name="module" id="module" onChange="changeflashclass(document.myform.module.options[document.myform.module.selectedIndex].label1,document.myform.module.options[document.myform.module.selectedIndex].value)" >
+<!--
+EOT;
+foreach($mod1 as $key=>$val){
+if(($met_flasharray[$flashrec1[module]][type]==$met_flasharray[$val[id]][type])||($met_flasharray[$flashrec1[module]][type]!=2&&($met_flasharray[$val[id]][type]!=0&&$met_flasharray[$val[id]][type]!=2))){
+$met_flash_module_now=$met_flash_module[$val[id]];
+echo <<<EOT
+-->	
+	<option value='$val[id]' label1="$val[name]" $met_flash_module_now >&nbsp;$val[name]</option>
+<!--
+EOT;
+}
+foreach($mod2[$val[id]] as $key=>$val2){
+if(($met_flasharray[$flashrec1[module]][type]==$met_flasharray[$val2[id]][type])||($met_flasharray[$flashrec1[module]][type]!=2&&($met_flasharray[$val2[id]][type]!=0&&$met_flasharray[$val2[id]][type]!=2))){
+$met_flash_module_now=$met_flash_module[$val2[id]];
+echo <<<EOT
+-->	
+    <option value='$val2[id]' style="color:#000099" $met_flash_module_now label1="$val2[name]">&nbsp;&nbsp;- $val2[name]</option>
+<!--
+EOT;
+}
+foreach($mod3[$val2[id]] as $key=>$val3){
+if(($met_flasharray[$flashrec1[module]][type]==$met_flasharray[$val3[id]][type])||($met_flasharray[$flashrec1[module]][type]!=2&&($met_flasharray[$val3[id]][type]!=0&&$met_flasharray[$val3[id]][type]!=2))){
+$met_flash_module_now=$met_flash_module3[$val[id]];
+echo <<<EOT
+-->	
+    <option value='$val3[id]' style="color:#FF0000" $met_flash_module_now label1="$val3[name]">&nbsp;&nbsp;&nbsp;-- $val3[name]</option>		
+<!--
+EOT;
+}
+}}}  
+echo <<<EOT
+-->	
+            </select></td>
+          </tr> 
+		  <tr> 
+            <td class="list1_text">{$lang_setflashMode}：</td>
+            <td colspan="2" class="list1_input">
+			<input type="radio" id="met_flash_type_0" name="met_flash_type" disabled="disabled"  $met_flash_type[0]  >{$lang_setflashclose} 
+			<input type="radio" id="met_flash_type_1" name="met_flash_type" disabled="disabled"  $met_flash_type[1]  >{$lang_setflashMode1}  
+			<input type="radio" id="met_flash_type_2" name="met_flash_type" disabled="disabled"  $met_flash_type[2] >{$lang_setflashMode2}
+			<input type="radio" id="met_flash_type_3" name="met_flash_type" disabled="disabled"  $met_flash_type[3] >{$lang_setflashMode3}
+			<span style="color:#FF0000">{$lang_flashmodify}</span>
+			</td>
+          </tr> 
+		  <tr> 
+            <td class="list1_text">{$lang_setflashSize}：</td>
+            <td colspan="2" class="list1_input">
+			{$lang_setflashWidth}：<input name="width" disabled="disabled"  id="met_flash_x" type="text" class="input" size="3" maxlength="200" value="{$met_flasharray[$flashrec1[module]][x]}">{$lang_setflashPixel}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			{$lang_setflashHeight}：<input disabled="disabled"  id="met_flash_y" name="height" type="text" class="input" size="3" maxlength="200" value="{$met_flasharray[$flashrec1[module]][y]}">{$lang_setflashPixel}
+			<span style="color:#FF0000">{$lang_flashmodify}</span>
+			</td>
+          </tr>
+</table>
+<!--
+EOT;
+if($met_c_lang_ok!=1){
+$c_access='style="display: none"';
+}
+if($met_e_lang_ok!=1){
+$e_access='style="display: none"';
+}
+if($met_o_lang_ok!=1){
+$o_access='style="display: none"';
+}
+echo <<<EOT
+-->		<table id='flash1' $style1  cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
+		  <tr id="no_order" $style3>
+			<td class="list1_text">{$lang_setflashOrder}：</td>
+            <td colspan="2"  class="list1_input"><input name="no_order" type="text" class="input" size="2" maxlength="5" value="{$flashrec1[no_order]}"><font color=red>{$lang_flashTip1}</font></td>
+          </tr>
+		  <tr $c_access>
+			<td class="list1_text">[<b>$met_c_lang</b>]{$lang_setflashName}：</td>
+            <td colspan="2" class="list1_input"><input name="c_img_title" type="text" class="input" size="30" maxlength="200" value="{$flashrec1[c_img_title]}"></td>
+          </tr>
+		  <tr $c_access>
+			<td class="list1_text">{$lang_setflashImgUrl}：</td>
+            <td colspan="2" class="list1_input"><input name="c_img_path" type="text" class="input" size="30" maxlength="200" value="{$flashrec1[c_img_path]}"><iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_photo.php?returnid=c_img_path&flash=flash" frameborder=0 scrolling=no width="280" height="25"></iframe>			</td>
+          </tr>
+		  <tr $c_access> 
+            <td class="list1_text">{$lang_setflashImgHref}：</td>
+            <td colspan="2" class="list1_input"><input name="c_img_link" type="text" class="input" size="30" maxlength="200" value="{$flashrec1[c_img_link]}"></td>
+          </tr> 
+		  <tr $e_access>
+			<td class="list1_text">[<b>$met_e_lang</b>]{$lang_setflashName}：</td>
+            <td colspan="2" class="list1_input"><input name="e_img_title" type="text" class="input" size="30" maxlength="200" value="{$flashrec1[e_img_title]}"></td>
+          </tr>
+		  <tr $e_access>
+		    <td class="list1_text">{$lang_setflashImgUrl}：</td>
+	        <td colspan="2" class="list1_input"><input name="e_img_path" type="text" class="input" size="30" maxlength="200" value="{$flashrec1[e_img_path]}"><iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_photo.php?returnid=e_img_path&flash=flash" frameborder=0 scrolling=no width="280" height="25"></iframe>			</td>
+		  </tr>
+		  <tr $e_access> 
+            <td class="list1_text">{$lang_setflashImgHref}：</td>
+            <td colspan="2" class="list1_input"><input name="e_img_link" type="text" class="input" size="30" maxlength="200" value="{$flashrec1[e_img_link]}"></td>
+          </tr> 
+		  <tr $o_access>
+			<td class="list1_text">[<b>$met_o_lang</b>]{$lang_setflashName}：</td>
+            <td colspan="2" class="list1_input"><input name="o_img_title" type="text" class="input" size="30" maxlength="200" value="{$flashrec1[o_img_title]}"></td>
+          </tr>
+		  <tr $o_access>
+		    <td class="list1_text">{$lang_setflashImgUrl}：</td>
+	        <td colspan="2" class="list1_input"><input name="o_img_path" type="text" class="input" size="30" maxlength="200" value="{$flashrec1[o_img_path]}"><iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_photo.php?returnid=o_img_path&flash=flash" frameborder=0 scrolling=no width="280" height="25"></iframe>			</td>
+		  </tr>
+		  <tr $o_access> 
+            <td class="list1_text">{$lang_setflashImgHref}：</td>
+            <td colspan="2" class="list1_input"><input name="o_img_link" type="text" class="input" size="30" maxlength="200" value="{$flashrec1[o_img_link]}"></td>
+          </tr> 
+		  </table>
+		  
+		  <table id='flash2' $style2 cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
+		  <tr $c_access>
+			<td class="list1_text" >[<b>$met_c_lang</b>]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+			<td colspan="2" class="list1_input"></td>
+		  </tr>
+		  <tr $c_access> 
+            <td class="list1_text" >{$lang_setflashUrl}：</td>
+            <td colspan="2" class="list1_input"> <input name="c_flash_path" type="text" class="input" size="30" maxlength="200" value="{$flashrec1[c_flash_path]}"> 
+			<iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_file.php?uploadtype=flash&returnid=c_flash_path" frameborder=0 scrolling=no width="280" height="25"></iframe></td>
+          </tr>
+		  <tr $c_access> 
+            <td class="list1_text" >{$lang_setflashBg}：</td>
+            <td colspan="2" class="list1_input"><input name="c_flash_back" type="text" class="input" size="30" maxlength="200" value="{$flashrec1[c_flash_back]}">
+			<iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_photo.php?returnid=c_flash_back&flash=flash" frameborder=0 scrolling=no width="280" height="25"></iframe>			</td>
+          </tr>
+		  <tr $e_access>
+			<td class="list1_text">[<b>$met_e_lang</b>]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+			<td colspan="2" class="list1_input"></td>
+		  </tr>
+		   <tr $e_access> 
+            <td class="list1_text" >{$lang_setflashUrl}：</td>
+            <td colspan="2" class="list1_input"> <input name="e_flash_path" type="text" class="input" size="30" maxlength="200" value="{$flashrec1[e_flash_path]}"> 
+			<iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_file.php?uploadtype=flash&returnid=e_flash_path" frameborder=0 scrolling=no width="280" height="25"></iframe></td>
+          </tr>		  
+		  <tr $e_access> 
+            <td class="list1_text" >{$lang_setflashBg}：</td>
+            <td colspan="2" class="list1_input"><input name="e_flash_back" type="text" class="input" size="30" maxlength="200" value="{$flashrec1[e_flash_back]}"><iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_photo.php?returnid=e_flash_back&flash=flash" frameborder=0 scrolling=no width="280" height="25"></iframe>			</td>
+          </tr>
+		  <tr $o_access>
+			<td class="list1_text">[<b>$met_o_lang</b>]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+			<td colspan="2" class="list1_input"></td>
+		  </tr>
+		   <tr $o_access> 
+            <td class="list1_text" >{$lang_setflashUrl}：</td>
+            <td colspan="2" class="list1_input"> <input name="o_flash_path" type="text" class="input" size="30" maxlength="200" value="{$flashrec1[o_flash_path]}"> 
+			<iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_file.php?uploadtype=flash&returnid=o_flash_path" frameborder=0 scrolling=no width="280" height="25"></iframe></td>
+          </tr>		  
+		  <tr $o_access> 
+            <td class="list1_text" >{$lang_setflashBg}：</td>
+            <td colspan="2" class="list1_input"><input name="o_flash_back" type="text" class="input" size="30" maxlength="200" value="{$flashrec1[o_flash_back]}"><iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_photo.php?returnid=o_flash_back&flash=flash" frameborder=0 scrolling=no width="280" height="25"></iframe>			</td>
+          </tr>		  
+		  </table>
+
+<!--
+EOT;
+
+echo <<<EOT
+-->
+	<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
+	      <tr> 
+            <td style="width:20%" class="list1_text" colspan="2"></td>
+	      <td class="list1_submit"><input type="submit" name="Submit" value="{$lang_Submit}" class="tj" style="*padding-top:2px; *height:22px;"><input type="reset" name="Submit" value="{$lang_Reset}" class="tj" style="*padding-top:2px; *height:22px;">
+		  </td>
+          </tr>        
+          <tr>
+		  <td class="list1_footer" colspan="4" align="center">$foot</td>
+	  </tr>
+</table>
+</form>
+</body>
+</html>
+<!--
+EOT;
+# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+?>-->

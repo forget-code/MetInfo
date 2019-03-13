@@ -1,0 +1,48 @@
+<!--<?php
+require_once template('head'); 
+$metright=methtml_list('text','','all','time','news',$lang_maxwordtext,'red');
+$metproduct=methtml_list('img','','com','hits','product',$lang_maxwordimg);
+$metlinkimg=methtm_link('img','com');
+$metlinktext=methtm_link('text','com');
+echo <<<EOT
+-->
+<div class="web">
+<div class="index_webleft">
+<div class="nav_x">&nbsp;{$lang_AboutUs}</div>
+<div class="index_content">
+$index[content]
+</div>
+</div>
+<div class="index_webright">
+<div class="nav_x">&nbsp;{$lang_News}</div>
+<div class="index_news_list">{$metright}</div>
+</div>
+</div>
+<div class="web">
+<div class="index_product">
+<div class="nav_x">&nbsp;{$lang_RecommendedProducts}</div>
+<div class="index_content">{$metproduct}</div>
+</div>
+<!--
+EOT;
+if($index[link_ok]){
+echo <<<EOT
+-->
+<div class="index_product">
+<div class="nav_x">&nbsp;{$lang_FriendlyLink}</div>
+<div class="index_link">
+<div class="index_link_img">{$metlinkimg}</div>
+<div class="index_link_text">{$metlinktext}</div>
+</div>
+</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</div>
+$met_online
+<!--
+EOT;
+require_once template('foot'); 
+?>

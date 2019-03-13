@@ -1,15 +1,28 @@
 <?php
+# 文件名称:save.php 2009-08-11 14:55:13
+# MetInfo企业网站管理系统 
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
 require_once '../login/login_check.php';
 if($action=="add"){
+
+$query = "SELECT * FROM $met_parameter where type=3 order by no_order";
+$result = $db->query($query);
+while($list = $db->fetch_array($result)) {
+if($list[use_ok]==1)$list_p[]=$list;
+}
 $query = "INSERT INTO $met_product SET
                       c_title            = '$c_title',
                       e_title            = '$e_title',
+					  o_title            = '$o_title',
 					  c_keywords         = '$c_keywords',
 					  e_keywords         = '$e_keywords',
+					  o_keywords         = '$o_keywords',
 					  c_description      = '$c_description',
 					  e_description      = '$e_description',
+					  o_description      = '$o_description',
 					  c_content          = '$c_content',
 					  e_content          = '$e_content',
+					  o_content          = '$o_content',
 					  class1             = '$class1',
 					  class2             = '$class2',
 					  class3             = '$class3',
@@ -20,176 +33,111 @@ $query = "INSERT INTO $met_product SET
 					  hits               = '$hits', 
 					  issue              = '$metinfo_admin_name',
 					  addtime            = '$addtime', 
-					  updatetime         = '$updatetime', 
-					  c_para1            = '$c_para1', 
-					  c_para2            = '$c_para2',
-					  c_para3            = '$c_para3',
-					  c_para4            = '$c_para4',
-					  c_para5            = '$c_para5',
-					  c_para6            = '$c_para6',
-					  c_para7            = '$c_para7',
-					  c_para8            = '$c_para8',
-					  c_para9            = '$c_para9',
-					  c_para10           = '$c_para10',
-					  e_para1            = '$e_para1', 
-					  e_para2            = '$e_para2',
-					  e_para3            = '$e_para3',
-					  e_para4            = '$e_para4',
-					  e_para5            = '$e_para5',
-					  e_para6            = '$e_para6',
-					  e_para7            = '$e_para7',
-					  e_para8            = '$e_para8',
-					  e_para9            = '$e_para9',
-					  e_para10           = '$e_para10'";
-         $db->query($query);
+					  updatetime         = '$updatetime',
+					  access         	 = '$access',
+					  ";
+foreach($list_p as $key=>$val)
+{		  
+$tmp="c_$val[name]";
+$query = $query."
+				  $tmp            	= '{$$tmp}', 
+				  ";
+$tmp="e_$val[name]";
+$query = $query."
+				  $tmp            	= '{$$tmp}', 
+				  ";
+$tmp="o_$val[name]";
+$query = $query."
+				  $tmp            	= '{$$tmp}', 
+				  ";
+}
+$query = $query." top_ok         	 = '$top_ok'";
+
+         $db->query($query);                 
 //静态页面生成
 $later_product=$db->get_one("select * from $met_product where updatetime='$updatetime'");
 $id=$later_product[id];
-$folder=$db->get_one("select * from $met_column where id='$class1'");
-if($met_webhtm==1){
-$fromurl=$met_weburl.$folder[foldername]."/showproduct.php?id=".$id;
-$filename="../../".$folder[foldername]."/"."showproduct".$id.".htm";
-createhtm($fromurl,$filename);
-if($met_en_lang==1){
-$fromurl=$met_weburl.$folder[foldername]."/showproduct.php?en=en&id=".$id;
-$filename="../../".$folder[foldername]."/"."showproduct".$id."_en.htm";
-createhtm($fromurl,$filename);
-}
-}
-if($met_index_type){
-
-if($met_webhtm==1){
-$fromurl=$met_weburl."/index.php?en=en";
-$filename="../../index.htm";
-createhtm($fromurl,$filename);
-if($met_en_lang==1){
-$fromurl=$met_weburl."/index.php?ch=ch";
-$filename="../../index_ch.htm";
-createhtm($fromurl,$filename);
-}}
-
-}else{
-if($met_webhtm==1){
-$fromurl=$met_weburl."/index.php";
-$filename="../../index.htm";
-createhtm($fromurl,$filename);
-if($met_en_lang==1){
-$fromurl=$met_weburl."/index.php?en=en";
-$filename="../../index_en.htm";
-createhtm($fromurl,$filename);
-}
-}
-}
-okinfo('index.php?class1='.$class1,$lang[user_admin]);
+contenthtm($class1,$id,'showproduct');
+indexhtm();
+classhtm($class1,$class2,$class3);
+okinfo('index.php?class1='.$class1,$lang_loginUserAdmin);
 }
 
 if($action=="editor"){
-if($met_en_lang==1){
-$query = "update $met_product SET
-                      c_title            = '$c_title',
-                      e_title            = '$e_title',
-					  c_keywords         = '$c_keywords',
-					  e_keywords         = '$e_keywords',
-					  c_description      = '$c_description',
-					  e_description      = '$e_description',
-					  c_content          = '$c_content',
-					  e_content          = '$e_content',
-					  class1             = '$class1',
-					  class2             = '$class2',
-					  class3             = '$class3',
-					  new_ok             = '$new_ok',
-					  imgurl             = '$imgurl',
-					  imgurls            = '$imgurls',
-				      com_ok             = '$com_ok',
-					  hits               = '$hits', 
-					  addtime            = '$addtime', 
-					  updatetime         = '$updatetime', 
-					  c_para1            = '$c_para1', 
-					  c_para2            = '$c_para2',
-					  c_para3            = '$c_para3',
-					  c_para4            = '$c_para4',
-					  c_para5            = '$c_para5',
-					  c_para6            = '$c_para6',
-					  c_para7            = '$c_para7',
-					  c_para8            = '$c_para8',
-					  c_para9            = '$c_para9',
-					  c_para10           = '$c_para10',
-					  e_para1            = '$e_para1', 
-					  e_para2            = '$e_para2',
-					  e_para3            = '$e_para3',
-					  e_para4            = '$e_para4',
-					  e_para5            = '$e_para5',
-					  e_para6            = '$e_para6',
-					  e_para7            = '$e_para7',
-					  e_para8            = '$e_para8',
-					  e_para9            = '$e_para9',
-					  e_para10           = '$e_para10'
-					  where id='$id'";
-}else{
-$query = "update $met_product SET
-                      c_title            = '$c_title',
-					  c_keywords         = '$c_keywords',
-					  c_description      = '$c_description',
-					  c_content          = '$c_content',
-					  class1             = '$class1',
-					  class2             = '$class2',
-					  class3             = '$class3',
-					  new_ok             = '$new_ok',
-					  imgurl             = '$imgurl',
-					  imgurls            = '$imgurls',
-				      com_ok             = '$com_ok',
-					  hits               = '$hits', 
-					  addtime            = '$addtime', 
-					  updatetime         = '$updatetime', 
-					  c_para1            = '$c_para1', 
-					  c_para2            = '$c_para2',
-					  c_para3            = '$c_para3',
-					  c_para4            = '$c_para4',
-					  c_para5            = '$c_para5',
-					  c_para6            = '$c_para6',
-					  c_para7            = '$c_para7',
-					  c_para8            = '$c_para8',
-					  c_para9            = '$c_para9',
-					  c_para10           = '$c_para10' 
-					  where id='$id'";
+$query = "SELECT * FROM $met_parameter where type=3 order by no_order";
+$result = $db->query($query);
+while($list = $db->fetch_array($result)) {
+if($list[use_ok]==1)$list_p[]=$list;
 }
+$query = "update $met_product SET ";
+if($met_c_lang_ok==1){
+$query = $query."
+                      c_title            = '$c_title',
+					  c_keywords         = '$c_keywords',
+					  c_description      = '$c_description',
+					  c_content          = '$c_content',"
+					  ;
+	foreach($list_p as $key=>$val)
+	{		  
+	$tmp="c_$val[name]";
+	$query = $query."
+					  $tmp            	= '{$$tmp}', 
+					  ";			
+	}					  
+}
+if($met_e_lang_ok==1){
+$query = $query."
+                      e_title            = '$e_title',
+					  e_keywords         = '$e_keywords',
+					  e_description      = '$e_description',
+					  e_content          = '$e_content',"
+					  ;
+	foreach($list_p as $key=>$val)
+	{		  
+	$tmp="e_$val[name]";
+	$query = $query."
+					  $tmp            	= '{$$tmp}', 
+					  ";			
+	}				  
+}
+if($met_o_lang_ok==1){
+$query = $query."
+                      o_title            = '$o_title',
+					  o_keywords         = '$o_keywords',
+					  o_description      = '$o_description',
+					  o_content          = '$o_content',"
+					  ;
+					  
+	foreach($list_p as $key=>$val)
+	{		  
+	$tmp="o_$val[name]";
+	$query = $query."
+					  $tmp            	= '{$$tmp}', 
+					  ";			
+	}
+}
+$query = $query."
+					  class1             = '$class1',
+					  class2             = '$class2',
+					  class3             = '$class3',
+					  new_ok             = '$new_ok',
+					  imgurl             = '$imgurl',
+					  imgurls            = '$imgurls',
+				      com_ok             = '$com_ok',
+					  hits               = '$hits', 
+					  addtime            = '$addtime', 
+					  updatetime         = '$updatetime', 
+					  access         	 = '$access',
+					  top_ok         	 = '$top_ok'
+					  where id='$id'";
+
 $db->query($query);
 //静态页面生成
-$folder=$db->get_one("select * from $met_column where id='$class1'");
-if($met_webhtm==1){
-$fromurl=$met_weburl.$folder[foldername]."/showproduct.php?id=".$id;
-$filename="../../".$folder[foldername]."/"."showproduct".$id.".htm";
-createhtm($fromurl,$filename);
-if($met_en_lang==1){
-$fromurl=$met_weburl.$folder[foldername]."/showproduct.php?en=en&id=".$id;
-$filename="../../".$folder[foldername]."/"."showproduct".$id."_en.htm";
-createhtm($fromurl,$filename);
+contenthtm($class1,$id,'showproduct');
+indexhtm();
+classhtm($class1,$class2,$class3);
+okinfo('index.php?class1='.$class1,$lang_loginUserAdmin);
 }
-}
-if($met_index_type){
-
-if($met_webhtm==1){
-$fromurl=$met_weburl."/index.php?en=en";
-$filename="../../index.htm";
-createhtm($fromurl,$filename);
-if($met_en_lang==1){
-$fromurl=$met_weburl."/index.php?ch=ch";
-$filename="../../index_ch.htm";
-createhtm($fromurl,$filename);
-}}
-
-}else{
-if($met_webhtm==1){
-$fromurl=$met_weburl."/index.php";
-$filename="../../index.htm";
-createhtm($fromurl,$filename);
-if($met_en_lang==1){
-$fromurl=$met_weburl."/index.php?en=en";
-$filename="../../index_en.htm";
-createhtm($fromurl,$filename);
-}
-}
-}
-okinfo('index.php?class1='.$class1,$lang[user_admin]);
-}
+# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
 ?>

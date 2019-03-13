@@ -1,0 +1,111 @@
+<!--<?php
+# 文件名称:member_add.html 2009-08-14 11:12:13
+# MetInfo企业网站管理系统
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+require_once template('head');
+echo <<<EOT
+-->
+<title>{$lang_memberaddTitle}</title>
+</head>
+<body>
+<form method="POST" name="myform" onSubmit="return CheckForm();" action="save.php?action=add" target="_self">
+<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
+          <tr> 
+            <td colspan="3" align="center" class="list1_title">{$lang_memberaddTitle}</td>
+          </tr>
+          <tr> 
+            <td class="list1_text"><font color="#FF0000">*</font>{$lang_memberaddUserName}：</td>
+            <td colspan="2" class="list1_input"> <input id='useid' name="useid" type="text" class="input" size="20" maxlength="20"><input name="" type="button" class="btn2" value="{$lang_memberaddCheckID}" onClick="javascript: Usercheck('useid')" /><span id="div_name"></span></td>
+          </tr> 
+		  <tr> 
+            <td class="list1_text"><font color="#FF0000">*</font>{$lang_memberaddPs}：</td>
+            <td colspan="2" class="list1_input"> <input name="pass1" type="password" class="input" size="20" maxlength="20"></td>
+          </tr> 
+		   <tr> 
+            <td class="list1_text"><font color="#FF0000">*</font>{$lang_memberaddPs1}：</td>
+            <td colspan="2" class="list1_input"> <input name="pass2" type="password" class="input" size="20" maxlength="20"></td>
+          </tr> 
+		  <tr> 
+            <td class="list1_text">{$lang_memberaddName}：</td>
+            <td colspan="2" class="list1_input"> <input name="name" type="text" class="input" size="20" maxlength="20"></td>
+          </tr> 
+		  <tr> 
+            <td class="list1_text">{$lang_memberaddSex}：</td>
+            <td colspan="2" class="list1_input"><input name="sex" type="radio" value="0" checked="checked">{$lang_memberaddMan} &nbsp;<input name="sex" type="radio" value="1">{$lang_memberaddWoman}</td>
+          </tr> 
+		  <tr> 
+            <td class="list1_text">{$lang_memberaddTel}：</td>
+            <td colspan="2" class="list1_input"> <input name="tel" type="text" class="input" size="20" maxlength="20"></td>
+          </tr> 
+		  <tr> 
+            <td class="list1_text">{$lang_memberaddCell}：</td>
+            <td colspan="2" class="list1_input"> <input name="mobile" type="text" class="input" size="20" maxlength="20"></td>
+          </tr> 
+		  <tr> 
+            <td class="list1_text"><font color="#FF0000">*</font>email：</td>
+            <td colspan="2" class="list1_input"> <input name="email" type="text" class="input" size="20" maxlength="50">{$lang_memberaddTip1}</td>
+          </tr> 
+		  <tr> 
+            <td class="list1_text">QQ：</td>
+            <td colspan="2" class="list1_input"> <input name="qq" type="text" class="input" size="20" maxlength="20"></td>
+          </tr> 
+		  <tr> 
+            <td class="list1_text">MSN：</td>
+            <td colspan="2" class="list1_input"> <input name="msn" type="text" class="input" size="20" maxlength="50"></td>
+          </tr> 
+		  <tr> 
+            <td class="list1_text">{$lang_memberaddTaoBao}：</td>
+            <td colspan="2" class="list1_input"> <input name="taobao" type="text" class="input" size="20" maxlength="30"></td>
+          </tr> 
+          <tr> 
+          <td class="list1_text" valign="middle">{$lang_memberaddIntro}:</td>
+          <td colspan="2" class="list1_input" valign="top"> <textarea name="admin_introduction" cols="60" rows="5" ></textarea></td>
+          </tr>
+		  <td class="list1_text" valign="middle">{$lang_memberaddCompanyName}:</td>
+          <td colspan="2" class="list1_input" valign="top"> <input name="companyname" type="text" class="input" size="20" maxlength="30" ></td>
+          </tr>
+		  <tr> 
+          <td class="list1_text" valign="middle">{$lang_memberaddCompanyFax}:</td>
+          <td colspan="2" class="list1_input" valign="top"> <input name="companyfax" type="text" class="input" size="20" maxlength="30" ></td>
+          </tr>
+		  <tr> 
+          <td class="list1_text" valign="middle">{$lang_memberaddCompanyCode}:</td>
+          <td colspan="2" class="list1_input" valign="top"> <input name="companycode" type="text" class="input" size="20" maxlength="30" ></td>
+          </tr>
+		  <tr> 
+          <td class="list1_text" valign="middle">{$lang_memberaddCompanyAddress}:</td>
+          <td colspan="2" class="list1_input" valign="top"> <input name="companyaddress" type="text" class="input" size="20" maxlength="30" ></td>
+          </tr>
+		  <tr> 
+          <td class="list1_text" valign="middle">{$lang_memberaddCompanyWebsite}:</td>
+          <td colspan="2" class="list1_input" valign="top"> <input name="companywebsite" type="text" class="input" size="20" maxlength="30" ></td>
+          </tr>
+		  <tr> 
+          <td class="list1_text" valign="middle">{$lang_memberaddType}:</td>
+          <td colspan="2" class="list1_input" valign="top">
+		  <select name="usertype" id="usertype" >
+			 <option value="1" >{$lang_memberaddType1}</option>
+              <option value="2" >{$lang_memberaddType2}</option>
+            </select>
+		  </td>
+          </tr>
+		  <tr>
+		  <td class="list1_text" valign="middle">{$lang_memberaddCheck}:</td>
+          <td colspan="2" class="list1_input" valign="top"><input name="checkid" type="checkbox" value="1"></td>
+          </tr>
+		  <tr> 
+          <td class="list1_text"></td>
+	      <td class="list1_submit"><input type="submit" name="Submit" value="{$lang_Submit}" class="tj" style="*padding-top:2px; *height:22px;"><input type="reset" name="Submit" value="{$lang_Reset}" class="tj" style="*padding-top:2px; *height:22px;"></td>
+          </tr>
+        </form>
+          <tr>
+		  <td class="list1_footer" colspan="2" align="center">$foot</td>
+	  </tr> 
+</table>
+</body>
+</html>
+<!--
+EOT;
+# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+?>-->

@@ -1,4 +1,7 @@
 <?php
+# 文件名称:database.php 2009-08-03 15:46:57
+# MetInfo企业网站管理系统 
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn)). All rights reserved.
 require_once '../login/login_check.php';
 if($action=='export')
 {
@@ -7,13 +10,13 @@ if($action=='export')
         $fileid = isset($fileid) ? $fileid : 1;
         if($fileid==1 && $tables)
         {
-            if(!isset($tables) || !is_array($tables))okinfo('database.php','请选择要备份的数据表!'); 
+            if(!isset($tables) || !is_array($tables))okinfo('database.php',$lang_setdbSelectTable); 
             $random = mt_rand(1000, 9999);
             cache_write('bakup_tables.php', $tables);
         }
         else
         {
-            if(!$tables = cache_read('bakup_tables.php'))okinfo('database.php','请选择要备份的数据表!');
+            if(!$tables = cache_read('bakup_tables.php'))okinfo('database.php',$lang_setdbSelectTable);
         }
         $sqldump = '';
         $tableid = isset($tableid) ? $tableid - 1 : 0;
@@ -31,16 +34,16 @@ if($action=='export')
             $filename = $con_db_name.'_'.date('Ymd').'_'.$random.'_'.$fileid.'.sql';
             $fileid++;
             $bakfile = '../databack/'.$filename;
-            if(!is_writable('../databack/'))okinfo('database.php','数据无法备份到服务器!请检查 ../databack/ 目录是否可写。'); 
+            if(!is_writable('../databack/'))okinfo('database.php','{$lang_setdbTip2} ../databack/ {$lang_setdbTip3}'); 
             file_put_contents($bakfile, $sqldump);
-			$data_msg.="备份文件".$filename."写入成功!<br>";
+			$data_msg.="{$lang_setdbBackupFile}".$filename."{$lang_setdbWriteOK}<br>";
 			echo $data_msg;
             header('location:database.php?data_msg='.$data_msg.'&action='.$action.'&sizelimit='.$sizelimit.'&tableid='.$tableid.'&fileid='.$fileid.'&startfrom='.$startrow.'&random='.$random.'&dosubmit=1');
         }
         else
         {
             cache_delete('bakup_tables.php');
-            okinfo("database.php?action=import",'数据库备份完毕!');
+            okinfo("database.php?action=import",$lang_setdbBackupOK);
         }
         exit;
     }
@@ -81,10 +84,10 @@ elseif ($action=='import')
             $sql = file_get_contents($filepath);
             sql_execute($sql);
             $fileid++;
-            okinfo("database.php?action=".$action."&pre=".$pre."&fileid=".$fileid."&dosubmit=1","数据文件 $filename 导入成功!");
+            okinfo("database.php?action=".$action."&pre=".$pre."&fileid=".$fileid."&dosubmit=1","{$lang_setdbDBFile} $filename {$lang_setdbImportOK}");
         }
         else {
-            okinfo("database.php?action=$action","数据库恢复成功!");
+            okinfo("database.php?action=$action","{$lang_setdbDBRestoreOK}");
         }
     }
 	 else
@@ -139,7 +142,7 @@ elseif ($action=='delete') {
             @unlink('../databack/'.$filenames);
         }
     }
-	okinfo("database.php?action=import","文件删除成功!");
+	okinfo("database.php?action=import","{$lang_setdbDeleteOK}");
 }
 
 /**下载文件**/
@@ -155,7 +158,7 @@ $f = new upfile('sql','../databack/','','');
 if($_FILES['met_upsql']['name']!=''){
         $met_upsql   = $f->upload('met_upsql',$met_sqlname); 
     }
-    okinfo('database.php?action=import','文件上传成功!');
+    okinfo('database.php?action=import',$lang_setdbUploadOK);
 }
 
 
@@ -188,10 +191,10 @@ footer();
 
 function file_down($file)
 {
-	!file_exists($file) && okinfo('database.php?action=import','文件不存在');
+	!file_exists($file) && okinfo('database.php?action=import',$lang_setdbNotExist);
 	$filename = $filename ? $filename : basename($file);
 	$filetype = fileext($filename);
-    $filetype!='sql' && okinfo('database.php?action=import','只能下载sql文件');
+    $filetype!='sql' && okinfo('database.php?action=import',$lang_setdbOnlyDownload);
 	$filesize = filesize($file);
 	header('Cache-control: max-age=31536000');
 	header('Expires: '.gmdate('D, d M Y H:i:s', time() + 31536000).' GMT');
@@ -325,4 +328,6 @@ function fileext($filename)
 {
 	return trim(substr(strrchr($filename, '.'), 1));
 }
+# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
 ?>

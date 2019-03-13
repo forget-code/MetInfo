@@ -1,127 +1,156 @@
 <!--<?php
+# 文件名称:admin_add.html 2009-08-15 14:34:57
+# MetInfo企业网站管理系统 
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+require_once template('head');
 echo <<<EOT
 -->
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-<link rel="stylesheet" type="text/css" href="$css_url/metinfo_admin.css">
-<title>添加管理员</title>
-<script type="text/javascript" src="../language/zh_cn.js"></script>
-<script type="text/javascript" src="../include/metinfo.js"></script>
+<title>{$lang_adminaddTitle}</title>
 </head>
 <body>
-
-<table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td align="center" valign="top"><table width="95%" border="0" cellpadding="2" cellspacing="1" class="table_southidc">
-        <form method="POST" name="myform" onSubmit="return CheckForm();" action="save.php?action=add" target="_self">
+<form method="POST" name="myform" onSubmit="return CheckForm();" action="save.php?action=add" target="_self">
+<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
           <tr> 
-            <td class="back_southidc" height="30" colspan="3" align="center">添加管理员</td>
+            <td colspan="3" align="center" class="list1_title">{$lang_adminaddTitle}</td>
           </tr>
-          <tr bgcolor="#ECF5FF"> 
-            <td width="120" height="25"><font color="#FF0000">*</font>用户名：</td>
-            <td colspan="2"> <input name="useid" type="text" class="input" size="20" maxlength="20"><input name="" type="button" class="btn2" value="ID重名检测" onClick="javascript: Usercheck('useid')" /><span id="div_name"></span></td>
+          <tr> 
+            <td class="list1_text"><font color="#FF0000">*</font>{$lang_adminaddUserName}：</td>
+            <td colspan="2" class="list1_input"> <input id="useid" name="useid" type="text" class="input" size="20" maxlength="20"><input name="" type="button" class="btn2" value="{$lang_adminaddCheckID}" onClick="javascript: Usercheck('useid')" /><span id="div_name"></span></td>
           </tr> 
-		  <tr bgcolor="#ECF5FF"> 
-            <td width="119" height="25"><font color="#FF0000">*</font>登陆密码：</td>
-            <td colspan="2"> <input name="pass1" type="password" class="input" size="20" maxlength="20"></td>
+		  <tr> 
+            <td class="list1_text"><font color="#FF0000">*</font>{$lang_adminaddPs}：</td>
+            <td colspan="2" class="list1_input"> <input name="pass1" type="password" class="input" size="20" maxlength="20"></td>
           </tr> 
-		   <tr bgcolor="#ECF5FF"> 
-            <td width="119" height="25"><font color="#FF0000">*</font>密码确认：</td>
-            <td colspan="2"> <input name="pass2" type="password" class="input" size="20" maxlength="20"></td>
+		   <tr> 
+            <td class="list1_text"><font color="#FF0000">*</font>{$lang_adminaddPs1}：</td>
+            <td colspan="2" class="list1_input"> <input name="pass2" type="password" class="input" size="20" maxlength="20"></td>
           </tr> 
-		  <tr bgcolor="#ECF5FF"> 
-            <td width="119" height="25">姓名：</td>
-            <td colspan="2"> <input name="name" type="text" class="input" size="20" maxlength="20"></td>
+		  <tr> 
+            <td class="list1_text">{$lang_adminaddReadlName}：</td>
+            <td colspan="2" class="list1_input"> <input name="name" type="text" class="input" size="20" maxlength="20"></td>
           </tr> 
-		  <tr bgcolor="#ECF5FF"> 
-            <td width="119" height="25">性别：</td>
-            <td colspan="2"><input name="sex" type="radio" value="0" checked="checked">男 &nbsp;<input name="sex" type="radio" value="1">女</td>
+		  <tr> 
+            <td class="list1_text">{$lang_adminaddSex}：</td>
+            <td colspan="2" class="list1_input"><input name="sex" type="radio" value="0" checked="checked">{$lang_adminaddMan} &nbsp;<input name="sex" type="radio" value="1">{$lang_adminaddWoman}</td>
           </tr> 
-		  <tr bgcolor="#ECF5FF"> 
-            <td width="119" height="25">联系电话：</td>
-            <td colspan="2"> <input name="tel" type="text" class="input" size="20" maxlength="20"></td>
+		  <tr> 
+            <td class="list1_text">{$lang_adminaddTel}：</td>
+            <td colspan="2" class="list1_input"> <input name="tel" type="text" class="input" size="20" maxlength="20"></td>
           </tr> 
-		  <tr bgcolor="#ECF5FF"> 
-            <td width="119" height="25">手机：</td>
-            <td colspan="2"> <input name="mobile" type="text" class="input" size="20" maxlength="20"></td>
+		  <tr> 
+            <td class="list1_text">{$lang_adminaddCell}：</td>
+            <td colspan="2" class="list1_input"> <input name="mobile" type="text" class="input" size="20" maxlength="20"></td>
           </tr> 
-		  <tr bgcolor="#ECF5FF"> 
-            <td width="119" height="25"><font color="#FF0000">*</font>email：</td>
-            <td colspan="2"> <input name="email" type="text" class="input" size="20" maxlength="50">用于取回账号密码</td>
+		  <tr> 
+            <td class="list1_text"><font color="#FF0000">*</font>email：</td>
+            <td colspan="2" class="list1_input"> <input name="email" type="text" class="input" size="20" maxlength="50">{$lang_adminaddTip1}</td>
           </tr> 
-		  <tr bgcolor="#ECF5FF"> 
-            <td width="119" height="25">QQ：</td>
-            <td colspan="2"> <input name="qq" type="text" class="input" size="20" maxlength="20"></td>
+		  <tr> 
+            <td class="list1_text">QQ：</td>
+            <td colspan="2" class="list1_input"> <input name="qq" type="text" class="input" size="20" maxlength="20"></td>
           </tr> 
-		  <tr bgcolor="#ECF5FF"> 
-            <td width="119" height="25">MSN：</td>
-            <td colspan="2"> <input name="msn" type="text" class="input" size="20" maxlength="50"></td>
+		  <tr> 
+            <td class="list1_text">MSN：</td>
+            <td colspan="2" class="list1_input"> <input name="msn" type="text" class="input" size="20" maxlength="50"></td>
           </tr> 
-		  <tr bgcolor="#ECF5FF"> 
-            <td width="119" height="25">淘宝：</td>
-            <td colspan="2"> <input name="taobao" type="text" class="input" size="20" maxlength="30"></td>
+		  <tr> 
+            <td class="list1_text">{$lang_adminaddTaoBao}：</td>
+            <td colspan="2" class="list1_input"> <input name="taobao" type="text" class="input" size="20" maxlength="30"></td>
           </tr> 
-          <tr bgcolor="#ECF5FF"> 
-          <td width="120" height="25" valign="middle">管理员简介:</td>
-          <td colspan="2" valign="top"> <textarea name="admin_introduction" cols="60" rows="5" ></textarea></td>
+          <tr> 
+          <td class="list1_text" valign="middle">{$lang_adminaddIntro}:</td>
+          <td colspan="2" class="list1_input" valign="top"> <textarea name="admin_introduction" cols="60" rows="5" ></textarea></td>
           </tr>
-		  <tr bgcolor="#ECF5FF"> 
-          <td width="120" height="25" valign="middle"><font color="#FF0000">*</font>信息权限:</td>
-          <td colspan="2" valign="top"><input name="admin_issue" type="checkbox" value="yes">只允许查看自己发表的信息</td>
+		  <tr> 
+          <td class="list1_text" valign="middle"><font color="#FF0000">*</font>{$lang_adminaddPower}:</td>
+          <td colspan="2" class="list1_input" valign="top"><input name="admin_issue" type="checkbox" value="yes">{$lang_adminaddTip2}</td>
           </tr>
-		  <tr bgcolor="#ECF5FF"> 
-          <td width="120" height="25" valign="middle"><font color="#FF0000">*</font>操作权限:</td>
-          <td colspan="2" valign="top"><font color="#FF0000"><input name="admin_op0" type="checkbox" value="metinfo" checked="checked">完全控制</font>&nbsp;&nbsp;<input name="admin_op1" type="checkbox" value="add">添加信息&nbsp;&nbsp;<input name="admin_op2" type="checkbox" value="editor">修改信息&nbsp;&nbsp;<input name="admin_op3" type="checkbox" value="del">删除信息</td>
+		  <tr> 
+          <td class="list1_text" valign="middle"><font color="#FF0000">*</font>{$lang_adminaddOperate}:</td>
+          <td colspan="2" class="list1_input" valign="top"><font color="#FF0000"><input name="admin_op0" type="checkbox" value="metinfo" checked="checked">{$lang_adminaddOperate1}</font>&nbsp;&nbsp;<input name="admin_op1" type="checkbox" value="add">{$lang_adminaddOperate2}&nbsp;&nbsp;<input name="admin_op2" type="checkbox" value="editor">{$lang_adminaddOperate3}&nbsp;&nbsp;<input name="admin_op3" type="checkbox" value="del">删除信息</td>
           </tr>
-		   <tr bgcolor="#ECF5FF"> 
-          <td width="120" height="25" valign="middle"><font color="#FF0000">*</font>栏目权限:</td>
-          <td colspan="2" valign="top"><font color="#FF0000">
-<input name="admin_pop" type="checkbox" value="yes">全部选择</font><br>
-<input name="admin_pop1001" type="checkbox" value="1001">管理员管理&nbsp;&nbsp;
-<input name="admin_pop1002" type="checkbox" value="1002">基本信息&nbsp;&nbsp;
-<input name="admin_pop1003" type="checkbox" value="1003">界面风格&nbsp;&nbsp;
+		   <tr> 
+          <td class="list1_text" valign="middle"><font color="#FF0000">*</font>{$lang_adminaddColumn}:</td>
+          <td colspan="2" class="list1_input" valign="top"><font color="#FF0000">
+<input name="admin_pop" type="checkbox" value="yes">{$lang_adminaddSelectAll}</font><br>
+<b>{$lang_indexbasic}:</b>
+<input name="admin_pop1001" type="checkbox" value="1001">{$lang_indexbasicinfo}&nbsp;
+<input name="admin_pop1002" type="checkbox" value="1002">{$lang_indexlang}&nbsp;
+<input name="admin_pop1003" type="checkbox" value="1003">{$lang_indexfoot}&nbsp;
+<input name="admin_pop1004" type="checkbox" value="1004">{$lang_indexotherinfo}&nbsp;
+<input name="admin_pop1005" type="checkbox" value="1005">{$lang_indexdataback}&nbsp;
+<input name="admin_pop1006" type="checkbox" value="1006">{$lang_indexsafe}&nbsp;
+<input name="admin_pop1007" type="checkbox" value="1007">{$lang_indexupload}<br>
 
-<input name="admin_pop1004" type="checkbox" value="1004">图片配置&nbsp;&nbsp;
-<input name="admin_pop1005" type="checkbox" value="1005">栏目配置&nbsp;&nbsp;
-<input name="admin_pop1006" type="checkbox" value="1006">首页配置&nbsp;&nbsp;
-<input name="admin_pop1007" type="checkbox" value="1007">优化推广&nbsp;&nbsp;
-<input name="admin_pop1008" type="checkbox" value="1008">底部信息&nbsp;&nbsp;
-<input name="admin_pop1009" type="checkbox" value="1009">flash管理&nbsp;&nbsp;
-<input name="admin_pop1010" type="checkbox" value="1010">热门标签&nbsp;&nbsp;
-<input name="admin_pop1011" type="checkbox" value="1011">在线交流&nbsp;&nbsp;
-<input name="admin_pop1012" type="checkbox" value="1012">静态页面生成&nbsp;&nbsp;
-<input name="admin_pop1013" type="checkbox" value="1013">产品模块参数&nbsp;&nbsp;
-<input name="admin_pop1014" type="checkbox" value="1014">下载模块参数&nbsp;&nbsp;
-<input name="admin_pop1015" type="checkbox" value="1015">图片模块参数&nbsp;&nbsp;
-<input name="admin_pop1016" type="checkbox" value="1016">数据库备份&nbsp;&nbsp;
-<input name="admin_pop1017" type="checkbox" value="1017">反馈系统&nbsp;&nbsp;
-<input name="admin_pop1018" type="checkbox" value="1018">友情链接&nbsp;&nbsp;
-<input name="admin_pop1019" type="checkbox" value="1019">备用字段&nbsp;&nbsp;
+<b>{$lang_indexskin}:</b>
+<input name="admin_pop1101" type="checkbox" value="1101">{$lang_indexskin}&nbsp;
+<input name="admin_pop1102" type="checkbox" value="1102">{$lang_indexpic}&nbsp;
+<input name="admin_pop1103" type="checkbox" value="1103">{$lang_indexhomeset}&nbsp;
+<input name="admin_pop1104" type="checkbox" value="1104">{$lang_indexflash}&nbsp;
+<input name="admin_pop1105" type="checkbox" value="1105">{$lang_indexonline}<br>
+
+<b>{$lang_indexcolumn}:</b>
+<input name="admin_pop1201" type="checkbox" value="1201">{$lang_indexcolumn}&nbsp;
+<input name="admin_pop1202" type="checkbox" value="1202">{$lang_indexproduct}&nbsp;
+<input name="admin_pop1203" type="checkbox" value="1203">{$lang_indexdownload}&nbsp;
+<input name="admin_pop1204" type="checkbox" value="1204">{$lang_indeximages}&nbsp;
+<input name="admin_pop1205" type="checkbox" value="1205">{$lang_indexcv}<br>
+
+<b>{$lang_indexcontent}:</b>
+<input name="admin_pop1301" type="checkbox" value="1301">{$lang_indexsetcontent}&nbsp;
+
 <!--
 EOT;
 foreach($column_list as $key=>$val){
+if($val[module]<7){
 echo <<<EOT
 -->
-<input name="admin_pop$val[id]" type="checkbox" value="$val[id]">$val[c_name]管理&nbsp;&nbsp;
+<input name="admin_pop$val[id]" type="checkbox" value="$val[id]">$val[c_name]&nbsp;
 <!--
 EOT;
-}
+}}
 echo <<<EOT
 -->
+<br>
+<b>{$lang_indexseo}:</b>
+<input name="admin_pop1401" type="checkbox" value="1401">{$lang_indexhtmset}&nbsp;
+<input name="admin_pop1402" type="checkbox" value="1402">{$lang_indexseoset}&nbsp;
+<input name="admin_pop1403" type="checkbox" value="1403">{$lang_indexhot}&nbsp;
+<input name="admin_pop1404" type="checkbox" value="1404">{$lang_indexlink}<br>
+
+<b>{$lang_indexfeedback}:</b>
+<!--
+EOT;
+foreach($column_list as $key=>$val){
+if($val[module]==7 or $val[module]==8){
+echo <<<EOT
+-->
+<input name="admin_pop$val[id]" type="checkbox" value="$val[id]">$val[c_name]&nbsp;
+<!--
+EOT;
+}}
+echo <<<EOT
+-->
+<br>
+<b>{$lang_indexuser}:</b>
+<input name="admin_pop1601" type="checkbox" value="1601">{$lang_indexadminname}&nbsp;
+<input name="admin_pop1602" type="checkbox" value="1602">{$lang_memberset}&nbsp;
+<input name="admin_pop1603" type="checkbox" value="1603">{$lang_memberManage}<br><br>
  </td>
-          </tr
-          ><tr> 
-            <td height="30" colspan="3" align="center" bgcolor="#ECF5FF"> <input type="submit" name="Submit" value="提交" class="tj">
-              　 
-              <input type="reset" name="Submit" value="重置" class="tj"> </td>
+          </tr>
+		  <tr> 
+          <td class="list1_text"></td>
+	      <td class="list1_submit"><input type="submit" name="Submit" value="{$lang_Submit}" class="tj" style="*padding-top:2px; *height:22px;"><input type="reset" name="Submit" value="{$lang_Reset}" class="tj" style="*padding-top:2px; *height:22px;"></td>
           </tr>
         </form>
-    </table></td>
-  </tr>
+          <tr>
+		  <td class="list1_footer" colspan="2" align="center">$foot</td>
+	  </tr> 
 </table>
 </body>
 </html>
 <!--
 EOT;
+# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
 ?>-->

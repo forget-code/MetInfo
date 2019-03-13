@@ -1,15 +1,23 @@
 <!--<?php
+# 文件名称:adminsetup.htm 2009-08-18 08:53:03
+# MetInfo企业网站管理系统 
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
 require_once template('header'); 
 echo <<<EOT
 -->
-<div class="body">
-<div class="head">
-<div class="logo"><img src="images/logosmall.gif" width="40" /></div>
-<div class="headtext">MetInfo企业网站管理系统安装</div>
+<body>
+
+<div class="top">
 <div class="headright">第五步：管理员帐号设置</div>
 </div>
+
+<div class="head">
+<div class="logo"><img src="images/logosmall.gif" width="40" /></div>
+<div class="headtext"><font style="font-family:Arial, Helvetica, sans-serif">MetInfo</font>企业网站管理系统安装<font style="font-family:Arial, Helvetica, sans-serif; font-size:16px;"> V2.0</font></div>
+</div>
+
 <div class="content">
-<br>
+<div class="content4">
 <p>为了管理MetInfo企业网站管理系统的设置，您需要一个管理员帐号.请选择管理员名字、密码，输入信息并仔细检查后，选择 <b>保存管理设置</b> 。 </p>
 
     <form method="post" action="" name="adminsetup" onSubmit="return chkreg();">
@@ -38,11 +46,15 @@ echo <<<EOT
 		  		  
 		</div>
 	  </fieldset>
-	 <p align="right"> <input type="submit" name="submit" class="btn2" tabindex="20" value="保存管理设置" /></p>
+	  <p align="center"> <input type="submit" name="submit" class="btn2" tabindex="20" value="保存管理设置" style="*padding-top:4px;" /></p>
     </form>
+
 </div>
-</div>
+
+
 <!--
 EOT;
 require_once template('footer'); 
+# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
 ?>-->

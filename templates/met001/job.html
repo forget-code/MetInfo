@@ -1,0 +1,23 @@
+<!--<?php
+require_once template('head'); 
+$metjob=methtml_job('',1,1,1,1,1,1,1,1,1,1);
+echo <<<EOT
+-->
+<div class="web">
+<div class="webleft">
+<div class="nav_x">&nbsp;<a href='$index_url'>{$lang_home}</a> > $nav_x[name]</div>
+<div class="content">
+<div class="job_list">$metjob</div>
+<div class="page">$page_list</div>
+</div>
+</div>
+<!--
+EOT;
+require_once template('rightlist');
+echo <<<EOT
+-->
+</div>
+<!--
+EOT;
+require_once template('foot'); 
+?>

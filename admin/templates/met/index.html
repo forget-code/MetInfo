@@ -1,46 +1,653 @@
 <!--<?php
+# 文件名称:index.html 2009-08-05 09:21:57
+# MetInfo企业网站管理系统 
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+echo <<<EOT
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>MetInfo{$lang_indexmetinfo}</title>
+<link href="$img_url/metinfo.css" rel="stylesheet" />
+<style type="text/css">
+body {
+	font-size: $lang_fontsize; 
+	font-family:$lang_fontfamily;
+	background-color:$lang_backgroundcolor;
+}
+</style>
+</head>
+<body>
+<div class="top">
+<div style="width:100%;">
+<marquee scrollAmount="3" scrollDelay="4" width="50%" align="left" onMouseOver="this.stop()" onMouseOut="this.start()"
+style="position:absolute; height:30px; line-height:30px; right:20px; top:0px; z-index:100; color:#FF0000;">
+<script language="javascript" src="http://www.metinfo.cn/metnews.php?fromurl=$met_weburl&softtype=1"></script>
+</marquee>
+</div> 
+   <div class="top_bottom">
+   <div class="top_left"><a href="http://www.metinfo.cn" target="_blank" hidefocus="true"><img src="$img_url/logo.gif" alt="MetInfo"  /></a></div>
+<div class="top_right">
+<div class="top_right_top"></div>
+<div class="top_list">
+   <ul id="top_ul">
+       <li><a href="#" onfocus="if(this.blur)this.blur();" onclick="san(0)"  class="li_ok" style="color:#FFFFFF;">{$lang_indexbasic}</a></li>
+	   <li><a href="#" onfocus="if(this.blur)this.blur();" onclick="san(1)">{$lang_indexskin}</a></li>
+	   <li><a href="#" onfocus="if(this.blur)this.blur();" onclick="san(2)">{$lang_indexcolumn}</a></li>
+	   <li><a href="#" onfocus="if(this.blur)this.blur();" onclick="san(3)" >{$lang_indexcontent}</a></li>
+	   <li><a href="#" onfocus="if(this.blur)this.blur();" onclick="san(4)">{$lang_indexseo}</a></li>
+	   <li><a href="#" onfocus="if(this.blur)this.blur();" onclick="san(5)">{$lang_indexfeedback}</a></li>
+	   <li><a href="#" onfocus="if(this.blur)this.blur();" onclick="san(6)">{$lang_indexuser}</a></li>
+	   <div style="clear:both;"></div>
+   </ul>
+   <div class="top_admin"><span>MetInfo{$lang_indexmanager}&nbsp;</span>{$lang_indexwelcom}: $metinfo_admin_name</div>
+</div>
+   <div style="clear:both;"></div>
+   <div class="top_right_bottom"></div>
+</div>
+</div>
+</div>
+
+
+
+<div class="bottom" >
+<table width="100%"  height="100%" cellpadding="0" cellspacing="0" >
+<tr>
+<td  valign="top" style="width:170px; *width:172px; _width:174px; z-index:2;">
+<div class="left" id="leftheight" >
+     <div class="left_top">
+	      <a target="_blank" href="../">{$lang_indexhome}</a>&nbsp;&nbsp;<a href="site/sysadmin.php" target="main">{$lang_indexadmin}</a>&nbsp;&nbsp;<a target="_top" href="login/login_out.php">{$lang_indexloginout}</a>	 </div>
+	 <div class="left_content">
+<!--——————————————————————栏目一开始————————————————————————————-->
+	 <div id="list0" class="left_u">
+	    <ul id="left_ul1" class="pt">
+<!--
+EOT;
+$k=0;
+echo <<<EOT
+-->
+<li><a target="main" onfocus="if(this.blur)this.blur();" id="list0_$k" href="site/sysadmin.php" onclick="san1(1,$k)" class="left_clicka" style=" border:1px solid  #c5edf9; color:#1788c2;">{$lang_sysadminSystemInfo}</a></li>
+<!--
+EOT;
+$k++;
+$p0weredby or ob_end_clean();
+ob_pcontent();
+if($metinfo_admin_pop=="metinfo" || $admin_pop1001=="metinfo"){
+echo <<<EOT
+-->
+<li><a target="main" onfocus="if(this.blur)this.blur();" id="list0_$k" href="set/basic.php" onclick="san1(1,$k)" >{$lang_indexbasicinfo}</a></li>
+<!--
+EOT;
+$k++;
+}
+if($metinfo_admin_pop=="metinfo" || $admin_pop1002=="metinfo"){
+echo <<<EOT
+-->
+<li><a target="main" onfocus="if(this.blur)this.blur();" id="list0_$k" href="set/lang.php" onclick="san1(1,$k)">{$lang_indexlang}</a></li> 
+<!--
+EOT;
+$k++;
+}
+if($metinfo_admin_pop=="metinfo" || $admin_pop1003=="metinfo"){
+echo <<<EOT
+--> 
+<li><a target="main" onfocus="if(this.blur)this.blur();" id="list0_$k" href="set/foot.php" onclick="san1(1,$k)">{$lang_indexfoot}</a></li>
+<!--
+EOT;
+$k++;
+}
+if($metinfo_admin_pop=="metinfo" || $admin_pop1004=="metinfo"){
+echo <<<EOT
+-->
+<li><a target="main" onfocus="if(this.blur)this.blur();" id="list0_$k" href="set/other_info.php" onclick="san1(1,$k)">{$lang_indexotherinfo}</a></li> 
+<!--
+EOT;
+$k++;
+}
+if($metinfo_admin_pop=="metinfo" || $admin_pop1005=="metinfo"){
+echo <<<EOT
+--> 
+<li><a target="main" onfocus="if(this.blur)this.blur();" id="list0_$k" href="set/database.php" onclick="san1(1,$k)">{$lang_indexdataback}</a></li> 
+<!--
+EOT;
+$k++;
+}
+if($metinfo_admin_pop=="metinfo" || $admin_pop1006=="metinfo"){
+echo <<<EOT
+--> 
+<li><a target="main" onfocus="if(this.blur)this.blur();" id="list0_$k" href="set/safe.php" onclick="san1(1,$k)">{$lang_indexsafe}</a></li> 
+<!--
+EOT;
+$k++;
+}
+if($metinfo_admin_pop=="metinfo" || $admin_pop1007=="metinfo"){
+echo <<<EOT
+--> 
+<li><a target="main" onfocus="if(this.blur)this.blur();" id="list0_$k" href="set/uploadfile.php" onclick="san1(1,$k)">{$lang_indexupload}</a></li> 
+<!--
+EOT;
+$k++;
+}
+$k1=$k+1;
+
+echo <<<EOT
+--> 
+		   <li><a target="main" onfocus="if(this.blur)this.blur();"  id="list0_$k2" href="set/authcode.php" onclick="san1(1,$k)">{$lang_indexcode}</a></li>
+		   <li><a  target="_blank" onfocus="if(this.blur)this.blur();" id="list0_$k3" href="http://bbs.metinfo.cn/" onclick="san1(1,$k1)">{$lang_indexsupport}</a></li>
+		</ul>	
+	</div>
+<!--***************************************栏目一结束***************************************-->
+
+
+
+
+<!--——————————————————————栏目二开始————————————————————————————-->
+	<div id="list1" class="left_u" style="display:none;">
+	    <ul id="left_ul2" class="pt">
+
+<!--
+EOT;
+$k=0;
+if($metinfo_admin_pop=="metinfo" || $admin_pop1101=="metinfo"){
+$k++;
+echo <<<EOT
+-->
+<li><a target="main" id="list1_0" onfocus="if(this.blur)this.blur();" href="set/skin.php" onclick="san1(2,0)" class="li_left_ok" style=" border:1px solid  #c5edf9; color:#1788c2;">{$lang_indexskin}</a></li>
+<li><a target="main" id="list2_$k" onfocus="if(this.blur)this.blur();" href="set/skin_manager.php" onclick="san1(2,$k)">{$lang_indexskinmanager}</a></li>
+<!--
+EOT;
+$k++;
+}
+if($metinfo_admin_pop=="metinfo" || $admin_pop1102=="metinfo"){
+echo <<<EOT
+-->
+<li><a target="main" id="list1_$k" onfocus="if(this.blur)this.blur();" href="set/img.php" onclick="san1(2,$k)">{$lang_indexpic}</a></li>
+<!--
+EOT;
+$k++;
+}
+if($metinfo_admin_pop=="metinfo" || $admin_pop1103=="metinfo"){
+echo <<<EOT
+--> 
+<li><a target="main" id="list1_$k" onfocus="if(this.blur)this.blur();" href="set/index_set.php" onclick="san1(2,$k)">{$lang_indexhomeset}</a></li>
+ <!--
+EOT;
+$k++;
+}
+if($metinfo_admin_pop=="metinfo" || $admin_pop1104=="metinfo"){
+$flashk=$k+1;
+echo <<<EOT
+--> 
+<li><a target="main" id="list1_$k" onfocus="if(this.blur)this.blur();" href="flash/setflash.php" onclick="san1(2,$k)">{$lang_indexflashset}</a></li>
+<li><a target="main" id="list1_$flashk" onfocus="if(this.blur)this.blur();" href="flash/flash.php" onclick="san1(2,$flashk)">{$lang_indexflash}</a></li>
+ <!--
+EOT;
+$k++;
+$k++;
+}
+if($metinfo_admin_pop=="metinfo" || $admin_pop1105=="metinfo"){
+$onlinek=$k+1;
+echo <<<EOT
+--> 
+<li><a target="main" id="list1_$k" onfocus="if(this.blur)this.blur();" href="set/online.php" onclick="san1(2,$k)">{$lang_indexonlineset}</a></li>
+<li><a target="main" id="list1_$k" onfocus="if(this.blur)this.blur();" href="online/" onclick="san1(2,$onlinek)">{$lang_indexonline}</a></li>
+<!--
+EOT;
+$k++;
+$k++;
+}
+echo <<<EOT
+-->
+		   <li><a target="main" onfocus="if(this.blur)this.blur();" id="list0_$k1" href="set/info.php" onclick="san1(2,$k)">{$lang_indexskinset}</a></li>
+		</ul>
+	</div>
+<!--***************************************栏目二结束***************************************-->
+
+
+
+
+
+<!--——————————————————————栏目三开始————————————————————————————-->
+<div id="list2" class="left_u" style="display:none;">
+<ul id="left_ul3" class="pt">	
+<!--
+EOT;
+$k=0;
+if($metinfo_admin_pop=="metinfo" || $admin_pop1201=="metinfo"){
+echo <<<EOT
+-->         	
+		   <li><a target="main" id="list2_$k" onfocus="if(this.blur)this.blur();" href="column/" onclick="san1(3,$k)" class="li_left_ok" style=" border:1px solid  #c5edf9; color:#1788c2;">{$lang_indexcolumn}</a></li>
+<!--
+EOT;
+$k++;
+}
+if($metinfo_admin_pop=="metinfo" || $admin_pop1202=="metinfo"){
+echo <<<EOT
+-->      
+<li><a target="main" id="list2_$k" onfocus="if(this.blur)this.blur();" href="parameter/parameter.php?type=3" onclick="san1(3,$k)">{$lang_indexproduct}</a></li>
+ <!--
+EOT;
+$k++;
+}
+if($metinfo_admin_pop=="metinfo" || $admin_pop1203=="metinfo"){
+echo <<<EOT
+--> 
+<li><a target="main" id="list2_$k" onfocus="if(this.blur)this.blur();" href="parameter/parameter.php?type=4" onclick="san1(3,$k)">{$lang_indexdownload}</a></li>
+ <!--
+EOT;
+$k++;
+}
+if($metinfo_admin_pop=="metinfo" || $admin_pop1204=="metinfo"){
+echo <<<EOT
+--> 
+<li><a target="main" id="list2_$k" onfocus="if(this.blur)this.blur();" href="parameter/parameter.php?type=5" onclick="san1(3,$k)">{$lang_indeximages}</a></li>
+ <!--
+EOT;
+$k++;
+}
+if($metinfo_admin_pop=="metinfo" || $admin_pop1205=="metinfo"){
+echo <<<EOT
+--> 
+<li><a target="main" id="list2_$k" onfocus="if(this.blur)this.blur();" href="parameter/parameter.php?type=10000" onclick="san1(3,$k)">{$lang_indexcv}</a></li>
+ <!--
+EOT;
+}
+echo <<<EOT
+--> 
+		</ul>
+	</div>
+<!--***************************************栏目三结束***************************************-->
+
+
+
+
+<!--——————————————————————栏目四开始————————————————————————————-->	
+	<div id="list3" class="left_u" style="display:none;">
+	   <ul id="left_ul4" class="lmgl">
+<!--首页内容开始-->
+<!--
+EOT;
+$i=0;
+if($metinfo_admin_pop=="metinfo" || $admin_pop1301=="metinfo"){
+echo <<<EOT
+--> 
+<li onclick="san4($i)"><a onfocus="if(this.blur)this.blur();" target="_self" href="#">{$lang_indexsetcontent}</a></li>
+		   <span style="display:none;">
+           <li><a target="main" onfocus="if(this.blur)this.blur();" href="set/index_content.php" >{$lang_indexsetcontent}</a></li>
+		   </span>
+<!--
+EOT;
+$i++;
+}
+echo <<<EOT
+-->	
+<!--首页内容结束--> 
+<!--简介模型开始-->
+<!--
+EOT;
+foreach($class1_list[1] as $key=>$val)
+{
+$admin_pop="admin_pop".$val[id];
+if($metinfo_admin_pop=="metinfo" || $$admin_pop=="metinfo"){
+echo <<<EOT
+-->	
+		   <li onclick="san4($i)"><a onfocus="if(this.blur)this.blur();" target="_self" href="#">$val[name]</a></li>
+		   <span style="display:none;">
+<!--
+EOT;
+if($val[isshow]==1){
+echo <<<EOT
+--> 
+		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="about/about.php?id=$val[id]">$val[name]</a></li>
+<!--
+EOT;
+}
+foreach($class2_list[1] as $key=>$val1)
+{
+if($val1[bigclass]==$val[id]){
+echo <<<EOT
+--> 
+			     <li><a target="main" onfocus="if(this.blur)this.blur();" href="about/about.php?id=$val1[id]">$val1[name]</a></li>
+<!--
+EOT;
+foreach($class2_list[1] as $key=>$val2){
+if($val2[bigclass]==$val1[id]){
+echo <<<EOT
+-->
+                <li><a target="main" onfocus="if(this.blur)this.blur();" href="about/about.php?id=$val2[id]">--$val2[name]</a></li>
+<!--
+EOT;
+}}		
+}
+}
+echo <<<EOT
+-->
+			</span>
+<!--
+EOT;
+$i++;
+}}
+echo <<<EOT
+-->	
+<!--简介模型结束-->
+
+<!--文章模型开始-->
+<!--
+EOT;
+foreach($class1_list[2] as $key=>$val)
+{
+$admin_pop="admin_pop".$val[id];
+if($metinfo_admin_pop=="metinfo" || $$admin_pop=="metinfo"){
+echo <<<EOT
+-->
+          <li onclick="san4($i)"><a onfocus="if(this.blur)this.blur();" target="_self" href="#">$val[name]</a></li>
+		   <span style="display:none;">	
+		   <li><a target="main"  onfocus="if(this.blur)this.blur();" href="article/add.php?class1=$val[id]">{$lang_indexadd}$val[name]</a></li>
+		   <li><a target="main" onfocus="if(this.blur)this.blur();"  href="article/index.php?class1=$val[id]">{$lang_indexindex}$val[name]</a></li>
+		   </span>
+<!--
+EOT;
+$i++;
+}}
+echo <<<EOT
+-->	
+<!--文章模型结束-->
+<!--产品模型开始-->
+<!--
+EOT;
+foreach($class1_list[3] as $key=>$val)
+{
+$admin_pop="admin_pop".$val[id];
+if($metinfo_admin_pop=="metinfo" || $$admin_pop=="metinfo"){
+echo <<<EOT
+-->	
+             <li onclick="san4($i)"><a onfocus="if(this.blur)this.blur();" target="_self" href="#">$val[name]</a></li>
+		   <span style="display:none;">	
+		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="product/add.php?class1=$val[id]">{$lang_indexadd}$val[name]</a></li>
+		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="product/index.php?class1=$val[id]">{$lang_indexindex}$val[name]</a></li>
+		   </span>
+<!--
+EOT;
+$i++;
+}}
+echo <<<EOT
+-->	
+<!--产品模型结束-->
+<!--下载模型开始-->
+<!--
+EOT;
+foreach($class1_list[4] as $key=>$val)
+{
+$admin_pop="admin_pop".$val[id];
+if($metinfo_admin_pop=="metinfo" || $$admin_pop=="metinfo"){
+echo <<<EOT
+-->	
+            <li onclick="san4($i)"><a onfocus="if(this.blur)this.blur();" target="_self" href="#">$val[name]</a></li>
+		   <span style="display:none;">	
+		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="download/add.php?class1=$val[id]">{$lang_indexadd}$val[name]</a></li>
+		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="download/index.php?class1=$val[id]">{$lang_indexindex}$val[name]</a></li>
+		   </span>
+<!--
+EOT;
+$i++;
+}}
+echo <<<EOT
+-->	
+<!--下载模型结束-->
+<!--图片模型开始-->
+<!--
+EOT;
+foreach($class1_list[5] as $key=>$val)
+{
+$admin_pop="admin_pop".$val[id];
+if($metinfo_admin_pop=="metinfo" || $$admin_pop=="metinfo"){
+echo <<<EOT
+-->	
+            <li onclick="san4($i)"><a onfocus="if(this.blur)this.blur();" target="_self" href="#">$val[name]</a></li>
+		   <span style="display:none;">	
+		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="img/add.php?class1=$val[id]">{$lang_indexadd}$val[name]</a></li>
+		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="img/index.php?class1=$val[id]">{$lang_indexindex}$val[name]</a></li>
+		   </span>
+<!--
+EOT;
+$i++;
+}}
+echo <<<EOT
+-->	
+<!--图片模型结束-->
+<!--招聘模型开始-->
+<!--
+EOT;
+foreach($class1_list[6] as $key=>$val)
+{
+$admin_pop="admin_pop".$val[id];
+if($metinfo_admin_pop=="metinfo" || $$admin_pop=="metinfo"){
+echo <<<EOT
+-->	
+           <li onclick="san4($i)"><a onfocus="if(this.blur)this.blur();" target="_self" href="#">$val[name]</a></li>
+		   <span style="display:none;">	
+		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="job/add.php?class1=$val[id]">{$lang_indexadd}$val[name]</a></li>
+		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="job/index.php?class1=$val[id]">{$lang_indexindex}$val[name]</a></li>
+		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="job/cv.php?class1=$val[id]">{$lang_indexCv}</a></li>
+		   </span>
+<!--
+EOT;
+$i++;
+}}
+echo <<<EOT
+-->	
+<!--招聘模型结束-->
+		  
+		</ul>
+	    
+	</div>
+<!--***************************************栏目四结束***************************************-->
+
+
+
+
+<!--——————————————————————栏目五开始————————————————————————————-->		
+	<div id="list4" class="left_u" style="display:none;">
+	    <ul id="left_ul5" class="pt">
+<!--
+EOT;
+$k=0;
+if($metinfo_admin_pop=="metinfo" || $admin_pop1401=="metinfo"){
+$k1=$k+1;
+if($met_webhtm){
+echo <<<EOT
+--> 
+ <li><a target="main" id="list4_$k" onfocus="if(this.blur)this.blur();" href="set/htm.php" onclick="san1(5,$k)" class="li_left_ok" style=" border:1px solid  #c5edf9; color:#1788c2;">{$lang_indexhtm}</a></li>		
+ <li><a target="main" id="list4_$k" onfocus="if(this.blur)this.blur();" href="set/sethtm.php" onclick="san1(5,$k1)">{$lang_indexhtmset}</a></li>
+<!--
+EOT;
+}else{
+echo <<<EOT
+--> 
+ <li><a target="main" id="list4_$k" onfocus="if(this.blur)this.blur();" href="set/sethtm.php" onclick="san1(5,$k)" class="li_left_ok" style=" border:1px solid  #c5edf9; color:#1788c2;">{$lang_indexhtmset}</a></li>		
+ <li><a target="main" id="list4_$k" onfocus="if(this.blur)this.blur();" href="set/htm.php" onclick="san1(5,$k1)">{$lang_indexhtm}</a></li>
+<!--
+EOT;
+}
+$k++;
+$k++;
+}
+if($metinfo_admin_pop=="metinfo" || $admin_pop1402=="metinfo"){
+echo <<<EOT
+--> 
+ <li><a target="main"  id="list4_$k" onfocus="if(this.blur)this.blur();" href="set/seo.php" onclick="san1(5,$k)" >{$lang_indexseoset}</a></li>
+<!--
+EOT;
+$k++;
+}
+if($metinfo_admin_pop=="metinfo" || $admin_pop1403=="metinfo"){
+echo <<<EOT
+--> 
+<li><a target="main" id="list4_$k" onfocus="if(this.blur)this.blur();" href="set/strcontent.php"  onclick="san1(5,$k)">{$lang_indexhot}</a></li>
+<!--
+EOT;
+$k++;
+}
+echo <<<EOT
+--> 
+
+<!--友情链接开始-->
+<!--
+EOT;
+if($metinfo_admin_pop=="metinfo" || $admin_pop1404=="metinfo"){
+$k1=$k+1;
+echo <<<EOT
+-->	
+<li><a target="main" id="list4_$k" onfocus="if(this.blur)this.blur();" href="link/index.php" onclick="san1(5,$k)">{$lang_indexlink}{$lang_indexindex}</a></li>
+<li><a target="main" id="list4_$k1" onfocus="if(this.blur)this.blur();" href="link/add.php" onclick="san1(5,$k1)">{$lang_indexadd}{$lang_indexlink}</a></li>
+<!--
+EOT;
+}
+echo <<<EOT
+-->	
+<!--友情链接结束-->
+
+
+		</ul>
+	</div>
+<!--***************************************栏目五结束***************************************-->
+
+
+
+<!--——————————————————————栏目六开始————————————————————————————-->		
+	<div id="list5" class="left_u" style="display:none;">
+	    <ul id="left_ul6" class="lmgl">
+<!--反馈系统开始-->
+<!--
+EOT;
+$i=0;
+foreach($class1_list[8] as $key=>$val)
+{
+$admin_pop="admin_pop".$val[id];
+if($metinfo_admin_pop=="metinfo" || $$admin_pop=="metinfo"){
+echo <<<EOT
+-->	
+           <li onclick="san6($i)"><a onfocus="if(this.blur)this.blur();" target="_self" href="#">$val[name]</a></li>
+		   <span style="display:none;">	
+		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="feedback/inc.php">{$lang_indexfeedbackset}</a></li>
+		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="feedback/parameter.php">{$lang_indexfeedbackp}</a></li>
+		   <li><a target="main" id="list5_$j" onfocus="if(this.blur)this.blur();" href="feedback/index.php">{$lang_indexfeedbackm}</a></li>
+		   </span>
+<!--
+EOT;
+$i++;
+}}
+echo <<<EOT
+-->	
+<!--反馈系统结束-->
+<!--留言系统开始-->
+<!--
+EOT;
+foreach($class1_list[7] as $key=>$val)
+{
+$admin_pop="admin_pop".$val[id];
+if($metinfo_admin_pop=="metinfo" || $$admin_pop=="metinfo"){
+echo <<<EOT
+-->	
+           <li onclick="san6($i)"><a onfocus="if(this.blur)this.blur();" target="_self" href="#">$val[name]</a></li>
+		   <span style="display:none;">	
+		   <li><a target="main" onfocus="if(this.blur)this.blur();" href="message/inc.php">$val[name]{$lang_indexset}</a></li>
+		   <li><a target="main" onfocus="if(this.blur)this.blur();" id="list5_$j" href="message/index.php">{$lang_indexmessage}</a></li>
+		   </span>
+<!--
+EOT;
+}}
+echo <<<EOT
+-->	
+<!--留言系统结束-->
+
+		</ul>
+	</div>
+<!--***************************************栏目六结束***************************************-->
+
+
+<!--——————————————————————栏目七开始————————————————————————————-->		
+	<div id="list6" class="left_u" style="display:none;">
+	<ul id="left_ul7" class="pt">
+<!--
+EOT;
+$k=0;
+if($metinfo_admin_pop=="metinfo" || $admin_pop1603=="metinfo"){
+echo <<<EOT
+--> 
+<li><a target="main" id="list6_$k"  onfocus="if(this.blur)this.blur();" href="member/" onclick="san1(7,$k)" class="li_left_ok" style=" border:1px solid  #c5edf9; color:#1788c2;">{$lang_memberManage}</a></li>
+<!--
+EOT;
+$k++;
+}
+if($metinfo_admin_pop=="metinfo" || $admin_pop1602=="metinfo"){
+echo <<<EOT
+--> 
+<li><a target="main" id="list6_$k"  onfocus="if(this.blur)this.blur();" href="set/member.php" onclick="san1(7,$k)">{$lang_memberset}</a></li>
+<!--
+EOT;
+$k++;
+}
+if($metinfo_admin_pop=="metinfo" || $admin_pop1601=="metinfo"){
+echo <<<EOT
+-->
+<li><a target="main" onfocus="if(this.blur)this.blur();" href="admin/" onclick="san1(7,$k)" id="list6_$k" >{$lang_indexadminname}</a></li>
+<!--
+EOT;
+$k++;
+}
+else{
+echo <<<EOT
+-->
+<li><a target="main" onfocus="if(this.blur)this.blur();" href="admin/editor_pass.php?id=$admin_list[id]" id="list6_$k" onclick="san1(7,$k)" >{$lang_indexperson}</a></li>
+<!--
+EOT;
+$k++;
+}
 echo <<<EOT
 -->
 
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-<link rel="stylesheet" type="text/css" href="$css_url/metinfo_admin.css">
-<title>MetInfo企业网站管理系统</title>
-</head>
-<body>
-<TABLE  width="100%" border=0 cellpadding="0" cellspacing="0" height="5%">
-<TR>
-<TD width="3%" align=center class="tabletop1">&nbsp;<a href="http://www.metinfo.cn/" target="_blank"><img src="$img_url/logosmall.gif" width="20" height="20" border="0"></a></TD>
-<TD width="27%" align=left class="tabletop1">&nbsp;<b>管理中心</b>&nbsp; 欢迎您: $metinfo_admin_name</TD>
-<TD class="tabletop" align=center>MetInfo企业网站管理系统</TD>
-<TD width="50%" align=center class="tabletop1">
-<Marquee  align="center" behavior="scroll"  direction="left" height="20" width="100%" vspace="2" loop="-1" scrollamount="3" scrolldelay="50" onMouseOut="this.start()" onMouseOver="this.stop()"><script language="javascript" src="http://www.metinfo.cn/metnews.php?fromurl=$met_weburl&softtype=1"></script></marquee>
-</TD>
-</TR>
-</TABLE>
-<table width="100%" height="100%" cellpadding="0" cellspacing="0" class="tablemain">
-<tr><td>
-<table width="100%" height="100%" cellpadding="0" cellspacing="0">
-  <tr>
-    <td width="200" height="100%">
-	<iframe frameBorder="0" id="carnoc" name="carnoc" scrolling="no" src="lefttree.php" style="HEIGHT: 120%; VISIBILITY: inherit; WIDTH: 200px; Z-INDEX: 2;">
-    </iframe></td>
-    <td width="1"  bgcolor="#003366" ></td>
-    <td>
-	<iframe frameborder="0" id="main" name="main" scrolling="yes" src="site/sysadmin.php" style="HEIGHT: 100%; VISIBILITY: inherit; WIDTH: 100%; Z-INDEX: 1"></iframe>
-	</td>
-  </tr>
-</table>
-</td></tr></table>
-<table width="100%" border="0" height="2%">
-  <tr>
-    <td height="100%"><div align="center"><a href="http://www.metinfo.cn/" target="_blank"><b>米拓信息</b></a>&nbsp;&nbsp;<a href="http://www.metinfo.cn/" target="_blank"><b> www.metinfo.cn</b> </a></div></td>
-  </tr>
-</table>
 
+		</ul>
+	</div>
+<!--***************************************栏目七结束***************************************-->
+
+
+
+<!--——————————————————————底部信息开始——————————————————————-->
+     <div class="left_footer">
+	    $foot	 </div>
+<!--——————————————————————底部信息结束——————————————————————-->
+
+	 </div><script src="$img_url/metinfo.js" type="text/javascript"></script>
+</div></td>
+<td class="right" valign="top" bgcolor="#FFFFFF"><iframe frameborder="0" id="main" name="main" src="site/sysadmin.php" scrolling="yes" class="iframe_main" ></iframe>&nbsp;</td>
+</tr>
+</table>
+</div>
+<script type='text/javascript'>
+var colunmnow=getCookie ('colunmid');
+var okinfo='$lang_loginUserAdmin';
+if(colunmnow=='metinfo'){
+san(2);
+alert(okinfo);
+}
+delCookie ('colunmid');
+
+var adminnow=getCookie ('adminnow');
+if(adminnow){
+var adminfile=adminnow;
+delCookie ('adminnow');
+alert(okinfo);
+location.href='../'+adminfile+'/';
+}
+</script>
 </body>
 </html>
+
 <!--
 EOT;
+# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
 ?>-->

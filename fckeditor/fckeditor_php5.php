@@ -174,11 +174,14 @@ class FCKeditor
 			// Render the linked hidden field.
 			$Html .= "<input type=\"hidden\" id=\"{$this->InstanceName}\" name=\"{$this->InstanceName}\" value=\"{$HtmlValue}\" style=\"display:none\" />" ;
 
+			$Html .= "<input type=\"hidden\" id=\"{$this->InstanceName}___PagingStart\" value=\"<sub>metinfopageStart</sub>\" style=\"display:none\" />";
+			$Html .= "<input type=\"hidden\" id=\"{$this->InstanceName}___PagingStop\" value=\"<sub>metinfopageEnd</sub>\" style=\"display:none\" />";
+			
 			// Render the configurations hidden field.
 			$Html .= "<input type=\"hidden\" id=\"{$this->InstanceName}___Config\" value=\"" . $this->GetConfigFieldString() . "\" style=\"display:none\" />" ;
 
 			// Render the editor IFRAME.
-			$Html .= "<iframe id=\"{$this->InstanceName}___Frame\" src=\"{$Link}\" width=\"{$this->Width}\" height=\"{$this->Height}\" frameborder=\"0\" scrolling=\"no\"></iframe>" ;
+			$Html .= "<iframe id=\"{$this->InstanceName}___Frame\" name=\"{$this->InstanceName}___Frame\" src=\"{$Link}\" width=\"{$this->Width}\" height=\"{$this->Height}\" frameborder=\"0\" scrolling=\"no\"></iframe>" ;
 		}
 		else
 		{

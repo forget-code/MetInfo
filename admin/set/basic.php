@@ -1,21 +1,13 @@
 <?php
+# 文件名称:basic.php 2009-08-01 21:01:57
+# MetInfo企业网站管理系统 
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn)). All rights reserved.
 require_once '../login/login_check.php';
 if($action=="modify"){
 if(substr($met_weburl,-1,1)!="/")$met_weburl.="/";
 if(!strstr($met_weburl,"http://"))$met_weburl="http://".$met_weburl;
-require_once '../include/upfile.class.php';
-$f = new upfile($met_img_type,'',$met_img_maxsize,'');
-if($_FILES['met_logo']['name']!=''){
-        $met_logo1   = $f->upload('met_logo'); 
-		$met_logo   = $met_logo1;
-    }
 require_once 'configsave.php';
-if($met_webhtm==0){
-if(file_exists("../../index.htm"))@unlink("../../index.htm");
-if(file_exists("../../index_en.htm"))@unlink("../../index_en.htm");
-if(file_exists("../../index_ch.htm"))@unlink("../../index_ch.htm");
-}
-okinfo('basic.php',$lang[user_admin]);
+okinfo('basic.php',$lang_loginUserAdmin);
 }
 else{
 $localurl="http://";
@@ -27,13 +19,11 @@ $localurl_admin=$localurl_admin."/set/basic";
 $localurl_real=explode($localurl_admin,$localurl);
 $localurl=$localurl_real[0];
 if($met_weburl=="")$met_weburl=$localurl;
-if($met_ch_lang==1)$met_ch_lang1="checked='checked'";
-if($met_en_lang==1)$met_en_lang1="checked='checked'";
-if($met_webhtm==1)$met_webhtm1="checked='checked'";
-$met_index_type1[$met_index_type]="checked='checked'";
 $css_url="../templates/".$met_skin."/css";
 $img_url="../templates/".$met_skin."/images";
 include template('set_basic');
 footer();
 }
+# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
 ?>

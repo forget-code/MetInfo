@@ -117,7 +117,7 @@ LoadScript( 'js/fckeditorcode_' + sSuffix + '.js' ) ;
 
 // Base configuration file.
 LoadScript( '../fckconfig.js' ) ;
-
+LoadScript( 'js/paginginfo.js' ) ;
 	</script>
 	<script type="text/javascript">
 
@@ -208,11 +208,26 @@ window.document.dir = FCKLang.Dir ;
 window.onload = function()
 {
 	InitializeAPI() ;
-
+	var xPagingAnalyse = document.getElementById('xPagingAnalyse') ;
+	var xPagingCreate = document.getElementById('xPagingCreate') ;
+	var xPagingDelete = document.getElementById('xPagingDelete') ;
+	var xPagingUnite = document.getElementById('xPagingUnite') ;	
+	
 	if ( FCKBrowserInfo.IsIE )
+	{
+		xPagingAnalyse.attachEvent("onclick",Paging.init);	
+		xPagingCreate.attachEvent("onclick",Paging.create);	
+		xPagingDelete.attachEvent("onclick",Paging.remove);
+		xPagingUnite.attachEvent("onclick",Paging.unite);
 		FCK_PreloadImages() ;
-	else
-		LoadToolbarSetup() ;
+	}else
+	{
+		xPagingAnalyse.addEventListener("click", Paging.init, false);
+		xPagingCreate.addEventListener("click", Paging.create, false);
+		xPagingDelete.addEventListener("click", Paging.remove, false);
+		xPagingUnite.addEventListener("click", Paging.unite, false);
+		LoadToolbarSetup() ;		
+	}
 }
 
 function LoadToolbarSetup()
@@ -312,6 +327,15 @@ if ( FCKBrowserInfo.IsGecko && !FCKBrowserInfo.IsOpera )
 		<tr>
 			<td id="xEditingArea" valign="top" style="height: 100%"></td>
 		</tr>
+		<tr>
+                  <td id="xPagingInfo" style="height: 25px;">
+                     <span id="xPagingAnalyse" ><script type="text/javascript">document.write(FCKLang.Paging1)</script></span>
+                     <span id="xPagingList"></span>
+                     <span id="xPagingCreate" style="display:none;"  ><script type="text/javascript">document.write(FCKLang.Paging2)</script></span>
+                     <span id="xPagingDelete" style="display:none;"  ><script type="text/javascript">document.write(FCKLang.Paging3)</script></span>
+                     <span id="xPagingUnite"  style="display:none;"  ><script type="text/javascript">document.write(FCKLang.Paging4)</script></span>
+                     <span id="xPagingMessage" ><script type="text/javascript">document.write(FCKLang.Paging5)</script></span></td>
+        </tr>
 	</table>
 </body>
 </html>

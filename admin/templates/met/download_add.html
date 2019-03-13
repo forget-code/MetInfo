@@ -1,52 +1,43 @@
 <!--<?php
+# 文件名称:download_add.html 2009-08-11 16:20:57
+# MetInfo企业网站管理系统 
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+require_once template('head');
 echo <<<EOT
 -->
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-<link rel="stylesheet" type="text/css" href="$css_url/metinfo_admin.css">
-<title>添加文件</title>
-<script type="text/javascript" src="../language/zh_cn.js"></script>
-<script type="text/javascript" src="../include/metinfo.js"></script>
+<title>{$lang_downloadaddTitle}</title>
 </head>
 <body>
-
-<table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td align="center" valign="top"><table width="95%" border="0" cellpadding="2" cellspacing="1" class="table_southidc">
-        <form  method="POST" name="myform" onSubmit="return CheckFormdownload();" action="save.php?action=add" target="_self">
+        <form  method="POST" name="myform" onSubmit="return CheckFormarticle();" action="save.php?action=add" target="_self">
 		<input name="class1" type="hidden" value="$class1">
+<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
           <tr> 
-            <td class="back_southidc" height="30" colspan="3" align="center">添加文件</td>
-          </tr>
-          <tr bgcolor="#ECF5FF"> 
-            <td width="120" height="25"><font color="#FF0000">*</font><b>文件标题：</b></td>
-            <td colspan="2"> <input name="c_title" type="text" class="input" size="50" maxlength="200"></td>
-          </tr> 
-		  <tr bgcolor="#ECF5FF"> 
-            <td width="120" height="25"><font color="#FF0000">*</font><b>所属栏目：</b></td>
-            <td colspan="2">
+            <td colspan="3" align="center" class="list1_title">{$lang_downloadaddTitle}</td>
+          </tr>          
+		  <tr> 
+            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_downloadaddBelong}：</b></td>
+            <td colspan="2" class="list1_input">
 <!--
 EOT;
 if($class2_ok==TRUE){
 echo <<<EOT
 -->	
 <select name="class2" onChange="changelocation(document.myform.class2.options[document.myform.class2.selectedIndex].value)" size="1">
-<option value=0 selected="selected">二级栏目</option>
+<option value=0 selected="selected">{$lang_downloadaddTwo}</option>
 <!--
 EOT;
 foreach($column_list2 as $key=>$val2){
 echo <<<EOT
 -->			
-<option  value="$val2[id]">$val2[c_name]</option>
+<option  value="$val2[id]">$val2[name]</option>
 <!--
 EOT;
 }
 echo <<<EOT
 -->
               </select>
-			<select name="class3"> 
-			<option value=0 selected="selected">三级栏目</option>
+			<select name="class3" onChange="changelocation2(document.myform.class3.options[document.myform.class3.selectedIndex].value)"> 
+			<option value=0 selected="selected">{$lang_downloadaddThree}</option>
          </select>
 <!--
 EOT;
@@ -57,36 +48,109 @@ echo <<<EOT
 <!--
 EOT;
 }
+if($met_autothumb_ok!=1)
+$styletip="style='display:none;'";
 echo <<<EOT
+-->
 		 </td>
           </tr>
-<tr bgcolor="#ECF5FF" > 
-            <td width="119" height="25"><font color="#FF0000">*</font><b>下载地址：</b></td>
-            <td colspan="2"> <input name="downloadurl" type="text" class="input" size="30" maxlength="200"> 
+		  <tr> 
+            <td class="list1_text"><b>{$lang_downloadaddAccess}：</b></td>
+            <td class="list1_input"><select name="access" id="access" >
+             <option value="all" >{$lang_downloadaddAccess0}</option>
+			 <option value="1" >{$lang_downloadaddAccess1}</option>
+              <option value="2" >{$lang_downloadaddAccess2}</option>
+              <option value="3" >{$lang_downloadaddAccess3}</option>
+            </select></td>
+          </tr>
+		  <tr> 
+            <td class="list1_text"><b>{$lang_downloadaddDLAccess}：</b></td>
+            <td class="list1_input"><select name="downloadaccess" id="downloadaccess" >
+             <option value="0" >{$lang_downloadaddAccess0}</option>
+			 <option value="1" >{$lang_downloadaddAccess1}</option>
+              <option value="2" >{$lang_downloadaddAccess2}</option>
+              <option value="3" >{$lang_downloadaddAccess3}</option>
+            </select></td>
+          </tr>
+		  <tr> 
+            <td class="list1_text"><b>{$lang_downloadaddTop}：</b></td>
+            <td colspan="2" class="list1_input"><input name="top_ok" type="checkbox" value="1">{$lang_downloadaddTip8}</td>
+          </tr>
+		  <tr> 
+            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_downloadaddUrl}：</b></td>
+            <td colspan="2" class="list1_input"> <input name="downloadurl" type="text" class="input" size="30" maxlength="200"> 
 			<iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_file.php" frameborder=0 scrolling=no width="280" height="25"></iframe></td>
           </tr> 
-<tr bgcolor="#ECF5FF" > 
-            <td width="119" height="25"><b>文件大小：</b></td>
-            <td colspan="2"> <input name="filesize" type="text" class="input" size="10" maxlength="200">K</td>
+			<tr> 
+            <td class="list1_text"><b>{$lang_downloadaddSize}：</b></td>
+            <td colspan="2" class="list1_input"><input name="filesize" type="text" class="input" size="10" maxlength="200">K</td>
+          </tr>
+		   <tr> 
+            <td class="list1_text"><b>{$lang_downloadaddNew}：</b></td>
+            <td colspan="2" class="list1_input"><input name="new_ok" type="checkbox" value="1" >{$lang_downloadaddTip3}</td>
+          </tr>  
+		 <tr> 
+            <td class="list1_text"><b>{$lang_downloadaddRecommend}：</b></td>
+            <td colspan="2" class="list1_input"><input name="com_ok" type="checkbox" value="1">{$lang_downloadaddTip4}</td>
+          </tr> 
+		  
+		  <tr> 
+            <td class="list1_text"><b>{$lang_downloadaddHits}：</b></td>
+            <td colspan="2" class="list1_input"><input name="hits" type="text" class="input" size="10" maxlength="200" value="0"> {$lang_downloadaddTip5}</td>
+          </tr>
+		  <tr> 
+            <td class="list1_text"><b>{$lang_downloadaddPublishTime}：</b></td>
+            <td colspan="2" class="list1_input"><input name="addtime" type="text" class="input" size="20" maxlength="200" value="$m_now_date">{$lang_downloadaddNow}$m_now_date {$lang_downloadaddTip6}</td>
+          </tr>
+		  <tr> 
+            <td class="list1_text"><b>{$lang_downloadaddUpdateTime}：</b></td>
+            <td colspan="2" class="list1_input"><input name="updatetime" type="text" class="input" size="20" maxlength="200" value="$m_now_date">{$lang_downloadaddNow}$m_now_date {$lang_downloadaddTip6}</td>
+          </tr>
+		   <tr> 
+            <td class="list1_text"><b>{$lang_downloadaddSort}：</b></td>
+            <td colspan="2" class="list1_input">{$lang_downloadaddTip7}</td>
+          </tr>
+<!--
+EOT;
+if($met_c_lang_ok==1){
+echo <<<EOT
+-->
+          <tr> <td colspan="3" align="center" class="list1_title"><b>{$lang_downloadaddContent}[$met_c_lang]</b></td></tr>
+           <tr> 
+            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_downloadaddName}：</b></td>
+            <td colspan="2" class="list1_input"> <input name="c_title" type="text" class="input" size="50" maxlength="200"></td>
           </tr> 
 <!--
 EOT;
+		 
 foreach($list_p as $key=>$val){
 if($val[maxsize]=="200"){
 echo <<<EOT
 -->
-         <tr bgcolor="#ECF5FF"> 
-            <td width="119" height="25"><b>$val[c_mark]</b></td>
-            <td colspan="2"><input name="c_$val[name]" type="text" class="input" size="50" maxlength="200"></td>
+         <tr> 
+            <td class="list1_text"><b>$val[mark]：</b></td>
+            <td colspan="2" class="list1_input"><input name="c_$val[name]" type="text" class="input" size="50" maxlength="200"></td>
+          </tr>
+<!--
+EOT;
+}else if($val[maxsize]=="300"){
+echo <<<EOT
+-->
+         <tr> 
+            <td class="list1_text"><b>$val[mark]：</b></td>
+            <td colspan="2" class="list1_input"><input name="c_$val[name]" type="text" class="input" size="30" maxlength="200">
+			<iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_photo.php?returnid=c_$val[name]&flash=flash" frameborder=0 scrolling=no width="280" height="25"></iframe>
+			
+			</td>
           </tr>
 <!--
 EOT;
 }else{
 echo <<<EOT
 -->
-         <tr bgcolor="#ECF5FF"> 
-            <td width="119" height="25"><b>$val[c_mark]</b></td>
-            <td colspan="2"><textarea name="c_$val[name]" cols="60" rows="5"></textarea></td>
+         <tr> 
+            <td class="list1_text"><b>$val[mark]：</b></td>
+            <td colspan="2" class="list1_input"><textarea name="c_$val[name]" cols="60" rows="5"></textarea></td>
           </tr>
 <!--
 EOT;
@@ -95,63 +159,42 @@ EOT;
 echo <<<EOT
 -->
 
-		  <tr bgcolor="#ECF5FF"> 
-            <td width="119" height="25"><b>内容关键词：</b></td>
-            <td colspan="2"><input name="c_keywords" type="text" class="input" size="50" maxlength="200">用于搜索引擎优化，多个关键词请用","隔开</td>
+		  <tr> 
+            <td class="list1_text"><b>{$lang_downloadaddKeys}：</b></td>
+            <td colspan="2" class="list1_input"><input name="c_keywords" type="text" class="input" size="50" maxlength="200">{$lang_downloadaddTip1}</td>
           </tr>
-		  <tr bgcolor="#ECF5FF"> 
-            <td width="20%" height="25"><b>内容简短描述：</b><br>用于搜索引擎优化
+		  <tr> 
+            <td class="list1_text"><b>{$lang_downloadaddIntro}：</b><br>{$lang_downloadaddSEO}
 			</td>
-            <td width="80%" ><textarea name="c_description" cols="60" rows="5"></textarea></td>
+            <td class="list1_input" ><textarea name="c_description" cols="60" rows="5"></textarea></td>
 			</tr> 
-			 <tr bgcolor="#ECF5FF"> 
-            <td width="20%" height="25"><b>详细内容：</b></td>
-            <td width="80%" >
+			 <tr> 
+            <td class="list1_text"><b>{$lang_downloadaddDetail}：</b></td>
+            <td class="list1_input">
 <!--
 EOT;
 echo "-->";
 $oFCKeditor = new FCKeditor('c_content'); 
 $oFCKeditor->BasePath = '../../fckeditor/';
-$oFCKeditor->Value = $about[c_content];
+$oFCKeditor->Config['AutoDetectLanguage']	= false ;
+$oFCKeditor->Config['DefaultLanguage']		= $langusenow ;
+$oFCKeditor->Value = '';
 $oFCKeditor->Width = '100%';   
 $oFCKeditor->Height = '300';
 $oFCKeditor->Create();
 echo <<<EOT
 </td></tr>
-		   <tr bgcolor="#ECF5FF"> 
-            <td width="119" height="25"><b>最新文件：</b></td>
-            <td colspan="2"><input name="new_ok" type="checkbox" value="1" >选择将在最新文件中显示（需要网站模板支持）</td>
-          </tr>  
-		 <tr bgcolor="#ECF5FF"> 
-            <td width="119" height="25"><b>推荐文件：</b></td>
-            <td colspan="2"><input name="com_ok" type="checkbox" value="1">选择将在推荐文件中显示（需要网站模板支持）</td>
-          </tr> 
 		  
-		  <tr bgcolor="#ECF5FF"> 
-            <td width="119" height="25"><b>点击次数：</b></td>
-            <td colspan="2"><input name="hits" type="text" class="input" size="10" maxlength="200" value="0"> （点击次数越多，热门信息中排名越靠前）</td>
-          </tr>
-		  <tr bgcolor="#ECF5FF"> 
-            <td width="119" height="25"><b>发布时间：</b></td>
-            <td colspan="2"><input name="addtime" type="text" class="input" size="20" maxlength="200" value="$m_now_date">当前时间为：$m_now_date 注意不要改变格式。</td>
-          </tr>
-		  <tr bgcolor="#ECF5FF"> 
-            <td width="119" height="25"><b>更新时间：</b></td>
-            <td colspan="2"><input name="updatetime" type="text" class="input" size="20" maxlength="200" value="$m_now_date">当前时间为：$m_now_date 注意不要改变格式。</td>
-          </tr>
-		   <tr bgcolor="#ECF5FF"> 
-            <td width="119" height="25"><b>文件排序：</b></td>
-            <td colspan="2">一般按更新时间的先后顺序排序，热门文件按点击次数排序，因此可以修改“发布时间”或“点击次数”来达到排序的目的。</td>
-          </tr>
 <!--
 EOT;
-if($met_en_lang==1){
+}
+if($met_e_lang_ok==1){
 echo <<<EOT
 -->
-          <tr bgcolor="#999999"> <td  height="25" colspan="2"><b>英文内容</b></td></tr>
-           <tr bgcolor="#ECF5FF"> 
-            <td width="120" height="25"><font color="#FF0000">*</font><b>英文标题：</b></td>
-            <td colspan="2"> <input name="e_title" type="text" class="input" size="50" maxlength="200"></td>
+          <tr> <td colspan="3" align="center" class="list1_title"><b>{$lang_downloadaddContent}[$met_e_lang]</b></td></tr>
+           <tr> 
+            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_downloadaddName}：</b></td>
+            <td colspan="2" class="list1_input"> <input name="e_title" type="text" class="input" size="50" maxlength="200"></td>
           </tr> 
 <!--
 EOT;
@@ -159,18 +202,30 @@ foreach($list_p as $key=>$val){
 if($val[maxsize]=="200"){
 echo <<<EOT
 -->
-         <tr bgcolor="#ECF5FF"> 
-            <td width="119" height="25"><b>$val[e_mark]</b></td>
-            <td colspan="2"><input name="e_$val[name]" type="text" class="input" size="50" maxlength="200"></td>
+         <tr> 
+            <td class="list1_text"><b>$val[mark]：</b></td>
+            <td colspan="2" class="list1_input"><input name="e_$val[name]" type="text" class="input" size="50" maxlength="200"></td>
+          </tr>
+<!--
+EOT;
+}else if($val[maxsize]=="300"){
+echo <<<EOT
+-->
+         <tr> 
+            <td class="list1_text"><b>$val[mark]：</b></td>
+            <td colspan="2" class="list1_input"><input name="e_$val[name]" type="text" class="input" size="30" maxlength="200">
+			<iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_photo.php?returnid=e_$val[name]&flash=flash" frameborder=0 scrolling=no width="280" height="25"></iframe>
+			
+			</td>
           </tr>
 <!--
 EOT;
 }else{
 echo <<<EOT
 -->
-         <tr bgcolor="#ECF5FF"> 
-            <td width="119" height="25"><b>$val[e_mark]</b></td>
-            <td colspan="2"><textarea name="e_$val[name]" cols="60" rows="5"></textarea></td>
+         <tr> 
+            <td class="list1_text"><b>$val[mark]：</b></td>
+            <td colspan="2" class="list1_input"><textarea name="e_$val[name]" cols="60" rows="5"></textarea></td>
           </tr>
 <!--
 EOT;
@@ -178,42 +233,124 @@ EOT;
 }
 echo <<<EOT
 -->
-		  <tr bgcolor="#ECF5FF"> 
-            <td width="119" height="25"><b>英文关键词：</b></td>
-            <td colspan="2"><input name="e_keywords" type="text" class="input" size="50" maxlength="200">用于搜索引擎优化，多个关键词请用","隔开</td>
+		  <tr> 
+            <td class="list1_text"><b>{$lang_downloadaddKeys}：</b></td>
+            <td colspan="2" class="list1_input"><input name="e_keywords" type="text" class="input" size="50" maxlength="200">{$lang_downloadaddTip1}</td>
           </tr>
-		  <tr bgcolor="#ECF5FF"> 
-            <td width="20%" height="25"><b>英文简短描述：</b><br>用于搜索引擎优化
+		  <tr> 
+            <td class="list1_text"><b>{$lang_downloadaddIntro}：</b><br>{$lang_downloadaddSEO}
 			</td>
-            <td width="80%" ><textarea name="e_description" cols="60" rows="5"></textarea></td>
+            <td class="list1_input"><textarea name="e_description" cols="60" rows="5"></textarea></td>
 			</tr> 
-			 <tr bgcolor="#ECF5FF"> 
-            <td width="20%" height="25"><b>英文详细内容：</b></td>
-            <td width="80%" >
+			 <tr> 
+            <td class="list1_text"><b>{$lang_downloadaddDetail}：</b></td>
+            <td class="list1_input">
 <!--
 EOT;
 echo "-->";
 $oFCKeditor = new FCKeditor('e_content'); 
 $oFCKeditor->BasePath = '../../fckeditor/';
-$oFCKeditor->Value = $about[c_content];
+$oFCKeditor->Config['AutoDetectLanguage']	= false ;
+$oFCKeditor->Config['DefaultLanguage']		= $langusenow ;
+$oFCKeditor->Value = '';
 $oFCKeditor->Width = '100%';   
 $oFCKeditor->Height = '300';
 $oFCKeditor->Create();
-echo "</td></tr>";
+echo <<<EOT
+</td></tr>
+		  
+<!--
+EOT;
+}
+if($met_o_lang_ok==1){
+echo <<<EOT
+-->
+          <tr> <td colspan="3" align="center" class="list1_title"><b>{$lang_downloadaddContent}[$met_o_lang]</b></td></tr>
+           <tr> 
+            <td class="list1_text"><font color="#FF0000">*</font><b>{$lang_downloadaddName}：</b></td>
+            <td colspan="2" class="list1_input"> <input name="o_title" type="text" class="input" size="50" maxlength="200"></td>
+          </tr> 
+<!--
+EOT;
+foreach($list_p as $key=>$val){
+if($val[maxsize]=="200"){
+echo <<<EOT
+-->
+         <tr> 
+            <td class="list1_text"><b>$val[mark]：</b></td>
+            <td colspan="2" class="list1_input"><input name="o_$val[name]" type="text" class="input" size="50" maxlength="200"></td>
+          </tr>
+<!--
+EOT;
+}else if($val[maxsize]=="300"){
+echo <<<EOT
+-->
+         <tr> 
+            <td class="list1_text"><b>$val[mark]：</b></td>
+            <td colspan="2" class="list1_input"><input name="o_$val[name]" type="text" class="input" size="30" maxlength="200">
+			<iframe style="padding-top:0px;"ID="UploadFiles" src="../include/upload_photo.php?returnid=o_$val[name]&flash=flash" frameborder=0 scrolling=no width="280" height="25"></iframe>
+			
+			</td>
+          </tr>
+<!--
+EOT;
+}else{
+echo <<<EOT
+-->
+         <tr> 
+            <td class="list1_text"><b>$val[mark]：</b></td>
+            <td colspan="2" class="list1_input"><textarea name="o_$val[name]" cols="60" rows="5"></textarea></td>
+          </tr>
+<!--
+EOT;
+}
+}
+echo <<<EOT
+-->
+		  <tr> 
+            <td class="list1_text"><b>{$lang_downloadaddKeys}：</b></td>
+            <td colspan="2" class="list1_input"><input name="o_keywords" type="text" class="input" size="50" maxlength="200">{$lang_downloadaddTip1}</td>
+          </tr>
+		  <tr> 
+            <td class="list1_text"><b>{$lang_downloadaddIntro}：</b><br>{$lang_downloadaddSEO}
+			</td>
+            <td class="list1_input"><textarea name="o_description" cols="60" rows="5"></textarea></td>
+			</tr> 
+			 <tr> 
+            <td class="list1_text"><b>{$lang_downloadaddDetail}：</b></td>
+            <td class="list1_input">
+<!--
+EOT;
+echo "-->";
+$oFCKeditor = new FCKeditor('o_content'); 
+$oFCKeditor->BasePath = '../../fckeditor/';
+$oFCKeditor->Config['AutoDetectLanguage']	= false ;
+$oFCKeditor->Config['DefaultLanguage']		= $langusenow ;
+$oFCKeditor->Value = '';
+$oFCKeditor->Width = '100%';   
+$oFCKeditor->Height = '300';
+$oFCKeditor->Create();
+echo <<<EOT
+</td></tr>
+		  
+<!--
+EOT;
 }
 echo <<<EOT
 
 		  <tr> 
-            <td height="30" colspan="3" align="center" bgcolor="#ECF5FF"> <input type="submit" name="Submit" value="提交" class="tj">
-              　 
-              <input type="reset" name="Submit" value="重置" class="tj"> </td>
+            <td class="list1_text"></td>
+	      <td class="list1_submit"><input type="submit" name="Submit" value="{$lang_Submit}" class="tj" style="*padding-top:2px; *height:22px;"><input type="reset" name="Submit" value="{$lang_Reset}" class="tj" style="*padding-top:2px; *height:22px;"></td>
           </tr>
         </form>
-    </table></td>
-  </tr>
+<tr>
+		  <td class="list1_footer" colspan="2" align="center">$foot</td>
+	  </tr>
 </table>
 </body>
 </html>
 <!--
 EOT;
+# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
 ?>-->

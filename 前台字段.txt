@@ -1,0 +1,639 @@
+全站通用变量与数组：
+
+基本信息：
+$met_webname：网站名称；
+$met_weburl：网站地址；
+
+
+头部信息：
+$show[description]：页面内容描述；
+$show[keywords]：页面关键词；
+$met_title：网页标题；
+$met_js_access：权限判断JS；
+
+css信息变量：
+$met_skin_css:当前采用的CSS名称；
+$lang_fontfamily：全站字体，需要在语言文件中设置；
+$lang_fontsize：全站文字大小，需要在语言文件中设置；
+$lang_fontcolor：全站文字默认颜色，需要在语言文件中设置；
+$lang_urlcolor：全站超链接文字默认颜色，需要在语言文件中设置；
+$lang_hovercolor：全站鼠标移至超链接时文字颜色，需要在语言文件中设置；
+$lang_backgroundcolor：全站背景颜色，需要在语言文件中设置；
+
+地址变量：
+$navurl：相对于根目录地址；
+$index_c_url：第一种语言首页地址
+$index_e_url：第二种语言首页地址
+$index_o_url：第三种语言首页地址
+$index_url：当前语言首页地址
+$img_url：当前模板图片文件地址
+$met_url：模板标签公共文件夹，包含flash、images、js子文件夹；
+$addmessage_url：留言提交地址
+$addfeedback_url：反馈信息提交地址，动态提交可在地址后添加反馈信息来源标题，如{$addfeedback_url}$product[title]
+$cv[url]:简历提交地址，动态提交可在地址后添加职位标题，如{$addfeedback_url}$job[position]
+$member_indexurl：会员首页
+$member_registerurl：注册链接
+
+
+优化变量：
+$met_webname：网站名称，如“米拓信息”；
+$met_alt：图片ALT文字；
+$met_atitle：超链接TITEL文字；
+$met_seo：头部强调关键词；
+$met_foottext：底部优化参数；
+$met_title_keywords：标题关键词
+$met_keywords：网站关键词
+$met_description：首页描述
+
+
+栏目：
+$nav_listall：所有栏目数组
+$nav_list_1：所有一级栏目数组
+$nav_search：搜索一级栏目数组
+$nav_list_2：所有二级栏目数组
+$nav_list_3：所有三级栏目数组
+$nav_list:头部导航栏目数组
+$navfoot_list:尾部导航栏目数组
+$nav_list2[$class1]:所属二级栏目数组
+$nav_list3[$class2]:所属三级栏目数组
+$class_list[classid]:特定栏目信息数组
+$class1_list[$class1]:一级栏目信息数组
+$class2_list[$class2]:二级栏目信息数组
+$class3_list[$class3]:三级栏目信息数组
+$class_index[栏目标识]：首页标识栏目信息数组，为模板制作方便，已将字段classtype改成"class"+"原值"的形式，如三级栏目为class3
+$module_listall[module]：特定模块全部栏目数组（module值分别对应为1-12，请参考数据库字段说明）
+$module_list1[module]：特定模块一级栏目数组（module值分别对应为1-12，请参考数据库字段说明）
+$module_list2[module]：特定模块二级栏目数组（module值分别对应为1-12，请参考数据库字段说明）
+$module_list3[module]：特定模块三级栏目数组（module值分别对应为1-12，请参考数据库字段说明）
+
+
+Flash变量：
+$classnow：当前页面class id,首页为10001
+$met_flasharray[classid][type]:所属栏目Flash模式，0为关闭，1为图片轮播，2为Flash动画，3为单张图片；
+$met_flasharray[classid][x]:所属栏目Flash宽度，单位为像素；
+$met_flasharray[classid][y]:所属栏目Flash高度，单位为像素；
+$met_flasharray[classid][imgtype]:所属栏目Flash轮播方式；
+$met_flash_img：图片Flash图片地址组合,"1.jpg|2.jpg"格式；
+$met_flash_imglink： 图片Flash链接地址组合,"http://www.metinfo.cn/|http://www.metinfo.com.cn/"格式;
+$met_flash_imgtitle： 图片Flash标题组合,"图片名称1|图片名称2"格式;
+$met_flash_back：动画Flash背景图片；
+$met_flash_url：动画Flash地址；
+$met_flashall：FLASH全部记录数组
+$met_flashimgall：当前栏目图片记录数组
+$met_flashflashall：当前栏目动画FLASH记录数组
+$flash_flash_module[classid]:特定class所对应的Flash记录数组
+$flash_img_module[classid]:特定class所对应的图片记录数组
+$met_flashimg：当前栏目符合栏目尺寸要求的图片记录数组
+FLASH数组信息：
+img_link：图片链接
+img_title：图片标题
+img_path：图片地址
+flash_back：flash背景图片
+flash_path：flash地址
+
+
+文章模块每条信息数组参数：
+class1_name：所属一级栏目名称
+class1_url：所属一级栏目链接
+class2_name：所属二级栏目名称，当二级栏目不存在时，自动转化为上级栏目名称；
+class2_url：所属二级栏目链接，当二级栏目不存在时，自动转化为上级栏目链接；
+class3_name：所属三级栏目名称，当三级栏目不存在时，自动转化为上级栏目名称；
+class3_url：所属三级栏目链接，当三级栏目不存在时，自动转化为上级栏目链接；
+top:置顶文章图标，格式为<img src='top.gif'>，可在模板文件夹中替换图片
+news:最新文章图标，格式为<img src='news.gif'>，可在模板文件夹中替换图片
+hot:热门文章图标，格式为<img src='hot.gif'>，可在模板文件夹中替换图片
+url:文章链接地址
+
+文章模块：
+$listall[news]:按更新时间排序的文章列表数组；
+$listcom[news]:按更新时间排序的推荐文章列表数组；
+$listimg[news]:按更新时间排序的图片文章列表数组；
+$classlistall[news][classid]：按更新时间排序的指定栏目文章列表数组；
+$classlistcom[news][classid]：按更新时间排序的指定栏目推荐文章列表数组；
+$classlistimg[news][classid]：按更新时间排序的指定栏目图片文章列表数组；
+$hitslistall[news]:按点击次数排序的文章列表数组；
+$hitslistcom[news]:按点击次数排序的推荐文章列表数组；
+$hitslistimg[news]:按点击次数排序的图片文章列表数组；
+$hitsclasslistall[news][classid]：按点击次数排序的指定栏目文章列表数组；
+$hitsclasslistcom[news][classid]：按点击次数排序的指定栏目推荐文章列表数组；
+$hitsclasslistimg[news][classid]：按点击次数排序的指定栏目图片文章列表数组；
+
+
+产品模块每条信息数组参数：
+class1_name：所属一级栏目名称
+class1_url：所属一级栏目链接
+class2_name：所属二级栏目名称，当二级栏目不存在时，自动转化为上级栏目名称；
+class2_url：所属二级栏目链接，当二级栏目不存在时，自动转化为上级栏目链接；
+class3_name：所属三级栏目名称，当三级栏目不存在时，自动转化为上级栏目名称；
+class3_url：所属三级栏目链接，当三级栏目不存在时，自动转化为上级栏目链接；
+top:置顶产品图标，格式为<img src='top.gif'>，可在模板文件夹中替换图片
+news:最新产品图标，格式为<img src='news.gif'>，可在模板文件夹中替换图片
+hot:热门产品图标，格式为<img src='hot.gif'>，可在模板文件夹中替换图片
+url:产品链接地址
+
+产品模块：
+$listall[product]:按更新时间排序的产品列表数组；
+$listcom[product]:按更新时间排序的推荐产品列表数组；
+$listnew[product]:按更新时间排序的最新产品列表数组；
+$classlistall[product][classid]：按更新时间排序的指定栏目产品列表数组；
+$classlistcom[product][classid]：按更新时间排序的指定栏目推荐产品列表数组；
+$classlistnew[product][classid]：按更新时间排序的指定栏目最新产品列表数组；
+$hitslistall[product]:按点击次数排序的产品列表数组；
+$hitslistcom[product]:按点击次数排序的推荐产品列表数组；
+$hitslistnew[product]:按点击次数排序的最新产品列表数组；
+$hitsclasslistall[product][classid]：按点击次数排序的指定栏目产品列表数组；
+$hitsclasslistcom[product][classid]：按点击次数排序的指定栏目推荐产品列表数组；
+$hitsclasslistnew[product][classid]：按点击次数排序的指定栏目最新产品列表数组；
+$product_para[]：产品参数数组；
+$product_para200[]：产品简短参数数组,包含下拉菜单参数；
+$product_paraimg[]：产品图片参数数组；
+$product_paraselect[]：产品下拉菜单参数数组；
+$para_select[81-84]:产品模块下拉菜单数值数值，显示ID81-ID84的下拉菜单中的值
+
+产品搜索参数提交：
+搜索判断：search=search
+标题：$title
+参数：$para1-$para10,$para21-$para24
+内容：$content
+搜索类型：$searchtype=1模糊搜索，其他值为精确搜索
+
+产品搜索函数
+
+
+
+下载模块每条信息数组参数：
+class1_name：所属一级栏目名称
+class1_url：所属一级栏目链接
+class2_name：所属二级栏目名称，当二级栏目不存在时，自动转化为上级栏目名称；
+class2_url：所属二级栏目链接，当二级栏目不存在时，自动转化为上级栏目链接；
+class3_name：所属三级栏目名称，当三级栏目不存在时，自动转化为上级栏目名称；
+class3_url：所属三级栏目链接，当三级栏目不存在时，自动转化为上级栏目链接；
+top:置顶下载图标，格式为<img src='top.gif'>，可在模板文件夹中替换图片
+news:最新下载图标，格式为<img src='news.gif'>，可在模板文件夹中替换图片
+hot:热门下载图标，格式为<img src='hot.gif'>，可在模板文件夹中替换图片
+url:下载链接地址
+
+下载模块：
+$listall[download]:按更新时间排序的下载列表数组；
+$listcom[download]:按更新时间排序的推荐下载列表数组；
+$listnew[download]:按更新时间排序的最新下载列表数组；
+$classlistall[download][classid]：按更新时间排序的指定栏目下载列表数组；
+$classlistcom[download][classid]：按更新时间排序的指定栏目推荐下载列表数组；
+$classlistnew[download][classid]：按更新时间排序的指定栏目最新下载列表数组；
+$hitslistall[download]:按点击次数排序的下载列表数组；
+$hitslistcom[download]:按点击次数排序的推荐下载列表数组；
+$hitslistnew[download]:按点击次数排序的最新下载列表数组；
+$hitsclasslistall[download][classid]：按点击次数排序的指定栏目下载列表数组；
+$hitsclasslistcom[download][classid]：按点击次数排序的指定栏目推荐下载列表数组；
+$hitsclasslistnew[download][classid]：按点击次数排序的指定栏目最新下载列表数组；
+
+图片模块每条信息数组参数：
+class1_name：所属一级栏目名称
+class1_url：所属一级栏目链接
+class2_name：所属二级栏目名称，当二级栏目不存在时，自动转化为上级栏目名称；
+class2_url：所属二级栏目链接，当二级栏目不存在时，自动转化为上级栏目链接；
+class3_name：所属三级栏目名称，当三级栏目不存在时，自动转化为上级栏目名称；
+class3_url：所属三级栏目链接，当三级栏目不存在时，自动转化为上级栏目链接；
+top:置顶图片图标，格式为<img src='top.gif'>，可在模板文件夹中替换图片
+news:最新图片图标，格式为<img src='news.gif'>，可在模板文件夹中替换图片
+hot:热门图片图标，格式为<img src='hot.gif'>，可在模板文件夹中替换图片
+url:图片链接地址
+
+图片模块：
+$listall[img]:按更新时间排序的图片列表数组；
+$listcom[img]:按更新时间排序的推荐图片列表数组；
+$listnew[img]:按更新时间排序的最新图片列表数组；
+$classlistall[img][classid]：按更新时间排序的指定栏目图片列表数组；
+$classlistcom[img][classid]：按更新时间排序的指定栏目推荐图片列表数组；
+$classlistnew[img][classid]：按更新时间排序的指定栏目最新图片列表数组；
+$hitslistall[img]:按点击次数排序的图片列表数组；
+$hitslistcom[img]:按点击次数排序的推荐图片列表数组；
+$hitslistnew[img]:按点击次数排序的最新图片列表数组；
+$hitsclasslistall[img][classid]：按点击次数排序的指定栏目图片列表数组；
+$hitsclasslistcom[img][classid]：按点击次数排序的指定栏目推荐图片列表数组；
+$hitsclasslistnew[img][classid]：按点击次数排序的指定栏目最新图片列表数组；
+
+
+
+首页参数：
+
+首页显示控制数组参数：
+$index[content]:企业简介
+$index[online_type]:在线交流显示控制，1为开启，0为关闭；
+$index[news_no]:文章新闻列表显示条数
+$index[product_no]:产品列表显示条数
+$index[img_no]:图片列表显示条数
+$index[download_no]:下载列表显示条数
+$index[job_no]:招聘列表显示条数
+$index[link_ok]:是否显示友情链接，1为显示，0为关闭
+$index[link_img]:图片链接显示条数
+$index[link_text]:文字链接显示条数
+
+招聘信息
+top:置顶招聘图标，格式为<img src='top.gif'>，可在模板文件夹中替换图片
+news:最新招聘图标，格式为<img src='news.gif'>，可在模板文件夹中替换图片
+url:招聘信息链接地址
+$listall[job]:按更新时间排序的招聘片列表数组；
+
+
+友情链接
+$link_text_com[]:推荐文字友情链接数组
+$link_text[]:文字友情链接数组
+$link_img_com[]:推荐图片友情链接数组
+$link_img[]:图片友情链接数组
+$link[]:友情链接数组
+$link_com[]:推荐友情链接数组
+
+文章模块：
+$news_list[]:当前栏目全部信息数组；
+$news_list_com[]:当前栏目推荐信息数组；
+$news_list_new[]:当前栏目图片信息数组；
+$news_class[classid]:当前栏目下特定栏目下全部信息数组；
+
+
+首页显示控制数组：$index[]
+
+首页显示控制数组参数:
+$index[content]企业简介
+$index[online_type]:在线交流显示控制，1为开启，0为关闭；
+$index[news_no]:文章新闻列表显示条数
+$index[product_no]:产品列表显示条数
+$index[img_no]:图片列表显示条数
+$index[download_no]:下载列表显示条数
+$index[job_no]:下载列表显示条数
+$index[link_ok]:是否显示友情链接，1为显示，0为关闭
+$index[link_img]:图片链接显示条数
+$index[link_text]:文字链接显示条数
+
+
+
+标签函数：
+
+全站导航：
+$navlist_y1：竖向导航简单形式；
+
+横向导航
+$nav_x[name]：细分到信息标题
+$nav_x[1]：细分到三级栏目
+$nav_x[2]：当前栏目
+
+
+标签参数：
+$methtml_head:头部标签包含<body>之前部分所有内容；
+$methtml_now:日期标签，表现形式：今天是 2009年8月14日 星期五 ；
+$methtml_sethome:设为首页标签
+$methtml_addfavorite:加为收藏标签
+$methtml_flash：flash标签，外部div可以通过名称为flash的css来控制；
+$methtml_feedback:反馈表单
+$methtml_message:留言表单
+$methtml_messagelist：留言列表
+$methtml_sitemap:网站地图列表
+
+
+标签函数：
+methtml_lang(区分符号):语言切换标签函数，如methtml_lang("-"),将显示为‘繁體中文-English-Japanese’的形式
+
+
+横向搜索条：
+methtml_search('类型编号','按钮图片名称')
+类型编号：
+按钮图片名称：请填写模板文件夹images中的图片按钮名称，为空默认为submit方式提交；
+css控制：
+navsearch_input：搜索关键字提交框；
+navsearch_class：栏目下拉菜单
+searchimage：图片提交按钮
+searchgo：submit提交按钮
+
+
+
+utf8substr(标题, 开始位置, 长度)：标题截取函数，如utf8substr($val[title], 0, 20)
+
+$methtml_topnav('类型编号','区分符号')：头部导航条
+$methtml_footnav('区分符号')：尾部导航条
+
+methtml_getarray('栏目标识','调用数组类型','信息排序方式','模块英文编号'):循环数组获取函数，用于定位文章、产品、下载、图片特定循环数组；
+栏目标识：不指定栏目请留空或'all'，‘栏目标识’和‘模块英文编号’不能同时设置为特定相互冲突的值；
+调用数组类型：'all'或留空为全部信息，'com'为推荐信息，'new'为最新信息，'img'为文章模块的图片文章；
+信息排序方式：'hits'为按照点击次数排序，'time'或留空为按照更新时间排序；
+模块英文编号：文章模块为'news'，产品模块为'product'，下载模块为'downlaod'，图片模块为'img'，如制定了栏目标识，请将模块英文编号留空；
+
+循环列表显示函数：
+methtml_list('显示方式','栏目标识','调用数组类型','信息排序方式','模块英文编号','标题文字长度','头条颜色','显示条数','新窗口打开','栏目名称','更新时间','最新信息','最热信息','置顶信息','点击次数','简短描述','简短描述长度')：
+显示方式：'img'为带图片方式显示，'text'为文字标题方式显示，留空默认为文字标题方式显示；
+栏目标识：不指定栏目请留空或'all'，‘栏目标识’和‘模块英文编号’不能同时设置为特定相互冲突的值；
+调用数组类型：'all'或留空为全部信息，'com'为推荐信息，'new'为最新信息，'img'为文章模块的图片文章；
+信息排序方式：'hits'为按照点击次数排序，'time'或留空为按照更新时间排序；
+模块英文编号：文章模块为'news'，产品模块为'product'，下载模块为'downlaod'，图片模块为'img'，如制定了栏目标识，请将模块英文编号留空；
+标题文字长度：请使用语言自定义变量，以区分不同语言的字符长度，留空表示显示完整标题；
+头条颜色：头条信息的文字颜色，表示默认，当显示方式为img时失效；
+显示条数：留空表示默认，管理员可以通过后台首页配置进行修改；
+新窗口打开:1为新窗口打开，0为原窗口打开，默认新窗口打开；
+栏目名称：1为显示信息所属栏目，0为不显示，默认显示，当显示方式为img时设置为2才可以显示；
+更新时间：1为显示更新时间，0为不显示，默认显示，当显示方式为img时失效；
+最新信息：1为显示最新信息图标，0为不显示，默认显示，当显示方式为img时失效；
+最热信息：1为显示最热信息图标，0为不显示，默认显示，当显示方式为img时失效；
+置顶信息：1为显示置顶信息图标，0为不显示，默认显示，当显示方式为img时失效；
+点击次数：1为显示点击次数，0为不显示，默认不显示，当显示方式为img时失效；
+简短描述：1为显示，0为不显示，默认不显示，当显示方式为text时失效；
+简短描述长度:请使用语言自定义变量，以区分不同语言的字符长度，留空表示显示完整简短描述；
+
+文字列表css控制：输出信息为<ul><li><span class='info_class'>[栏目名称]</span> <span class='info_title'>信息标题</span><span class='info_hits'>[<font>点击次数</font>]</span> 信息标识图标 <span class='info_updatetime'>更新时间</span></li>...</ul>
+图片列表css控制：输出信息为<ul><li><span class='info_img'>图片地址</span> <span class='info_class'>[栏目名称]</span> <span class='info_title'>信息标题</span></li> ..</ul>
+栏目名称可用 class='info_class'来控制
+信息标题可以用 class='info_title'来控制
+信息图片可以用 class='info_img'来控制
+点击次数可以用 class='info_hits'来控制
+更新时间可以用 class='info_updatetime'来控制
+
+友情链接显示函数：
+methtm_link('友情链接类型','显示推荐','显示方式','显示条数','友情链接页面显示')
+友情链接类型：'text'为文字友情链接，'img'为图片友情链接，留空默认为文字友情链接；
+显示推荐：'all'为全部友情链接，'com'为推荐友情链接，留空默认为全部友情链接；
+显示方式：'select'为下拉菜单跳转形式，留空为普通文本形式，只对文字友情链接生效；
+显示条数：留空表示默认，管理员可以通过后台首页配置进行修改；
+友情链接页面显示：1为在友情链接页面调用初始值，默认为首页显示方式
+
+左右栏目导航显示函数：
+methtml_classlist('显示类型','栏目名称长度','特定栏目标识')
+显示类型：系统自带的显示方式
+栏目名称长度：留空为不限制
+特定栏目标识：若指定显示特定栏目，请填写一级栏目栏目标识；
+
+在线交流显示函数：
+methtml_online()
+页面固定方式控制class名称
+导航：met_online
+客服名称：met_onlinename
+QQ,msn,淘宝,客服名称所在行:met_onlinelist
+QQ：met_qq
+MSN：met_msn
+淘宝：met_taobao
+阿里巴巴：met_alibaba
+SKYPE：met_skype
+
+
+文章模块信息列表显示函数：
+methtml_news('显示方式','调用数组类型','置顶信息颜色','标题文字长度','文章描述文字长度','新窗口打开','栏目名称','更新时间','最新信息','最热信息','置顶信息','点击次数','信息导航标题','显示条数')：
+显示方式：'img'为带图片方式显示，'text'为文字标题方式显示，'description'为带简短描述的文字显示方式，留空默认为文字标题方式显示；
+调用数组类型：'all'或留空为全部信息，'com'为推荐信息，'img'为文章模块的图片文章；
+置顶信息颜色：置顶信息的标题文字颜色，表示默认，当显示方式为img时失效；
+标题文字长度：请使用语言自定义变量，以区分不同语言的字符长度，留空表示显示完整标题；
+文章描述文字长度：文字标题方式显示下无效，请使用语言自定义变量，以区分不同语言的字符长度，留空表示显示完整简短描述；
+新窗口打开:1为新窗口打开，0为原窗口打开，默认新窗口打开；
+栏目名称：1为显示信息所属栏目，0为不显示，默认显示，当显示方式为img时设置为2才可以显示；
+更新时间：1为显示更新时间，0为不显示，默认显示，当显示方式为img时失效；
+最新信息：1为显示最新信息图标，0为不显示，默认显示，当显示方式为img时失效；
+最热信息：1为显示最热信息图标，0为不显示，默认显示，当显示方式为img时失效；
+置顶信息：1为显示置顶信息图标，0为不显示，默认显示，当显示方式为img时失效；
+点击次数：1为显示点击次数，0为不显示，默认不显示，当显示方式为img时失效；
+信息导航标题：文字标题方式显示时有效，1为显示，0为不显示，默认显示；
+显示条数：列表页请留空，以便正常翻页，仅在显示相关栏目信息时使用；
+
+栏目名称可用 class='info_class'来控制
+文章标题可以用 class='info_title'来控制
+文章图片可以用 class='info_img'来控制
+查看详细可以用 class='info_detail'来控制
+点击次数可以用 class='info_hits'来控制
+更新时间可以用 class='info_updatetime'来控制
+
+上一条下一条显示函数：
+methtml_prenextinfo('显示类型')
+1 为在一行显示，0 为分行显示，默认为分行显示；
+
+产品模块信息列表显示函数：
+methtml_product('显示方式','调用数组类型','标题文字长度','简短参数个数','查看详细','购买反馈','更新时间','点击次数','新窗口打开','简短描述','简短描述长度','栏目名称','最新信息','最热信息','置顶信息','信息导航标题','显示条数','置顶信息颜色')
+显示方式：'img'为带图片方式显示，'text'为文字标题列表方式显示，留空默认为文字标题列表方式显示；
+调用数组类型：'all'或留空为全部信息，'com'为推荐信息，'new'为最新信息；
+标题文字长度：请使用语言自定义变量，以区分不同语言的字符长度，留空表示显示完整标题；
+简短参数个数：对应产品简短字段，最多为12个；
+查看详细：1为显示查看详细链接，0为不显示，默认不显示；
+购买反馈：1为显示购买反馈链接，0为不显示，默认不显示；
+更新时间：1为显示更新时间，0为不显示，默认不显示；
+最新信息：1为显示最新信息图标，0为不显示，默认显示；
+点击次数：1为显示点击次数，0为不显示，默认不显示；
+新窗口打开:1为新窗口打开，0为原窗口打开，默认新窗口打开；
+简短描述:1为显示，0为不显示，默认不显示；
+简短描述长度：请使用语言自定义变量，以区分不同语言的字符长度，留空表示显示完整简单描述；
+栏目名称：1为显示信息所属栏目，0为不显示，默认不显示；
+最新信息：1为显示最新信息图标，0为不显示，默认不显示，当显示方式为img时失效；
+最热信息：1为显示最热信息图标，0为不显示，默认不显示，当显示方式为img时失效；
+置顶信息：1为显示置顶信息图标，0为不显示，默认不显示，当显示方式为img时失效；
+信息导航标题：文字标题方式显示时有效，1为显示，0为不显示，默认不显示；
+显示条数：列表页请留空，以便正常翻页，仅在显示相关栏目信息时使用；
+置顶信息颜色：置顶信息的标题文字颜色，当显示方式为img时失效；
+
+栏目名称可用 class='info_class'来控制
+文章标题可以用 class='info_title'来控制
+文章图片可以用 class='info_img'来控制
+查看详细可以用 class='info_detail'来控制
+点击次数可以用 class='info_hits'来控制
+更新时间可以用 class='info_updatetime'来控制
+购买反馈可以用 class='info_feedback'来控制
+产品参数可以用 class='info_para1'-class='info_para8'来控制
+
+产品页面显示函数：
+methtml_showproduct('类型','购买反馈','简短描述')
+类型：'all'为一张缩略图带参数的显示方式
+购买反馈：1为显示购买反馈链接，0为不显示，默认显示；
+简短描述:1为显示，0为不显示，默认不显示；
+
+栏目名称可用 class='info_class'来控制
+文章标题可以用 class='info_title'来控制
+文章图片可以用 class='info_img'来控制
+购买反馈可以用 class='info_feedback'来控制
+产品简短参数可以用 class='info_para1'-class='info_para8'来控制
+产品详细参数可以用 class='info_bigpara1'-class='info_bigpara2'来控制
+
+
+搜索列表显示参数：
+methtml_searchlist('内容摘要','更新时间','查看详细','缩略图')
+内容摘要：1为显示，0为不显示，默认显示，css名称：search_content；
+更新时间：1为显示，0为不显示，默认显示，css名称：search_updatetime；
+查看详细：1为显示，0为不显示，默认显示，css名称：search_detail；
+缩略图：1为显示，0为不显示，默认显示，css名称：search_img；
+信息标题css名称：search_title；
+
+产品及图片含参数搜索函数：
+methtml_parasearch('模块类型','简短参数个最大数','下拉菜单参数最大数','按钮图片名称','栏目标识','一级栏目显示','二级栏目显示','三级栏目显示','搜索类型')
+模块类型：product为产品模块，img为图片模块，默认为产品模块；
+简短参数个最大数：最大8个，留空、0、默认为不限制，可以由用在后台产品参数配置中开启；
+下拉菜单参数最大数：最大4个，留空、0、默认为不限制，可以由用在后台产品参数配置中开启；
+按钮图片名称：请填写模板文件夹images中的图片按钮名称，为空默认为submit方式提交；
+栏目标识：留空、0、默认为不指定；
+一级栏目显示：1为显示一级栏目下拉选择框,0为不显示，默认为不显示；
+二级栏目显示：1为显示二级栏目下拉选择框,0为不显示，默认为不显示；
+三级栏目显示：1为显示三级栏目下拉选择框,0为不显示，默认为不显示；
+搜索类型：0为模糊搜索，1为精确搜索，默认为模糊搜索；
+css控制：
+parasearch_class1：一级栏目下拉菜单;
+parasearch_class2：二级栏目下拉菜单;
+parasearch_class3：三级栏目下拉菜单;
+parasearch_title：字段标题；
+parasearch_input：input及select选择框；
+parasearch_search：搜索按钮；
+searchimage：图片提交input按钮
+searchgo：submit提交按钮
+
+高级搜索函数：
+methtml_advsearch('模块','栏目标识','一级栏目显示','二级栏目显示','三级栏目显示','按钮图片名称','搜索类型')
+模块：对应与系统模块，1为简介模块，2为文章模块，3为产品模块，4为下载模块，5为图片模块；
+栏目标识：留空、0、默认为不指定，如模块和栏目标识冲突，优先栏目标识；
+一级栏目显示：1为显示一级栏目下拉选择框,0为不显示，默认为显示；
+二级栏目显示：1为显示二级栏目下拉选择框,0为不显示，默认为显示；
+三级栏目显示：1为显示三级栏目下拉选择框,0为不显示，默认为显示；
+按钮图片名称：请填写模板文件夹images中的图片按钮名称，为空默认为submit方式提交；
+搜索类型：留空显示选择框，0为同时搜索标题和内容，1为标题，2为内容；
+css控制：
+advsearch_class1：一级栏目下拉菜单;
+advsearch_class2：二级栏目下拉菜单;
+advsearch_class3：三级栏目下拉菜单;
+advsearch_title：字段标题；
+advsearch_input：input及select选择框；
+advsearch_search：搜索按钮；
+searchimage：图片提交input按钮
+searchgo：submit提交按钮
+
+
+
+图片模块信息列表显示函数：
+methtml_img('显示方式','调用数组类型','标题文字长度','简短参数个数','查看详细','在线反馈','更新时间','点击次数','新窗口打开','简短描述','简短描述长度','栏目名称','最新信息','最热信息','置顶信息','信息导航标题','显示条数','置顶信息颜色')
+显示方式：'img'为带图片方式显示，'text'为文字标题列表方式显示，留空默认为文字标题列表方式显示；
+调用数组类型：'all'或留空为全部信息，'com'为推荐信息，'new'为最新信息；
+标题文字长度：请使用语言自定义变量，以区分不同语言的字符长度，留空表示显示完整标题；
+简短参数个数：对应图片简短字段，最多为12个；
+查看详细：1为显示查看详细链接，0为不显示，默认不显示；
+在线反馈：1为显示购买反馈链接，0为不显示，默认不显示；
+更新时间：1为显示更新时间，0为不显示，默认不显示；
+最新信息：1为显示最新信息图标，0为不显示，默认显示；
+点击次数：1为显示点击次数，0为不显示，默认不显示；
+新窗口打开:1为新窗口打开，0为原窗口打开，默认新窗口打开；
+简短描述:1为显示，0为不显示，默认不显示；
+简短描述长度：请使用语言自定义变量，以区分不同语言的字符长度，留空表示显示完整简单描述；
+栏目名称：1为显示信息所属栏目，0为不显示，默认不显示；
+最新信息：1为显示最新信息图标，0为不显示，默认不显示，当显示方式为img时失效；
+最热信息：1为显示最热信息图标，0为不显示，默认不显示，当显示方式为img时失效；
+置顶信息：1为显示置顶信息图标，0为不显示，默认不显示，当显示方式为img时失效；
+信息导航标题：文字标题方式显示时有效，1为显示，0为不显示，默认不显示；
+显示条数：列表页请留空，以便正常翻页，仅在显示相关栏目信息时使用；
+置顶信息颜色：置顶信息的标题文字颜色，当显示方式为img时失效；
+
+栏目名称可用 class='info_class'来控制
+文章标题可以用 class='info_title'来控制
+文章图片可以用 class='info_img'来控制
+查看详细可以用 class='info_detail'来控制
+点击次数可以用 class='info_hits'来控制
+更新时间可以用 class='info_updatetime'来控制
+购买反馈可以用 class='info_feedback'来控制
+产品参数可以用 class='info_para1'-class='info_para8'来控制
+
+图片页面显示函数：
+methtml_showimg('类型','在线反馈','简短描述')
+类型：'all'为图片带参数的显示方式，'para'只输出文字参数；
+在线反馈：1为显示购买反馈链接，0为不显示，默认不显示；
+简短描述:1为显示，0为不显示，默认不显示；
+css控制：
+info_img:图片及特效
+info_para1-info_para12：简短参数
+
+
+
+图片播放显示函数
+methtml_imgdisplay('类型');
+类型：留空或'img'调用图片模块，'product'调用产品模块；
+
+
+
+下载模块信息列表显示函数：
+methtml_download('调用数组类型','标题文字长度','下载地址','文件大小','简短参数个数','查看详细','更新时间','点击次数','新窗口打开','简短描述','简短描述长度','栏目名称','最新信息','最热信息','置顶信息','信息导航标题','显示条数','置顶信息颜色')
+调用数组类型：'all'或留空为全部信息，'com'为推荐信息，'new'为最新信息；
+标题文字长度：请使用语言自定义变量，以区分不同语言的字符长度，留空表示显示完整标题；
+下载地址：1为显示下载链接，0为不显示，默认显示；
+文件大小：1为显示，0为不显示，默认显示；
+简短参数个数：对应图片简短字段，最多为8个；
+查看详细：1为显示查看详细链接，0为不显示，默认不显示；
+更新时间：1为显示更新时间，0为不显示，默认不显示；
+最新信息：1为显示最新信息图标，0为不显示，默认显示；
+点击次数：1为显示点击次数，0为不显示，默认不显示；
+新窗口打开:1为新窗口打开，0为原窗口打开，默认新窗口打开；
+简短描述:1为显示，0为不显示，默认不显示；
+简短描述长度：请使用语言自定义变量，以区分不同语言的字符长度，留空表示显示完整简单描述；
+栏目名称：1为显示信息所属栏目，0为不显示，默认不显示；
+最新信息：1为显示最新信息图标，0为不显示，默认不显示；
+最热信息：1为显示最热信息图标，0为不显示，默认不显示；
+置顶信息：1为显示置顶信息图标，0为不显示，默认不显示；
+信息导航标题：文字标题方式显示时有效，1为显示，0为不显示，默认不显示；
+显示条数：列表页请留空，以便正常翻页，仅在显示相关栏目信息时使用；
+置顶信息颜色：置顶信息的标题文字颜色；
+
+栏目名称可以用 class='info_class'来控制
+下载标题可以用 class='info_title'来控制
+下载链接可以用 class='info_download'来控制
+文件大小可以用 class='info_size'来控制
+查看详细可以用 class='info_detail'来控制
+点击次数可以用 class='info_hits'来控制
+更新时间可以用 class='info_updatetime'来控制
+简短参数可以用 class='info_para1'-class='info_para8'来控制
+
+下载页面显示函数：
+methtml_showdownload('类型','简短描述')
+类型：'all'为图片带参数的显示方式，'para'只输出文字参数；
+简短描述:1为显示，0为不显示，默认不显示；
+css控制：
+info_para1-info_para12：简短参数
+info_bigpara1,info_bigpara2:文本参数
+info_description：简短描述
+info_download：下载链接
+
+
+招聘模块信息列表显示函数：
+methtml_job('标题文字长度','招聘人数','工作地点','工资待遇','发布日期','有效期','在线应聘','新窗口打开','简短描述','简短描述长度','最新信息','置顶信息','信息导航标题','显示条数','置顶信息颜色')
+调用数组类型：'all'或留空为全部信息，'com'为推荐信息，'new'为最新信息；
+标题文字长度：请使用语言自定义变量，以区分不同语言的字符长度，留空表示显示完整标题；
+下载地址：1为显示下载链接，0为不显示，默认显示；
+文件大小：1为显示，0为不显示，默认显示；
+简短参数个数：对应图片简短字段，最多为8个；
+查看详细：1为显示查看详细链接，0为不显示，默认不显示；
+更新时间：1为显示更新时间，0为不显示，默认不显示；
+最新信息：1为显示最新信息图标，0为不显示，默认显示；
+点击次数：1为显示点击次数，0为不显示，默认不显示；
+新窗口打开:1为新窗口打开，0为原窗口打开，默认新窗口打开；
+简短描述:1为显示，0为不显示，默认不显示；
+简短描述长度：请使用语言自定义变量，以区分不同语言的字符长度，留空表示显示完整简单描述；
+栏目名称：1为显示信息所属栏目，0为不显示，默认不显示；
+最新信息：1为显示最新信息图标，0为不显示，默认不显示；
+最热信息：1为显示最热信息图标，0为不显示，默认不显示；
+置顶信息：1为显示置顶信息图标，0为不显示，默认不显示；
+信息导航标题：文字标题方式显示时有效，1为显示，0为不显示，默认不显示；
+显示条数：列表页请留空，以便正常翻页，仅在显示相关栏目信息时使用；
+置顶信息颜色：置顶信息的标题文字颜色；
+
+栏目名称可以用 class='info_class'来控制
+下载标题可以用 class='info_title'来控制
+下载链接可以用 class='info_download'来控制
+文件大小可以用 class='info_size'来控制
+查看详细可以用 class='info_detail'来控制
+点击次数可以用 class='info_hits'来控制
+更新时间可以用 class='info_updatetime'来控制
+简短参数可以用 class='info_para1'-class='info_para8'来控制
+
+
+
+
+Flash播放函数：
+methtml_flashimg('类型','宽度','高度','图片地址','链接地址','图片标题')
+类型：对应相应的数字，如1，2，3等）
+宽度：如1000，留空默认为当前栏目Flash宽度
+高度：如150，留空默认为当前栏目Flash高度
+图片地址：如'1.jpg|2.jpg|3.jpg'，请严格按照此种格式传输参数，留空默认为当前栏目Flash图片地址
+链接地址：如'http://www.metinfo.cn|http://www.metinfo.cn|http://www.metinfo.cn'，请严格按照此种格式传输参数，留空默认为当前栏目Flash链接地址
+图片标题：如'米拓信息|米拓信息|米拓信息'，请严格按照此种格式传输参数，留空默认为当前栏目Flash图片标题
+
+特别提醒：
+类型为3时，请将Flash外部DIV ID设为dplayer2，如<div class="flash" id='dplayer2'>调用函数</div>
+类型为5时，请将Flash外部DIV ID设为FocusObj，如<div class="flash" id='FocusObj'>调用函数</div>
+类型为7时，请将Flash外部DIV ID设为flashcontent01，如<div class="flash" id='flashcontent01'>调用函数</div>
+
+整站css名称
+最新信息图片css名称：listnews
+热门信息图片css名称：listhot
+置顶信息图片css名称：listtop

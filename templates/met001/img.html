@@ -1,0 +1,27 @@
+<!--<?php
+# 文件名称
+require_once template('head'); 
+$met_img=methtml_img('img','all');
+echo <<<EOT
+-->
+<div class="web">
+<div class="webleft">
+<div class="nav_x">&nbsp;<a href='$index_url'>{$lang_home}</a> > $nav_x[name]</div>
+<div class="content" >
+<div class="img_list">
+$met_img
+</div>
+</div>
+<div class="page">$page_list</div>
+</div>
+
+<!--
+EOT;
+require_once template('rightlist');
+echo <<<EOT
+-->
+</div>
+<!--
+EOT;
+require_once template('foot'); 
+?>

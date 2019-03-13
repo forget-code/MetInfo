@@ -1,0 +1,156 @@
+<!--<?php
+# 文件名称:flash.html 2009-08-03 15:30:57
+# MetInfo企业网站管理系统 
+# Copyright (C)  长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+require_once template('head');
+echo <<<EOT
+-->
+
+<title>{$lang_flashTitle}</title>
+</head>
+<body>
+   <div class="div_top">
+	              <div class="div_title">{$lang_flashTitle}</div>     
+					
+<!--
+EOT;
+echo <<<EOT
+-->
+<div class="div_content" align="left">
+<a href="flashadd.php" >{$lang_flashAdd}</a>
+</div>
+<div class="div_content" align="left"><span>{$lang_flashMode}：</span>
+<a href="?flashmode=1" $selected1>{$lang_flashMode3}</a>&nbsp;&nbsp;|&nbsp;
+<a href="?flashmode=2" $selected2>{$lang_flashMode2}</a>
+<!--
+EOT;
+echo <<<EOT
+-->	
+</div>
+<div>
+ <table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1" >
+              <tr $style1>
+                <td width="8%" class="list1_top" align="center">{$lang_flashSelect}</td>
+				<td width="8%" class="list1_top" align="center">{$lang_flashnoorder}</td>
+                <td width="30%" class="list1_top" align="center">{$lang_flashName}</td>
+                <td width="17%" class="list1_top" align="center" >
+				<select name="module" id="module" onchange='javascript:window.location.href=this.options[this.selectedIndex].value'>
+				<option value='flash.php?flashmode=1' >&nbsp;{$lang_flashBelong}</option>
+<!--
+EOT;
+foreach($mod1 as $key=>$val){
+echo <<<EOT
+-->	
+	<option value='flash.php?flashmode=1&module=$val[id]'  >&nbsp;$val[name]</option>
+<!--
+EOT;
+foreach($mod2[$val[id]] as $key=>$val2){
+echo <<<EOT
+-->	
+    <option value='flash.php?flashmode=1&module=$val2[id]' style="color:#000099" >&nbsp;&nbsp;- $val2[name]</option>
+<!--
+EOT;
+foreach($mod3[$val2[id]] as $key=>$val3){
+echo <<<EOT
+-->	
+    <option value='flash.php?flashmode=1&module=$val3[id]' style="color:#FF0000" >&nbsp;&nbsp;&nbsp;-- $val3[name]</option>		
+<!--
+EOT;
+}}}  
+echo <<<EOT
+-->	
+            </select>
+				
+				
+				</td>
+                <td width="25%" class="list1_top" align="center" >{$lang_flashPath}</td>
+				<td width="12%" class="list1_top" align="center" >{$lang_flashOperate}</td>
+              </tr>
+			  <tr $style2>
+                <td width="8%" class="list1_top" align="center">{$lang_flashSelect}</td>
+				<td width="8%" class="list1_top" align="center">{$lang_flashnoorder}</td>
+				<td width="17%" class="list1_top" align="center" >
+				<select name="module" id="module" onchange='javascript:window.location.href=this.options[this.selectedIndex].value'>
+				<option value='flash.php?flashmode=1' >&nbsp;{$lang_flashBelong}</option>
+<!--
+EOT;
+foreach($mod1 as $key=>$val){
+echo <<<EOT
+-->	
+	<option value='flash.php?flashmode=2&module=$val[id]'  >&nbsp;$val[name]</option>
+<!--
+EOT;
+foreach($mod2[$val[id]] as $key=>$val2){
+echo <<<EOT
+-->	
+    <option value='flash.php?flashmode=2&module=$val2[id]' style="color:#000099" >&nbsp;&nbsp;- $val2[name]</option>
+<!--
+EOT;
+foreach($mod3[$val2[id]] as $key=>$val3){
+echo <<<EOT
+-->	
+    <option value='flash.php?flashmode=2&module=$val3[id]' style="color:#FF0000" >&nbsp;&nbsp;&nbsp;-- $val3[name]</option>		
+<!--
+EOT;
+}}}  
+echo <<<EOT
+-->	
+            </select>
+				
+			
+				</td>
+                <td width="25%" class="list1_top" align="center">{$lang_flashUrl}</td>
+                <td width="30%" class="list1_top" align="center" >{$lang_flashBg}</td>
+				<td width="12%" class="list1_top" align="center" >{$lang_flashOperate}</td>
+              </tr>
+			  <form name="del" method="Post" action="flashdelete.php" onSubmit="return ConfirmDelall();">
+<!--
+EOT;
+foreach ($flashrec as $key=>$val){
+echo <<<EOT
+-->          
+              <tr $style1>
+              <td class="list1_content_titile" align="center"><input name='id' type='checkbox' onClick="unselectall()" id="id" value='$val[id]' class="xz"></td>
+                <td class="list1_content" align="center">$val[no_order]</td>
+			    <td align="left" class="list1_content">$val[img_title]</td>
+                <td class="list1_content" align="center"><a href="flash.php?flashmode=1&module=$val[module]">$val[modulename]</a></td>
+                <td  class="list1_content" align="center">$val[img_path]</td>
+				<td align="center" class="list1_content" style="color:#0066FF;"></a> <a href="flashedit.php?id=$val[id]&flashmode=1" >{$lang_flashEdit}</a> | <a href="flashdelete.php?id=$val[id]" onClick="return ConfirmDel();" >{$lang_flashDelete}</a></td>
+              </tr>
+			  <tr $style2>
+              <td class="list1_content_titile" align="center"><input name='id' type='checkbox' onClick="unselectall()" id="id" value='$val[id]' class="xz"></td>
+                <td class="list1_content" align="center">$val[no_order]</td>
+				<td class="list1_content" align="center"><a href="flash.php?flashmode=2&module=$val[module]">$val[modulename]</a></td>
+			    <td align="left" class="list1_content">$val[flash_path]</td>
+                <td class="list1_content" align="center">$val[flash_back]</td>
+				<td align="center" class="list1_content" style="color:#0066FF;"></a> <a href="flashedit.php?id=$val[id]&flashmode=2" >{$lang_flashEdit}</a> | <a href="flashdelete.php?id=$val[id]" onClick="return ConfirmDel();" >{$lang_flashDelete}</a></td>
+              </tr>
+			  
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+		   
+   	   <tr> 
+            <td class="input_bottom" align="center"><input name="chkAll" class="xz" type="checkbox" id="chkAll" onclick=CheckAll(this.form) value="checkbox"></td>
+            <td class="input_bottom" align="center">{$lang_flashSelectAll}</td>
+			<td class="input_bottom" align="left" colspan="5"><input name="submit" type='submit' value='{$lang_flashDeleteSelected}'> 
+              <input name="action" type="hidden" id="action" value="del">
+			  <input name="allid" type="hidden" id="allid" value=""></form></td>
+          </tr>
+   	   <tr>
+   	     <td height="0" align="center" colspan="7" class="list1_input">$page_list</td>
+        </tr>
+		<tr>
+		  <td class="list1_footer" colspan="10" align="center">$foot</td>
+	  </tr>
+</table>
+</div>
+</body>
+</html>
+<!--
+EOT;
+# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+?>-->

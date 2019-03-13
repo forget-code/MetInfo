@@ -1,0 +1,85 @@
+<!--<?php
+$metlang=methtml_lang('&nbsp;&nbsp;|&nbsp;&nbsp;');
+if($navurl == "../"){$asd="&gt;";}
+$methtml_login=methtml_login();
+$met_online=methtml_online();
+echo <<<EOT
+-->
+{$methtml_head}
+
+<body>
+<div class="content">
+   <div class="top" style="background:url($otherinfo[imgurl1]) no-repeat 0px 0px;">
+        <div class="leftlogo" ><div class="logo"><a href="$index_url"><img src="$met_logo" alt="$met_alt" /></a></div></div>
+		<div class="righttime">
+		<div class="sidebar" style="font-family:arial;">{$methtml_now}<span>&nbsp;{$methtml_sethome} | {$methtml_addfavorite} | &nbsp;{$metlang}</span></div>
+		<div class="seo">$met_seo</div>
+		    <div class="index_login">
+			$methtml_login 
+			</div> 
+        </div>
+	  <div class="nav">
+			<ul>
+<li ><a href="$index_url" onFocus="if(this.blur)this.blur();" id="nav_0">{$lang_home}</a></li>
+<!--
+EOT;
+$i=0;
+foreach($nav_list as $key=>$val){
+$i++;
+echo <<<EOT
+-->
+<li><a href="$val[url]" $val[new_windows] title="$val[name]" onFocus="if(this.blur)this.blur();" id="nav_$val[id]">$val[name]</a></li>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<div style="clear:both;"></div>
+			</ul>
+<script language=JavaScript type=text/JavaScript>
+            document.getElementById('$navdown').className="navdn";
+			document.getElementById('$navdown').style.color="#111111";
+</script>
+<div class="index_search">
+<form method="POST" name="myform1" action="$searchurl"  target="_self">
+<input type="text" name="searchword" size="20"  class="navtext" />
+<input type='submit' name='Submit' value='&nbsp;&nbsp;' class="navsb" />
+</form>
+</div>
+			</div>
+<!--
+EOT;
+if($met_flasharray[$classnow][type]){
+echo <<<EOT
+-->
+			<div class="nav_flash"><div class="flash_lefttop"><div class="flash_bottomleft"><div class="flash_bottomright">{$methtml_flash}</div></div></div></div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->		
+   </div>
+ <div class="main_top">
+<span>{$lang_YouPosition}：<a href="$index_url">{$lang_home}</a>&nbsp;{$asd}&nbsp;$nav_x[name]</span>
+<div class="notice">
+<marquee scrollAmount=2 scrollDelay=4 width=500 align="left" onMouseOver="this.stop()" onMouseOut="this.start()">
+<!--
+EOT;
+$i=0;
+foreach(methtml_getarray('5','','time','') as $key=>$val){
+$i++;
+echo <<<EOT
+-->
+<a href="$val[url]" target="_blank" title="$val[title]">$val[title]</a>
+<!--
+EOT;
+if($i>=$index[news_no])break;
+}
+echo <<<EOT
+-->
+</marquee>
+</div>
+</div>  
+<!--
+EOT;
+?>

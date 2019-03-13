@@ -1,45 +1,34 @@
 <!--<?php
+# 文件名称:admin.html 2009-08-15 14:34:57
+# MetInfo企业网站管理系统 
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+require_once template('head');
 echo <<<EOT
 -->
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-<link rel="stylesheet" type="text/css" href="$css_url/metinfo_admin.css">
-<title>管理员管理</title>
-<script type="text/javascript" src="../language/zh_cn.js"></script>
-<script type="text/javascript" src="../include/metinfo.js"></script>
+<title>{$lang_adminTitle}</title>
 </head>
 <body>
-<br>
-<table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td align="center" valign="top"><table width="95%" border="0" cellpadding="2" cellspacing="1" class="table_southidc">
+<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
           <tr> 
-            <td class="back_southidc" height="30" colspan="4" align="center">管理员管理</td>
+            <td colspan="9" align="center" class="list1_title">{$lang_adminTitle}</td>
           </tr>
           <tr>
-            <td class="title_add" height="20" colspan="2" align="left"><a href="add.php">添加管理员</a></td>
-            <td width="20%" height="20" align="center" >&nbsp;</td>
-            <td width="60%" align="right" >
-			<form method="POST" name="myform"  action="index.php?search=detail_search" target="_self">
-			用户名:
-              <input name="admin_id" type="text" size="16">
-管理员姓名:
-<input name="admin_name" type="text" size="16">
-<input type="submit" name="Submit2" value="查询" class="tj">  </form></td>
+            <td class="list1_input" height="20" colspan="5"><a href="add.php">{$lang_adminAdd}</a></td>
+            <td width="60%" align="right" colspan="4" class="list1_input">
+			<form method="POST" name="myform" action="index.php?search=detail_search" target="_self">
+			{$lang_adminUserName}:&nbsp;<input name="admin_id" type="text" size="16">&nbsp;{$lang_adminName}:&nbsp;<input name="admin_name" type="text" size="16">
+<input type="submit" name="Submit2" value="{$lang_adminSearch}" class="tj">&nbsp;</form></td>
           </tr>
-          <tr> 
-            <td colspan="4" valign="top"><table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#003366" class="border" style="word-break:break-all">
-              <tr class="back_southidc2">
-                <td width="5%" height="25" align="center">选中</td>
-                <td width="6%" height="25" align="center">用户名</td>
-                <td width="6%" align="center" >姓名</td>
-                <td width="10%" align="center" >电话</td>
-                <td width="10%" align="center" >手机</td>
-                <td width="7%" align="center" >登陆次数</td>
-				<td width="15%" align="center" >最后登陆时间</td>
-                <td width="12%" align="center" >最后登陆IP</td>
-				<td width="15%" align="center" >操作</td>
+              <tr>
+                <td width="5%" class="list1_top" align="center">{$lang_adminSelect}</td>
+                <td width="6%" class="list1_top" align="center">{$lang_adminUserName}</td>
+                <td width="6%" class="list1_top" align="center" >{$lang_adminRealName}</td>
+                <td width="10%" class="list1_top" align="center" >{$lang_adminTel}</td>
+                <td width="10%" class="list1_top" align="center" >{$lang_adminCell}</td>
+                <td width="7%" class="list1_top" align="center" >{$lang_adminLoginNum}</td>
+				<td width="15%" class="list1_top" align="center" >{$lang_adminLastLogin}</td>
+                <td width="12%" class="list1_top" align="center" >{$lang_adminLastIP}</td>
+				<td width="15%" class="list1_top" align="center" >{$lang_adminOperate}</td>
               </tr>
 			  <form name="del" method="Post" action="delete.php" onSubmit="return ConfirmDelall();">
 <!--
@@ -47,40 +36,40 @@ EOT;
 foreach ($admin_list as $key=>$val){
 echo <<<EOT
 -->          
-              <tr class="tdbg">
-              <td height="22" align="center" class="left1"><input name='id' type='checkbox' onClick="unselectall()" id="id" value='$val[id]' class="xz"></td>
-                <td align="center" bgcolor="#ECF5FF"><a href="detail.php?id=$val[id]" title="查看详细">$val[admin_id]</a></td>
-                <td  bgcolor="#ECF5FF" align="center"><a href="detail.php?id=$val[id]"  title="查看详细">$val[admin_name]</a></td>
-                <td  bgcolor="#ECF5FF" align="center">$val[admin_tel]</td>
-                <td  bgcolor="#ECF5FF" align="center">$val[admin_mobile]</td>
-                <td align="center" bgcolor="#ECF5FF">$val[admin_login]</td>
-				<td bgcolor="#ECF5FF" align="center" >$val[admin_modify_date] </td>
-                <td align="center" bgcolor="#ECF5FF">$val[admin_modify_ip]</td>
-				<td align="center" bgcolor="#ECF5FF" ><a href="detail.php?id=$val[id]" >详细 |</a> <a href="editor.php?id=$val[id]" >编辑</a> | <a href="delete.php?id=$val[id]" onClick="return ConfirmDel();" >删除</a></td>
+              <tr>
+              <td align="center" class="list1_content_titile"><input name='id' type='checkbox' onClick="unselectall()" id="id" value='$val[id]' class="xz"></td>
+                <td align="center" class="list1_content"><a href="detail.php?id=$val[id]" title="{$lang_adminReadDetail}">$val[admin_id]</a></td>
+                <td class="list1_content" align="center"><a href="detail.php?id=$val[id]"  title="{$lang_adminReadDetail}">$val[admin_name]</a></td>
+                <td class="list1_content" align="center">$val[admin_tel]</td>
+                <td class="list1_content" align="center">$val[admin_mobile]</td>
+                <td align="center" class="list1_content">$val[admin_login]</td>
+				<td class="list1_content" align="center" >$val[admin_modify_date] </td>
+                <td align="center" class="list1_content">$val[admin_modify_ip]</td>
+				<td align="center" class="list1_content" style="color:#0066FF;"><a href="detail.php?id=$val[id]" >{$lang_adminDetail}</a> | <a href="editor.php?id=$val[id]" >{$lang_adminEdit}</a> | <a href="delete.php?id=$val[id]" onClick="return ConfirmDel();" >{$lang_adminDel}</a></td>
               </tr>
 <!--
 EOT;
 }
 echo <<<EOT
 -->
-       
-            </table></td>
-          </tr> 
-		   
    	   <tr> 
-            <td height="20" colspan="4" align="left" bgcolor="#ECF5FF"><input name="chkAll" class="xz" type="checkbox" id="chkAll" onclick=CheckAll(this.form) value="checkbox">
-              选中本页显示的所有管理员 <input name="submit" type='submit' value='删除选定的条目'> 
+            <td class="input_bottom" align="center"><input name="chkAll" class="xz" type="checkbox" id="chkAll" onclick=CheckAll(this.form) value="checkbox"></td>
+             <td class="input_bottom" align="center">{$lang_adminSelectAll}</td>
+			 <td colspan="7" class="input_bottom" align="left"><input name="submit" type='submit' value='{$lang_adminDelSelected}' style="*padding-top:2px; *height:22px;"> 
               <input name="action" type="hidden" id="action" value="del">
 			  <input name="allid" type="hidden" id="allid" value=""></form></td>
           </tr>
    	   <tr>
-   	     <td height="0" colspan="4" align="center" bgcolor="#ECF5FF">$page_list</td>
+   	     <td class="list1_input" colspan="9" align="center">$page_list</td>
         </tr>
-    </table></td>
-  </tr>
+		 <tr>
+		  <td class="list1_footer" colspan="9" align="center">$foot</td>
+	  </tr>
 </table>
 </body>
 </html>
 <!--
 EOT;
+# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
 ?>-->

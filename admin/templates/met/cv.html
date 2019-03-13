@@ -1,0 +1,90 @@
+<!--<?php
+# 文件名称:cv.html 2009-08-13 13:03:57
+# MetInfo企业网站管理系统 
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+require_once template('head');
+echo <<<EOT
+-->
+<title>{$lang_cvTitle}</title>
+</head>
+<body>
+<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
+          <tr> 
+            <td colspan="7" align="center" class="list1_title">{$lang_cvTitle}</td>
+          </tr>  
+			<tr align="right">
+			<form method="POST" name="filterform"  action="cv.php?search=detail_search" target="_self">
+			<td colspan="7">				
+				<span><b>{$lang_cvRead}:</b></span>
+				<select name="readok" id="readok" onChange="autosubmit()">
+					<option value="" $readok0>{$lang_cvState}</option>
+					<option value="1" $readok1>{$lang_YES}</option>
+					<option value="0" $readok2>{$lang_NO}</option>
+				</select>
+				
+			</td>
+			</form>
+		</tr>
+              <tr>
+                <td width="5%" class="list1_top" align="center">{$lang_cvSelect}</td>
+				<td width="5%" class="list1_top" align="center">ID</td>
+                <td width="25%" class="list1_top" align="center">{$lang_cvPosition}</td>
+                <td width="20%" class="list1_top" align="center" >{$lang_cvName}</td>
+                <td width="20%" class="list1_top" align="center" >{$lang_cvAddtime}</td>
+				<td width="5%"  class="list1_top" align="center" >{$lang_cvRead}</td>
+				<td width="20%" class="list1_top" align="center" >{$lang_cvOperate}</td>
+              </tr>
+			  <form name="del" method="Post" action="cv_delete.php" onSubmit="return ConfirmDelall();">
+<!--
+EOT;
+foreach ($cv_list as $key=>$val){
+echo <<<EOT
+-->          
+              <tr>
+              <td align="center"class="list1_content_titile"><input name='id' type='checkbox' onClick="unselectall()" id="id" value='$val[id]' class="xz"></td>
+                <td  align="center" class="list1_content">$val[id]</td>
+			    <td align="center" class="list1_content">$val[position]</td>
+                <td class="list1_content" align="center">$val[customerid]</td>
+                <td   class="list1_content" align="center">$val[addtime]</td>
+				<td   class="list1_content" align="center">$val[readok]</td>
+				<td align="center"  class="list1_content" style="color:#0066FF;"></a> <a href="cv_editor.php?id=$val[id]" >{$lang_cvDetail}</a> | <a href="cv_delete.php?id=$val[id]" onClick="return ConfirmDel();" >{$lang_cvDelete}</a></td>
+              </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+
+   	   <tr> 
+            <td class="input_bottom" align="center"><input name="chkAll" class="xz" type="checkbox" id="chkAll" onclick=CheckAll(this.form) value="checkbox"></td>
+             <td class="input_bottom" align="center">{$lang_cvAll}</td>
+              <td class="input_bottom" align="left" colspan="7"><input name="submit" type='submit' value='{$lang_cvTip1}'><input name="action" type="hidden" id="action" value="del"><input name="allid" type="hidden" id="allid" value=""></form></td>
+          </tr>
+		  <tr>
+            <td align="left" colspan="7"  class="input_search">
+			<form method="POST" name="search"  action="cv.php?search=detail_search" target="_self">
+			       <span><b>{$lang_cvTip2}：</b></span> 
+			    <input name="position" type="text" size="30">
+  <input type="submit" name="Submit2" value="{$lang_cvSearch}" class="tj">  
+	        {$lang_cvTip3}</form></td>
+          </tr>
+   	   <tr>
+   	     <td height="0" align="center" colspan="7" class="list1_input">$page_list</td>
+        </tr>
+		<tr>
+		  <td class="list1_footer" colspan="7" align="center">$foot</td>
+	  </tr>
+</table>
+<script type='text/javascript'>
+	function autosubmit()
+	{
+		document.filterform.submit();
+	}
+</script>
+</body>
+</html>
+<!--
+EOT;
+# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+?>-->

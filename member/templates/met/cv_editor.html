@@ -1,0 +1,113 @@
+<!--<?php
+# 文件名称:cv_editor.html 2009-08-12 08:50:13
+# MetInfo企业网站管理系统 
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+echo <<<EOT
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{$lang_memberModifyCV}</title>
+<link href="templates/met/css/style.css" rel="stylesheet" />
+<style type="text/css">
+<!--
+body {
+	font-size: $lang_fontsize; 
+	font-family:$lang_fontfamily;
+	}
+-->
+</style>
+<script type="text/javascript">
+
+function pressCaptcha(obj)//字母变大写
+  {
+    obj.value = obj.value.toUpperCase();
+  }
+</script>
+$fdjs
+</head>
+<body>
+<form  enctype="multipart/form-data" method="POST" onSubmit="return Checkcv();" name="myform" action="cv_editor.php?action=edit" target="_self">
+<input name="id" type="hidden" value="$id">
+<input name="lang" type="hidden" value="$lang">
+<table cellpadding="2" cellspacing="1" border="0" class="table_member">
+		
+		  <tr> 
+            <td colspan="10" align="center" class="member_title">{$lang_memberModifyCV}</td>
+          </tr>
+		  <tr> 
+            <td class="member_text"><b>{$lang_memberPosition}:</b></td>
+            <td colspan="2" class="member_input">
+			<select name="jobid" id="jobid">
+			$selectjob
+			</select>
+			</td>
+			<td class="member_input" bgcolor="#FFFFFF" style="color:#990000">*</td>
+		 </tr>
+<!--
+EOT;
+foreach($cv_para as $key=>$val){
+if($val[maxsize]==200 )
+{
+echo <<<EOT
+-->
+         <tr> 
+            <td class="member_text"><b>$val[mark]:</b></td>
+            <td colspan="2" class="member_input"><input name="$val[name]" type="text" class="input" size="40" maxlength="200" value='$val[content]'></td>
+			<td class="member_input" bgcolor="#FFFFFF" style="color:#990000">$val[wr_must]</td>
+		 </tr>
+<!--
+EOT;
+}else if($val[maxsize]==255)
+{
+
+echo <<<EOT
+-->
+			<tr> 
+            <td class="member_text"><b>$val[mark]:</b></td>
+            <td colspan="2" class="member_input"> $val[content] <input name="$val[name]" type='file' class="input" size="20" maxlength="200" ></td>
+			<td class="member_input" bgcolor="#FFFFFF" style="color:#990000">$val[wr_must]</td>
+			</tr>
+<!--
+EOT;
+}
+else
+{
+echo <<<EOT
+-->
+         <tr> 
+            <td class="member_text"><b>$val[mark]:</b></td>
+            <td colspan="2"  class="member_input"><textarea name="$val[name]" cols="60" rows="5">$val[content]</textarea></td>
+			<td class="member_input" bgcolor="#FFFFFF" style="color:#990000">$val[wr_must]</td>
+			</tr>
+<!--
+EOT;
+
+}
+
+}
+echo <<<EOT
+-->       
+		  <tr> 
+            <td class="member_text"><b>{$lang_memberAddTime}:</b></td>
+            <td colspan="2" class="member_input">$cv_list[addtime]</td>
+          </tr>
+		  <tr>    
+         <td class="member_text"><b>{$lang_memberImgCode}:</b></td>
+         <td colspan="2" class="member_input"><input name="code" onKeyUp="pressCaptcha(this)" type="text" class="inp" id="code" size="6" maxlength="8" style="width:50px" />
+         <img align="absbottom" src="ajax.php?action=code"  onclick=this.src="ajax.php?action=code&"+Math.random() style="cursor: pointer;" title="{$lang_memberTip1}"/>
+		</td>
+		</tr>
+		<tr> 
+            <td class="member_text"></td>
+	      <td class="cv_submit"><input type="submit" name="Submit" value="{$lang_Submit}" class="tj" style="*padding-top:2px; *height:22px;"><input type="reset" name="Submit" value="{$lang_Reset}" class="tj" style="*padding-top:2px; *height:22px;"> </td>
+        </tr>
+</table>
+</body>
+</html>
+<!--
+EOT;
+# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn).  All rights reserved.
+?>-->

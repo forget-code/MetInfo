@@ -1,0 +1,24 @@
+<!--<?php
+$metproductsearch=methtml_parasearch('product','4');
+echo <<<EOT
+-->
+<div class="webright">
+<div class="nav_x1">$class1_info[name]</div>
+<div class="navright">{$metrightnav}</div>
+<!--
+EOT;
+if($class_list[$classnow][module]==3){
+echo <<<EOT
+-->
+<div class="nav_x1">{$lang_ProductSearch}</div>
+<div class="navright1">$metproductsearch</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+$met_online
+</div>
+<!--
+EOT;
+?>

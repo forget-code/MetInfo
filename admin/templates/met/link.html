@@ -1,40 +1,82 @@
 <!--<?php
+# 文件名称:link.html 2009-08-15 14:34:57
+# MetInfo企业网站管理系统 
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+require_once template('head');
+if($show_ok==0 && $show_ok<>""){
+   $style1="style='color:#FF0000'";
+ }elseif($com_ok==1 && $com_ok<>""){
+   $style2="style='color:#FF0000'";
+ }elseif($link_type==0 && $link_type<>""){
+   $style4="style='color:#FF0000'";
+ }
+ elseif($link_type==1 && $link_type<>""){
+   $style5="style='color:#FF0000'";
+ }elseif($langnow=="cn"){
+   $style6="style='color:#FF0000'";
+ }
+ elseif($langnow=="en"){
+   $style7="style='color:#FF0000'";
+ }
+ elseif($langnow=="other"){
+   $style8="style='color:#FF0000'";
+ }else{
+   $style3="style='color:#FF0000'";
+ }
 echo <<<EOT
 -->
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-<link rel="stylesheet" type="text/css" href="$css_url/metinfo_admin.css">
-<title>友情链接管理</title>
-<script type="text/javascript" src="../language/zh_cn.js"></script>
-<script type="text/javascript" src="../include/metinfo.js"></script>
+<title>{$lang_linkTitle}</title>
 </head>
 <body>
 <br>
-<table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td align="center" valign="top"><table width="95%" border="0" cellpadding="2" cellspacing="1" class="table_southidc">
+<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_list1">
           <tr> 
-            <td class="back_southidc" height="30" align="center">友情链接管理</td>
+            <td colspan="9" align="center" class="list1_title">{$lang_linkTitle}</td>
           </tr>
-	   <tr>
-	   <tr><td style="color:#990000;">前台调用方法： 可在栏目配置中添加，访问地址为"$met_weburl/link/" </td></tr>
-            <td height="25" align="left" class="class2">链接类型：
+       <tr>
+	        <td align="left" class="list1_input list9" colspan="9">{$lang_linkType}：
+			<a href="index.php?show_ok=0" $style1>{$lang_linkType1}</a>&nbsp;|&nbsp;
+			<a href="index.php?com_ok=1" $style2>{$lang_linkType2}</a>&nbsp;|&nbsp;
+			<a href="index.php" $style3>{$lang_linkType3}</a>&nbsp;|&nbsp;
+			<a href="index.php?link_type=0" $style4>{$lang_linkType4}</a>&nbsp;|&nbsp;
+			<a href="index.php?link_type=1" $style5>{$lang_linkType5}</a>
+<!--
+EOT;
+if($met_c_lang_ok){
+echo <<<EOT
+--> 
+          &nbsp;|&nbsp; <a href="index.php?langnow=cn" $style6>[$met_c_lang]{$lang_linkType3}</a>
+<!--
+EOT;
+}
+if($met_e_lang_ok){
+echo <<<EOT
+--> 
+ &nbsp;|&nbsp;<a href="index.php?langnow=en" $style7>[$met_e_lang]{$lang_linkType3}</a>
+<!--
+EOT;
+}
+if($met_o_lang_ok){
+echo <<<EOT
+--> 
+ &nbsp;|&nbsp;<a href="index.php?langnow=other" $style8>[$met_o_lang]{$lang_linkType3}</a>
+<!--
+EOT;
+}
+echo <<<EOT
+--> 
 
-<a href="index.php?show_ok=0">未审核链接</a>&nbsp;|&nbsp;<a href="index.php?com_ok=1">推荐链接</a>&nbsp;|&nbsp;<a href="index.php">全部链接</a>&nbsp;|&nbsp;<a href="index.php?link_type=0">文字链接</a>&nbsp;|&nbsp;<a href="index.php?link_type=1">LOGO链接</a>&nbsp;|&nbsp;<a href="index.php?link_lang=ch">仅在中文版显示链接</a>&nbsp;|&nbsp;<a href="index.php?link_lang=en">仅在英文版显示链接</a>
 </td> </tr>
-          <tr> 
-            <td valign="top"><table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#003366" class="border" style="word-break:break-all">
-              <tr class="back_southidc2">
-                <td width="5%" height="25" align="center">选中</td>
-				<td width="5%" height="25" align="center">ID</td>
-                <td width="8%" height="25" align="center">链接类型</td>
-                <td width="18%" align="center" >网站标题</td>
-                <td width="26%" align="center" >网站关键词</td>
-                <td width="6%" align="center" >排序</td>
-				<td width="6%" align="center" >审核</td>
-				<td width="6%" align="center" >推荐</td>
-				<td width="10%" align="center" >操作</td>
+              <tr>
+                <td width="5%" class="list1_top" align="center">{$lang_linkSelect}</td>
+				<td width="5%" class="list1_top" align="center">ID</td>
+                <td width="8%" class="list1_top" align="center">{$lang_linkType}</td>
+                <td width="18%" class="list1_top" align="center" >{$lang_linkName}</td>
+                <td width="26%" class="list1_top" align="center" >{$lang_linkKeys}</td>
+                <td width="6%" class="list1_top" align="center" >{$lang_linkSort}</td>
+				<td width="6%" class="list1_top" align="center" >{$lang_linkCheck}</td>
+				<td width="6%" class="list1_top" align="center" >{$lang_linkRecommend}</td>
+				<td width="10%" class="list1_top" align="center" >{$lang_linkOperate}</td>
               </tr>
 			  <form name="del" method="Post" action="delete.php" onSubmit="return ConfirmDelall();">
 <!--
@@ -42,48 +84,49 @@ EOT;
 foreach ($link_list as $key=>$val){
 echo <<<EOT
 -->          
-              <tr class="tdbg">
-              <td height="22" align="center" class="left1"><input name='id' type='checkbox' onClick="unselectall()" id="id" value='$val[id]' class="xz"></td>
-                <td  bgcolor="#ECF5FF" align="center">$val[id]</td>
-				<td align="center" bgcolor="#ECF5FF">$val[link_type]</td>
-			    <td align="left" bgcolor="#ECF5FF">$val[c_webname]</td>
-				<td align="left" bgcolor="#ECF5FF">$val[c_info]</td>
-				<td  bgcolor="#ECF5FF" align="center">$val[orderno]</td>
-                <td  bgcolor="#ECF5FF" align="center">$val[show_ok]</td>
-                <td  bgcolor="#ECF5FF" align="center">$val[com_ok]</td>          
-				<td align="center" bgcolor="#ECF5FF" ></a> <a href="editor.php?id=$val[id]" >编辑</a> | <a href="delete.php?id=$val[id]" onClick="return ConfirmDel();" >删除</a></td>
+              <tr>
+              <td class="list1_content_titile" align="center"><input name='id' type='checkbox' onClick="unselectall()" id="id" value='$val[id]' class="xz"></td>
+                <td class="list1_content" align="center">$val[id]</td>
+				<td align="center" class="list1_content">$val[link_type]</td>
+			    <td align="left" class="list1_content">$val[webname]</td>
+				<td align="left" class="list1_content">$val[info]</td>
+				<td class="list1_content" align="center">$val[orderno]</td>
+                <td class="list1_content" align="center">$val[show_ok]</td>
+                <td class="list1_content" align="center">$val[com_ok]</td>          
+				<td align="center" class="list1_content" style="color:#0066FF;"></a> <a href="editor.php?id=$val[id]" >{$lang_linkEdit}</a> | <a href="delete.php?id=$val[id]" onClick="return ConfirmDel();" >{$lang_linkDel}</a></td>
               </tr>
 <!--
 EOT;
 }
 echo <<<EOT
 -->
-       
-            </table></td>
-          </tr> 
 		   
    	   <tr> 
-            <td height="20" align="left" bgcolor="#ECF5FF"><input name="chkAll" class="xz" type="checkbox" id="chkAll" onclick=CheckAll(this.form) value="checkbox">
-              选中本页显示的所有链接<input name="submit" type='submit' value='删除选定的条目'> 
+            <td class="input_bottom" align="center"><input name="chkAll" class="xz" type="checkbox" id="chkAll" onclick=CheckAll(this.form) value="checkbox"></td>
+            <td class="input_bottom" align="center">{$lang_linkSelectAll}</td>
+			<td class="input_bottom" align="left" colspan="8"><input name="submit" type='submit' value='{$lang_linkDelSelected}' style="*padding-top:2px; *height:22px;"> 
               <input name="action" type="hidden" id="action" value="del">
 			  <input name="allid" type="hidden" id="allid" value=""></form></td>
           </tr>
-		  <tr  bgcolor="#ECF5FF">
-            <td  height="20" align="left">
+		  <tr>
+            <td class="input_search" colspan="9" align="left">
 			<form method="POST" name="myform"  action="index.php?search=detail_search" target="_self">
-			       <b>友情链接查找：</b> 
+			       <span><b>{$lang_linkSearch}：</b></span>
 			    <input name="c_webname" type="text" size="30">
-  <input type="submit" name="Submit2" value="查询" class="tj">  
-	        请输入网站标题关键字。如果为空，则查找所有链接。</form></td>
+  <input type="submit" name="Submit2" value="{$lang_linkDo}" class="tj" style="*padding-top:2px; *height:22px;">  
+	        {$lang_linkTip2}</form></td>
           </tr>
    	   <tr>
-   	     <td height="0" align="center" bgcolor="#ECF5FF">$page_list</td>
+   	     <td  align="center" colspan="9" class="list1_input" >$page_list</td>
         </tr>
-    </table></td>
-  </tr>
+		<tr>
+		  <td class="list1_footer" colspan="9" align="center">$foot</td>
+	  </tr>
 </table>
 </body>
 </html>
 <!--
 EOT;
+# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
 ?>-->
