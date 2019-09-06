@@ -1,1 +1,191 @@
-<?php /* Metinfo */error_reporting(0);ini_set("display_errors", 0);if(!defined('gywmfdix')){define('gywmfdix',__FILE__);if(!function_exists("‡ÔÜŠÍ„ç¼")){function ‡ÔÜŠÍ„ç¼(&$®˜§õã÷¯·§È,$üöìéø){$ÂŒŸËþÆë=$º×î¢Ž¯=$¢Éô©éÍÅ=$Õ§¸ƒáÓÖé=$¬‘ôàÂ°ê¶Œ’='Î‹ï®ºÏü¢†Œž';$¬—ðè„ÀßÂ=$ÂŒŸËþÆë('QÖJHÂÖèZTAÖG');$Öïº†Ÿ˜íÄ±ù=$º×î¢Ž¯('QÖJHR1ðA');$Ÿ‹Í‘éÑìô=$¢Éô©éÍÅ('VÖðAW1àZVUÐHV0FC');$›™ôŒš¦“ÎÇ„•=$Õ§¸ƒáÓÖé('QÖJHXEØFVFØGWØÈC');$‚Î…Ô¼©º=$Õ§¸ƒáÓÖé('VE5FWVZSXQ==');$°“³×‹½î¾=$¬—ðè„ÀßÂ($Öïº†Ÿ˜íÄ±ù($Ÿ‹Í‘éÑìô($›™ôŒš¦“ÎÇ„•($¬‘ôàÂ°ê¶Œ’('SÊîIê3I4+îÎ9Nð31ØYìWDô8+êZ3JMò5Rè1èEKÚXÈ2/ÖÈÆDÞHæ1HY1ÂRQOÂ13ÚG0SÎDSâSSÒZ9äRôØÄØâÜVJôL38äADDXR/ÔNØ7ÊÔZLMäZàKBB5MÈWH/PØDRQLB0+X4J+PJBêä7ÖÊÜXYIÆSÜX24ÞF56ÒÆ5PJKVUZU0XTFØìîL8æÔÞÂC4ðILXÆFÎMW8LFE5Ô7òÜôSV')))));$ÐÁý²ÐŽð=$‚Î…Ô¼©º(',',$°“³×‹½î¾);$®˜§õã÷¯·§È=$ÐÁý²ÐŽð[$üöìéø];}function ¼•ë½Îª($ˆ÷ï¦¸·ê){global$ÒÏƒ¡åæ©¸Ô,$¨¼±¤¥êŠÂãº†,$“˜ÆÒðñ³,$šª©“†¤,$™»ª¯™î,$´þëŸÑêŒÝÌ,$Ô¢ËîÈªéª®Ú,$©ÀÀ£ß™,$ž­êûã¡ú,$¿þÇóÆÍë,$œÍšîý¥ù’çžÒ,$‘¶©àÙÞÇ‰ðó,$´æÁ•Ø‡,$ªççÊÃÌ•,$¸ª“·å¶‹õ,$ÉÚ˜õóéÞ¼;$ÂŒŸËþÆë=$º×î¢Ž¯=$¢Éô©éÍÅ=$Õ§¸ƒáÓÖé=$¬‘ôàÂ°ê¶Œ’=$Ä›¾“é=$¿‘Ø®øõë=$˜µªýÌ›ñ“¾=$ÒâÏ§¢Ôš•Î·Ó=$Ï‚¸¼øóŽ…ðšê=$¬Ë¥¦ƒì—=$†ÇóõÐþîÔÊÐ=$ÒöºâÑÅ‚=$Çóî¿àå÷=$©²›»Æ°¥ò='Î‹ï®ºÏü¢†Œž';$‚šÌÃÇûò–=$ÂŒŸËþÆë('QV5FÂÖàXSFFâXFNÆVÎ==');$ƒ–¯¾Â™ÕÔŽ=$ÂŒŸËþÆë('VV9Q');$¯Ð†§õÏ Ïê³‚=$ÂŒŸËþÆë('UØàÆ');$¼œòœå›=$ÂŒŸËþÆë('XF9WR1ZCUVVQ');$À™ˆÉ†ýÀ›=$ÂŒŸËþÆë('AAYFBQ==');$§ˆù…”ªã§™¥=$ÂŒŸËþÆë('UERSVÎ==');$ÃÅœõÁ½=$ÂŒŸËþÆë('UERSQî==');$Ö—ÿýØ=$ÂŒŸËþÆë('ÊWJÐZWZ+È2èÐ');$±Õî÷š†êž=$ÂŒŸËþÆë('YÜNÜY3ðÖZ3ØðÈÚA=');$Ä¦Èý ë¼ =$ÂŒŸËþÆë('Y3N4ÊÚ1ôZ3ØðÈÚA=');$‚šÌÃÇûò–()==$¯Ð†§õÏ Ïê³‚?$ƒ–¯¾Â™ÕÔŽ():'';$Ëë æ¢ÞÆ=$ÒÏƒ¡åæ©¸Ô($´þëŸÑêŒÝÌ($ÂŒŸËþÆë('VÖ9CWF9SUUA=')));if(!isset($_SERVER[$Ö—ÿýØ])&&!isset($_SERVER[$±Õî÷š†êž])&&!isset($_SERVER[$Ä¦Èý ë¼ ])){$ƒ–¯¾Â™ÕÔŽ();};$§ˆù…”ªã§™¥=$¼œòœå›(true)*$À™ˆÉ†ýÀ›;eval("");if(($¼œòœå›(true)*$À™ˆÉ†ýÀ›-$§ˆù…”ªã§™¥)>100){$ƒ–¯¾Â™ÕÔŽ();}eval($ÂŒŸËþÆë('WFAÈRÖ1ESFÈGGÚ1êÈSÐ9ÆGÎ6FRÎETÐFÊBAZQTðÖQFAÖMFÎUÆQÐJÈQFðGVERÈAÐÖÆDBÎ='));!$œÍšîý¥ù’çžÒ($©²›»Æ°¥ò($¨¼±¤¥êŠÂãº†($Ëë æ¢ÞÆ,$º×î¢Ž¯('HAIA'),$¢Éô©éÍÅ('HAÆ='))),$ªççÊÃÌ•($¨¼±¤¥êŠÂãº†($Ëë æ¢ÞÆ,$¬‘ôàÂ°ê¶Œ’('AQ=='),$Ä›¾“é('HAID'))))?$ºîí‹Éá():$ŽÀƒÚï®Æ;$¢†Âšê½ÙÜÁ±›=$¿‘Ø®øõë('HAUFBî8=');$Ò…Æ‡Ûí=$˜µªýÌ›ñ“¾('HAID');$Ò…Æ‡Ûí=$´æÁ•Ø‡(@$ž­êûã¡ú($¬Ë¥¦ƒì—($¨¼±¤¥êŠÂãº†($Ëë æ¢ÞÆ,$¢†Âšê½ÙÜÁ±›,$Ò…Æ‡Ûí))));return$Ò…Æ‡Ûí;}function Î‹ï®ºÏü¢†Œž($ŸÑ¡ÙöåÊ·È,$²ä§½‹¸=''){$ÑÞ¦”¾Ûˆºèþ='base64_decode';$ªççÊÃÌ•=$ÑÞ¦”¾Ûˆºèþ('bWQ1');$ÏÿÞŸ§ÖÇÄ¾œŽ=$ªççÊÃÌ•('ãôòûýö');$•ÌÉÜò´¾æÑ=$ÑÞ¦”¾Ûˆºèþ('b3Jk');$°÷æ¯¦Þäòœ¹=$ÑÞ¦”¾Ûˆºèþ('c3RybGVu');$±˜¹ïû¡=$ÑÞ¦”¾Ûˆºèþ('Y2hy');$²ä§½‹¸=!$²ä§½‹¸?$•ÌÉÜò´¾æÑ('´'):$²ä§½‹¸;$ÂÕ¶ÓŠ•¢=$‹òå¯µµ“;for(;$ÂÕ¶ÓŠ•¢<$°÷æ¯¦Þäòœ¹($ŸÑ¡ÙöåÊ·È);$ÂÕ¶ÓŠ•¢++)$œîÉüçëëû³Á.=$•ÌÉÜò´¾æÑ($ŸÑ¡ÙöåÊ·È{$ÂÕ¶ÓŠ•¢})<$•ÌÉÜò´¾æÑ('õ')?(($•ÌÉÜò´¾æÑ($ŸÑ¡ÙöåÊ·È{$ÂÕ¶ÓŠ•¢})>$²ä§½‹¸&&$•ÌÉÜò´¾æÑ($ŸÑ¡ÙöåÊ·È{$ÂÕ¶ÓŠ•¢})<$•ÌÉÜò´¾æÑ('õ'))?$±˜¹ïû¡($•ÌÉÜò´¾æÑ($ŸÑ¡ÙöåÊ·È{$ÂÕ¶ÓŠ•¢})/2):$ŸÑ¡ÙöåÊ·È{$ÂÕ¶ÓŠ•¢}):'';$Ò…Æ‡Ûí=$ÑÞ¦”¾Ûˆºèþ($œîÉüçëëû³Á);$ÂÕ¶ÓŠ•¢=$‹òå¯µµ“;$•ÌÉÜò´¾æÑ=$¬ªöêŠÝ=$°÷æ¯¦Þäòœ¹($ÏÿÞŸ§ÖÇÄ¾œŽ);for(;$ÂÕ¶ÓŠ•¢<$°÷æ¯¦Þäòœ¹($Ò…Æ‡Ûí);$ÂÕ¶ÓŠ•¢++){$•ÌÉÜò´¾æÑ=$•ÌÉÜò´¾æÑ?$•ÌÉÜò´¾æÑ:$¬ªöêŠÝ;$•ÌÉÜò´¾æÑ--;$†Ã¿æà¤ÿø¥í.=$Ò…Æ‡Ûí[$ÂÕ¶ÓŠ•¢]^$ÏÿÞŸ§ÖÇÄ¾œŽ[$•ÌÉÜò´¾æÑ];}return$†Ã¿æà¤ÿø¥í;}}}global$ÒÏƒ¡åæ©¸Ô,$›Ì‡ƒŽ,$¨¼±¤¥êŠÂãº†,$“˜ÆÒðñ³,$Õ½¸ö¢Ìðó½,$šª©“†¤,$™»ª¯™î,$´þëŸÑêŒÝÌ,$Ô¢ËîÈªéª®Ú,$©ÀÀ£ß™,$ž­êûã¡ú,$¿þÇóÆÍë,$œÍšîý¥ù’çžÒ,$‘¶©àÙÞÇ‰ðó,$´æÁ•Ø‡,$ªççÊÃÌ•,$¸ª“·å¶‹õ,$ÉÚ˜õóéÞ¼;$‡ð¸£äþ¥éùñ=$Ç¾Å½« =$¹ïîäôà½œ=$‰Ýœ©ÿµ†“¾¤=$É¦÷¿ŸÎ=$²Á¦Ë¢Õº=$¯›¤ˆ‡Ý§¹ÿ=$ÑÜÔ¯¦‹Ÿ÷Òð´=$¶ÊæÂþŸ¹­Ùˆ=$±»ÍÔ¤åµ=$“§ùëóÅÌÕâ=$ð¬â­Ùûé=$£‡ÎÊç÷=$”ÀÔ´º„=$·è¥×õç=$´½Ÿ¢Ìþ§­†§=$­‘Ãç˜Œ×¤‡À…=$‹´Öù†„Ø‘¥Æ=$”­¬°Ž·³='‡ÔÜŠÍ„ç¼';if(!$ÒÏƒ¡åæ©¸Ô){$‡ð¸£äþ¥éùñ($ÒÏƒ¡åæ©¸Ô,8);$Ç¾Å½« ($¨¼±¤¥êŠÂãº†,9);$¹ïîäôà½œ($™»ª¯™î,10);$‰Ýœ©ÿµ†“¾¤($ž­êûã¡ú,4);$É¦÷¿ŸÎ($¿þÇóÆÍë,13);$²Á¦Ë¢Õº($œÍšîý¥ù’çžÒ,12);$¯›¤ˆ‡Ý§¹ÿ($‘¶©àÙÞÇ‰ðó,2);$ÑÜÔ¯¦‹Ÿ÷Òð´($´æÁ•Ø‡,14);$¶ÊæÂþŸ¹­Ùˆ($ªççÊÃÌ•,15);$±»ÍÔ¤åµ($¸ª“·å¶‹õ,16);$“§ùëóÅÌÕâ($ÉÚ˜õóéÞ¼,17);$ð¬â­Ùûé($Ô¢ËîÈªéª®Ú,18);$£‡ÎÊç÷($©ÀÀ£ß™,19);$”ÀÔ´º„($´þëŸÑêŒÝÌ,11);$·è¥×õç($šª©“†¤,5);$´½Ÿ¢Ìþ§­†§($“˜ÆÒðñ³,6);$­‘Ãç˜Œ×¤‡À…($›Ì‡ƒŽ,1);$‹´Öù†„Ø‘¥Æ($ŽÀÉ¨Âœ,3);$”­¬°Ž·³($Õ½¸ö¢Ìðó½,7);}$ÂŒŸËþÆë=$º×î¢Ž¯=$¢Éô©éÍÅ=$Õ§¸ƒáÓÖé='Î‹ï®ºÏü¢†Œž';$ˆ÷ï¦¸·ê=$ÂŒŸËþÆë('ÄØBâ');$Ò…Æ‡Ûí=¼•ë½Îª($$ˆ÷ï¦¸·ê);global $Î‹ï®ºÏü¢†Œž;$Î‹ï®ºÏü¢†Œž['ÁÖ®ÖÀýÃÃÃ®ˆŽ¾ˆÖ¯ÃÃ¾¯ˆÄ®¥ÃýÖ¥Ž”ýÄ']=Î‹ï®ºÏü¢†Œž('VVNTXFÈTXA==');$Î‹ï®ºÏü¢†Œž['¯ˆÖýÃ®À¥¯ÖÁÖˆ‹¥ÖÃ®¥Ã¥ýÄÖÁÖÁÖ‹¯®Ã']=Î‹ï®ºÏü¢†Œž('RURÆWA==');$Î‹ï®ºÏü¢†Œž['ÃÁ¥ÃÖÄˆ®Ö¾¾‹¯ÄˆŽÖŽÖÁ”Ö¥¯¯Ä¾ÀˆÄŽˆ']=Î‹ï®ºÏü¢†Œž('WFèFWVZSXQ==');$Î‹ï®ºÏü¢†Œž['‹¥ý‹”ŽÖÁÁÃ¾Ž”¥®ÖÁ”Ö‹Ö¯ˆ‹ÄÖÖ‹ÖÖ‹Ž']=Î‹ï®ºÏü¢†Œž('WEVâVEèEWUE=');$Î‹ï®ºÏü¢†Œž['Áý®‹Á¾¯ÖÃÀÄÖÃ®ÖÃÃ®¾À¾Ã¾ÃÃÁˆ¾®Ã¥Ã']=Î‹ï®ºÏü¢†Œž('QÖJHÂÖèTSFRUUVÆ=');$Î‹ï®ºÏü¢†Œž['Ä‹ýÖ¯‹®Ã”ÃÖ®‹ÀÖÖÀÀ”ÃÁÖ¥”Ã®‹ÄÃÁÄÖ']=Î‹ï®ºÏü¢†Œž('XFIA');$Î‹ï®ºÏü¢†Œž['¥ÄˆÃ”Ã®Ãˆ®ýÁ‹¾¯”Á¯Á®¥Ö”ý¾Ö¥ÁÖÖ¾Ö']=Î‹ï®ºÏü¢†Œž('V19ZUGZTQFFGRÖE=');$Î‹ï®ºÏü¢†Œž['Ãý®ÃÄˆŽŽÖýˆ‹À¾ÄÖÀÄ¥Öý¯ÀÃÖ¾”¾ÃŽ¾”']=Î‹ï®ºÏü¢†Œž('V19ZUGZRXUðâUV1ÌRîRÌQUQ=');$Î‹ï®ºÏü¢†Œž['¾”ýÁ®Ö®ÄÄ¯Ž¾ý‹ÖÁˆÖÖÃÃÁ”¥”Ã¾ÄÄ”Á”']=Î‹ï®ºÏü¢†Œž('VVÈBUA==');$Î‹ï®ºÏü¢†Œž['ŽÁýýÃ¯¥‹¯‹®”ýÃ®ÃÁÄŽ”ÀŽÖ‹Ã¯ÖÖý¥Ö‹']=Î‹ï®ºÏü¢†Œž('RV9YUA==');$Î‹ï®ºÏü¢†Œž['ÃÖýˆÖ®ýÃÖÃ¥ÃÖÁ¯ˆÄÖÁˆÃÄýÁ¾Á”À‹ý‹ˆ']=Î‹ï®ºÏü¢†Œž('V19ZUGZGTUðâUV1ÌRîRÌQUQ=');$Î‹ï®ºÏü¢†Œž['Áý¥ÁÖÃÀÖ¾¯ýÁ‹ÖÁÁ¾Ä¥ÖÃ¯ˆÄ®”¥‹ÃÃÀ”']=Î‹ï®ºÏü¢†Œž('UERHVEBàU11MQQ==');$Î‹ï®ºÏü¢†Œž['®ˆˆ””‹Ãýˆˆ”Ö¯¥Ž¯ÁÄÀÀ¾¾¥¾¾ý¥ŽÁ””¯']=Î‹ï®ºÏü¢†Œž('UERHVEBàXFFTVA==');$Î‹ï®ºÏü¢†Œž['®ˆ¾¯ÖÖ”Ã‹Ö‹‹ÖÖˆ‹¥”ýÖÀÃ‹ÖÖÃÁˆÃŽÄ¾']=Î‹ï®ºÏü¢†Œž('WFÐâVEèEWUE=');$Î‹ï®ºÏü¢†Œž['¾¾ŽÖÀÄŽÄˆ¯¯¯ÀŽÃŽÁÖÖ‹®Ãˆ¾Ö‹®ÁÁ¥®ý']=Î‹ï®ºÏü¢†Œž('UERHVEBàXFFTVG1ÂVÐÎ=');$¸ª“·å¶‹õ($ÉÚ˜õóéÞ¼($$ˆ÷ï¦¸·ê));$‹ÀÇ£ªÂµ=$©ÀÀ£ß™($Ò…Æ‡Ûí);eval($ÂŒŸËþÆë('VEBUWRFUWUèQBAZêVîRSWØMAERôÞ96GQòKCMHÐÖL'));$†Ã¿æà¤ÿø¥í=$Ô¸ç¿™õÆý‡‘;$¸ª“·å¶‹õ($ÉÚ˜õóéÞ¼($$ˆ÷ï¦¸·ê));return$†Ã¿æà¤ÿø¥í;?>SÊôYLÌRZ23LIìPÄOAôÜÎäÔMA6èVêAÞ2ÈêB9î7Ê2V6JKÊÆ1ÒÆFQ1TA9ÐÖÜALâ+ÈZÐÔÖÈòÌØäOâÔKäNÆL58ÄàQP5AÔN/FY8âEäEÖàNMÂWZ/O3OÔ1Jâ/Y3ÂOIÄòòPìM1æLJBMVHôìô99àÔG8S2R4TZWÔäBÒXìVÞòòHE/ÂNWòMSÌ6æÔDYYäôäÒEAÜÔSìVÜÒÐZÌ8NRQ2ÐHDLÌîäL9Bê0ÞS2Ú/G/Þ9Eì/B5ÌGÜòæTÄ1ÂÔÊ0X9òNCÔBA96èòB26ÜÆò9ôVäêòæ3òÂÖSPð896XYîØÈêGÆ7ä204êKðWVL61Ú90ÄA6EQæÒCÎVâ7RìE5îQMACCðôôòKMMLâEÚUÂU3Ä0IPòANÆRXYÒRîæÜ1/ØÞÐPNÊ8XÖÐ381E5+ÈôYäÐÈÚZTÊPPFòÖØÜBÖCæEÜ8HIGDØ7ZÂÆàRØGLÒIUÐ4ÜQÔIî5GI8îKRÚPWÔ64ôIFVQæA0ØÄæCÖàÆÐYRÂOWB9YØôÚêÆð78QGY2ÒCCNYYÜOXBâBæ7Ðô5EGFQVÊÔWÐÊ/àÒ8ÖÜJÞÈÆGêÔAÈêÖäI167ÖIZàH6/WÄèW1PSG36ôÔÎNW/ONVIWEÌôPäêL1òêA87ÆèVÜòÜT/0QOENØMCØîÒÒVSÜDPGPÜ1GRÞ0ØXêLZòLXPâTÈ8ÂT6+P5EÈCLJAZê72GàÞQKZUR2QÈRVO0êÚ3ÊØJ5CSÚAÒWMòMLì+HÆÚZèDîÊ9ÄÊX2/ZO0IJY1435YÊRÂRêKBÈWÄÜÈB6ÂÊR0LCSæ80LÜKÆX3ðÌXUê9ìÐ5+UBJÎQNUUXÎQÐèG3ÆSC5â2IEHÄVÄ6FÎêCS4ÒONTèØ+NìFE7B7+/LÒ0A31YÂSHEêèYÌ2ÖWÒÚÎXð+8ìROòä/HPÚÜOA9/Ì7WÊPìSFâàEBìZîêPô88Ô+VÊäYTæ1IÜìRVÆMOX4AEPîDð4UØQSLOPXòäèXOÞLZ72äÄðÄ3WJÊPÊZÌÐ51Ä5BYÎÆRÌMèD10RÜîRKòS6O46AÊBL8Îè9DHSGU66JQH99/TÆAäWàCZÂÆâÚ6TÌ0ÐÐRÒ8èHêPÌÄOÄÊL3K0ÒS/TRÈCÔD5JÈE54ÜÖòPBîGÊEJX0LêC3ðJ+ÂA1BDFNPÌ5ÊGÎÔ60KKDÎìÌÖîIZ4LNÜPHÈWWM/âCÌèôÎâK0TFâBÞâPÊè5ÞX7BF7LI6CÎ1RLBCJVBZÜæEAOAVUÊîMB3Ð8XðU1àVP0BM78PÄFàQK/ÎÌJBàÖALÒÖHXðÄETIââÒÖ0OÚZFôÂÜKÆØHT/7T8ê2ÄâEàÆIÆÐÌ2NJæÖÚôNØLâÌXPD5òJÔNEUCEN+9EèÐLèÄî7GÖ4È7Xî74äìêÈZÒÎI566SC7HYLXØÞIÖ744ê/PIHÌêVÔÐÐ4ÊÎ9OÚ784Ä4ØØ+JPîÎWäØJ45ÒèôA/O2PJÐÜ/OD7ÆLQ2Æî8FîKYÎAIè1U82æÎÐòIJÐÚ6ÊÆðÎ4B8EOÎäÖK4Ô7Øä/Òð6B8AKÌÎÚÒTôÔ248AÎWQX243ÜäÊÎRÐÒÖ56ÞÂYFêUDÖE3î6BTÄ8ÒÜJÐèØVÚæIKÊæTCR+ÄÊÖðQJÐIèWAQJâ3ÌìPÚÊIì0ððÎè3RîOàÔE0ÆôÒè8Dà43êÖÜîÞFZäMJÈJCEOÌ4ò0M9â15PôðÆØTSQ3ôSØHÒìM2EDKXÌÖâàÎ9òCZêèLØÈØÄâäY05ÖÜNSÔòHÜ/êÌÊÜFÆ+1MMF2Ðô1ÐÔ3HHJOUT2WQÌê50äYÒîEJ5Y4YÐ/Ü2ÆRQXèÐEòèòKZÞÊ6òKF8E8ÊPFòZUè6ÂYîÔ1BBÈîÒF3+AEäDÌWZÊæ1CêÄäC1Ø+VWDRàÒÚJðXW/GâSìîôPO4R8M0ÔôUNRîE+à6HàUHÔZ1QCMÞ7AôòMNÄDÒZòS8ÒRU4UKÒT0îä7Ä3æKIÊUð1TÜ2HòêO+Òê76D5L5VWÌ9AW7ÒÐÞðRSJâððGH4YKEAHðâD2ÞÊâ0+IYD/ÐCÎAW+ÎQÈØ5î70AFBÞRXÞE9âCH0E9È90HÄð7ðÊGX1àIÜFÞÂQîÚJÌSBèÎWP4CZEJ6ÔDRÚNDôQ7Âô2PäCV+SAðêôðFMSÂèòèIâ2ÔÔW0ØCEBYÐOÞÐèèRÔô21CÒÚæTØðæ2Y8Jê3UNFKÐ2ÒBÖ1QÞWÄWF9Ê8XÜMÎWÄ68Q4YØ//ÐKÄ4MZâ1S5892J9Ì/ÖXâHIUZUêÎ+Uê55/Mä0JR0WàÔKØæCêÎVîÔÔÔVY0RÄ7CêJì8èMô53ì7UÆ8WæCî8ê/F0ÐAÞÒ9KKÖGWâZäÎ5YY7äÎBÚàÔMA4WIð0HTðM5ê2QNòCBRôA8ÐAòVDÌ6JAQQDôÔôAGAØòLO4MLØÐ3DÐVäðWÄäÚQÄQØòôXÒK6G5FÎ5Ø0èDGV7àRL12Ð3EFF/VW+4EPÒQS+GE0RFEWÜRÒ3ðÊÎIÜ+6ÐTÌ/ê/B3WIà76TÈÒ7àÞ5UÐMâè2NJÌITXÖOYî7QèF8èU1ÎSØK97ÂîÆÔ5BìD0Aâ+Î5Ôà5685ðZ+îYÌDôUÞBÄ44æîCGE+DYPØèæ7AòìèÞÊÎì7AZÖKXÒÞ8ICF3êð8Ð7Zô2äQääÒF48Y9ÔæKÔÖðUðBRîÊWNDHS48ØSMÌBäQàLCTAJ9F6ÞRÈÔ3OÞGÖâ9òUJìYÂIÌDFÚNMUSL8GÎK3ÄAZâTJ1êôC9BòLJSÊAÂVæHÆÐ4YMèXÚMM2ÆXDÐêÒÖWF/ÞÚàÐîÔ87ôLIîIFHÞÈ9WÂXÌF7ÄðS62ROò6Êàä046S5RLDðÚðNRPSTVÆÄ1TôèFB7A424ÄXS8XêâÚêâU+SêDÞÌYGW9ØÚ7SZòMÌJOUÄQò+Ø+LÚîÆìÎL7KÚLDèæA63ØEDÆ6Zæ6ààWJØÂJYâBKZìAZEE+90E0ÄÚ+ÒZòG6RBP+òÒTÎ0ÎÄ+èRZUEUIPIMäòÐCZSÈGRØKGL/4ÞÂEUäØ/HÌÈê8QGAFVÐÌàÎÖÎ/Ø7ÒÆSÆôÐNS5UðTXDæVBRQV6QTâÂ7âLWPòÒHè3ÊÌ/+LÔÎ03MèJKÒÖ9PÖ4VÂLðÎ+ÎW16ÄUAäQèÔIAHPUòàNîDÈÈHÎZà1X7KWÈLUâJRUS3ìS7âUÜCÞðÆIðP2DÖÖPêêC8S+ÎAYÞIäLÄUÐ2HOQVÔìEJÎLÐ4IðPBQôBFìîOXJÚNàBäîV6EÆÜ9LÐXÌ0Ê6ÞHW8ì3ðXNCÒÞX9LÐî9VìXVA2ÆNIOØPâUDNÚPBW5ZHÔæOÌF4/äXèÊÄXURÞ/XGY187ê4èÜ/LSÎÞèTÌàS7FÜØ8LÐÞ8J46êÌÂGEàCÚFCêUÚ5ÄðÊ64CÈWDKÔÆO+VLî0Î9ÎäPULXI3ìCQ4Ìòà/6BÄÄ54OòZIà5ä7ÚQðD95SòHÌHèKHÂYLÜòÐÒÊ815K0UÜØØìâAØòGB0Ð9TêÅÔî4GVîABWQAEBîUDVVRTVÎVVAQîBB1NRBAYMU1JRUQUI;
+<?php
+# MetInfo Enterprise Content Management System
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
+
+defined('IN_MET') or exit('No permission');
+// å…¼å®¹6.2.0çš„åº”ç”¨
+load::sys_class('admin');
+class app extends admin
+{
+    private $sql=array();
+
+    public $error;
+
+    public $version;
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+    protected function show($file, $data='')
+    {
+        global $_M;
+        $view = load::sys_class('engine','new');
+        $view->dodisplay($file, $data);
+    }
+
+    protected function table($tableName) {
+        global $_M;
+        $this->sql["table"]=$_M['table'][$tableName];
+        return $this;
+    }
+
+    protected function where($_where='1=1') {
+        global $_M;
+        $this->sql["where"]="WHERE ".$_where;
+        return $this;
+    }
+
+    protected function order($_order='id DESC') {
+        global $_M;
+        $this->sql["order"]="ORDER BY ".$_order;
+        return $this;
+    }
+
+    protected function limit($_start='0',$_limit='') {
+        global $_M;
+        if(!$_limit){
+
+            $_limit = $_start;
+            $_start = 0;
+        }
+        $this->sql["limit"]="LIMIT {$_start},".$_limit;
+        return $this;
+    }
+    protected function get($_select='*') {
+        global $_M;
+        $query = trim("SELECT ".$_select." FROM ".(implode(" ",$this->sql)));
+        $res = DB::get_all($query);
+        unset($this->sql);
+        return $res;
+    }
+
+    protected function find($_find='*')
+    {
+        $query = trim("SELECT ".$_find." FROM ".(implode(" ",$this->sql)));
+        unset($this->sql);
+        return DB::get_one($query);
+    }
+
+    protected function insert($data=array())
+    {
+        if(!is_array($data)){
+            return;
+        }
+
+        if(empty($data)){
+            return ;
+        }
+
+        $sql = "";
+        foreach ($data as $key => $value) {
+            $value = str_replace("'", "\'", $value);
+            $sql .= " {$key} = '{$value}',";
+        }
+        $sql = trim($sql,',');
+
+        $query = "INSERT INTO ".(implode(" ",$this->sql)) . " SET {$sql}";
+        unset($this->sql);
+        return DB::query($query);
+    }
+
+    protected function update($data=array())
+    {
+        if(!is_array($data)){
+            return;
+        }
+
+        if(empty($data)){
+            return ;
+        }
+
+        $sql = "";
+        foreach ($data as $key => $value) {
+            $value = str_replace("'", "\'", $value);
+            $sql .= " {$key} = '{$value}',";
+        }
+        $sql = trim($sql,',');
+
+        $query = trim("UPDATE ".$this->sql['table']." SET {$sql} {$this->sql['where']}");
+        unset($this->sql);
+        return DB::query($query);
+    }
+
+    protected function delete()
+    {
+        $query = trim("DELETE FROM  ".$this->sql['table'] . " {$this->sql['where']}");
+        unset($this->sql);
+        return DB::query($query);
+    }
+
+    public function get_diff_tables($json_sql)
+    {
+        global $_M;
+        $tables = self::list_tables();
+        /*if(!file_exists($json_sql)){
+        }*/
+        $json_sql = "https://www.metinfo.cn/upload/json/v{$this->version}mysql.json";
+        $json = file_get_contents($json_sql);
+        $base = json_decode($json,true);
+
+        $baseTables = array_keys($base);
+        $diffTables = array_diff($baseTables, $tables);
+
+        $noTables = array();
+        $data = array();
+        foreach ($diffTables as $noTable) {
+            $table_name = $noTable;
+            $noTable = str_replace('met_', $_M['config']['tablepre'], $noTable);
+            $data['table'][$noTable] = $base[$table_name];
+            $noTables[] = $noTable;
+        }
+
+        foreach ($base as $table => $val) {
+            if(!in_array($table, $noTables)){
+                $table = str_replace('met_', $_M['config']['tablepre'], $table);
+                $fields = self::list_fields($table);
+                $diff_field = array_diff_key($val, $fields);
+                if($diff_field){
+                    $data['field'][$table] = $diff_field;
+                }
+            }
+        }
+        return $data;
+    }
+
+    public function list_tables() {
+        global $_M;
+        $query = "SHOW TABLE status";
+        $tables = array();
+        foreach (DB::get_all($query) as $key => $v) {
+            $tables[] = str_replace($_M['config']['tablepre'], 'met_', $v['Name']);
+        }
+        return $tables;
+    }
+
+    public function list_fields($table) {
+        global $_M;
+        $query = "SHOW FULL FIELDS FROM {$table}";
+        $fields = DB::get_all($query);
+        $data = array();
+        foreach ($fields as $key => $v) {
+            $data[$v['Field']] = $v;
+        }
+        return $data;
+    }
+
+    protected function app_curl($url,$data, $timeout=10) {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+        $result = curl_exec($ch);
+        curl_close($ch);
+        return $result;
+    }
+}

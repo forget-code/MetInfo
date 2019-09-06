@@ -166,7 +166,6 @@ define(function(require, exports, module) {
 		var newl = $(this).parents('tr.newlist');
 		if(newl.length>0){ //删除正在新增的栏目
 			newl.remove();
-			common.ifreme_methei();//高度重置
 			return false;
 		}
 	})
@@ -184,7 +183,6 @@ define(function(require, exports, module) {
 				d.after(data);
 				d.next("tr").find("input[type='text']").eq(0).focus();
 				common.defaultoption(d.next("tr"));
-				common.ifreme_methei();//高度重置
 			}
 		});
 		window.ai++;

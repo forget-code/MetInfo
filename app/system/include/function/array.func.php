@@ -246,13 +246,14 @@ function jsondecode($json){
  */
 function jsoncallback($back ,$callback = 'callback'){
 	global $_M;
-	header('Content-type: application/x-javascript');
+    header('Content-Type:application/json; charset=utf-8');
 	$callback =	$_M['form'][$callback];
 	if ($callback) {
 		echo $callback.'('.jsonencode($back).')';
 	}else{
 		echo jsonencode($back);
 	}
+    exit();
 }
 
 # This program is an open source system, commercial use, please consciously to purchase commercial license.

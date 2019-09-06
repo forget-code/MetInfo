@@ -30,18 +30,14 @@ class news_database extends base_database {
 	 */
 	public function get_list_by_class($id, $start = 0, $rows = '', $type, $order) {
 		global $_M;
-
 		$sql = $this->get_list_by_class_sql($id, $type, $order);
 		if ($rows) {
 			$sql .= "LIMIT $start , $rows";
 		}
 
 		$query = "SELECT * FROM {$this->table} WHERE {$sql} ";
-
-		$para['query'] = $query;
-		$query = load::plugin('module_get_list_by_class_query', 1 , $para);//加载插件
-
-		return DB::get_all($query);
+		$data = DB::get_all($query);
+		return $data;
 	}
 
 	/**
@@ -53,6 +49,7 @@ class news_database extends base_database {
 	 * @return array            配置数组
 	 */
 	public function get_page_count_by_class($id, $type) {
+		
 		$sql = $this->get_list_by_class_sql($id, $type, -1);
 		return   DB::counter($this->table, $sql);
 	}
@@ -64,16 +61,13 @@ class news_database extends base_database {
 	 * @return array            配置数组
 	 */
 	public function get_list_by_class_sql($id, $type, $order) {
-        global $_M;
+		global $_M;
 		$time = date("Y-m-d H:i:s");
-
 		$column = load::sys_class('label', 'new')->get('column');
 		$sql = " {$this->langsql} AND (recycle='0' or recycle='-1') AND displaytype='1' ";
-
-		if(!$_M['config']['sitemap']){//网站地图
+		if(!$_M['config']['sitemap']){//网站地图生成全部连接
             $sql .= " AND addtime < '{$time}' ";
         }
-
 		if($_M['form']['classnow']){
 			$class = $column->get_class123_reclass($_M['form']['classnow']);
 			if($class['class1']){
@@ -88,67 +82,50 @@ class news_database extends base_database {
 				$sql .= " AND class3 = {$class['class3']['id']} ";
 			}
 		}
+		
 		$class123 = $column->get_class123_no_reclass($id);
+        if(isset($_M['form']['search'])){
+			// search_label的search_info的数据
+			$search = '';
+			$fields = array('ctitle','title','keywords','description','content','tag');
+			if ($type['type'] == 'array' || $type['type'] == 'tag') {
 
-        if(is_array($type)){
-			//自定义条件
-			if ($type['type'] == 'array') {
-				$serach = '';
-				if ($type['title']['status'] && $type['title']['info']) {
-					if($type['title']['precision']){
-						$serach .= " OR title = '{$type['title']['info']}' ";
-					}else{
-						$serach .= " OR title like '%{$type['title']['info']}%' ";
+				$search .= load::sys_class('label', 'new')->get('tags')->getSqlByTag($_M['form']['content'], $class123);
+				if(!$_M['config']['tag_show_range']){
+
+					foreach ($fields as $val) {
+						if($type[$val]['status']){
+							$search .= " OR {$val} like '%{$type[$val]['info']}%' ";
+						}
+					}
+					
+					if ($type['para']['status'] && $type['para']['info']) {
+						$para = load::sys_class('label', 'new')->get('parameter')->get_search_list_sql($this->module, $type['para']['precision'], $type['para']['info']);
+						$search .= " OR id in ({$para}) ";//如果以后需要加强字段搜索，就在这里添加代码。
 					}
 				}
 
-				if ($type['content']['status'] && $type['content']['info']) {
-					if($type['content']['precision']){
-						$serach .= " OR content = '{$type['content']['info']}' ";
-					}else{
-						$serach .= " OR content like '%{$type['content']['info']}%' ";
-					}
-				}
-
-                if ($type['tag']['status'] && $type['tag']['info']) {
-					if($type['tag']['precision']){
-						$serach .= " OR tag = '{$type['tag']['info']}' ";
-					}else{
-						$serach .= " OR tag like '%{$type['tag']['info']}%' ";
-					}
-				}
-
-				if ($type['para']['status'] && $type['para']['info']) {
-					$para = load::sys_class('label', 'new')->get('parameter')->get_search_list_sql($this->module, $type['para']['precision'], $type['para']['info']);
-					$serach .= " OR id in ({$para}) ";//如果以后需要加强字段搜索，就在这里添加代码。
-				}
-
-				//商城規格 价格
-                if ($type['specv']['status'] && $type['specv']['info'] && $_M['config']['shopv2_open'] && $_M['config']['shopv2_para'] ||  ($_M['form']['price_low'] || $_M['form']['price_top'] )) {
-                    $specv_sql = load::app_class("shop/include/class/shop_search","new")->get_search_list_by_specv_sql($type['specv']['info']);
-
-					$serach .= " OR id in ({$specv_sql}) ";//如果以后需要加强字段搜索，就在这里添加代码。
-				}
-
-
-
-				if($serach){
-					$sql .= "AND ( 1 != 1 {$serach} ) ";
+				if($search){
+					$sql .= "AND ( 1 != 1 {$search} ) ";
 					$sql = str_replace('1 != 1  OR', '', $sql);
 				}
 			}
+
 		}else{
 			if($type == 'com'){
 				$sql .= "AND com_ok = 1 ";
 			}
 		}
 
-
 		if($this->multi_column == 1 && !$_M['form']['searchword']){
 			$sql .= $this->get_multi_column_sql($class123['class1']['id'], $class123['class2']['id'], $class123['class3']['id']);
         }else{
 			if ($class123['class1']['id'] && !$_M['form']['searchword']) {//搜索模块的兼容
-				$sql .= "AND class1 = '{$class123['class1']['id']}' ";
+				
+				if($_M['form']['search'] != 'tag' || $_M['config']['tag_search_type'] == 'column'){
+					$sql .= "AND class1 = '{$class123['class1']['id']}' ";
+				}
+
 			}
 			if ($class123['class2']['id']) {
 				$sql .= "AND class2 = '{$class123['class2']['id']}' ";
@@ -168,8 +145,9 @@ class news_database extends base_database {
 			$defult_order = $class123['class3']['list_order'];
 		}
 
-		if(is_array($order)){
-			//自定义条件
+		$order_sql = '';
+        if(is_array($order)){
+            //自定义条件
             if($order['type'] == 'array'){
                 $order_sql .= $this->get_custom_order($order['status'], $defult_order);
             }
@@ -180,6 +158,8 @@ class news_database extends base_database {
         $plugin['type'] = $type;
         $plugin_order = load::plugin('list_order', $plugin);//商城这里加插件，当前代码只作演示用，开发商城的时候，需要根据实际情况修改。
 		$sql .= $plugin_order ? $plugin_order : $order_sql;
+		
+
         return $sql;
 	}
 
@@ -189,6 +169,7 @@ class news_database extends base_database {
 	 * @return string          排序sql
 	 */
 	public function get_column_order($order) {
+        $order_sql = '';
 		switch ($order) {
 			case '1':
 				$order_sql .= " ORDER BY top_ok DESC, com_ok DESC, no_order DESC, updatetime DESC, id DESC ";
@@ -205,6 +186,9 @@ class news_database extends base_database {
 			case '5':
 				$order_sql .= " ORDER BY top_ok DESC, com_ok DESC, no_order DESC, id ASC ";
 			break;
+            case '6':
+                $order_sql .= " ORDER BY top_ok DESC, com_ok DESC, no_order DESC, id ASC ";
+			break;
 			case '-1':
 				$order_sql .= "  ";
 			break;
@@ -215,30 +199,37 @@ class news_database extends base_database {
 		return $order_sql;
 	}
 
-		/**
+	/**
 	 * 获取栏目排序URL
 	 * @param  string  $order  排序类型
 	 * @return string          排序sql
 	 */
 	public function get_custom_order($order, $defult_order) {
+        $order_sql = '';
 		switch ($order) {
 			case '1':
-				$order_sql .= " ORDER BY updatetime DESC, id DESC ";
+				$order_sql .= " ORDER BY updatetime DESC, id DESC ";	//按更新时间
 			break;
 			case '2':
-				$order_sql .= " ORDER BY addtime DESC, id DESC ";
+				$order_sql .= " ORDER BY addtime DESC, id DESC ";		//按添加时间
 			break;
 			case '3':
-				$order_sql .= " ORDER BY hits DESC, id DESC ";
+				$order_sql .= " ORDER BY hits DESC, id DESC ";			//按点击数
 			break;
 			case '4':
-				$order_sql .= " ORDER BY id DESC ";
+				$order_sql .= " ORDER BY id DESC ";						//按ID倒叙
 			break;
 			case '5':
-				$order_sql .= " ORDER BY id ASC ";
+				$order_sql .= " ORDER BY id ASC ";						//按ID顺序
+			break;
+            case '6':
+                $order_sql .= " ORDER BY com_ok DESC, id DESC ";		//按推荐
 			break;
 			case '-1':
 				$order_sql .= "  ";
+			break;
+			case '7':
+				$order_sql .= " ORDER BY rand()";
 			break;
 			default:
 				$order_sql .= $this->get_column_order($defult_order);
@@ -484,7 +475,7 @@ class news_database extends base_database {
 	}
 
 	public function table_para(){
-		return 'id|title|ctitle|keywords|description|content|class1|class2|class3|no_order|wap_ok|img_ok|imgurl|imgurls|com_ok|issue|hits|updatetime|addtime|access|top_ok|filename|lang|recycle|displaytype|tag|links|';
+		return 'id|title|ctitle|keywords|description|content|class1|class2|class3|no_order|wap_ok|img_ok|imgurl|imgurls|com_ok|issue|hits|updatetime|addtime|access|top_ok|filename|lang|recycle|displaytype|tag|links|text_size|text_color|other_info|custom_info|publisher';
 	}
 
 	//删除

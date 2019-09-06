@@ -22,18 +22,32 @@ class html_op {
 	/**
 	 * 跳转至静态页面生成
 	 * @param  string  $url        	url id
-	 * @param  string  $column_list 栏目id
-	 * @param  string  $id_list     内容id
+	 * @param  string  $column_id   顶级栏目id
+	 * @param  string  $content_id  内容id
 	 */
-	public function html_generate($url, $column_list, $id_list) {
+	public function html_generate($back_url = '', $column_id = '', $content_id = '') {
 		global $_M;
-		load::sys_class('label', 'new')->get('seo')->site_map();
-		if($_M['config']['met_webhtm'] != 0 && $_M['config']['met_htmway'] == 0){
-			$url = urlencode($url);
-			turnover("{$_M['url']['site_admin']}index.php?lang={$_M['lang']}&n=html&c=html&a=dogenerate&auto=1&reurl={$url}&column_list={$column_list}&id_list={$id_list}");
-		}else{
-			turnover($url);
+        if ($_M['config']['met_sitemap_auto']){
+            load::sys_class('label', 'new')->get('seo')->site_map();
 		}
+        //开启静态化 并自动生成
+        if($_M['config']['met_webhtm'] != 0 && $_M['config']['met_htmway'] == 0){
+            //生成静态页
+            load::sys_class('label', 'new')->get('column')->get_column($_M['lang']);
+            $c = load::sys_class('label', 'new')->get('column')->get_column_id($column_id);
+            $html_res = "{$_M['url']['site_admin']}index.php?lang={$_M['lang']}&n=html&c=html&a=doCreatePage&type=column&module={$c['module']}&class1={$column_id}&content={$content_id}&index=1";
+
+            /*if ($_M['config']['met_webhtm'] == 3) {
+                //首页 列表页 静态化
+                #$html_res = "{$_M['url']['site_admin']}index.php?lang={$_M['lang']}&n=html&c=html&a=doCreateIndexPage&class1={$column_id}&index=1&list_page=1";
+                $html_res = "{$_M['url']['site_admin']}index.php?lang={$_M['lang']}&n=html&c=html&a=doCreateIndexPage&index=1&list_page=1";
+            }else{
+                $c = load::sys_class('label', 'new')->get('column')->get_column_id($column_id);
+                $html_res = "{$_M['url']['site_admin']}index.php?lang={$_M['lang']}&n=html&c=html&a=doCreatePage&type=column&module={$c['module']}&class1={$column_id}&content={$content_id}&index=1";
+            }*/
+            return $html_res;
+		}
+        return null;
 	}
 
 }

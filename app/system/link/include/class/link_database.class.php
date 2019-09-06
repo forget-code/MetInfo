@@ -25,10 +25,13 @@ class link_database extends base_database {
 	    $this->construct($_M['table']['link']);
     }
 
-	public function get_link_list_by_lang($lang , $com_ok = 0 , $start = 0 , $rows = '') {
+	public function get_link_list_by_lang($lang , $com_ok = 0 , $start = 0 , $rows = '',$classnow='') {
 		global $_M;
 		$where = "WHERE lang = '{$lang}' AND show_ok = 1 ";
 		$where .= $com_ok ? " AND com_ok = 1 " : '';
+		if ($classnow){
+			$where .= "AND (module LIKE '%,{$classnow},%' OR module='')";
+		}
 		$limit = $rows ? " LIMIT {$start} , {$rows} " : '';
 		$order = " ORDER BY com_ok DESC , orderno DESC, id DESC ";
 		$query = "SELECT * FROM {$_M['table']['link']} {$where} {$order} {$limit}";

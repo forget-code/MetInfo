@@ -34,6 +34,10 @@ class valid {
 			$body = $_M['config']['met_member_email_safety_content'];
 			$url = $_M['url']['profile_safety_emailadd'];
 		}
+
+
+        $current_url = $_M['url']['web_site'];
+        $url = str_replace('../',$current_url,$url);
 		$url = $url."&p={$p}";
 		$title = $this->repalce_email($title, $url);
 		$body = $this->repalce_email($body, $url);
@@ -56,8 +60,10 @@ class valid {
         // }
 		$session = load::sys_class('session', 'new');
 		if($session->get("phonetime")&&time()<($session->get("phonetime")-220)){
-			return false;
-			die;
+            $redata = array();
+            $redata['status'] = 403;
+            $redata['msg'] = $_M['word']['Sendfrequent'];
+			return $redata;
 		}
 
 		$code = random(6, 1);

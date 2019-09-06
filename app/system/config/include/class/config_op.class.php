@@ -32,6 +32,48 @@ class config_op {
 		return true;
 	}
 
+    /**
+	 * 获取单个栏目篇配置
+     * @param string $name
+     * @param string $class
+     * @param string $lang
+     * @return mixed
+     */
+    public function getColumnConf($class = '', $name = '')
+    {
+    	global $_M;
+        $data = $this->database->get_value_by_classid($class ,$name);
+        return $data;
+    }
+
+    /**
+	 * 获取栏目篇配置
+     * @param string $class
+     * @param string $lang
+     */
+    public function getColumnConfArry($class = '')
+    {
+        global $_M;
+        $config = $this->database->get_value_by_columnid($class);
+        $list = array();
+        foreach($config as $key => $val){
+            $list[$val['name']] = $val['value'];
+        }
+        return $list;
+    }
+
+    /**
+     * @param string $name
+     * @param string $class
+     * @param string $lang
+     */
+    public function saveColumnConf($class = '', $name = '',$value = '')
+    {
+        global $_M;
+        $data = $this->database->update_by_classid($class ,$name ,$value);
+        return $data;
+    }
+
 }
 # This program is an open source system, commercial use, please consciously to purchase commercial license.; # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>

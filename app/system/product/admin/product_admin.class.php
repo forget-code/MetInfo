@@ -7,319 +7,439 @@ defined('IN_MET') or exit('No permission');
 load::mod_class('news/admin/news_admin');
 
 class product_admin extends news_admin {
-	public $paraclass;
-	public $moduleclass;
-	public $shop;
-	public $shop_exists;
-	public $module;
+    public $moduleclass;
+    public $shop_exists;
+    public $shop;
+    public $module;
+    public $specification_admin;
+
+    /**
+     * product_admin constructor.
+     */
 	function __construct() {
 		global $_M;
 		parent::__construct();
-		$this->moduleclass = load::mod_class('content/class/sys_product', 'new');
-		//
+        ###$this->moduleclass = load::mod_class('content/class/sys_product', 'new');
         $this->shop_exists = false;
         $shop_applist = DB::get_one("SELECT * FROM {$_M['table']['applist']} WHERE `no`='10043'");	//判断商城applist
-        $shop_appfile = file_exists(PATH_ALL_APP.'shop');									//商城文件
+        $shop_appfile = file_exists(PATH_ALL_APP.'shop');										//商城文件
         if($_M['config']['shopv2_open'] && $shop_applist && $shop_appfile) {
-            $this->specification_admin=load::app_class('shop/admin/specification_admin', 'new');
-            $this->shop_exists = 1;
+            $this->specification_admin = load::app_class('shop/admin/specification_admin', 'new');
+            if($this->shop = load::plugin('doproduct_plugin_class', '99')){
+                $this->shop_exists = 1;
+                ##$this->shop = load::mod_class('content/class/sys_shop', 'new');
+            }
         }
-        if(!$this->shop = load::plugin('doproduct_plugin_class', '99')){
-			$this->shop = load::mod_class('content/class/sys_shop', 'new');
-		}
-		//$this->paraclass = load::mod_class('system/class/sys_para', 'new');
-		$this->paraclass = load::mod_class('parameter/parameter_op','new');
-		$this->para = load::mod_class('parameter/parameter_list','new');
-		$this->module = 3;
-		$this->database = load::mod_class('product/product_database', 'new');
+        //$this->paraclass = load::mod_class('system/class/sys_para', 'new');
+
+        $this->module   = 3;
+        $this->database = load::mod_class('product/product_database', 'new');
 
 	}
-	/*获取运费模板*/
-	function dorefresh_discount_list(){
-		global $_M;
-		$list = $this->shop->discount_list();
-		$re = "<option value=\"0\">{$_M[word][skinerr3]}</option>";
-		foreach($list as $val){
-			$re.= "<option value=\"{$val[id]}\">{$val[name]}</option>";
-		}
-		echo $re;
-	}
+
+    /*产品管理*/
+    function doindex() {
+        global $_M;
+        $column = $this->column(3,$this->module);
+        $list['class1'] = $_M['form']['class1'] ? $_M['form']['class1'] : '' ;
+        $list['class2'] = $_M['form']['class2'] ? $_M['form']['class2'] : '' ;
+        $list['class3'] = $_M['form']['class3'] ? $_M['form']['class3'] : '' ;
+        $tmpname = $this->shop->get_tmpname('product_shop_index');
+
+        if($tmpname && $_M['config']['shopv2_open']==1){
+            $tmpname = $this->shop->get_tmpname('product_shop_index');
+        } else {
+            $tmpname = $this->template('tem/product_index');
+        }
+        require $tmpname;
+        //
+    }
 
 	/*产品增加*/
 	function doadd() {
 		global $_M;
+        $redata = array();
 		$list = $this->add();
-		$list['class1'] = $_M['form']['class1_select'] ? $_M['form']['class1_select'] : 0 ;
-		$list['class2'] = $_M['form']['class2_select'] ? $_M['form']['class2_select'] : 0 ;
-		$list['class3'] = $_M['form']['class3_select'] ? $_M['form']['class3_select'] : 0 ;
-		$list['class'] = $list['class1'].'-'.$list['class2'].'-'.$list['class3'];
+        $list['class1'] = $_M['form']['class1'] ? $_M['form']['class1'] : 0;
+        $list['class2'] = $_M['form']['class2'] ? $_M['form']['class2'] : 0;
+        $list['class3'] = $_M['form']['class3'] ? $_M['form']['class3'] : 0;
         $list['lnvoice'] = 0;
 		$list['auto_sent'] = 0;
 
-		$list = $this->shop->default_value($list);
-		$a = 'doaddsave';
-		$turnurl="&class1={$list['class1']}&class2={$list['class2']}&class3={$list['class3']}";
         if($this->shop_exists){
-           	$list_s['paraku']=$this->specification_admin->dogetspeclist();
-			$list_s['speclist']=jsonencode($list_s['paraku']);
-			$list = array_merge($list, $list_s);
+            $list = $this->shop->default_value($list);
+            $list_s['paraku']=$this->specification_admin->dogetspeclist();
+            $list_s['speclist']=jsonencode($list_s['paraku']);
+            $list = array_merge($list, $list_s);
         }
-		$class_option = $this->class_option($this->module);
-		$access_option = $this->access_option('access');
-		$_M['url']['help_tutorials_helpid']='98#1、基本信息';
-		require $this->template('own/product_add');
+        $column_list=$this->_columnjson();
+        $access_option = $this->access_option();
+
+        $redata['list'] = $list;
+        $redata['access_option'] = $access_option;
+        $redata=array_merge($redata,$column_list);
+
+        if (is_mobile()){
+            $this->success($redata);
+        }else{
+            if ($_M['form']['app_type'] == 'shop'){
+                require $this->shop->get_tmpname('product_shop');
+            }else{
+                return $redata;
+            }
+        }
 	}
 
 	function doaddsave() {
 		global $_M;
-		$_M['form']['addtime'] = $_M['form']['addtype']==2?$_M['form']['addtime']:date("Y-m-d H:i:s");
+        $redata = array();
+        $_M['form']['addtime'] = $_M['form']['addtype'] == 2 ? $_M['form']['addtime'] : date("Y-m-d H:i:s");
 		$pid = $this->insert_list($_M['form']);
 		if($pid){
-			//if($_M['config']['shopv2_open'])$this->shop->save_product($pid,$_M['form']);
-			//
-			$this->shop->save_product($pid,$_M['form']);
-			//
+			//商城产品属性
+            if ($this->shop_exists) {
 
-           $url="{$_M[url][own_form]}a=doindex{$_M[form][turnurl]}";
-			load::mod_class('html/html_op', 'new')->html_generate($url,$_M['form']['class1_select'],$pid);
-		}else{
-			turnover("{$_M[url][own_form]}a=doindex",$_M[word][dataerror]);
-		}
+                $this->shop->save_product($pid,$_M['form']);
+            }
+
+           	$url="{$_M['url']['own_form']}a=doindex{$_M['form']['turnurl']}";
+            $html_res = load::mod_class('html/html_op', 'new')->html_generate($url, $_M['form']['class1'], $pid);
+
+            //写日志
+            logs::addAdminLog('administration','addinfo','jsok','doaddsave');
+            if ($_M['form']['app_type']) {
+                okinfo($_M['form']['turnurl'], $_M['word']['jsok']);
+            }else{
+                $redata['status'] = 1;
+                $redata['msg'] = $_M['word']['jsok'];
+                $redata['html_res'] = $html_res;
+                $redata['back_url'] = $url;
+                $this->ajaxReturn($redata);
+            }
+            #load::mod_class('html/html_op', 'new')->html_generate($url,$_M['form']['class1'],$pid);
+        }else {
+            //写日志
+            logs::addAdminLog('administration', 'addinfo', 'dataerror', 'doaddsave');
+            if ($_M['form']['app_type']) {
+                okinfo('-1', $_M['word']['dataerror']);
+            }else {
+                $redata['status'] = 0;
+                $redata['msg'] = $_M['word']['dataerror'];
+                $redata['error'] = $this->error;
+                $this->ajaxReturn($redata);
+            }
+        }
 	}
 
+    /**
+     * @param 前台提交的表单数组 $list
+     * @return bool|number
+     */
 	public function insert_list($list){
 		global $_M;
-		$list = $this->form_classlist($list);
-		if($list['imgurl'])$list = $this->form_imglist($list,$this->module);
-		$list['updatetime'] = date("Y-m-d H:i:s");
-		$list['addtime']    = $list['addtime']?$list['addtime']:$list['updatetime'];
-		//$list[description]=str_replace('&nbsp;','',$list[description]);
-		//$list[description]=trim($list[description]);
-		$pid = $this->insert_list_sql($list);
+        $list['issue']    = $this->met_admin['admin_id'];
+
+        // $list = $this->form_classlist($list);
+        if($list['imgurl']){
+            $list = $this->form_imglist($list,$this->module);
+        }
+        $pid = $this->insert_list_sql($list);
+        // 更新TAG标签
+            load::sys_class('label','new')->get('tags')->updateTags($list['tag'],$this->module,$list['class1'],$pid,1);
 		if($pid){
-			// $this->paraclass->get_para($pid,3,$list['class1'],$list['class2'],$list['class3']);
-			// $info = $this->paraclass->form_para($list,3,$list['class1'],$list['class2'],$list['class3']);
-			// $this->paraclass->update_para($pid,$info,3);
-			$this->paraclass->insert($pid, $this->module, $_M['form']);
+		    if($this->module == 3 || $this->module == 4 || $this->module == 5){
+                //产品 下载 图片
+                $this->para_op->insert($pid, $this->module, $list);
+            }
 			return $pid;
 		}else{
 			return false;
 		}
 	}
 
-	public function insert_list_sql($list){
-		global $_M;
-		if(!$list['title']){
-			return false;
-		}
-		if(!$this->check_filename($list['filename'],'',$this->module)){
-			return false;
-		}
-		if($list['links']){
-			$list['links'] = url_standard($list['links']);
-		}
-		if(!$list['description'])$list['description'] = $this->description($list['content']);
-		//$list[description]=str_replace('&nbsp;','',$list[description]);
-		//$list[description]=str_replace(' ','',$list[description]);
-		$titlenum =substr_count($list['title'],"\'");
-		if(!$titlenum){
-			 $list['title']=str_replace("'", "\'",$list['title']);
-					$list['description']=str_replace("'", "\'",$list['description']);
-		}
-
-
-		// 增加展示图片尺寸属性imgsize（新模板框架v2）
-		// $query = "INSERT INTO {$this->tablename} SET
-		// 	title              = '{$list['title']}',
-		// 	ctitle             = '{$list['ctitle']}',
-		// 	keywords           = '{$list['keywords']}',
-		// 	description        = '{$list['description']}',
-		// 	content            = '{$list['content']}',
-		// 	class1             = '{$list['class1']}',
-		// 	class2             = '{$list['class2']}',
-		// 	class3             = '{$list['class3']}',
-		// 	classother         = '{$list['classother']}',
-		// 	new_ok             = '{$list['new_ok']}',
-		// 	imgurl             = '{$list['imgurl']}',
-		// 	imgsize            = '{$list['imgsize']}',
-		// 	imgurls            = '{$list['imgurls']}',
-		// 	displayimg         = '{$list['displayimg']}',
-		// 	com_ok             = '{$list['com_ok']}',
-		// 	wap_ok             = '{$list['wap_ok']}',
-		// 	issue              = '{$list['issue']}',
-		// 	hits               = '{$list['hits']}',
-		// 	addtime            = '{$list['addtime']}',
-		// 	updatetime         = '{$list['updatetime']}',
-		// 	access             = '{$list['access']}',
-		// 	filename           = '{$list['filename']}',
-		// 	no_order       	   = '{$list['no_order']}',
-		// 	lang          	   = '{$_M['lang']}',
-		// 	displaytype        = '{$list['displaytype']}',
-		// 	tag                = '{$list['tag']}',
-		// 	links              = '{$list['links']}',
-		// 	content1           = '{$list['content1']}',
-		// 	content2           = '{$list['content2']}',
-		// 	content3           = '{$list['content3']}',
-		// 	content4           = '{$list['content4']}',
-		// 	top_ok             = '{$list['top_ok']}'
-		// ";
-		// DB::query($query);
-		// return DB::insert_id();
-		$list['lang'] = $this->lang;
-
-		return $this->database->insert($list);
+    /**
+     * @param array $list
+     * @return bool
+     */
+	public function insert_list_sql($list = array()){
+        return parent::insert_list_sql($list);
 	}
 
-	//继承news
-	// function docheck_filename() {
-	// 	global $_M;
-	// 	if(!$this->moduleclass->check_filename($_M['form']['filename'],$_M['form']['id'],$this->module)){
-	// 		$errorno = $this->moduleclass->errorno=='error_filename_cha'?'仅支持中文、大小写字母、数字、下划线':'静态页面名称已被使用';
-	// 		echo '0|'.$errorno;
-	// 	}else{
-	// 		echo '1|名称可用';
-	// 	}
-	// }
+    /**
+     *系统属性
+     */
+    public function dopara() {
+        global $_M;
+        if($_M['form']['app_type']=='shop'){
+            $class1 = $_M['form']['class1'];
+            $class2 = $_M['form']['class2'];
+            $class3 = $_M['form']['class3'];
+            $paralist = $this->para_op->paratem($_M['form']['id'],$this->module,$class1,$class2,$class3);
+            require PATH_WEB . 'app/system/include/public/ui/admin/paratype.php';
+       }else{
+            parent::dopara();
+        }
+    }
 
-	function dopara() {
+    /**
+     * 获取栏目信息
+     */
+    public function doGetColumnSeting()
+    {
+        global $_M;
+        $class1 = $_M['form']['class1'];
+        $class2 = $_M['form']['class2'];
+        $class3 = $_M['form']['class3'];
+        $classnow = $class3 ? $class3 :($class2 ? $class2 : $class1);
+
+        $class = load::mod_class('column/column_label', 'new')->get_column_id($classnow);
+        $c123 = load::mod_class('column/column_label', 'new')->get_class123_no_reclass($classnow);
+
+        $c_lev = $class['classtype'];
+
+        //三级栏目
+        if ($c_lev == 3) {
+            //tab_num
+            $tab_num = $c123['class3']['tab_num'] ? $c123['class3']['tab_num'] : ($c123['class2']['tab_num'] ? $c123['class2']['tab_num'] : ($c123['class1']['tab_num'] ? $c123['class1']['tab_num'] : 3));
+
+            //tab_name
+            if ($c123['class3']['tab_name'] && $c123['class3']['tab_name'] != '|') {
+                $tab_name = explode("|", $c123['class3']['tab_name']);
+            }else{
+                if ($c123['class2']['tab_name'] && $c123['class2']['tab_name'] != '|') {
+                    $tab_name = explode("|", $c123['class2']['tab_name']);
+                }else{
+                    if ($c123['class1']['tab_name'] && $c123['class1']['tab_name'] != '|') {
+                        $tab_name = explode("|", $c123['class1']['tab_name']);
+                    }else{
+                        $tab_name = array(
+                            $_M['config']['met_productTabname'],
+                            $_M['config']['met_productTabname_1'],
+                            $_M['config']['met_productTabname_2'],
+                            $_M['config']['met_productTabname_3'],
+                            $_M['config']['met_productTabname_4']
+                        );
+                    }
+                }
+            }
+        }
+
+        //二级栏目将
+        if($c_lev == 2){
+            //tab_num
+            $tab_num = $c123['class2']['tab_num'] ? $c123['class2']['tab_num'] : ($c123['class1']['tab_num'] ? $c123['class1']['tab_num'] : 3);
+
+            //tab_name
+            if ($c123['class2']['tab_name'] && $c123['class2']['tab_name'] != '|') {
+                $tab_name = explode("|", $c123['class2']['tab_name']);
+            }else{
+                if ($c123['class1']['tab_name'] && $c123['class1']['tab_name'] != '|') {
+                    $tab_name = explode("|", $c123['class1']['tab_name']);
+                }else{
+                    $tab_name = array(
+                        $_M['config']['met_productTabname'],
+                        $_M['config']['met_productTabname_1'],
+                        $_M['config']['met_productTabname_2'],
+                        $_M['config']['met_productTabname_3'],
+                        $_M['config']['met_productTabname_4']
+                    );
+                }
+            }
+        }
+
+        //一级栏目
+        if ($c_lev == 1) {
+            //tab_num
+            $tab_num = $c123['class1']['tab_num'] ? $c123['class1']['tab_num'] : 3;
+
+            //tab_name
+            if ($c123['class1']['tab_name'] && $c123['class1']['tab_name'] != '|') {
+                $tab_name = explode("|", $c123['class1']['tab_name']);
+            }else{
+                $tab_name = array(
+                    $_M['config']['met_productTabname'],
+                    $_M['config']['met_productTabname_1'],
+                    $_M['config']['met_productTabname_2'],
+                    $_M['config']['met_productTabname_3'],
+                    $_M['config']['met_productTabname_4']
+                );
+            }
+        }
+
+
+        $redata['tab_name'] = "{$tab_name[0]}|{$tab_name[1]}|{$tab_name[2]}|{$tab_name[3]}|{$tab_name[4]}";
+        $redata['tab_num']  = $tab_num;
+        $this->ajaxReturn($redata);
+    }
+
+    /**
+     * 产品编辑
+     */
+	public function doeditor() {
 		global $_M;
-		$class = explode("-",$_M['form']['class']);
-		$class1 = $class[0];
-		$class2 = $class[1];
-		$class3 = $class[2];
-		$this->paraclass->paratem($_M['form']['id'],$this->module,$class1,$class2,$class3);
+        $redata = array();
+        $id = $_M['form']['id'];
+
+        if ($id && is_numeric($id)) {
+            $list = $this->database->get_list_one_by_id($id);
+            $list = $this->listAnalysis($list);
+            $list['class1']=$list['class1']!=''?$list['class1']:0;
+            $list['class2']=$list['class2']!=''?$list['class2']:0;
+            $list['class3']=$list['class3']!=''?$list['class3']:0;
+            $list['imgurl_all'] = $list['imgurl'];
+            $displayimg = explode("|",$list['displayimg']) ;
+            foreach($displayimg as $val){
+                if($val){
+                    $img = explode("*",$val);
+                    $list['imgurl_all'].= '|'.$img[1];
+                }
+            }
+            $list['imgurl_all'] = trim($list['imgurl_all'], '|');
+            if($list['classother']){
+                $list['classother_str'] = str_replace("-|-",'|',$list['classother']);
+                $list['classother_str'] = str_replace('|-','|',$list['classother_str']);
+                $list['classother_str'] = str_replace('-|','',$list['classother_str']);
+            }
+
+            //商城商品数据
+            if($this->shop_exists){
+                $list_s = $this->shop->default_value($list);
+                $list_s['paraku']=$this->specification_admin->dogetspeclist();
+                $list_s['speclist']=jsonencode($list_s['paraku']);
+                $list = array_merge($list, $list_s);
+            }
+            $column_list=$this->_columnjson();
+            $access_option = $this->access_option('',$list['access']);
+
+            $redata['list'] = $list;
+            $redata['access_option'] = $access_option;
+            $redata=array_merge($redata,$column_list);
+
+            if (is_mobile()){
+                $this->success($redata);
+            }else{
+                if ($_M['form']['app_type'] == 'shop'){
+
+                    require $this->shop->get_tmpname('product_shop');
+                }else{
+                    return $redata;
+                }
+
+
+            }
+        }
+        if (is_mobile()){
+            $this->error();
+        }else{
+            return false;
+        }
+
+        /*$redata['status'] = 0;
+        $redata['msg'] = 'Data error';
+        $this->ajaxReturn($redata);*/
 	}
 
-	/*产品编辑*/
-	function doeditor() {
-		global $_M;
-		$list = $this->database->get_list_one_by_id($_M['form']['id']);
-		$list['imgurl_all'] = $list['imgurl'];
-		$displayimg = explode("|",$list['displayimg']) ;
-		foreach($displayimg as $val){
-			$img = explode("*",$val);
-		    $list['imgurl_all'].= '|'.$img[1];
-		}
-		$list['class'] = $list['class1'].'-'.$list['class2'].'-'.$list['class3'];
-		if($list['classother']){
-			$list['classother'] = str_replace("-|-",",",$list['classother']);
-			$list['classother'] = str_replace("|-",",",$list['classother']);
-			$list['classother'] = str_replace("-|",",",$list['classother']);
-			$list['classother'] = substr($list['classother'], 0, -1);
-		}
-		$list['addtype'] = strtotime($list['addtime'])>time()?2:1;
-		$list['updatetime'] = date("Y-m-d H:i:s");
-		$list['issue'] = $list['issue'] ? $list['issue'] : get_met_cookie('metinfo_admin_name');
-		//$list[description]=str_replace('&nbsp;','',$list[description]);
-		//$list[description]=str_replace(' ','',$list[description]);
-		if($this->shop_exists){
-			$list_s = $this->shop->default_value($list);
-			$list_s['paraku']=$this->specification_admin->dogetspeclist();
-			$list_s['speclist']=jsonencode($list_s['paraku']);
-			$list = array_merge($list, $list_s);
-		}
-		$a = 'doeditorsave';
-		$class_option = $this->class_option($this->module);
-		$access_option = $this->access_option('access',$list['access']);
-		$_M['url']['help_tutorials_helpid']='98#1、基本信息';
-
-		require $this->template('own/product_add');
-	}
+    /**
+     * 保存编辑
+     */
 	function doeditorsave() {
 		global $_M;
-		$_M['form']['addtime'] = $_M['form']['addtype']==2?$_M['form']['addtime']:$_M['form']['addtime_l'];
-		if($this->update_list($_M['form'],$_M['form']['id'])){
-			//if($_M['config']['shopv2_open'])$this->shop->save_product($_M['form']['id'],$_M['form']);
-			//
-			$this->shop->save_product($_M['form']['id'],$_M['form']);
-			//
-			//if($_M['config']['met_webhtm'] == 2 && $_M['config']['met_htmlurl'] == 0){
-			$url="{$_M[url][own_form]}a=doindex&class1={$_M['form']['class1_select']}&class2={$_M['form']['class2_select']}&class3={$_M['form']['class3_select']}";
-			load::mod_class('html/html_op', 'new')->html_generate($url,$_M['form']['class1_select'],$_M['form']['id']);
-		}else{
-			turnover("{$_M[url][own_form]}a=doindex",$_M[word][dataerror]);
-		}
+        $redata = array();
+        $list = $_M['form'];
+        $id = $_M['form']['id'];
 
+        if (!is_numeric($id)) {
+            //写日志
+            logs::addAdminLog('administration','physicalupdate','dataerror','doeditorsave');
+            $redata['status']   = 0;
+            $redata['msg']      = $_M['word']['dataerror'];
+            $redata['error']    = "No id";
+            $this->ajaxReturn($redata);
+        }
+        //发布信息需要审核才能正常显示
+        $admin_info = admin_information();
+        if ($admin_info['admin_check'] == 1 && !strstr($admin_info['admin_type'],'metinfo')){
+            $list['displaytype'] = 0;
+        }
+		if($this->update_list($list, $id)){
+            if ($this->shop_exists && $_M['form']['app_type'] == 'shop') {
+                $this->shop->save_product($id,$list);
+            }
+			//if($_M['config']['met_webhtm'] == 2 && $_M['config']['met_htmlurl'] == 0){
+			$url="{$_M['url']['own_form']}a=doindex&class1={$_M['form']['class1']}&class2={$_M['form']['class2']}&class3={$_M['form']['class3']}";
+            $html_res = load::mod_class('html/html_op', 'new')->html_generate($url,$_M['form']['class1'],$_M['form']['id']);
+            //写日志
+            logs::addAdminLog('administration','editor','jsok','doaddsave');
+            if ($_M['form']['app_type']){
+                okinfo($_M['form']['turnurl'],$_M['word']['jsok']);
+            }else{
+                $redata['status']   = 1;
+                $redata['msg']      = $_M['word']['jsok'];
+                $redata['html_res'] = $html_res;
+                $redata['back_url'] = $url;
+                $this->ajaxReturn($redata);
+            }
+		}else {
+            //写日志
+            logs::addAdminLog('administration', 'editor', 'dataerror', 'doeditorsave');
+
+            if ($_M['form']['app_type']) {
+                okinfo('-1',$_M['word']['dataerror']);
+            }else{
+                $redata['status'] = 0;
+                $redata['msg'] = $_M['word']['dataerror'];
+                $this->ajaxReturn($redata);
+            }
+        }
 	}
+
 	/*编辑产品*/
-	public function update_list($list,$id){
-		global $_M;
-		$list = $this->form_classlist($list);
+	public function update_list($list = array(), $id = ''){
+        return parent::update_list($list, $id);
+		/*$list = $this->form_classlist($list);
 		if($list['imgurl'])$list = $this->form_imglist($list,$this->module);
-		//$list['updatetime'] = date("Y-m-d H:i:s");
 
 		if($this->update_list_sql($list,$id)){
-			$this->paraclass->update($id, $this->module, $_M['form']);
+			$this->para_op->update($id, $this->module, $list);
 			return true;
 		}else{
 			return false;
-		}
+		}*/
 	}
 
-	public function update_list_sql($list,$id){
-		global $_M;
-		if(!$list['title']){
-			return false;
-		}
-		if(!$this->check_filename($list['filename'],$id,3)){
-			return false;
-		}
-		if($list['links']){
-			$list['links'] = url_standard($list['links']);
-		}
-		if($list['description']){
-			$query = "SELECT content FROM {$this->tablename} WHERE id='{$id}'";
-			$listown = DB::get_one($query);
-			$description = $this->description($listown['content']);
-			if($list['description']==$description){
-				$list['description'] = $this->description($list['content']);
-			}
-		}else{
-			$list['description'] = $this->description($list['content']);
-		}
-		//$list[description]=str_replace('&nbsp;','',$list[description]);
-		//$list[description]=str_replace(' ','',$list[description]);
-		$list['displayimg'] = $this->displayimg_check($list['displayimg']);
-		$list['id'] = $id;
-		// 增加展示图片尺寸属性imgsize（新模板框架v2）
-		// $query = "UPDATE {$this->tablename} SET
-		// 	title              = '{$list['title']}',
-		// 	ctitle             = '{$list['ctitle']}',
-		// 	keywords           = '{$list['keywords']}',
-		// 	description        = '{$list['description']}',
-		// 	content            = '{$list['content']}',
-		// 	class1             = '{$list['class1']}',
-		// 	class2             = '{$list['class2']}',
-		// 	class3             = '{$list['class3']}',
-		// 	classother         = '{$list['classother']}',
-		// 	new_ok             = '{$list['new_ok']}',
-		// 	imgurl             = '{$list['imgurl']}',
-		// 	imgsize            = '{$list['imgsize']}',
-		// 	imgurls            = '{$list['imgurls']}',
-		// 	displayimg         = '{$list['displayimg']}',
-		// 	com_ok             = '{$list['com_ok']}',
-		// 	wap_ok             = '{$list['wap_ok']}',
-		// 	issue              = '{$list['issue']}',
-		// 	hits               = '{$list['hits']}',
-		// 	addtime            = '{$list['addtime']}',
-		// 	updatetime         = '{$list['updatetime']}',
-		// 	access             = '{$list['access']}',
-		// 	filename           = '{$list['filename']}',
-		// 	no_order       	   = '{$list['no_order']}',
-		// 	lang          	   = '{$_M['lang']}',
-		// 	displaytype        = '{$list['displaytype']}',
-		// 	tag                = '{$list['tag']}',
-		// 	links              = '{$list['links']}',
-		// 	content1           = '{$list['content1']}',
-		// 	content2           = '{$list['content2']}',
-		// 	content3           = '{$list['content3']}',
-		// 	content4           = '{$list['content4']}',
-		// 	top_ok             = '{$list['top_ok']}'
-		// 	WHERE id='{$id}'
-		// ";
-		// DB::query($query);
-		return $this->database->update_by_id($list);
-	}
+    /**
+	 * 保存修改sql
+     * @param array $list
+     * @param string $id
+     * @return bool
+     */
+	public function update_list_sql($list = array(),$id = '')
+    {
+        if (!$list['title']) {
+            $this->error[] = 'no title';
+            return false;
+        }
+        if (!$this->check_filename($list['filename'], $id, 3)) {
+            return false;
+        }
+        if ($list['links']) {
+            $list['links'] = url_standard($list['links']);
+        }
+        if ($list['description']) {
+            $listown = $this->database->get_list_one_by_id($id);
+            $description = $this->description($listown['content']);
+            if ($list['description'] == $description) {
+                $list['description'] = $this->description($list['content']);
+            }
+        } else {
+            $list['description'] = $this->description($list['content']);
+        }
+        $list['displayimg'] = $this->displayimg_check($list['displayimg']);
+        $list['addtime']    = $list['addtype'] == 2 ? $list['addtime'] : $list['updatetime'];
+        // $list['updatetime'] = $list['update_list'] ? $list['update_list'] : date("Y-m-d H:i:s");
+        $list['id'] = $id;
+        return $this->database->update_by_id($list);
+    }
 
 	/*去除多余的displayimg里面的图片数据*/
 	public function displayimg_check($img){
@@ -334,148 +454,129 @@ class product_admin extends news_admin {
 		return $str;
 	}
 
-	/*产品管理*/
-	function doindex() {
-		global $_M;
-		$column = $this->column(3,$this->module);
-		//$tmpname = $_M['config']['shopv2_open']?'tem/product_shop_index':'tem/product_index';
-		//require $this->template($tmpname);
-		$list['class1'] = $_M['form']['class1'] ? $_M['form']['class1'] : '' ;
-		$list['class2'] = $_M['form']['class2'] ? $_M['form']['class2'] : '' ;
-		$list['class3'] = $_M['form']['class3'] ? $_M['form']['class3'] : '' ;
-		$tmpname = $this->shop->get_tmpname('product_shop_index');
-
-		if($tmpname && $_M['config']['shopv2_open']==1){
-			$tmpname = $this->shop->get_tmpname('product_shop_index');
-
-		} else {
-			$tmpname = $this->template('tem/product_index');
-		}
-		$_M['url']['help_tutorials_helpid']='99';
-		require $tmpname;
-		//
-	}
-
-	function docolumnjson(){
-		$this->column_json($this->module);
-	}
-
-	function dojson_list(){
-		global $_M;
-		if(!$this->shop->plgin_json_list()){
-			/*if($_M['form']['class1_select']=='null'&&$_M['form']['class2_select']=='null'&&$_M['form']['class3_select']=='null'){
-				$class1 = $_M['form']['class1'];
-				$class2 = $_M['form']['class2'];
-				$class3 = $_M['form']['class3'];
-			}else{
-				$class1 = $_M['form']['class1_select'];
-				$class2 = $_M['form']['class2_select'];
-				$class3 = $_M['form']['class3_select'];
-			}
-            if($_M['form']['class1_select']==$_M[word][allcategory] && $_M['form']['class1']){
-                	$class1 = $_M['form']['class1'];
-                	$class2 = $_M['form']['class2'];
-				    $class3 = $_M['form']['class3'];
+	function dojson_list()
+    {
+        global $_M;
+        $redata = array();
+        if ($this->shop_exists && $_M['form']['app_type'] == 'shop') {
+            $this->shop->plgin_json_list();
+            die();
+        }else{
+            $class1 = is_numeric($_M['form']['class1_select']) ? $_M['form']['class1_select'] : (is_numeric($_M['form']['class1']) ? $_M['form']['class1'] : '');
+            $class2 = is_numeric($_M['form']['class2_select']) ? $_M['form']['class2_select'] : (is_numeric($_M['form']['class2']) ? $_M['form']['class2'] : '');
+            $class3 = is_numeric($_M['form']['class3_select']) ? $_M['form']['class3_select'] : (is_numeric($_M['form']['class3']) ? $_M['form']['class3'] : '');
+            $keyword = $_M['form']['keyword'];
+            $search_type = $_M['form']['search_type'];
+            foreach ($_M['form']['order'] as $key => $value) {
+                $order[$value['name']]=$value['value'];
             }
 
-			$class1 = $class1 == ' ' ? 'null' : $class1;
-			$class2 = $class2 == ' ' ? 'null' : $class2;
-			$class3 = $class3 == ' ' ? 'null' : $class3;
-			*/
-
-            $class1 = is_numeric($_M['form']['class1_select'])?$_M['form']['class1_select']:($_M['form']['class1_select']==''?$_M['form']['class1']:'');
-            $class2 = is_numeric($_M['form']['class2_select'])?$_M['form']['class2_select']:($_M['form']['class2_select']==''?$_M['form']['class2']:'');
-            $class3 = is_numeric($_M['form']['class3_select'])?$_M['form']['class3_select']:($_M['form']['class3_select']==''?$_M['form']['class3']:'');
-
-			$keyword = $_M['form']['keyword'];
-			$search_type = $_M['form']['search_type'];
-			$orderby_hits = $_M['form']['orderby_hits'];
-			$orderby_updatetime = $_M['form']['orderby_updatetime'];
-
-			$ps = '';
-
-			$where = $class1&&$class1!=$_M[word][allcategory]&&$class1!='null'?" and {$ps}class1 = '{$class1}'":'';
-			$where.= $class2&&$class2!='null'?" and {$ps}class2 = '{$class2}'":'';
-			$where.= $class3&&$class3!='null'?" and {$ps}class3 = '{$class3}'":'';
-
-			$where.= $keyword?" and {$ps}title like '%{$keyword}%'":'';
-			switch($search_type){
-				case 0:break;
-				case 1:
-					$where.= " and {$ps}displaytype = '0'";
-				break;
-				case 2:
-					$where.= " and {$ps}com_ok = '1'";
-				break;
-			}
-
-			if($class3){
-				$classother = "|-{$class1}-{$class2}-{$class3}-|";
-			}else{
-				if($class2){
-					$classother = "|-{$class1}-{$class2}-0-|";
-				}else{
-					$classother = "|-{$class1}-0-0-|";
-				}
-			}
-			$where.= " or classother like '%{$classother}%'";
-			$admininfo = admin_information();
-			if($admininfo[admin_issueok] == 1)$where.= "and issue = '{$admininfo[admin_id]}'";
-			$met_class = $this->column(2,$this->module);
-			if($class3!='null' &&$class3){
-                 $classnow=$class3;
-			}elseif($class2!='null' && $class2){
-                 $classnow=$class2;
-			}else{
-				 $classnow=$class1;
-			}
-			$order = $this->list_order($met_class[$classnow]['list_order']);
-			if($orderby_hits)$order = "{$ps}hits {$orderby_hits}";
-			if($orderby_updatetime)$order = "{$ps}updatetime {$orderby_updatetime}";
-			$userlist = $this->json_list($where, $order);
-
-			foreach($userlist as $key=>$val){
-				$val['url']   = $this->url($val,$this->module);
-                $val['state'] = $val['displaytype']?'':'<span class="label label-default">'.$_M[word][displaytype2].'</span>';
-                if(!$val['state'])$val['state'] = strtotime($val['addtime'])>time()?'<span class="label label-default">'.$_M[word][timedrelease].'</span>':'';
-                $val['state'].= $val['com_ok']?'<span class="label label-info" style="margin-left:8px;">'.$_M[word][recom].'</span>':'';
-                $val['state'].= $val['top_ok']?'<span class="label label-success" style="margin-left:8px;">'.$_M[word][top].'</span>':'';
-				$list = array();
-				$list[] = "<input name=\"id\" type=\"checkbox\" value=\"{$val[id]}\">";
-				$list[] = "
-					<div class=\"media\">
-					  <div class=\"media-left\">
-						<a href=\"{$val['url']}\" target=\"_blank\">
-						  <img class=\"media-object\" src=\"{$val['imgurl']}\" width=\"60\">
-						</a>
-					  </div>
-					  <div class=\"media-body ui-table-a\">
-						<a href=\"{$val['url']}\" title=\"{$val['title']}\" target=\"_blank\">{$val['title']}</a>
-						{$val['price_html']}
-					  </div>
-					</div>
-				";
-				$list[] = $val['hits'];
-				$list[] = $val['updatetime'];
-				$list[] = $val['state'];
-				$list[] = "<input name=\"no_order-{$val['id']}\" type=\"text\" class=\"ui-input text-center\" value=\"{$val[no_order]}\">";
-				$list[] = "<a href=\"{$_M[url][own_form]}a=doeditor&id={$val['id']}&class1_select={$class1}&class2_select={$class2}&class3_select={$class3}\" class=\"edit\">{$_M[word][editor]}</a><span class=\"line\">-</span><a href=\"{$_M[url][own_form]}a=dolistsave&submit_type=del&allid={$val['id']}\" data-toggle=\"popover\" class=\"delet\">{$_M[word][delete]}</a>
-				";
-				$rarray[] = $list;
-			}
-			$this->json_return($rarray);
+            $list = self::_dojson_list($class1, $class2, $class3, $keyword, $search_type, $order['hits'], $order['updatetime']);
 		}
+        $this->json_return($list);
+        /*$redata['data'] = $list;
+        $this->ajaxReturn($redata);*/
+    }
+
+    /**
+     * @param string $class1
+     * @param string $class2
+     * @param string $class3
+     * @param string $keyword
+     * @param string $search_type
+     * @param string $orderby_hits
+     * @param string $orderby_updatetime
+     * @return array
+     */
+    public function _dojson_list($class1 = '', $class2 = '', $class3 = '', $keyword = '', $search_type = '', $orderby_hits = '', $orderby_updatetime = ''){
+		global $_M;
+        $ps = '';
+        $where = $class1 ? "and class1 = '{$class1}'" : '';
+        $where .= $class2 ? " and class2 = '{$class2}'" : '';
+        $where .= $class3 ? " and class3 = '{$class3}'" : '';
+        $where .= $keyword ? " and title like '%{$keyword}%'" : '';
+        switch ($search_type) {
+            case 0:
+                break;
+            case 1:
+                $where .= " and {$ps}displaytype = '0'";
+                break;
+            case 2:
+                $where .= " and {$ps}com_ok = '1'";
+                break;
+        }
+
+        if ($class3) {
+            $classother = "|-{$class1}-{$class2}-{$class3}-|";
+        } else {
+            if ($class2) {
+                $classother = "|-{$class1}-{$class2}-0-|";
+            } else {
+                $classother = "|-{$class1}-0-0-|";
+            }
+        }
+        $where .= " or classother like '%{$classother}%'";
+
+
+        $met_class = $this->column(2, $this->module);
+        if ($class3) {
+            $classnow = $class3;
+        } elseif ($class2) {
+            $classnow = $class2;
+        } else {
+            $classnow = $class1;
+        }
+        $order = $this->list_order($met_class[$classnow]['list_order']);
+        if ($orderby_hits) $order = "{$ps}hits {$orderby_hits}";
+        if ($orderby_updatetime) $order = "{$ps}updatetime {$orderby_updatetime}";
+
+        $data = $this->json_list($where, $order);
+
+        foreach ($data as $key => $val) {
+            $val['url'] = $this->url($val, $this->module);
+            // $val['displaytype'] = $val['displaytype'];
+            // $state = array();
+            // $val['displaytype'] ? array_push($state,$_M['word']['displaytype2']) : '';
+            // strtotime($val['addtime']) > time() ? array_push($state,$_M['word']['timedrelease']) : '';
+            // $val['com_ok'] ? array_push($state,$_M['word']['recom']) : '';
+            // $val['top_ok'] ? array_push($state,$_M['word']['top']) : '';
+            // $var['state'] = $state;
+
+            $row = array();
+            $row['id'] 		    = $val['id'];
+            $row['no_order']    = $val['no_order'];
+            $row['title'] 	    = $val['title'];
+            $row['url'] 	    = $val['url'];
+            $row['imgurl'] 	    = $val['imgurl'];
+            $row['com_ok'] 	    = $val['com_ok'];
+            $row['top_ok'] 	    = $val['top_ok'];
+            $row['displaytype'] = $val['displaytype'];
+            $row['addtype'] = strtotime($val['addtime'])>time()?1:0;
+            $row['price_html'] 	= $val['price_html'];
+            $row['hits'] 	    = $val['hits'];
+            $row['updatetime'] 	= $val['updatetime'];
+            #$row['state'] 	    = $state;
+            $row['editor_url'] 	= "{$_M['url']['own_form']}a=doeditor&id={$val['id']}&class1={$class1}&class2={$class2}&class3={$class3}";
+            $row['del_url'] = "{$_M['url']['own_form']}a=dolistsave&submit_type=del&allid={$val['id']}";
+            $rarray[] = $row;
+        }
+        return $rarray;
 	}
 
-	// /*gggg*/
-	public function json_list($where, $order){
+
+    /**
+     * @param array $where
+     * @param array $order
+     * @return mixed
+     */
+	public function json_list($where = '', $order = ''){
 		global $_M;
-		$this->table = load::sys_class('tabledata', 'new');
+		$this->tabledata = load::sys_class('tabledata', 'new');
 
 		$p = $_M['table']['product'];
 		$s = $_M['table']['shopv2_product'];
 
-		if($_M['config']['shopv2_open']){//开启在线订购时
+		if($this->shop_exists){//开启在线订购时
 			$table = $p.' Left JOIN '.$s." ON ({$p}.id = {$s}.pid)";
 			$where = "{$p}.lang='{$_M['lang']}' and ({$p}.recycle = '0' or {$p}.recycle = '-1') {$where}";
 		}else{
@@ -483,16 +584,26 @@ class product_admin extends news_admin {
 			$where = "lang='{$_M['lang']}' and (recycle = '0' or recycle = '-1') {$where}";
 		}
 
-		$data = $this->table->getdata($table, '*', $where, $order);
+        if ($this->met_admin['admin_issueok']) {
+		    $where = "({$where})  and (issue = '{$this->met_admin['admin_id']}')";
+        }
+
+        $data = $this->tabledata->getdata($table, '*', $where, $order);
 		return $data;
 	}
 
-	public function json_return($data){
-		global $_M;
-		$this->table->rdata($data);
-	}
+    /**
+     * @param array $data
+     */
+    public function json_return($data){
+        global $_M;
+        $this->tabledata->rdata($data);
+    }
 
-	function dolistsave(){
+    /**
+     * 保存列表
+     */
+	public function dolistsave(){
 		global $_M;
 		$list = explode(",",$_M['form']['allid']) ;
 		foreach($list as $id){
@@ -501,146 +612,163 @@ class product_admin extends news_admin {
 					case 'save':
 						$list['no_order'] 	 = $_M['form']['no_order-'.$id];
 						$this->list_no_order($id,$list['no_order']);
+						$log_name = 'submit';
 					break;
 					case 'del':
 						$this->del_list($id,$_M['form']['recycle']);
-						if($_M['form']['recycle']==0){
-							$this->database->del_plist($id,3);
-							$this->shop->del_product($id);
-						}
+                        $log_name = 'jslang1';
+                        if($_M['form']['recycle']==0){
+                            $para_op = load::mod_class("parameter/parameter_op", 'new');
+							$para_op->del_plist($id,3);
+                            if ($this->shop_exists) {
+                                $this->shop->del_product($id);
+                            }
+                            $log_name = 'jslang0';
+                        }
 					break;
 					case 'comok':
-						$this->list_com($id,1);
+                        $log_name = 'recom';
+                        $this->list_com($id,1);
 					break;
 					case 'comno':
-						$this->list_com($id,0);
+                        $log_name = 'unrecom';
+                        $this->list_com($id,0);
 					break;
 					case 'topok':
-						$this->list_top($id,1);
+                        $log_name = 'top';
+                        $this->list_top($id,1);
 					break;
 					case 'topno':
-						$this->list_top($id,0);
+                        $log_name = 'untop';
+                        $this->list_top($id,0);
 					break;
 					case 'displayok':
-						$this->list_display($id,1);
+                        $log_name = 'frontshow';
+                        $this->list_display($id,1);
 					break;
 					case 'displayno':
-						$this->list_display($id,0);
+                        $log_name = 'fronthidden';
+                        $this->list_display($id,0);
 					break;
 					case 'move':
-						$class = explode("-",$_M['form']['columnid']);
+                        $log_name = 'columnmove1';
+                        $class = explode("-",$_M['form']['columnid']);
 						$class1 = $class[0];
 						$class2 = $class[1];
 						$class3 = $class[2];
 						$this->list_move($id,$class1,$class2,$class3);
 					break;
 					case 'copy':
-						$class = explode("-",$_M['form']['columnid']);
+                        $log_name = 'copyotherlang2';
+                        $class = explode("-",$_M['form']['columnid']);
 						$class1 = $class[0];
 						$class2 = $class[1];
 						$class3 = $class[2];
 						$newid = $this->list_copy($id,$class1,$class2,$class3);
-						//开启在线订购时
-						//if($_M['config']['0'])$this->shop->copy_product($id,$newid);
-						//
-						$this->shop->copy_product($id,$newid);
-						//
 					break;
+                    case 'copy_tolang':
+                        $log_name = 'copy_tolang';
+                        $new_class = explode("-", $_M['form']['columnid']);
+                        $tolang = $_M['form']['tolang'];
+                        $module = $_M['form']['module'];
+                        $res = $this->copy_tolang($id, $module, $tolang, $new_class);
+                    break;
 				}
 			}
 		}
+
+        if (!$this->error) {
+            $url = "{$_M['url']['own_form']}a=doindex&class1={$_M['form']['class1']}&class2={$_M['form']['class2']}&class3={$_M['form']['class3']}";
+            $html_res = load::mod_class('html/html_op', 'new')->html_generate($url, $_M['form']['class1'], $_M['form']['id']);
+            $redata['status']   = 1;
+            $redata['msg']      = $_M['word']['jsok'];
+            $redata['html_res'] = $html_res;
+            $redata['back_url'] = $url;
+            //写日志
+            logs::addAdminLog('administration',$log_name,'jsok','dolistsave');
+        }else{
+            $redata['status']   = 0;
+            $redata['msg']      = $this->error[0];
+            $redata['error']    = $this->error;
+            //写日志
+            logs::addAdminLog('administration',$log_name,$this->error[0],'dolistsave');
+
+        }
+
+        if ($_M['form']['app_type']) {
+            okinfo('-1',$redata['msg']);
+        }else {
+            $this->ajaxReturn($redata);
+        }
+
 		$old_class_str="&class1={$_M['form']['class1']}&class2={$_M['form']['class2']}&class3={$_M['form']['class3']}";
-		$url="{$_M[url][own_form]}a=doindex&class1={$_M['form']['class1_select']}&class2={$_M['form']['class2_select']}&class3={$_M['form']['class3_select']}";
-		load::mod_class('html/html_op', 'new')->html_generate($url,$_M['form']['class1_select'],$_M['form']['id']);
+		$url="{$_M[url][own_form]}a=doindex&class1={$_M['form']['class1']}&class2={$_M['form']['class2']}&class3={$_M['form']['class3']}";
+		load::mod_class('html/html_op', 'new')->html_generate($url,$_M['form']['class1'],$_M['form']['id']);
 	}
 
 	/*复制*/
-	public function list_copy($id,$class1,$class2,$class3){
+	public function list_copy($id = '', $class1 = '', $class2 = '', $class3 = ''){
 		global $_M;
-        $list =$this->database->get_list_one_by_id($id);
-		$list['filename'] = '';
-		$list['class1']   = $class1;
-		$list['class2']   = $class2;
-		$list['class3']   = $class3;
-		$list['updatetime']  = date("Y-m-d H:i:s");
-		$list['addtime']  = date("Y-m-d H:i:s");
-		$list['content']  = str_replace('\'','\'\'',$list['content']);
-		$list['content1'] = str_replace('\'','\'\'',$list['content1']);
-		$list['content2'] = str_replace('\'','\'\'',$list['content2']);
-		$list['content3'] = str_replace('\'','\'\'',$list['content3']);
-		$list['content4'] = str_replace('\'','\'\'',$list['content4']);
-		$copyid=$this->insert_list_sql($list); //复制产品参数
-		$paralist = $this->para->get_list($id,$this->module);//
-		foreach ($paralist as $key=>$paravalue) {
-		 $listid=$copyid;
-		 $paraid= $paravalue[paraid];
-		 $val   =$paravalue[val];
-		 $module=$paravalue[module];
-		 $lang  =$paravalue[lang];
-		 $imgname=$paravalue[imgname];
-		 $info=$paravalue[info];
-		 $query3="INSERT INTO  {$_M['table']['plist']}
-						(`id` ,  `listid` ,   `paraid` ,   `info` ,     `lang` ,    `imgname` ,  `module`)	VALUES
-						(NULL ,  '{$listid}', '{$paraid}' , '{$info}' , '{$lang}' , '{$imgname}','{$module}')";
-		 DB::query($query3);
-		}
-		 return $copyid;
+        if ($id && is_numeric($id)) {
+            $list =$this->database->get_list_one_by_id($id);
+            $list['filename'] = '';
+            $list['class1']   = $class1;
+            $list['class2']   = $class2;
+            $list['class3']   = $class3;
+            $list['updatetime']  = date("Y-m-d H:i:s");
+            $list['addtime']  = date("Y-m-d H:i:s");
+            $list['content']  = str_replace('\'','\'\'',$list['content']);
+            $list['content1'] = str_replace('\'','\'\'',$list['content1']);
+            $list['content2'] = str_replace('\'','\'\'',$list['content2']);
+            $list['content3'] = str_replace('\'','\'\'',$list['content3']);
+            $list['content4'] = str_replace('\'','\'\'',$list['content4']);
+
+            $copyid     = $this->insert_list_sql($list); //复制产品参数
+            if ($this->module == 3 || $this->module == 4 || $this->module == 5) {
+                $this->para_copy($id, $copyid);
+            }
+
+            //开启在线订购时
+            if ($this->shop_exists) {
+                $this->shop->copy_product($id,$copyid);
+            }
+            return $copyid;
+        }
+        $this->error[] = 'error no id';
+        return false;
 	}
 
-    public function dodelpara()
+    /**
+     * 多语言内容复制
+     */
+    public function copy_tolang($id = '' , $module = '', $tolang = '' , $new_class = '')
     {
-		global $_M;
-        $this->shop->delpara($_M['form']);
+        global $_M;
+        if ($id && $module && $tolang && $new_class) {
+            $content = $this->database->get_list_one_by_id($id);
+            if ($content) {
+                $content['id'] = '';
+                $content['filename'] = '';
+                $content['class1'] = $new_class[0];
+                $content['class2'] = $new_class[1];
+                $content['class3'] = $new_class[2];
+                $content['updatetime'] = date("Y-m-d H:i:s");
+                $content['addtime'] = date("Y-m-d H:i:s");
+                $content['content'] = str_replace('\'', '\'\'', $content['content']);
+                $content['content1'] = str_replace('\'', '\'\'', $content['content1']);
+                $content['content2'] = str_replace('\'', '\'\'', $content['content2']);
+                $content['content3'] = str_replace('\'', '\'\'', $content['content3']);
+                $content['content4'] = str_replace('\'', '\'\'', $content['content4']);
+                $content['lang'] = $tolang ? $tolang : $content['lang'];
+                $new_id = $this->database->insert($content);
+                if ($new_id) {
+                    return $new_id;
+                }
+            }
+            $this->error[] = "Content replication failed";
+            return false;
+        }
     }
-
-	//下列全部继承news
-	// /*移动产品*/
-	// public function list_move($id,$class1,$class2,$class3){
-	// 	global $_M;
-	// 	$query = "UPDATE {$this->tablename} SET
-	// 		class1 = '{$class1}',
-	// 		class2 = '{$class2}',
-	// 		class3 = '{$class3}'
-	// 		WHERE id = '{$id}'";
-	// 	DB::query($query);
-	// }
-	// /*修改排序*/
-	// public function list_no_order($id,$no_order){
-	// 	global $_M;
-	// 	$query = "UPDATE {$this->tablename} SET no_order = '{$no_order}' WHERE id = '{$id}'";
-	// 	DB::query($query);
-	// }
-	// /*上架下架*/
-	// public function list_display($id,$display){
-	// 	global $_M;
-	// 	$query = "UPDATE {$this->tablename} SET displaytype = '{$display}' WHERE id = '{$id}'";
-	// 	DB::query($query);
-	// }
-	// /*置顶*/
-	// public function list_top($id,$top){
-	// 	global $_M;
-	// 	$query = "UPDATE {$this->tablename} SET top_ok = '{$top}' WHERE id = '{$id}'";
-	// 	DB::query($query);
-	// }
-	// /*推荐*/
-	// public function list_com($id,$com){
-	// 	global $_M;
-	// 	$query = "UPDATE {$this->tablename} SET com_ok = '{$com}' WHERE id = '{$id}'";
-	// 	DB::query($query);
-	// }
-	// /*删除产品*/
-	// public function del_list($id,$recycle){
-	// 	global $_M;
-	// 	if($recycle){
-	// 		$query = "UPDATE {$this->tablename} SET recycle = '3' WHERE id='{$id}'";
-	// 		DB::query($query);
-	// 	}else{
-	// 		$query = "DELETE FROM {$this->tablename} WHERE id='{$id}'";
-	// 		DB::query($query);
-	// 		$query = "DELETE FROM {$_M['table']['plist']} WHERE listid='{$id}'";
-	// 		DB::query($query);
-	// 	}
-	// }
 
 }
 

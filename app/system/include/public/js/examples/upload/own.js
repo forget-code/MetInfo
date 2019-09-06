@@ -27,7 +27,7 @@ define(function(require, exports, module) {
 			});
 			//文件上传成功时
 			uploader.on( 'uploadSuccess', function( file, response ) {
-				if(response.error!='0'){
+				if(response.error){
 					alert(response.errorcode);
 				}else{
 					// 重新加载图片库列表，并跳转到上传的文件夹
@@ -273,7 +273,7 @@ define(function(require, exports, module) {
 					});
 					//文件上传成功时
 					uploaders.on( 'uploadSuccess', function( file, response ) {
-						if(response.error!='0'){
+						if(response.error){
 							alert(response.errorcode);
 						}else{
 							if(!dom.data('upload-many')){

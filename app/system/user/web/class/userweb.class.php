@@ -32,7 +32,7 @@ class userweb extends web {
 		global $_M;
 		$user = $this->get_login_user_info();
 		if(!$user){
-            okinfo($_M['url']['site'].'member/login.php?lang='.$_M['form']['lang'].'&gourl='.$_M['form']['gourl']);
+			okinfo($_M['url']['web_site'].'member/login.php?lang='.$_M['form']['lang'].'&gourl='.$_M['form']['gourl'],$_M['word']['please_login']);
 		}
 	}
 
@@ -45,12 +45,12 @@ class userweb extends web {
 		global $_M;
 		$postion = strstr($path, '/',true);
 		$file = substr(strstr($path, '/'),1);
-		if ($postion == 'own') return PATH_OWN_FILE."templates/met/{$file}.php";
+		if ($postion == 'own') return PATH_OWN_FILE."templates/{$file}.php";
 		if ($postion == 'ui') return PATH_SYS."include/public/ui/web/{$file}.php";
 		if($postion == 'tem'){
 			$sys_content=$_M['custom_template']['sys_content'];
 			$flag=$sys_content?1:0;
-			$sys_content = PATH_OWN_FILE."templates/met/{$file}.php";
+			$sys_content = PATH_OWN_FILE."templates/{$file}.php";
 			!file_exists($sys_content) && $sys_content = PATH_WEB."public/ui/v2/{$file}.php";
 			$_M['custom_template']['sys_content']=$sys_content;
 			if($flag){

@@ -1,10 +1,5 @@
 <?php
-/**
- * 上传附件和上传视频
- * User: Jinqn
- * Date: 14-04-09
- * Time: 上午10:17
- */
+defined('IN_MET') or exit('No permission');
 include "Uploader.class.php";
 
 /* 上传配置 */

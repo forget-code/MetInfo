@@ -22,7 +22,7 @@ function makedir($dir){
 		foreach($fileArr as $val){
 			$fileUrl .= $val . '/';
 			if(!file_exists($fileUrl)){
-				$result = mkdir($fileUrl);
+				$result = mkdir($fileUrl,0777, true);
 			}
 		}
 	}
@@ -498,7 +498,7 @@ function modifyfilepower($file,$power){
  * @param  string   $jkdir	遍历文件夹,可以是绝对路径，也可以是相对网站根目录的相对路径
  * @param  string   $suffix	遍历文件的后缀，不填写为全部文件。支持正则。
  * @param  string   $jump	跳过不需要遍历的文件夹。要填写网站根目录路径，不要含有../,实质是"/^({$jump})/"中正则参数。
- * @return string       	返回提取的文件数组。文件路径都是绝对路径。
+ * @return string   $filenamearray  返回提取的文件数组。文件路径都是绝对路径。
  */
 function traversal($jkdir, $suffix='[A-Za-z]*', $jump=null, &$filenamearray = array()) {
 	if($jkdir == '.' || $jkdir == './') $jkdir = '';
@@ -521,34 +521,88 @@ function traversal($jkdir, $suffix='[A-Za-z]*', $jump=null, &$filenamearray = ar
 				$filenamearray[] = str_replace(PATH_WEB, '', $filename);
 			}
 		}
-
 	}
 	return $filenamearray;
 }
 
-	function file_zip($dir,$zip)
+/**
+ * 扫描当前文件夹
+ * @param string $jkdir
+ * @param string $suffix
+ * @param null $jump
+ */
+function scan_dir($jkdir = '', $suffix = '[A-Za-z]*', $jump = null)
+{
+    if ($jkdir == '.' || $jkdir == './') $jkdir = '';
+    $jkdir = path_absolute($jkdir);
+    $hand = opendir($jkdir);
+    $filenamearray = array();
+
+    while ($file = readdir($hand)) {
+        $filename = $jkdir . $file;
+        #$filename = str_replace("\\", '/', $filename);
+        if (@is_dir($filename) && $file != '.' && $file != '..' && $file != './..') {
+            if ($jump != null) {
+                if (preg_match_all("/^({$jump})/", str_replace(PATH_WEB, '', $filename), $out)) {
+                    continue;
+                }
+            }
+            $filenamearray[] = str_replace(PATH_WEB, '', $filename);
+        } else {
+            if ($file != '.' && $file != '..' && $file != './..' && preg_match_all("/\.({$suffix})/i", $filename, $out)) {
+                if (stristr(PHP_OS, "WIN")) {
+                    $filename = iconv("gbk", "utf-8", $filename);
+                }
+                $filenamearray[] = str_replace(PATH_WEB, '', $filename);
+            }
+        }
+    }
+    return $filenamearray;
+}
+
+/**
+ * @param string $dir
+ * @param string $skip
+ * @param $zip
+ */
+	function file_zip($dir = '', $skip = '', $zip)
     {
     	global $_M;
-    	$web_path = PATH_WEB.'/';
-
+        if (!$skip) {
+            $skip = PATH_WEB.'/';
+            ##$web_path = PATH_WEB.'/';
+        }
     	$handler = opendir($dir);
-
 	    while(($filename = readdir($handler))!==false){
-
 	        if($filename != "." && $filename != ".."){
 	            if(is_dir($dir."/".$filename)){
-	            	$zip->addEmptyDir($dir.'/'.$filename,str_replace($web_path, '', $dir.'/'.$filename));
-
-	                file_zip($dir."/".$filename, $zip);
+	            	$zip->addEmptyDir($dir.'/'.$filename,str_replace($skip, '', $dir.'/'.$filename));
+	                file_zip($dir."/".$filename, $skip, $zip);
 	            }else{
-
-	                $row = $zip->addFile($dir."/".$filename,str_replace($web_path, '', $dir.'/'.$filename));
-
+	                $row = $zip->addFile($dir."/".$filename,str_replace($skip, '', $dir.'/'.$filename));
 	            }
 	        }
 	    }
 	    @closedir($dir);
     }
+
+/**
+ * @param string $fzip      //zip文件路径
+ * @param string $tagdir    //解压路径
+ * @return bool
+ */
+function fzip_open($fzip = '',$tagdir = '')
+{
+    if (file_exists($fzip) && is_dir($tagdir)) {
+        $zip = new ZipArchive;
+        if ($zip->open($fzip) === TRUE) {//中文文件名要使用ANSI编码的文件格式
+            $zip->extractTo($tagdir);//提取全部文件
+            $zip->close();
+            return true;
+        }
+    }
+    return false;
+}
 
 
 

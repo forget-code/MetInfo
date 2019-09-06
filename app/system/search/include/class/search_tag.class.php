@@ -5,8 +5,11 @@ class search_tag extends tag {
     public $config = array(
         'list'     => array( 'block' => 1, 'level' => 4 ),
         'form'     => array( 'block' => 1, 'level' => 4 ),
+        'global'     => array( 'block' => 1, 'level' => 4 ),
+        'column'     => array( 'block' => 1, 'level' => 4 ),
+        'advanced'     => array( 'block' => 1, 'level' => 4 ),
         'option'     => array( 'block' => 1, 'level' => 4 ),
-    );  
+    );
 
     public function _form( $attr, $content ) {
         global $_M;
@@ -15,16 +18,51 @@ class search_tag extends tag {
             : "'{$attr['cid']}'" ) : 0;
 
         $php = <<<str
-<?php
-    \$cid=$cid;
-    \$result = load::sys_class('label', 'new')->get('search')->get_search_form_html(\$cid);
-    echo \$result;
-?>
+        <?php
+            \$cid=$cid;
+            \$result = load::sys_class('label', 'new')->get('search')->get_search_form_html(\$cid);
+            echo \$result;
+        ?>
 str;
         return $php;
-
     }
 
+
+    public function _global( $attr, $content ) {
+        global $_M;
+        $type = isset( $attr['type'] ) ? $attr['type'] : "";
+        $php = <<<str
+        <?php
+            \$result = load::sys_class('label', 'new')->get('search')->get_search_global(\$data);
+            echo \$result;
+        ?>
+str;
+        return $php;
+    }
+
+    public function _column( $attr, $content ) {
+        global $_M;
+        $type = isset( $attr['type'] ) ? $attr['type'] : "";
+        $php = <<<str
+        <?php
+            \$result = load::sys_class('label', 'new')->get('search')->get_search_column(\$data);
+            echo \$result;
+        ?>
+str;
+        return $php;
+    }
+
+    public function _advanced( $attr, $content ) {
+        global $_M;
+        $type = isset( $attr['type'] ) ? $attr['type'] : "";
+        $php = <<<str
+        <?php
+            \$result = load::sys_class('label', 'new')->get('search')->get_search_advanced(\$data);
+            echo \$result;
+        ?>
+str;
+        return $php;
+    }
 
     public function _list( $attr, $content ) {
         global $_M;
@@ -56,5 +94,5 @@ str;
 str;
         return $php;
     }
-  
+
 }

@@ -46,14 +46,20 @@ if(top.location!=location) $("html",parent.document).find('.turnovertext').remov
 function metAlert(text,delay,bg_ok,type){
     delay=typeof delay != 'undefined'?delay:2000;
     bg_ok=bg_ok?'bgshow':'';
-    $('.metalert-wrapper,.metalert-text').remove();
+    if(bg_ok){
+        $('.metalert-text').remove();
+    }else{
+        $('.metalert-wrapper').remove();
+    }
     if(text!=' '){
         text=text||METLANG.jsok;
         text='<div>'+text+'</div>';
         if(parseInt(type)==0) text+='<button type="button" class="close white" data-dismiss="alert"><span aria-hidden="true">×</span></button>';
-        var html='<div class="metalert-text p-x-40 p-y-10 bg-purple-600 white font-size-16">'+text+'</div>';
-        if(bg_ok) html='<div class="metalert-wrapper w-full alert '+bg_ok+'">'+html+'</div>';
-        $('body').append(html);
+        if(!$('.metalert-text').length){
+            var html='<div class="metalert-text p-x-40 p-y-10 bg-purple-600 white font-size-16">'+text+'</div>';
+            if(bg_ok) html='<div class="metalert-wrapper w-full alert '+bg_ok+'">'+html+'</div>';
+            $('body').append(html);
+        }
         var $met_alert=$('.metalert-text'),
             $obj=bg_ok?$('.metalert-wrapper'):$met_alert;
         $met_alert.html(text);
@@ -88,6 +94,8 @@ M['a']=getQueryString('a');
 if(!M['url']) M['url']=[];
 M['url']['system']=M['weburl']+'app/system/';
 M['url']['static']=M['url']['system']+'include/static/';
+M['url']['static_new']=M['weburl']+'app/static/';
+M['url']['static_modules']=M['url']['static_new']+'modules/';
 M['url']['static_vendor']=M['url']['static']+'vendor/';
 M['url']['static2']=M['url']['system']+'include/static2/';
 M['url']['static2_vendor']=M['url']['static2']+'vendor/';
@@ -99,7 +107,7 @@ M['url']['uiv2_plugin']=M['url']['uiv2']+'static/plugin/';
 M['url']['app']=M['weburl']+'app/app/';
 M['url']['pub']=M['weburl']+'app/system/include/public/';
 M['url']['epl']=M['url']['pub']+'js/examples/';
-M['url']['editor']=M['url']['app']+(typeof MET !='undefined'?MET['met_editor']:'')+'/';
+M['url']['admin']=M['url']['basepath'];
 // 插件路径
 M['plugin']=[];
 M['plugin']['formvalidation']=[
@@ -118,9 +126,11 @@ M['plugin']['datatables']=[
     M['url']['static2_vendor']+'datatables-responsive/dataTables.responsive.min.js',
     M['url']['uiv2_js']+'datatable.js'
 ];
-M['plugin']['ueditor']=[
-    M['weburl']+'app/app/ueditor/ueditor.config.js',
-    M['weburl']+'app/app/ueditor/ueditor.all.min.js'
+M['plugin']['ueditor']=M['url']['static_modules']+'ueditor/ueditor.all.min.js';
+M['plugin']['editormd']=[
+    M['url']['app']+'editorswith/editormd/markdown/dist/to-markdown.js',
+    M['url']['app']+'editorswith/editormd/editormd.js',
+    M['url']['app']+'editorswith/editormd/css/editormd.min.css'
 ];
 M['plugin']['minicolors']=[
     M['url']['epl']+'color/jquery.minicolors.css',
@@ -187,24 +197,42 @@ $.fn.extend({
     // 编辑器
     metEditor:function(){
         if(!$(this).length) return;
-        if(M['met_editor']=='ueditor'){// 百度编辑器
-            if(typeof UE_VAL =='undefined' || typeof textarea_editor_val =='undefined') window.UE_VAL=window.textarea_editor_val=[];
-            var $self=$(this);
-            $.include(M['plugin']['ueditor'],function(){
-                $self.each(function(index, val) {
-                    var index1=$(this).index('textarea[data-plugin="editor"]');
-                    if(!$(this).attr('id')) $(this).attr({id:'textarea-editor'+index1});
-                    UE_VAL[index1]=textarea_editor_val[index1]=UE.getEditor(val.id,{
+        var $self=$(this);
+        if(typeof UE_VAL =='undefined' || typeof textarea_editor_val =='undefined') window.UE_VAL=window.textarea_editor_val=[];
+        $.include(M['plugin'][M.met_editor],function(){
+            $self.each(function(index, val) {
+                var editor_y=parseInt($(this).data('editor-y'))||400;
+                    index1=$(this).index('textarea[data-plugin="editor"]');
+                    $(this).attr({id:'met-editor'+index1});
+                if(M.met_editor=='ueditor'){// 百度编辑器
+                    if(UE_VAL[index1]) UE_VAL[index1].destroy();
+                    UE_VAL[index1]=UE.getEditor(val.id,{
                         scaleEnabled:true, // 是否可以拉伸长高,默认false(当开启时，自动长高失效)
                         autoFloatEnabled:false, // 是否保持toolbar的位置不动，默认true
-                        initialFrameWidth : $(this).data('editor-x')||'100%',
-                        initialFrameHeight : $(this).data('editor-y')||400,
+                        initialFrameWidth : parseInt($(this).data('editor-x'))||'100%',
+                        initialFrameHeight : editor_y,
                     });
-                });
+                }else if(M.met_editor=='editormd'){// markdown编辑器
+                    $(this).text(toMarkdown($(this).text(), {gfm: true}));
+                    var id='editormd-'+new Date().getTime();
+                    if($('#'+id).length) id+=1;
+                    $(this).wrap('<div id="'+id+'" class="mb-0"></div>');
+                    UE_VAL[index1] = editormd(id, {
+                        name:$(this).attr('name'),
+                        height: editor_y,
+                        htmlDecode: true,
+                        saveHTMLToTextarea: true,
+                        path: M.url.app+'editorswith/editormd/lib/',
+                        // emoji:1,
+                        imageUpload: true,
+                        // imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"]
+                    });
+                    UE_VAL[index1].setContent=function(value){
+                        UE_VAL[index1].setValue(toMarkdown(value, {gfm: true}));
+                    };
+                }
             });
-        }else if(M['met_editor']=='editormd'){// markdown编辑器
-
-        }
+        });
     },
     // 日期时间选择器
     metDatetimepicker:function(){
@@ -279,7 +307,7 @@ $.fn.extend({
                 $obj1.val(path).trigger('change'); // input值更新
                 // 显示上传成功文字
                 $obj2.find('.input-group .file-caption-name').html('<span class="glyphicon glyphicon-file kv-caption-icon"></span>'+path).attr({title:path});
-                $obj2.removeClass('has-danger').addClass('has-success');
+                $obj2.parents('.form-group').removeClass('has-danger').addClass('has-success');
                 if(!$obj2.parents('.form-group').find('small.form-control-label').length) $obj2.parents('.form-group').append('<small class="form-control-label"></small>');
                 var tips=M['langtxt'].jsx17||M['langtxt'].fileOK;
                 $obj2.parents('.form-group').find('small.form-control-label').text(tips);
@@ -998,4 +1026,17 @@ function getCookie(name) {
             return decodeURIComponent(temp);
         }
     }
+}
+// 判断后台登录状态
+function checkLogin(){
+    var status=true;
+    if(!getCookie('met_auth')){
+        metAlertifyLoadFun(function(){
+            alertify.okBtn(METLANG.confirm).cancelBtn(METLANG.cancel).confirm('<span class="text-danger">'+(METLANG.jsx32||'登录超时，请重新登录！')+'</span>', function (ev) {
+                location.href=M.url.admin;
+            });
+        });
+        status=false;
+    }
+    return status;
 }

@@ -98,7 +98,7 @@ class  banner_database{
 			}
 		}
 		$sql = trim($sql, ',');
-		$query="UPDATE {$_M['table']['flash']} SET {$sql} WHERE id='{$list[id]}'";
+		$query="UPDATE {$_M['table']['flash']} SET {$sql} WHERE id='{$list['id']}'";
 		return DB::query($query);
 	}
 
@@ -107,7 +107,6 @@ class  banner_database{
 		$query = "DELETE FROM {$_M['table']['flash']} WHERE id = '{$id}'";
 		return DB::query($query);
 	}
-
 
 	public function update_flash_by_cid($cid,$lang)
 	{
@@ -120,6 +119,10 @@ class  banner_database{
 			DB::query($query);
 		}
 	}
+
+    public function table_para(){
+        return 'id|module|img_title|img_path|img_link|flash_path|flash_back|no_order|width|height|wap_ok|img_title_color|img_des|img_des_color|img_text_position|img_title_fontsize|img_des_fontsize|height_m|height_t|mobile_img_path|img_title_mobile|img_title_color_mobile|img_text_position_mobile|img_title_fontsize_mobile|img_des_mobile|img_des_color_mobile|img_des_fontsize_mobile|lang|target';
+    }
 
 }
 

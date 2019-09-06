@@ -5,72 +5,77 @@
 defined('IN_MET') or exit('No permission');
 
 /**
- * ¶¥²¿µ¼º½Ñ¡Ïî¿¨
- * @param array $navlist  µ¼º½Ñ¡Ïî¿¨Êý×é
- * @param int   $nav_show ÊÇ·ñÏÔÊ¾µ¼º½Ñ¡Ïî¿¨
+ *é¡¶éƒ¨å¯¼èˆªé€‰é¡¹å¡
+ * @param array $navlist  å¯¼èˆªé€‰é¡¹å¡æ•°ç»„
+ * @param int   $nav_show æ˜¯å¦æ˜¾ç¤ºå¯¼èˆªé€‰é¡¹å¡
  */
-class nav {
-	
-	public static $navlist;
-	public static $nav_show = 1;
-	
-	/**
-	 * ÉèÖÃµ¼º½Ñ¡Ïî¿¨
-	 * @param int    $num   µ¼º½Ñ¡Ïî¿¨±àºÅ
-	 * @param string $title µ¼º½Ñ¡Ïî¿¨Ãû³Æ
-	 * @param string $url   µ¼º½Ñ¡Ïî¿¨µØÖ·
-	 */
-	public static function set_nav($num, $title, $url, $target='_self') {
-		self::$navlist[$num]['title'] = $title;
-		self::$navlist[$num]['url'] = $url;
-		self::$navlist[$num]['classnow'] = "";
-		self::$navlist[$num]['target'] = $target;
-	}
-	
-	/**
-	 * ÉèÖÃµ±Ç°Ò³ÃæµÄµ¼º½À¸
-	 * @param int    $num   Ñ¡¶¨µ¼º½Ñ¡Ïî¿¨µÄ±àºÅ
-	 * @param string $title ÔÚ¶¥²¿µ¼º½ºó×·¼ÓµÄµ¼º½£¬Ò»°ãÊÇÕâ¸öÑ¡¶¨µ¼º½Ñ¡Ïî¿¨µÄÄÚ²¿Ò³Ãæ£¬´ËÊ±µ¼º½Ñ¡Ïî¿¨»áÓ°²Ø¡£
-	 */
-	public static function select_nav($num, $title = '') {
-		global $_M;
-		foreach (self::$navlist as $key => $val) {
-			self::$navlist[$key]['classnow'] = '';
-			self::$navlist[$key]['nav'] = '';
-		}
-		self::$navlist[$num]['classnow'] = "class='now'";
-		if($title){
-			self::$navlist[$num]['nav'] = ' > <a href="'.self::$navlist[$num]['url'].'">'.self::$navlist[$num]['title'].'</a> > '.$title."<div class='return'><a href='javascript:history.go(-1);'><i class='fa fa-chevron-left'></i>{$_M['word']['js55']}</a></div>";
-			self::$nav_show = 0;
-		}else{
-			self::$navlist[$num]['nav'] = ' > '.self::$navlist[$num]['title'];
-			self::$nav_show = 1;
-		}
-	}
-	
-	/**
-	 * »ñÈ¡µ¼º½Ñ¡Ïî¿¨Êý×é
-	 * @return string µ¼º½Ñ¡Ïî¿¨Êý×é
-	 */
-	public static function get_nav() {
-		if(self::$nav_show == 1){
-			return self::$navlist;
-		}else{
-			return false;
-		}
-	}
-	
-	/**
-	 * »ñÈ¡¶¥²¿µ¼º½html´úÂë
-	 * @return string ¶¥²¿µ¼º½html´úÂë
-	 */
-	public static function get_select_navhtml() {
-		foreach (self::$navlist as $key => $val) {
-			if ($val['nav']) {
-				return $val['nav'];
-			}
-		}
-	}
+class nav
+{
+
+    public static $navlist;
+    public static $nav_show = 1;
+
+    /**
+     * è®¾ç½®å¯¼èˆªé€‰é¡¹å¡
+     * @param int $num å¯¼èˆªé€‰é¡¹å¡ç¼–å·
+     * @param string $title å¯¼èˆªé€‰é¡¹å¡åç§°
+     * @param string $url å¯¼èˆªé€‰é¡¹å¡åœ°å€
+     */
+    public static function set_nav($num, $title, $url, $target = '_self')
+    {
+        self::$navlist[$num]['title'] = $title;
+        self::$navlist[$num]['url'] = $url;
+        self::$navlist[$num]['classnow'] = "";
+        self::$navlist[$num]['target'] = $target;
+    }
+
+    /**
+     * è®¾ç½®å½“å‰é¡µé¢çš„å¯¼èˆªæ 
+     * @param int $num é€‰å®šå¯¼èˆªé€‰é¡¹å¡çš„ç¼–å·
+     * @param string $title åœ¨é¡¶éƒ¨å¯¼èˆªåŽè¿½åŠ çš„å¯¼èˆªï¼Œä¸€èˆ¬æ˜¯è¿™ä¸ªé€‰å®šå¯¼èˆªé€‰é¡¹å¡çš„å†…éƒ¨é¡µé¢ï¼Œæ­¤æ—¶å¯¼èˆªé€‰é¡¹å¡ä¼šå½±è—ã€‚
+     */
+    public static function select_nav($num, $title = '')
+    {
+        global $_M;
+        foreach (self::$navlist as $key => $val) {
+            self::$navlist[$key]['classnow'] = '';
+            self::$navlist[$key]['nav'] = '';
+        }
+        self::$navlist[$num]['classnow'] = "class='now'";
+        if ($title) {
+            self::$navlist[$num]['nav'] = ' > <a href="' . self::$navlist[$num]['url'] . '">' . self::$navlist[$num]['title'] . '</a> > ' . $title . "<div class='return'><a href='javascript:history.go(-1);'><i class='fa fa-chevron-left'></i>{$_M['word']['js55']}</a></div>";
+            self::$nav_show = 0;
+        } else {
+            self::$navlist[$num]['nav'] = ' > ' . self::$navlist[$num]['title'];
+            self::$nav_show = 1;
+        }
+    }
+
+    /**
+     * èŽ·å–å¯¼èˆªé€‰é¡¹å¡æ•°ç»„
+     * @return string å¯¼èˆªé€‰é¡¹å¡æ•°ç»„
+     */
+    public static function get_nav()
+    {
+        if (self::$nav_show == 1) {
+            return self::$navlist;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * èŽ·å–é¡¶éƒ¨å¯¼èˆªhtmlä»£ç 
+     * @return string é¡¶éƒ¨å¯¼èˆªhtmlä»£ç 
+     */
+    public static function get_select_navhtml()
+    {
+        foreach (self::$navlist as $key => $val) {
+            if ($val['nav']) {
+                return $val['nav'];
+            }
+        }
+    }
 }
 
 # This program is an open source system, commercial use, please consciously to purchase commercial license.

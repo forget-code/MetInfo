@@ -1,49 +1,83 @@
-<!--<?php
-# MetInfo Enterprise Content Management System 
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
-
+<?php
+# MetInfo Enterprise Content Management System
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 defined('IN_MET') or exit('No permission');
-
-require $this->template('ui/head');
-echo <<<EOT
--->
-<form method="POST" class="ui-from" name="myform" action="{$_M[url][own_form]}a=doanchortablesave" target="_self">
-<div class="v52fmbx">
-	<dl style="border-bottom:0;">
-		<dd class="ftype_description">
-		{$_M['word']['applies_paper']}
-		</dd>
-	</dl>
-	<table class="display dataTable ui-table new_effects" data-table-ajaxurl="{$_M[url][own_form]}a=doanchor_json"  data-table-pageLength="20">
-		<thead>
-			<tr>
-				<th width="20" data-table-columnclass="met-center"><input name="id" data-table-chckall="id" type="checkbox" value="" /></th>
-				<th>{$_M['word']['labelOld']}</th>
-				<th>{$_M['word']['labelNew']}</th>
-				<th>Title</th>
-				<th>{$_M['word']['labelUrl']}</th>
-				<th width="50" data-table-columnclass="met-center">{$_M['word']['labelnum']}</th>
-				<th width='50'>{$_M['word']['operate']}</th>
-			</tr>
-		</thead>
-		<tbody>
-		</tbody>
-		<tfoot>
-			<tr>
-				<th><input name="id" type="checkbox" data-table-chckall="id" value=""></th>
-				<th colspan="6" class="formsubmit">
-					<input type="submit" name="save" value="{$_M['word']['Submit']}" class="submit" />
-					<input type="submit" name="del" value="{$_M['word']['delete']}" class="submit" data-confirm='{$_M[word][js7]}' />
-					<a href="javascript:;" class="ui-addlist" data-table-addlist="{$_M[url][own_form]}a=doanchor_add"><i class="fa fa-plus-circle"></i>{$_M['word']['anchor_textadd']}</a>
-				</th>
-			</tr>
-		</tfoot>
-	</table>
-</div>
-</form>
-<!--
-EOT;
-require $this->template('ui/foot');
-# This program is an open source system, commercial use, please consciously to purchase commercial license.
-# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
 ?>
+<div class="met-anchor-list">
+  <div class="alert dark alert-primary radius0">{$word.applies_paper}</div>
+  <button type="button" class="btn btn-success btn-add" >
+    {$word.anchor_textadd}
+  </button>
+
+    <table class="dataTable table table-bordered table-hover table-striped w-100 mt-2"
+    id="anchor-table" data-ajaxurl="{$url.own_name}c=anchor&a=doGetAnchor"
+    data-table-pagelength="20" data-plugin="checkAll"
+    data-datatable_order="#anchor-table">
+      <thead>
+        <tr>
+          <th width="50" data-table-columnclass="text-center">
+            <div class="custom-control custom-checkbox">
+              <input class="checkall-all custom-control-input" type="checkbox" />
+              <label class="custom-control-label"></label>
+            </div>
+          </th>
+          <th width="200" data-table-columnclass="text-center">{$word.labelOld}</th>
+          <th width="200" data-table-columnclass="text-center">{$word.labelNew}</th>
+          <th width="200" data-table-columnclass="text-center">Title</th>
+          <th width="200" data-table-columnclass="text-center">{$word.labelUrl}</th>
+          <th width="100" data-table-columnclass="text-center">{$word.labelnum}</th>
+          <th width="200">{$word.operate}</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+      <tfoot>
+        <tr class="tr-add">
+          <textarea table-addlist-data hidden>
+							<tr class="class-add">
+								<td class="text-center">
+									<div class="custom-control custom-checkbox">
+										<input class="checkall-item custom-control-input" type="checkbox" checked="checked" name="id">
+										<label class="custom-control-label"></label>
+									</div>
+								</td>
+								<td class="text-center">
+										<input type="text" name="oldwords"   class="form-control text-center" required>
+								</td>
+								<td class="text-center">
+										<input type="text" name="newwords"   class="form-control text-center">
+								</td>
+								<td class="text-center">
+										<input type="text" name="newtitle"  class="form-control text-center">
+								</td>
+								<td class="text-center">
+										<input type="text" name="url" value=""  class="form-control text-center">
+								</td>
+								<td class="text-center">
+										<input type="text" name="num" value="999"  class="form-control text-center">
+								</td>
+								<td >
+
+								</td>
+
+							</tr>
+						</textarea
+          >
+          <th>
+            <div class="custom-control custom-checkbox">
+              <input class="checkall-all custom-control-input" type="checkbox" />
+              <label class="custom-control-label"></label>
+            </div>
+          </th>
+          <th colspan="6" data-no_column_defs class="btn_group">
+            <button type="submit" class="btn btn-primary mr-2 btn-save">
+              {$word.Submit}
+            </button>
+            <button type="button" class="btn btn-delete-all">
+              {$word.delete}
+            </button>
+          </th>
+        </tr>
+      </tfoot>
+    </table>
+
+</div>

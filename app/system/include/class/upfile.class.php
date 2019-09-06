@@ -19,7 +19,7 @@ load::sys_class('common');
 class upfile extends common{
     public    $savepath;
     public    $format;
-    public    $maxsize = 1073741824;
+    public    $maxsize;
     public    $is_rename;
 
     protected $ext;
@@ -27,39 +27,46 @@ class upfile extends common{
     public function __construct() {
         parent::__construct();
         global $_M;
-        if(file_exists(PATH_WEB."cache/lang_json_admin_{$_M['lang']}.php")){
-            $langf = file_get_contents(PATH_WEB . "cache/lang_json_admin_{$_M['lang']}.php");
-            $lang = json_decode($langf,JSON_UNESCAPED_UNICODE);
+        $query = "SELECT * FROM {$_M['table']['language']} WHERE lang='{$_M['lang']}' AND site=1 ";
+        $result = DB::get_all($query);
+        foreach ($result as $val) {
+            $_M['word'][$val['name']] = trim($val['value']);
         }
-        foreach ($lang as $key => $val) {
-            $_M[word][$key] = $val;
-        }
+
+        $this->maxsize = 1073741824;
         $this->set_upfile();
 	}
 
 	/**
 	 * 设置字段
 	 */
-	public function set($name, $value) {
-		if ($value === NULL) {
-			return false;
-		}
-		switch ($name) {
-			case 'savepath':
-				$this->savepath = path_standard(PATH_WEB.'upload/'.$value);
+	public function set($name, $value)
+    {
+        global $_M;
+        if ($value === NULL) {
+            return false;
+        }
+        switch ($name) {
+            case 'savepath':
+                $this->savepath = path_standard(PATH_WEB . 'upload/' . $value);
 
-			break;
-			case 'format':
-				$this->format = $value;
-			break;
-			case 'maxsize':
-				$this->maxsize = min($value*1048576, $this->maxsize);
-			break;
-			case 'is_rename':
-				$this->is_rename = $value;
-			break;
-		}
-	}
+                break;
+            case 'format':
+                $this->format = $value;
+                break;
+            case 'maxsize':
+                if (is_numeric($value)) {
+                    $maxsize = min($value * 1048576, $this->maxsize);
+                    $this->maxsize = min($_M['config']['met_file_maxsize'] * 1048576, $maxsize);
+                } else {
+                    $this->maxsize = min($_M['config']['met_file_maxsize'] * 1048576, $this->maxsize);
+                }
+                break;
+            case 'is_rename':
+                $this->is_rename = $value;
+                break;
+        }
+    }
 
 	/**
 	 * 设置上传文件模式
@@ -68,7 +75,7 @@ class upfile extends common{
 		global $_M;
 		$this->set('savepath', 'file');
 		$this->set('format', $_M['config']['met_file_format']);
-		$this->set('maxsize', min($_M['config']['met_file_maxsize']*1048576, 1073741824));
+		$this->set('maxsize', $_M['config']['met_file_maxsize']*1048576);
 		$this->set('is_rename', $_M['config']['met_img_rename']);
 	}
 
@@ -79,9 +86,21 @@ class upfile extends common{
 		global $_M;
 		$this->set('savepath', date('Ym'));
 		$this->set('format', $_M['config']['met_file_format']);
-		$this->set('maxsize', min($_M['config']['met_file_maxsize']*1048576, 1073741824));
+		$this->set('maxsize', $_M['config']['met_file_maxsize']*1048576);
 		$this->set('is_rename', $_M['config']['met_img_rename']);
 	}
+
+    /**
+     * 设置上传备份文件模式
+     */
+    public function set_upsql() {
+        global $_M;
+        $this->set('savepath', 'sql');
+        $this->set('format', "sql|zip");
+        $this->set('maxsize', 5*1048576);
+        $this->set('is_rename', 0);
+        $this->set('is_overwrite', 1);
+    }
 
 	/**
 	 * 上传方法
@@ -89,20 +108,12 @@ class upfile extends common{
 	 */
 	public function upload($form = '') {
 		global $_M;
-		if($form){
-			foreach($_FILES as $key => $val){
-				if($form == $key){
-					$filear = $_FILES[$key];
-				}
-			}
+		foreach($_FILES as $key => $val){
+            if(isset($form)?$form == $key:1) {
+                $filear = $_FILES[$key];
+            }
 		}
-		if(!$filear){
-			foreach($_FILES as $key => $val){
-				$filear = $_FILES[$key];
-				break;
-			}
-		}
-
+   
 		//是否能正常上传
 		if(!is_array($filear))$filear['error'] = 4;
 		if($filear['error'] != 0 ){
@@ -118,6 +129,7 @@ class upfile extends common{
 			$error_info[]= $errors[$filear['error']] ? $errors[$filear['error']] : $errors[0];
 			return $this->error($errors[$filear['error']]);
 		}
+
         //空间超容 有些虚拟主机不支持此函数
         if(function_exists('disk_free_space')){
         	if(disk_free_space(__DIR__) != FALSE && disk_free_space(__DIR__) != 'NULL'){
@@ -127,16 +139,24 @@ class upfile extends common{
         	}
 
 		}
+
+		
         //目录不可写
         if (!is_writable(PATH_WEB."upload")) {
-            return $this->error("directory ['".PATH_WEB."upload'] can not weite");
+            return $this->error("directory ['".PATH_WEB."upload'] can not write");
         }
         //文件大小是否正确{}
-		if ($filear["size"] > $this->maxsize || $filear["size"] > $_M['config']['met_file_maxsize']*1048576) {
+		if ($filear["size"] > $this->maxsize) {
 			return $this->error("{$_M['word']['upfileFile']}".$filear["name"]." {$_M['word']['upfileMax']} {$_M['word']['upfileTip1']}");
 		}
 		//文件后缀是否为合法后缀
-		$this->getext($filear["name"]); //获取允许的后缀
+        $this->getext($filear["name"]); //获取允许的后缀
+
+        if(!getimagesize($filear['tmp_name']) && in_array($this->ext,array('png','jpg','gif','bmp','jpeg'))){
+			// 假图片不允许上传
+			return $this->error("{$_M['word']['upfileTip3']}");
+		}
+
 		if (strtolower($this->ext)=='php'||strtolower($this->ext)=='aspx'||strtolower($this->ext)=='asp'||strtolower($this->ext)=='jsp'||strtolower($this->ext)=='js'||strtolower($this->ext)=='asa') {
 			return $this->error($this->ext." {$_M['word']['upfileTip3']}");
 		}
@@ -182,10 +202,9 @@ class upfile extends common{
 			$upfileok=1;
 		}
 		if (!$upfileok) {
-			if (file_put_contents($this->savepath.'test.txt','metinfo')) {
-				$_M['word']['upfileOver4']=$_M['word']['upfileOver5'];
-			}
-			unlink($this->savepath.'test.txt');
+			if(is_writable($this->savepath)){
+                $_M['word']['upfileOver4'] = $_M['word']['upfileOver5'];
+            }
 			$errors = array(0 => $_M['word']['upfileOver4'], 1 =>$_M['word']['upfileOver'], 2 => $_M['word']['upfileOver1'], 3 => $_M['word']['upfileOver2'], 4 => $_M['word']['upfileOver3'], 6=> $_M['word']['upfileOver5'], 7=> $_M['word']['upfileOver5']);
 			$filear['error']=$filear['error']?$filear['error']:0;
 			return $this->error($errors[$filear['error']]);
@@ -196,7 +215,7 @@ class upfile extends common{
 		}
 		load::plugin('doqiniu_upload',0,array('savename'=>str_replace(PATH_WEB, '', $this->savepath).$this->savename,'localfile'=>$file_name));
 		$back = '../'.str_replace(PATH_WEB, '', $this->savepath).$this->savename;
-		return $this->sucess($back);
+		return $this->sucess($back,$filear["size"]);
 	}
 
 	//批量上传文件
@@ -256,10 +275,10 @@ class upfile extends common{
         }
         //目录不可写
         if (!is_writable(PATH_WEB."upload")) {
-            return $this->error("directory ['".PATH_WEB."upload'] can not weite");
+            return $this->error("directory ['".PATH_WEB."upload'] can not write");
         }
         //文件大小是否正确{}
-        if ($filear["size"] > $this->maxsize || $filear["size"] > $_M['config']['met_file_maxsize']*1048576) {
+        if ($filear["size"] > $this->maxsize) {
             return $this->error("{$_M['word']['upfileFile']}".$filear["name"]." {$_M['word']['upfileMax']} {$_M['word']['upfileTip1']}");
         }
         //文件后缀是否为合法后缀
@@ -309,10 +328,6 @@ class upfile extends common{
             $upfileok=1;
         }
         if (!$upfileok) {
-            if (file_put_contents($this->savepath.'test.txt','metinfo')) {
-                $_M['word']['upfileOver4']=$_M['word']['upfileOver5'];
-            }
-            unlink($this->savepath.'test.txt');
             $errors = array(0 => $_M['word']['upfileOver4'], 1 =>$_M['word']['upfileOver'], 2 => $_M['word']['upfileOver1'], 3 => $_M['word']['upfileOver2'], 4 => $_M['word']['upfileOver3'], 6=> $_M['word']['upfileOver5'], 7=> $_M['word']['upfileOver5']);
             $filear['error']=$filear['error']?$filear['error']:0;
             return $this->error($errors[$filear['error']]);
@@ -323,7 +338,7 @@ class upfile extends common{
         }
         load::plugin('doqiniu_upload',0,array('savename'=>str_replace(PATH_WEB, '', $this->savepath).$this->savename,'localfile'=>$file_name));
         $back = '../'.str_replace(PATH_WEB, '', $this->savepath).$this->savename;
-        return $this->sucess($back);
+        return $this->sucess($back,$filear['size']);
 
     }
 
@@ -337,7 +352,7 @@ class upfile extends common{
 		if ($filename == "") {
 			return ;
 		}
-		$ext = explode(".", $filename);
+        $ext = explode(".", $filename);
         $ext = $ext[count($ext) - 1];
         if (preg_match("/^[0-9a-zA-Z]+$/u", $ext)) {
             return $this->ext = $ext;
@@ -395,20 +410,22 @@ class upfile extends common{
 	 * @return array 返回错误信息
 	 */
 	protected function error($error){
-		$back['error'] = 1;
-		$back['errorcode'] = $error;
-		return $back;
+        $redata = array();
+        $redata['error'] = $error;
+        $redata['msg'] = $error;
+		return $redata;
 	}
 
-	/**
-	 * 上传成功调用方法
-	 * @param string $path 路径
-	 * @return array 返回成功路径(相对于当前路径)
-	 */
-	protected function sucess($path){
-		$back['error']=0;
-		$back['path']=$path;
-		return $back;
+    /**
+     * @param string $path
+     * @param string $size
+     * @return mixed
+     */
+	protected function sucess($path = '',$size = ''){
+        $redata = array();
+        $redata['size']=$size;
+        $redata['path']=$path;
+		return $redata;
 	}
 }
 

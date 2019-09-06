@@ -1,1597 +1,404 @@
 <?php
 defined('IN_MET') or exit('No permission');
 load::mod_class('base/admin/base_admin');
-class index extends base_admin {
-  public function __construct() {
-    global $_M;
-    parent::__construct();
-    $_M['url']['help_tutorials_helpid']='99';
-  }
 
-  public function doindex() {
-    global $_M;
-    $class1 = $_M[form][class1];
-    $class2 = $_M[form][class2];
-    $module = $_M[form][module];
-    $anyid = $_M[form][anyid];
-    $met_class[$class1] = load::mod_class('column/column_database', 'new')->get_column_by_id($class1, $this->lang);
-    $met_class[$class2] = load::mod_class('column/column_database', 'new')->get_column_by_id($class2, $this->lang);
-    $met_class[$class3] = load::mod_class('column/column_database', 'new')->get_column_by_id($class3, $this->lang);
-    $array = column_sorting(2);
-    $lang = $this->lang;
-    $metinfo_admin_name = get_met_cookie('metinfo_admin_name');
-    $metinfo_admin_pop = get_met_cookie('metinfo_admin_pop');
-    $met_class1 = $array['class1'];
-    $met_class2 = $array['class2'];
-    $met_class3 = $array['class3'];
-    $met_skin = 'met';
-    $query = "select * from {$_M[table][column]} where lang='$lang' order by no_order";
-    $result = DB::query($query);
-    $power = background_privilege();
-    while ($list = DB::fetch_array($result)) {
-      if (!is_have_power('c'. $list['id']) && ($list[classtype] == 1 || $list[releclass] != 0)) {
-        continue;
-      }
-      if ($list[classtype] == 1) {
-        $met_class1[$list['id']] = $list;
-      }
-      if (($list[classtype] == 1 or ($list[releclass] > 0 and ($list[module] <= 7 || $list[module] == 8))) and $list[if_in] == 0) {
-        $met_classindex[$list[module]][] = $list;
-      }
 
-    }
-    $css_url = "templates/" . $met_skin . "/css";
-    $img_url = "templates/" . $met_skin . "/images";
-    $new_news_module_url = "index.php?n=news&c=news_admin&a=doindex";
-    $new_product_module_url = "index.php?n=product&c=product_admin&a=doindex";
-    if ($topara) {
-      $toparas = explode('|', $topara);
-      Header("Location: ../column/parameter/parameter.php?module={$topara[0]}&anyid=29&lang={$lang}&class1={$toparas[1]}");
-      met_setcookie("topara", '', time() - 3600);
+class index extends base_admin
+{
+    public function __construct()
+    {
+        global $_M;
+        parent::__construct();
     }
 
+    /**
+     * 内容管理
+     */
+    public function doGetContentList()
+    {
+        global $_M;
+        $redata = array();
+        $class = $_M['form']['class'];
+        $content_type = $_M['form']['content_type'];
 
-    $admin = admin_information();
-    $met_content_type = $admin['content_type'];
-    if ($met_content_type == 0) {
-      $query = "select content_type from {$_M[table][admin_table]} where admin_id='{$metinfo_admin_name}'";
-      $met_content_type1 = DB::get_one($query);
-      $met_content_type = $met_content_type1['content_type'];
+        $list = self::_getColnumList($class, $content_type);
+        $redata['status'] = 1;
+        $redata['data']['list'] = $list;
+
+        $this->ajaxReturn($redata);
     }
-    $query = "update {$_M[table][admin_table]} set content_type='1' where admin_id='{$metinfo_admin_name}'";
-    DB::query($query);
 
-    if ($met_content_type != 2) {
-      if ($action == 'search' && $program) {
-        foreach ($met_class1 as $key => $val) {
-          if ($val['module'] < 9 && !$val['if_in']) {
-            $contentlistes[] = $val;
-          }
+    private function _getColnumList($class_id = '', $content_type = 0)
+    {
+        global $_M;
+        $admin = admin_information();
+        $metinfo_admin_name = $admin['admin_id'];
+        $met_content_type = $admin['content_type'];
+        if ($met_content_type == 0) {
+            $query = "select content_type from {$_M['table']['admin_table']} where admin_id='{$metinfo_admin_name}'";
+            $met_content_type1 = DB::get_one($query);
+            $met_content_type = $met_content_type1['content_type'];
         }
-        foreach ($contentlistes as $key => $val) {
-          switch ($val['module']) {
-          case '1':
-            $val['url'] = 'about/content.php?id=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-            $val['conturl'] = '?n=about&c=about_admin&a=doeditor&id=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-            $val['set'] = "<div>
-                  <p class='lt'><a href='{$val[url]}'>{$_M[word][addinfo]}</a></p><span>-</span><p class='rt'><a href='{$val[conturl]}'>{$_M[word][manager]}</a></p>
-                  </div>";
-            break;
-          case '2':
-            $val['url'] = 'article/content.php?class1=' . $val[id] . '&action=add&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-            $val['conturl'] = $new_news_module_url . '&class1=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-            $val['set'] = "<div>
-                  <p class='lt'><a href='{$val[url]}'>{$_M[word][addinfo]}</a></p><span>-</span><p class='rt'><a href='{$val[conturl]}'>{$_M[word][manager]}</a></p>
-                  </div>";
-            break;
-          case '3':
-            $val['url'] = 'product/content.php?class1=' . $val[id] . '&action=add&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-            $val['conturl'] = $new_product_module_url . '&class1=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-            $val['set'] = "<div>
-                  <p class='lt'><a href='{$val[url]}'>{$_M[word][addinfo]}</a></p><span>-</span><p class='rt'><a href='{$val[conturl]}'>{$_M[word][manager]}</a></p>
-                  </div>";
-            break;
-          case '4':
-            $val['url'] = 'download/content.php?class1=' . $val[id] . '&action=add&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-            $val['conturl'] = 'download/index.php?class1=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-            $val['set'] = "<div>
-                  <p class='lt'><a href='{$val[url]}'>{$_M[word][addinfo]}</a></p><span>-</span>
-                  <p class='rt'><a href='{$val[conturl]}'>{$_M[word][manager]}</a></p>
-                  </div>";
-            break;
-          case '5':
-            $val['url'] = 'img/content.php?class1=' . $val[id] . '&action=add&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-            $val['conturl'] = 'img/index.php?class1=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-            $val['set'] = "<div>
-                  <p class='lt'><a href='{$val[url]}'>{$_M[word][addinfo]}</a></p><span>-</span>
-                  <p class='rt'><a href='{$val[conturl]}'>{$_M[word][manager]}</a></p>
-                  </div>";
-            break;
-          case '6':
-            $val['url'] = 'job/content.php?class1=' . $val[id] . '&action=add&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-            $val['conturl'] = 'job/index.php?class1=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-            $val['incurl'] = 'job/inc.php?lang=' . $lang . '&anyid=' . $_M[form][anyid];
-            $val['cvurl'] = 'job/cv.php?class1=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-            $val['set'] = "<div>
-                  <p class='lt'><a href='{$val[conturl]}'>{$_M[word][manager]}</a></p><span>-</span>
-                  <p class='rt'><a href='{$val[cvurl]}'>{$_M[word][cveditorTitle]}</a></p>
-                  </div>
-                  ";
-            break;
-          case '7':
-            $val['incurl'] = 'message/inc.php?class1=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-            $val['conturl'] = 'message/index.php?class1=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-            $val['set'] = "<div><a href='{$val[conturl]}'>{$_M[word][eidtmsg]}</a></div>";
-            break;
-          case '8':
-            $val['url'] = 'feedback/inc.php?class1=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-            $val['conturl'] = 'feedback/index.php?class1=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-            $val['set'] = "<div><a href='{$val[conturl]}'>{$_M[word][eidtfed]}</a></div>";
-            break;
-          }
-          $contentlist[] = $val;
+        $query = "update {$_M['table']['admin_table']} set content_type='1' where admin_id='{$metinfo_admin_name}'";
+        DB::query($query);
 
+        if (!$content_type) {
+            $content_type = $met_content_type;
         }
 
-        foreach ($met_class2 as $key => $val) {
-          foreach ($met_class2[$key] as $key1 => $val1) {
-            if ($val['module'] < 9 && !$val['if_in']) {
-              $contentlistes1[] = $val1;
+        if ($content_type == 2) {
+            //自定义管理员不可查看
+            if ($admin['admin_group'] == 0) {
+                return;
             }
-          }
-        }
-
-        foreach ($contentlistes1 as $key => $val) {
-          switch ($val['module']) {
-          case '1':
-            $val['url'] = 'about/content.php?id=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-            $val['conturl'] = '?n=about&c=about_admin&a=doeditor&id=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-            $val['set'] = "<div>
-                  <p class='lt'><a href='{$val[url]}'>{$_M[word][addinfo]}</a></p><span>-</span><p class='rt'><a href='{$val[conturl]}'>{$_M[word][manager]}</a></p>
-                  </div>";
-            break;
-          case '2':
-            if (!$val[releclass]) {
-              $val['url'] = 'article/content.php?class1=' . $val[bigclass] . '&class2=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['conturl'] = $new_news_module_url . '&class1=' . $val[bigclass] . '&class2=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['set'] = "<div>
-                  <p class='lt'><a href='{$val[url]}'>{$_M[word][addinfo]}</a></p><span>-</span><p class='rt'><a href='{$val[conturl]}'>{$_M[word][manager]}</a></p>
-                  </div>";
-            } else {
-              $val['url'] = 'article/content.php?class1=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['conturl'] = $new_news_module_url . '&class1=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['set'] = "<div>
-                  <p class='lt'><a href='{$val[url]}'>{$_M[word][addinfo]}</a></p><span>-</span><p class='rt'><a href='{$val[conturl]}'>{$_M[word][manager]}</a></p>
-                  </div>";
-            }
-
-            break;
-          case '3':
-            if (!$val[releclass]) {
-              $val['url'] = 'product/content.php?class1=' . $val[bigclass] . '&class2=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['conturl'] = $new_product_module_url . '&class1=' . $val[bigclass] . '&class2=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['set'] = "<div>
-                    <p class='lt'><a href='{$val[url]}'>{$_M[word][addinfo]}</a></p><span>-</span><p class='rt'><a href='{$val[conturl]}'>{$_M[word][manager]}</a></p>
-                    </div>";
-            } else {
-              $val['url'] = 'product/content.php?class1=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['conturl'] = $new_product_module_url . '&class1=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['set'] = "<div>
-                    <p class='lt'><a href='{$val[url]}'>{$_M[word][addinfo]}</a></p><span>-</span><p class='rt'><a href='{$val[conturl]}'>{$_M[word][manager]}</a></p>
-                    </div>";
-            }
-            break;
-          case '4':
-            if (!$val[releclass]) {
-              $val['url'] = 'download/content.php?class1=' . $val[bigclass] . '&class2=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['conturl'] = 'download/index.php?class1=' . $val[bigclass] . '&class2=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['set'] = "<div>
-                    <p class='lt'><a href='{$val[url]}'>{$_M[word][addinfo]}</a></p><span>-</span>
-                    <p class='rt'><a href='{$val[conturl]}'>{$_M[word][manager]}</a></p>
-                    </div>";
-            } else {
-              $val['url'] = 'download/content.php?class1=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['conturl'] = 'download/index.php?class1=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['set'] = "<div>
-                    <p class='lt'><a href='{$val[url]}'>{$_M[word][addinfo]}</a></p><span>-</span>
-                    <p class='rt'><a href='{$val[conturl]}'>{$_M[word][manager]}</a></p>
-                    </div>";
-            }
-            break;
-          case '5':
-            if (!$val[releclass]) {
-              $val['url'] = 'img/content.php?class1=' . $val[bigclass] . '&class2=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['conturl'] = 'img/index.php?class1=' . $val[bigclass] . '&class2=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['set'] = "<div>
-                    <p class='lt'><a href='{$val[url]}'>{$_M[word][addinfo]}</a></p><span>-</span>
-                    <p class='rt'><a href='{$val[conturl]}'>{$_M[word][manager]}</a></p>
-                    </div>";
-            } else {
-              $val['url'] = 'img/content.php?class1=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['conturl'] = 'index.php?n=img&c=img_admin&a=doindex&class1=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['set'] = "<div>
-                    <p class='lt'><a href='{$val[url]}'>{$_M[word][addinfo]}</a></p><span>-</span>
-                    <p class='rt'><a href='{$val[conturl]}'>{$_M[word][manager]}</a></p>
-                    </div>";
-            }
-            break;
-          case '6':
-            $val['url'] = 'job/content.php?class1=' . $val[id] . '&action=add&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-            $val['conturl'] = 'index.php?n=job&c=job_admin&a=doindex&class1=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-            $val['incurl'] = 'job/inc.php?lang=' . $lang . '&anyid=' . $_M[form][anyid];
-            $val['cvurl'] = 'job/cv.php?class1=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-            $val['set'] = "<div>
-                  <p class='lt'><a href='{$val[conturl]}'>{$_M[word][manager]}</a></p><span>-</span>
-                  <p class='rt'><a href='{$val[cvurl]}'>{$_M[word][cveditorTitle]}</a></p>
-                  </div>
-                  ";
-            break;
-          case '7':
-            if (!$val[releclass]) {
-              $val['incurl'] = 'message/inc.php?class1=' . $val[bigclass] . '&class2=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['conturl'] = 'index.php?n=message&c=message_admin&a=doindex&class1=' . $val[bigclass] . '&class2=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['set'] = "<div><a href='{$val[conturl]}'>{$_M[word][eidtmsg]}</a></div>";
-            } else {
-              $val['incurl'] = 'message/inc.php?class1=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['conturl'] = 'index.php?n=message&c=message_admin&a=doindex&class1=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['set'] = "<div><a href='{$val[conturl]}'>{$_M[word][eidtmsg]}</a></div>";
-            }
-            break;
-          case '8':
-            if (!$val[releclass]) {
-              $val['url'] = 'feedback/inc.php?class1=' . $val[bigclass] . '&class2=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['conturl'] = 'index.php?n=feedback&c=feedback_admin&a=doindex&class1=' . $val[bigclass] . '&class2=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['set'] = "<div><a href='{$val[conturl]}'>{$_M[word][eidtfed]}</a></div>";
-            } else {
-              $val['url'] = 'feedback/inc.php?class1=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['conturl'] = 'index.php?n=feedback&c=feedback_admin&a=doindex&class1=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['set'] = "<div><a href='{$val[conturl]}'>{$_M[word][eidtfed]}</a></div>";
-            }
-            break;
-          }
-          $contentlist[] = $val;
-        }
-
-        foreach ($met_class3 as $key => $val) {
-          foreach ($met_class3[$key] as $key1 => $val1) {
-            if ($val['module'] < 9 && !$val['if_in']) {
-              $contentlistes2[] = $val1;
-            }
-          }
-        }
-        foreach ($contentlistes2 as $key => $val) {
-          switch ($val['module']) {
-          case '1':
-            $val['url'] = 'about/content.php?id=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-            $val['conturl'] = '?n=about&c=about_admin&a=doeditor&id=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-            $val['set'] = "<div>
-                  <p class='lt'><a href='{$val[url]}'>{$_M[word][addinfo]}</a></p><span>-</span><p class='rt'><a href='{$val[conturl]}'>{$_M[word][manager]}</a></p>
-                  </div>";
-            break;
-          case '2':
-            $column_types2 = array();
-            foreach ($met_class2 as $key1 => $val1) {
-              foreach ($val1 as $key11 => $val11) {
-                if ($val11[id] == $val[bigclass]) {
-                  $column_types2 = $met_class1[$key1];
-                }
-              }
-            }
-            if ($column_types2['module'] != $val['module']) {
-              $val['url'] = 'article/content.php?class1=' . $val[bigclass] . '&class2=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['conturl'] = $new_news_module_url . '&class1=' . $val[bigclass] . '&class2=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['set'] = "<div>
-                  <p class='lt'><a href='{$val[url]}'>{$_M[word][addinfo]}</a></p><span>-</span><p class='rt'><a href='{$val[conturl]}'>{$_M[word][manager]}</a></p>
-                  </div>";
-            } else {
-              $val['url'] = 'article/content.php?class1=' . $column_types2[id] . '&class2=' . $val[bigclass] . '&class3=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['conturl'] = $new_news_module_url . '&class1=' . $column_types2[id] . '&class2=' . $val[bigclass] . '&class3=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['set'] = "<div>
-                  <p class='lt'><a href='{$val[url]}'>{$_M[word][addinfo]}</a></p><span>-</span><p class='rt'><a href='{$val[conturl]}'>{$_M[word][manager]}</a></p>
-                  </div>";
-            }
-
-            break;
-          case '3':
-            $column_types2 = array();
-            foreach ($met_class2 as $key1 => $val1) {
-              foreach ($val1 as $key11 => $val11) {
-                if ($val11[id] == $val[bigclass]) {
-                  $column_types2 = $met_class1[$key1];
-                }
-              }
-            }
-            if ($column_types2['module'] != $val['module']) {
-              $val['url'] = 'product/content.php?class1=' . $val[bigclass] . '&class2=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['conturl'] = $new_product_module_url . '&class1=' . $val[bigclass] . '&class2=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['set'] = "<div>
-                    <p class='lt'><a href='{$val[url]}'>{$_M[word][addinfo]}</a></p><span>-</span><p class='rt'><a href='{$val[conturl]}'>{$_M[word][manager]}</a></p>
-                    </div>";
-            } else {
-              $val['url'] = 'product/content.php?class1=' . $column_types2[id] . '&class2=' . $val[bigclass] . '&class3=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['conturl'] = $new_product_module_url . '&class1=' . $column_types2[id] . '&class2=' . $val[bigclass] . '&class3=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['set'] = "<div>
-                    <p class='lt'><a href='{$val[url]}'>{$_M[word][addinfo]}</a></p><span>-</span><p class='rt'><a href='{$val[conturl]}'>{$_M[word][manager]}</a></p>
-                    </div>";
-            }
-            break;
-          case '4':
-            $column_types2 = array();
-            foreach ($met_class2 as $key1 => $val1) {
-              foreach ($val1 as $key11 => $val11) {
-                if ($val11[id] == $val[bigclass]) {
-                  $column_types2 = $met_class1[$key1];
-                }
-              }
-            }
-            if ($column_types2['module'] != $val['module']) {
-              $val['url'] = 'download/content.php?class1=' . $val[bigclass] . '&class2=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['conturl'] = 'index.php?n=download&c=download_admin&a=doindex&class1=' . $val[bigclass] . '&class2=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['set'] = "<div>
-                    <p class='lt'><a href='{$val[url]}'>{$_M[word][addinfo]}</a></p><span>-</span>
-                    <p class='rt'><a href='{$val[conturl]}'>{$_M[word][manager]}</a></p>
-                    </div>";
-            } else {
-              $val['url'] = 'download/content.php?class1=' . $column_types2[id] . '&class2=' . $val[bigclass] . '&class3=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['conturl'] = 'index.php?n=download&c=download_admin&a=doindex&class1=' . $column_types2[id] . '&class2=' . $val[bigclass] . '&class3=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['set'] = "<div>
-                    <p class='lt'><a href='{$val[url]}'>{$_M[word][addinfo]}</a></p><span>-</span>
-                    <p class='rt'><a href='{$val[conturl]}'>{$_M[word][manager]}</a></p>
-                    </div>";
-            }
-            break;
-          case '5':
-            $column_types2 = array();
-            foreach ($met_class2 as $key1 => $val1) {
-              foreach ($val1 as $key11 => $val11) {
-                if ($val11[id] == $val[bigclass]) {
-                  $column_types2 = $met_class1[$key1];
-                }
-              }
-            }
-            if ($column_types2['module'] != $val['module']) {
-              $val['url'] = 'img/content.php?class1=' . $val[bigclass] . '&class2=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['conturl'] = 'index.php?n=img&c=img_admin&a=doindex&class1=' . $val[bigclass] . '&class2=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['set'] = "<div>
-                    <p class='lt'><a href='{$val[url]}'>{$_M[word][addinfo]}</a></p><span>-</span>
-                    <p class='rt'><a href='{$val[conturl]}'>{$_M[word][manager]}</a></p>
-                    </div>";
-            } else {
-              $val['url'] = 'img/content.php?class1=' . $column_types2[id] . '&class2=' . $val[bigclass] . '&class3=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['conturl'] = 'index.php?n=img&c=img_admin&a=doindex&class1=' . $column_types2[id] . '&class2=' . $val[bigclass] . '&class3=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['set'] = "<div>
-                    <p class='lt'><a href='{$val[url]}'>{$_M[word][addinfo]}</a></p><span>-</span>
-                    <p class='rt'><a href='{$val[conturl]}'>{$_M[word][manager]}</a></p>
-                    </div>";
-            }
-            break;
-          case '6':
-            $val['url'] = 'job/content.php?class1=' . $val[id] . '&action=add&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-            $val['conturl'] = 'index.php?n=job&c=job_admin&a=doindex&class1=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-            $val['incurl'] = 'job/inc.php?lang=' . $lang . '&anyid=' . $_M[form][anyid];
-            $val['cvurl'] = 'job/cv.php?class1=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-            $val['set'] = "<div>
-                  <p class='lt'><a href='{$val[conturl]}'>{$_M[word][manager]}</a></p><span>-</span>
-                  <p class='rt'><a href='{$val[cvurl]}'>{$_M[word][cveditorTitle]}</a></p>
-                  </div>
-                  ";
-            break;
-          case '7':
-            $column_types2 = array();
-            foreach ($met_class2 as $key1 => $val1) {
-              foreach ($val1 as $key11 => $val11) {
-                if ($val11[id] == $val[bigclass]) {
-                  $column_types2 = $met_class1[$key1];
-                }
-              }
-            }
-            if ($column_types2['module'] != $val['module']) {
-              $val['incurl'] = 'message/inc.php?class1=' . $val[bigclass] . '&class2=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['conturl'] = 'index.php?n=message&c=message_admin&a=doindex&class1=' . $val[bigclass] . '&class2=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['set'] = "<div><a href='{$val[conturl]}'>{$_M[word][eidtmsg]}</a></div>";
-            } else {
-              $val['incurl'] = 'message/inc.php?class1=' . $column_types2[id] . '&class2=' . $val[bigclass] . '&class3=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['conturl'] = 'index.php?n=message&c=message_admin&a=doindex&class1=' . $column_types2[id] . '&class2=' . $val[bigclass] . '&class3=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['set'] = "<div><a href='{$val[conturl]}'>{$_M[word][eidtmsg]}</a></div>";
-            }
-            break;
-          case '8':
-            $column_types1 = array();
-            $column_types2 = array();
-            foreach ($met_class2 as $key1 => $val1) {
-              foreach ($val1 as $key11 => $val11) {
-                if ($val11[id] == $val[bigclass]) {
-                  $column_types2 = $met_class1[$key1];
-                }
-              }
-            }
-            if ($column_types2['module'] != $val['module']) {
-              $val['url'] = 'feedback/inc.php?class1=' . $val[bigclass] . '&class2=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['conturl'] = 'index.php?n=feedback&c=feedback_admin&a=doindex&class1=' . $val[bigclass] . '&class2=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['set'] = "<div><a href='{$val[conturl]}'>{$_M[word][eidtfed]}</a></div>";
-            } else {
-              $val['url'] = 'feedback/inc.php?class1=' . $column_types2[id] . '&class2=' . $val[bigclass] . '&class3=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['conturl'] = 'index.php?n=feedback&c=feedback_admin&a=doindex&class1=' . $column_types2[id] . '&class2=' . $val[bigclass] . '&class3=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['set'] = "<div><a href='{$val[conturl]}'>{$_M[word][eidtfed]}</a></div>";
-            }
-            break;
-          }
-          $contentlist[] = $val;
-        }
-
-      } else {
-        if ($class1) {
-
-          if ($met_class[$class1]['isshow']) {
-            $contentlistes[] = $met_class[$class1];
-          }
-
-          foreach ($met_class2[$class1] as $key => $val2) {
-            $contentlistes[] = $val2;
-          }
-
-          //dump($contentlistes);
-          foreach ($contentlistes as $key => $val) {
-            if ($val['module'] == 1) {
-              $c2 = count($met_class3[$val['id']]);
-              $classname = $c2 ? "class='lt'" : '';
-
-              $classname1 = $c2 && $val['isshow'] ? "class='rt'" : '';
-              $val['url'] = '?n=about&c=about_admin&a=doeditor&id=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['conturl'] = $c2 ? "?n=manage&c=index&a=doindex&anyid={$anyid}&lang={$lang}&module=1&class2={$val['id']}" : $val[url];
-              $val['set'] = "<div>";
-              if ($val['isshow']) {
-                $val['set'] .= "<p {$classname}><a href='{$val[url]}'>{$_M[word][eidtcont]}</a></p>";
-              }
-
-              if ($val['isshow'] && $c2) {
-                $val['set'] .= '<span>-</span>';
-              }
-
-              if ($c2) {
-                $val['set'] .= "<p {$classname1}><a href='?anyid={$anyid}&lang={$lang}&module=1&class2={$val['id']}'>{$_M[word][subpart]}</a></p>";
-              }
-
-              $val['set'] .= '</div>';
-              $contentlist[] = $val;
-            }
-
-            $column_types5 = array();
-            $column_types5 = DB::get_one("select * from {$_M[table][column]} where id='$val[bigclass]'");
-            if ($val['module'] == 2) {
-              // dump($val);
-              // dump($column_types5);
-
-            }
-            if (($val['module'] == 2 && $val['bigclass'] == '0') || ($val['module'] == 2 && $column_types5[module] != 2 && $val['bigclass'] != '0')) {
-              $val['url'] = 'article/content.php?class1=' . $val[id] . '&action=add&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-
-              $val['conturl'] = $new_news_module_url . '&class1=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['set'] = "<div>
-            <p class='lt'><a href='{$val[url]}'>{$_M[word][addinfo]}</a></p><span>-</span><p class='rt'><a href='{$val[conturl]}'>{$_M[word][manager]}</a></p>
-            </div>";
-              $contentlist[] = $val;
-            } else {
-              if ($val['module'] == 2 && $val['bigclass'] != '0') {
-
-                if ($val['classtype'] == 2) {
-                  $val['url'] = 'article/content.php?class1=' . $val[id] . '&action=add&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-                  $val['conturl'] = $new_news_module_url . '&class1=' . $val['bigclass'] . '&class2=' . $val['id'] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-                  $val['set'] = "<div>
-                <p class='lt'><a href='{$val[url]}'>{$_M[word][addinfo]}</a></p><span>-</span><p class='rt'><a href='{$val[conturl]}'>{$_M[word][manager]}</a></p>
-                </div>";
-                  $contentlist[] = $val;
-                }
-              }
-            }
-            $column_types5 = array();
-            $column_types5 = DB::get_one("select * from {$_M[table][column]} where id='$val[bigclass]'");
-            if (($val['module'] == 3 && $val['bigclass'] == '0') || ($val['module'] == 3 && $column_types5[module] != 3 && $val['bigclass'] != '0')) {
-              $val['url'] = 'product/content.php?class1=' . $val[id] . '&action=add&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['conturl'] = $new_product_module_url . '&class1=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['set'] = "<div>
-              <p class='lt'><a href='{$val[url]}'>{$_M[word][addinfo]}</a></p><span>-</span><p class='rt'><a href='{$val[conturl]}'>{$_M[word][manager]}</a></p>
-              </div>";
-              $contentlist[] = $val;
-            } else {
-              if ($val['module'] == 3 && $val['bigclass'] != '0') {
-                if ($val['classtype'] == 2) {
-                  $val['url'] = 'product/content.php?class1=' . $val[id] . '&action=add&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-                  $val['conturl'] = $new_product_module_url . '&class1=' . $val['bigclass'] . '&class2=' . $val['id'] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-                  $val['set'] = "<div>
-                  <p class='lt'><a href='{$val[url]}'>{$_M[word][addinfo]}</a></p><span>-</span><p class='rt'><a href='{$val[conturl]}'>{$_M[word][manager]}</a></p>
-                  </div>";
-                  $contentlist[] = $val;
-                }
-              }
-            }
-            $column_types5 = array();
-            $column_types5 = DB::get_one("select * from {$_M[table][column]} where id='$val[bigclass]'");
-            if (($val['module'] == 4 && $val['bigclass'] == '0') || ($val['module'] == 4 && $column_types5[module] != 4 && $val['bigclass'] != '0')) {
-              $val['url'] = 'download/content.php?class1=' . $val[id] . '&action=add&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['conturl'] = 'index.php?n=download&c=download_admin&a=doindex&class1=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['set'] = "<div>
-              <p class='lt'><a href='{$val[url]}'>{$_M[word][addinfo]}</a></p><span>-</span>
-              <p class='rt'><a href='{$val[conturl]}'>{$_M[word][manager]}</a></p>
-                  </div>";
-              $contentlist[] = $val;
-            }
-            $column_types5 = array();
-            $column_types5 = DB::get_one("select * from {$_M[table][column]} where id='$val[bigclass]'");
-            if (($val['module'] == 5 && $val['bigclass'] == '0') || ($val['module'] == 5 && $val['module'] == $class1 && $val['bigclass'] == '0') || ($val['module'] == 5 && $column_types5[module] != 5 && $val['bigclass'] != '0') || ($val['module'] == 5 && $val['bigclass'] != '0' && $column_types5[foldername] != $val[foldername])) {
-              $val['url'] = 'img/content.php?class1=' . $val[id] . '&action=add&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['conturl'] = 'index.php?n=img&c=img_admin&a=doindex&class1=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['set'] = "<div>
-              <p class='lt'><a href='{$val[url]}'>{$_M[word][addinfo]}</a></p><span>-</span>
-              <p class='rt'><a href='{$val[conturl]}'>{$_M[word][manager]}</a></p>
-              </div>";
-              $contentlist[] = $val;
-            }
-            if ($val['module'] == 6) {
-              $val['url'] = 'job/content.php?class1=' . $val[id] . '&action=add&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['conturl'] = 'index.php?n=job&c=job_admin&a=doindex&class1=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['incurl'] = 'job/inc.php?lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['cvurl'] = 'job/cv.php?class1=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['set'] = "<div>
-              <p class='lt'><a href='{$val[conturl]}'>{$_M[word][manager]}</a></p><span>-</span>
-              <p class='rt'><a href='{$val[cvurl]}'>{$_M[word][cveditorTitle]}</a></p>
-              </div>
-              ";
-              $sum1 = '';
-              $sums = array();
-              $sums = DB::get_one("select count(*) from {$_M[table][cv]} where lang='$lang' and readok='0'");
-              $sum1 = $sums['count(*)'];
-              if ($sum1 > 99) {
-                $sum1 = "99+";
-              }
-              $val['sum'] = $sum1;
-              $contentlist[] = $val;
-            }
-            if ($val['module'] == 7) {
-              $val['incurl'] = 'message/inc.php?class1=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['conturl'] = 'index.php?n=message&c=message_admin&a=doindex&class1=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['set'] = "<div><a href='{$val[conturl]}'>{$_M[word][eidtmsg]}</a></div>";
-              $sum1 = '';
-              $sums = array();
-              $sums = DB::get_one("select count(*) from {$_M[table][message]} where lang='$lang' and readok='0'");
-              $sum1 = $sums['count(*)'];
-              if ($sum1 > 99) {
-                $sum1 = "99+";
-              }
-              $val['sum'] = $sum1;
-              $contentlist[] = $val;
-            }
-            if ($val['module'] == 8) {
-              $val['url'] = 'feedback/inc.php?class1=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['conturl'] = 'index.php?n=feedback&c=feedback_admin&a=doindex&class1=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $val['set'] = "<div><a href='{$val[conturl]}'>{$_M[word][eidtfed]}</a></div>";
-              $sum1 = '';
-              $sums = array();
-              $sums = DB::get_one("select count(*) from {$_M[table][feedback]} where class1='$val[id]' and lang='$lang' and readok='0'");
-              $sum1 = $sums['count(*)'];
-              if ($sum1 > 99) {
-                $sum1 = "99+";
-              }
-              $val['sum'] = $sum1;
-              $contentlist[] = $val;
-            }
-            //exit;
-          }
-        } elseif ($class2) {
-          $class1 = $met_class[$class2]['bigclass'];
-          if ($met_class[$class2]['isshow']) {
-            $contentlistes[] = $met_class[$class2];
-          }
-
-          foreach ($met_class3[$class2] as $key => $val2) {
-            if (!$val2['releclass'] && !$val2['if_in']) {
-              $contentlistes[] = $val2;
-            }
-
-          }
-          foreach ($contentlistes as $key => $val) {
-            $val['conturl'] = '?n=about&c=about_admin&a=doeditor&id=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-            $val['set'] = "<div><p><a href='{$val[conturl]}'>{$_M[word][eidtcont]}</a></p></div>";
-            $contentlist[] = $val;
-          }
+            //内容管理员-按模块获取能容列表
+            $contents = self::getContentBymodule();
+            return $contents;
         } else {
-          foreach ($met_class1 as $key => $val) {
-            if ($val['module'] < 9 && !$val['if_in']) {
-              $contentlistes[] = $val;
-            }
-          }
-          foreach ($contentlistes as $key => $val) {
-            $purview = 'admin_popc' . $val['id'];
-            $purview = $$purview;
-            $metcmspr = is_have_power('c'. $val['id']) ? 1 : 0;
-            $metcmspr1 = $val[classtype] == 1 || $val[releclass] ? 1 : 0;
-            $metcmspr = $metcmspr1 ? $metcmspr : 1;
-            if ($metcmspr) {
-              $sum = '';
-              $sum1 = '';
-              $sum2 = '';
-              $sum3 = '';
-              $sum_count = array();
-              switch ($val['module']) {
-              case '1':
-                $c2 = count($met_class2[$val['id']]);
-
-                if ($val['releclass']) {
-                  $c2 = count($met_class3[$val['id']]);
-                }
-
-                $classname = $c2 ? "class='lt'" : '';
-                $classname1 = $c2 && $val['isshow'] ? "class='rt'" : '';
-                $val['url'] = '?n=about&c=about_admin&a=doindex&id=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-                $val['set'] = "<div>";
-                if ($val['isshow']) {
-                  $val['set'] .= "<p {$classname}><a href='{$val[url]}'>{$_M[word][eidtcont]}</a></p>";
-                }
-
-                $classx = 'class1';
-                if ($val['releclass'] && $c2) {
-                  $classx = 'class2';
-                }
-
-                $val['conturl'] = $c2 ? "?n=manage&c=index&a=doindex&lang={$lang}&module=1&{$classx}={$val['id']}&anyid={$anyid}" : $val[url];
-                if ($val['isshow'] && $c2) {
-                  $val['set'] .= '<span>-</span>';
-                }
-
-                if ($c2) {
-                  $val['set'] .= "<p {$classname1}><a href='{$val[conturl]}'>{$_M[word][subpart]}</a></p>";
-                }
-
-                $val['set'] .= '</div>';
-                $sum_count = DB::get_all("select * from {$_M[table][column]} where lang='$lang' and bigclass='$val[id]'");
-                foreach ($sum_count as $key => $val5) {
-                  if ($val5[module] == 6) {
-                    $sums = array();
-                    $sums = DB::get_one("select count(*) from {$_M[table][cv]} where lang='$lang' and readok='0'");
-                    $sum1 = $sums['count(*)'];
-                  }
-                  if ($val5[module] == 7) {
-                    $sums = array();
-                    $sums = DB::get_one("select count(*) from {$_M[table][message]} where lang='$lang' and readok='0'");
-                    $sum2 = $sums['count(*)'];
-                  }
-                  if ($val5[module] == 8) {
-                    $sums = array();
-                    $sums = DB::get_one("select count(*) from {$_M[table][feedback]} where class1='$val5[id]' and lang='$lang' and readok='0'");
-                    $sum3 = $sums['count(*)'];
-                  }
-                  $sum = $sum1 + $sum2 + $sum3;
-                  if ($sum > 99) {
-                    $sum = "99+";
-                  }
-                }
-
-                $val['sum'] = $sum;
-
-                break;
-              case '2':
-                $contentlistes1 = array();
-                $content_type = 0;
-                foreach ($met_class2[$val[id]] as $key => $val2) {
-                  $contentlistes1[] = $val2;
-                }
-                foreach ($contentlistes1 as $key => $val3) {
-                  if ($val3[module] != 2 && $val3[module] != 0 && $val3[module] < 100) {
-                    $content_type++;
-                  }
-                }
-                if ($content_type > 0) {
-                  $c2 = count($met_class2[$val['id']]);
-                  if ($val['releclass']) {
-                    $c2 = count($met_class3[$val['id']]);
-                  }
-
-                  $classname = $c2 ? "class='lt'" : '';
-                  $classname1 = $c2 && $val['isshow'] ? "class='rt'" : '';
-                  $val['url'] = '?n=about&c=about_admin&a=doeditor&id=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-                  $val['set'] = "<div>";
-                  if ($val['isshow']) {
-                    $val['set'] .= "<p {$classname}><a href='{$val[url]}'>{$_M[word][eidtcont]}</a></p>";
-                  }
-
-                  $classx = 'class1';
-                  if ($val['releclass'] && $c2) {
-                    $classx = 'class2';
-                  }
-
-                  $val['conturl'] = $c2 ? "?n=manage&c=index&a=doindex&anyid={$anyid}&lang={$lang}&{$classx}={$val['id']}" : $val[url];
-                  if ($val['isshow'] && $c2) {
-                    $val['set'] .= '<span>-</span>';
-                  }
-
-                  if ($c2) {
-                    $val['set'] .= "<p {$classname1}><a href='{$val[conturl]}'>{$_M[word][subpart]}</a></p>";
-                  }
-
-                  $val['set'] .= '</div>';
-                } else {
-                  $val['url'] = 'article/content.php?class1=' . $val[id] . '&action=add&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-                  $val['conturl'] = $new_news_module_url . '&class1=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-                  $val['set'] = "<div>
-                  <p class='lt'><a href='{$val[url]}'>{$_M[word][addinfo]}</a></p><span>-</span><p class='rt'><a href='{$val[conturl]}'>{$_M[word][manager]}</a></p>
-                  </div>";
-                }
-                $sum_count = DB::get_all("select * from {$_M[table][column]} where lang='$lang' and bigclass='$val[id]'");
-                foreach ($sum_count1 as $key => $val5) {
-                  if ($val5[module] == 6) {
-                    $sums = array();
-                    $sums = DB::get_one("select count(*) from {$_M[table][cv]} where lang='$lang' and readok='0'");
-                    $sum1 = $sums['count(*)'];
-                  }
-                  if ($val5[module] == 7) {
-                    $sums = array();
-                    $sums = DB::get_one("select count(*) from  {$_M[table][message]} where lang='$lang' and readok='0'");
-                    $sum2 = $sums['count(*)'];
-                  }
-                  if ($val5[module] == 8) {
-                    $sums = array();
-                    $sums = DB::get_one("select count(*) from {$_M[table][feedback]} where class1='$val5[id]' and lang='$lang' and readok='0'");
-                    $sum3 = $sums['count(*)'];
-                  }
-                  $sum = $sum1 + $sum2 + $sum3;
-                  if ($sum > 99) {
-                    $sum = "99+";
-                  }
-                }
-
-                $val['sum'] = $sum;
-                break;
-              case '3':
-                $contentlistes1 = array();
-                $content_type = 0;
-                foreach ($met_class2[$val[id]] as $key => $val2) {
-                  $contentlistes1[] = $val2;
-                }
-                foreach ($contentlistes1 as $key => $val3) {
-                  if ($val3[module] != 3 && $val3[module] != 0 && $val3[module] < 100) {
-                    $content_type++;
-                  }
-                }
-                if ($content_type > 0) {
-                  $c2 = count($met_class2[$val['id']]);
-                  if ($val['releclass']) {
-                    $c2 = count($met_class3[$val['id']]);
-                  }
-
-                  $classname = $c2 ? "class='lt'" : '';
-                  $classname1 = $c2 && $val['isshow'] ? "class='rt'" : '';
-                  $val['url'] = '?n=about&c=about_admin&a=doeditor&id=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-                  $val['set'] = "<div>";
-                  if ($val['isshow']) {
-                    $val['set'] .= "<p {$classname}><a href='{$val[url]}'>{$_M[word][eidtcont]}</a></p>";
-                  }
-
-                  $classx = 'class1';
-                  if ($val['releclass'] && $c2) {
-                    $classx = 'class2';
-                  }
-
-                  $val['conturl'] = $c2 ? "?n=manage&c=index&a=doindex&anyid={$anyid}&lang={$lang}&{$classx}={$val['id']}" : $val[url];
-                  if ($val['isshow'] && $c2) {
-                    $val['set'] .= '<span>-</span>';
-                  }
-
-                  if ($c2) {
-                    $val['set'] .= "<p {$classname1}><a href='{$val[conturl]}'>{$_M[word][subpart]}</a></p>";
-                  }
-
-                  $val['set'] .= '</div>';
-                } else {
-                  $val['url'] = 'product/content.php?class1=' . $val[id] . '&action=add&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-                  $val['conturl'] = $new_product_module_url . '&class1=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-                  $val['set'] = "<div>
-                  <p class='lt'><a href='{$val[url]}'>{$_M[word][addinfo]}</a></p><span>-</span><p class='rt'><a href='{$val[conturl]}'>{$_M[word][manager]}</a></p>
-                  </div>";
-                }
-                $sum_count = DB::get_all("select * from {$_M[table][column]} where lang='$lang' and bigclass='$val[id]'");
-                foreach ($sum_count as $key => $val5) {
-                  if ($val5[module] == 6) {
-                    $sums = array();
-                    $sums = DB::get_one("select count(*) from {$_M[table][cv]} where lang='$lang' and readok='0'");
-                    $sum1 = $sums['count(*)'];
-                  }
-                  if ($val5[module] == 7) {
-                    $sums = array();
-                    $sums = DB::get_one("select count(*) from {$_M[table][message]} where lang='$lang' and readok='0'");
-                    $sum2 = $sums['count(*)'];
-                  }
-                  if ($val5[module] == 8) {
-                    $sums = array();
-                    $sums = DB::get_one("select count(*) from {$_M[table][feedback]} where class1='$val5[id]' and lang='$lang' and readok='0'");
-                    $sum3 = $sums['count(*)'];
-                  }
-                  $sum = $sum1 + $sum2 + $sum3;
-                  if ($sum > 99) {
-                    $sum = "99+";
-                  }
-                }
-
-                $val['sum'] = $sum;
-                break;
-              case '4':
-                $contentlistes1 = array();
-                $content_type = 0;
-                foreach ($met_class2[$val[id]] as $key => $val2) {
-                  $contentlistes1[] = $val2;
-                }
-                foreach ($contentlistes1 as $key => $val3) {
-                  if ($val3[module] != 4 && $val3[module] != 0 && $val3[module] < 100) {
-                    $content_type++;
-                  }
-                }
-                if ($content_type > 0) {
-                  $c2 = count($met_class2[$val['id']]);
-
-                  if ($val['releclass']) {
-                    $c2 = count($met_class3[$val['id']]);
-                  }
-
-                  $classname = $c2 ? "class='lt'" : '';
-                  $classname1 = $c2 && $val['isshow'] ? "class='rt'" : '';
-                  $val['url'] = '?n=about&c=about_admin&a=doeditor&id=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-                  $val['set'] = "<div>";
-                  if ($val['isshow']) {
-                    $val['set'] .= "<p {$classname}><a href='{$val[url]}'>{$_M[word][eidtcont]}</a></p>";
-                  }
-
-                  $classx = 'class1';
-                  if ($val['releclass'] && $c2) {
-                    $classx = 'class2';
-                  }
-
-                  $val['conturl'] = $c2 ? "?n=manage&c=index&a=doindex&anyid={$anyid}&lang={$lang}&{$classx}={$val['id']}" : $val[url];
-                  if ($val['isshow'] && $c2) {
-                    $val['set'] .= '<span>-</span>';
-                  }
-
-                  if ($c2) {
-                    $val['set'] .= "<p {$classname1}><a href='{$val[conturl]}'>{$_M[word][subpart]}</a></p>";
-                  }
-
-                  $val['set'] .= '</div>';
-                } else {
-                  $val['url'] = 'download/content.php?class1=' . $val[id] . '&action=add&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-                  $val['conturl'] = 'index.php?n=download&c=download_admin&a=doindex&class1=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-                  $val['set'] = "<div>
-                  <p class='lt'><a href='{$val[url]}'>{$_M[word][addinfo]}</a></p><span>-</span>
-                  <p class='rt'><a href='{$val[conturl]}'>{$_M[word][manager]}</a></p>
-                  </div>";
-                }
-                $sum_count = DB::get_all("select * from {$_M[table][column]} where lang='$lang' and bigclass='$val[id]'");
-                foreach ($sum_count as $key => $val5) {
-                  if ($val5[module] == 6) {
-                    $sums = array();
-                    $sums = DB::get_one("select count(*) from {$_M[table][cv]} where lang='$lang' and readok='0'");
-                    $sum1 = $sums['count(*)'];
-                  }
-                  if ($val5[module] == 7) {
-                    $sums = array();
-                    $sums = DB::get_one("select count(*) from {$_M[table][message]} where lang='$lang' and readok='0'");
-                    $sum2 = $sums['count(*)'];
-                  }
-                  if ($val5[module] == 8) {
-                    $sums = array();
-                    $sums = DB::get_one("select count(*) from {$_M[table][feedback]} where class1='$val5[id]' and lang='$lang' and readok='0'");
-                    $sum3 = $sums['count(*)'];
-                  }
-                  $sum = $sum1 + $sum2 + $sum3;
-                  if ($sum > 99) {
-                    $sum = "99+";
-                  }
-                }
-
-                $val['sum'] = $sum;
-                break;
-              case '5':
-                $contentlistes1 = array();
-                $content_type = 0;
-                foreach ($met_class2[$val[id]] as $key => $val2) {
-                  $contentlistes1[] = $val2;
-                }
-                foreach ($contentlistes1 as $key => $val3) {
-                  $column_types5 = array();
-                  $column_types5 = DB::get_one("select * from {$_M[table][column]} where id='$val3[bigclass]'");
-                  if (($val3[module] != 5 || $val3[foldername] != $column_types5[foldername]) && $val3[module] != 0 && $val3[module] < 100) {
-                    $content_type++;
-                  }
-                }
-                if ($content_type > 0) {
-                  $c2 = count($met_class2[$val['id']]);
-                  if ($val['releclass']) {
-                    $c2 = count($met_class3[$val['id']]);
-                  }
-
-                  $classname = $c2 ? "class='lt'" : '';
-                  $classname1 = $c2 && $val['isshow'] ? "class='rt'" : '';
-                  $val['url'] = '?n=about&c=about_admin&a=doeditor&id=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-                  $val['set'] = "<div>";
-                  if ($val['isshow']) {
-                    $val['set'] .= "<p {$classname}><a href='{$val[url]}'>{$_M[word][eidtcont]}</a></p>";
-                  }
-
-                  $classx = 'class1';
-                  if ($val['releclass'] && $c2) {
-                    $classx = 'class2';
-                  }
-
-                  $val['conturl'] = $c2 ? "?n=manage&c=index&a=doindex&anyid={$anyid}&lang={$lang}&{$classx}={$val['id']}" : $val[url];
-                  if ($val['isshow'] && $c2) {
-                    $val['set'] .= '<span>-</span>';
-                  }
-
-                  if ($c2) {
-                    $val['set'] .= "<p {$classname1}><a href='{$val[conturl]}'>{$_M[word][subpart]}</a></p>";
-                  }
-
-                  $val['set'] .= '</div>';
-                } else {
-                  $val['url'] = 'img/content.php?class1=' . $val[id] . '&action=add&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-                  $val['conturl'] = 'index.php?n=img&c=img_admin&a=doindex&class1=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-                  $val['set'] = "<div>
-                  <p class='lt'><a href='{$val[url]}'>{$_M[word][addinfo]}</a></p><span>-</span>
-                  <p class='rt'><a href='{$val[conturl]}'>{$_M[word][manager]}</a></p>
-                  </div>";
-                }
-                $sum_count = DB::get_all("select * from {$_M[table][column]} where lang='$lang' and bigclass='$val[id]'");
-                foreach ($sum_count as $key => $val5) {
-                  if ($val5[module] == 6) {
-                    $sums = array();
-                    $sums = DB::get_one("select count(*) from {$_M[table][cv]} where lang='$lang' and readok='0'");
-                    $sum1 = $sums['count(*)'];
-                  }
-                  if ($val5[module] == 7) {
-                    $sums = array();
-                    $sums = DB::get_one("select count(*) from {$_M[table][message]} where lang='$lang' and readok='0'");
-                    $sum2 = $sums['count(*)'];
-                  }
-                  if ($val5[module] == 8) {
-                    $sums = array();
-                    $sums = DB::get_one("select count(*) from {$_M[table][feedback]} where class1='$val5[id]' and lang='$lang' and readok='0'");
-                    $sum3 = $sums['count(*)'];
-                  }
-                  $sum = $sum1 + $sum2 + $sum3;
-                  if ($sum > 99) {
-                    $sum = "99+";
-                  }
-                }
-
-                $val['sum'] = $sum;
-                break;
-              case '6':
-                $contentlistes1 = array();
-                $content_type = 0;
-                foreach ($met_class2[$val[id]] as $key => $val2) {
-                  $contentlistes1[] = $val2;
-                }
-                foreach ($contentlistes1 as $key => $val3) {
-                  if ($val3[module] != 6 && $val3[module] != 0 && $val3[module] < 100) {
-                    $content_type++;
-                  }
-                }
-                if ($content_type > 0) {
-                  $c2 = count($met_class2[$val['id']]);
-                  if ($val['releclass']) {
-                    $c2 = count($met_class3[$val['id']]);
-                  }
-
-                  $classname = $c2 ? "class='lt'" : '';
-                  $classname1 = $c2 && $val['isshow'] ? "class='rt'" : '';
-                  $val['url'] = '?n=about&c=about_admin&a=doeditor&id=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-                  $val['set'] = "<div>";
-                  if ($val['isshow']) {
-                    $val['set'] .= "<p {$classname}><a href='{$val[url]}'>{$_M[word][eidtcont]}</a></p>";
-                  }
-
-                  $classx = 'class1';
-                  if ($val['releclass'] && $c2) {
-                    $classx = 'class2';
-                  }
-
-                  $val['conturl'] = $c2 ? "?n=manage&c=index&a=doindex&anyid={$anyid}&lang={$lang}&{$classx}={$val['id']}" : $val[url];
-                  if ($val['isshow'] && $c2) {
-                    $val['set'] .= '<span>-</span>';
-                  }
-
-                  if ($c2) {
-                    $val['set'] .= "<p {$classname1}><a href='{$val[conturl]}'>{$_M[word][subpart]}</a></p>";
-                  }
-
-                  $val['set'] .= '</div>';
-                } else {
-                  $val['url'] = 'job/content.php?class1=' . $val[id] . '&action=add&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-                  $val['conturl'] = 'index.php?n=job&c=job_admin&a=doindex&class1=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-                  $val['incurl'] = 'job/inc.php?lang=' . $lang . '&anyid=' . $_M[form][anyid];
-                  $val['cvurl'] = 'job/cv.php?class1=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-                  $val['set'] = "<div>
-                  <p class='lt'><a href='{$val[conturl]}'>{$_M[word][manager]}</a></p><span>-</span>
-                  <p class='rt'><a href='{$val[cvurl]}'>{$_M[word][cveditorTitle]}</a></p>
-                  </div>
-                  ";
-                }
-                $sums = DB::get_one("select count(*) from {$_M[table][cv]} where lang='$lang' and readok='0'");
-                $sum1 = $sums['count(*)'];
-                if ($sum1 > 99) {
-                  $sum1 = "99+";
-                }
-                $val['sum'] = $sum1;
-
-                break;
-              case '7':
-                $contentlistes1 = array();
-                $content_type = 0;
-                foreach ($met_class2[$val[id]] as $key => $val2) {
-                  $contentlistes1[] = $val2;
-                }
-                foreach ($contentlistes1 as $key => $val3) {
-                  if ($val3[module] != 7 && $val3[module] != 0 && $val3[module] < 100) {
-                    $content_type++;
-                  }
-                }
-                if ($content_type > 0) {
-                  $c2 = count($met_class2[$val['id']]);
-                  if ($val['releclass']) {
-                    $c2 = count($met_class3[$val['id']]);
-                  }
-
-                  $classname = $c2 ? "class='lt'" : '';
-                  $classname1 = $c2 && $val['isshow'] ? "class='rt'" : '';
-                  $val['url'] = '?n=about&c=about_admin&a=doeditor&id=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-                  $val['set'] = "<div>";
-                  if ($val['isshow']) {
-                    $val['set'] .= "<p {$classname}><a href='{$val[url]}'>{$_M[word][eidtcont]}</a></p>";
-                  }
-
-                  $classx = 'class1';
-                  if ($val['releclass'] && $c2) {
-                    $classx = 'class2';
-                  }
-
-                  $val['conturl'] = $c2 ? "?n=manage&c=index&a=doindex&anyid={$anyid}&lang={$lang}&{$classx}={$val['id']}" : $val[url];
-                  if ($val['isshow'] && $c2) {
-                    $val['set'] .= '<span>-</span>';
-                  }
-
-                  if ($c2) {
-                    $val['set'] .= "<p {$classname1}><a href='{$val[conturl]}'>{$_M[word][subpart]}</a></p>";
-                  }
-
-                  $val['set'] .= '</div>';
-                } else {
-                  $val['incurl'] = 'message/inc.php?class1=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-                  $val['conturl'] = 'index.php?n=message&c=message_admin&a=doindex&class1=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-                  $val['set'] = "<div><a href='{$val[conturl]}'>{$_M[word][eidtmsg]}</a></div>";
-                }
-                $sums = DB::get_one("select count(*) from {$_M[table][message]} where lang='$lang' and readok='0'");
-                $sum1 = $sums['count(*)'];
-                if ($sum1 > 99) {
-                  $sum1 = "99+";
-                }
-                $val['sum'] = $sum1;
-                break;
-              case '8':
-                $contentlistes1 = array();
-                $content_type = 0;
-                foreach ($met_class2[$val[id]] as $key => $val2) {
-                  $contentlistes1[] = $val2;
-                }
-                foreach ($contentlistes1 as $key => $val3) {
-                  if ($val3[module] != 8 && $val3[module] != 0 && $val3[module] < 100) {
-                    $content_type++;
-                  }
-                }
-                if ($content_type > 0) {
-                  $c2 = count($met_class2[$val['id']]);
-                  if ($val['releclass']) {
-                    $c2 = count($met_class3[$val['id']]);
-                  }
-
-                  $classname = $c2 ? "class='lt'" : '';
-                  $classname1 = $c2 && $val['isshow'] ? "class='rt'" : '';
-                  $val['url'] = '?n=about&c=about_admin&a=doeditor&id=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-                  $val['set'] = "<div>";
-                  if ($val['isshow']) {
-                    $val['set'] .= "<p {$classname}><a href='{$val[url]}'>{$_M[word][eidtcont]}</a></p>";
-                  }
-
-                  $classx = 'class1';
-                  if ($val['releclass'] && $c2) {
-                    $classx = 'class2';
-                  }
-
-                  $val['conturl'] = $c2 ? "?n=manage&c=index&a=doindex&anyid={$anyid}&lang={$lang}&{$classx}={$val['id']}" : $val[url];
-                  if ($val['isshow'] && $c2) {
-                    $val['set'] .= '<span>-</span>';
-                  }
-
-                  if ($c2) {
-                    $val['set'] .= "<p {$classname1}><a href='{$val[conturl]}'>{$_M[word][subpart]}</a></p>";
-                  }
-
-                  $val['set'] .= '</div>';
-                } else {
-                  $val['url'] = 'feedback/inc.php?class1=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-                  $val['conturl'] = 'index.php?n=feedback&c=feedback_admin&a=doindex&class1=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-                  $val['set'] = "<div><a href='{$val[conturl]}'>{$_M[word][eidtfed]}</a></div>";
-                }
-                $sums = DB::get_one("select count(*) from {$_M[table][feedback]} where class1='$val[id]' and lang='$lang' and readok='0'");
-                $sum1 = $sums['count(*)'];
-                if ($sum1 > 99) {
-                  $sum1 = "99+";
-                }
-                $val['sum'] = $sum1;
-                break;
-              }
-              $contentlist[] = $val;
-            }
-          }
+            //按栏目获取能容列表
+            $contents = self::getContentByColumn();
+            return $contents;
         }
-      }
-    } else {
-      if ($module) {
-        if ($class1) {
-          if ($met_class1[$class1]['isshow']) {
-            $met_class1[$class1]['conturl'] = '?n=about&c=about_admin&a=doeditor&id=' . $met_class1[$class1][id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-            $contentlist[0] = $met_class1[$class1];
-          }
-          foreach ($met_class2[$class1] as $key => $val) {
-            if ($val['module'] == $module) {
-              $val['conturl'] = '?n=about&c=about_admin&a=doeditor&id=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              if (count($met_class3[$val['id']])) {
-                $val['conturl'] = "?anyid={$anyid}&lang={$lang}&module=1&class2={$val['id']}";
-              }
+    }
 
-              $contentlist[] = $val;
+    /**
+     * 按模块获取能容列表
+     * @param string $class_id
+     * @return array
+     */
+    private function getContentBymodule()
+    {
+        global $_M;
+        $content_list = array();
+        $columns = load::mod_class('column/column_database', 'new')->get_all_column_by_lang($_M['lang']);
+
+        foreach ($columns as $column) {
+            if (($column['classtype'] == 1 or ($column['releclass'] > 0 and (in_array($column['module'], array(1, 2, 3, 4, 5, 6, 7, 8))))) or $column['module']==6 and $column['if_in'] == 0) {
+                $met_classindex[$column['module']][] = $column;
             }
-          }
-        } elseif ($class2) {
-          if ($met_class[$class2]['isshow']) {
-            $met_class[$class2]['conturl'] = '?n=about&c=about_admin&a=doeditor&id=' . $met_class[$class2][id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-            $contentlist[0] = $met_class[$class2];
-          }
-          foreach ($met_class3[$class2] as $key => $val) {
-            if ($val['module'] == $module) {
-              $val['conturl'] = '?n=about&c=about_admin&a=doeditor&id=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              $contentlist[] = $val;
+        }
+
+        foreach ($met_classindex as $mod => $column) {
+            if ($mod <= 8) {
+                $content_list[$mod]['name'] = modname($mod);
+                $content_list[$mod]['classtype'] = 1;
+                $content_list[$mod]['url'] = self::getModContentLink($column[0], 'mod');
+                if(in_array($mod, array(6,7))) {
+                    $content_list[$mod]['url'].='&class1='.$column[0]['id'];
+                }
+                if ($mod == 6) {
+                    $content_list[$mod]['url'] = '';
+                    foreach ($column as $row) {
+                        $class123 = load::sys_class('label', 'new')->get('column')->get_class123_no_reclass($row['id']);
+                        $job_column = array();
+                        $job_column['name'] = $row['name'];
+                        $job_column['classtype']=2;
+                        $job_column['url'].="?n=job&class1={$class123['class1']['id']}&class2={$class123['class2']['id']}&class3={$class123['class3']['id']}";
+                        $content_list[$mod]['subcolumn'][] = $job_column;
+                    }
+                }
+
+                if ($mod == 8) {
+                    $content_list[$mod]['url'] = '';
+                    foreach ($column as $row) {
+                        $class123 = load::sys_class('label', 'new')->get('column')->get_class123_no_reclass($row['id']);
+                        $feed_column = array();
+                        $feed_column['name'] = $row['name'];
+                        $feed_column['classtype']=2;
+                        $feed_column['url'].='?n=feedback&class1='.$row['id'];
+                        $feed_column['url'] .= "?n=feedback&class1={$class123['class1']['id']}&class2={$class123['class2']['id']}&class3={$class123['class3']['id']}";
+                        $content_list[$mod]['subcolumn'][] = $feed_column;
+                    }
+                }
             }
-          }
+        }
+        return $content_list;
+    }
+
+    /**
+     * 按栏目获取内容列表
+     * @param string $class_id
+     * @return mixed
+     */
+    private function getContentByColumn($class_id = '')
+    {
+        global $_M;
+        $array = column_sorting(2);
+        $column_list = array();
+        $sys_column = load::mod_class('column/sys_column', 'new');
+
+        foreach ($array['class1'] as $key1 => $col_v1) {
+            if($col_v1['module']==0 || $col_v1['module']>8){continue;}
+            $col_v1['module_name'] = $sys_column->module($col_v1['module']);
+            $col_v1['url'] = self::getModContentLink($col_v1);
+            if ($class2 = $array['class2'][$col_v1['id']]) {
+                $col_v1['url'] = $col_v1['module'] == 6 ? '' : $col_v1['url'];  //招聘模块有二级栏目直接进入二级栏目管理
+                foreach ($class2 as $key2 => $col_v2) {
+                    $col_v2['url'] = self::getModContentLink($col_v2);
+                    if ($class3 = $array['class3'][$col_v2['id']]) {
+                        foreach ($class3 as $key3 => $col_v3) {
+                            $col_v3['url'] = self::getModContentLink($col_v3);
+                            $col_v2['subcolumn'][] = $col_v3;
+                        }
+                    }
+                    $col_v1['subcolumn'][] = $col_v2;
+                }
+            }
+            $column_list[] = $col_v1;
+        }
+
+        return $column_list;
+    }
+
+
+    /**
+     * 内容列表连接
+     * @param string $mod
+     * @param $class_id
+     * @return string
+     */
+    private function getModContentLink($column = array(), $c_type = 'column')
+    {
+        global $_M;
+        //收索
+        if ($column['module'] == 11) {
+            /*$url = "#/seo/?head_tab_active=6";
+            return $url;*/
+        }
+
+        //网站地图
+        if ($column['module'] == 12){
+            $url = "#/seo/?head_tab_active=4";
+            return $url;
+        }
+
+        //集合标签
+        if ($column['module'] == 13) {
+            $url = "#/seo/?head_tab_active=6";
+            return $url;
+        }
+
+        $class123 = load::sys_class('label', 'new')->get('column')->get_class123_no_reclass($column['id']);
+        if ($class123) {
+            $para_class123 = '';
+            $para_class123 .= $class123['class1']['id'] ? "&class1={$class123['class1']['id']}" : '';
+            $para_class123 .= $class123['class2']['id'] ? "&class2={$class123['class2']['id']}" : '';
+            $para_class123 .= $class123['class3']['id'] ? "&class3={$class123['class3']['id']}" : '';
+        }
+        $mod_name = load::sys_class('handle', 'new')->mod_to_file($column['module']);
+
+        if ($c_type == 'mod') {
+            $url = "lang={$this->lang}&n={$mod_name}&c={$mod_name}_admin&a=dojson_list";
+            return $url;
         } else {
-          switch ($module) {
-          case 1:
-            foreach ($met_class1 as $key => $val) {
-              if ($val['module'] == 1) {
-                $val['conturl'] = '?n=about&c=about_admin&a=doeditor&id=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-                if (count($met_class2[$val['id']])) {
-                  $val['conturl'] = "?anyid={$anyid}&lang={$lang}&module=1&class1={$val['id']}";
+            #$url = "lang={$this->lang}&n={$mod_name}&c={$mod_name}_admin&a=doindex" . $para_class123;
+            $url = "lang={$this->lang}&n={$mod_name}&c={$mod_name}_admin&a=dojson_list&" . $para_class123;
+            if ($column['isshow'] == 0 && ($column['module'] == 1)) {
+                return '';
+            }
+            return $url;
+        }
+    }
+
+    /*
+     * 栏目列表连接
+     */
+    private function getColumnList($mod)
+    {
+        $mod_name = load::sys_class('handle', 'new')->mod_to_file($mod);
+        $url = "lang={$this->lang}&n={$mod_name}&c={$mod_name}_admin&a=docolumnjson";
+        return $url;
+    }
+
+    /**
+     * 收索栏目
+     */
+    public function dosearch()
+    {
+        global $_M;
+        $redata = array();
+        $search_contnet = $_M['form']['search_contnet'];
+        if ($search_contnet) {
+            $content = self::_search($search_contnet);
+            $redata['status'] = 1;
+            $redata['data']['list'] = $content;
+            $this->ajaxReturn($redata);
+        }
+        $this->doGetContentList();
+    }
+
+    /**
+     * 收索
+     * @param string $search_contnet
+     * @return array
+     */
+    private function _search($search_contnet = '')
+    {
+        global $_M;
+        $query = "select * from {$_M['table']['column']} where name like '%{$search_contnet}%' and lang='{$this->lang}' and module <= 8";
+        $column_list = DB::get_all($query);
+
+        $list = array();
+        foreach ($column_list as $key1 => $class1) {
+            $class1['url'] = self::getModContentLink($class1);
+            $class1_son = load::sys_class('label', 'new')->get('column')->get_column_son($class1['id']);
+            if ($class1_son) {
+                foreach ($class1_son as $key2 => $class2) {
+                    $class2['url'] = self::getModContentLink($class2);
+                    $class2_son = load::sys_class('label', 'new')->get('column')->get_column_son($class2['id']);
+                    if ($class2_son) {
+                        foreach ($class2_son as $key3 => $class3) {
+                            $class3['url'] = self::getModContentLink($class3);
+                        }
+                        $class2['subcolumn'][] = $class3;
+                    }
+                    $class1['subcolumn'][] = $class2;
                 }
-
-                $contentlist[] = $val;
-              }
             }
-            break;
-          }
+            $list[$key1] = $class1;
         }
-      } else {
-        foreach ($met_class1 as $key => $val) {
-          if ($val['module'] == 1) {
-            $md1[] = $val;
-          }
-        }
-        $query = "select * from {$_M[table][column]} where lang='$lang' order by no_order";
-        $result = DB::query($query);
-        while ($list = DB::fetch_array($result)) {
-          if (!is_have_power('c'. $list['id']) && ($list[classtype] == 1 || $list[releclass] != 0)) {
-            continue;
-          }
-
-          if ($list[classtype] == 1) {
-            $met_class1[$list['id']] = $list;
-          }
-          if (($list[classtype] == 1 or ($list[releclass] > 0 and ($list[module] <= 7 || $list[module] == 8))) and $list[if_in] == 0) {
-            $met_classindex[$list[module]][] = $list;
-          }
-
-        }
-        if (count($met_classindex[1]) != 0) {
-          $contentlist[1]['name'] = $_M[word][modulemanagement1];
-          $contentlist[1]['module'] = '1';
-          $contentlist[1]['conturl'] = "index.php?n=about&c=about_admin&a=doeditor&module=1&lang=$lang&anyid={$anyid}";
-        }
-        if (count($met_classindex[2]) != 0) {
-          $contentlist[2]['name'] = $_M[word][modulemanagement2];
-          $contentlist[2]['module'] = '2';
-          $contentlist[2]['conturl'] = $new_news_module_url . "&module=2&lang=$lang&anyid=$anyid";
-          $contentlist[2]['url'] = "article/content.php?action=add&lang=$lang&anyid=$anyid";
-          $contentlist[2]['set'] = "<div>
-        <p class='lt'><a href='{$contentlist[2][url]}'>{$_M[word][addinfo]}</a></p><span>-</span><p class='rt'><a href='{$contentlist[2][conturl]}'>{$_M[word][manager]}</a></p>
-        </div>";
-        }
-        if (count($met_classindex[3]) != 0) {
-          $contentlist[3]['name'] = $_M[word][modulemanagement3];
-          $contentlist[3]['module'] = '3';
-          $contentlist[3]['conturl'] = $new_product_module_url . "&module=3&lang=$lang&anyid=$anyid";
-          $contentlist[3]['url'] = "product/content.php?action=add&lang=$lang&anyid=$anyid";
-          $contentlist[3]['set'] = "<div>
-        <p class='lt'><a href='{$contentlist[3][url]}'>{$_M[word][addinfo]}</a></p><span>-</span><p class='rt'><a href='{$contentlist[3][conturl]}'>{$_M[word][manager]}</a></p>
-        </div>";
-        }
-        if (count($met_classindex[4]) != 0) {
-          $contentlist[4]['name'] = $_M[word][modulemanagement4];
-          $contentlist[4]['module'] = '4';
-          $contentlist[4]['conturl'] = "index.php?n=download&c=download_admin&a=doindex&module=4&lang=$lang&anyid=$anyid";
-          $contentlist[4]['url'] = "download/content.php?action=add&lang=$lang&anyid=$anyid";
-          $contentlist[4]['set'] = "<div>
-        <p class='lt'><a href='{$contentlist[4][url]}'>{$_M[word][addinfo]}</a></p><span>-</span><p class='rt'><a href='{$contentlist[4][conturl]}'>{$_M[word][manager]}</a></p>
-        </div>";
-        }
-        if (count($met_classindex[5]) != 0) {
-          $contentlist[5]['name'] = $_M[word][modulemanagement5];
-          $contentlist[5]['module'] = '5';
-          $contentlist[5]['conturl'] = "index.php?n=img&c=img_admin&a=doindex&module=5&lang=$lang&anyid=$anyid";
-          $contentlist[5]['url'] = "img/content.php?action=add&lang=$lang&anyid=$anyid";
-          $contentlist[5]['set'] = "<div>
-        <p class='lt'><a href='{$contentlist[5][url]}'>{$_M[word][addinfo]}</a></p><span>-</span><p class='rt'><a href='{$contentlist[5][conturl]}'>{$_M[word][manager]}</a></p>
-        </div>";
-        }
-        if (count($met_classindex[6]) != 0) {
-          $sum = DB::get_one("select count(*) from {$_M[table][cv]} where lang='$lang' and readok='0'");
-          if ($sum['count(*)'] > 99) {
-            $sum['count(*)'] = "99+";
-          }
-          $contentlist[6]['sum'] = $sum['count(*)'];
-          $contentlist[6]['name'] = $_M[word][modulemanagement6];
-          $contentlist[6]['module'] = '6';
-          $contentlist[6]['conturl'] = "index.php?n=job&c=job_admin&a=doindex&class1={$met_classindex[6][0][id]}&lang={$lang}&anyid={$anyid}";
-          $contentlist[6]['cvurl'] = "job/cv.php?class1={$met_classindex[6][0][id]}&lang={$lang}&anyid={$anyid}";
-          $contentlist[6]['set'] = "<div>
-        <p class='lt'><a href='{$contentlist[6]['conturl']}'>{$_M[word][manager]}</a></p><span>-</span>
-        <p class='rt'><a href='{$contentlist[6]['cvurl']}'>{$_M[word][cveditorTitle]}</a></p>
-        </div>
-        ";
-        }
-        if (count($met_classindex[7]) != 0) {
-          $sum = DB::get_one("select count(*) from {$_M[table][message]} where lang='$lang' and readok='0'");
-          if ($sum['count(*)'] > 99) {
-            $sum['count(*)'] = "99+";
-          }
-          $contentlist[7]['sum'] = $sum['count(*)'];
-          $contentlist[7]['name'] = $_M[word][modulemanagement7];
-          $contentlist[7]['module'] = '7';
-          $contentlist[7]['conturl'] = "index.php?n=message&c=message_admin&a=doindex&class1={$met_classindex[7][0][id]}&lang={$lang}&anyid={$anyid}";
-        }
-        if (count($met_classindex[8]) != 0) {
-          $sum = DB::get_one("select count(*) from {$_M[table][feedback]} where lang='$lang' and readok='0'");
-          if ($sum['count(*)'] > 99) {
-            $sum['count(*)'] = "99+";
-          }
-          $contentlist[8]['sum'] = $sum['count(*)'];
-          $contentlist[8]['name'] = $_M[word][modulemanagement8];
-          $contentlist[8]['module'] = '8';
-          $contentlist[8]['conturl'] = "index.php?n=feedback&c=feedback_admin&a=doindex&class1={$met_classindex[8][0][id]}&lang={$lang}&anyid={$anyid}";
-        }
-
-      }
+        return $list;
 
     }
 
-    require_once $this->template('own/index');
-  }
-
-  public function doceshi() {
-    global $_M;
-    $array = column_sorting(2);
-    $lang = $this->lang;
-    $anyid = $_M[form][anyid];
-    $metinfo_admin_name = get_met_cookie('metinfo_admin_name');
-    $metinfo_admin_pop = get_met_cookie('metinfo_admin_pop');
-    $met_class1 = $array['class1'];
-    $met_class2 = $array['class2'];
-    $met_class3 = $array['class3'];
-    foreach ($met_class1 as $key => $val) {
-      if ($val['module'] == 1) {
-        $md1[] = $val;
-      }
-    }
-    $query = "select * from {$_M[table][column]} where lang='$lang' order by no_order";
-    $result = DB::query($query);
-    while ($list = DB::fetch_array($result)) {
-      $admin_column_power = "admin_popc" . $list[id];
-      if (!is_have_power('c'. $list['id']) && ($list[classtype] == 1 || $list[releclass] != 0)) {
-        continue;
-      }
-
-      if ($list[classtype] == 1) {
-        $met_class1[$list['id']] = $list;
-      }
-      if (($list[classtype] == 1 or ($list[releclass] > 0 and ($list[module] <= 7 || $list[module] == 8))) and $list[if_in] == 0) {
-        $met_classindex[$list[module]][] = $list;
-      }
-
-    }
-    if (count($met_classindex[1]) != 0) {
-      $contentlist[1]['name'] = $_M[word][modulemanagement1];
-      $contentlist[1]['module'] = '1';
-      $contentlist[1]['conturl'] = "index.php?n=about&c=about_admin&a=doeditor&module=1&lang=$lang&anyid={$anyid}";
-    }
-    if (count($met_classindex[2]) != 0) {
-      $contentlist[2]['name'] = $_M[word][modulemanagement2];
-      $contentlist[2]['module'] = '2';
-      $contentlist[2]['conturl'] = $new_news_module_url . "&module=2&lang=$lang&anyid=$anyid";
-      $contentlist[2]['url'] = "article/content.php?action=add&lang=$lang&anyid=$anyid";
-      $contentlist[2]['set'] = "<div>
-        <p class='lt'><a href='{$contentlist[2][url]}'>{$_M[word][addinfo]}</a></p><span>-</span><p class='rt'><a href='{$contentlist[2][conturl]}'>{$_M[word][manager]}</a></p>
-        </div>";
-    }
-    if (count($met_classindex[3]) != 0) {
-      $contentlist[3]['name'] = $_M[word][modulemanagement3];
-      $contentlist[3]['module'] = '3';
-      $contentlist[3]['conturl'] = $new_product_module_url . "&module=3&lang=$lang&anyid=$anyid";
-      $contentlist[3]['url'] = "product/content.php?action=add&lang=$lang&anyid=$anyid";
-      $contentlist[3]['set'] = "<div>
-        <p class='lt'><a href='{$contentlist[3][url]}'>{$_M[word][addinfo]}</a></p><span>-</span><p class='rt'><a href='{$contentlist[3][conturl]}'>{$_M[word][manager]}</a></p>
-        </div>";
-    }
-    if (count($met_classindex[4]) != 0) {
-      $contentlist[4]['name'] = $_M[word][modulemanagement4];
-      $contentlist[4]['module'] = '4';
-      $contentlist[4]['conturl'] = "index.php?n=download&c=download_admin&a=doindex&module=4&lang=$lang&anyid=$anyid";
-      $contentlist[4]['url'] = "download/content.php?action=add&lang=$lang&anyid=$anyid";
-      $contentlist[4]['set'] = "<div>
-        <p class='lt'><a href='{$contentlist[4][url]}'>{$_M[word][addinfo]}</a></p><span>-</span><p class='rt'><a href='{$contentlist[4][conturl]}'>{$_M[word][manager]}</a></p>
-        </div>";
-    }
-    if (count($met_classindex[5]) != 0) {
-      $contentlist[5]['name'] = $_M[word][modulemanagement5];
-      $contentlist[5]['module'] = '5';
-      $contentlist[5]['conturl'] = "index.php?n=img&c=img_admin&a=doindex&module=5&lang=$lang&anyid=$anyid";
-      $contentlist[5]['url'] = "img/content.php?action=add&lang=$lang&anyid=$anyid";
-      $contentlist[5]['set'] = "<div>
-        <p class='lt'><a href='{$contentlist[5][url]}'>{$_M[word][addinfo]}</a></p><span>-</span><p class='rt'><a href='{$contentlist[5][conturl]}'>{$_M[word][manager]}</a></p>
-        </div>";
-    }
-    if (count($met_classindex[6]) != 0) {
-      $sum = DB::get_one("select count(*) from {$_M[table][cv]} where lang='$lang' and readok='0'");
-      if ($sum['count(*)'] > 99) {
-        $sum['count(*)'] = "99+";
-      }
-      $contentlist[6]['sum'] = $sum['count(*)'];
-      $contentlist[6]['name'] = $_M[word][modulemanagement6];
-      $contentlist[6]['module'] = '6';
-      $contentlist[6]['conturl'] = "index.php?n=job&c=job_admin&a=doindex&class1={$met_classindex[6][0][id]}&lang={$lang}&anyid={$anyid}";
-      $contentlist[6]['cvurl'] = "job/cv.php?class1={$met_classindex[6][0][id]}&lang={$lang}&anyid={$anyid}";
-      $contentlist[6]['set'] = "<div>
-        <p class='lt'><a href='{$contentlist[6]['conturl']}'>{$_M[word][manager]}</a></p><span>-</span>
-        <p class='rt'><a href='{$contentlist[6]['cvurl']}'>{$_M[word][cveditorTitle]}</a></p>
-        </div>
-        ";
-    }
-    if (count($met_classindex[7]) != 0) {
-      $sum = DB::get_one("select count(*) from {$_M[table][message]} where lang='$lang' and readok='0'");
-      if ($sum['count(*)'] > 99) {
-        $sum['count(*)'] = "99+";
-      }
-      $contentlist[7]['sum'] = $sum['count(*)'];
-      $contentlist[7]['name'] = $_M[word][modulemanagement7];
-      $contentlist[7]['module'] = '7';
-      $contentlist[7]['conturl'] = "index.php?n=message&c=message_admin&a=doindex&class1={$met_classindex[7][0][id]}&lang={$lang}&anyid={$anyid}";
-    }
-    if (count($met_classindex[8]) != 0) {
-      $sum = DB::get_one("select count(*) from {$_M[table][feedback]} where lang='$lang' and readok='0'");
-      if ($sum['count(*)'] > 99) {
-        $sum['count(*)'] = "99+";
-      }
-      $contentlist[8]['sum'] = $sum['count(*)'];
-      $contentlist[8]['name'] = $_M[word][modulemanagement8];
-      $contentlist[8]['module'] = '8';
-      $contentlist[8]['conturl'] = "index.php?n=feedback&c=feedback_admin&a=doindex&class1={$met_classindex[8][0][id]}&lang={$lang}&anyid={$anyid}";
-    }
-
-    return $contentlist;
-
-  }
-
-  public function domodule() {
-    global $_M;
-    $array = column_sorting(2);
-    $lang = $this->lang;
-    $anyid = $_M[form][anyid];
-    $metinfo_admin_name = get_met_cookie('metinfo_admin_name');
-    $metinfo_admin_pop = get_met_cookie('metinfo_admin_pop');
-    $met_content_type = 2;
-    $met_class1 = $array['class1'];
-    $met_class2 = $array['class2'];
-    $met_class3 = $array['class3'];
-    $query = "select * from {$_M[table][column]} where lang='$lang' order by no_order";
-    $result = DB::query($query);
-    $power = background_privilege();
-    while ($list = DB::fetch_array($result)) {
-      if (!is_have_power('c'. $list['id']) && ($list[classtype] == 1 || $list[releclass] != 0)) {
-        continue;
-      }
-
-      if ($list[classtype] == 1) {
-        $met_class1[$list['id']] = $list;
-      }
-      if (($list[classtype] == 1 or ($list[releclass] > 0 and ($list[module] <= 7 || $list[module] == 8))) and $list[if_in] == 0) {
-        $met_classindex[$list[module]][] = $list;
-      }
-
-    }
-    if ($module) {
-      if ($class1) {
-        if ($met_class1[$class1]['isshow']) {
-          $met_class1[$class1]['conturl'] = 'index.php?n=about&c=about_admin&a=doeditor&id=' . $met_class1[$class1][id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-          $contentlist[0] = $met_class1[$class1];
-        }
-        foreach ($met_class2[$class1] as $key => $val) {
-          if ($val['module'] == $module) {
-            $val['conturl'] = 'index.php?n=about&c=about_admin&a=doeditor&id=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-            if (count($met_class3[$val['id']])) {
-              $val['conturl'] = "?anyid={$anyid}&lang={$lang}&module=1&class2={$val['id']}";
+    /**
+     * 添加内容的选择栏目json
+     */
+    public function docolumnjson()
+    {
+        global $_M;
+        $list['citylist']=array();
+        $columnlist=column_sorting();
+        foreach ($columnlist['class1'] as $key => $value) {
+            if($value['module']>=2 && $value['module']<=6){
+                $column_json = parent::column_json($value['module'],1,$value['id']);
+                $list['citylist']=array_merge($list['citylist'],$column_json['citylist']);
             }
+        }
+        if($_M['form']['noajax']){
+            $list=array(
+                'columnlist'=>$list['citylist'],
+                'columnlist_json'=>jsonencode($list['citylist'])
 
-            $contentlist[] = $val;
-          }
+            );
+            return $list;
         }
-      } elseif ($class2) {
-        if ($met_class[$class2]['isshow']) {
-          $met_class[$class2]['conturl'] = 'index.php?n=about&c=about_admin&a=doeditor&id=' . $met_class[$class2][id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-          $contentlist[0] = $met_class[$class2];
-        }
-        foreach ($met_class3[$class2] as $key => $val) {
-          if ($val['module'] == $module) {
-            $val['conturl'] = 'index.php?n=about&c=about_admin&a=doeditor&id=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-            $contentlist[] = $val;
-          }
-        }
-      } else {
-        switch ($module) {
-        case 1:
-          foreach ($met_class1 as $key => $val) {
-            if ($val['module'] == 1) {
-              $val['conturl'] = 'index.php?n=about&c=about_admin&a=doeditor&id=' . $val[id] . '&lang=' . $lang . '&anyid=' . $_M[form][anyid];
-              if (count($met_class2[$val['id']])) {
-                $val['conturl'] = "?anyid={$anyid}&lang={$lang}&module=1&class1={$val['id']}";
-              }
+        $this->ajaxReturn($list);
+    }
 
-              $contentlist[] = $val;
+
+    /**
+     * 获取特定语言下的栏目列表
+     */
+    public function doGetLangColumn()
+    {
+        global $_M;
+        $tolang = $_M['form']['tolang'];
+        $module = $_M['form']['module'];
+        $mod = load::sys_class('handle', 'new')->file_to_mod($module);
+
+        $column_list = self::getColumnjson($mod , $tolang);
+        #dump($column_list);
+        $this->ajaxReturn($column_list);
+    }
+
+    /**
+     * 栏目列表处理
+     * @param string $module
+     * @param string $tolang
+     * @return array
+     */
+    private function getColumnjson($module = '', $tolang = '')
+    {
+        global $_M;
+        $array = self::_getColumnjson($module, $tolang);
+
+        $metinfo = array();
+        $i = 0;
+        $metinfo['citylist'][$i]['p']['name'] = "{$_M['word']['columnselect1']}";
+        $metinfo['citylist'][$i]['p']['value'] = '';
+
+        foreach ($array['class1'] as $key => $val) { //一级级栏目
+
+            if ($val['module'] == $module) {
+                $i++;
+                $metinfo['citylist'][$i]['p']['name'] = $val['name'];
+                $metinfo['citylist'][$i]['p']['value'] .= $val['id'];
+
+                if (count($array['class2'][$val['id']])) { //二级栏目
+                    $k = 0;
+                    $metinfo['citylist'][$i]['c'][$k]['n']['name'] = "{$_M['word']['modClass2']}";
+                    $metinfo['citylist'][$i]['c'][$k]['n']['value'] = '';
+                    $k++;
+
+                    foreach ($array['class2'][$val['id']] as $key => $val2) {
+                        $metinfo['citylist'][$i]['c'][$k]['n']['name'] = $val2['name'];
+                        $metinfo['citylist'][$i]['c'][$k]['n']['value'] = $val2['id'];
+
+                        if (count($array['class3'][$val2['id']])) { //三级栏目
+                            $j = 0;
+                            $metinfo['citylist'][$i]['c'][$k]['a'][0]['s']['name'] = "{$_M['word']['modClass3']}";
+                            $metinfo['citylist'][$i]['c'][$k]['a'][0]['s']['value'] = '';
+                            $j++;
+
+                            foreach ($array['class3'][$val2['id']] as $key => $val3) {
+                                $metinfo['citylist'][$i]['c'][$k]['a'][$j]['s']['name'] = $val3['name'];
+                                $metinfo['citylist'][$i]['c'][$k]['a'][$j]['s']['value'] = $val3['id'];
+                                $j++;
+                            }
+                        }
+                        $k++;
+                    }
+                }
             }
-          }
-          break;
         }
-      }
-    } else {
-      foreach ($met_class1 as $key => $val) {
-        if ($val['module'] == 1) {
-          $md1[] = $val;
-        }
-      }
-      if (count($met_classindex[1]) != 0) {
-        $contentlist[1]['name'] = $_M[word][modulemanagement1];
-        $contentlist[1]['module'] = '1';
-        $contentlist[1]['conturl'] = "index.php?n=about&c=about_admin&a=doeditor&lang=$lang";
-        $contentlist[1]['conturl'] = "index.php?n=about&c=about_admin&a=doindex&lang=$lang&anyid=$anyid";
-      }
-      if (count($met_classindex[2]) != 0) {
-        $contentlist[2]['name'] = $_M[word][modulemanagement2];
-        $contentlist[2]['module'] = '2';
-        $contentlist[2]['conturl'] = "index.php?n=news&c=news_admin&a=doindex&module=2&lang=$lang&anyid=$anyid";
-        $contentlist[2]['url'] = $_M[url][site_admin] . "index.php?n=news&c=news_admin&a=doindex&lang=$lang&anyid=$anyid";
-        $contentlist[2]['set'] = "<div>
-        <p class='lt'><a href='{$contentlist[2][url]}'>{$_M[word][addinfo]}</a></p><span>-</span><p class='rt'><a href='{$contentlist[2][conturl]}'>{$_M[word][manager]}</a></p>
-        </div>";
-      }
-      if (count($met_classindex[3]) != 0) {
-        $contentlist[3]['name'] = $_M[word][modulemanagement3];
-        $contentlist[3]['module'] = '3';
-        $contentlist[3]['conturl'] = "index.php?n=product&c=product_admin&a=doindex&module=3&lang=$lang&anyid=$anyid";
-        $contentlist[3]['url'] = "product/content.php?action=add&lang=$lang&anyid=$anyid";
-        $contentlist[3]['set'] = "<div>
-        <p class='lt'><a href='{$contentlist[3][url]}'>{$_M[word][addinfo]}</a></p><span>-</span><p class='rt'><a href='{$contentlist[3][conturl]}'>{$_M[word][manager]}</a></p>
-        </div>";
-      }
-      if (count($met_classindex[4]) != 0) {
-        $contentlist[4]['name'] = $_M[word][modulemanagement4];
-        $contentlist[4]['module'] = '4';
-        $contentlist[4]['conturl'] = "index.php?n=download&c=download_admin&a=doindex&lang=$lang&anyid=$anyid";
-        $contentlist[4]['url'] = "download/content.php?action=add&lang=$lang&anyid=$anyid";
-        $contentlist[4]['set'] = "<div>
-        <p class='lt'><a href='{$contentlist[4][url]}'>{$_M[word][addinfo]}</a></p><span>-</span><p class='rt'><a href='{$contentlist[4][conturl]}'>{$_M[word][manager]}</a></p>
-        </div>";
-      }
-      if (count($met_classindex[5]) != 0) {
-        $contentlist[5]['name'] = $_M[word][modulemanagement5];
-        $contentlist[5]['module'] = '5';
-        $contentlist[5]['conturl'] = "index.php?n=img&c=img_admin&a=doindex&module=5&lang=$lang&anyid=$anyid";
-        $contentlist[5]['url'] = "img/content.php?action=add&lang=$lang&anyid=$anyid";
-        $contentlist[5]['set'] = "<div>
-        <p class='lt'><a href='{$contentlist[5][url]}'>{$_M[word][addinfo]}</a></p><span>-</span><p class='rt'><a href='{$contentlist[5][conturl]}'>{$_M[word][manager]}</a></p>
-        </div>";
-      }
-      if (count($met_classindex[6]) != 0) {
-        $sum = DB::get_one("select count(*) from {$_M[table][cv]} where lang='$lang' and readok='0'");
-        if ($sum['count(*)'] > 99) {
-          $sum['count(*)'] = "99+";
-        }
-        $contentlist[6]['sum'] = $sum['count(*)'];
-        $contentlist[6]['name'] = $_M[word][modulemanagement6];
-        $contentlist[6]['module'] = '6';
-        $contentlist[6]['conturl'] = "index.php?n=job&c=job_admin&a=doindex&class1={$met_classindex[6][0][id]}&lang={$lang}&anyid=$anyid";
-        $contentlist[6]['cvurl'] = "job/cv.php?class1={$met_classindex[6][0][id]}&lang={$lang}&anyid={$anyid}";
-        $contentlist[6]['set'] = "<div>
-        <p class='lt'><a href='{$contentlist[6]['conturl']}'>{$_M[word][manager]}</a></p><span>-</span>
-        <p class='rt'><a href='{$contentlist[6]['cvurl']}'>{$_M[word][cveditorTitle]}</a></p>
-        </div>
-        ";
-      }
-      if (count($met_classindex[7]) != 0) {
-        $sum = DB::get_one("select count(*) from {$_M[table][message]} where lang='$lang' and readok='0'");
-        if ($sum['count(*)'] > 99) {
-          $sum['count(*)'] = "99+";
-        }
-        $contentlist[7]['sum'] = $sum['count(*)'];
-        $contentlist[7]['name'] = $_M[word][modulemanagement7];
-        $contentlist[7]['module'] = '7';
-        $contentlist[7]['conturl'] = "index.php?n=message&c=message_admin&a=doindex&class1={$met_classindex[7][0][id]}&lang={$lang}&anyid={$anyid}";
-      }
-      if (count($met_classindex[8]) != 0) {
-        $sum = DB::get_one("select count(*) from {$_M[table][feedback]} where lang='$lang' and readok='0'");
-        if ($sum['count(*)'] > 99) {
-          $sum['count(*)'] = "99+";
-        }
-        $contentlist[8]['sum'] = $sum['count(*)'];
-        $contentlist[8]['name'] = $_M[word][modulemanagement8];
-        $contentlist[8]['module'] = '8';
-        $contentlist[8]['conturl'] = "index.php?n=feedback&c=feedback_admin&a=doindex&class1={$met_classindex[8][0][id]}&lang={$lang}&anyid=$anyid";
-      }
 
-    }
-    $css_url = "templates/" . $met_skin . "/css";
-    $img_url = "templates/met/" . $met_skin . "images";
-    require_once $this->template('own/index');
-  }
-
-/*栏目搜索*/
-  public function dosearch() {
-    global $_M;
-    $id = unescape($_M[form][id]);
-    $img_url = "templates/met/" . $met_skin . "images";
-    $query = "select * from {$_M[table][column]} where name like '%{$id}%' and lang='{$this->lang}'";
-    $contentlist = DB::get_all($query);
-    foreach ($contentlist as $key => $val) {
-      $vimgurl = 'tubiao_' . $val[module] . '.png';
-      $metinfo .= "<li class='contlist'>
-      <div class='box'>
-        <a href='{$val[conturl]}'>
-          <img src='{$img_url}/metv5/{$vimgurl}?new' width='70' height='70' />";
-      if ($val[sum]) {
-        $metinfo .= "<span class='cloumn_num'>{$val[sum]}</span>";
-      }
-      $metinfo .= "<h2>{$val['name']}</h2>
-        </a>
-      </div>
-    </li>";
-    }
-    if ($id != null) {
-      echo "<script language='JavaScript'>
-    document.getElementById('loading').style.display='none';
-    </script> ";
-      if ($metinfo) {
-        echo $metinfo;
-      } else {
-        echo "<div class='proccess1' ><img src='../../upload/image/Noresults.png' width='150' height='150' /><br>{$lang_search_Noresults}</div>";
-      }
-    } else {
-      echo "<script language='JavaScript'>
-    document.getElementById('loading').style.display='none';
-    </script> ";
-      echo $metinfo1;
+        return $metinfo;
+        ##$this->ajaxReturn($array);
     }
 
-  }
+    /**
+     * 获取栏目
+     * @param  string $type
+     * @param  string $module 模块
+     * @return array  栏目数组
+     */
+    private function _getColumnjson($module = '', $tolang = '')
+    {
+        //理顺被关联的栏目
+        $array = column_sorting(2,$tolang);
+
+        $newarray = array();
+        foreach ($array['class1'] as $key => $val) {
+            if ($val['module'] == $module) {
+                $newarray['class1'][] = $val;
+            }
+        }
+
+        foreach ($array['class2'] as $key => $val) {
+            foreach ($val as $val2) {
+                if ($val2['module'] == $module) {
+                    if ($val2['releclass']) {
+                        $newarray['class1'][] = $val2;
+                        if (count($array['class3'][$val2['id']])) {
+                            $newarray['class2'][$val2['id']] = $array['class3'][$val2['id']];
+                        }
+                    } else {
+                        $newarray['class2'][$val2['bigclass']][] = $val2;
+                    }
+                }
+            }
+        }
+        foreach ($array['class3'] as $key => $val) {
+            foreach ($val as $key1 => $val3) {
+                # code...
+                if (!$val3['releclass']) {
+                    $newarray['class3'][$key][$key1] = $val3;
+                }
+            }
+        }
+
+        return $newarray;
+    }
 
 }

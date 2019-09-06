@@ -23,12 +23,19 @@ class job_op extends message_op {
   //删除
   public function del_by_class($classnow) {
     global $_M;
+    //删除属性
+      $c = load::sys_class('label', 'new')->get('column')->get_column_id($classnow);
+      if ($c['classtype'] == 1) {
+          $para_list = load::mod_class('parameter/parameter_list_database', 'new');
+          $para_list->construct($c['module']);
+          $para_list->del_parameter_by_class(0, $classnow);
+      }
     //删除字段
     //删除简历
   }
   
 	/*复制*/
-	public function list_copy($classnow, $toclass1, $toclass2, $toclass3, $tolang){
+	public function list_copy($classnow = '', $toclass1 ='', $toclass2 = '', $toclass3 = '', $tolang = '', $paras = array()){
 		global $_M;
 
     $c = load::sys_class('label', 'new')->get('column')->get_column_id($classnow);
@@ -38,7 +45,10 @@ class job_op extends message_op {
 			$id = $list['id'];
 			$list['id']       = '';
 			$list['filename'] = '';
-			$list['lang']     = $tolang ? $tolang : $list['lang'];	
+			$list['lang']     = $tolang ? $tolang : $list['lang'];
+			$list['class1']   = $toclass1 ? $toclass1 : $list['lang'];
+			$list['class2']   = $toclass2 ? $toclass2 : $list['lang'];
+			$list['class3']   = $toclass3 ? $toclass3 : $list['lang'];
 
 			$id_array[$id] =  $this->database->insert($list);
 		}

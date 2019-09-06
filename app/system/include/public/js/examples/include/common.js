@@ -165,6 +165,7 @@ define(function(require, exports, module) {
 		$('.metalert_type_alert').on('click', function(event){
 			event.preventDefault();
 			$('.cd-popup').removeClass('is-visible');
+			data.callback(data.status);
 		});
 		$('.metalert_type_confirm a').on('click', function(event){
 			event.preventDefault();
@@ -222,10 +223,6 @@ define(function(require, exports, module) {
 		var nUrl = Url.replace(re,Name+'='+Val);
 		return nUrl;
 	}
-
-	/*等高*/
-	exports.ifreme_methei = function(mh){ }
-
 	/*语言文字*/
 
 	exports.langtxt = function(){

@@ -39,7 +39,7 @@ class register extends userweb {
             okinfo($_M['url']['user_home']);
         }
 
-		require_once $this->view('app/register',$this->input);
+		$this->view('app/register',$this->input);
 	}
 
 	public function dosave() {
@@ -51,9 +51,13 @@ class register extends userweb {
                 if(!$pinok && $_M['config']['met_memberlogin_code'] ){
                     okinfo(-1, $_M['word']['membercode']);
 				}
-				if($this->userclass->register($_M['form']['username'], $_M['form']['password'], $_M['form']['username'],'',$info, 0)){
+				$register_result = $this->userclass->register($_M['form']['username'], $_M['form']['password'], $_M['form']['username'],'',$info, 0);
+				if($register_result){
 					$valid = load::mod_class('user/web/class/valid','new');
-					if ($valid->get_email($_M['form']['username'])) {
+                    $user = array();
+                    $user['id'] = $register_result;
+                    $this->userclass->set_login_record($user);
+                    if ($valid->get_email($_M['form']['username'])) {
 						$this->userclass->login_by_password($_M['form']['username'],  $_M['form']['password']);
 						okinfo($_M['url']['profile'], $_M['word']['js25']);
 					} else {
@@ -79,8 +83,11 @@ class register extends userweb {
 				$session->del('phonecode');
 				$session->del('phonetime');
 				$session->del('phonetel');
-
-				if($this->userclass->register($_M['form']['username'], $_M['form']['password'], '',$_M['form']['username'],$info, 1)){
+                $register_result = $this->userclass->register($_M['form']['username'], $_M['form']['password'], '',$_M['form']['username'],$info, 1);
+				if($register_result){
+                    $user = array();
+                    $user['id'] = $register_result;
+                    $this->userclass->set_login_record($user);
                     $this->userclass->login_by_password($_M['form']['username'],  $_M['form']['password']);
 					okinfo($_M['url']['profile'], $_M['word']['regsuc']);
 				}else{
@@ -93,7 +100,11 @@ class register extends userweb {
 				}
 				$valid = $_M['config']['met_member_vecan'] == 2?0:1;
 				$turnovertext=$_M['config']['met_member_vecan'] == 2?$_M['word']['js25']:$_M['word']['regsuc'];
-				if($this->userclass->register($_M['form']['username'], $_M['form']['password'], '','',$info, $valid)){
+                $register_result = $this->userclass->register($_M['form']['username'], $_M['form']['password'], '','',$info, $valid);
+				if($register_result){
+                    $user = array();
+                    $user['id'] = $register_result;
+                    $this->userclass->set_login_record($user);
 					$this->userclass->login_by_password($_M['form']['username'],  $_M['form']['password']);
 					okinfo($_M['url']['profile'], $turnovertext);
 				}else{
@@ -132,21 +143,21 @@ class register extends userweb {
 
 	public function dophonecode() {
 		global $_M;
-        $pinok = load::sys_class('pin', 'new')->check_pin($_M['form']['code']);
+        /*$pinok = load::sys_class('pin', 'new')->check_pin($_M['form']['code']);
         if(!$pinok && $_M['config']['met_memberlogin_code'] ){
             $this->ajax_error($_M['word']['membercode']);
         }
 		if($this->userclass->get_user_by_username_sql($_M['form']['phone'])||$this->userclass->get_admin_by_username_sql($_M['form']['phone'])){
 			$this->ajax_error($_M['word']['telreg']);
-		}
+		}*/
 
 		$valid = load::mod_class('user/web/class/valid','new');
-		if ($valid->get_tel($_M['form']['phone'])) {
-			$this->ajax_success();
+        $res = $valid->get_tel($_M['form']['phone']);
+		if ($res['status'] == 200 ) {
+			$this->ajax_success($_M['word']['getOK']);
 		} else {
-			$this->ajax_error($_M['word']['Sendfrequent']);
+            $this->ajax_error($_M['word']['getFail']);
 		}
-
 	}
 
 }

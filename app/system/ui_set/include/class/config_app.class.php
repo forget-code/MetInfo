@@ -7,7 +7,7 @@ class config_app{
     public $no;//模板编号
     public $lang;//模板语言
 
-    function __construct($no, $lang) {
+    function __construct($no = '', $lang = '') {
         global $_M;
         $this->no = $no;
         $this->lang = $_M['lang'];
@@ -18,7 +18,7 @@ class config_app{
      * @param $list  applist
      * @return mixed 外部app多语言处理
      */
-    public function standard($list) {
+    public function standard($list = array()) {
         global $_M;
         if (!$list['appname']) {
             if($list['field']){
@@ -35,17 +35,17 @@ class config_app{
                 else{
                     $set_url="{$_M['url']['site_admin']}app/dlapp/setapp.php";
                 }
-                $list['url'] = "{$set_url}?lang={$_M['lang']}&id={$list['id']}&anyid={$this->app_anyid}&n={$list['file']}";
+                $list['url'] = "{$set_url}?lang={$_M['lang']}&id={$list['id']}&n={$list['file']}";
                 $list['ico'] = $list['depend'] == 'sys' ?  "{$_M['url']['site']}app/system/{$list['m_name']}/icon.png" : "{$_M['url']['app']}{$list['m_name']}/icon.png";
                 $list['uninstall'] = "{$_M['url']['own_name']}c=myapp&a=dodelapp&no={$list['no']}";
-                if($list['no']>10000)$list['update'] = "{$_M['url']['adminurl']}n=appstore&c=appstore&a=doappdetail&type=app&no={$list['no']}&anyid=65";
+                if($list['no']>10000)$list['update'] = "{$_M['url']['adminurl']}n=appstore&c=appstore&a=doappdetail&type=app&no={$list['no']}";
             }
         } else {
             $list['appname'] = get_word($list['appname']);
-            $list['url'] = "{$_M['url']['site_admin']}index.php?lang={$_M['lang']}&anyid={$this->app_anyid}&n={$list['m_name']}&c={$list['m_class']}&a={$list['m_action']}";
+            $list['url'] = "{$_M['url']['site_admin']}index.php?lang={$_M['lang']}&n={$list['m_name']}&c={$list['m_class']}&a={$list['m_action']}";
             $list['ico'] = $list['depend'] == 'sys' ?  "{$_M['url']['site']}app/system/{$list['m_name']}/icon.png" : "{$_M['url']['app']}{$list['m_name']}/icon.png";
             $list['uninstall'] = "{$_M['url']['own_name']}c=myapp&a=dodelapp&no={$list['no']}";
-            if($list['no']>10000)$list['update'] = "{$_M['url']['adminurl']}n=appstore&c=appstore&a=doappdetail&type=app&no={$list['no']}&anyid=65";
+            if($list['no']>10000)$list['update'] = "{$_M['url']['adminurl']}n=appstore&c=appstore&a=doappdetail&type=app&no={$list['no']}";
             $list['info'] = get_word($list['info']);
         }
         return $list;

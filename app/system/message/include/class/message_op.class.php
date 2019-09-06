@@ -28,7 +28,7 @@ class message_op extends news_op {
   }
   
 	/*复制*/
-	public function list_copy($id, $class1, $class2, $class3, $lang){
+	public function list_copy($classnow = '', $toclass1 ='', $toclass2 = '', $toclass3 = '', $tolang = '', $paras = array()){
     return true;
 	}
 

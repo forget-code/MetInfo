@@ -1,18 +1,18 @@
 <?php
 defined('IN_MET') or exit ('No permission');
 load::sys_class('admin');
-class install extends admin{
+class install{
 
     public $appno = 10070;
-    public $ver = '1.3';
+    public $ver = '1.4';
     public $appname = 'met_sms';
     public $apptitle= '短信功能';
-    public $description = '可以用于批量发送、查看发送记录、流水账，以及充值短信费用';
+    public $description = '可以用于系统通知、短信注册、批量发送';
 
-    public function __construct() {
+    /*public function __construct() {
         global $_M;
         parent::__construct();
-    }
+    }*/
 
      /**
      * 注册应用
@@ -45,7 +45,7 @@ class install extends admin{
 
         }
 
-        $this->addConfig('met_sms_url','https://appv2.metinfo.cn/sms');
+        $this->addConfig('met_sms_url','https://u.mituo.cn/api/sms');
         $this->addConfig('met_sms_token','');
 
     }
@@ -60,6 +60,8 @@ class install extends admin{
         global $_M;
 
         DB::query("UPDATE {$_M['table']['applist']} SET ver = '{$this->ver}' WHERE no = '{$this->appno}'");
+        $query = "UPDATE {$_M['table']['config']} SET value = 'https://u.mituo.cn/api/sms' WHERE name = 'met_sms_url'";
+        DB::query($query);
 
     }
 

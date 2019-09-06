@@ -42,43 +42,42 @@ final class met_view
     public function display(
         $tplFile = null, $cacheTime = -1, $cachePath = null,
         $contentType = "text/html", $show = true
-    )
-    {
+    ) {
         global $_M;
-
-
-        //缓存文件名
-        $cacheName = md5($_SERVER['REQUEST_URI']);
-
-        //缓存时间
-        $cacheTime = is_numeric($cacheTime)
-            ? $cacheTime
-            : -1;
-        //缓存路径
         $cachePath = $cachePath ? $cachePath : TEMP_CACHE_PATH;
 
-        //内容缓存
-        $content_cache = TEMP_CACHE_PATH . '/' .md5($cacheName.md5(serialize($_M['user'])).$tplFile);
-
         $content = null;
-
         if (!$content) {
             /**
              * 全局变量定义
              * 模板使用{$c.xx}方式调用
              */
-            ##load::sys_class('view/ui_compile');
-            $ui_compile = load::sys_class('view/ui_compile','new');
-            $this->vars['g'] =  $ui_compile->list_public_config();
-            $this->vars['c'] =  $ui_compile->replace_sys_config();
-            $this->vars['user'] = load::sys_class('user', 'new')->get_login_user_info();
+            $sys_compile = load::sys_class('view/compile', 'new');
+            if ($sys_compile->template_type == 'tag' || (defined("IN_ADMIN") && ($sys_compile->template_type == 'ui'))) {
+                $this->compile = load::sys_class('view/sys_compile', 'new');
+                // 模板使用$lang.xxx调用模板标签配置
+                $this->vars['lang'] = $this->compile->list_templates_config();
+            } else {
+                $parseFile = PATH_ALL_APP . "met_template/include/class/parse.class.php";
+                if(!file_exists($parseFile)){
+                    die('error templates file is not found');
+                }
+                require_once $parseFile;
+                $this->compile = new parse;
+            }
+
+            $this->vars['g'] = $this->compile->list_public_config(); //模板全局配置
+            $this->vars['c'] = $this->compile->replace_sys_config(); //系统全局配置
 
             /**
              * 模板使用$lang.xxx调用模板标签配置
              */
-            $this->vars['lang'] = $ui_compile->list_templates_config();
-            $this->vars['word'] = $_M['word'];
-            $this->vars['url']  = $_M['url'];
+            ##$this->vars['lang'] = $sys_compile->list_templates_config();
+            ##$this->vars['lang'] = $this->vars['g'];
+
+            $this->vars['word'] = $_M['word'];//语言
+            $this->vars['url'] = $_M['url'];
+            $this->vars['user'] = load::sys_class('user', 'new')->get_login_user_info();
 
             /**
              * 获得模板文件
@@ -89,12 +88,11 @@ final class met_view
                 return;
             }
 
-
             //编译文件
             $this->compileFile
-                = $cachePath
-                . '/_' . substr(md5($this->tplFile.$_M['lang'].intval($_M['form']['pageset'])), 0, 8) . '.php';
-
+            = $cachePath
+            . '/_' . substr(md5($this->tplFile . $_M['lang'] . intval($_M['form']['pageset'])), 0, 8) . '.php';
+            // var_dump($this->compileFile);
             // 编译文件不存在或DEBUG时都会重新编译
             if ($this->compileInvalid($tplFile)) {
 
@@ -108,15 +106,10 @@ final class met_view
             }
 
             ob_start();
-            include($this->compileFile);
+            include $this->compileFile;
             $content = ob_get_clean();
-
-            if (!$_M['form']['pageset'] && M_MODULE == 'web') {
-                #file_put_contents($content_cache, $content);
-            }
-
+           
         }
-
 
         if ($show) {
             $charset = "UTF-8";
@@ -142,27 +135,11 @@ final class met_view
     public function fetch(
         $tplFile = null, $cacheTime = null, $cachePath = null,
         $contentType = "text/html"
-    )
-    {
+    ) {
 
         return $this->display(
             $tplFile, $cacheTime, $cachePath, $contentType, false
         );
-    }
-
-    /**
-     * 验证缓存是否过期
-     *
-     * @param string $cachePath 缓存目录
-     *
-     * @return bool
-     */
-    public function isCache($cachePath = null)
-    {
-        $cachePath = $cachePath ? $cachePath : TEMP_CACHE_PATH;
-        $cacheName = md5($_SERVER['REQUEST_URI']);
-
-        return true;
     }
 
     /**
@@ -175,54 +152,81 @@ final class met_view
     private function getTemplateFile($file)
     {
         global $_M;
+        $filename = $file;
         if (!is_file($file)) {
-            $file_info = explode('/',$file,2);
-            if(count($file_info)>1){
+            $file_info = explode('/', $file, 2);
+            if (count($file_info) > 1) {
+                $m_module = M_MODULE;
+                if (M_CLASS == 'loadtemp' && M_ACTION == 'doviewhtml') {
+                    $m_module = 'admin';
+                    $app_path = PATH_OWN_FILE;
+                    if ($file_info[0] == 'app') {
+                        $app_path = explode('templates/', $this->getTemplateFile($_M['form']['path']));
+                        $app_path=$app_path[0];
+                    }
+                } else if ($file_info[0] == 'app') {
+                    $app_path = PATH_OWN_FILE;
+                }
                 switch ($file_info[0]) {
                     case 'ui_ajax':
-                        $file = PATH_WEB . str_replace('ui_ajax/','public/ui/v2/module/ajax/', $file);
+                        $file = PATH_WEB . str_replace('ui_ajax/', 'public/ui/v2/module/ajax/', $file);
                         break;
                     case 'ui_v2':
-                        $file = PATH_WEB . str_replace('ui_v2/','public/ui/v2/', $file);
-                        if(strpos($file_info[1], 'module/shop/shop_option_ui')!==false) $file=$this->getTemplateFile('app/module/shop_option');
+                        $file = PATH_WEB . str_replace('ui_v2/', 'public/ui/v2/', $file);
+                        if (strpos($file_info[1], 'module/shop/shop_option_ui') !== false) {
+                            $file = $this->getTemplateFile('app/module/shop_option');
+                        }
+
                         break;
                     case 'app':
-                        $folder=M_MODULE=='web'?'/met':'';
-                        $app_path=PATH_OWN_FILE;
-                        if(M_NAME=='product' && $_M['config']['shopv2_open']) $app_path=PATH_APP.'app/shop/'.M_MODULE.'/';
-                        $file = $app_path . str_replace('app/', "templates{$folder}/", $file);
+                        if(M_MODULE=='web' && (M_NAME=='shop' || M_NAME=='product' || M_NAME=='pay')){
+                            if (M_NAME == 'product' && $_M['config']['shopv2_open']) {
+                                $app_path = PATH_APP . 'app/shop/' . $m_module . '/';
+                            }
+                            $file = $app_path . str_replace('app/', "templates/met/", $file);
+                        }else{
+                            $file = $app_path . str_replace('app/', "templates/", $file);
+                        }
+                        break;
+                    case 'sys':
+                        $file = PATH_WEB . str_replace('sys/', 'app/system/', $file);
                         break;
                     case 'sys_admin':
-                        $file = PATH_WEB .str_replace('sys_admin/', 'app/system/include/public/ui/admin/', $file);
+                        $file = PATH_WEB . str_replace('sys_admin/', 'app/system/include/public/ui/admin/', $file);
                         break;
                     case 'sys_web':
-                        $folder=$_M['config']['metinfover']=='v2'?'app/system/include/public/ui/web/':'public/ui/v2/';
-                        $file = PATH_WEB.str_replace('sys_web/', $folder, $file);
+                        $folder = $_M['config']['metinfover'] == 'v2' ? 'app/system/include/public/ui/web/' : 'public/ui/v2/';
+                        $file = PATH_WEB . str_replace('sys_web/', $folder, $file);
                         break;
-                    case 'app_system':
-                        $file = PATH_WEB . str_replace('app_system/','app/system/', $file);
+                    case 'pub':
+                        $file = PATH_WEB . str_replace('pub/', 'app/system/include/templates/' . $m_module . '/', $file);
+                        break;
+                    case 'apps':
+                        $file = PATH_WEB . str_replace('apps/', 'app/app/', $file);
                         break;
                     case 'site':
-                        $file = PATH_WEB . str_replace('site/','', $file);
+                        $file = PATH_WEB . str_replace('site/', '', $file);
                         break;
                     default:
-                        $onlyfile=true;
+                        $onlyfile = true;
                         break;
                 }
-            }else{
-                $onlyfile=true;
+            } else {
+                $onlyfile = true;
             }
-            if($onlyfile){
-                if($file == 'user_sidebar'){
-                    $file = PATH_WEB . 'app/system/user/web/templates/met/sidebar';
-                }else{
+
+            if ($onlyfile) {
+                if ($file == 'user_sidebar') {
+                    $file = PATH_WEB . 'app/system/user/web/templates/sidebar';
+                } else {
                     $file = PATH_TEM . $file;
                 }
             }
+
             /**
              * 添加后缀
              */
-             if (!preg_match('/\.[a-z]+$/i', $file)) {
+            if (!preg_match('/\.[a-z]+$/i', $file)) {
                 $file .= '.php';
             }
         }
@@ -234,6 +238,14 @@ final class met_view
 
             return $file;
         } else {
+
+            if(strstr($filename,'/')){
+                return false;
+            }
+            $default = PATH_WEB."public/ui/v2/".$filename.'.php';
+           if(file_exists($default)){
+               return $default;
+           }
             return false;
         }
     }
@@ -249,7 +261,7 @@ final class met_view
         $tplFile = $this->tplFile;
         $compileFile = $this->compileFile;
         return !is_file($compileFile) || $_M['config']['debug']
-        || (filemtime($tplFile) > filemtime($compileFile));
+            || (filemtime($tplFile) > filemtime($compileFile));
     }
 
     /**

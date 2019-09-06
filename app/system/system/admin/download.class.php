@@ -273,9 +273,9 @@ class download extends admin {
 			$query = "SELECT * FROM {$_M['table']['skin_table']} ORDER BY id DESC";
 			$tem = DB::get_one($query);
 			if(file_exists(PATH_WEB.'templates/'.$tem['skin_name'].'/ui.json')){
-				$tem_url = "{$_M['url']['adminurl']}index.php?lang={$_M['lang']}&n=ui_set&pageset=1";
+				$tem_url = "{$_M['url']['adminurl']}index.php?lang={$_M['lang']}&n=ui_set";
 			}else{
-				$tem_url = "{$_M['url']['adminurl']}n=theme&c=theme&a=doindex&mobile={$tem['devices']}&anyid=70&lang={$_M['lang']}";
+				$tem_url = "{$_M['url']['adminurl']}n=theme&c=theme&a=doindex&mobile={$tem['devices']}&lang={$_M['lang']}";
 			}
 			$html = "<a target=\"_blank\" href=\"{$tem_url}\">{$_M['word']['configuratio_template']}</a>";
 			$html.="<a target=\"_blank\" href=\"https://account.metinfo.cn/profile/template/\">{$_M['word']['appstore_downshowdata_v6']}</a>";

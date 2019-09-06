@@ -21,6 +21,9 @@ class parameter_handle extends handle {
  	public function para_handle_formation($para, $simplify = true) {
  		global $paravalue,$_M;
  		$module=$para[0]['module'];
+ 		!isset($_M['stamp']) && $_M['stamp']=time();
+ 		$_M['stamp']++;
+ 		$stamp=$_M['stamp'];
  		switch ($module) {
  			case 6:
  				// 取消前台必填字段判断
@@ -30,7 +33,7 @@ class parameter_handle extends handle {
  			case 7:
  			    $_M['config']['met_fd_back']=load::mod_class('message/message_database','new')->get_config_val('met_fd_back',7);
  			    $_M['config']['met_fd_sms_back']=load::mod_class('message/message_database','new')->get_config_val('met_fd_sms_back',7);
- 				// $para_need[$_M['config']['met_message_fd_class']]='1';
+ 				// $para_need[$_M['config']['met_m`essage_fd_class']]='1';
  				// $para_need[$_M['config']['met_message_fd_content']]='1';
  				if($_M['config']['met_fd_back']) $para_need[$_M['config']['met_message_fd_email']]='email';
  				if($_M['config']['met_fd_sms_back']) $para_need[$_M['config']['met_message_fd_sms']]='tel';
@@ -43,7 +46,7 @@ class parameter_handle extends handle {
  				// 	$para_need[$_M['config']['met_fd_email']]='email'
  				// };
  				// if($_M['config']['met_fd_sms_back']){
- 				// 	$para_need[$_M['config']['met_fd_sms_dell']]='tel'
+ 				// 	$para_need[$_M['config']['met_fd_sms_tell']]='tel'
  				// };
  				break;
  		}
@@ -179,12 +182,12 @@ class parameter_handle extends handle {
  					case 5:
  						$val['type_html'].="
  						<div class='input-group input-group-file'>
- 							<span class='input-group-btn'>
+ 							<label class='input-group-btn' for='{$val[dataname]}-{$stamp}'>
  								<span class='btn btn-primary btn-file'>
- 									<i class='icon wb-upload' aria-hidden='true'></i>
- 									<input type='file' name='{$val[dataname]}' {$wr_ok} multiple=''>
+ 									<i class='icon wb-upload'></i>
+ 									<input type='file' name='{$val[dataname]}' id='{$val[dataname]}-{$stamp}' {$wr_ok} multiple hidden>
  								</span>
- 							</span>
+ 							</label>
  							<input type='text' class='form-control' readonly=''>
  						</div>";
  					break;

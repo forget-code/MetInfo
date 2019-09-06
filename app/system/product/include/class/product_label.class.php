@@ -29,7 +29,7 @@ class product_label extends news_label {
 	 * @param  string  $type    调用内容com／news(已废掉)／all（默认）
 	 * @return array        		news数组
 	 */
-	public function get_module_list($id, $rows, $type, $order, $para) {
+	public function get_module_list($id, $rows='', $type='', $order='', $para='') {
 		global $_M;
 		$data = parent::get_module_list($id, $rows, $type, $order);
 		if($para){
@@ -61,8 +61,6 @@ class product_label extends news_label {
 
 		return $data;
 	}
-
-
 
 
 	/**

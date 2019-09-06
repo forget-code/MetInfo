@@ -37,7 +37,7 @@ class search_handle extends handle {
 	}
 
 	/*搜索关键词*/
-function get_keyword_str($str, $keyword, $getstrlen, $searchtype, $type){
+function get_keyword_str($str, $keyword, $getstrlen, $searchtype, $type=0){
 	$str=str_ireplace('<p>','&nbsp;',$str);
 	$str=str_ireplace('</p>','&nbsp;',$str);
 	$str=str_ireplace('<br />','&nbsp;',$str);

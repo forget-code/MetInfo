@@ -150,7 +150,7 @@ $.fn.metDataTable=function(){
                                 return false;
                             }
                         });
-                        var this_top=$show_body.offset().top-$this_scroll.offset().top;
+                        var this_top=$show_body.offset().top-($this_scroll.offset()?$this_scroll.offset().top:0);
                         if($this_scroll.scrollTop()>this_top) $this_scroll.scrollTop(this_top);// 页面滚动回表格顶部
                         $('#'+$(this).attr('id')+'_paginate .paginate_button.active').addClass('disabled');
                         // 添加表单验证

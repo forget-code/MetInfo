@@ -3,8 +3,8 @@
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 
 //版本号
-define ('SYS_VER', '6.2.0');
-define ('SYS_VER_TIME', '20190331');
+define ('SYS_VER', '7.0.0');
+define ('SYS_VER_TIME', '20190808');
 
 header("Content-type: text/html;charset=utf-8");
 error_reporting(E_ERROR | E_PARSE | E_CORE_ERROR |E_COMPILE_ERROR | E_USER_ERROR );
@@ -32,6 +32,7 @@ define ('PATH_SYS_CLASS', PATH_WEB."app/system/include/class/");
 define ('PATH_SYS_FUNC', PATH_WEB."app/system/include/function/");
 //系统模板公用文件根目录
 define ('PATH_SYS_PUBLIC', PATH_WEB."app/system/include/public/");
+define ('PATH_STATIC', PATH_APP."static/");
 //系统模块根目录
 define ('PATH_SYS_MODULE', PATH_WEB."app/system/include/module/");
 

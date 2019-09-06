@@ -146,7 +146,7 @@ class profile extends userweb {
 
 	public function dosafety_emailadd() {
 		global $_M;
-		if($_M['form']['p']){
+        if($_M['form']['p']){
 			$auth = load::sys_class('auth', 'new');
 			$email = $auth->decode($_M['form']['p']);
             $email = sqlinsert($email);
@@ -161,7 +161,7 @@ class profile extends userweb {
 			}
 		}else{
 			if($this->userclass->get_user_by_email($_M['form']['email'])){
-				die;
+                okinfo($_M['url']['profile_safety'], $_M['word']['emailhave']);
 			}
 			$valid = load::mod_class('user/web/class/valid','new');
 			if ($valid->get_email($_M['form']['email'],'emailadd')) {

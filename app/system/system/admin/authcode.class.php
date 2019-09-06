@@ -19,20 +19,19 @@ class authcode extends admin {
 		if ($auth->have_auth()) {
 			$info = $auth->authinfo();
 		}
-		$_M['url']['help_tutorials_url']="https://www.metinfo.cn/?langset={$_M['langset']}&helpid=";
-		$_M['url']['help_tutorials_helpid']='faq/shownews1535.htm';
-		require $this->template('own/authcode');
+		return $info;
 	}
 
 	public function doauth() {
 		global $_M;
 		$auth = load::mod_class('system/class/auth', 'new');
-		if($auth->dl_auth($_M['form']['authpass'], $_M['form']['authcode'])){
-			turnover("{$_M['url']['own_form']}a=doindex");
-		} else {
-			turnover("{$_M['url']['own_form']}a=doindex", $_M['word']['authTip2']);
+		$redata['status']=1;
+		$redata['msg']=$_M['word']['jsok'];
+		if(!$auth->dl_auth($_M['form']['authpass'], $_M['form']['authcode'])){
+			$redata['status']=0;
+			$redata['msg']=$_M['word']['authTip2'];
 		}
-
+		$this->ajaxReturn($redata);
 	}
 }
 

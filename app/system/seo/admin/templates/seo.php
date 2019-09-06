@@ -1,103 +1,193 @@
-<!--<?php
-# MetInfo Enterprise Content Management System 
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+<form method="POST" action="{$url.own_name}c=seo&a=doSaveParameter" class='info-form mt-3' data-submit-ajax='1'>
+  <div class="metadmin-fmbx">
+    <h3 class='example-title'>{$word.columnmtitle}{$word.seting}</h3>
+    <dl>
+      <dt>
+        <label class='form-control-label'>{$word.setseohomeKey}</label>
+      </dt>
+      <dd>
+        <div class='form-group clearfix'>
+          <input type="text" name="met_hometitle" class="form-control">
+          <span class="text-help ml-2">{$word.setseoTip10}</span>
+        </div>
+      </dd>
+    </dl>
+    <dl>
+      <dt>
+        <label class='form-control-label'>{$word.setseotitletype}</label>
+      </dt>
+      <dd>
+        <div class='form-group'>
+          <div class="custom-control custom-radio ">
+            <input type="radio" name="met_title_type" value='0' class="custom-control-input met_title_type-0"
+              id="met_title_type-0" />
+            <label class="custom-control-label" for="met_title_type-0">{$word.setseotitletype1}</label>
+          </div>
+          <div class="custom-control custom-radio ">
+            <input type="radio" name="met_title_type" value='1' class="custom-control-input met_title_type-1"
+              id="met_title_type-1" />
+            <label class="custom-control-label" for="met_title_type-1">{$word.setseotitletype3}</label>
+          </div>
+          <div class="custom-control custom-radio ">
+            <input type="radio" name="met_title_type" value='2' class="custom-control-input met_title_type-2"
+              id="met_title_type-2" />
+            <label class="custom-control-label" for="met_title_type-2">{$word.setseotitletype2}</label>
+          </div>
+          <div class="custom-control custom-radio ">
+            <input type="radio" name="met_title_type" value='3' class="custom-control-input met_title_type-3"
+              id="met_title_type-3" />
+            <label class="custom-control-label" for="met_title_type-3">{$word.setseotitletype4}</label>
+          </div>
+          <span class="text-help ">{$word.setseoTip14}</span>
+        </div>
+      </dd>
+    </dl>
+    <dl>
+      <dt>
+        <label class='form-control-label'>{$word.301jump}</label>
+      </dt>
+      <dd>
+        <div class='form-group clearfix'>
+          <input type="checkbox" data-plugin="switchery" name="met_301jump" value='0'>
+          <span class="text-help ml-2">{$word.301jumpDescription}</span>
+        </div>
+      </dd>
+    </dl>
+    <h3 class='example-title'>{$word.unitytxt_25}</h3>
+    <dl>
+      <dt>
+        <label class='form-control-label'>{$word.setseoKey}</label>
+      </dt>
+      <dd>
+        <div class='form-group'>
+          <input type="text" name="met_keywords" class="form-control" />
+          <span class="text-help ml-2">{$word.seotips1}</span>
+        </div>
+      </dd>
+    </dl>
+    <dl>
+      <dt>
+        <label class='form-control-label'>{$word.setseoTip6}</label>
+      </dt>
+      <dd>
+        <div class='form-group'>
+          <input type="text" name="met_alt" class="form-control" />
+          <span class="text-help ml-2">{$word.setseoTip7}</span>
+        </div>
+      </dd>
+    </dl>
+    <dl>
+      <dt>
+        <label class='form-control-label'>{$word.setseoTip8}</label>
+      </dt>
+      <dd>
+        <div class='form-group'>
+          <input type="text" name="met_atitle" class="form-control" />
+          <span class="text-help ml-2">{$word.setseoTip9}</span>
+        </div>
+      </dd>
+    </dl>
+    <dl>
+      <dt>
+        <label class='form-control-label'>{$word.setseoLogoKeyword}</label>
+      </dt>
+      <dd>
+        <div class='form-group'>
+          <input type="text" name="met_logo_keyword" class="form-control" />
+          <span class="text-help ml-2">{$word.temSupport}</span>
+        </div>
+      </dd>
+    </dl>
 
-defined('IN_MET') or exit('No permission');
+    <h3 class='example-title'>{$word.admin_tag_setting1}</h3>
+    <dl>
+      <dt>
+				<label class='form-control-label'>{$word.admin_tag_setting2}</label>
+			</dt>
+          <dd class="form-group">
+              <div class="custom-control custom-radio custom-control-inline">
+                  <input type="radio" id="tag_search_type_2" name="tag_search_type" value='module' class="custom-control-input" data-checked='{$c.tag_search_type}' required/>
 
-require $this->template('ui/head');
-echo <<<EOT
--->
-<form method="POST" class="ui-from" name="myform" action="{$_M[url][own_form]}a=doseoeditor" target="_self">
-<div class="v52fmbx">
-	<h3 class="v52fmbx_hr">{$_M[word][columnmtitle]}{$_M[word][unitytxt_39]}</h3>
-	<dl>
-		<dt>{$_M[word][setseohomeKey]}</dt>
-		<dd class="ftype_input">
-			<div class="fbox">
-				<input name="met_hometitle" type="text" value="{$_M[config][met_hometitle]}" />
-			</div>
-			<span class="tips">{$_M[word][setseoTip10]}</span>
-		</dd>
-	</dl>
-	<dl>
-		<dt>{$_M[word][setseotitletype]}</dt>
-		<dd class="ftype_radio">
-			<div class="fbox">
-				<label><input type="radio" name="met_title_type" value="0" data-checked="{$_M[config][met_title_type]}" />{$_M[word][setseotitletype1]}</label>
-				<label><input type="radio" name="met_title_type" value="1" />{$_M[word][setseotitletype3]}</label>
-				<label><input type="radio" name="met_title_type" value="2" />{$_M[word][setseotitletype2]}</label>
-				<label><input type="radio" name="met_title_type" value="3" />{$_M[word][setseotitletype4]}</label>
-			</div>
-			<span class="tips">{$_M[word][setseoTip14]}</span>
-		</dd>
-	</dl>
-	<h3 class="v52fmbx_hr">{$_M['word']['unitytxt_25']}</h3>
-	<dl>
-		<dt>{$_M[word][setseoKey]}</dt>
-		<dd class="ftype_input">
-			<div class="fbox">
-				<input name="met_keywords" type="text" value="{$_M[config][met_keywords]}" />
-			</div>
-			<span class="tips">{$_M[word][seotips1]}</span>
-		</dd>
-	</dl>
-	<dl>
-		<dt>{$_M[word][setseoTip6]}</dt>
-		<dd class="ftype_input">
-			<div class="fbox">
-				<input name="met_alt" type="text" value="{$_M[config][met_alt]}" />
-			</div>
-			<span class="tips">{$_M[word][setseoTip7]}</span>
-		</dd>
-	</dl>
-	<dl>
-		<dt>{$_M[word][setseoTip8]}</dt>
-		<dd class="ftype_input">
-			<div class="fbox">
-				<input name="met_atitle" type="text" value="{$_M[config][met_atitle]}" />
-			</div>
-			<span class="tips">{$_M[word][setseoTip9]}</span>
-		</dd>
-	</dl>
-<!--	
-	<dl>
-		<dt>{$_M[word][setseoFriendLink]}</dt>
-		<dd class="ftype_input">
-			<div class="fbox">
-				<input name="met_linkname" type="text" value="{$_M[config][met_linkname]}" />
-			</div>
-			<span class="tips">{$_M[word][setseoTip13]}</span>
-		</dd>
-	</dl>
--->
-	<h3 class="v52fmbx_hr">{$_M[word][unitytxt_26]}</h3>
-	<dl>
-		<dt>{$_M[word][setseoFoot]}</dt>
-		<dd class="ftype_ckeditor">
-			<div class="fbox">
-				<textarea name="met_foottext" data-ckeditor-type="1">{$_M['config']['met_foottext']}</textarea>
-			</div>
-		</dd>
-	</dl>
-	<dl>
-		<dt>{$_M[word][setseoTip4]}</dt>
-		<dd class="ftype_ckeditor">
-			<div class="fbox">
-				<textarea name="met_seo" data-ckeditor-type="1">{$_M['config']['met_seo']}</textarea>
-			</div>
-		</dd>
-	</dl>
-	<dl class="noborder">
-		<dt> </dt>
-		<dd>
-			<input type="submit" name="submit" value="{$_M['word']['Submit']}" class="submit">
-		</dd>
-	</dl>
-</div>
+                  <label class="custom-control-label" for="tag_search_type_2">{$word.by_module}</label>
+              </div>
+              <div class="custom-control custom-radio custom-control-inline">
+                  <input type="radio" id="tag_search_type_3" name="tag_search_type" value='column' class="custom-control-input" />
+
+                  <label class="custom-control-label" for="tag_search_type_3">{$word.admin_tag_setting3}</label>
+              </div>
+          </dd>
+      </dl>
+      <dl>
+      <dt>
+				<label class='form-control-label'>{$word.admin_tag_setting4}</label>
+			</dt>
+          <dd class="form-group">
+              <div class="custom-control custom-radio custom-control-inline">
+                  <input type="radio" id="tag_show_range_1" name="tag_show_range" value='0' data-checked='{$c.tag_show_range}' required class="custom-control-input" />
+                  <label class="custom-control-label" for="tag_show_range_1">{$word.search}</label>
+              </div>
+              <div class="custom-control custom-radio custom-control-inline">
+                  <input type="radio" id="tag_show_range_2" name="tag_show_range" value='1' class="custom-control-input" />
+
+                  <label class="custom-control-label" for="tag_show_range_2">{$word.admin_tag_setting5}</label>
+              </div>
+          </dd>
+      </dl>
+      <dl>
+        <dt>
+          <label class='form-control-label'>{$word.admin_tag_setting6}</label>
+        </dt>
+        <dd>
+          <div class='form-group'>
+            <input type="number" name="tag_show_number" class="form-control" value="{$c.tag_show_number}"/>
+          </div>
+        </dd>
+      </dl>
+    <h3 class='example-title'>{$word.404page}</h3>
+    <dl>
+      <dt>
+        <label class='form-control-label'>{$word.404page}</label>
+      </dt>
+      <dd>
+        <div class='form-group clearfix'>
+          <textarea name="met_404content" data-plugin='editor' data-editor-x='700' hidden></textarea>
+      </dd>
+    </dl>
+    <dl>
+      <dt>
+        <label class='form-control-label'>{$word.data_null}</label>
+      </dt>
+      <dd>
+        <div class='form-group'>
+          <textarea type="text" name="met_data_null" class="form-control" rows="5"></textarea>
+          <span class="text-help ml-2">{$word.temSupport}</span>
+        </div>
+      </dd>
+    </dl>
+    <h3 class='example-title'>{$word.unitytxt_26}</h3>
+    <dl>
+      <dt>
+        <label class='form-control-label'>{$word.setseoFoot}</label>
+      </dt>
+      <dd>
+        <div class='form-group clearfix'>
+          <textarea name="met_foottext" data-plugin='editor' data-editor-x='700' hidden></textarea>
+      </dd>
+    </dl>
+    <dl>
+      <dt>
+        <label class='form-control-label'>{$word.setseoTip4}</label>
+      </dt>
+      <dd>
+        <div class='form-group clearfix'>
+          <textarea name="met_seo" data-plugin='editor' data-editor-x='700' hidden></textarea>
+      </dd>
+    </dl>
+    <dl>
+      <dt></dt>
+      <dd>
+        <button type="submit" class='btn btn-primary'>{$word.Submit}</button>
+      </dd>
+    </dl>
+  </div>
 </form>
-<!--
-EOT;
-require $this->template('ui/foot');
-# This program is an open source system, commercial use, please consciously to purchase commercial license.
-# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
-?>

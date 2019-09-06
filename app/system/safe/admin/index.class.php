@@ -2,110 +2,87 @@
 defined('IN_MET') or exit('No permission');
 load::sys_class('admin');
 load::sys_func('file');
-
-class index extends admin {
-    public function __construct() {
+/** 安全与效率 */
+class index extends admin
+{
+    public function __construct()
+    {
         global $_M;
         parent::__construct();
     }
-    public function doindex(){
+
+    //获取设置
+    public function doGetSetup()
+    {
         global $_M;
-        $metinfo_admin_name= get_met_cookie('metinfo_admin_name');
-        $met_login_code=$_M['config']['met_login_code'];
-        $met_memberlogin_code=$_M['config']['met_memberlogin_code'];
-        $met_automatic_upgrade=$_M['config']['met_automatic_upgrade'];
-        $localurl=$_M['config']['met_weburl'];
-        $localurl_admin=$_M['config']['met_weburl'].$_M['config']['met_adminfile'].'/';
-        $feedcfg=DB::get_one("select * from {$_M[table][config]} where lang ='{$_M[form][lang]}' and name='met_fd_word' and columnid = 0");
-        $_M[config][met_fd_word]=$feedcfg[value];
-        if(!is_dir(PATH_WEB.'install'))$installstyle="display:none;";
-        if(!is_dir(PATH_WEB.'update'))$updatestyle="display:none;";
-        $met_login_code1[$met_login_code]="checked='checked'";
-        $met_memberlogin_code1[$met_memberlogin_code]="checked='checked'";
-        $met_automatic_upgrade1[$met_automatic_upgrade]="checked";
-        if($_M[config][met_img_rename]==1)$met_img_rename1="checked='checked'";
-        $query="SELECT * FROM {$_M[table][admin_table]} WHERE admin_id='{$metinfo_admin_name}'";
-        $admin_list =DB::get_one($query);
-        $_M['url']['help_tutorials_helpid']='120';
-        require_once $this->template('own/index');
+        $admin = admin_information();
+        $query = "DELETE FROM {$_M['table']['config']} name='met_fd_word' and columnid != 0";
+        DB::query($query);
+
+        $feedcfg = DB::get_one("SELECT value FROM {$_M['table']['config']} WHERE lang ='{$_M['lang']}' AND name='met_fd_word' AND columnid = 0");
+        $met_fd_word = $feedcfg['value'];
+
+        $list = array();
+        $list['met_login_code'] = isset($_M['config']['met_login_code']) ? $_M['config']['met_login_code'] : '';
+        $list['met_memberlogin_code'] = isset($_M['config']['met_memberlogin_code']) ? $_M['config']['met_memberlogin_code'] : '';
+        $list['met_img_rename'] = isset($_M['config']['met_img_rename']) ? $_M['config']['met_img_rename'] : '';
+        $list['met_file_maxsize'] = isset($_M['config']['met_file_maxsize']) ? $_M['config']['met_file_maxsize'] : '';
+        $list['met_file_format'] = isset($_M['config']['met_file_format']) ? $_M['config']['met_file_format'] : '';
+        $list['met_logs'] = isset($_M['config']['met_logs']) ? $_M['config']['met_logs'] : 0;
+        $list['met_fd_word'] = $met_fd_word;
+        $list['disable_cssjs'] = isset($_M['config']['disable_cssjs'])?$_M['config']['disable_cssjs']:'';
+        if ($admin['admin_group'] == 10000) {
+            //管理与为创始人才显示后台地址设置
+            $list['met_adminfile'] = $_M['config']['met_adminfile'];
+        }
+        $list['install'] = 0;
+
+        if(is_dir(PATH_WEB.'install')) {
+            $list['install'] = 1;
+        }
+
+        $this->success($list);
     }
 
-    /*删除系统安装与升级文件*/
-    public function dodelete(){
+    //删除安装文件
+    public function doDelInstallFile()
+    {
         global $_M;
-        $filename=$_M[form][filename]=='update'?$_M[form][filename]:'install';
-        if($filename=='update')@chmod(PATH_WEB.'update/install.lock',0777);
-           $dir=PATH_WEB.$filename;
-           $dh=opendir($dir);
-           while ($file=readdir($dh)) {
-                if($file!="." && $file!="..") {
-                  $fullpath=$dir."/".$file;
-                  if(!is_dir($fullpath)) {
-                      unlink($fullpath);
-                  } else {
-                      deldir($fullpath);
-                  }
-                }
-            }
-              closedir($dh);
-        if($dir!=PATH_WEB.'upload'){
-            rmdir($dir);
-        }
+        $dir = PATH_WEB . 'install';
+        if (is_dir($dir)) {
+            deldir($dir);
+            //写日志
+            logs::addAdminLog('safety_efficiency','setsafeupdate','jsok','doDelAdmin');
+            $this->success($dir, $_M['word']['jsok']);
+        };
+        //写日志
+        logs::addAdminLog('safety_efficiency','setsafeupdate','opfailed','doDelAdmin');
+        $this->error();
 
-         turnover("{$_M[url][own_form]}a=doindex",$_M[word][success]);
+    }
 
-    } 
-   /*更新数据*/
-   public function doupdate(){
+    //请除模板缓存
+    function clear_cache()
+    {
         global $_M;
-        $current_admin = str_replace($_M['url']['site'], '', trim($_M['url']['site_admin'],'/'));
-        $old_admin = $_M['config']['met_adminfile'];
-        $new_admin = $_M['form']['met_adminfile'];
-
-        if($old_admin != $current_admin){
-            $old_admin = $current_admin;
+        if (file_exists(PATH_WEB . 'cache')) {
+            deldir(PATH_WEB . 'cache', 1);
         }
-
-        $query = "SELECT * FROM {$_M[table][config]} WHERE lang='{$_M[form][lang]}' or lang='metinfo'";
-            $result = DB::query($query);
-            while($list_config= DB::fetch_array($result)){
-                $settings_arr[]=$list_config;
-                $_M[config][$list_config['name']]=$list_config['value'];
-                if($metinfoadminok)$list_config['value']=str_replace('"', '&#34;', str_replace("'", '&#39;',$list_config['value']));
-             }
-       //目录名解密
-         // $_M[config][met_adminfile] = authcode($_M['config']['met_adminfile'], 'DECODE', $_M['config']['met_webkeys']);
-        $met_adminfile_code=authcode($new_admin,'ENCODE',$_M[config][met_webkeys]);
-        if($new_admin != $current_admin){
-           //中文和特殊字符判断
-           if (preg_match("/[\x{4e00}-\x{9fa5}]+/u",$new_admin)) {
-               turnover("{$_M[url][own_form]}a=doindex",$_M[word][js77]);
-               die();
-           }elseif(!preg_match("/^\w+$/u",$new_admin)){
-               turnover("{$_M[url][own_form]}a=doindex",$_M[word][js77]);
-               die();
-           }
-
-            if(!is_dir(PATH_WEB.$old_admin)){
-               turnover("{$_M[url][own_form]}a=doindex",$old_admin.$_M[word][setdbNotExist]);
+        $no = $_M['config']['met_skin_user'];
+        $inc_file = PATH_WEB . "templates/{$no}/metinfo.inc.php";
+        if (file_exists($inc_file)) {
+            require $inc_file;
+            if (isset($template_type) && $template_type) {
+                deldir(PATH_WEB . 'templates/' . $no . '/cache', 1);
             }
-
-            if(is_dir(PATH_WEB.$new_admin)){
-                turnover("{$_M[url][own_form]}a=doindex",$new_admin.$_M[word][columnerr4]);
-            }
-
-            $newname=PATH_WEB.$new_admin;
-
-            if(rename(PATH_WEB.$old_admin,PATH_WEB.$new_admin)){
-             $url = str_replace($current_admin,$new_admin,$_M[url][site_admin]);
-             echo "<script type='text/javascript'> alert('{$_M[word][authTip11]}');  top.location.href='{$url}#metnav_12'; </script>";
-        }else{
-             turnover("{$_M[url][own_form]}a=doindex",$_M[word][adminwenjian]);
-             die();
-         }
         }
+    }
 
-        $old_code = authcode($old_admin, 'DECODE', $_M['config']['met_webkeys']);
+
+    //保存设置
+    public function doSaveSetup()
+    {
+        global $_M;
         $config_list = array();
         $config_list[] = 'met_img_rename';
         $config_list[] = 'met_login_code';
@@ -113,13 +90,65 @@ class index extends admin {
         $config_list[] = 'met_file_maxsize';
         $config_list[] = 'met_file_format';
         $config_list[] = 'met_fd_word';
-        // if($rename){
-            $_M['form']['met_adminfile'] = $met_adminfile_code;
-            $config_list[] = 'met_adminfile';
-        // }
+        $config_list[] = 'met_logs';
+        $config_list[] = 'disable_cssjs';
+
         configsave($config_list);
 
-        turnover("{$_M[url][own_form]}a=doindex",$_M[word][success]);
-      }
+        $current_admin = str_replace($_M['url']['site'], '', trim($_M['url']['site_admin'], '/'));
+        $old_admin = $_M['config']['met_adminfile'];
+        $new_admin = isset($_M['form']['met_adminfile']) ? $_M['form']['met_adminfile'] : '';
+        //目录名解密
+        $new_admin_url = '';
+        if (is_string($new_admin) && $new_admin != $old_admin && $current_admin == $old_admin) {
+            $new_admin_url = $_M['url']['site'].$_M['form']['met_adminfile'];
+            //中文和特殊字符判断
+            if (preg_match("/[\x{4e00}-\x{9fa5}]+/u", $new_admin)) {
+                //写日志
+                logs::addAdminLog('safety_efficiency','save','js77','doSaveSetup');
+                $this->error($_M['word']['js77']);
+            } elseif (!preg_match("/^\w+$/u", $new_admin)) {
+                //写日志
+                logs::addAdminLog('safety_efficiency','save','js77','doSaveSetup');
+                $this->error($_M['word']['js77']);
+            }
 
+            if (!is_dir(PATH_WEB . $old_admin)) {
+                //写日志
+                logs::addAdminLog('safety_efficiency','save','setdbNotExist','doSaveSetup');
+                $this->error($old_admin . $_M['word']['setdbNotExist']);
+            }
+            if (is_dir(PATH_WEB . $new_admin)) {
+                //写日志
+                logs::addAdminLog('safety_efficiency','save','columnerr4','doSaveSetup');
+                $this->error($new_admin . $_M['word']['columnerr4']);
+            }
+            $res = rename(PATH_WEB . $old_admin, PATH_WEB . $new_admin);
+            if (!$res) {
+                //写日志
+                movedir(PATH_WEB . $old_admin, PATH_WEB . $new_admin);
+                if (!is_dir(PATH_WEB . $new_admin)){
+                    logs::addAdminLog('safety_efficiency','save','authTip12','doSaveSetup');
+                    $this->error($_M['word']['rename_admin_dir']);
+                }
+            }else{
+                //后台地址加密字段
+                $met_adminfile_code = authcode($new_admin, 'ENCODE', $_M['config']['met_webkeys']);
+                $_M['form']['met_adminfile'] = $met_adminfile_code;
+                configsave(array('met_adminfile'));
+            }
+        }
+
+
+        //写日志
+        logs::addAdminLog('safety_efficiency','save','jsok','doSaveSetup');
+        $return_data = array();
+        if ($new_admin_url) {
+            $return_data['url'] = str_replace($old_admin,$new_admin,$_SERVER['HTTP_REFERER']);
+        }
+
+        deldir(PATH_WEB . 'cache/templates/',1);
+
+        $this->success($return_data,$_M['word']['jsok']);
+    }
 }

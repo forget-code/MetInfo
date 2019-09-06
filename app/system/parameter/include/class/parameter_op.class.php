@@ -18,9 +18,10 @@ class parameter_op {
 	public function __construct() {
 		global $_M;
 		if(IN_ADMIN){
-			$this->preg = '/^info_([0-9]+)/';
-		}else{
-			$this->preg = '/^para([0-9]+)/';
+            #$this->preg = '/^info_([0-9]+)/';
+            $this->preg = '/^para-([0-9]+)/';
+        }else{
+            $this->preg = '/^para([0-9]+)/';
 		}
 		$this->parameter_database = load::mod_class('parameter/parameter_database', 'new');
 	}
@@ -55,7 +56,7 @@ class parameter_op {
 	 * @param  number  $id      一级栏目
 	 * @return array            表单数组
 	 */
-	public function insert($listid, $module, $paras) {
+	public function insert($listid = '', $module = '', $paras = array()) {
 		global $_M;
 		$mod = $this->name_to_num($module);
 		$list = array();
@@ -99,9 +100,13 @@ class parameter_op {
 	 * @param  number  $id      一级栏目
 	 * @return array            表单数组
 	 */
-	public function update($listid, $module, $paras) {
+	public function update($listid = '', $module = '', $paras = array()) {
 		global $_M;
-		$mod = $this->name_to_num($module);
+        if (is_numeric($module)) {
+            $mod = $module;
+        }else{
+            $mod = $this->name_to_num($module);
+        }
 		$list = array();
 		foreach ($paras as $key => $val) {
 
@@ -126,38 +131,40 @@ class parameter_op {
 			$this->parameter_database->delete_list($listid, $key,$module);
 			if(strstr($val, '|')){
 				foreach (explode('|', $val) as $v) {
+                    $imgname = '';
 					$this->parameter_database->insert_list($listid, $key, $v, $imgname, $_M['lang'], $module);
 				}
 			}else{
-				$val = trim($val, ',');
-				$paraid = $this->parameter_database->update_list($listid, $key, $val, '', $module);
+                $val = trim($val, ',');
+                $paraid = $this->parameter_database->update_list($listid, $key, $val, '', $module);
 			}
 		}
-		return ture;
+        return true;
 	}
 
-	public function paratem($listid,$module,$class1,$class2,$class3){
+    public function paratem($listid = '',$module = '',$class1 = '',$class2 = '',$class3 = ''){
 		global $_M;
 
 		$paralist = $this->get_para_list($module,$class1,$class2,$class3);
-
 		foreach ($paralist as $key => $para) {
 			$list = $this->parameter_database->get_parameters($module,$para['id']);
-			$paralist[$key]['list'] = $list;
-			$values = array();
+            $paralist[$key]['list'] = $list;
 			if($para['type'] ==4 || $para['type'] ==2 || $para['type'] ==6){
+                $values = array();
 				foreach ($list as $val) {
-					$query = "SELECT * FROM {$_M['table']['plist']} WHERE listid = {$listid} AND paraid={$para['id']} AND module={$module} AND info = '{$val['id']}' AND lang = '{$_M['lang']}'";
-					$para_value = DB::get_one($query);
-
-					if($para_value){
-						$values[] = $para_value['info'];
-					}
-				}
-			}else{
-				$query = "SELECT * FROM {$_M['table']['plist']} WHERE listid = {$listid} AND paraid={$para['id']} AND module={$module} AND lang = '{$_M['lang']}'";
-				$para_value = DB::get_one($query);
-				$values = $para_value['info'];
+                    $query = "SELECT * FROM {$_M['table']['plist']} WHERE listid = {$listid} AND paraid={$para['id']} AND module={$module} AND info = '{$val['id']}' AND lang = '{$_M['lang']}'";
+                    $para_value = DB::get_one($query);
+                    if($para_value){
+                        $values[] = $para_value['info'];
+                    }
+                }
+                $query = "SELECT * FROM {$_M['table']['plist']} WHERE listid = {$listid} AND paraid={$para['id']} AND module={$module} AND lang = '{$_M['lang']}'";
+                $para_value = DB::get_one($query);
+                $values = $para_value['info'];
+            }else{
+                $query = "SELECT * FROM {$_M['table']['plist']} WHERE listid = {$listid} AND paraid={$para['id']} AND module={$module} AND lang = '{$_M['lang']}'";
+                $para_value = DB::get_one($query);
+                $values = $para_value['info'];
 			}
 
 
@@ -167,10 +174,11 @@ class parameter_op {
 				$paralist[$key]['value'] = $values;
 			}
 		}
-		require PATH_WEB.'app/system/include/public/ui/admin/paratype.php';
+		return $paralist;
+		##require PATH_WEB.'app/system/include/public/ui/admin/paratype.php';
 	}
 
-	public function get_para($listid,$module,$class1,$class2,$class3){
+    public function get_para($listid,$module,$class1,$class2,$class3){
 		global $_M;
 		$paralist = $this->get_para_list($module,$class1,$class2,$class3);
 		$list = $this->parameter_database->get_list($listid, $module);
@@ -203,9 +211,9 @@ class parameter_op {
 		return $list;
 	}
 
-	public function get_para_list($module,$class1,$class2,$class3){
+    public function get_para_list($module = '',$class1 = '',$class2 = '',$class3 = ''){
 		global $_M;
-		$re = $this->parameter_database->get_parameter($module);
+		$re = $this->parameter_database->get_parameter($module, $class1 ,$class2 ,$class3);
 		$paralists = array();
 		foreach($re as $val){
 			$val['list'] = $val['para_list'];
@@ -223,8 +231,13 @@ class parameter_op {
 		return $re;
 	}
 
+    public function del_plist($listid = '', $module = '')
+    {
+        return $this->parameter_database->del_plist($listid, $module);
+    }
+
 	//复制字段内容
-	public function copy_list($module, $listid, $paraid, $tolistid, $toparaid, $tolang){
+	public function copy_para_list($module = '', $listid = '', $paraid = '', $tolistid = '', $toparaid = '', $tolang = ''){
 		$para_list = load::mod_class('parameter/parameter_list_database', 'new');
 		$para_list->construct($module);
 		$list = $para_list->select_by_listid_paraid($listid, $paraid);
@@ -232,23 +245,42 @@ class parameter_op {
 			$list['id'] = '';
 			$list['listid'] = $tolistid;
 			$list['paraid'] = $toparaid ? $toparaid : $list['paraid'];
-			$list['lang'] = $tolang ? $tolang : $list['paraid'];
+			$list['lang'] 	= $tolang ;
 			return $para_list->insert($list);
 		}
 	}
 
 	//复制字段
 	public function copy_parameter($classnow, $toclass1, $toclass2, $toclass3, $tolang){
-		$c = load::sys_class('label', 'new')->get('column')->get_column_id($classnow);
 		$paras = $this->parameter_database->get_list_by_class_no_next($classnow);
+        $global_para = array();
 		foreach($paras as $key => $val) {
-			$list = $val;
-			$list['class1'] = $toclass1;
-			$list['class2'] = $toclass2;
-			$list['class3'] = $toclass3;
-			$list['lang'] = $tolang;
-			unset($list['id']);
-			$pids[$val['id']] = $this->parameter_database->insert($list);
+            if ($val['class1'] == 0 && $toclass1 != 0) {
+                continue;
+            }
+            $list = $val;
+            $list['class1'] = $toclass1;
+            $list['class2'] = $toclass2;
+            $list['class3'] = $toclass3;
+            $list['lang'] 	= $tolang;
+            unset($list['id']);
+            $id = $this->parameter_database->insert($list);
+            $pids[$val['id']] = $id;
+            if (in_array($val['type'],array(2,4,6)) ){
+                $options = $this->parameter_database->get_parameters($val['module'],$val['id']);
+                if ($options) {
+                    foreach ($options as $para) {
+                        $option = array();
+                        $option['pid'] 	  = $id;
+                        $option['value']  = $para['value'];
+                        $option['module'] = $para['module'];
+                        $option['order']  = $para['order'];
+                        $option['lang']   = $tolang;
+                        $this->parameter_database->add_parameter($option,$tolang);
+                    }
+                }
+            }
+
 		}
 		return $pids;
 	}

@@ -6,36 +6,44 @@ defined('IN_MET') or exit('No permission');
 
 load::sys_class('web');
 
-class search extends web {
-	public function __construct() {
-		global $_M;
-		parent::__construct();
-	}
+class search extends web
+{
+    public function __construct()
+    {
+        global $_M;
+        parent::__construct();
+    }
 
 
-  public function dosearch() {
-      global $_M;
-      $classnow = $this->input_class();
-      $data = load::sys_class('label', 'new')->get('column')->get_column_id($classnow);
-      $this->check($data['access']);
-      if ($_M['form']['searchword']) {
-          if($_M['form']['searchtype']){
-              $this->seo($_M['form']['searchword'].'-'.$data['name'], $data['keywords'], $data['description']);
-          }else{
-              $this->seo($_M['form']['searchword'], $data['keywords'], $data['description']);
-          }
-      }else{
-          $this->seo($data['name']);
-      }
-      $this->seo_title($data['ctitle']);
-      // $this->input['searchword'] = $_M['form']['searchword'];
-      // $this->input['class1'] = $_M['form']['class1'];
-      // $this->input['type'] = $_M['form']['class1'];//all title contents para
-      $this->add_input('searchword', urldecode($_M['form']['searchword']));
+    public function dosearch()
+    {
+        global $_M;
+        $classnow = $this->input_class();
+        $_M['config']['met_search_list'] = $this->input['list_length'] ;
+        $data = load::sys_class('label', 'new')->get('column')->get_column_id($classnow);
+        $this->check($data['access']);
 
-      require_once $this->template('tem/search', $this->input);
-  }
+        if ($_M['form']['searchword']) {
+            if(!preg_match('/^[<0-9a-zA-Z\x{4e00}-\x{9fa5}>]+$/u',$_M['form']['searchword'])){
+                $_M['form']['searchword'] = '';
+            }
+            if($_M['form']['search'] != 'tag'){
+                $_M['form']['search'] = 'search';
+            }else{
+                $_M['form']['searchword'] = load::sys_class('label', 'new')->get('tags')->getTagName($_M['form']['searchword']);
+            }
+            $this->seo($_M['form']['searchword'], $data['keywords'], $data['description']);
+        } else {
+            $this->seo($data['name']);
+        }
+        $this->seo_title($data['ctitle']);
 
+        load::sys_class('handle', 'new')->redirectUrl($this->input);
+        $this->add_input('searchword', urldecode($_M['form']['searchword']));
+
+        $this->view('search', $this->input);
+
+    }
 }
 
 # This program is an open source system, commercial use, please consciously to purchase commercial license.

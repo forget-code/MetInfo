@@ -12,7 +12,7 @@ class session{
     }
 
     public function start(){
-        #$ip=$this->getip();
+        ##$ip=$this->getip();
         session_id(md5($_SERVER['HTTP_USER_AGENT']));
 
         session_start();

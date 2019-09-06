@@ -31,7 +31,7 @@ class feedback_label extends message_label{
 		global $_M;
 		$return['para'] = load::mod_class('parameter/parameter_label', 'new')->get_parameter_form('feedback',$id);
 		$return['config']['url'] = load::mod_class('feedback/feedback_handle', 'new')->module_form_url($id);
-		$return['config']['lang']['submit'] = $_M['word']['submit'];
+		$return['config']['lang']['submit'] = $_M['word']['Submit'];
 		$return['config']['lang']['title'] = '';
 		return $return;
   }

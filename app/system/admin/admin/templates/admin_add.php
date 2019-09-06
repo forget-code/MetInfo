@@ -1,202 +1,216 @@
-<!--<?php
-# MetInfo Enterprise Content Management System
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
-
-defined('IN_MET') or exit('No permission');
-
-require $this->template('ui/head');
-echo <<<EOT
--->
-
-<link rel="stylesheet" href="{$_M[url][own_tem]}css/metinfo.css?{$jsrand}" />
-<form method="POST" class="ui-from" name="myform" action="{$_M[url][own_form]}a={$a}" target="_self">
-	<input type="hidden" name='id' value="{$_M['form']['id']}" />
-    <div class="v52fmbx">
-    <h3 class="v52fmbx_hr">{$_M['word']['admininfo']}</h3>
-    <dl>
-    	<dt>{$_M['word']['adminusername']}</dt>
-    	<dd class="ftype_input">
-    		<div class="fbox">
-    			<input type="text" name="admin_id" value="{$list['admin_id']}" data-required="1">
-    		</div>
-    	</dd>
-    </dl>
-    <dl>
-      <dt>{$_M['word']['adminpassword']}</dt>
-      <dd class="ftype_input">
-        <div class="fbox">
-          <input type="password" name="admin_pass" value="" >
-        </div>
-      </dd>
-    </dl>
-    <dl>
-      <dt>{$_M['word']['adminpassword1']}</dt>
-      <dd class="ftype_input">
-        <div class="fbox">
-          <input type="password" name="admin_pass_replay" value=""  data-password="admin_pass">
-        </div>
-      </dd>
-    </dl>
-    <dl>
-      <dt>{$_M['word']['adminname']}</dt>
-      <dd class="ftype_input">
-        <div class="fbox">
-          <input type="text" name="admin_name" value="{$list['admin_name']}">
-        </div>
-      </dd>
-    </dl>
-    <dl>
-      <dt>{$_M['word']['admin_email']}</dt>
-      <dd class="ftype_input">
-        <div class="fbox">
-          <input type="text" name="admin_email" value="{$list['admin_email']}">
-        </div>
-      </dd>
-    </dl>
-    <h3 class="v52fmbx_hr">{$_M['word']['admintips7']}</h3>
-    <dl>
-    	<dt>{$_M['word']['admintips7']}</dt>
-    	<dd class="ftype_radio">
-    		<div class="fbox">
-    			<label><input name="admin_group" type="radio" value="1" data-checked="{$list['admin_group']}">{$_M['word']['managertyp4']}</label>
-    			<label><input name="admin_group" type="radio" value="2">{$_M['word']['managertyp3']}</label>
-    			<label><input name="admin_group" type="radio" value="3">{$_M['word']['managertyp2']}</label>
-          <label><input name="admin_group" type="radio" value="0">{$_M['word']['managertyp5']}</label>
-    		</div>
-    	</dd>
-    </dl>
-    <dl>
-    	<dt>{$_M['word']['adminjurisd']}</dt>
-    	<dd class="ftype_checkbox">
-    		<div class="fbox">
-    			<label><input name="langok" type="checkbox" value="#metinfo#" data-checked="{$list['lang_check']}" class="lang-select-all">{$_M['word']['admintips1']}</label>
-<!--
-EOT;
-foreach($list['lang'] as $key=>$val){
-echo <<<EOT
--->
-          <label><input name="langok" type="checkbox" value="{$val['mark']}" class="lang-select-one">{$val['name']}</label>
-<!--
-EOT;
-}
-echo <<<EOT
--->
-    		</div>
-    		<span class="tips">{$_M['word']['admintips2']}</span>
-    	</dd>
-    </dl>
-    <dl>
-      <dt>{$_M['word']['permission_upgrade']}</dt>
-      <dd class="ftype_checkbox">
-        <div class="fbox">
-          <label><input name="admin_pop" type="checkbox" value="s1801" />{$_M['word']['upfiletips42']}</label>
-        </div>
-      </dd>
-    </dl>
-    <dl>
-    <dt>{$_M[word][veditor]}</dt>
-      <dd class="ftype_checkbox">
-        <div class="fbox">
-          <label><input name="admin_pop" type="checkbox" value="s1802" />{$_M[word][veditortips1]}</label>
-        </div>
-      </dd>
-    </dl>
-    <dl>
-      <dt>{$_M['word']['adminPower']}</dt>
-      <dd class="ftype_checkbox">
-        <div class="fbox">
-          <label><input name="admin_issueok" type="checkbox" value="1" data-checked="{$list['admin_issueok']}">{$_M['word']['adminTip2']}</label>
-        </div>
-      </dd>
-    </dl>
-    <dl>
-      <dt>{$_M['word']['adminOperate']}</dt>
-      <dd class="ftype_checkbox">
-        <div class="fbox">
-          <label><input name="admin_op" class="op-select-all" type="checkbox" value="metinfo" data-checked="{$list['op_check']}">{$_M['word']['adminOperate1']}</label>
-          <label><input name="admin_op" class="op-select-one" type="checkbox" value="add">{$_M['word']['adminOperate2']}</label>
-          <label><input name="admin_op" class="op-select-one" type="checkbox" value="editor">{$_M['word']['adminOperate3']}</label>
-          <label><input name="admin_op" class="op-select-one" type="checkbox" value="del">{$_M['word']['adminOperate4']}</label>
-        </div>
-      </dd>
-    </dl>
-
-    <dl>
-      <dt>{$_M['word']['adminOperate']}</dt>
-      <dd class="ftype_checkbox ftype_transverse">
-        <div class="fbox">
-          <label><input name="admin_pop" id="opwer-id" class="opwer-select-all" type="checkbox" value="#metinfo#" data-checked="{$list['pop_check']}"><input type="hidden" id="admin_pop_list" name="admin_pop_str">{$_M['word']['adminSelectAll']}</label>
-        </div>
-<!--
-EOT;
-foreach($metinfocolumn as $mkey=>$mval){
-echo <<<EOT
--->
-        <div class="fbox admin_poplistdiv">
-        <h2>{$mval['info']['name']}</h2>
-        <div class="x2">
-<!--
-EOT;
-  foreach($mval['next'] as $nkey=>$nval){
-echo <<<EOT
--->
-
-          <label><input name="admin_pop" class="opwer-select-one" type="checkbox" value="{$nval['field']}">{$nval['name']}</label>
-<!--
-EOT;
-  }
-echo <<<EOT
--->
-        </div>
-        <div class="x3">
-<!--
-EOT;
-  foreach($mval['next2'] as $n2key=>$n2val){
-echo <<<EOT
--->
-          <div class="adpopcnkdiv">
-          <div class="x5">
-          <h2>{$n2val['info']['name']}</h2>
-          </div>
-          <div class="x6">
-<!--
-EOT;
-    foreach($n2val['column'] as $n2ckey=>$n2cval){
-echo <<<EOT
--->
-          <label><input name="admin_pop" class="opwer-select-one {$n2cval['column_lang']}" type="checkbox" value="{$n2cval['field']}" {$n2cval['data_lang']}>{$n2cval['name']}</label>
-<!--
-EOT;
-    }
-echo <<<EOT
--->
-        </div>
-        </div>
-<!--
-EOT;
-  }
-echo <<<EOT
--->
-        </div>
-        </div>
-<!--
-EOT;
-}
-echo <<<EOT
--->
-      </dd>
-    </dl>
-    <dl class="noborder">
-      <dt> </dt>
-      <dd>
-        <input type="submit" name="submit" value="{$_M['word']['Submit']}" class="submit">
-      </dd>
-    </dl>
-    </div>
-</form>
-<!--
-EOT;
-require $this->template('ui/foot');
-# This program is an open source system, commercial use, please consciously to purchase commercial license.
-# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+<?php 
+ $time = time();
 ?>
+<form method="POST" action="{$url.own_name}c=index&a=doSaveSetup" class="link-form" data-submit-ajax="1">
+  <div class="metadmin-fmbx">
+    <h3 class="example-title">{$word.admininfo}</h3>
+    <dl>
+      <dt>
+        <label class="form-control-label">{$word.adminusername}</label>
+      </dt>
+      <dd>
+        <div class="form-group clearfix">
+          <input type="text" name="admin_id" class="form-control" required autocomplete="new-password" />
+        </div>
+      </dd>
+    </dl>
+    <dl>
+      <dt>
+        <label class="form-control-label">{$word.adminpassword}</label>
+      </dt>
+      <dd>
+        <div class="form-group clearfix">
+          <input type="password" name="admin_pass" class="form-control" autocomplete="new-password" required />
+        </div>
+      </dd>
+    </dl>
+    <dl>
+      <dt>
+        <label class="form-control-label">{$word.adminpassword1}</label>
+      </dt>
+      <dd>
+        <div class="form-group clearfix">
+          <input type="password" name="admin_pass_replay" class="form-control" required
+            data-fv-notEmpty-message="{$word.formerror1}" data-fv-identical="true" data-fv-identical-field="admin_pass"
+            data-fv-identical-message="{$word.formerror5}" />
+        </div>
+      </dd>
+    </dl>
+    <dl>
+      <dt>
+        <label class="form-control-label">{$word.adminname}</label>
+      </dt>
+      <dd>
+        <div class="form-group clearfix">
+          <input type="text" name="admin_name" class="form-control" />
+        </div>
+      </dd>
+    </dl>
+    <dl>
+      <dt>
+        <label class="form-control-label">{$word.adminmobile}</label>
+      </dt>
+      <dd>
+        <div class="form-group clearfix">
+          <input type="text" name="admin_mobile" class="form-control" />
+        </div>
+      </dd>
+    </dl>
+    <dl>
+      <dt>
+        <label class="form-control-label">{$word.admin_email}</label>
+      </dt>
+      <dd>
+        <div class="form-group clearfix">
+          <input type="text" name="admin_email" class="form-control" />
+        </div>
+      </dd>
+    </dl>
+    <h3 class="example-title">{$word.admintips7}</h3>
+    <dl>
+      <dt>
+        <label class="form-control-label">{$word.admintips7}</label>
+      </dt>
+      <dd>
+        <div class="form-group clearfix">
+          <div class="custom-control custom-radio ">
+            <input type="radio" id="admin_group-1-{$time}" name="admin_group" value="1" class="custom-control-input" />
+            <label class="custom-control-label" for="admin_group-1-{$time}">{$word.managertyp4}</label>
+          </div>
+          <div class="custom-control custom-radio ">
+            <input type="radio" id="admin_group-2-{$time}" name="admin_group" value="2" class="custom-control-input" />
+            <label class="custom-control-label" for="admin_group-2-{$time}">{$word.managertyp3}</label>
+          </div>
+          <div class="custom-control custom-radio ">
+            <input type="radio" id="admin_group-3-{$time}" name="admin_group" value="3" class="custom-control-input"
+              checked="checked" />
+            <label class="custom-control-label" for="admin_group-3-{$time}">{$word.managertyp2}</label>
+          </div>
+          <div class="custom-control custom-radio ">
+            <input type="radio" id="admin_group-0-{$time}" name="admin_group" value="0" class="custom-control-input" />
+            <label class="custom-control-label" for="admin_group-0-{$time}">{$word.managertyp5}</label>
+          </div>
+        </div>
+      </dd>
+    </dl>
+    <dl>
+      <dt>
+        <label class="form-control-label">{$word.adminjurisd}</label>
+      </dt>
+      <dd>
+        <div class="form-group clearfix">
+          <div class="custom-control custom-checkbox ">
+            <input type="checkbox" id="langok_1-{$time}" name="langok" value="metinfo"
+              class="custom-control-input lang-select-all" data-delimiter="-" checked="checked" disabled="disabled" />
+            <label class="custom-control-label" for="langok_1-{$time}">{$word.admintips1}</label>
+          </div>
+          <list data="$_M['langlist']['web']" name="$lang">
+            <div class="custom-control custom-checkbox ">
+              <input type="checkbox" id="checkbox-{$lang.lang}-{$time}" name="langok" value="{$lang.lang}"
+                data-delimiter="-" class="custom-control-input lang-select-item" checked="checked"
+                disabled="disabled" />
+              <label class="custom-control-label" for="checkbox-{$lang.lang}-{$time}">{$lang.name}</label>
+            </div>
+          </list>
+          <span class="text-help">{$word.admintips2}</span>
+        </div>
+      </dd>
+    </dl>
+    <dl>
+      <dt>
+        <label class="form-control-label">{$word.admin_login_lang}</label>
+      </dt>
+      <dd>
+        <div class="form-group clearfix">
+          <list data="$_M['langlist']['admin']" name="$lang">
+            <div class="custom-control custom-radio ">
+              <input type="radio" id="radio-{$lang.lang}-{$time}" name="admin_login_lang" value="{$lang.lang}"
+                class="custom-control-input" <if value="$lang['id'] eq 1"> checked="checked"</if>
+              disabled="disabled" />
+              <label class="custom-control-label" for="radio-{$lang.lang}-{$time}">{$lang.name}</label>
+            </div>
+          </list>
+        </div>
+      </dd>
+    </dl>
+
+    <dl>
+      <dt>
+        <label class="form-control-label">{$word.veditor}</label>
+      </dt>
+      <dd>
+        <div class="form-group clearfix">
+          <div class="custom-control custom-checkbox ">
+            <input type="checkbox" id="admin_pop-s1802-{$time}" name="admin_pop" value="s1802" data-delimiter="-"
+              checked="checked" class="custom-control-input" disabled="disabled" />
+            <label class="custom-control-label" for="admin_pop-s1802-{$time}">{$word.veditortips1}</label>
+          </div>
+        </div>
+      </dd>
+    </dl>
+    <dl>
+      <dt>
+        <label class="form-control-label">{$word.adminPower}</label>
+      </dt>
+      <dd>
+        <div class="form-group clearfix">
+          <div class="custom-control custom-checkbox ">
+            <input type="checkbox" id="admin_issueok-{$time}" name="admin_issueok" value="1"
+              class="custom-control-input" disabled="disabled" />
+            <label class="custom-control-label" for="admin_issueok-{$time}">{$word.adminTip2}</label>
+          </div>
+          <div class="custom-control custom-checkbox ">
+            <input type="checkbox" id="admin_check-{$time}" name="admin_check" value="1"
+              class="custom-control-input" disabled="disabled" />
+            <label class="custom-control-label" for="admin_check-{$time}">{$word.adminTip3}</label>
+          </div>
+        </div>
+      </dd>
+    </dl>
+    <dl>
+      <dt>
+        <label class="form-control-label">{$word.adminOperate}</label>
+      </dt>
+      <dd>
+        <div class="form-group clearfix">
+          <div class="custom-control custom-checkbox ">
+            <input type="checkbox" id="admin_op_1-{$time}" name="admin_op" value="metinfo" data-delimiter="-"
+              checked="checked" class="custom-control-input admin_op_1" disabled="disabled" />
+            <label class="custom-control-label" for="admin_op_1-{$time}">{$word.adminOperate1}</label>
+          </div>
+          <div class="custom-control custom-checkbox ">
+            <input type="checkbox" id="admin_op_2-{$time}" name="admin_op" value="add" data-delimiter="-"
+              checked="checked" class="custom-control-input admin_op_2 admin_op" disabled="disabled" />
+            <label class="custom-control-label" for="admin_op_2-{$time}">{$word.adminOperate2}</label>
+          </div>
+          <div class="custom-control custom-checkbox ">
+            <input type="checkbox" id="admin_op_3-{$time}" name="admin_op" value="editor" data-delimiter="-"
+              checked="checked" class="custom-control-input admin_op" disabled="disabled" />
+            <label class="custom-control-label" for="admin_op_3-{$time}">{$word.adminOperate3}</label>
+          </div>
+          <div class="custom-control custom-checkbox ">
+            <input type="checkbox" id="admin_op_4-{$time}" name="admin_op" value="del" data-delimiter="-"
+              checked="checked" class="custom-control-input admin_op" disabled="disabled" />
+            <label class="custom-control-label" for="admin_op_4-{$time}">{$word.adminOperate4}</label>
+          </div>
+        </div>
+      </dd>
+    </dl>
+    <dl>
+      <dt>
+        <label class="form-control-label">{$word.adminFunOperate}</label>
+      </dt>
+      <dd>
+        <div class="form-group clearfix">
+          <div class="custom-control custom-checkbox ">
+            <input type="checkbox" name="admin_pop" class="custom-control-input role admin_pop_all"
+              id="admin_pop_all-{$time}" disabled="disabled" checked="checked" value="metinfo" data-delimiter="-" />
+            <label class="custom-control-label" for="admin_pop_all-{$time}">{$word.adminSelectAll}</label>
+          </div>
+        </div>
+        <div class="admin-operate"></div>
+      </dd>
+    </dl>
+    <input name="id" hidden />
+  </div>
+</form>

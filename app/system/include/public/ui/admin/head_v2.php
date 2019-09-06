@@ -2,23 +2,10 @@
 # MetInfo Enterprise Content Management System
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 defined('IN_MET') or exit('No permission');
-// 判断来源页面是否有pageset=1 ，如果有而本页url没有pageset=1，则本页加上pageset=1跳转
-if(strpos($_SERVER['HTTP_REFERER'], 'pageset=1')!==false && !$_M['form']['pageset'] && !$_M['form']['nopageset'] && strpos($_SERVER['HTTP_REFERER'], 'nopageset=1')===false){
-    echo '<script>
-        var newurl=location.href;
-        if(location.search!=""){
-            newurl+="&pageset=1";
-        }else{
-            newurl+="?pageset=1";
-        }
-        location.href=newurl;
-    </script>';
-    die;
-}
+$_M['form']['pageset']=1;
 if($_M['word']['metinfo']){
     $met_title.='-'.$_M['word']['metinfo'];
 }
-$met_file_version=str_replace('.','',$_M['config']['metcms_v']).$_M['config']['met_patch'];
 $is_lte_ie9=strpos($_SERVER["HTTP_USER_AGENT"],"MSIE 9")!==false || strpos($_SERVER["HTTP_USER_AGENT"],"MSIE 8")!==false;
 if($is_lte_ie9){
     $basic_admin_css_filemtime_1 = filemtime(PATH_WEB.'public/ui/v2/static/css/basic_admin-lteie9-1.css');
@@ -37,7 +24,7 @@ if($is_lte_ie9){
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0,minimal-ui">
 <meta name="format-detection" content="telephone=no">
 <title>{$met_title}</title>
-<meta name="generator" content="MetInfo {$_M['config']['metcms_v']}" data-variable="{$_M['url']['site']}|{$_M['lang']}|{$_M['config']['met_skin_user']}||||" data-m_type="{$_M['config']['m_type']}">
+<meta name="generator" content="MetInfo {$_M['config']['metcms_v']}" data-variable="{$_M['url']['site']}|{$_M['lang']}|{$_M['config']['met_skin_user']}||||">
 <link href="{$_M['url']['site']}favicon.ico" rel="shortcut icon" type="image/x-icon">
 <?php
 if($is_lte_ie9){
@@ -59,7 +46,7 @@ if(file_exists(PATH_OWN_FILE.'templates/css/metinfo.css')){
 <script src="{$_M['url']['site']}public/ui/v2/static/js/lteie9.js"></script>
 <!['endif']-->
 </head>
-<!--['if lte IE 8']>
+<!--['if lte IE 9']>
 <div class="text-xs-center m-b-0 bg-blue-grey-100 alert">
     <button type="button" class="close" data-dismiss="alert">
         <span aria-hidden="true">×</span>
@@ -119,7 +106,7 @@ if(!$head_no && !$_M['head_no']){
         }
         $weizhi = '<li class="breadcrumb-item"><a href="'.$nav_3['url'].'">'.$nav_3['name'].'</a></li>';
 ?>
-<header class="metadmin-haed navbar h-50">
+<header class="metadmin-head navbar h-50">
     <div class="container-fluid h-100p">
         <div class="h-100p vertical-align pull-xs-left hidden-md-down">
             <div class="breadcrumb m-b-0 p-0 vertical-align-middle">
@@ -128,20 +115,9 @@ if(!$head_no && !$_M['head_no']){
                 {$weizhi}
             </div>
         </div>
-        <div class="metadmin-haed-right pull-xs-right h-100p vertical-align">
+        <div class="metadmin-head-right pull-xs-right h-100p vertical-align">
             <div class="vertical-align-middle">
                 <?php
-                if($_M['url']['help_tutorials_helpid'] && $_M['langset']=='cn'){
-                    $_M['url']['help_tutorials_url'].=$_M['url']['help_tutorials_helpid'];
-                ?>
-                <div class="btn-group" hidden>
-                    <a href='{$_M['url']['help_tutorials_url']}' target="_blank" class="btn btn-warning">
-                        <i class="fa fa-question"></i>
-                        <span class="hidden-sm-down">{$_M['word']['help1']}</span>
-                    </a>
-                </div>
-                <?php
-                }
                 $power = admin_information();
                 if($power['admin_group'] == '10000' || $power['admin_group'] == '3'){
                 ?>
@@ -255,15 +231,6 @@ if(!$head_no && !$_M['head_no']){
 </div>
 <?php }else if(M_ACTION=='dofunction_ency'){ ?>
 <include file='sys_admin/function_ency'/>
-<?php
-    }
-    if($_M['form']['pageset'] && $_M['url']['help_tutorials_helpid'] && $_M['langset']=='cn'){
-        $_M['url']['help_tutorials_url'].=$_M['url']['help_tutorials_helpid'];
-?>
-<a href='{$_M['url']['help_tutorials_url']}' target="_blank" class="btn btn-icon btn-warning btn-squared btn-xs met-help-tutorials" hidden>
-    <i class="fa fa-question"></i>
-    <span class="hidden-sm-down">{$_M['word']['help1']}</span>
-</a>
 <?php
     }
     if(M_ACTION!='dofunction_ency'){

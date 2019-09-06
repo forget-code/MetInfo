@@ -26,7 +26,7 @@ class weixin extends other {
 	
 	public function get_login_url(){
 		global $_M;
-		$redirect_uri = $_M['url']['site'].'member/login.php?a=doother_login&type=weixin';
+		$redirect_uri = $_M['url']['web_site'].'member/login.php?a=doother_login&type=weixin';
 		if(is_weixin_client()){
 			$url .= "https://open.weixin.qq.com/connect/oauth2/authorize?";
 			$url .= "appid={$this->appid}";

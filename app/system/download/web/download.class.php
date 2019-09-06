@@ -14,8 +14,12 @@ class download extends news {
 
 	public function dodownload() {
 		global $_M;
+		
 		if($this->listpage('download') == 'list'){
-			require_once $this->template('tem/download');
+            $_M['config']['met_download_list'] = $this->input['list_length'];
+
+			load::sys_class('handle', 'new')->redirectUrl($this->input); //伪静态时动态链接跳转
+            $this->view('download',$this->input);
 		}else{
 			$this->doshowdownload();
 		}
@@ -24,7 +28,8 @@ class download extends news {
 	public function doshowdownload(){
 		global $_M;
 		$this->showpage('download');
-		require_once $this->template('tem/showdownload');
+		load::sys_class('handle', 'new')->redirectUrl($this->input); //伪静态时动态链接跳转
+        $this->view('showdownload',$this->input);
 	}
 }
 

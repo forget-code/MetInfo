@@ -10,11 +10,13 @@ class job_tag extends tag {
 
     public function _form( $attr, $content ) {
         global $_M;
+        $id = isset( $attr['cid'] ) ? ( $attr['cid'][0] == '$' ? $attr['cid']
+            : "'{$attr['cid']}'" ) : 0;
         $php = <<<str
 
 <?php
-
-    \$result = load::sys_class('label', 'new')->get('job')->get_module_form_html  ();
+    \$id= $id;
+    \$result = load::sys_class('label', 'new')->get('job')->get_module_form_html  (\$id);
 
     echo \$result;
 ?>
@@ -30,14 +32,13 @@ str;
         $cid    = isset( $attr['cid'] ) ? ( $attr['cid'][0] == '$' ? $attr['cid']
             : "'{$attr['cid']}'" ) : 0;
         $order  = isset($attr['order']) ? $attr['order'] : 'no_order';
-        $num    = isset($attr['num']) ? $attr['num'] : 10;
+        $num    = isset($attr['num']) ? $attr['num'] : 8;
         $php    = <<<str
 <?php
     \$cid = $cid;
     if(\$cid == 0){
         \$cid = \$data['classnow'];
     }
-
     \$num = $num;
     \$order = "$order";
     \$result = load::sys_class('label', 'new')->get('job')->get_list_page(\$cid, \$data['page']);
@@ -48,6 +49,8 @@ str;
         \$v['_index']   = \$index;
         \$v['_first']   = \$index == 0 ? true:false;
         \$v['_last']    = \$index == (\$sub-1) ? true : false;
+        \$v['count']    = \$v['count'] ? \$v['count'] : \$word['Job1'];
+        \$v['classnow'] = \$v['class3'] ? \$v['class3'] : (\$v['class2'] ? \$v['class2'] :\$v['class1']);
 ?>
 str;
         $php .= $content;

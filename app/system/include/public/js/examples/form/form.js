@@ -181,7 +181,6 @@ define(function(require, exports, module) {
 				d.next(".formerror").remove();
 			}
 		}
-		common.ifreme_methei();
 		/*多选赋值*/
 		d.each(function(){
 			var d=$(this),l=d.val(),t=d.attr('type');
@@ -290,8 +289,26 @@ define(function(require, exports, module) {
 			callback:function(buer){
 				if(buer){
 					switch(tg){
-						case 'A': window.location.href = my.attr("href"); break;
+						case 'A':
+							my.data('ajax')?
+							$.ajax({
+								url: my.attr("href"),
+								type: 'GET',
+								dataType: 'json',
+								success:function(result){
+									result.msg && common.metalert({
+										html:result.msg,
+										type:'alert',
+										status:result.status,
+										callback:function(buer){
+											buer && ($('.page-iframe',parent.document).attr({'data-reload':1}),window.location.reload());
+										}
+									});
+								}
+							}):(window.location.href = my.attr("href"));
+							break;
 						case 'INPUT': my.parents("form").submit(); break;
+						case 'BUTTON': my.parents("form").submit(); break;
 						case 'BUTTON': my.parents("form").submit(); break;
 					}
 				}

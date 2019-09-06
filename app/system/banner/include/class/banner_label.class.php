@@ -11,6 +11,9 @@ defined('IN_MET') or exit('No permission');
 class banner_label {
 
 	public $lang;
+    public $handle;
+    public $banner_database;
+    public $banner_content_database;
 
 	/**
 		* 初始化
@@ -18,6 +21,8 @@ class banner_label {
 	public function __construct() {
 		global $_M;
 		$this->lang = $_M['lang'];
+        $this->database = load::mod_class('banner/banner_database', 'new');
+        $this->handle = load::mod_class('banner/banner_handle', 'new');
 	}
 
   /**
@@ -25,8 +30,8 @@ class banner_label {
 	 * @return array         banner栏目配置数组
 	 */
 	public function get_config(){
-		$banner = load::mod_class('banner/banner_database', 'new')->get_banner_config_by_lang($this->lang);
-		return load::mod_class('banner/banner_handle', 'new')->config_para_handle($banner);
+		$banner = $this->database->get_banner_config_by_lang($this->lang);
+		return $this->handle->config_para_handle($banner);
   }
 
 	/**
@@ -34,8 +39,8 @@ class banner_label {
 	 * @return array         banner图片列表
 	 */
 	public function get_img(){
-		$banner = load::mod_class('banner/banner_database', 'new')->get_banner_img_by_lang($this->lang);
-		return load::mod_class('banner/banner_handle', 'new')->img_para_handle($banner);
+		$banner = $this->database->get_banner_img_by_lang($this->lang);
+		return $this->handle->img_para_handle($banner);
 	}
 
 	/**
@@ -49,16 +54,15 @@ class banner_label {
 			$column_id = 10001;
 		}
 
-		$banner_config = load::mod_class('banner/banner_handle', 'new')->config_para_handle(load::mod_class('banner/banner_database', 'new')->get_banner_config_by_column($column_id));
+		$banner_config = $this->handle->config_para_handle($this->database->get_banner_config_by_column($column_id));
 
 		if (!isset($banner_config['type'])) {//页面如果没有type类型，就采用默认设置，兼容v5代码
-			$banner_config = load::mod_class('banner/banner_handle', 'new')->config_para_handle(load::mod_class('banner/banner_database', 'new')->get_banner_config_by_column(10000));
+			$banner_config = $this->handle->config_para_handle($this->database->get_banner_config_by_column(10000));
 		}
-
 		$banner['config']['type'] = $banner_config['type'];
 		$banner['config']['y'] = $banner_config['y'];
 
-		$banner['img'] = load::mod_class('banner/banner_handle', 'new')->img_para_handle(load::mod_class('banner/banner_database', 'new')->get_banner_img_by_column($column_id, $this->lang));
+		$banner['img'] = $this->handle->img_para_handle($this->database->get_banner_img_by_column($column_id, $this->lang));
 
 		return $banner;
 	}

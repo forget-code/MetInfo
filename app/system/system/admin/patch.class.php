@@ -44,6 +44,17 @@ class patch extends admin {
 		}
 		die();
 	}
+
+	public function docheckEnv()
+	{
+		global $_M;
+		$handle = load::sys_class('handle','new');
+		$data = array(
+			'data'=>$handle->checkFunction(),
+			'dirs'=>$handle->checkDirs()
+		);
+		return $data;
+	}
 }
 
 # This program is an open source system, commercial use, please consciously to purchase commercial license.

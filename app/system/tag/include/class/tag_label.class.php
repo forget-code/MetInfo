@@ -33,6 +33,10 @@ class tag_label {
 			$module = $mod;
 		}
 		if (load::sys_class('handle', 'new')->file_to_mod($module)) {
+            if (in_array($module, array('member','sitemap','tags'))) {
+                return false;
+			}
+			
 			if (method_exists(load::sys_class('label', 'new')->get($module), 'get_module_list')) {
 				return load::sys_class('label', 'new')->get($module)->get_module_list($mod, $num, $type, $order, $para, true);
 			} else {
@@ -68,13 +72,14 @@ class tag_label {
 		}
 	}
 
-	/**
-	 * 共用list标签
-	 * @param  string  $mod  模块名称或id
-	 * @param  string  $num  数量
-	 * @param  string  $type com/news/all
-	 */
-	public function get_page_html($classnow, $pagenow) {
+    /**
+	 * 分页按钮
+     * @param string $classnow
+     * @param string $pagenow
+     * @param string $page_type
+     * @return bool
+     */
+	public function get_page_html($classnow = '', $pagenow = '', $page_type = '') {
 		global $_M;
 		if (is_numeric($classnow)) {
 			$c = load::sys_class('label', 'new')->get('column')->get_column_id($classnow);
@@ -84,8 +89,7 @@ class tag_label {
 		}
 		if (load::sys_class('handle', 'new')->file_to_mod($module)) {
 			if (method_exists(load::sys_class('label', 'new')->get($module), 'get_list_page_html')) {
-				return load::sys_class('label', 'new')->get($module)->get_list_page_html($classnow, $pagenow);
-			} else {
+				return load::sys_class('label', 'new')->get($module)->get_list_page_html($classnow, $pagenow, $page_type);
 				return false;
 			}
 		} else {
@@ -93,12 +97,11 @@ class tag_label {
 		}
 	}
 
-	/**
-	 * 共用list标签
-	 * @param  string  $mod  模块名称或id
-	 * @param  string  $num  数量
-	 * @param  string  $type com/news/all
-	 */
+    /**
+     * @param $classnow
+     * @param $pagenow
+     * @return bool
+     */
 	public function get_page_select($classnow, $pagenow) {
 		global $_M;
 		if (is_numeric($classnow)) {

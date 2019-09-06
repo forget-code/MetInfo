@@ -81,7 +81,7 @@ define(function(require, exports, module) {
 			$('#htmlloading .listbox').prepend(METLANG.html_createend_v6+"<br />");
 			if($('#reurl').val()){
 				//alert($('#reurl').val());
-				window.location = $('#reurl').val();
+				window.location.href = $('#reurl').val();
 			}
 		}
 	}

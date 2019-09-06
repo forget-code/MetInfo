@@ -18,12 +18,12 @@ load::sys_func('file.func.php');
  */
 class thumb {
 	public $thumb_src_image = ""; 
-	public $thumb_width = 350;
-	public $thumb_height = 350; 
-	public $thumb_savepath = ""; 
+	public $thumb_width     = 400;
+	public $thumb_height    = 400;
+	public $thumb_savepath  = "";
 	public $thumb_save_type = 1; 
-	public $thumb_bgcolor =' ';
-	public $thumb_kind = 1;
+	public $thumb_bgcolor   =' ';
+	public $thumb_kind      = 1;
 	
 	function __construct() {
 		global $_M;
@@ -74,7 +74,7 @@ class thumb {
 	 * 按网站列表页缩略图方式缩略图片（2 = 新闻模块, 3 = 产品模块, 5 = 图片模块）
 	 * @param string $module  2/news:新闻模块，3/product:产品模块，5/img:图片模块）
 	 */
-	public function list_module($module) {
+	public function list_module($module = '') {
 		if ($module == 'news') $module = 2;
 		if ($module == 'product') $module = 3;
 		if ($module == 'img') $module = 5;
@@ -87,7 +87,9 @@ class thumb {
 			break;
 			case 5:
 				$this->list_img();
-			break;		
+			break;
+            default:
+                $this->list_news();
 		}
 	}
 	
@@ -292,7 +294,7 @@ class thumb {
 			return $this->error($_M['word']['upfileFail4']);
         }
 	
-        $thumbname = $thumb_savepath.basename($thumb_src_image);;
+        $thumbname = $thumb_savepath.basename($thumb_src_image);
         //Create
 		switch ($org_info[mime]) {
             case 'image/gif':

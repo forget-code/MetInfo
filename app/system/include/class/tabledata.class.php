@@ -10,8 +10,10 @@ defined('IN_MET') or exit('No permission');
  */
 class tabledata {
 
-	protected $rearray;
+	protected 	$rearray;
 	public $error;
+    public $rarray;
+    public $sql;
 
 	/**
 	 * 获取表查询数据
@@ -22,13 +24,13 @@ class tabledata {
 	 * @param  string $sql 自定义SQL语句
 	 * @return array  查询数据
 	 */
-	public function getdata($table, $field = '*', $where = '', $order = '',$sql = ''){
+	public function getdata($table = '', $field = '*', $where = '', $order = '',$sql = ''){
 		global $_M;
 	//dump( $_M['form']);
 		/*获取表格ajax传递的参数*/
-		$length = $_M['form']['length'];         //每页显示数量
-		$start  = $_M['form']['start'];          //读取数据的起点
-		$draw   = $_M['form']['draw'];           //累计执行次数，无作用但必须回传
+        $length = $_M['form']['length'] ? $_M['form']['length'] : 20;      //每页显示数量
+		$start  = $_M['form']['start'] ?  $_M['form']['start'] : 0;        //读取数据的起点
+        $draw 	= $_M['form']['draw'] ? $_M['form']['draw'] : 1;           //累计执行次数，无作用但必须回传
 		// if($_M['form']['tablepage_json']&&$start==0&&$draw!=1){
 		// 	$cook = explode("|",$_M['form']['tablepage_json']) ;
 		// 	$u = "{$_M['form']['n']},{$_M['form']['c']},{$_M['form']['a']}";
@@ -41,6 +43,7 @@ class tabledata {
 
         if(!$sql){
             /*查询表*/
+            $conds = '';
             if($where){
                 $conds .= " WHERE {$where} ";
             }
@@ -50,7 +53,8 @@ class tabledata {
             //整理查询条件
 
             $query = "SELECT {$field} FROM {$table} {$conds} LIMIT {$start},{$length}";  //mysql语句
-            $array = DB::get_all($query);                                           //执行查询，获得数组
+            $this->sql = $query;
+            $array = DB::get_all($query);                                         //执行查询，获得数组
             $error = DB::error();
             if($error){
                 $this->error = $query."<br />".$error;
@@ -59,8 +63,9 @@ class tabledata {
             }
             $total = DB::counter($table, $conds, '*');                        //获取总数量，计算总页数
         }else{
-            $array = DB::get_all($sql);
+            // $array = DB::get_all($sql);
             $query = $sql . " LIMIT {$start},{$length}";
+            $this->sql = $query;
             $array = DB::get_all($query);
             $total = count(DB::get_all($sql));
         }
@@ -78,14 +83,32 @@ class tabledata {
 	 * 把处理后的数组已json方式输出到页面上，供AJAX读取。
 	 * @param  array $rdata 需要转成json的数组
 	 */
-	public function rdata($rdata){
+	public function rdata($rdata = array()){
+		global $_M;
+		if(!$this->rarray['draw']){
+			$draw   = $_M['form']['draw'];
+			$total=count($rdata);
+            $this->rarray['draw'] 			 = $draw;   //回传执行次数
+			$this->rarray['recordsTotal']    = $total;  //回传总数量
+			$this->rarray['recordsFiltered'] = $total;  //回传筛选过的总数量，暂无作用，但必须回传
+		}
 		if($rdata){
 			$this->rarray['data'] = $rdata;
 		}else{
-			$this->rarray['data'][''] = '';
+			$this->rarray['data'] = '';
 		}
 		jsoncallback($this->rarray); //回传json格式
 	}
+
+    /**
+	 * 获取执行的sql语句
+     * @return mixed
+     */
+    public function getSql()
+    {
+		global $_M;
+        return $this->sql;
+    }
 
 }
 

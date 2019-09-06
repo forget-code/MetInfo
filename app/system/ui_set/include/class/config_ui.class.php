@@ -10,20 +10,25 @@ class config_ui {
 	public $lang;
 	public $skin_name;
 
-	function __construct($no, $lang) {
+    /**
+     * config_ui constructor.
+     * @param string $no    模板编号
+     * @param string $lang  语言
+     */
+	function __construct($no = '', $lang = '') {
 		global $_M;
 		$this->no = $no;
 		$this->lang = $lang;
-		$this->skin_name = $_M['config']['met_skin_user'];
+		$this->skin_name = $no;
+        if ($_M['form']['mid'] >= 10000) {
+            $this->skin_name = 'system';
+        }
 	}
 
 	/*读取配置*/
-	public function get_config($mid) {
+	public function get_config($mid = '') {
 		global $_M;
-
-		$query = "ALTER TABLE `{$_M['table']['ui_config']}` ADD COLUMN `uip_hidden`  tinyint(1) NULL DEFAULT 0 AFTER `uip_order`";
-		DB::query($query);
-		$query = "SELECT * FROM {$_M['table']['ui_config']} WHERE pid = {$mid} AND lang = '{$_M['lang']}' AND skin_name = '{$this->skin_name}' order by uip_hidden,uip_order";
+        $query = "SELECT * FROM {$_M['table']['ui_config']} WHERE pid = {$mid} AND lang = '{$_M['lang']}' AND skin_name = '{$this->skin_name}' order by uip_hidden,uip_order";
 		$config = DB::get_all($query);
 		return $config;
 	}
@@ -33,12 +38,12 @@ class config_ui {
 	public function get_public_config()
 	{
 		global $_M;
-		$query = "SELECT * FROM {$_M['table']['ui_config']} WHERE parent_name = 'global' AND skin_name = '{$this->skin_name}' AND lang = '{$_M['lang']}' ORDER BY uip_order";
+		$query = "SELECT * FROM {$_M['table']['ui_config']} WHERE parent_name = 'global' AND skin_name = '{$this->no}' AND lang = '{$_M['lang']}' ORDER BY uip_order";
 		return DB::get_all($query);
 
 	}
 
-	public function get_config_column($mid)
+	public function get_config_column($mid = '')
 	{
 		global $_M;
 		$query = "SELECT * FROM {$_M['table']['ui_config']} WHERE pid = {$mid} AND lang = '{$_M['lang']}' AND uip_type = 6";
@@ -49,14 +54,19 @@ class config_ui {
 		return DB::get_one($query);
 	}
 
-	public function get_ui($pid)
+    /**
+     * 获取UI区块信息
+     * @param string $pid
+     * @return array
+     */
+	public function get_ui($pid = '')
 	{
 		global $_M;
-		$query = "SELECT * FROM {$_M['table']['ui_list']} WHERE installid = {$pid} AND skin_name = '{$this->no}' ";
+		$query = "SELECT * FROM {$_M['table']['ui_list']} WHERE installid = {$pid} AND skin_name = '{$this->skin_name}' ";
 		return DB::get_one($query);
 	}
 
-	public function set_public_config($config)
+	public function set_public_config($config = array())
 	{
 		global $_M;
 		$public = $this->get_public_config();
@@ -72,7 +82,7 @@ class config_ui {
 		return array('status'=>1);
 	}
 	/*配置文件保存*/
-	public function save_config($config){
+	public function save_config($config = array()){
 		global $_M;
 		$ui_config = $this->get_config($config['mid']);
 		foreach($ui_config as $key=>$val){
@@ -87,354 +97,224 @@ class config_ui {
 		}
 	}
 
+    /**
+     * 获取UI区块配置
+     * @param string $mid
+     * @return array
+     */
+    public function list_data($mid = ''){
+        global $_M;
+        $config = array();
+        $config['desc'] = $this->get_ui($mid);
+        #dump($this->get_ui($mid));
+        $config['data'] = $this->parse_config($this->get_config($mid));
+        $config['met_ui_list'] = $this->getMetuiList($config['desc']['parent_name']);
+        return $config;
+    }
 
+    public function parse_config($config = array()) {
+        global $_M;
 
+        $html = array();
+        foreach ($config as $key=>$val) {
+            switch($val['uip_type']){
+                case 2:
+                    #$re = $this->text($val);
+                    $re = $val;
+                    break;
+                case 3:
+                    #$re = $this->textarea($val);
+                    $re = $val;
+                    break;
+                case 4:
+                    #$re = $this->radio($val);
+                    $re = $val;
+                    break;
+                case 5:
+                    #$re = $this->checkbox($val);
+                    $re = $val;
+                    break;
+                case 6:
+                    $re = $this->select($val);
+                    #$re = $val;
+                    break;
+                case 7:
+                    #$re = $this->upload($val);
+                    $re = $val;
+                    break;
+                case 8:
+                    #$re = $this->editor($val);
+                    $re = $val;
+                    break;
+                case 9:
+                    #$re = $this->color($val);
+                    $re = $val;
+                    break;
+                case 10:
+                    #$re = $this->dateselect($val);
+                    $re = $val;
+                    break;
+                case 11:
+                    #$re = $this->slider($val);
+                    $re = $val;
+                    break;
+                case 12:
+                    #$re = $this->label($val);
+                    $re = $val;
+                    break;
+                case 13://增加新组件类型（新模板框架v2）
+                    #$re = $this->upload($val);
+                    $re = $val;
+                    break;
+                case 14://
+                    #$re = $this->socaillink($val);
+                    $re = $val;
+                    break;
+                case 15://
+                    #$re = $this->icon($val);
+                    $re = $val;
+                    break;
+            }
+            $html[] = $re;
+        }
+        return $html;
+    }
 
-	public function list_html($mid){
-		global $_M;
-		$config = array();
-		$config['html'] =  $this->parse_config($this->get_config($mid));
-		$config['desc'] = $this->get_ui($mid);
-		return $config;
-	}
+    public function select($val = array())
+    {
+        global $_M;
+        if ($val['uip_style'] == 2) $val['uip_style'] = 4;
+        if ($val['uip_style'] == 0) {
+            $val['ftype'] = "ftype_select";
+            $val['uip_value'] = $val['uip_value'] == "" ? $val['uip_default'] : $val['uip_value'];
+            return $val;
+        } else {
+            $val['ftype'] = "ftype_select";
+            $option_style = $val['uip_style'];
+            $array = column_sorting(2);
+            $met_class1 = $array['class1'];
+            $met_class2 = $array['class2'];
+            $met_class3 = $array['class3'];
+            $selectd = '';
+            switch ($option_style) {
+                case 1:
+                    foreach ($met_class1 as $key => $val2) {
+                        if (!$val2['if_in'] && $val2['module'] < 8) {
+                            $selectd .= $val2['name'] . '$T$' . $val2['id'] . '$M$';
+                        }
+                    }
+                    break;
+                case 3:
+                    foreach ($met_class1 as $key => $val2) {
+                        $val2['cok'] = 0;
+                        if (count($met_class2[$val2['id']])) {
+                            foreach ($met_class2[$val2['id']] as $key => $val6) {
+                                if ($val6['module'] > 1 && $val6['module'] < 7) {
+                                    $val2['cok'] = 1;
+                                }
+                            }
+                        }
+                        if (($val2['module'] > 1 && $val2['module'] < 7) || $val2['cok']) {
+                            if (($val2['module'] < 2 || $val2['module'] > 6) && $val2['cok']) $disabled = 'disabled';
+                            $selectd .= $val2['name'] . '$T$' . $val2['id'] . '$M$';
+                            foreach ($met_class2[$val2['id']] as $key => $val3) {
+                                if (($val3['module'] >= 2 && $val3['module'] <= 6) && !$val3['if_in']) {
+                                    $selectd .= $val3['name'] . '$T$' . $val3['id'] . '$M$';
+                                    foreach ($met_class3[$val3['id']] as $key => $val4) {
+                                        $selectd .= '+' . $val4['name'] . '$T$' . $val4['id'] . '$M$';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    for ($i = 2; $i < 6; $i++) {
+                        if ($i != 4) {
+                            $langmod1 = $_M['word']['mod' . $i];
+                            $selectd .= '==' . $langmod1 . '==' . '$T$' . $i . '-md' . '$M$';
+                        }
+                    }
+                    break;
+                case 4:
+                    foreach ($met_class1 as $key => $val2) {
+                        if ($val2['module'] <= 8) {
+                            $selectd .= '==' . $val2['name'] . '==' . '$T$' . $val2['id'] . '$M$';
+                            foreach ($met_class2[$val2['id']] as $key => $val3) {
+                                $selectd .= $val3['name'] . '$T$' . $val3['id'] . '$M$';
+                                foreach ($met_class3[$val3['id']] as $key => $val4) {
+                                    $selectd .= '+' . $val4['name'] . '$T$' . $val4['id'] . '$M$';
+                                }
+                            }
+                        }
+                    }
+                    break;
+            }
+            $val['uip_select'] = $selectd;
+            return $val;
+        }
+    }
 
-	/*解析配置为html代码*/
-	public function parse_config($config) {
-		global $_M;
+    /*************集成UI方法**************/
+    /**
+     * 获取集成UI列表
+     * @return array
+     */
+    public function getMetuiList($parent_name = '')
+    {
+        global $_M;
+        $ui_list = array();
 
-		$html = array();
-		foreach ($config as $key=>$val) {
-			switch($val['uip_type']){
-				case 2:
-					$re = $this->text($val);
-				break;
-				case 3:
-					$re = $this->textarea($val);
-				break;
-				case 4:
-					$re = $this->radio($val);
-				break;
-				case 5:
-					$re = $this->checkbox($val);
-				break;
-				case 6:
-					$re = $this->select($val);
-				break;
-				case 7:
-					$re = $this->upload($val);
-				break;
-				case 8:
-					$re = $this->editor($val);
-				break;
-				case 9:
-					$re = $this->color($val);
-				break;
-				case 10:
-					$re = $this->dateselect($val);
-				break;
-				case 11:
-					$re = $this->slider($val);
-				break;
-				case 12:
-					$re = $this->label($val);
-				break;
-				case 13://增加新组件类型（新模板框架v2）
-					$re = $this->upload($val);
-				break;
-				case 14://
-					$re = $this->socaillink($val);
-				break;
-				case 15://
-					$re = $this->icon($val);
-				break;
-			}
-			$html[] = $re;
-		}
-		return $html;
-	}
+        //模板默认UI
+        $query = "SELECT * FROM {$_M['table']['ui_list']} WHERE skin_name = '{$this->no}' AND parent_name = '{$parent_name}' ORDER BY ui_order";
+        $temp_ui = db::get_one($query);
+        if ($temp_ui) {
+            $temp_ui['view'] = "{$_M['url']['site']}templates/{$_M['config']['met_skin_user']}/ui/{$parent_name}/{$temp_ui['ui_name']}/view.jpg";
+            $temp_ui['ui_title'] = $temp_ui['ui_title'] . " ({$_M['word']['default']})";
+            $temp_ui['ui_name']  = '0';
+            $ui_list[] = $temp_ui;
+        }
 
-	/*
-	 *标题栏html
-	 * 0：分类设置
-	 * 1：区块设置
-	 */
-	public function tlebar($val) {
-		global $_M;
-		$val['ftype']="";
-		$val['inputhtm']="{$val['uip_title']}";
-		$val['uip_title']="";
-		$val['sliding']=1;
-		if ($val['uip_style'] == 1) {
-			$val['inputhtm']="<span class='blockname'>{$val['uip_title']}</span>";
-			$val['uip_title']="";
-			$val['sliding']=1;
-		}
-		return $val;
-	}
+        //集成UI
+        $query = "SELECT * FROM {$_M['table']['ui_list']} WHERE skin_name = 'system' AND parent_name = '{$parent_name}' ORDER BY ui_order";
+        $list = DB::get_all($query);
+        if($list){
+            foreach ($list as $key => $ui) {
+                $ui['view'] = "{$_M['url']['site']}app/app/met_template/style/{$parent_name}/{$ui['ui_name']}/view.jpg";
+                $ui_list[] = $ui;
+            }
+            return $ui_list;
+        }
+        return;
 
-	/*简短输入框*/
-	public function text($val){
-		global $_M;
-		$convlue = $val['uip_name'];
-		$convlue = $val['uip_style'] ==0 ? $val['uip_value'] : $_M['config'][$val['uip_value']];
-		$convlue = $val['uip_value']=="" ? $val['uip_default']:$val['uip_value'];
-		$val['inputhtm'] ="
-			<div class=\"fbox\">
-				<input type=\"text\" name=\"{$val['id']}_metinfo\" data-name={$val['uip_name']} value=\"{$convlue}\" />
-			</div>
-			<span class=\"tips\">{$val['uip_description']}</span>
-		";
-		$val['ftype']="ftype_input";
-		return $val;
-	}
+    }
 
-	/*输入文本域*/
-	public function textarea($val){
-		global $_M;
-		$val['ftype']="ftype_textarea";
-		$convlue = $val['uip_name'];
-		$convlue = $val['uip_style'] ==0 ? $val['uip_value'] : $_M['config'][$val['uip_value']];
-		$convlue = $val['uip_value']=="" ? $val['uip_default']:$val['uip_value'];
+    /**
+     * 切换集成UI
+     * @param string $mid       installid/pid
+     * @param string $ui_name   ui名称
+     * @return bool
+     */
+    public function changeUi($mid = '', $ui_name = '')
+    {
+        global $_M;
+        if ($mid == '') {
+            return false;
+        }
 
-		$val['inputhtm'] ="
-			<div class=\"fbox\">
-				<textarea name=\"{$val['id']}_metinfo\" data-name={$val['uip_name']}>{$convlue}</textarea>
-			</div>
-			<span class=\"tips\">{$val['uip_description']}</span>
-		";
-		return $val;
-	}
+        $ui_info = self::get_ui($mid);
+        if ($ui_info['parent_name']) {
+            $config_name = "met_style_{$ui_info['parent_name']}";
+            $query = "UPDATE {$_M['table']['config']} SET `value` = '{$ui_name}' WHERE `name` = '{$config_name}' AND lang = '{$_M['lang']}'";
+            DB::query($query);
+            return true;
+        }
+    }
 
-	public function radio($val){
-		global $_M;
-		$val['ftype']="ftype_radio";
-		$vlist=explode('$M$',$val['uip_select']);
-		$val['inputhtm']='<div class="fbox">';
-		foreach($vlist as $key=>$val2){
-			$vz=explode('$T$',$val2);
-			$val['uip_value']=$val['uip_value']=="" ? $val['uip_default']:$val['uip_value'];
-			if($vz[0]){
-			$val['inputhtm'].="<label>";
-			$select=$val['uip_value']==$vz[1]?'checked':'';
-			$val['inputhtm'].="<input value='".$vz[1]."' name='{$val['id']}_metinfo' data-name={$val['uip_name']} type='radio' {$select} />".$vz[0];
-			$val['inputhtm'].="</label>";
-			}
-		}
-		$val['inputhtm'].='</div>';
-		$val['inputhtm'].="<span class='tips'>{$val['uip_description']}</span>";
-		return $val;
-	}
-
-	public function checkbox($val){}
-	/**
-	 * 下拉html
-	 * 0:自定义下拉选项
-	 * 1：moudule小于6的一级栏目下拉
-	 * 2：moudule小于7的三级栏目下拉
-	 * 3：moudule为2,3,5的三级栏目下拉
-	 * 4：三级栏目下拉，所有模块栏目
-	 */
-	public function select($val) {
-		global $_M;
-		if($val['uip_style']==2)$val['uip_style']=4;
-		if ($val['uip_style'] == 0) {
-			$val['ftype']="ftype_select";
-			$val['inputhtm'] ="<div class='fbox'><select name='{$val['id']}_metinfo' data-name={$val['uip_name']} data-checked='{$val['uip_value']}'>";
-			$vlist=explode('$M$',$val['uip_select']);
-			foreach($vlist as $key=>$val2){
-				$vz=explode('$T$',$val2);
-				$val['uip_value']=$val['uip_value']=="" ? $val['uip_default']:$val['uip_value'];
-				$select=$val['uip_value']==$vz[1]?'uip_select':'';
-				$val['inputhtm'].="<option value='".$vz[1]."' {$select}>".$vz[0]."</option>";
-			}
-			$val['inputhtm'].="</select></div>";
-			$val['inputhtm'].="<span class='tips'>{$val['uip_description']}</span>";
-		}else{
-			$val['ftype']="ftype_select";
-			$hngy5 = $val['uip_style'];
-			$array = column_sorting(2);
-			$met_class1 = $array['class1'];
-			$met_class2 = $array['class2'];
-			$met_class3 = $array['class3'];
-			$val['inputhtm'] ="<div class='fbox'><select name='{$val['id']}_metinfo' data-name={$val['uip_name']} data-checked='{$val['uip_value']}'>";
-			$val['inputhtm'].="<option value=''>{$_M['word']['skinerr3']}</option>";
-			switch($hngy5){
-				case 1:
-					foreach($met_class1 as $key=>$val2){
-						if(!$val2['if_in']){
-						$select=$val['uip_value']==$val2[id]?'uip_select':'';
-						$val['inputhtm'].="<option value='".$val2[id]."' {$select} class='c1'>".$val2['name']."</option>";
-						}
-					}
-				break;
-				case 3:
-					foreach($met_class1 as $key=>$val2){
-						$val2['cok']=0;
-						if(count($met_class2[$val2[id]])){
-							foreach($met_class2[$val2[id]] as $key=>$val6){
-								if($val6['module'] > 1 && $val6['module'] < 7 ){
-									$val2['cok'] = 1;
-								}
-							}
-						}
-						if(($val2['module']>1&&$val2['module']<7)||$val2['cok']){
-						$select=$val['uip_value']==$val2['id']?'uip_select':'';
-						$disabled='';
-						if(($val2['module']<2||$val2['module']>6)&&$val2['cok'])$disabled='disabled';
-						$val['inputhtm'].="<option value='".$val2['id']."' {$select} class='c1' {$disabled}>==".$val2['name']."==</option>";
-						foreach($met_class2[$val2['id']] as $key=>$val3){
-							if(($val3['module']>=2&&$val3['module']<=6)&&!$val3['if_in']){
-							$select2=$val['uip_value']==$val3['id']?'uip_select':'';
-							$val['inputhtm'].="<option value='".$val3['id']."' {$select2} class='c2'>".$val3['name']."</option>";
-							foreach($met_class3[$val3['id']] as $key=>$val4){
-								$select3=$val['uip_value']==$val4['id']?'uip_select':'';
-								$val['inputhtm'].="<option value='".$val4['id']."' {$select3} class='c3'>+".$val4['name']."</option>";
-							}
-							}
-						}
-						}
-					}
-					for($i=2;$i<6;$i++){
-						if($i!=4){
-						$langmod1=$_M['word']['mod'.$i];
-						$select=$val['uip_value']==$i.'-md'?'uip_select':'';
-						$val['inputhtm'].="<option value='".$i."-md' {$select} class='c0'>==".$langmod1."==</option>";
-						}
-					}
-				break;
-				case 4:
-					foreach($met_class1 as $key=>$val2){
-						//if(!$val2[if_in]){
-							$select=$val['uip_value']==$val2[id]?'uip_select':'';
-							$val['inputhtm'].="<option value='".$val2[id]."' {$select} class='c1'>==".$val2[name]."==</option>";
-							foreach($met_class2[$val2['id']] as $key=>$val3){
-								//if(!$val3[if_in]){
-									$select2=$val['uip_value']==$val3[id]?'uip_select':'';
-									$val['inputhtm'].="<option value='".$val3[id]."' {$select2} class='c2'>".$val3[name]."</option>";
-									foreach($met_class3[$val3['id']] as $key=>$val4){
-										$select3=$val['uip_value']==$val4[id]?'uip_select':'';
-										$val['inputhtm'].="<option value='".$val4[id]."' {$select3} class='c3'>+".$val4[name]."</option>";
-									}
-								//}
-							}
-						//}
-					}
-				break;
-			}
-			$val[inputhtm].="</select>";
-			$val[inputhtm].="<span class='tips'>{$val['uip_description']}</span></div>";
-		}
-		return $val;
-	}
-
-	/**
-	 * 上传空间html
-	 * 0:自定义
-	 * 1:编辑值为系统设置
-	 */
-	public function upload($val) {
-		global $_M;
-		$convlue = $val['uip_name'];
-		$convlue = $val['uip_style'] ==0 ? $val['uip_value'] : $_M['config'][$val['uip_value']];
-		$convlue = $val['uip_value']=="" ? $val['uip_default']:$val['uip_value'];
-		// 增加上传组件类型判断（新模板框架v2）
-		$val[ftype]="ftype_upload";
-		$upload_type=$val[type]==13?'doupfile':'doupimg';
-		$upload_accept=$val[type]==13?'video/*':'*';
-		$val[inputhtm]="
-			<div class=\"fbox\">
-				<input
-					name=\"{$val['id']}_metinfo\"
-					data-name={$val['uip_name']}
-					type=\"text\"
-					data-upload-type=\"{$upload_type}\"
-					value=\"{$convlue}\"
-				/>
-			</div>
-			<span class=\"tips\">{$val['uip_description']}</span>
-		";
-		return $val;
-	}
-
-	/**
-	 * 编辑器html
-	 * 0:自定义
-	 * 1:编辑值为系统设置
-	 */
-	public function editor($val){
-		global $_M;
-		$val[ftype]="ftype_ckeditor_theme";
-		$convlue = $val['uip_name'];
-		$convlue = $val['uip_style'] ==0 ? $val['uip_value'] : $_M['config'][$val['uip_value']];
-		$convlue = $val['uip_value']=="" ? $val['uip_default']:$val['uip_value'];
-		$val[inputhtm] ="
-			<div class=\"fbox\">
-				<textarea name=\"{$val['id']}_metinfo\" data-name={$val['uip_name']} data-ckeditor-type=\"2\" data-ckeditor-y='300'>{$convlue}</textarea>
-			</div>
-			<span class='tips'>{$val['uip_description']}</span>
-		";
-		return $val;
-	}
-
-	/*颜色选择*/
-	public function color($val){
-		global $_M;
-		$val[ftype]="ftype_color";
-		$val['uip_value'] = $val['uip_value'] ? $val['uip_value'] : $val['uip_default'];
-		$val[inputhtm]="
-			<div class=\"fbox\">
-				<input type=\"text\" name=\"{$val['id']}_metinfo\" data-name={$val['uip_name']} value=\"{$val['uip_value']}\">
-			</div>
-			<span class=\"tips\">{$val['uip_description']}</span>
-		";
-		return $val;
-	}
-	/*社交链接*/
-	public function socaillink($val){
-		global $_M;
-		$val[ftype]="ftype_input";
-		$val['uip_value'] = $val['uip_value'] ? $val['uip_value'] : $val['uip_default'];
-		$val['value']=strpos($val['uip_value'], '$M$')!==false?explode('$M$'):array('','');
-		$val['inputhtm'] ="<div class='fbox'><select name='{$val['id']}_metinfo' data-name={$val['uip_name']} data-checked='{$val['value'][0]}'>";
-		$vlist=array(
-			'tel'=>$_M['word']['parameter8'],
-			'sms'=>'短信',
-			'email'=>$_M['word']['parameter9'],
-			'qq'=>'普通qq',
-			'qyqq'=>'企业qq'
-		);
-		foreach($vlist as $key=>$val1){
-			$select=$val['value'][0]==$key?'checked':'';
-			$val['inputhtm'].="<option value='".$key."' {$select}>".$val1."</option>";
-		}
-		$val['inputhtm'].="</select>
-			<input type=\"text\" data-name=\"{$val['uip_name']}\" value=\"{$val['value'][1]}\"/>
-			<input type=\"hidden\" name=\"{$val['id']}_metinfo\" data-name={$val['uip_name']} data-type=\"14\" value=\"{$val['uip_value']}\"/>
-		</div>
-		<span class='tips'>{$val['uip_description']}</span>";
-		return $val;
-	}
-	/*图标选择*/
-	public function icon($val){
-		global $_M;
-		$val[ftype]="ftype_input";
-		$hide=$val['uip_value']?'':' hide';
-		$val['inputhtm'] ="<div class='fbox'>
-			<input type=\"hidden\" name=\"{$val['id']}_metinfo\" value=\"{$val['uip_value']}\"/>
-			<button type='button' class='btn btn-default icon-add-view{$hide}'><i class='{$val['uip_value']}'></i></button>
-			<button type='button' class='btn btn-default btn-icon-del{$hide}'>{$_M['word']['delete']}</button>
-			<button type='button' class='btn btn-primary ui-config-icon icon-add' data-name='{$val['uip_key']}' data-toggle='modal' data-target='.icon-modal'>{$_M['word']['column_choosicon_v6']}</button>
-		</div>
-		<span class='tips'>{$val['uip_description']}</span>";
-		return $val;
-	}
-
-	public function dateselect($val){}
-
-	public function slider($val){}
-
-	public function label($val){}
-
+	/******************/
+    /**
+	 * 更换模板
+     * @param $skin_name
+     * @return mixed
+     */
 	public function change_skin($skin_name)
 	{
 		global $_M;
@@ -444,7 +324,12 @@ class config_ui {
 		return DB::query($query);
 	}
 
-	public function update_lang_config($skin_name)
+    /**
+	 * 更新当前语言下的模板配置
+     * @param string $skin_name
+     * @return bool
+     */
+	public function update_lang_config($skin_name = '')
     {
         global $_M;
 
@@ -481,7 +366,11 @@ class config_ui {
         }
     }
 
-    public function get_sql($data) {
+    /**
+     * @param array $data
+     * @return string
+     */
+    public function get_sql($data = array()) {
         global $_M;
 
         $sql = "";

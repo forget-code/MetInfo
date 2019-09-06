@@ -5,73 +5,180 @@
 defined('IN_MET') or exit('No permission');
 
 load::sys_class('admin');
-
+/** 会员组设置 */
 class admin_group extends admin {
 	public $userclass;
 	public $groupclass;
 	public function __construct() {
 		parent::__construct();
 		global $_M;
-		nav::set_nav(1,$_M[word][memberist], $_M['url']['own_name'].'c=admin_user&a=doindex');
-		nav::set_nav(2, $_M[word][membergroup], $_M['url']['own_name'].'c=admin_group&a=doindex');
-		//nav::set_nav(3, $_M[word][memberattribute], $_M['url']['own_name'].'c=admin_set&a=douserfield');
-		nav::set_nav(3, $_M[word][memberattribute], $_M[url][adminurl]."anyid=73&n=parameter&c=parameter_admin&a=doparaset&module=10");
-		nav::set_nav(4,  $_M[word][memberfunc], $_M['url']['own_name'].'c=admin_set&a=doindex');
-		nav::set_nav(5, $_M[word][thirdlogin], $_M['url']['own_name'].'c=admin_set&a=doopen');
-		nav::set_nav(6, $_M[word][mailcontentsetting], $_M['url']['own_name'].'c=admin_set&a=doemailset');
-		// nav::set_nav(7, $_M[word][paygroup], $_M['url']['own_name'].'c=admin_group&a=do_pay_group');
 		$this->userclass = load::mod_class('user/sys_user', 'new');
 		$this->groupclass = load::mod_class('user/sys_group', 'new');
 
 	}
-	public function dojson_group_list(){
-		$this->groupclass->json_group_list();
-	}
-	public function doaddlist(){
-		global $_M;
-		$id = 'new-'.$_M['form']['ai'];
-        if($_M['config']['payment_open']){
-		$metinfo ="<tr class=\"even newlist\">
-					<td class=\"met-center\"><input name=\"id\" type=\"checkbox\" value=\"{$id}\" checked></td>
-					<td><input type=\"text\" name=\"name-{$id}\" class=\"ui-input listname\" value=\"\" placeholder=\"{$_M[word][membergroupname]}\"></td>
-					<td>
-					<input type='checkbox' name='rechargeok-{$id}' class='set-price-ok' id='rechargeok-{$id}' value='1'>
-					<label for='rechargeok-{$id}' style='font-weight: normal;margin-bottom: 0;'>{$_M['word']['usegroupauto1']}</label>
-					<input type=\"text\" name=\"recharge_price-{$id}\" class=\"ui-input\" value=\"\">
-					</td>
-                    <td>
-                    <input type='checkbox' name='buyok-{$id}' class='set-price-ok' id='buyok-{$id}' value='1'>
-                    <label for='buybale-{$id}' style='font-weight: normal;margin-bottom: 0;'>".$_M['word']['sys_group_bayable']."</label>
-                    <input type='text' name='group_pricr-{$id}' placeholder='".$_M['word']['sys_group_set_price']."' value='' class='ui-input' style='width: 60%;'>
-                    </td>
-                    <td><input type='text' name='access-{$id}' data-required='1' class='ui-input met-center' value=''></td>
-				</tr>";
-        }else{
-            $metinfo ="<tr class=\"even newlist\">
-					<td class=\"met-center\"><input name=\"id\" type=\"checkbox\" value=\"{$id}\" checked></td>
-					<td><input type=\"text\" name=\"name-{$id}\" class=\"ui-input listname\" value=\"\" placeholder=\"{$_M[word][membergroupname]}\"></td>
-					<td>
-					{$_M['word']['useinfopay']}
-					</td>
-                    <td>
-                    {$_M['word']['useinfopay']}
-                    </td>
-                    <td><input type='text' name='access-{$id}' data-required='1' class='ui-input met-center' value=''></td>
-				</tr>";
+
+	//获取会员组
+	public function doGetUserGroup(){
+        global $_M;
+        $where = " lang = '{$_M['lang']}' ";
+        $table = load::sys_class('tabledata', 'new');
+        $group_data = $table->getdata($_M['table']['user_group'], '*', $where,'access');
+
+        foreach ($group_data as $key => $value){
+            $query = "SELECT price,buyok,recharge_price,rechargeok FROM  {$_M['table']['user_group_pay']} WHERE groupid='{$value['id']}' AND lang = '{$_M['lang']}'";
+            $group_data[$key]['payment'] = DB::get_one($query);
         }
-		echo $metinfo;
+        $data['group_data'] = $group_data;
+        $data['payment_open'] = isset($_M['config']['payment_open']) ? $_M['config']['payment_open'] : '';
+
+        $table->rdata($data);
 	}
-	public function doindex(){
+
+    //保存分组
+	public function doSaveGroup(){
 		global $_M;
-		nav::select_nav(2);
-		$_M['url']['help_tutorials_helpid']='118#'.$_M[word][user_tips31_v6];
-		require_once $this->template('tem/user_group');
+        $data = isset($_M['form']['data']) ? $_M['form']['data'] : '';
+        if (!$data){
+            $this->error();
+        }
+        foreach ($data as $value) {
+            if (!$value['name']) {
+                continue;
+            }
+            $value['access'] = $value['access'] ? $value['access'] : 0;
+            if ($value['access'] < 1) {
+                $this->error($_M['word']['usereadinfo']);
+            }
+            if (isset($value['id']) && $value['id']) {
+                $log_name = 'save';
+
+                if (!is_numeric($value['id'])) {
+                    //写日志
+                    logs::addAdminLog('membergroup',$log_name,'dataerror','doSaveGroup');
+                    $this->error($_M['word']['dataerror']);
+                }
+                //修改
+                $this->update($value);
+                //写日志
+            } else {
+                //新增
+                $this->insert($value);
+                $log_name = 'added';
+            }
+
+        }
+
+        //写日志
+        logs::addAdminLog('membergroup',$log_name,'jsok','doSaveGroup');
+
+        cache::del('user', 'file');
+        $this->success('', $_M['word']['jsok']);
 	}
-	public function dosave(){
-		global $_M;
-		$this->groupclass->save_group($_M['form']['allid'],$_M['form']['submit_type']);
-		turnover("{$_M[url][own_form]}a=doindex");
-	}
+
+    //新增会员组
+    public function insert($value)
+    {
+        global $_M;
+
+        $recharge_price = isset($value['recharge_price']) ? $value['recharge_price'] : 0;
+        $rechargeok = isset($value['rechargeok']) ? $value['rechargeok'] : 0;
+        $price = isset($value['price']) ? $value['price'] : 0;
+        $buyok = isset($value['buyok']) ? $value['buyok'] : 0;
+
+        $query = "INSERT INTO {$_M['table']['user_group']} SET 
+							name = '{$value['name']}',
+							access = '{$value['access']}',
+							lang  = '{$_M['lang']}'
+							";
+        DB::query($query);
+        $group_id = DB::insert_id();
+        $query = "INSERT INTO {$_M['table']['admin_array']} SET 
+							id = " . DB::insert_id() . ",
+							array_name = '{$value['name']}',
+							user_webpower = '{$value['access']}',
+							array_type = 1,
+							langok = '',
+							lang  = '{$_M['lang']}'
+							";
+        DB::query($query);
+        $query = "INSERT INTO {$_M['table']['user_group_pay']} SET 
+                            groupid = '{$group_id}' ,
+                            price = '{$price}' ,
+                            buyok = '{$buyok}',
+                            recharge_price = '{$recharge_price}',
+                            rechargeok = '{$rechargeok}',
+                            lang = '{$_M['lang']}'";
+        DB::query($query);
+
+    }
+
+	function update($value)
+    {
+        global $_M;
+        $query = "UPDATE {$_M['table']['user_group']} SET 
+							name = '{$value['name']}',
+							access = '{$value['access']}'
+						WHERE id = '{$value['id']}' and lang = '{$_M['lang']}'
+						";
+        DB::query($query);
+
+        $query = "UPDATE {$_M['table']['admin_array']} SET 
+							array_name = '{$value['name']}',
+							user_webpower = '{$value['access']}',
+						WHERE id = '{$value['id']}' and lang = '{$_M['lang']}'
+						";
+        DB::query($query);
+
+
+        $recharge_price = isset($value['recharge_price']) ? $value['recharge_price'] : 0;
+        $rechargeok = isset($value['rechargeok']) ? $value['rechargeok'] : 0;
+        $price = isset($value['price']) ? $value['price'] : 0;
+        $buyok = isset($value['buyok']) ? $value['buyok'] : 0;
+        $query = "SELECT id FROM {$_M['table']['user_group_pay']} WHERE groupid = '{$value['id']}' AND lang = '{$_M['lang']}'";
+        if (DB::get_one($query)) {
+            $query = "UPDATE {$_M['table']['user_group_pay']} SET 
+                            price = '{$price}', 
+                            buyok = '{$buyok}',
+                            recharge_price = '{$recharge_price}',
+                            rechargeok = '{$rechargeok}' 
+                            WHERE groupid = '{$value['id']}' AND 
+                            lang = '{$_M['lang']}'";
+            DB::query($query);
+        }else{
+            $query = "INSERT INTO {$_M['table']['user_group_pay']} SET 
+                            groupid = '{$value['id']}',
+                            recharge_price = '{$recharge_price}',
+                            price = '{$price}',
+                            buyok = '{$buyok}',
+                            rechargeok = '{$rechargeok}',
+                            lang = '{$_M['lang']}'";
+            DB::query($query);
+        }
+
+    }
+
+	//删除会员组
+	public function doDelGroup(){
+        global $_M;
+        $data = isset($_M['form']['id']) ? $_M['form']['id'] : '';
+        if (!$data){
+            $this->error();
+        }
+
+        foreach ($data as $value) {
+            $query = "DELETE FROM {$_M['table']['user_group']} WHERE id='{$value}' AND lang='{$_M['lang']}' ";
+            DB::query($query);
+
+            $query = "DELETE FROM {$_M['table']['admin_array']} WHERE id='{$value}' AND lang='{$_M['lang']}' ";
+            DB::query($query);
+        }
+        //写日志
+        logs::addAdminLog('membergroup','delete','jsok','doDelGroup');
+        cache::del('user', 'file');
+        $this->success('', $_M['word']['jsok']);
+    }
+
+
 
 }
 

@@ -150,9 +150,9 @@ function template($template){
     $path = PATH_WEB."templates/{$_M['config']['met_skin_user']}/{$template}.{$uisuffix}";
     if(!file_exists($path) && $metinfover=='v2'){
     	if(M_NAME=='product'){
-    		$path=PATH_APP_FILE."web/templates/met/{$template}.php";// 商城V3使用默认模板时
+    		$path=PATH_APP_FILE."web/templates/{$template}.php";// 商城V3使用默认模板时
 		}else{
-			$path=PATH_OWN_FILE."templates/met/{$template}.php";
+			$path=PATH_OWN_FILE."templates/{$template}.php";
     		!file_exists($path) && $path=PATH_SYS."include/public/ui/admin/{$template}.php";
 		}
     }
@@ -168,19 +168,6 @@ function footer(){
 	echo $output;
 	DB::close();
 	exit;
-}
-
-/**
- * 缓存兼容函数
- */
-function cache_online(){
-    global $_M;
-	$query="SELECT * FROM {$_M['table']['online']} WHERE lang='{$_M['lang']}' ORDER BY no_order";
-	$result= DB::query($query);
-	while($list = DB::fetch_array($result)){
-		$data[]=$list;
-	}
-	return cache_page('online_'.$_M['lang'].'.inc.php',$data);
 }
 
 function cache_otherinfo($retype=1){

@@ -14,11 +14,11 @@ class login extends userweb
         global $_M;
         parent::__construct();
         if ($_M['form']['gourl']) {
-            $_M['url']['user_home'] = $_M['form']['gourl'];
+            $_M['url']['user_home'] = base64_decode($_M['form']['gourl']);
             if (strpos($_M['url']['login'], 'lang=')) {
-                $_M['url']['login'] .= "&gourl=" . urlencode($_M['form']['gourl']);
+                $_M['url']['login'] .= "&gourl=" . $_M['form']['gourl'];
             } else {
-                $_M['url']['login'] .= "?gourl=" . urlencode($_M['form']['gourl']);
+                $_M['url']['login'] .= "?gourl=" . $_M['form']['gourl'];
             }
         }
     }
@@ -48,12 +48,12 @@ class login extends userweb
         }
 
         if (isset($_M['form']['gourl']) && $_M['form']['gourl']) {
-            setcookie("referer", $_M['form']['gourl']);
+            setcookie("referer", base64_decode($_M['form']['gourl']));
         }
 
         if ($session->get("logineorrorlength") > 3) $_M['code'] = 1;
 
-        require $this->view('app/login', $this->input);
+        $this->view('app/login', $this->input);
     }
 
     public function dologin()
@@ -177,7 +177,8 @@ class login extends userweb
 
 	public function dologin_other_info(){
 		global $_M;
-		require_once $this->view('app/other_info',$this->input);
+		$this->view('app/other_info',$this->input);
+		#require_once $this->view('app/other_info',$this->input);
 	}
 }
 

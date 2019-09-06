@@ -30,7 +30,7 @@ class user {
     }
 
     //会员注册
-    public function register($username, $password, $email, $tel, $info, $valid, $groupid, $source) {
+    public function register($username, $password, $email, $tel, $info, $valid, $groupid, $source='') {
         global $_M;
         $userid = $this->insert_uesr($username, $password, $email, $tel, $valid, $groupid, $source);
         if ($userid) {
@@ -142,7 +142,7 @@ class user {
     }
 
     /* 修改密码 */
-    public function editor_uesr_password($userid, $password,$type=1) {
+    public function editor_uesr_password($userid = '', $password = '',$type = 1) {
         global $_M;
         if (!$userid) {
             return false;
@@ -304,8 +304,13 @@ class user {
                 if (file_exists(PATH_WEB . str_replace('../', $user['head'])) && $user['head']) {
                     $user['head'] = $_M['url']['site'] . str_replace('../', '', $user['head']);
                 } else {
-                    $user['head'] = $_M['url']['static'] . 'img/user.jpg';
+                    $user['head'] = $_M['url']['static_new'] . 'images/user.jpg';
                 }
+
+                if (strstr($user['head'],$_M['url']['web_site'])){
+                    $user['head'] = str_replace('../', '', $user['head']);
+                }
+
                 //将会员信息传递给$_M['user']参数
                 $this->set_m($user);
                 return $user;
@@ -678,8 +683,8 @@ class user {
                 return 1;
             }
             if(!$user['access']){
-				return -2;
-			}
+                return -2;
+            }
 			$group = load::sys_class('group', 'new')->get_group($groupid);
             if(!$group){
                 return -1;
@@ -695,7 +700,8 @@ class user {
         global $_M;
         $str = urlencode(load::sys_class('auth', 'new')->encode($str));
         $groupid = urlencode(load::sys_class('auth', 'new')->encode($groupid));
-        $url = load::sys_class('handle', 'new')->url_transform("{$_M['url']['entrance']}?m=include&c=access&a=doinfo&str={$str}&groupid={$groupid}");
+        #$url = load::sys_class('handle', 'new')->url_transform("{$_M['url']['entrance']}?m=include&c=access&a=doinfo&str={$str}&groupid={$groupid}");
+        $url = "{$_M['url']['entrance']}?m=include&c=access&a=doinfo&lang={$_M['lang']}&str={$str}&groupid={$groupid}";
         return "<script language='javascript' src='{$url}'></script>";
     }
 

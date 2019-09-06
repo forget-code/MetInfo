@@ -1,137 +1,94 @@
-<!--<?php
+<?php
 # MetInfo Enterprise Content Management System
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
-
 defined('IN_MET') or exit('No permission');
-
-require $this->template('ui/head');
-echo <<<EOT
--->
-<link rel="stylesheet" href="{$_M[url][own_tem]}css/metinfo.css?{$jsrand}" />
-<form method="POST" class="ui-from" name="myform" action="{$_M[url][own_form]}a=dolistsave&sub_type=editor" target="_self">
-<div class="v52fmbx product_index">
-	<div class="v52fmbx-table-top">
-		<div class="ui-float-left">
-		<a class="btn btn-danger" href="javascript:;" data-table-addlist="{$_M[url][own_form]}a=doadd&bigclass=0" role="button">{$_M[word][add]}</a>
-		&nbsp;&nbsp;
-		<font style=" color:#999;">{$_M[word][noorderinfo]}</font>
-		</div>
-		<div class="ui-float-right">
-		<a class="btn btn-danger " role="button" id="expandall">{$_M[word][columntip11]}</a>
-		</div>
-	</div>
-	<input id="class1id" name="class1" data-table-search="1" value="{$_M['form']['class1']}" class="ui-input" type="hidden" />
-	<input id="class2id" name="class2" data-table-search="1" value="{$_M['form']['class2']}" class="ui-input" type="hidden" />
-	<input id="class3id" name="class3" data-table-search="1" value="{$_M['form']['class3']}" class="ui-input" type="hidden" />
-	<table class="display dataTable ui-table" data-table-ajaxurl="{$_M[url][own_form]}a=dojson_list"  data-table-pageLength="100000000000">
+$checkbox_time=time();
+$table_addlist='#column-list';
+?>
+<div class="clearfix">
+	<button type="button" class="btn btn-primary" table-addlist='#column-list'>{$word.add}</button>
+	<font class="text-danger ml-2">{$word.noorderinfo}</font>
+	<button type="button" class="btn btn-primary float-right btn-show-allsubcolumn2">{$word.open_allchildcolumn_v6}</button>
+</div>
+<form method="POST" action="{$url.own_name}c=index&a=dolistsave" data-submit-ajax='1'>
+	<table class="table table-hover dataTable w-100 mt-2" id="column-list" data-ajaxurl="{$url.own_name}c=index&a=doGetColumnList" data-table-sdom='t' data-plugin="checkAll" data-datatable_order="#column-list">
 		<thead>
 			<tr>
-				<th width="30" data-table-columnclass="met-center">{$_M[word][selected]}</th>
-				<th data-table-columnclass="met-center" width="30">
-					{$_M[word][sort]}
-				</th>
-				<th  >
-					{$_M[word][columnname]}
-				</th>
-				<th data-table-columnclass="met-center" width="110">
-				{$_M[word][columnnav]}
-				</th>
-				<th data-table-columnclass="met-center" width="60">
-				{$_M[word][columnmodule]}
-				</th>
-				<th data-table-columnclass="met-center" width="60">
-				{$_M[word][columndocument]}
-				</th>
-				<th data-table-columnclass="met-center" width="30">
-				{$_M[word][columnmark1]}
-				</th>
-				<th data-table-columnclass="met-center" width="150" >{$_M[word][operate]}</th>
+				<include file="pub/content_list/checkall_all"/>
+				<th data-table-columnclass="text-center" width="30">{$word.sort}</th>
+				<th data-table-columnclass="td-column-name"><button type="button" class="btn btn-sm btn-default py-0 mr-2 btn-show-allsubcolumn"><i class="fa-angle-down h5 mb-0"></i></button>{$word.columnname}</th>
+				<th data-table-columnclass="text-center" width="170">{$word.columnnav}</th>
+				<th data-table-columnclass="text-center" width="100">{$word.columnmodule}</th>
+				<th data-table-columnclass="text-center" width="120">{$word.columndocument}</th>
+				<th width="150">{$word.operate}</th>
 			</tr>
 		</thead>
 		<tbody>
+			<?php $colspan=7; ?>
+			<include file="pub/content_list/table_loader"/>
 		</tbody>
-		<tfoot>	
-			<tr>
-				<th><input name="id" type="checkbox" data-table-chckall="id" value=""></th>
-				<th colspan="7" class="formsubmit">
-				<div class="pull-left">
-					<button type="submit" name="save" class="btn btn-default btn-primary" style="margin-left:5px;">
-					{$_M[word][Submit]}</button>
-					<button type="submit" name="del" class="btn btn-default btn-danger" data-confirm="{$_M['word']['js7']}</br>{$_M['word']['jsx39']}" style="margin-left:2px;">
-					{$_M[word][delete]}</button>
-					<a class="btn btn-default" href="javascript:;" data-table-addlist="{$_M[url][own_form]}a=doadd&bigclass=0" role="button">+{$_M[word][add]}</a>
-					</div>
-					<div class="pull-right">
-					<div class="pull-left padding-right-5 dropup">
-						<input type="hidden" name="to_lang" value="">
-						<button id="lang" class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">
-						{$_M[word][copyotherlang1]}
-						<span class="caret"></span>
-						</button>	
-						<ul class="dropdown-menu" data-type="move" role="menu">
-						<li role="presentation" class="divider"></li>
-<!--
-EOT;
-foreach($met_langok as $val){
-	if($val['mark'] == $_M['lang'])continue;
-echo <<<EOT
--->
-						<li class="met-tool-list"><a class="to-lang-select" data-value="{$val['mark']}" href="javascript:;">{$val['name']}</a></li>
-						<!--
-EOT;
-}
-echo <<<EOT
--->
-							</li>
-							<li role="presentation" class="divider"></li>
-						</ul>
-					</div>
-
-					<div class=" pull-left padding-right-15 copycontent">
-          			<span class="">
-            		<input type="checkbox" name="is_contents" value="1" aria-label="Checkbox for following text input">
-          			</span>
-          			<span class="">{$_M[word][copyotherlang2]}</span>
-        			</div>
-        			<div class="pull-left padding-right-15">
-        			<button type="submit" name="copy" class="btn btn-default btn-warning" id="copyLang">{$_M[word][Copy]}</button>
-        			</div>
+		<?php
+		$colspan--;
+		$del_title=$word['delete_information'].$word['jsx39'];
+		?>
+		<include file="pub/content_list/tfoot_common"/>
+					<include file="pub/content_list/btn_table_add"/>
+					<textarea table-addlist-data hidden>
+						<tr class="class1" style="background: #eee;">
+							<td class="text-center">
+								<div class="custom-control custom-checkbox">
+									<input class="checkall-item custom-control-input" type="checkbox" name="id">
+									<label class="custom-control-label"></label>
+								</div>
+								<input type="hidden" name="no_order">
+								<input type="hidden" name="bigclass">
+								<input type="hidden" name="classtype">
+							</td>
+							<td class="text-center">
+								<div class="form-group">
+									<input type="text" name="no_order" required class="form-control text-center">
+								</div>
+							</td>
+							<td class="td-column-name">
+								<div class="form-group">
+									<input type="text" name="name" required class="form-control">
+								</div>
+							</td>
+							<td class="text-center">
+								<select name="nav" class="form-control">
+								</select>
+							</td>
+							<td class="text-center">
+								<select name="module" class="form-control">
+								</select>
+							</td>
+							<td class="text-center">
+								<div class="form-group">
+									<input type="text" name="foldername" required class="form-control text-center">
+								</div>
+							</td>
+							<td>
+								<button type="button" class='btn btn-sm btn-success' table-save-new data-url="{$url.own_name}c=index&a=doAddColumn">{$word.Submit}</button>
+							</td>
+						</tr>
+					</textarea>
+					<div class="float-right">
+						<div class="custom-control custom-checkbox checkbox-inline mr-2">
+							<input type="checkbox" id="is_contents-{$checkbox_time}" name='is_contents' value='1' class="custom-control-input"/>
+							<label class="custom-control-label pl-1 font-weight-normal" for="is_contents-{$checkbox_time}">{$word.copyotherlang2}</label>
+						</div>
+						<select name="to_lang" class="form-control d-inline-block w-a">
+							<option value="">{$word.copyotherlang1}</option>
+							<list data="$_M['user']['langok']" name="$v">
+							<if value="$_M['lang'] neq $v['mark']">
+							<option value="{$v.mark}">{$v.name}</option>
+							</if>
+							</list>
+						</select>
+						<button type="submit" class="btn btn-primary" data-submit_type="copy">{$word.Copy}</button>
 					</div>
 				</th>
 			</tr>
 		</tfoot>
 	</table>
-</div>
 </form>
-
-<div class="modal fade modal-primary move-modal" id="move-modal" aria-hidden="true" aria-labelledby="move-modal" role="dialog" tabindex="-1">
-<div class="modal-dialog modal-lg">
-	<div class="modal-content">
-		<form method="POST" name="myform" action="{$_M[url][own_form]}a=domove&uplv=1">
-			<input id="movenow" name="nowid" type="hidden" value=""/>
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="top: 10px;">
-					<span aria-hidden="true">×</span>
-				</button>
-				<h4 class="modal-title">{$_M[word][column_inputcolumnfolder_v6]}</h4>
-			</div>
-			<div class="modal-body">
-				<input type="text" class="form-control" name="foldername" placeholder="">
-			</div>
-			<div class="modal-footer bg-blue-grey-100">
-				<button type="button" class="btn btn-default" data-dismiss="modal">{$_M['word']['indexonlieno']}</button>
-				<button type="submit" class="btn btn-primary">{$_M['word']['Submit']}</button>
-			</div>
-
-		</form>
-	</div>
-</div>
-</div>
-<script>var closeText='{$_M[word][close_allchildcolumn_v6]}',
-			expandText='{$_M[word][open_allchildcolumn_v6]}';</script>
-<!--
-EOT;
-require $this->template('ui/foot');
-# This program is an open source system, commercial use, please consciously to purchase commercial license.
-# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
-?>

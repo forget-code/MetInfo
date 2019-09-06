@@ -16,7 +16,7 @@ class Uploader
     private $oriName; //原始文件名
     private $fileName; //新文件名
     private $fullName; //完整文件名,即从当前配置目录开始的URL
-    private $filePath; //完整文件名,即从当前配置目录开始的URL
+    private $filePath; //完整文件路径,即从当前配置目录开始的URL
     private $fileSize; //文件大小
     private $fileType; //文件类型
     private $stateInfo; //上传状态信息,
@@ -30,6 +30,7 @@ class Uploader
         "ERROR_TMP_FILE" => "临时文件错误",
         "ERROR_TMP_FILE_NOT_FOUND" => "找不到临时文件",
         "ERROR_SIZE_EXCEED" => "文件大小超出网站限制",
+        "ERROR_IMG_PX_SIZE_EXCEED" => "图片尺寸超出网站限制 (图片宽高不超过2000px)",
         "ERROR_TYPE_NOT_ALLOWED" => "文件类型不允许",
         "ERROR_CREATE_DIR" => "目录创建失败",
         "ERROR_DIR_NOT_WRITEABLE" => "目录没有写权限",
@@ -39,7 +40,8 @@ class Uploader
         "ERROR_UNKNOWN" => "未知错误",
         "ERROR_DEAD_LINK" => "链接不可用",
         "ERROR_HTTP_LINK" => "链接不是http链接",
-        "ERROR_HTTP_CONTENTTYPE" => "链接contentType不正确"
+        #"ERROR_HTTP_CONTENTTYPE" => "链接contentType不正确",
+        "ERROR_HTTP_CONTENTTYPE" => "图片无法下载",
     );
 
     /**
@@ -117,6 +119,15 @@ class Uploader
             $truePath = iconv("UTF-8", "GBK", $this->filePath);
         }else{
             $truePath = $this->filePath;
+        }
+
+        //上传图片大小限制 2000px
+        $imgattr = @getimagesize($file["tmp_name"]);
+        if ($imgattr && $this->config['imageCompressBorder']) {
+            if ($imgattr[0] > $this->config['imageCompressBorder'] || $imgattr[1] > $this->config['imageCompressBorder']) {
+                $this->stateInfo = $this->getStateInfo("ERROR_IMG_PX_SIZE_EXCEED");
+                return;
+            }
         }
 
         //移动文件
@@ -354,15 +365,19 @@ class Uploader
     public function getFileInfo()
     {
 		global $_M;
-		$fullName = $this->fullName;
-		$fullName = str_replace(PATH_WEB,$_M['url']['site'],$fullName);
+        $file_info=getimagesize($this->fullName);
+        $fullName = $this->fullName;
+		#$fullName = str_replace(PATH_WEB,$_M['url']['site'],$fullName);
+		$fullName = str_replace(PATH_WEB,'../',$fullName);
         return array(
             "state" => $this->stateInfo,
             "url" => $fullName,
             "title" => $this->fileName,
             "original" => $this->oriName,
             "type" => $this->fileType,
-            "size" => $this->fileSize
+            "size" => $this->fileSize,
+            "width" => $file_info[0],
+            "height" => $file_info[1]
         );
     }
 

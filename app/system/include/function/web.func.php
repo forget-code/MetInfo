@@ -7,8 +7,8 @@ defined('IN_MET') or exit('No permission');
 
 
 /**
- * »ñÈ¡µ±Ç°»áÔ±ÐÅÏ¢£»
- * @return array  $user ·µ»Ø¼ÇÂ¼µ±Ç°»áÔ±ÐÅÏ¢µÄÊý×é
+ * ï¿½ï¿½È¡ï¿½ï¿½Ç°ï¿½ï¿½Ô±ï¿½ï¿½Ï¢ï¿½ï¿½
+ * @return array  $user ï¿½ï¿½ï¿½Ø¼ï¿½Â¼ï¿½ï¿½Ç°ï¿½ï¿½Ô±ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
  */
 function member_information(){
 	global $_M;
@@ -24,7 +24,7 @@ function member_information(){
 }
 
 /**
- * ÊÇ·ñÊÇÎ¢ÐÅ¿Í»§¶Ë
+ * ï¿½Ç·ï¿½ï¿½ï¿½Î¢ï¿½Å¿Í»ï¿½ï¿½ï¿½
  */
 function is_weixin_client(){
 	if(strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger')){
@@ -35,7 +35,7 @@ function is_weixin_client(){
 }
 
 /**
- * ÊÇ·ñÊÇÎ¢ÐÅ¿Í»§¶Ë
+ * ï¿½Ç·ï¿½ï¿½ï¿½Î¢ï¿½Å¿Í»ï¿½ï¿½ï¿½
  */
 function is_mobile_client(){
 	$ua = strtolower($_SERVER['HTTP_USER_AGENT']);

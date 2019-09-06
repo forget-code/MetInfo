@@ -9,7 +9,7 @@
 				<a href="{$v.url}" title="{$v.title}" {$g.urlnew}>
 					<img class="cover-image" <if value="$v['_index'] gt 0">data-lazy<else/>src</if>="{$v.imgurl|thumb:$ui['news_headlines_x'],$ui['news_headlines_y']}" data-srcset="{$v.imgurl|thumb:450,450*$ui['news_headlines_y']/$ui['news_headlines_x']} 450w,{$v.imgurl|thumb:$ui['news_headlines_x'],$ui['news_headlines_y']}" sizes='(max-width:479px) 450px' alt="{$v.title}">
 					<div class="headlines-text text-xs-center">
-						<h3>{$v.title}</h3>
+						<h3>{$v._title}</h3>
 					</div>
 				</a>
 			</div>
@@ -24,7 +24,7 @@
 <if value="($ui['news_headlines'] && !$data[page] && !$data[class2] && $v['_index'] egt $ui[news_headlines_num]) || ($ui['news_headlines'] && !$data[page] && $data[class2]) || $data[page] || !$ui['news_headlines']">
 	<li class='border-bottom1'>
 		<h4>
-			<a href="{$v.url}" title="{$v.title}" {$g.urlnew}>{$v.title}</a>
+			<a href="{$v.url}" title="{$v.title}" {$g.urlnew}>{$v._title}</a>
 		</h4>
 		<p class="des font-weight-300">{$v.description}</p>
 		<p class="info font-weight-300">
@@ -46,7 +46,7 @@
 		</div>
 		<div class="media-body">
 			<h4>
-				<a href="{$v.url}" title="{$v.title}" {$g.urlnew}>{$v.title}</a>
+				<a href="{$v.url}" title="{$v.title}" {$g.urlnew}>{$v._title}</a>
 			</h4>
 			<p class="des font-weight-300">
 				{$v.description}
@@ -73,7 +73,7 @@
 	</div>
 	<div class="card-body">
 		<h4 class="card-title">
-			<a href="{$v.url}" title="{$v.title}" {$g.urlnew}>{$v.title}</a>
+			<a href="{$v.url}" title="{$v.title}" {$g.urlnew}>{$v._title}</a>
 		</h4>
 		<p class="card-metas font-size-12 font-weight-300">
 			<span>{$v.updatetime}</span>

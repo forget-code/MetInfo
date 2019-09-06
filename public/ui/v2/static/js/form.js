@@ -50,13 +50,11 @@ $.fn.extend({
     // 表单验证通用
     validation:function(){
         var $self=$(this),
-            order=$(this).attr('data-validate_order'),
             self_validation=$(this).formValidation({
             locale:M['validation_locale'],
             framework:'bootstrap4'
         });
         function success(fun,afterajax_ok){
-            validate[order].ajax_submit=1;
             self_validation.on('success.form.fv', function(e) {
                 e.preventDefault();
                 if($self.find('[name="submit_type"]').length && $self.find('[name="submit_type"]').val()=='delet' && $self.find('[name="all_id"]').val()=='') return false;
@@ -194,7 +192,6 @@ $.fn.metValidate=function(){
     if(typeof validate =='undefined') window.validate=[];
     $('form',this).each(function(index, el) {
         var order=$(this).index('form');
-        $(this).attr({'data-validate_order':order});
         validate[order]=$(this).validation();
     });
 }

@@ -9,9 +9,10 @@ class link_tag extends tag {
 
     public function _list( $attr, $content ) {
         global $_M;
+
         $php    = <<<str
 <?php
-    \$result = load::sys_class('label', 'new')->get('link')->get_link_list();
+    \$result = load::sys_class('label', 'new')->get('link')->get_link_list(\$data['classnow']);
     \$sub = count(\$result);
      foreach(\$result as \$index=>\$v):
         \$v['sub']      = \$sub;

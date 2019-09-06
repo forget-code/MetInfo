@@ -32,14 +32,28 @@ foreach ($source as $imgUrl) {
         "state" => $info["state"],
         "url" => $info["url"],
         "size" => $info["size"],
+        "width" => $info["width"],
+        "height" => $info["height"],
         "title" => htmlspecialchars($info["title"]),
         "original" => htmlspecialchars($info["original"]),
         "source" => htmlspecialchars($imgUrl)
     ));
 }
 
+if ($info['state'] == 'SUCCESS') {
+    $redata = array();
+    $redata['state'] = count($list) ? 'SUCCESS':'ERROR';
+    $redata['list'] = $list;
+    $redata =  json_encode($redata);
+}else{
+    $redata = array();
+    $redata['error'] = $info['state'];
+    $redata['msg'] = $info['state'];
+    $redata = json_encode($redata);
+}
+return $redata;
 /* 返回抓取数据 */
-return json_encode(array(
+/*return json_encode(array(
     'state'=> count($list) ? 'SUCCESS':'ERROR',
     'list'=> $list
-));
+));*/

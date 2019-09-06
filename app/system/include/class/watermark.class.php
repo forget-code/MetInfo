@@ -228,7 +228,6 @@ class watermark {
 		$src_image_type = $this->get_type($water_scr_image);
 		
 		$src_image = $this->createImage($src_image_type,$water_scr_image);
-		
 		if (!$src_image) return;
 		$src_image_w = ImageSX($src_image);
 		$src_image_h = ImageSY($src_image);
@@ -328,13 +327,15 @@ class watermark {
 			case 'png':
 				$tmp_img=imagecreatefrompng($img_name);
 			break;
-				case 'jpeg':
+			case 'jpeg':
 			$tmp_img=imagecreatefromjpeg($img_name);
 			break;
 			default:
 				$tmp_img=imagecreatefromstring($img_name);
 			break;
 		}
+		imagesavealpha($tmp_img, true);
+
 		return $tmp_img;
 	}
 

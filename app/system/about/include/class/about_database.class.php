@@ -11,6 +11,11 @@ load::mod_class('column/column_database');
  */
 
 class about_database extends column_database{
+    public function __construct() {
+        global $_M;
+        $this->construct($_M['table']['column']);
+    }
+
      /**
 	 * 获取静态页面名称
 	 * @param  array  $filename     静态页面名称

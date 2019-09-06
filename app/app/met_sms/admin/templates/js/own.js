@@ -56,10 +56,11 @@ define(function (require, exports, module) {
 		})
 		.done(function(res) {
 			$('.sms_submit').removeAttr('disabled');
-			if(res.status == 0){
-				$('.sms_msg').html(res.msg)
-			}else{
+			if(res.status == 200){
 				$('.sms_msg').html(res.data)
+				
+			}else{
+				$('.sms_msg').html(res.msg)
 			}
 		})
 	});

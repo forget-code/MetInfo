@@ -48,22 +48,27 @@ class parameter_label {
 		$mod = is_numeric($module) ? $module : $this->name_to_num($module);
 		return load::mod_class('parameter/parameter_database', 'new')->get_parameter($mod, $class1,$class2);
 	}
-  /**
+
+    /**
 	 * 获取字段提交表单，前台留言，反馈，招聘模块使用
-	 * @param  string  $module  表单模块类型(feedback, message, job)
-	 * @param  number  $id      一级栏目
-	 * @return array            表单数组
-	 */
-	public function get_parameter_form($module, $id) {
+     * @param string $module 表单模块类型(feedback, message, job)
+     * @param string $class1 一级栏目
+     * @param string $class2 二级栏目
+     * @param string $class3 三级栏目
+     * @return array
+     */
+	public function get_parameter_form($module = '', $class1 = '', $class2 = '', $class3 = '') {
 		global $_M;
+        $classnow = $class3 ? $class3 :($class2 ? $class2 : $class1);
 		$mod = $this->name_to_num($module);
 		$parameter_database = load::mod_class('parameter/parameter_database', 'new');
-		$p = $parameter_database->get_parameter($mod, $id);
+		$p = $parameter_database->get_parameter($mod, $class1, $class2, $class3);
 
 		foreach ($p as $key => $para) {
 			$list = $parameter_database->get_parameters($mod,$para['id']);
 			$p[$key]['para_list'] = $list;
-			$values = array();
+
+			/*$values = array();
 			if($para['type'] ==4 || $para['type'] ==2 || $para['type'] ==6){
 				foreach ($list as $val) {
 					$query = "SELECT * FROM {$_M['table']['plist']} WHERE listid = {$listid} AND paraid={$para['id']} AND module={$module} AND info = '{$val['id']}' AND lang = '{$_M['lang']}'";
@@ -83,9 +88,8 @@ class parameter_label {
 				$p[$key]['value'] = implode('|', $values);
 			}else{
 				$p[$key]['value'] = $values;
-			}
+			}*/
 		}
-
 
 		foreach ($p as $val) {
 			$power = load::sys_class('user', 'new')->check_power($val['access']);
@@ -94,10 +98,10 @@ class parameter_label {
 			}
 		}
 		if($mod == '8'){
-			$query = "SELECT * FROM {$_M['table']['list']} WHERE bigid='{$id}' AND no_order='99999' AND lang='{$_M['lang']}'";
+			$query = "SELECT * FROM {$_M['table']['list']} WHERE bigid='{$classnow}' AND no_order='99999' AND lang='{$_M['lang']}'";
 			$metlistrele = DB::get_one($query);
 			if($metlistrele['info']){
-				$config = load::sys_class('label', 'new')->get('config')->get_column_config($id);
+				$config = load::sys_class('label', 'new')->get('config')->get_column_config($classnow);
 				foreach($paras as $key => $val){
 					if($val['id'] == $config['met_fd_class']){
 						$paras[$key]['productlist'] = $metlistrele['info'];
@@ -115,82 +119,98 @@ class parameter_label {
 	 * @param  number  $id      一级栏目
 	 * @return array            表单数组
 	 */
-	public function get_parameter_contents($module, $id, $class1, $class2, $class3,$type=0) {
-		global $_M;
-		$mod = $this->name_to_num($module);
-		$parameter_database = load::mod_class('parameter/parameter_database', 'new');
-		$parameter = $parameter_database->get_parameter($mod);
+	public function get_parameter_contents($module, $id, $class1, $class2, $class3, $type = 0)
+    {
+        global $_M;
+        $mod = $this->name_to_num($module);
+        $parameter_database = load::mod_class('parameter/parameter_database', 'new');
+        $parameter = $parameter_database->get_parameter($mod ,$class1, $class2, $class3);
+        $userclass = load::sys_class('user', 'new');
 
-		$list = $parameter_database->get_list($id, $mod);
+        $list = $parameter_database->get_list($id, $mod);
 
-		$userclass = load::sys_class('user', 'new');
-		foreach ($parameter as $key => $val) {
-			if($type){
-				if($val['type'] != $type){
-					continue;
-				}
-			}else{
-				if($val['type'] == 10){
-					continue;
-				}
-			}
-			if (
-				($val['class1'] == 0) ||
-				($val['class1'] == $class1 && $val['class2'] == 0) ||
-				($val['class1'] == $class1 && $val['class2'] == $class2 && $val['class3'] == 0) ||
-				($val['class1'] == $class1 && $val['class2'] == $class2 && $val['class3'] == $class3)
-			) {
-				if($val['type'] == 5){
-					$url = load::sys_class('handle', 'new')->url_transform($list[$val['id']]['info']);
-					$value = "<a target='_blank' href='{$list[$val['id']]['info']}'>{$_M['word']['downloadtext1']}</a>";
-				}else{
-					if($val['type'] == 2 || $val['type'] == 4 || $val['type'] == 6){
+        $relist = array();
+        foreach ($parameter as $key => $val) {
+            if ($type) {
+                if ($val['type'] != $type) {
+                    continue;
+                }
+            } else {
+                if ($val['type'] == 10) {
+                    continue;
+                }
+            }
+            if (
+                ($val['class1'] == 0) ||
+                ($val['class1'] == $class1 && $val['class2'] == 0) ||
+                ($val['class1'] == $class1 && $val['class2'] == $class2 && $val['class3'] == 0) ||
+                ($val['class1'] == $class1 && $val['class2'] == $class2 && $val['class3'] == $class3)
+            ) {
+                if ($val['type'] == 5) {
+                    $url = load::sys_class('handle', 'new')->url_transform($list[$val['id']]['info']);
+                    $value = "<a target='_blank' href='{$list[$val['id']]['info']}'>{$_M['word']['downloadtext1']}</a>";
+                } else {
+                    if ($val['type'] == 2 || $val['type'] == 4 || $val['type'] == 6) {
+                        $value = '';
+                        $value_list = $parameter_database->get_parameter_value($mod, $id, $val['id']);
+                        foreach ($value_list as $v) {
+                            if (strstr( $v['info'],',')) {
+                                $para_ids = explode(',',$v['info']);
+                                foreach ($para_ids as $para_id) {
+                                    $para_value = $parameter_database->get_parameter_value_by_id($para_id);
+                                    if ($para_value) {
+                                        $value .= "," . $para_value;
+                                    }
+                                }
+							}else{
+                                $para_value = $parameter_database->get_parameter_value_by_id($v['info']);
+                                $value = $para_value;
+                            }
 
-						$value_list = $parameter_database->get_parameter_value($mod,$id,$val['id']);
-						$value = "";
-						foreach ($value_list as $v) {
-							$para_value = $parameter_database->get_parameter_value_by_id($v['info']);
-							if($para_value){
-								$value .= ",".$para_value;
-							}
-						}
-					}else{
-						$value = $list[$val['id']]['info'];
-					}
-				}
+                        }
+                        $value = trim($value, ',');
+                    } else {
+                        $value = $list[$val['id']]['info'];
+                    }
+                }
 
-				$value = trim($value,',');
-				$pt['id'] =  $val['id'];
-				$pt['name'] =  $val['name'];
-				$pt['value'] =  $val['access'] ? $userclass->check_power_script($value, $val['access']) : $value;
 
-				$relist[] = $pt;
-			}
-		}
-		if($type){
+                $value = trim($value, ',');
+                $pt = array();
+                $pt['id'] = $val['id'];
+                $pt['name'] = $val['name'];
+                $pt['value'] = $val['access'] ? $userclass->check_power_script($value, $val['access']) : $value;
 
-			$inquiry = load::mod_class('config/config_database','new')->get_inquiry();
-			if($inquiry){
-				$column = load::mod_class('column/column_database','new')->get_column_by_id($inquiry);
-				$feedback = array();
-				if($_M['form']['id']){
-					$product = load::mod_class('product/include/class/product_database','new')->get_list_one_by_id($_M['form']['id']);
-					$product_title = urlencode($product['title']);
-				}else{
-					$product_title = "";
-				}
+                $relist[] = $pt;
+            }
+        }
 
-				$feedback['id'] = 0;
-				$feedback['name'] = $_M['word']['feedbackinquiry'];
+        if ($type) {
+			
+			$feedback = load::mod_class('feedback/feedback_database', 'new');
+        	//在线询价
+			$inquiry = $feedback->get_inquiry();
+            if ($inquiry) {
+                    $fd_column = load::mod_class('column/column_database', 'new')->get_column_by_id($inquiry['columnid']);
+                    $feedback = array();
+                    if ($_M['form']['id']) {
+                        $product = load::mod_class('product/include/class/product_database', 'new')->get_list_one_by_id($_M['form']['id']);
+                        $product_title = urlencode($product['title']);
+                    } else {
+                        $product_title = "";
+                    }
 
-				$feedback['value'] = $_M['url']['site']."{$column['foldername']}/index.php?fdtitle={$product_title}&lang={$_M['lang']}";
+                    $feedback['id'] = 0;
+                    $feedback['name'] = $_M['word']['feedbackinquiry'];
 
-				$relist[] = $feedback;
-			}
-		}
+                    $feedback['value'] = $_M['url']['web_site'] . "{$fd_column['foldername']}/index.php?fdtitle={$product_title}&lang={$_M['lang']}";
 
-		return $relist;
-	}
+                $relist[] = $feedback;
+            }
+        }
+
+        return $relist;
+    }
 
 	/**
 	 * 获取字段内容，前台产品，图片，下载模块使用
@@ -230,7 +250,8 @@ class parameter_label {
 			if($precision){
 				$sql = "SELECT listid FROM {$_M['table']['plist']} WHERE info = '{$info}'";
 			}else{
-				$sql = "SELECT listid FROM {$_M['table']['plist']} WHERE info like '%{$info}%'";
+				$mod = load::sys_class('handle','new')->file_to_mod($module);
+				$sql = "SELECT listid FROM {$_M['table']['plist']} WHERE info like '%{$info}%' AND module = '{$mod}'";
 			}
 		}else{
 			// $sql = "SELECT listid FROM {$_M['table']['plist']} WHERE 1=1 ";

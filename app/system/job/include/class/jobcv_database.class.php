@@ -24,9 +24,9 @@ class jobcv_database extends database {
 
   public function del_by_id($id){
      global $_M;
-     $query="delete from {$_M[table][plist]} where listid='$id' and lang='{$_M[lang]}' and module='6'"; 
+     $query="delete from {$_M['table']['plist']} where listid='$id' and lang='{$_M['lang']}' and module='6'";
      DB::query($query);
-     $query="delete  from {$_M[table][cv]} where id='$id' and lang='{$_M[lang]}'"; 
+     $query="delete  from {$_M['table']['cv']} where id='$id' and lang='{$_M['lang']}'";
      return DB::query($query);
   }
 }

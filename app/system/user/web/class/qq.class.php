@@ -22,7 +22,7 @@ class qq extends other {
 	public function get_login_url(){
 		global $_M;
 
-		$redirect_uri = $_M['url']['site'].'member/login.php?a=doother_login&type=qq';
+		$redirect_uri = $_M['url']['web_site'].'member/login.php?a=doother_login&type=qq';
 		$url .= "https://graph.qq.com/oauth2.0/authorize?";
 		$url .= "client_id={$this->appid}";
 		$url .= "&redirect_uri=".urlencode($redirect_uri);
@@ -34,7 +34,7 @@ class qq extends other {
 	
 	public function get_access_token_by_curl($code){
 		global $_M;		
-        $redirect_uri = $_M['url']['site'].'member/login.php?a=doother_login&type=qq';
+        $redirect_uri = $_M['url']['web_site'].'member/login.php?a=doother_login&type=qq';
 		$url = "https://graph.qq.com/oauth2.0/token";
 		$send['code'] = $code;
 		$send['client_id'] = $this->appid;

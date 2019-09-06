@@ -68,8 +68,7 @@ function is_filename($filename){
 function is_phone($phone){
 	if(strlen($phone) == 11){
 		$flag = true;
-		#$patten = '/^1[3458]{1}\d{8}\d$/';
-		$patten = '/^1[345678]{1}\d{8}\d$/';
+		$patten = '/^1[346578]{1}\d{8}\d$/';
 		if(preg_match($patten, $phone) == 0){
 			$flag = false;
 		}
@@ -139,6 +138,21 @@ function is_strinclude($str, $needle, $type = 0){
 		}
 	}
 	return $flag;
+}
+
+/**
+ * 普通字符串查找
+ * @param string $str
+ * @param string $patten
+ * @return bool
+ */
+function is_simplestr($str = '' , $patten = '/^[0-9A-Za-z_]+$/')
+{
+    $flag = false;
+    if(preg_match($patten, $str)){
+        $flag = true;
+    }
+    return $flag;
 }
 
 /**

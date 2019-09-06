@@ -21,18 +21,25 @@ class  parameter_database extends database{
 	}
 
 	//获取list存放的表
-	public function get_plist_table($module){
-		global $_M;
-		switch ($module) {
-			case 7:
-			$table = $_M['table']['mlist'];
-			break;
-			default:
-			$table = $_M['table']['plist'];
-			break;
-		}
-		return $table;
-	}
+	public function get_plist_table($module)
+    {
+        global $_M;
+        switch ($module) {
+            case 7:
+                $table = $_M['table']['mlist'];
+                break;
+            case 8:
+                $table = $_M['table']['flist'];
+                break;
+            case 10:
+                $table = $_M['table']['user_list'];
+                break;
+            default:
+                $table = $_M['table']['plist'];
+                break;
+        }
+        return $table;
+    }
 
 	/**
 	 * 获取字段
@@ -41,15 +48,23 @@ class  parameter_database extends database{
 	 * @param  string  $class1  一级栏目
 	 * @return array            字段数组
 	 */
-	public function get_list($id, $module){
+	public function get_list($id = '', $module = ''){
 		global $_M;
-		$table = $this->get_plist_table($module);
-		$query = "SELECT * FROM {$table} WHERE listid = '{$id}' AND module = '{$module}'";
+        $para_list = load::mod_class('parameter/parameter_list_database', 'new');
+        $para_list->construct($module);
+        $plist = $para_list->get_by_listid($id);
+        foreach ($plist as $key => $val) {
+            $relist[$val['paraid']] = $val;
+        }
+        return $relist;
+
+		/*$table = $this->get_plist_table($module);
+		$query = "SELECT * FROM {$table} WHERE `listid` = '{$id}' AND `module` = '{$module}'";
 		$list = DB::get_all($query);
 		foreach ($list as $key => $val) {
 			$relist[$val['paraid']] = $val;
 		}
-		return $relist;
+		return $relist;*/
 	}
 
 	/**
@@ -59,7 +74,7 @@ class  parameter_database extends database{
 	 * @param  string  $class1  一级栏目
 	 * @return array            字段数组
 	 */
-	public function insert_list($listid, $paraid, $info, $imgname, $lang, $module){
+	public function insert_list($listid = '', $paraid = '', $info = '', $imgname = '', $lang = '', $module = ''){
 		global $_M;
 		$para_list = load::mod_class('parameter/parameter_list_database', 'new');
 		$para_list->construct($module);
@@ -82,7 +97,7 @@ class  parameter_database extends database{
 	 * @param  string  $class1  一级栏目
 	 * @return array            字段数组
 	 */
-	public function add_list($listid, $paraid, $info, $imgname, $module){
+	public function add_list($listid = '', $paraid = '', $info = '', $imgname = '', $module = ''){
 		global $_M;
 		$para_list = load::mod_class('parameter/parameter_list_database', 'new');
 		$para_list->construct($module);
@@ -95,7 +110,7 @@ class  parameter_database extends database{
 	 * @param  string  $class1  一级栏目
 	 * @return array            字段数组
 	 */
-	public function update_list($listid, $paraid, $info, $imgname, $module){
+	public function update_list($listid = '', $paraid = '', $info = '', $imgname = '', $module = ''){
 		global $_M;
 		$para_list = load::mod_class('parameter/parameter_list_database', 'new');
 		$para_list->construct($module);
@@ -109,7 +124,7 @@ class  parameter_database extends database{
 	 * @param  string  $class1  一级栏目
 	 * @return array            字段数组
 	 */
-	public function del_list($listid, $module){
+	public function del_list($listid = '', $module = ''){
 		global $_M;
 		$para_list = load::mod_class('parameter/parameter_list_database', 'new');
 		$para_list->construct($module);
@@ -132,19 +147,50 @@ class  parameter_database extends database{
 	 * @param  string  $class3  三级栏目
 	 * @return array            字段数组
 	 */
-	public function get_parameter($module , $class1 = '' , $class2 = '' , $class3 = '' ){
+	public function get_parameter($module = '' , $class1 = '' , $class2 = '' , $class3 = '' ){
 		global $_M;
-		$where = "WHERE {$this->langsql} AND (( module = '$module' AND class1 = 0) OR ( module = '$module'";
-		if($class1){
-			$where .=" AND class1 = '$class1' ";
+
+		//获取指定模块属性
+        if (!$class1 && !$class2 && !$class3) {
+            $where = "WHERE {$this->langsql} AND module = '{$module}'";
+            $query = "SELECT * FROM {$_M['table']['parameter']} {$where} ORDER BY no_order ASC, id DESC ";
+            $paras = DB::get_all($query);
+            return $paras;
+        }
+
+        //获取指点栏目熟悉
+        $where = "WHERE {$this->langsql} AND (( module = '{$module}' AND class1 = 0) OR ( module = '{$module}'";
+        if($class1){
+			$where .= " AND class1 = '{$class1}' ";
+		}else{
+            $where .= " AND class1 = '0' ";
 		}
 		if($class2){
-			$where .=" AND class2 = '$class2' ";
+			$where .= " AND class2 = '{$class2}' ";
+		}else{
+            $where .= " AND class2 = '0' ";
 		}
 		if($class3){
-			$where .=" AND class3 = '$class3' ";
-		}
-		$where .= " ) )";
+			$where .= " AND class3 = '{$class3}' ";
+		}else{
+            $where .= " AND class3 = '0' ";
+        }
+		$where .= " ) ";
+
+        if ($class1) {
+            $where .= " OR (  module = '{$module}' AND class1 = '{$class1}' AND class2 = 0 AND class3 = 0 )  ";
+        }
+
+        if ($class2) {
+            $where .= " OR (  module = '{$module}' AND class1 = '{$class1}' AND class2 = '{$class2}' AND class3 = 0 )  ";
+        }
+
+        if ($class3) {
+            $where .= " OR (  module = '{$module}' AND class1 = '{$class1}' AND class2 = '{$class2}' AND class3 = '{$class3}' )  ";
+        }
+
+        $where .= ')';
+
 		$query = "SELECT * FROM {$_M['table']['parameter']} {$where} ORDER BY no_order ASC, id DESC ";
 		$paras = DB::get_all($query);
 
@@ -152,7 +198,12 @@ class  parameter_database extends database{
 	}
 
 	//获取栏目下面的内容,返回内容不包含下级栏目内容
-	public function get_list_by_class_no_next($id) {
+
+    /**
+     * @param string $id 栏目id
+     * @return array
+     */
+	public function get_list_by_class_no_next($id = '') {
 		global $_M;
 		if(is_numeric($id)){
 			$class123 = load::sys_class('label', 'new')->get('column')->get_class123_no_reclass($id);
@@ -163,7 +214,7 @@ class  parameter_database extends database{
 		$sql = " {$this->langsql} AND module = '{$module}' ";
 
 		if ($class123['class1']['id']) {
-			if($module == 7 ){
+			if($module == 6 || $module == 7){
 				$sql .= " AND (class1 = '{$class123['class1']['id']}' OR class1 = 0)";
 			}else{
 				$sql .= " AND class1 = '{$class123['class1']['id']}' ";
@@ -193,7 +244,7 @@ class  parameter_database extends database{
 	 * @param  string  $paraid  字段id
 	 * @return array            字段选项数组
 	 */
-	public function get_parameter_list($paraid) {
+	public function get_parameter_list($paraid = '') {
 		global $_M;
 		$query = "SELECT * FROM {$_M['table']['list']} WHERE bigid='{$paraid}' ORDER BY no_order ASC";
 		return DB::get_all($query);
@@ -203,40 +254,64 @@ class  parameter_database extends database{
 		return 'id|name|options|description|no_order|type|access|wr_ok|class1|class2|class3|module|lang|wr_oks|related';
 	}
 
-	public function add_parameter($option)
+	public function add_parameter($option,$lang = '')
 	{
 		global $_M;
-
-		$query = "SELECT * FROM {$_M['table']['para']} WHERE pid = {$option['pid']} AND value='{$option['value']}' AND module = {$option['module']} AND lang = '{$_M['lang']}'";
+        $lang = $lang ? $lang : $_M['lang'];
+		$query = "SELECT * FROM {$_M['table']['para']} WHERE pid = {$option['pid']} AND value='{$option['value']}' AND module = {$option['module']} AND lang = '{$lang}'";
 		$para = DB::get_one($query);
-		if($para){
+
+        if($para){
 			return false;
 		}
 
-		$query = "INSERT INTO {$_M['table']['para']} SET pid = {$option['pid']},module={$option['module']},value='{$option['value']}',lang='{$_M['lang']}'";
+		$query = "INSERT INTO {$_M['table']['para']} SET pid = {$option['pid']},module={$option['module']},value='{$option['value']}',lang='{$lang}',`order`='{$option['order']}'";
 		$row = DB::query($query);
-		if(!$row){
+
+        if(!$row){
 			return false;
 		}
 		return DB::insert_id();
 	}
 
-	public function get_parameters($module,$pid)
+    /**
+	 * 获取属性选项
+     * @param string $module 模块
+     * @param string $pid	 属性id
+     * @return array
+     */
+	public function get_parameters($module = '',$pid = '',$lang = '')
 	{
 		global $_M;
-		$query = "SELECT * FROM {$_M['table']['para']} WHERE pid = {$pid} AND module = {$module} AND lang = '{$_M['lang']}' ORDER BY `order` ASC";
+        $lang = $lang ? $lang : $_M['lang'];
+		$query = "SELECT * FROM {$_M['table']['para']} WHERE pid = {$pid} AND module = {$module} AND lang = '{$lang}' ORDER BY `order` ASC";
 		return DB::get_all($query);
 	}
 
-	public function get_parameter_value($module, $listid, $paraid){
+    public function get_parameter_value($module, $listid, $paraid, $lang = ''){
 		global $_M;
-		$query = "SELECT * FROM {$_M['table']['plist']} WHERE listid = '{$listid}' AND module = '{$module}' AND paraid = '{$paraid}' AND lang = '{$_M['lang']}'";
+        $lang = $lang ? $lang : $_M['lang'];
+		$query = "SELECT * FROM {$_M['table']['plist']} WHERE listid = '{$listid}' AND module = '{$module}' AND paraid = '{$paraid}' AND lang = '{$lang}'";
 		$list = DB::get_all($query);
 		return $list;
 	}
 
+    public function get_parameter_by_id($id = '')
+    {
+        global $_M;
+        $query = "SELECT * FROM {$_M['table']['parameter']} WHERE id = {$id}";
+        $parameter = DB::get_one($query);
+        return $parameter;
+    }
 
-	public function get_para_value($paraid,$info)
+    public function get_parameter_type($id = '')
+    {
+        global $_M;
+        $parameter = self::get_parameter_by_id($id);
+        return $parameter['type'];
+    }
+
+    public function get_para_value($paraid = '',$info = '')
 	{
 		$type = self::get_parameter_type($paraid);
 		if($type == 2 || $type == 4 || $type == 6){
@@ -246,23 +321,15 @@ class  parameter_database extends database{
 		}
 	}
 
-	public function get_parameter_type($id)
+	public function get_parameter_value_by_id($id = '')
 	{
 		global $_M;
-		$query = "SELECT type FROM {$_M['table']['parameter']} WHERE id = {$id}";
-		$parameter = DB::get_one($query);
-		return $parameter['type'];
-	}
-
-	public function get_parameter_value_by_id($id)
-	{
-		global $_M;
-		$query = "SELECT value FROM {$_M['table']['para']} WHERE id = {$id}";
+		$query = "SELECT `value` FROM {$_M['table']['para']} WHERE id = {$id}";
 		$para = DB::get_one($query);
 		return $para['value'];
 	}
 
-	public function update_para_value($option)
+	public function update_para_value($option = '')
 	{
 		global $_M;
 
@@ -271,10 +338,11 @@ class  parameter_database extends database{
 		return $row;
 	}
 
-	public function add_para_value($option)
+	public function add_para_value($option = '', $lang = '')
 	{
 		global $_M;
-		$query = "INSERT INTO {$_M['table']['para']} SET pid = {$option['pid']},module = '{$option['module']}',`order`='{$option['order']}',value='{$option['value']}',lang='{$_M['lang']}'";
+        $lang = $lang ? $lang : $_M['lang'];
+		$query = "INSERT INTO {$_M['table']['para']} SET pid = {$option['pid']},module = '{$option['module']}',`order`='{$option['order']}',value='{$option['value']}',lang='{$lang}'";
 		$res = DB::query($query);
 
 		if($res){
@@ -284,7 +352,7 @@ class  parameter_database extends database{
 		return false;
 	}
 
-	public function delete_para_value($pid,$pids=array())
+	public function delete_para_value($pid = '',$pids = array())
 	{
 		global $_M;
 		if(!empty($pids)){
@@ -297,6 +365,17 @@ class  parameter_database extends database{
 		}
 
 	}
+
+    public function del_plist($listid = '',$module = '', $lang = ''){
+        global $_M;
+        $lang = $lang ? $lang : $_M['lang'];
+        if ($listid && is_numeric($listid) && $module && is_numeric($module)) {
+            $query="delete from {$_M['table']['plist']} where listid='$listid' and lang='{$lang}' and module='$module'";
+            DB::query($query);
+            return true;
+        }
+        return false;
+    }
 }
 
 # This program is an open source system, commercial use, please consciously to purchase commercial license.

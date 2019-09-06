@@ -10,7 +10,7 @@
 		<div class="media-body">
 			<a class="btn btn-outline btn-primary btn-squared pull-xs-right" href="{$v.downloadurl}" title="{$v.title}" {$g.urlnew}>{$ui.download}</a>
 			<h4 class="media-heading font-size-16">
-				<a class="name" href="{$v.url}" title="{$v.title}" target='_self'>{$v.title}</a>
+				<a class="name" href="{$v.url}" title="{$v.title}" target='_self'>{$v._title}</a>
 			</h4>
 			<small class='font-size-14 blue-grey-500'>
 				<span>{$v.filesize} kb</span>

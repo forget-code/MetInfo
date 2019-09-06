@@ -14,7 +14,7 @@ echo <<<EOT
 			<dt>{$val['name']}</dt>
 			<dd class="ftype_input">
 				<div class="fbox">
-					<input type="text" name="info_{$val['id']}" value="{$value}" {$wr_ok} />
+					<input type="text" name="para-{$val['id']}" value="{$value}" {$wr_ok} />
 				</div>
 				<span class="tips">{$val['description']}</span>
 			</dd>
@@ -29,8 +29,8 @@ echo <<<EOT
 			<dt>{$val['name']}</dt>
 			<dd class="ftype_select">
 				<div class="fbox">
-					<select name="info_{$val['id']}" data-checked="{$value}" {$wr_ok}>
-						<option value="">{$_M[word][skinerr3]}</option>
+					<select name="para-{$val['id']}" data-checked="{$value}" {$wr_ok}>
+						<option value="">{$_M['word']['please_choose']}</option>
 <!--
 EOT;
 		foreach($val['list'] as $option){
@@ -64,7 +64,7 @@ echo <<<EOT
 			<dt>{$val['name']}</dt>
 			<dd class="ftype_textarea">
 				<div class="fbox">
-					<textarea name="info_{$val['id']}" {$wr_ok}>{$value}</textarea>
+					<textarea name="para-{$val['id']}" {$wr_ok}>{$value}</textarea>
 				</div>
 				<span class="tips">{$val['description']}</span>
 			</dd>
@@ -92,7 +92,7 @@ EOT;
 				}
 echo <<<EOT
 -->
-					<label><input name="info_{$val['id']}" type="checkbox" value="{$para_value}" {$wr_ok} {$check}>{$option['value']}</label>
+					<label><input name="para-{$val['id']}" type="checkbox" value="{$para_value}" {$wr_ok} {$check}>{$option['value']}</label>
 <!--
 EOT;
 				$wr_ok='';
@@ -116,7 +116,7 @@ echo <<<EOT
 			<dd class="ftype_upload">
 				<div class="fbox">
 					<input
-						name="info_{$val['id']}"
+						name="para-{$val['id']}"
 						type="text"
 						{$wr_ok}
 						data-upload-type="doupfile"
@@ -150,7 +150,7 @@ EOT;
 				}
 echo <<<EOT
 -->
-					<label><input name="info_{$val['id']}" type="radio" value="{$para_value}" {$wr_ok} {$check}>{$option['value']}</label>
+					<label><input name="para-{$val['id']}" type="radio" value="{$para_value}" {$wr_ok} {$check}>{$option['value']}</label>
 <!--
 EOT;
 				$wr_ok='';
@@ -176,9 +176,9 @@ echo <<<EOT
 			<dt>{$val['name']}</dt>
 			<dd class="ftype_select-linkage">
 				<div class="fbox">
-					<select name="info_{$val['id']}_1" data-checked="{$prov}" class="prov" {$wr_ok}></select>
-					<select name="info_{$val['id']}_2" data-checked="{$city}" class="city"></select>
-					<select name="info_{$val['id']}_3" data-checked="{$dist}" class="dist"></select>
+					<select name="para-{$val['id']}-1" data-checked="{$prov}" class="prov" {$wr_ok}></select>
+					<select name="para-{$val['id']}-2" data-checked="{$city}" class="city"></select>
+					<select name="para-{$val['id']}-3" data-checked="{$dist}" class="dist"></select>
 				</div>
 				<span class="tips">{$val['description']}</span>
 			</dd>
@@ -193,7 +193,7 @@ echo <<<EOT
 			<dt>{$val['name']}</dt>
 			<dd class="ftype_input">
 				<div class="fbox">
-					<input type="text" name="info_{$val['id']}" value="{$value}" {$wr_ok} />
+					<input type="text" name="para-{$val['id']}" value="{$value}" {$wr_ok} />
 				</div>
 				<span class="tips">{$val['description']}</span>
 			</dd>
@@ -209,7 +209,7 @@ echo <<<EOT
 			<dt>{$val['name']}</dt>
 			<dd class="ftype_input">
 				<div class="fbox">
-					<input type="text" name="info_{$val['id']}" value="{$value}" {$wr_ok} />
+					<input type="text" name="para-{$val['id']}" value="{$value}" {$wr_ok} />
 				</div>
 				<span class="tips">{$val['description']}</span>
 			</dd>

@@ -24,10 +24,11 @@ class link_label {
 	 * 获取友情链接指定条目数据
 	 * @return array
 	 */
-	public function get_link_list(){
+	public function get_link_list($classnow=''){
 		global $_M;
+
 		return load::mod_class('link/link_handle', 'new')->para_handle(
-			load::mod_class('link/link_database', 'new')->get_link_list_by_lang($this->lang)
+			load::mod_class('link/link_database', 'new')->get_link_list_by_lang($this->lang,0,0,'',$classnow)
 		);
   }
 

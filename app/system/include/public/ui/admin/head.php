@@ -2,19 +2,7 @@
 # MetInfo Enterprise Content Management System
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 defined('IN_MET') or exit('No permission');
-// 判断来源页面是否有pageset=1 ，如果有而本页url没有pageset=1，则本页加上pageset=1跳转
-if(strpos($_SERVER["HTTP_REFERER"], 'pageset=1')!==false && !$_M['form']['pageset'] && !$_M['form']['nopageset'] && strpos($_SERVER['HTTP_REFERER'], 'nopageset=1')===false){
-    echo '--><script>
-        var newurl=location.href;
-        if(location.search!=""){
-            newurl+="&pageset=1";
-        }else{
-            newurl+="?pageset=1";
-        }
-        location.href=newurl;
-    </script>';
-    die;
-}
+$_M['form']['pageset']=1;
 $jsrand=str_replace('.','',$_M['config']['metcms_v']).$_M['config']['met_patch'];
 if($_M['config']['met_agents_type'] > 2) $met_agents_display = "style=\"display:none\"";
 echo <<<EOT
@@ -28,7 +16,7 @@ echo <<<EOT
 <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0,user-scalable=0,minimal-ui">
 <meta name="format-detection" content="telephone=no">
 <title>{$_M['word']['metinfo']}</title>
-<meta name="generator" content="MetInfo {$_M['config']['metcms_v']}" data-variable="{$_M['url']['site']}|{$_M['lang']}||||{$_M['config']['met_skin_user']}" data-m_type="{$_M['config']['m_type']}">
+<meta name="generator" content="MetInfo {$_M['config']['metcms_v']}" data-variable="{$_M['url']['site']}|{$_M['lang']}||||{$_M['config']['met_skin_user']}">
 <link href="{$_M['url']['site']}favicon.ico" rel="shortcut icon" type="image/x-icon">
 <link rel="stylesheet" href="{$_M['url']['pub']}bootstrap/css/bootstrap.min.css?{$jsrand}">
 <link rel="stylesheet" href="{$_M['url']['ui']}css/metinfo.css?{$jsrand}">
@@ -69,6 +57,7 @@ var langtxt = {
 		"attention":"{$_M[word][attention]}",
 		"cvall":"{$_M[word][cvall]}"
 	},
+	lang="{$_M['lang']}",
 	langset="{$_M['langset']}",
 	anyid="{$_M['form']['anyid']}",
 	own_form="{$_M['url']['own_form']}",
@@ -93,11 +82,7 @@ echo <<<EOT
 <div id="metcmsbox">
 <!--
 EOT;
-	require $this->template('ui/box');
 	require $this->template('ui/top');
-	if($_M['config']['met_agents_app'] && (M_NAME=='met_template' || M_NAME=='appstore' || M_NAME=='theme') && $navlist){
-		require $this->template('ui/logininfo');
-	}
 }
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.

@@ -31,16 +31,19 @@ required:必选项
 			p_children_key:'c',
 			n_children_key:'a',
 			value_key:'value',
+			data_val_key:'value',
+			prehtml:1,
+			required_title:METLANG.Choice ? METLANG.Choice : "请选择",
 			getCityjson:function(json){
 				return json.citylist;
 			}
 		},settings);
-		var box_obj=this,
-			country_obj=box_obj.find(".country"),
-			prov_obj=box_obj.find(".prov"),
-			city_obj=box_obj.find(".city"),
-			dist_obj=box_obj.find(".dist"),
-			select_prehtml=(settings.required) ? "" : "<option value=''>请选择</option>",
+        var box_obj = this,
+            country_obj = box_obj.find(".country"),
+            prov_obj = box_obj.find(".prov"),
+            city_obj = box_obj.find(".city"),
+            dist_obj = box_obj.find(".dist"),
+            select_prehtml = settings.required ? "" : (settings.prehtml?"<option value=''>" + settings.required_title + "</option>":''),
 			city_json,
 			cityJson=function(index){
 				city_json=settings.getCityjson(jsondata,index);
@@ -51,8 +54,8 @@ required:必选项
 				if(typeof country_key != 'undefined') cityJson(country_key);
 				$.each(city_json,function(i,prov){
 					var tn = prov[settings.p_name_key].name?prov[settings.p_name_key].name:prov[settings.p_name_key];
-					var tv = prov[settings.value_key]||prov[settings.value_key]==''?prov[settings.value_key]:prov[settings.p_name_key];
-					temp_html+=prov[settings.p_name_key]=="请选择"?"<option value=''>"+tn+"</option>":"<option value='"+tv+"' data-val='"+tn+"'>"+tn+"</option>";
+					var tv = prov[settings.value_key]||prov[settings.value_key]==''?prov[settings.value_key]:(prov[settings.p_name_key][settings.value_key]||prov[settings.p_name_key][settings.value_key]==''?prov[settings.p_name_key][settings.value_key]:prov[settings.p_name_key]);
+					temp_html+=prov[settings.p_name_key]==settings.required_title?"<option value=''>"+tn+"</option>":"<option value='"+tv+"' data-val='"+(prov[settings.data_val_key]||tn)+"'>"+tn+"</option>";
 				});
 				prov_obj.html(temp_html);
 				cityStart();
@@ -60,7 +63,7 @@ required:必选项
 			// 赋值市级函数
 			cityStart=function(){
 				var prov_id=prov_obj.get(0).selectedIndex;
-				if(!settings.required){
+				if(!settings.required && settings.prehtml){
 					prov_id--;
 				};
 				city_obj.empty().attr("disabled",true);
@@ -80,8 +83,8 @@ required:必选项
 				temp_html=select_prehtml;
 				$.each(city_json[prov_id][settings.p_children_key],function(i,city){
 					var tn = city[settings.n_name_key].name?city[settings.n_name_key].name:city[settings.n_name_key];
-					var tv = city[settings.value_key]?city[settings.value_key]:city[settings.n_name_key];
-					temp_html+="<option value='"+tv+"' data-val='"+tn+"'>"+tn+"</option>";
+					var tv = city[settings.value_key]||city[settings.value_key]==''?city[settings.value_key]:(city[settings.n_name_key][settings.value_key]||city[settings.n_name_key][settings.value_key]==''?city[settings.n_name_key][settings.value_key]:city[settings.n_name_key]);
+					temp_html+="<option value='"+tv+"' data-val='"+(city[settings.data_val_key]||tn)+"'>"+tn+"</option>";
 				});
 				city_obj.html(temp_html).attr("disabled",false).css({"display":"","visibility":""});
 				distStart();
@@ -90,7 +93,7 @@ required:必选项
 			distStart=function(){
 				var prov_id=prov_obj.get(0).selectedIndex;
 				var city_id=city_obj.get(0).selectedIndex;
-				if(!settings.required){
+				if(!settings.required && settings.prehtml){
 					prov_id--;
 					city_id--;
 				};
@@ -110,8 +113,8 @@ required:必选项
 					temp_html=select_prehtml;
 					$.each(city_json[prov_id][settings.p_children_key][city_id][settings.n_children_key],function(i,dist){
 						var tn = dist[settings.s_name_key].name?dist[settings.s_name_key].name:dist[settings.s_name_key];
-						var tv = dist[settings.value_key]?dist[settings.value_key]:dist[settings.s_name_key];
-						temp_html+="<option value='"+tv+"' data-val='"+tn+"'>"+tn+"</option>";
+						var tv = dist[settings.value_key]||dist[settings.value_key]==''?dist[settings.value_key]:(dist[settings.s_name_key][settings.value_key]||dist[settings.s_name_key][settings.value_key]==''?dist[settings.s_name_key][settings.value_key]:dist[settings.s_name_key]);
+						temp_html+="<option value='"+tv+"' data-val='"+(dist[settings.data_val_key]||tn)+"'>"+tn+"</option>";
 					});
 					dist_obj.html(temp_html).attr("disabled",false).css({"display":"","visibility":""});
 				// }
@@ -169,6 +172,11 @@ required:必选项
 				city_obj.bind("change",function(){
 					distStart();
 				});
+			},
+			destroy=function(){
+				country_obj.unbind('change',provStart);
+				prov_obj.unbind('change',cityStart);
+				city_obj.unbind('change',distStart);
 			};
 		// 设置省市json数据
 		if(typeof(settings.url)=="string"){
@@ -181,6 +189,6 @@ required:必选项
 			city_json=settings.url;
 			init();
 		};
-		return {cityJson:cityJson};
+		return {cityJson:cityJson,destroy:destroy};
 	};
 })(jQuery);

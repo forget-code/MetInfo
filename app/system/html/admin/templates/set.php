@@ -12,7 +12,9 @@ echo <<<EOT
 <div class="v52fmbx">
 	<h3 class="v52fmbx_hr">{$_M['word']['unitytxt_1']}</h3>
   <dl>
-	 <dt>{$_M['word']['sethtmok']}<input name="op" type="hidden" value="0"><input name="webhtm" type="hidden" value="{$_M['config']['met_webhtm']}"></dt>
+	 <dt>{$_M['word']['sethtmok']}
+	 <input name="op" type="hidden" value="0">
+	 <input name="webhtm" type="hidden" value="{$_M['config']['met_webhtm']}"></dt>
   	<dd class="ftype_radio">
       <div class="fbox">
   			<label><input name="met_webhtm" type="radio" value="0" data-checked="{$_M['config']['met_webhtm']}">{$_M['word']['close']}</label>

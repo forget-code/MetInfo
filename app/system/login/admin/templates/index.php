@@ -1,134 +1,114 @@
-<!--<?php
+<?php
 # MetInfo Enterprise Content Management System
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. .
-$_M['word']['fontfamily'] = str_replace("'","\"", $_M['word']['fontfamily']);
-$_M['word']['fontfamily'] =str_replace("&quot;","\"", $_M['word']['fontfamily']);
-$_M['config']['met_agents_linkurl'] = $_M['config']['met_agents_linkurl'] ? $_M['config']['met_agents_linkurl'] : 'https://www.metinfo.cn';
-$jsrand=str_replace('.','',$_M[config][metcms_v]).$_M[config][met_patch];
-$rand = time();
-echo <<<EOT
---><!DOCTYPE HTML>
-<html>
-<head>
-<title>{$_M['word']['logintitle']} - {$_M['word']['metinfo']}</title>
-<meta charset="utf-8" />
-<meta http-equiv="Content-Language" content="zh-cn"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
-<meta name="author" content="www.metinfo.cn"/>
-<meta name="copyright" content="www.metinfo.cn"/>
-<meta content="{$_M['word']['metinfo']}{$_M['word']['logintitle']}"/>
-<link href="{$_M['url']['site']}favicon.ico" rel="shortcut icon" type="image/x-icon">
-<link rel="stylesheet" href="{$_M['url']['own_tem']}css/metinfo.css?{$jsrand}" />
-<script type="text/javascript" src="{$_M['url']['site']}public/js/metinfo-min.js"></script>
-</head>
-<script type="text/javascript">
-function check_main_login(){
-	var name = $("input[name='login_name']");
-	var pass = $("input[name='login_pass']");
-		if(name.val() == ''){
-			alert("{$_M[word][loginid]}");
-			name.focus();
-			return false;
-		}
-		if(pass.val() == ''){
-			alert('{$_M[word][loginps]}');
-			pass.focus();
-			return false;
-		}
-}
-</script>
-<body id="login">
-<div class="login-min">
-	<div class="login-left">
-		<div style=" border-right:1px solid #fff; padding:0px 0px 20px;">
-<!--
-EOT;
-if($_M['config']['met_agents_type'] >= 2){
-echo <<<EOT
--->
-			<a href="{$_M['config']['met_agents_linkurl']}" style="font-size:0px;" target="_blank" title="{$_M['word']['metinfo']}" class="img">
-<!--
-EOT;
-}else{
-echo <<<EOT
--->
-            <a href="{$_M['config']['met_agents_linkurl']}" style="font-size:0px;" target="_blank" title="{$_M['word']['metinfo']}" class="img">
-<!--
-EOT;
-}
-echo <<<EOT
--->
-				<img src="{$_M['config']['met_agents_logo_login']}?{$rand}" alt="{$_M['word']['metinfo']}" title="{$_M['word']['metinfo']}" 
-				style="width:200px;"/>
-			</a>
-		</div>
-	</div>
-	<div class="login-right">
-		<h1 class="login-title">{$_M['word']['loginadmin']}</h1>
-		<div>
-			<form method="post" action="{$_M['url']['own_form']}a=dologin&langset={$_M[form][langset]}" name="main_login" onSubmit="return check_main_login()">
-				<input type="hidden" name="action" value="login" />
-				<p style="height:22px; margin-top:0px;">
-<!--
-EOT;
-if($_M['config']['met_admin_type_ok']){
-echo <<<EOT
--->
-					<label>{$_M['word']['loginlanguage']}</label>
-					<select name="loginlang" onchange=javascript:window.location.href=this.options[this.selectedIndex].value >
-<!--
-EOT;
-	//ob_pcontent();
-    $langset=$langset==""?$_M['config']['met_admin_type']:$langset;
-    $met_langtype_select[$langset]="selected='selected'" ;
-	foreach($met_langadmin as $key=>$val){
-		if($val[mark] == 'en' || $val[mark] == 'cn' || 1 == 1){
-echo <<<EOT
--->
-						<option value="{$_M['url']['own_form']}langset=$val[mark]" {$met_langtype_select[$val[mark]]}>$val[name]</option>
-<!--
-EOT;
-	}
-}
-echo <<<EOT
--->
-					</select>
-<!--
-EOT;
-}
-echo <<<EOT
--->
-				</p>
-				<p><label>{$_M['word']['loginusename']}</label><input type="text" class="text" name="login_name" value="$check_name" $disabled /></p>
-				<p><label>{$_M['word']['loginpassword']}</label><input type="password" class="text" name="login_pass" /></p>
-				<p class="login-code">
-<!--
-EOT;
-if($_M['config']['met_login_code']==1){
-echo <<<EOT
--->
-					<label>{$_M['word']['logincode']}</label>
-					<input name="code" type="text" class="text mid" id="code" />
-					<img align="absbottom" src="./include/ajax.php?action=code"  onclick=this.src="./include/ajax.php?action=code&"+Math.random() style="cursor: pointer;" title="{$_M['word']['logincodechange']}"/>
-<!--
-EOT;
-}
-echo <<<EOT
--->
-				</p>
-				<p class="login-submit">
-					<input type="submit" name="Submit" value="{$_M['word']['loginconfirm']}" />
-					<a href="./index.php?n=getpassword&c=index&a=doindex&langset={$_M[form][langset]}">{$_M['word']['loginforget']}</a>
-				</p>
-			</form>
-		</div>
-	</div>
-	<div class="clear"></div>
-</div>
-<!--
-EOT;
-require $this->template('ui/footer');
-# This program is an open source system, commercial use, please consciously to purchase commercial license.
-# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
+defined('IN_MET') or exit('No permission');
+$html_class=$body_class='h-100';
+$html_class.=' met-login';
+$body_class.=' d-flex align-items-center justify-content-center';
+$met_title=$word['logintitle'];
+$login_logo_filemtime=filemtime(str_replace($url['site'], PATH_WEB, $data['met_agents_logo_login']));
+
+$basic_admin_css_filemtime = filemtime(PATH_STATIC.'css/basic_admin.css');
+$met_title.='-'.$word['metinfo'];
+$synchronous=$_M['langlist']['admin'][$_M['langset']]['synchronous'];
 ?>
+<!DOCTYPE HTML>
+<html class="{$html_class}">
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit">
+    <meta name="robots" content="noindex,nofllow">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0,minimal-ui">
+    <meta name="format-detection" content="telephone=no">
+    <title data-title="{$word.metinfo}">{$met_title}</title>
+    <meta name="generator" content="MetInfo {$c.metcms_v}" data-variable="{$url.site}|{$_M['lang']}|{$synchronous}|{$c.met_skin_user}||||">
+    <link href="{$url.site}favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="{$url.static_new}css/basic_admin.css?{$basic_admin_css_filemtime}" rel='stylesheet' type='text/css'>
+    <!--['if lte IE 9']>
+    <script src="{$url.static_new}js/lteie9.js"></script>
+    <!['endif']-->
+</head>
+<!--['if lte IE 9']>
+<div class="text-center mb-0 bg-danger alert">
+    <button type="button" class="close" data-dismiss="alert">
+        <span aria-hidden="true">×</span>
+    </button>
+    {$word.browserupdatetips}
+</div>
+<!['endif']-->
+<body class="{$body_class}">
+
+<div>
+    <div class="d-flex text-left align-items-center">
+        <a href="{$data.met_agents_linkurl}" title="{$word.metinfo}" target="_blank">
+            <img src="{$data.met_agents_logo_login}?{$login_logo_filemtime}" alt="{$word.metinfo}" width="200">
+        </a>
+        <form action="{$url.own_form}a=dologin" class="border-left pl-4 ml-5 met-login-form" style="border-color: #eee !important;" data-submit-ajax="1">
+            <div class="row mb-4">
+                <label class="col-form-label" style="width: 100px;"></label>
+                <div class="mb-3">
+                    <h1 class="h5">{$word.loginadmin}</h1>
+                </div>
+            </div>
+            <if value="$c['met_admin_type_ok']">
+                <div class="row">
+                    <label class="col-form-label pr-3 text-right" style="width: 100px;">{$word.loginlanguage}</label>
+                    <div class="form-group mb-4">
+                        <select name="langset" data-checked="{$data.langset}" class="form-control" onchange="javascript:location.href=M.url.admin+'?langset='+this.value">
+                            <list data="$data['met_langadmin']" name="$v">
+                                <option value="{$v.mark}">{$v.name}</option>
+                            </list>
+                        </select>
+                    </div>
+                </div>
+            </if>
+            <div class="row">
+                <label class="col-form-label pr-3 text-right" style="width: 100px;">{$word.loginusename}</label>
+                <div class="form-group mb-4">
+                    <input type="text" name="login_name" required class="form-control" style="width: 200px;">
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-form-label pr-3 text-right" style="width: 100px;">{$word.loginpassword}</label>
+                <div class="form-group mb-4">
+                    <input type="password" name="login_pass" required class="form-control" style="width: 200px;">
+                </div>
+            </div>
+            <if value="$c['met_login_code']">
+                <div class="row">
+                    <label class="col-form-label pr-3 text-right" style="width: 100px;">{$word.logincode}</label>
+                    <div class="form-group mb-4">
+                        <div class="input-group" style="width: 200px;">
+                            <input name='code' type='text' class='form-control' placeholder='{$word.memberImgCode}' required>
+                            <div class="input-group-append">
+                                <div class="input-group-text py-0 px-1"><img src='{$url.entrance}?m=include&c=ajax_pin&a=dogetpin' title='{$word.memberTip1}' align='absmiddle' role='button' class="met-getcode"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </if>
+            <div class="row">
+                <label class="col-form-label" style="width: 100px;"></label>
+                <div class="">
+                    <button type="submit" class="btn btn-primary px-4">{$word.loginconfirm}</button>
+                    <a href="{$url.get_pass}" class="ml-3">{$word.loginforget}</a>
+                </div>
+            </div>
+        </form>
+    </div>
+    <footer class="metadmin-foot text-grey text-center mt-5 pt-5">{$data.copyright}</footer>
+</div>
+
+<?php
+# MetInfo Enterprise Content Management System
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
+defined('IN_MET') or exit('No permission');
+$basic_admin_js_time = filemtime(PATH_STATIC.'js/basic_admin.js');
+$lang_json_admin_js_time = filemtime(PATH_WEB.'cache/lang_json_admin_'.$_M['lang'].'.js');
+?>
+</body>
+<script>window.MET={$data['met_para']};</script>
+<script src="{$url.static_new}js/basic_admin.js?{$basic_admin_js_time}"></script>
+<script src="{$url.site}cache/lang_json_admin_{$_M['langset']}.js?{$lang_json_admin_js_time}"></script>
+</html>

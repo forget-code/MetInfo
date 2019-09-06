@@ -4,7 +4,8 @@ class column_tag extends tag {
     // 必须包含Tag属性 不可修改
     public $config = array(
         '_category'         => array( 'block' => 1, 'level' => 4 ),
-        '_list'             => array( 'block' => 1, 'level' => 4 ),
+        '_list'             => array( 'block' => 1, 'level' => 5 ),
+        'app_column'        => array('block'=>1,'level'=>4),
     );
 
 
@@ -24,30 +25,21 @@ class column_tag extends tag {
 <?php
     \$type=strtolower(trim('$type'));
     \$cid=$cid;
-    \$column = load::sys_class('label', 'new')->get('column');
-
-    unset(\$result);
-    switch (\$type) {
-            case 'son':
-                \$result = \$column->get_column_son(\$cid);
-                break;
-            case 'current':
-                \$result[0] = \$column->get_column_id(\$cid);
-                break;
-            case 'head':
-                \$result = \$column->get_column_head();
-                break;
-            case 'foot':
-                \$result = \$column->get_column_foot();
-                break;
-            default:
-                \$result[0] = \$column->get_column_id(\$cid);
-                break;
-        }
+    if(!isset(\$column)){
+        \$column = load::sys_class('label', 'new')->get('column');
+    }
+    \$result = \$column->get_column_by_type(\$type,\$cid,\$data);
+    
     \$sub = count(\$result);
     foreach(\$result as \$index=>\$m):
         if(\$m['display'] == 1){
             continue;
+        }
+        if(\$data['module'] == 10001){
+            \$m['url'] = str_replace(array('../',\$_M['url']['site']),'',\$m['url']);
+            \$m['content'] = str_replace(array('../',\$_M['url']['site']),'',\$m['content']);
+            \$m['indeximg'] = str_replace(array('../',\$_M['url']['site']),'',\$m['indeximg']);
+            \$m['columnimg'] = str_replace(array('../',\$_M['url']['site']),'',\$m['columnimg']);
         }
         \$hides = $hide;
         \$hide = explode("|",\$hides);
@@ -128,5 +120,28 @@ str;
 
     }
 
+    public function _app_column($attr,$content)
+    {
+        global $_M;
+        $name = isset($attr['name']) ? $attr['name'] : '$v';
+        $php = <<<str
+<?php
+    \$result = load::mod_class('column/ifcolumn_database','new')->getLeftColumn();
+    \$sub = count(\$result);
+    foreach(\$result as \$index=>\$v):
+        \$id = \$v['id'];
+        \$v['sub'] = \$sub;
+        \$v['_index']= \$index;
+        \$v['_first']= \$index==0 ? true:false;
+        \$v['_last']=\$index==(count(\$result)-1)?true:false;
+        \$v['active']=(\$_M['config']['app_no']==\$v['no']&&\$_M['config']['own_order']==\$v['own_order'])?'active':'';
+        \$v['target']=\$v['target']?'target="_blank"':'';
+        \$$name = \$v;
+?>
+str;
+        $php .= $content;
+        $php .= '<?php endforeach;?>';
+        return $php;
+    }
 
 }

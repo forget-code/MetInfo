@@ -8,21 +8,7 @@ load::sys_class('para');
  
 class sys_para extends para {
 	public $table;
-	public function para_type($id, $value){
-		$re = "
-			<select name=\"type-{$id}\" class=\"paratype\" data-checked=\"{$value}\">
-				<option value=\"1\">简短</option>
-				<option value=\"2\">下拉</option>
-				<option value=\"3\">文本</option>
-				<option value=\"4\">多选</option>
-				<!--<option value=\"5\">附件</option>-->
-				<option value=\"6\">单选</option>
-				<option value=\"7\">城市选择</option>
-				<option value=\"8\">仅管理员可修改</option>
-			</select>
-		";
-		return $re;
-	}
+
 	public function json_para_list($where, $order, $module){
 		global $_M;
 		$this->table = load::sys_class('tabledata', 'new');

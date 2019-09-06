@@ -12,7 +12,7 @@ class product_tag extends tag {
         $cid    = isset( $attr['cid'] ) ? ( $attr['cid'][0] == '$' ? $attr['cid']
             : "'{$attr['cid']}'" ) : 0;
         $order  = isset($attr['order']) ? $attr['order'] : 'no_order';
-        $num    = isset($attr['num']) ? $attr['num'] : 10;
+        $num    = isset($attr['num']) ? $attr['num'] : 8;
 
         $php    = <<<str
 <?php

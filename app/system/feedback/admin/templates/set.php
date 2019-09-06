@@ -1,309 +1,101 @@
-<!--<?php
+<?php
 # MetInfo Enterprise Content Management System
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
-
 defined('IN_MET') or exit('No permission');
-
-require $this->template('ui/head');
-echo <<<EOT
--->
-<form method="POST"  class="ui-from" name="myform" action="{$_M[url][own_form]}a=dosaveinc" target="_self">
-	<input name="action" type="hidden" value="modify">
-	<input name="class1" type="hidden" value="{$_M[form][class1]}">
-	<input name="met_fd_back" type="hidden" value="0">
-	<input name="met_fd_sms_back" type="hidden" value="0">
-	<div class="v52fmbx_tbmax">
-		<div class="v52fmbx_tbbox">
-			<div class="v52fmbx">
-				<dl>
-					<dt>{$_M[word][feedbacksubmit]}{$_M[word][marks]}</dt>
-					<dd class="ftype_radio">
-						<div class="fbox">
-							<label>
-								<input name="met_fd_ok" type="radio" value="1" $met_fd_ok1[1]>{$_M[word][open]}</label>
-							<label>
-								<input name="met_fd_ok" type="radio" value="0" $met_fd_ok1[0]>{$_M[word][close]}</label>
-						</div>
-					</dd>
-				</dl>
-				<dl>
-					<dt>{$_M[word][fdincName]}{$_M[word][marks]}</dt>
-					<dd class="ftype_input">
-						<div class="fbox">
-							<input type="text" name="met_fdtable" value="$met_fdtable"></div>
-						<span class="tips">{$_M[word][feedbackexplain1]}</span>
-					</dd>
-				</dl>
-				<dl>
-					<dt>{$_M[word][fdincTime]}{$_M[word][marks]}</dt>
-					<dd class="ftype_input">
-						<div class="fbox">
-							<input type="text" name="met_fd_time" value="$met_fd_time"></div>
-						<span class="tips">{$_M[word][fdincTip4]}</span>
-					</dd>
-				</dl>
-				<!--<dl>
-					<dt>{$_M[word][fdincSlash]}{$_M[word][marks]}</dt>
-					<dd class="ftype_textarea">
-						<div class="fbox">
-							<textarea name="met_fd_word" placeholder="提示文字，为空时显示，输入文字后消失。">$met_fd_word</textarea>
-						</div>
-						<span class="tips">{$_M[word][fdincTip5]}</span>
-					</dd>
-				</dl>-->
-				<div class="v52fmbx_dlbox">
-					<dl>
-						<dt>{$_M[word][fdincClassName]}{$_M[word][marks]}</dt>
-						<dd>
-							<select name="met_fd_class">
-<!--
-EOT;
-foreach($fd_paraall as $key=>$val){
-$select1='';
-if($val[id]==$met_fd_class)$select1="selected='selected'";
-echo <<<EOT
--->								<option value="$val[id]" $select1 >$val[name]</option>
-<!--
-EOT;
+if($data['handle']){
+	$data=array_merge($data,$data['handle']);
+	unset($data['handle']);
 }
-if('0'==$metlistrele)$select0="selected='selected'";
-if('metinfoall'==$metlistrele)$selectall="selected='selected'";
-echo <<<EOT
--->
-
-							</select>
-							<span class="tips">{$_M[word][fdincTip6]}</span>
-						</dd>
-					</dl>
-<!--
-EOT;
-
-
-/*echo <<<EOT
-
-					<dl>
-						<dt>{$_M[word][listproductre]}{$_M[word][marks]}</dt>
-						<dd class="ftype_select">
-							<div class="fbox">
-								<select name="metlistrele">
-									<option value="0" {$select0}>{$_M[word][listproductreok]}</option>
-									<option value="metinfoall" {$selectall}>{$_M[word][allcategory]}</option>
-<!--
-EOT;
-$module = load::mod_class('column/column_op', 'new')->get_sorting_by_module();
-foreach($module['3']['class1'] as $val){
-    $select1=$val[id]==$metlistrele?"selected='selected'":'';
-    echo <<<EOT
--->
-									<option value="{$val['id']}" {$select1}>{$val['name']}</option>
-<!--
-EOT;
-}
-echo <<<EOT
--->
-								</select>
-								<span class="tips">{$_M[word][fdincTip13]}</span>
-							</div>
-						</dd>
-					</dl>
-<!--
-EOT;*/
-
-
-echo <<<EOT
--->
-                    <dl>
-						<dt>{$_M[word][listproductre]}{$_M[word][marks]}</dt>
-						<dd class="ftype_select">
-							<div class="fbox">
-								<select name="met_fd_related">
-									<option value="0" {$select0}>{$_M[word][listproductreok]}</option>
-<!--
-EOT;
-foreach($fd_related as $val){
-    $select1=$val[id]==$met_fd_related?"selected='selected'":'';
-    echo <<<EOT
--->
-									<option value="{$val['id']}" {$select1}>{$val['name']}</option>
-<!--
-EOT;
-}
-echo <<<EOT
--->
-								</select>
-								<span class="tips">{$_M[word][fdincTip13]}</span>
-							</div>
-						</dd>
-					</dl>
-
-
-				    <dl>
-                        <dt>{$_M[word][fdincTip12]}</dt>
-                        <dd class="ftype_checkbox">
-                            <div class="fbox">
-<!--
-EOT;
-foreach($fbcol as $key=>$val){
-    $checked='';
-    foreach($met_fd_showcol as $v){
-        if($val['id']==$v)$checked="checked='checked'";
-    }
-echo <<<EOT
--->
-                                <label><input name="met_fd_showcol" type="checkbox" value="{$val[id]}" data-checked={$met_fd_showcol} >{$val[name]}</label>
-<!--
-EOT;
-}
-echo <<<EOT
--->
-                            </div>
-                            <span class="tips"></span>
-                        </dd>
-                    </dl>
-
-					<dl>
-						<dt>{$_M['word']['feedbackinquiry']}{$_M['word']['[marks']}</dt>
-						<dd class="ftype_radio">
-							<div class="fbox">
-								<label>
-									<input name="met_fd_inquiry" type="radio" value="1"  data-checked="{$met_fd_inquiry}">{$_M[word][open]}</label>
-								<label>
-									<input name="met_fd_inquiry" type="radio" value="0" >{$_M[word][close]}</label>
-							</div>
-							<span class="tips">{$_M['word']['feedbackinquiryinfo']}</span>
-						</dd>
-					</dl>
-
-					<dl>
-						<dt>{$_M[word][fdincAcceptType]}{$_M[word][marks]}</dt>
-						<dd class="ftype_radio">
-							<div class="fbox">
-								<label>
-									<input name="met_fd_type" type="radio" value="0" $met_fd_type1[0]>{$_M[word][fdincAccept]}</label>
-								<label>
-									<input name="met_fd_type" type="radio" value="1" $met_fd_type1[1]>{$_M[word][fdincTip7]}</label>
-								<label>
-									<input name="met_fd_type" type="radio" value="2" $met_fd_type1[2]>{$_M[word][fdincTip8]}</label>
-							</div>
-						</dd>
-					</dl>
-				</div>
-
-				<dl>
-					<dt>{$_M[word][fdincAcceptMail]}{$_M[word][marks]}</dt>
-					<dd class="ftype_input">
-						<div class="fbox">
-							<input type="text" name="met_fd_to" value="$met_fd_to"></div>
-						<span class="tips">{$_M[word][fdincTip9]}</span>
-					</dd>
-				</dl>
-				<h3 class="v52fmbx_hr metsliding" sliding="1">{$_M[word][feedbackauto]}</h3>
-				<div class="metsliding_box metsliding_box_1">
-					<dl>
-						<dt>{$_M[word][fdincAuto]}{$_M[word][marks]}</dt>
-						<dd class="ftype_checkbox ftype_transverse">
-							<div class="fbox">
-								<label>
-									<input name="met_fd_back" type="checkbox" value="1" {$met_fd_back1}>{$_M[word][fdincTip10]}</label>
-							</div>
-						</dd>
-					</dl>
-					<div class="v52fmbx_dlbox">
-						<dl>
-							<dt>{$_M[word][fdincEmailName]}{$_M[word][marks]}</dt>
-							<dd>
-								<select name="met_fd_email">
-<!--
-EOT;
-foreach($fd_para[9] as $key=>$val){
-$select1='';
-if($val[id]==$met_fd_email)$select1="selected='selected'";
-echo <<<EOT
--->
-									<option value="$val[id]" $select1 >$val[name]</option>
-<!--
-EOT;
-}
-echo <<<EOT
--->
-								</select>
-								<span class="tips">{$_M[word][fdincTip11]}</span>
-							</dd>
-						</dl>
-					</div>
-				    <dl>
-						<dt>{$_M[word][fdincFeedbackTitle]}{$_M[word][marks]}</dt>
-						<dd class="ftype_input">
-							<div class="fbox">
-								<input type="text" name="met_fd_title" value="$met_fd_title">
-							</div>
-							<span class="tips">{$_M[word][fdincAutoFbTitle]}</span>
-						</dd>
-				    </dl>
-				    <dl>
-				    	<dt>{$_M[word][fdincAutoContent]}{$_M[word][marks]}</dt>
-				    	<dd class="ftype_textarea">
-				    		<div class="fbox">
-				    			<textarea name="met_fd_content" >{$_M[config][met_fd_content]}</textarea>
-				    		</div>
-				    		<span class="tips">{$_M[word][htmlok]}</span>
-				    	</dd>
-				    </dl>
-				    <h3 class="v52fmbx_hr metsliding" sliding="1">{$_M[word][feedbackautosms]}</h3>
-				    <div class="metsliding_box metsliding_box_1">
-				    	<dl>
-				    		<dt>{$_M[word][fdincAutosms]}{$_M[word][marks]}</dt>
-				    		<dd class="ftype_checkbox">
-				    			<div class="fbox">
-				    				<label>
-				    					<input name="met_fd_sms_back" type="checkbox" value="1" $met_fd_sms_back1 >{$_M[word][fdincTipsms]}</label>
-				    			</div>
-				    		</dd>
-				    	</dl>
-				    	<div class="v52fmbx_dlbox">
-				    		<dl>
-				    			<dt>{$_M[word][fdinctellsms]}{$_M[word][marks]}</dt>
-				    			<dd>
-				    				<select name="met_fd_sms_dell">
-<!--
-EOT;
-foreach($fd_para[8] as $key=>$val){
-$select1='';
-if($val[id]==$met_fd_sms_dell)$select1="selected='selected'";
-echo <<<EOT
--->
-										<option value="$val[id]" $select1 >$val[name]</option>
-<!--
-EOT;
-}
-echo <<<EOT
--->
-									</select>
-								<span class="tips">{$_M[word][fdinctells]}</span>
-								</dd>
-							</dl>
-						</div>
-				        <dl>
-				        	<dt>{$_M[word][fdincAutoContentsms]}{$_M[word][marks]}</dt>
-				        	<dd class="ftype_textarea">
-				        		<div class="fbox">
-				        			<textarea name="met_fd_sms_content" placeholder="提示文字，为空时显示，输入文字后消失。">{$_M[config][met_fd_sms_content]}</textarea>
-				        		</div>
-				        		<span class="tips"></span>
-				        	</dd>
-				        </dl>
-			        </div>
-			        <div class="v52fmbx_submit">
-			        	<input type="submit" name="Submit" value="{$_M[word][Submit]}" class="submit" onclick="return Smit($(this),'myform')" />
-			        </div>
-		        </div>
-	        </div>
-        </div>
-    </div>
-</form>
-<!--
-EOT;
-require $this->template('ui/foot');
-# This program is an open source system, commercial use, please consciously to purchase commercial license.
-# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+$checkbox_time=time();
 ?>
+<form method="POST" action="{$url.own_name}c={$data.c}&a=dosaveinc&class1={$data.class1}&class2={$data.class2}&class3={$data.class3}&classnow={$data.list.classnow}" id="feedback-set-form-{$checkbox_time}" data-validate_order="#feedback-set-form-{$checkbox_time}" data-submit-ajax='1' enctype="multipart/form-data">
+	<div class="metadmin-fmbx">
+		<dl>
+			<dt>
+				<label class='form-control-label'>{$word.feedbacksubmit}{$word.marks}</label>
+			</dt>
+			<dd>
+				<input type="checkbox" data-plugin="switchery" name="met_fd_ok" value='{$data.list.met_fd_ok}' hidden>
+			</dd>
+		</dl>
+		<dl>
+			<dt>
+				<label class='form-control-label'>{$word.fdincName}{$word.marks}</label>
+			</dt>
+			<dd>
+				<input type="text" name="met_fdtable" value='{$data.list.met_fdtable}' class="form-control">
+				<span class="text-help ml-2">{$word.feedbackexplain1}</span>
+			</dd>
+		</dl>
+        <dl>
+            <dt>
+                <label class='form-control-label'>{$word.fdincTime}{$word.marks}</label>
+            </dt>
+            <dd>
+                <input type="text" name="met_fd_time" value='{$data.list.met_fd_time}' class="form-control">
+            </dd>
+        </dl>
+		<!--
+		<dl>
+			<dt>
+				<label class='form-control-label'>{$word.fdincClassName}{$word.marks}</label>
+			</dt>
+			<dd>
+				<select name='met_fd_class' data-checked='{$data.list.met_fd_class.val}' class="form-control w-a">
+					<list data="$data['list']['met_fd_class']['options']" name="$v">
+					<option value='{$v.val}'>{$v.name}</option>
+					</list>
+				</select>
+				<span class="text-help ml-2">{$word.fdincTip6}</span>
+			</dd>
+		</dl>
+		-->
+		<dl>
+			<dt>
+				<label class='form-control-label'>{$word.listproductre}{$word.marks}</label>
+			</dt>
+			<dd>
+				<select name='met_fd_related' data-checked='{$data.list.met_fd_related.val}' class="form-control w-a">
+					<list data="$data['list']['met_fd_related']['options']" name="$v">
+					<option value='{$v.val}'>{$v.name}</option>
+					</list>
+				</select>
+				<span class="text-help ml-2">{$word.fdincTip13}</span>
+			</dd>
+		</dl>
+		<dl>
+			<dt>
+				<label class='form-control-label'>{$word.fdincTip12}{$word.marks}</label>
+			</dt>
+			<dd>
+				<list data="$data['list']['met_fd_showcol']['options']" name="$v">
+				<div class="custom-control custom-checkbox custom-control-inline">
+					<input type="checkbox" id="met_fd_showcol{$v._index}-{$checkbox_time}" name='met_fd_showcol' value='{$v.id}'<if value="!$v['_index']">data-checked='{$data.list.met_fd_showcol.val}'</if>data-delimiter="|" class="custom-control-input"/>
+					<label class="custom-control-label" for="met_fd_showcol{$v._index}-{$checkbox_time}">{$v.name}</label>
+				</div>
+				</list>
+			</dd>
+		</dl>
+		<dl>
+			<dt>
+				<label class='form-control-label'>{$word.feedbackinquiry}{$word.marks}</label>
+			</dt>
+			<dd>
+				<input type="checkbox" data-plugin="switchery" name="met_fd_inquiry" value='{$data.list.met_fd_inquiry}' data-checked='1' hidden>
+                <span class="text-help ml-2">{$word.feedbackinquiryinfo}</span>
+			</dd>
+		</dl>
+		<?php
+		$accepttype_title=$word['fdincAcceptType'];
+		$met_fd_type_name='met_fd_type';
+		$met_fd_type=$data['list'][$met_fd_type_name];
+		$acceptmail_title=$word['fdincAcceptMail'];
+		$met_fd_to_name='met_fd_to';
+		$met_fd_to=$data['list'][$met_fd_to_name];
+		$admin_tel_title=$word['fdincTip14'];
+		$met_fd_admin_tel_name='met_fd_admin_tel';
+		$met_fd_admin_tel=$data['list'][$met_fd_admin_tel_name];
+		?>
+		<include file="pub/form_module_set/reply"/>
+	</div>
+</form>

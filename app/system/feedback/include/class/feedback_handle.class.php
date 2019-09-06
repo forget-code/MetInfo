@@ -46,14 +46,6 @@ class feedback_handle extends message_handle {
 		return $this->url_transform($column['foldername'].'/index.php?action=add&lang='.$column['lang']);
 	}
 
-	public function get_feedback_config($id){
-        global $_M;
-        $message=load::mod_class('message/message_database','new')->get_config_by_id($id);
-        foreach ($message as $key => $value) {
-        	$messagecfg[$value[name]]=$value;
-        }
-        return $messagecfg;
-	}
 }
 
 # This program is an open source system, commercial use, please consciously to purchase commercial license.

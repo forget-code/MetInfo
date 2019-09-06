@@ -219,7 +219,6 @@ function Cell($row, $col, $data='', $type='String')
 
 function Text($row, $col, $txt)
 {
-	
 	return $this->Cell($row, $col, iconv("GBK","UTF-8",$txt), 'String');
 }
 

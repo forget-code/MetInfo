@@ -2,7 +2,6 @@
 # MetInfo Enterprise Content Management System
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 defined('IN_MET') or exit('No permission');
-if(!$_M['form']['head_no']) require $this->template('ui/footer');
 echo <<<EOT
 -->
 		<div class="clear"></div>

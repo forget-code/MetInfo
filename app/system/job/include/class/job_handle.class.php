@@ -35,19 +35,55 @@ class job_handle extends news_handle {
 	 * @param  string  $banner 设置数组
 	 * @return array           处理过后的栏目图片数组
 	 */
-	public function one_para_handle($job) {
-		global $_M;
-		$job['title'] = $job['position'];
-		$job['url'] = $this->url_add_contents_filename('job', $this->contents_page_name, $job['id'], $job['filename'], $job['lang'], $job['addtime']);
-		$job['addtime'] = date($_M['config']['met_listtime'], strtotime($job['addtime']));
-		$job['cv'] = $this->url_transform('job/cv.php?lang=' . $job['lang'] . '&selectedjob=' . $job['id']);
-		if($content['new_windows']){
-      $content['target'] = 'target="_blank"';
-    }else{
-      $content['target'] = '';
+	public function one_para_handle($content = array())
+    {
+        global $_M;
+        $content['title'] = $content['position'];
+        $content['url'] = $this->url_add_contents_filename('job', $this->contents_page_name, $content['id'], $content['filename'], $content['lang'], $content['addtime']);
+        $content['addtime'] = date($_M['config']['met_listtime'], strtotime($content['addtime']));
+        $content['cv'] = $this->url_transform('job/cv.php?lang=' . $content['lang'] . '&selectedjob=' . $content['id']);
+        if ($content['new_windows']) {
+            $content['target'] = 'target="_blank"';
+        } else {
+            $content['target'] = '';
+        }
+
+        $content = self::addStyle($content);
+        return $content;
     }
-		return $job;
-	}
+
+    /**
+     * 添加系统样式
+     * @param array $content
+     * @return array
+     */
+    public function addStyle($content = array())
+    {
+        global $_M;
+        //title
+        $title = "<span style='";
+        if ($content['text_size']) {
+            $title .= "font-size:{$content['text_size']}px ;";
+        }
+        if ($content['text_color']) {
+            $title .= "color:{$content['text_color']} ;";
+        }
+        $title .= "'>" . $content['title'] . "</span>";
+        $content['_title'] = $title;
+
+        //position
+        $position = "<span style='";
+        if ($content['text_size']) {
+            $position .= "font-size:{$content['text_size']}px ;";
+        }
+        if ($content['text_color']) {
+            $position .= "color:{$content['text_color']} ;";
+        }
+        $position .= "'>" . $content['position'] . "</span>";
+        $content['_position'] = $position;
+
+        return $content;
+    }
 
 	/**
 	 * 返回分页url

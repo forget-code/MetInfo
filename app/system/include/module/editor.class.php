@@ -23,29 +23,34 @@ class editor extends admin {
 		$CONFIG['filePathFormat'] = PATH_WEB.'upload/'.$CONFIG['filePathFormat'];
 		$CONFIG['imageManagerListPath'] = PATH_WEB.'upload/';
 		$CONFIG['fileManagerListPath'] = PATH_WEB.'upload/';
-		
-		$file_maxsize = $_M['config']['met_file_maxsize']*1024*1000;
-		
+
+		//允许上传文件大小
+        $file_maxsize = $_M['config']['met_file_maxsize'] * 1024 * 1000;
 		$CONFIG['imageMaxSize'] = $file_maxsize;
+		$CONFIG['videoMaxSize'] = $file_maxsize;
+		$CONFIG['fileMaxSize']  = $file_maxsize;
 		$CONFIG['scrawlMaxSize'] = $file_maxsize;
 		$CONFIG['catcherMaxSize'] = $file_maxsize;
-		
-		$CONFIG['videoMaxSize'] = $file_maxsize*50;
-		$CONFIG['fileMaxSize'] = $file_maxsize*50;
-		
-		
-		
-		
-		
-		//$CONFIG['imagePathFormat'] = '/metv5/upload/'.$CONFIG['imagePathFormat'];
-		//dump($CONFIG);
-		//die;
+
+		//允许上传格式
+        $allow_files = array();
+        foreach (explode('|', $_M['config']['met_file_format']) as $val) {
+            if ($val != '') {
+                $ext = ".{$val}";
+                $allow_files[] = $ext;
+            }
+        }
+        if (is_array($allow_files) && $allow_files) {
+            $CONFIG['imageAllowFiles'] = $allow_files;
+            $CONFIG['videoAllowFiles'] = $allow_files;
+            $CONFIG['fileAllowFiles']  = $allow_files;
+            $CONFIG['fileManagerAllowFiles']  = $allow_files;
+        }
 		
 		switch ($_M['form']['action']) {
 			case 'config':
 				$result =  json_encode($CONFIG);
 				break;
-
 			/* 上传图片 */
 			case 'uploadimage':
 			/* 上传涂鸦 */
@@ -56,7 +61,6 @@ class editor extends admin {
 			case 'uploadfile':
 				$result = include("editor/action_upload.php");
 				break;
-
 			/* 列出图片 */
 			case 'listimage':
 				$result = include("editor/action_list.php");
@@ -65,12 +69,10 @@ class editor extends admin {
 			case 'listfile':
 				$result = include("editor/action_list.php");
 				break;
-
 			/* 抓取远程文件 */
 			case 'catchimage':
 				$result = include("editor/action_crawler.php");
 				break;
-
 			default:
 				$result = json_encode(array(
 					'state'=> $_M['word']['rurlerror']

@@ -38,13 +38,16 @@ class view_compile
     private $literal = array();
 
     /**
+     * @var 同_load_class
+     */
+    private $compile;
+
+    /**
      * 构造函数
      */
     function __construct()
     {
         global $_M;
-        #load::sys_class('view/ui_compile');
-        $this->ui_compile = load::sys_class('view/ui_compile','new');
     }
 
     //运行编译
@@ -57,9 +60,6 @@ class view_compile
          */
         $this->content = file_get_contents($this->view->tplFile);
 
-        // 解析css
-        $this->ui_compile->parse_tag_static('css');
-        $this->ui_compile->parse_tag_static('js');
         /**
          * 获得不解析内容
          */
@@ -85,7 +85,6 @@ class view_compile
          * 将不解析内容还原
          */
         $this->replaceNoParseContent();
-
 
         /**
          * 创建编译目录
@@ -154,7 +153,12 @@ class view_compile
          */
         $tagClass = array();
 
-        $tags = array(__DIR__.'/met_tag.class.php',__DIR__.'/ui_tag.class.php');
+        $tags = array(
+            __DIR__.'/met_tag.class.php',
+            __DIR__.'/sys_tag.class.php',
+            #__DIR__.'/ui_tag.class.php',
+            PATH_ALL_APP."met_template/include/class/ui_tag.class.php"
+        );
 
         if ( ! empty($tags) && is_array($tags)) {
 
@@ -181,7 +185,6 @@ class view_compile
         /**
          * 解析标签类
          */
-
         foreach ($tagClass as $class) {
             /**
              * 标签类对象

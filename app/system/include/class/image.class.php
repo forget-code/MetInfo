@@ -87,14 +87,52 @@ class image{
 
 		$this->image = pathinfo($this->image_path);
 		$this->thumb_dir = PATH_WEB.'upload/thumb_src/';
-		$this->thumb_path = $this->get_thumb_file() . $this->image['basename'];
+		$this->thumb_path = $this->get_thumb_path() . $this->image['basename'];
 
 		$image = $this->get_thumb();
 		return $image;
 	}
 
+	// 先直接返回缩略图地址
+	public function get_thumb_path()
+	{
+		global $_M;
+		$x = $this->x;
+		$y = $this->y;
+		if($path = explode('?', $this->image_path)){
+			$image_path = $path[0];
+		}else{
+			$image_path = $this->image_path;
+		}
 
-	public function get_thumb_file() {
+		if($x && $y) {
+            $dirname = "{$x}_{$y}/";
+        }
+
+        if($x && !$y) {
+            $dirname 		= "x_{$x}/";
+        }
+
+        if(!$x && $y) {
+            $dirname 		= "y_{$y}/";
+		}
+
+        if (!$x && !$y) {
+            $dirname 		= "400_400/";
+        }
+
+		$this->thumb_url = $_M['url']['site'] . 'upload/thumb_src/' . $dirname . $this->image['basename'];
+		$dirname = $this->thumb_dir . $dirname ;
+
+		if(stristr(PHP_OS,"WIN")) {
+			$dirname = @iconv("utf-8","GBK",$dirname);
+		}
+		return $dirname;
+	}
+
+
+	// 生成新的缩略图地址
+	public function get_new_path() {
 		global $_M;
 		$x = $this->x;
 		$y = $this->y;
@@ -114,23 +152,30 @@ class image{
 
 		$width = imagesx($image);//获取原图片的宽
 		$height = imagesy($image);//获取原图片的高
+
 		if($x && $y) {
-			$dirname = "{$x}_{$y}/";
-			$this->thumb_x  = $x;
+            $dirname = "{$x}_{$y}/";
+            $this->thumb_x  = $x;
+            $this->thumb_y  = $y;
+        }
+
+        if($x && !$y) {
+            $dirname 		= "x_{$x}/";
+            $this->thumb_x  = $x;
+            $this->thumb_y  = floor($x / $width * $height);
+        }
+
+        if(!$x && $y) {
+            $dirname 		= "y_{$y}/";
 			$this->thumb_y  = $y;
+			$this->thumb_x  = floor($y / $height * $width);
 		}
 
-		if($x && !$y) {
-			$dirname 		= "x_{$x}/";
-			$this->thumb_x  = $x;
-			$this->thumb_y  = $x / $width * $height;
-		}
-
-		if(!$x && $y) {
-			$dirname 		= "y_{$y}/";
-			$this->thumb_y  = $y;
-			$this->thumb_x  = $y / $height * $width;
-		}
+        if (!$x && !$y) {
+            $dirname 		= "400_400/";
+            $this->thumb_y  = 400;
+            $this->thumb_x  = 400;
+        }
 
 		$this->thumb_url = $_M['url']['site'] . 'upload/thumb_src/' . $dirname . $this->image['basename'];
 		$dirname = $this->thumb_dir . $dirname ;
@@ -155,10 +200,10 @@ class image{
 	public function create_thumb() {
 
 		global $_M;
-		$thumb = load::sys_class('thumb','new');
+        $thumb = load::sys_class('thumb','new');
 		$thumb->set('thumb_save_type',3);
 		$thumb->set('thumb_kind',$_M['config']['thumb_kind']);
-		$thumb->set('thumb_savepath',$this->get_thumb_file());
+		$thumb->set('thumb_savepath',$this->get_new_path());
 		$thumb->set('thumb_width',$this->thumb_x);
 		$thumb->set('thumb_height',$this->thumb_y);
 		$suf = '';
@@ -179,7 +224,7 @@ class image{
 		$image = $thumb->createthumb($image_path);
 		if($_M['config']['met_thumb_wate'] && strpos($image_path, 'watermark')===false){
 			$mark = load::sys_class('watermark','new');
-			$mark->set('water_savepath',$this->get_thumb_file());
+			$mark->set('water_savepath',$this->get_thumb_path());
 			$mark->set_system_thumb();
 			$mark->create($image['path']);
 		}

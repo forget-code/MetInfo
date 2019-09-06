@@ -10,9 +10,13 @@ class message_tag extends tag {
 
     public function _form( $attr, $content ) {
         global $_M;
+        $cid = isset( $attr['cid'] ) ? ( $attr['cid'][0] == '$' ? $attr['cid']
+            : "'{$attr['cid']}'" ) : 0;
         $php = <<<str
 <?php
-    \$result = load::sys_class('label', 'new')->get('message')->get_module_form_html();
+    \$cid= $cid;
+    \$cid= \$cid ? \$cid : \$data['classnow'];
+    \$result = load::sys_class('label', 'new')->get('message')->get_module_form_html(\$cid);
     echo \$result;
 ?>
 str;

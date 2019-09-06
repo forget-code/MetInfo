@@ -108,6 +108,15 @@ define(function(require, exports, module) {
 	$('.prov').change(function(){
 		$('#class1id').val($('.prov').val());
 	});
+	$('[data-selectdburl] select').change(function(event) {
+		setTimeout(function(){
+			var class1=$('[data-selectdburl] [name="class1_select"]').val()||'',
+				class2=$('[data-selectdburl] [name="class2_select"]').val()||'',
+				class3=$('[data-selectdburl] [name="class3_select"]').val()||'',
+				href=$('.btn-add-product').attr('href').split('&class1=')[0];
+			$('.btn-add-product').attr({href:href+'&class1='+class1+'&class2='+class2+'&class3='+class3});
+		},300)
+	});
 	// 加载设置发货码弹框页面
 	$(document).on('click', '#shopproduct-list .auto-sent', function(event) {
 		$('.auto-sent-modal iframe').attr({src:$('.auto-sent-modal iframe').data('src')+$(this).data('id')});

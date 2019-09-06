@@ -10,7 +10,7 @@ defined('IN_MET') or exit('No permission');
  */
 load::sys_class('curl');
 class sms extends curl{
-	public $errorcode;
+	public $redata;
 
 	/**
 	 * 发送短信
@@ -23,15 +23,14 @@ class sms extends curl{
 	public function sendsms($phone, $message, $type = 6){
 		global $_M;
 
-
 		if(file_exists(PATH_ALL_APP.'met_sms') && $_M['config']['met_sms_url'])
 		{
 			$sms = load::app_class('met_sms/include/class/met_sms','new');
-			$this->errorcode = $sms->auto_send($phone,$message);
+			$this->redata = $sms->auto_send($phone,$message);
 		}else{
-			$this->errorcode =$_M['word']['msmnoifno'];
+			$this->redata = $_M['word']['msmnoifno'];
 		}
-		return $this->errorcode;
+		return $this->redata;
 
 	}
 

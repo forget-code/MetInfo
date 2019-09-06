@@ -21,15 +21,15 @@ class news_op {
 	}
 
   //删除
-  public function del_by_class($classnow) {
+  public function del_by_class($classnow = '') {
     global $_M;
     $class123 = load::sys_class('label', 'new')->get('column')->get_class123_no_reclass($classnow);
     $this->database->del_list_by_class($class123['class1']['id'], $class123['class2']['id'], $class123['class3']['id']);
     return true;
   }
   
-	/*复制*/
-	public function list_copy($classnow, $toclass1, $toclass2, $toclass3, $tolang){
+	/*复制内容列表*/
+	public function list_copy($classnow = '', $toclass1 ='', $toclass2 = '', $toclass3 = '', $tolang = '', $paras = array()){
 		global $_M;
 
 		$class123 = load::sys_class('label', 'new')->get('column')->get_class123_no_reclass($classnow);
@@ -53,6 +53,35 @@ class news_op {
 
 		return $id_array;
 	}
+
+    /**
+	 * 复制内容至新语言
+     * @param string $id
+     * @param string $toclass1
+     * @param string $toclass2
+     * @param string $toclass3
+     * @param string $tolang
+     */
+    public function copy_one($id = '', $toclass1 ='', $toclass2 = '', $toclass3 = '', $tolang = '')
+    {
+		global $_M;
+        $content = $this->database->get_list_one_by_id($id);
+        if ($content) {
+            $content['id']       = '';
+            $content['filename'] = '';
+            $content['class1']   = $toclass1;
+            $content['class2']   = $toclass2;
+            $content['class3']   = $toclass3;
+            $content['updatetime']  = date("Y-m-d H:i:s");
+            $content['addtime']  = date("Y-m-d H:i:s");
+            $content['content']  = str_replace('\'','\'\'',$content['content']);
+            $content['lang']     = $tolang ? $tolang : $content['lang'];
+
+            $new_id =  $this->database->insert($content);
+            return $new_id;
+        }
+        return false;
+    }
 
 	/*移动产品*/
 	public function list_move($nowclass1,$nowclass2,$nowclass3,$toclass1,$toclass2,$toclass3){

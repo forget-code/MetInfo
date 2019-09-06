@@ -1,6 +1,6 @@
 <?php
-# MetInfo Enterprise Content Management System 
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+# MetInfo Enterprise Content Management System
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 
 defined('IN_MET') or exit('No permission');
 
@@ -8,153 +8,180 @@ load::sys_class('admin');
 load::sys_func('admin');
 
 class index extends admin {
+	/**
+	 * 后台框架页
+	 */
 	public function doindex() {
 		global $_M;
-		$jsrand=str_replace('.','',$_M[config][metcms_v]).$_M[config][met_patch];
-		if ($_M['config']['met_agents_type'] >= 2) {
-			$met_admin_logo = "{$_M[url][site]}".str_replace('../', '', $_M['config']['met_agents_logo_index']);
-			$query = "SELECT * FROM {$_M['table']['config']} WHERE lang='{$_M['langset']}-metinfo'";
-			$result = DB::query($query);
-			while($list_config= DB::fetch_array($result)){
-				$lang_agents[$list_config['name']]=$list_config['value'];
-			}
-			
-			$_M['word']['metinfo'] = $lang_agents['met_agents_name'];
-
-		}
-		//
-		$toparr = load::app_class('met_template/admin/class/UI','new')->adminnav();
-		
-		if ($_M['config']['met_agents_type'] >= 2) {
-			$met_admin_logo = "{$_M[url][site]}".str_replace('../', '', $_M['config']['met_agents_logo_index']);
-			$query = "SELECT * FROM {$_M['table']['config']} WHERE lang='{$_M['langset']}-metinfo'";
-			$result = DB::query($query);
-			while($list_config= DB::fetch_array($result)){
-				$lang_agents[$list_config['name']]=$list_config['value'];
-			}
-			
-			$_M['word']['indexthanks'] = $lang_agents['met_agents_thanks'];
-			$_M['word']['metinfo'] = $lang_agents['met_agents_name'];
-			$_M['word']['copyright'] = $lang_agents['met_agents_copyright'];
-			$_M['word']['oginmetinfo'] = $lang_agents['met_agents_depict_login'];
-			
-			$met_agents_display = "style=\"display:none\"";
-		}else{
-			$met_admin_logo = "{$_M['url']['ui']}images/logo.png";
-		}
-		setcookie("page_iframe_url", '',0,'/');
-        require $this->template('own/index');
-	}
-	public function dohome() {
-		global $_M;
-		
-		/*获取统计数据*/
-		function statime($ymd,$day=''){
-			$day=$day==''?time():strtotime($day);
-			$time=strtotime(date($ymd,$day));
-			return $time;
-		}
-		
-		$stat = array();
-		for($i = 1; $i <= 5; $i++) {
-			$stats = $i==1?statime("Y-m-d"):statime("Y-m-d",(0-$i+1)." day");
-			$query = "select * from {$_M[table][visit_summary]} WHERE stattime ='{$stats}'";
-			$stat[$i] = DB::get_one($query);
-			if(!$stat[$i]){
-				$stat[$i]['pv'] = 0;
-				$stat[$i]['alone'] = 0;
-				$stat[$i]['ip'] = 0;
-			}
-			$stat[$i]['day'] = date('Y-m-d', $stats);
-			if($i==1)$stat[$i]['day'] = $_M['word']['today'];
-			if($i==2)$stat[$i]['day'] = $_M['word']['yesterday'];
-		}
-		
-		/*图表数据*/
-		$dm = date('H', time());
-		$dt = $dm - 8;
-		$dt = $dt<0?$dt+24:$dt;
-		for($i = 0; $i <= 23; $i++) {
-			if($i<=$dm&&$i>=$dt){
-				$d = $i<10?'0'.$i:$i;
-				$chartdata['labels'][] = "{$d}:59";
-			}
-		}
-		$chartcolor[0] = "#23b7e5";
-		$chartcolor[1] = "#7266ba";
-		$chartcolor[2] = "#23ad44";
-		foreach($chartcolor as $key=>$val){
-			$chartdata['datasets'][$key]['fillColor'] = $val;
-			$chartdata['datasets'][$key]['strokeColor'] = $val;
-			$chartdata['datasets'][$key]['pointColor'] = $val;
-			$chartdata['datasets'][$key]['pointStrokeColor'] = '#fff';
-		}
-		$nowcrt = explode("|",$stat[1]['parttime']);
-		$i=0;
-		foreach($nowcrt as $val){
-			if($i<=$dm&&$i>=$dt){
-				$aowcrt='';
-				if($val){
-					$aowcrt = explode("-",$val);
-					$val = array();
-					$val[0] = $aowcrt[0];
-					$val[1] = $aowcrt[1];
-					$val[2] = $aowcrt[2];
-				}else{
-					$val[0] = 0;
-					$val[1] = 0;
-					$val[2] = 0;
+		$data=array();
+		if(!$_M['form']['noside']){
+			$sub_column=load::mod_class('base/admin/base_admin', 'new')->column(1);
+	        $adminnav = get_adminnav();
+			$data['adminnav']= array();
+		 	foreach ($adminnav as $key => $val) {
+		 		if($val['display']==1){
+		 			if($val['type']==1){
+				  		$data['adminnav']['top'][] = $val;
+				  	}else{
+				  		if($val['bigclass']==3 && strstr($val['url'],'feed_')){
+				  			$module_info=explode('_', $val['url']);
+				  			$sub_num=count($sub_column[$module_info[2]]);
+				  			foreach ($sub_column[$module_info[2]] as $keys=> $value) {
+				  				if(!($module_info[2]==6 && $keys=='class1' && $sub_num>1)){
+				  					foreach ($value as $keys1=> $value1) {
+					  					$url="manage/?module={$module_info[1]}";
+					  					if($keys=='class1'){
+					  						$url.="&class1={$value1['id']}";
+					  					}else{
+					  						$url.="&class1={$value1['bigclass']}&class2={$value1['id']}";
+					  					}
+					  					if($module_info[2]==7 || ($module_info[2]==6 && $sub_num==1)){
+					  						$val['url']=$url;
+					  					}else{
+					  						$data['adminnav']['sub'][$val['id']][]=array(
+							  					'name'=>$value1['name'],
+							  					'url'=>$url
+						  					);
+					  					}
+						  			}
+				  				}
+				  			}
+				  			if(($module_info[2]!=7 || !$sub_column[$module_info[2]]) && !($module_info[2]==6 && $sub_num==1)) $val['url']='';
+				  		}
+				  		$data['adminnav']['sub'][$val['bigclass']][]=$val;
+				  	}
+			  	}else if($val['type']==1){
+			  		foreach ($adminnav as $key1 => $val1) {
+			  			if($val1['type']==2 && $val1['bigclass']==$val['id'] && $val1['display']==1){
+			  				$data['adminnav']['top'][] = $val1;
+					  	}
+			  		}
+			  	}
+		 	}
+			if ($_M['config']['met_agents_type']) {
+				$data['met_admin_logo'] = "{$_M[url][site]}".str_replace('../', '', $_M['config']['met_agents_logo_index']);
+				$query = "SELECT * FROM {$_M['table']['config']} WHERE lang='{$_M['langset']}-metinfo'";
+				$result = DB::query($query);
+				while($list_config= DB::fetch_array($result)){
+					$lang_agents[$list_config['name']]=$list_config['value'];
 				}
-				$chartdata['datasets'][0]['data'][] = $val[0];
-				$chartdata['datasets'][1]['data'][] = $val[1];
-				$chartdata['datasets'][2]['data'][] = $val[2];
+				$_M['word']['metinfo'] = $lang_agents['met_agents_name'];
+				$_M['word']['indexthanks'] = $lang_agents['met_agents_thanks'];
+				$_M['word']['copyright'] = $lang_agents['met_agents_copyright'];
+				$_M['word']['oginmetinfo'] = $lang_agents['met_agents_depict_login'];
+			}else{
+				$data['met_admin_logo'] = "{$_M['url']['pub_new']}images/logo.png";
+				$auth = load::mod_class('system/class/auth', 'new');
+	        	$data['otherinfoauth'] = $auth->have_auth();
 			}
-			$i++;
+			$data['msecount'] = DB::counter($_M['table']['infoprompt'], "WHERE (lang='".$_M['lang']."' or lang='metinfo') and see_ok='0'", "*");
+			$data['privilege'] = background_privilege();
+			setcookie("arrlanguage", $data['privilege']['navigation'],0,'/');
+			$arrlanguage=explode('|',$data['privilege']['navigation']);
+			if(in_array('metinfo',$arrlanguage) || in_array('1002',$arrlanguage)){
+			    $data['langprivelage']=1;
+			}else{
+			    $data['langprivelage']=0;
+			}
+			$data['admin_group']=admin_information();
+			//判断是否有环境检测的权限
+			if (strstr($data['admin_group']['admin_type'],'s1903') || strstr($data['admin_group']['admin_type'],'metinfo')){
+			    $data['environmental_test'] = 1;
+	        }
+	        //判断是否有功能大全的权限
+	        if (strstr($data['admin_group']['admin_type'],'s1902') || strstr($data['admin_group']['admin_type'],'metinfo')){
+	            $data['function_complete'] = 1;
+	        }
+	        //判断是否有清空缓存的权限
+	        if (strstr($data['admin_group']['admin_type'],'s1901') || strstr($data['admin_group']['admin_type'],'metinfo')){
+	            $data['clear_cache'] = 1;
+	        }
+	        //判断是否有检测更新的权限
+	        if (strstr($data['admin_group']['admin_type'],'1104') || strstr($data['admin_group']['admin_type'],'metinfo')){
+				$data['checkupdate'] = 1;
+				if(!$_M['config']['met_agent_update'] && $_M['config']['met_agents_type']){
+					$data['checkupdate'] = 0;
+				}
+	        }
+			$data['admin_group']=$data['admin_group']['admin_group'];
 		}
-		$chartdata = jsonencode($chartdata);
-		
-		/*我的应用*/
-		$query = "select * from {$_M['table']['admin_column']} where bigclass='44'";
-		$app_in = DB::get_all($query);
-		$privilege = background_privilege();
+        $sys_json = parent::sys_json();
+        $data=array_merge($data,$sys_json);
+        $this->view(is_mobile()?'sys/mobile/admin/templates/index':'app/index',$data);
+	}
+	/**
+	 * 后台首页
+	 */
+	public function dohome()
+    {
+        global $_M;
+        $privilege = background_privilege();
+        $admin_folder_safe = $this->admin_folder_safe();
+        $home_app_ok = $_M['config']['met_agents_metmsg'];
 
+		$query = "SELECT count(1) as total FROM {$_M['table']['feedback']} WHERE readok=0 AND lang = '{$_M['lang']}'";
+		$feedback = DB::get_one($query);
+		$feedback['name']= $_M['word']['feedfback'];
+		if(!$feedback){
+			$feedback['total'] = 0;
+		}
 
-        if($_M['config']['met_safe_prompt']==0){
-            //判断后来路径是否包含admin和网站关键词
-            $adflag = 0;
-            if (preg_match("/\/admin\/$/", $_M['url']['site_admin'])) {
-                $adflag = 1;
-            }
-            $arr1 = explode( '/',trim($_M['url']['site_admin'],'/'));
-            $adfile = end($arr1);
-            unset($arr1[1]);
-            foreach ($arr1 as $val) {
-                if($val == $_M['config']['met_keywords'] || $val == 'admin' ){
-                    $adflag = 1;
-                }
-            }
-            foreach (explode('.', $arr1[2]) as $val) {
-                if ($val == $adfile  || $val == $_M['config']['met_keywords']) {
-                    $adflag = 1;
-                }
-            }
-        }else{
-            $adflag = 0;
+		$query = "SELECT count(1) as total FROM {$_M['table']['message']} WHERE readok=0 AND lang = '{$_M['lang']}'";
+		$message = DB::get_one($query);
+		$message['name']=$_M['word']['message'];
+		if(!$message){
+			$message['total'] = 0;
+		}
+
+		$query = "SELECT count(1) as total FROM {$_M['table']['cv']} WHERE readok=0 AND lang = '{$_M['lang']}'";
+		$cv = DB::get_one($query);
+		if(!$cv){
+			$cv['total'] = 0;
+		}
+		$cv['name']=$_M['word']['job'];
+
+		$query = "SELECT COUNT(1) AS total FROM {$_M['table']['news']} WHERE  lang = '{$_M['lang']}'";
+		$news = DB::get_one($query);
+		if(!$news){
+			$news['total'] = 0;
+		}
+		$news['name']=$_M['word']['upfiletips37'];
+
+		$query = "SELECT COUNT(1) AS total FROM {$_M['table']['product']} WHERE  lang = '{$_M['lang']}'";
+		$product = DB::get_one($query);
+		if(!$product){
+			$product['total'] = 0;
+		}
+		$product['name']=$_M['word']['product'];;
+        $data = array(
+            'admin_folder_safe' => $admin_folder_safe,
+            'home_app_ok' => $home_app_ok,
+			'summarize'=>array(
+            	'news'=>$news,
+				'product'=>$product,
+	            'feedback' => $feedback,
+	            'message' => $message,
+	            'job' => $cv
+        	)
+        );
+        if (is_mobile()) {
+            $this->success($data);
+        } else {
+            return $data;
         }
 
-		require $this->template('own/home');
-	}
+    }
 
     /**
-     * 系统安全提示
+     * 取消系统安全提示
      */
     public function do_no_prompt(){
         $configlist = array();
         $configlist[] = 'met_safe_prompt';
-        configsave($configlist);
+        configsave($configlist,array('met_safe_prompt'=>1));
         die('met_safe_prompt saved ');
     }
-	
+
 }
 
 # This program is an open source system, commercial use, please consciously to purchase commercial license.

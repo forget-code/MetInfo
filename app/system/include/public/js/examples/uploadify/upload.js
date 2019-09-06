@@ -34,7 +34,6 @@ define(function(require, exports, module) {
 		t_html+='<span class="uptips"></span>';
 		t_html+='</div>';
 		d.after(t_html);
-		common.ifreme_methei();
 		//
 		$(document).on('mouseenter mouseout','.file_uploadfrom input',function(){
 			if(event.type=='mouseover'){

@@ -14,14 +14,14 @@
 		</div>
 	</li>
 	</tag>
-	<else/>
+<elseif value="!$c['met_img_page']"/>
 	<list data="$result" name="$v">
 	<li class="card">
 		<div class="cover overlay overlay-hover">
 			<img class="cover-image overlay-scale" <if value="$v['_index'] gt 3 || $data['page'] gt 1">data-original<else/>src</if>="{$v.imgurl|thumb:$c['met_imgs_x'],$c['met_imgs_y']}" alt="{$v.title}">
 			<div class="overlay-panel overlay-fade overlay-background overlay-background-fixed text-xs-center vertical-align" met-imgmask>
 				<div class="vertical-align-middle">
-					<h3 class="card-title m-b-20">{$v.title}</h3>
+					<h3 class="card-title m-b-20">{$v._title}</h3>
 					<a href='{$v.url}' title='{$v.title}' class="btn btn-outline btn-squared btn-inverse" {$g.urlnew}>{$ui.img_listlook}</a>
 				</div>
 			</div>

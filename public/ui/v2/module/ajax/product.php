@@ -26,7 +26,7 @@
 			</a>
 		</figure>
 		<h4 class="card-title m-0 p-x-10 font-size-16 text-xs-center">
-			<a href="{$v.url}" title="{$v.title}" class="block" {$g.urlnew}>{$v.title}</a>
+			<a href="{$v.url}" title="{$v.title}" class="block" {$g.urlnew}>{$v._title}</a>
 			<p class='m-b-0 m-t-5 red-600'>{$v.price_str}</p>
 		</h4>
 	</div>
@@ -41,7 +41,7 @@
 				<figcaption class="overlay-panel overlay-background overlay-fade text-xs-center vertical-align" met-imgmask>
 					<div class="vertical-align-middle">
 						<h4 class="animation-slide-bottom">
-							{$v.title}
+							{$v._title}
 						</h4>
 						<p class='m-b-0 m-t-5 red-600'>{$v.price_str}</p>
 					</div>
@@ -60,7 +60,7 @@
 			</a>
 		</figure>
 		<div class="widget-body">
-			<h4 class="widget-title">{$v.title}</h4>
+			<h4 class="widget-title">{$v._title}</h4>
 			<p class='m-b-0 m-t-5 red-600'>{$v.price_str}</p>
 			<list data="$v['para']"  name='$para'>
 			<if value="$para['value']">

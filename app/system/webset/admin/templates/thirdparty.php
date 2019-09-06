@@ -1,76 +1,70 @@
-<!--<?php
-# MetInfo Enterprise Content Management System 
-# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
-
+<?php
+# MetInfo Enterprise Content Management System
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
 defined('IN_MET') or exit('No permission');
-
-require $this->template('ui/head');
-echo <<<EOT
--->
-<form method="POST" class="ui-from" name="myform" action="{$_M[url][own_form]}a=dotpeditor" target="_self">
-<div class="v52fmbx">
-	<dl>
-		<dd class="ftype_description">
-		{$_M[word][PC]}{$_M[word][unitytxt_36]}
-		</dd>
-	</dl>
-	<dl>
-		<dt>{$_M[word][setheadstat]}</dt>
-		<dd class="ftype_textarea">
-			<div class="fbox">
-				<textarea name="met_headstat" style="width:80%;">{$_M[config][met_headstat]}</textarea>
-			</div>
-			<span class="tips">{$_M[word][unitytxt_37]}</span>
-			
-		</dd>
-	</dl>
-	<dl>
-		<dt>{$_M[word][setfootstat]}</dt>
-		<dd class="ftype_textarea">
-			<div class="fbox">
-				<textarea name="met_footstat" style="width:80%;">{$_M[config][met_footstat]}</textarea>
-			</div>
-			<span class="tips">{$_M[word][unitytxt_38]}</span>
-			
-		</dd>
-	</dl>
-
-	<dl>
-		<dd class="ftype_description">
-		{$_M[word][third_code_mobile]}
-		</dd>
-	</dl>
-	<dl>
-		<dt>{$_M[word][setheadstat]}</dt>
-		<dd class="ftype_textarea">
-			<div class="fbox">
-				<textarea name="met_headstat_mobile" style="width:80%;">{$_M[config][met_headstat_mobile]}</textarea>
-			</div>
-			<span class="tips">{$_M[word][unitytxt_37]}</span>
-
-		</dd>
-	</dl>
-	<dl>
-		<dt>{$_M[word][setfootstat]}</dt>
-		<dd class="ftype_textarea">
-			<div class="fbox">
-				<textarea name="met_footstat_mobile" style="width:80%;">{$_M[config][met_footstat_mobile]}</textarea>
-			</div>
-			<span class="tips">{$_M[word][unitytxt_38]}</span>
-
-		</dd>
-	</dl>
-	<dl class="noborder">
-		<dt> </dt>
-		<dd>
-			<input type="submit" name="submit" value="{$_M['word']['Submit']}" class="submit">
-		</dd>
-	</dl>
-</div>
-</form>
-<!--
-EOT;
-require $this->template('ui/foot');
-# This program is an open source system, commercial use, please consciously to purchase commercial license.
-# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+$head_tab_active=2;
+$head_tab=array(
+	array(title=>$word['website_information'],url=>'#/webset'),
+	array(title=>$word['email_Settings'],url=>'#/webset/email'),
+	array(title=>$word['third_party_code'],url=>'#/webset/thirdparty')
+);
 ?>
+<div class="met-web-set">
+	<include file="pub/head_tab"/>
+	<form method="POST" action="{$url.own_name}c=thirdparty&a=doSaveThirdparty"  class='third-form mt-3' data-submit-ajax='1'>
+		<div class="metadmin-fmbx">
+			<h3 class='example-title'>{$word.unitytxt_36}</h3>
+			<dl>
+				<dt>
+					<label class='form-control-label'>{$word.setheadstat}</label>
+				</dt>
+				<dd>
+					<div class='form-group clearfix'>
+						<textarea name="met_headstat" rows="5" class='form-control mr-2'></textarea>
+						<span class="text-help">{$word.unitytxt_37}</span>
+					</div>
+				</dd>
+			</dl>
+			<dl>
+				<dt>
+					<label class='form-control-label'>{$word.setfootstat}</label>
+				</dt>
+				<dd>
+					<div class='form-group clearfix'>
+						<textarea name="met_footstat" rows="5" class='form-control mr-2'></textarea>
+						<span class="text-help">{$word.unitytxt_38}</span>
+					</div>
+				</dd>
+			</dl>
+			<h3 class='example-title'>{$word.third_code_mobile}</h3>
+			<dl>
+				<dt>
+					<label class='form-control-label'>{$word.setheadstat}</label>
+				</dt>
+				<dd>
+					<div class='form-group clearfix'>
+						<textarea name="met_headstat_mobile" rows="5" class='form-control mr-2'></textarea>
+						<span class="text-help">{$word.unitytxt_37}</span>
+					</div>
+				</dd>
+			</dl>
+			<dl>
+				<dt>
+					<label class='form-control-label'>{$word.setfootstat}</label>
+				</dt>
+				<dd>
+					<div class='form-group clearfix'>
+						<textarea name="met_footstat_mobile" rows="5" class='form-control mr-2'></textarea>
+						<span class="text-help">{$word.unitytxt_38}</span>
+					</div>
+				</dd>
+			</dl>
+			<dl>
+				<dt></dt>
+				<dd>
+					<button type="submit" class='btn btn-primary'>{$word.save}</button>
+				</dd>
+			</dl>
+		</div>
+	</form>
+</div>

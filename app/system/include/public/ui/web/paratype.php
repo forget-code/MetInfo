@@ -75,17 +75,9 @@ echo <<<EOT
 		<div class="col-md-9">
 <!--
 EOT;
-		foreach($val['list'] as $option){
+		foreach($val['list'] as $key1=> $option){
 			if($option){
-				if(strstr($value,"#@met@#")){
-					$values = explode("#@met@#",$value);
-					$checked ='';
-					foreach($values as $v){
-						if($v==$option['value'])$checked = 'checked';
-					}
-				}else{
-					$checked = $value==$option['id']?'checked':'';
-				}
+				$checked = $para['info_'.$val['id'].'_'.$key1]!=''?'checked':'';
 				// html修改（新模板框架v2） 开始
 echo <<<EOT
 -->

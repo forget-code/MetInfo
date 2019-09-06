@@ -9,7 +9,6 @@ if(!$foot_no && !$_M['foot_no']){
 	$foot = str_replace('$m_now_year',date('Y',time()), $foot);
 ?>
 </div>
-<footer class="metadmin-foot container-fluid m-y-10 grey-600">{$foot}</footer>
 <?php } ?>
 <button type="button" class="btn btn-icon btn-primary btn-squared met-scroll-top" hidden><i class="icon wb-chevron-up" aria-hidden="true"></i></button>
 </body>

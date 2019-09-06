@@ -18,7 +18,7 @@ class admin_database extends database {
   }
 
   public function table_para() {
-    return 'id|admin_type|admin_id|admin_pass|admin_name|admin_sex|admin_tel|admin_mobile|admin_email|admin_qq|admin_msn|admin_taobao|admin_introduction|admin_login|admin_modify_ip|admin_modify_date|admin_register_date|admin_approval_date|admin_ok|admin_op|admin_issueok|admin_group|companyname|companyaddress|companyfax|usertype|checkid|companycode|companywebsite|cookie|admin_shortcut|lang|content_type|langok';
+    return 'id|admin_type|admin_id|admin_pass|admin_name|admin_sex|admin_tel|admin_mobile|admin_email|admin_qq|admin_msn|admin_taobao|admin_introduction|admin_login|admin_modify_ip|admin_modify_date|admin_register_date|admin_approval_date|admin_ok|admin_op|admin_issueok|admin_group|companyname|companyaddress|companyfax|usertype|checkid|companycode|companywebsite|cookie|admin_shortcut|lang|content_type|langok|admin_login_lang|admin_check';
   }
 
   public function get_one_by_admin_id($username) {

@@ -35,7 +35,6 @@ class search_label extends base_label{
 		$search['para']['class3'] = 'class3';
 		$search['para']['module'] = 'module';
 		$search['para']['searchword'] = 'searchword';
-
 		$search['lang']['searchword'] = $_M['form']['searchword'];
 		$search['lang']['SearchInfo1'] = $_M['word']['SearchInfo1'];
 		$search['lang']['SearchInfo2'] = $_M['word']['SearchInfo2'];
@@ -52,12 +51,15 @@ class search_label extends base_label{
 	public function get_search_opotion($type, $classnow, $page){
 		global $_M;
 		if($type == 'page'){//模块列表页面搜索
-			$url = load::sys_class('label', 'new')->get('tag')->get_list_page_url($classnow, $page).'&search=search';
+            $url = load::sys_class('label', 'new')->get('tag')->get_list_page_url($classnow, $page) . '&search=search';
+            if($_M['config']['met_pseudo']){
+                $url = preg_replace("/(tag)\/[\w-]+/", 'index.php?',$url);
+            }
 			//模糊搜索框
 			$search['form']['action'] = $url.'&search=search&order=com';
 			$search['form']['input_name'] = "content";
 			$search['form']['input_name_all'] = "all";
-			$search['form']['content'] = $_M['form']['content'];
+			$search['form']['content'] = load::sys_class('label', 'new')->get('tags')->getTagName($_M['form']['content']);
 
 			//排序
 			$order_url = $url;
@@ -171,6 +173,163 @@ $str .= <<<EOT
 EOT;
 		return $str;
 	}
+
+	public function get_search_global($data)
+	{
+		global $_M;
+		$search_range = $_M['config']['global_search_range'];//全局搜索
+		$search_type = $_M['config']['global_search_type'];//全局搜索
+		$search_placeholder = $_M['word']['SearchInfo1'];
+		$module = $_M['config']['global_search_module'];
+		$cid = $_M['config']['global_search_column'];
+		$field = 'searchword';
+		$add = '';
+		if($search_range == 'all'){
+			$url = $_M['url']['site'] . 'search/index.php?lang=' . $this->lang;
+		}
+
+		if($search_range == 'module'){
+			$module_name = load::sys_class('handle','new')->mod_to_file($module);
+			$url = $_M['url']['site'] . "{$module_name}/index.php?lang=" . $this->lang;
+			$field = 'content';//到模块列表页搜索时的字段
+			$add .= "<input type=\"hidden\" name=\"search\" value=\"search\" />";
+		}
+
+		if($search_range == 'column'){
+			$column = load::sys_class('label','new')->get('column')->get_column_id($cid);
+			$url = $_M['url']['site'] . "{$column['foldername']}/index.php?lang=" . $this->lang;
+			$field = 'content'; //到栏目列表页搜索时的字段
+			$add .= "<input type=\"hidden\" name=\"search\" value=\"search\" />";
+			$add .= "<input type=\"hidden\" name=\"class1\" value=\"{$cid}\" />";
+		}
+		$searchword = load::sys_class('label', 'new')->get('tags')->getTagName($_M['form'][$field]);
+		
+		$form = <<<EOT
+		<form method="get" class="page-search-form form-group" role="search" action="{$url}" m-id="search_global" m-type="nocontent">
+			<input type="hidden" name="lang" value="{$this->lang}" />
+			<input type="hidden" name="stype" value="{$search_type}" />
+			{$add}
+			<div class="input-search input-search-dark">
+				<button type="submit" class="input-search-btn"><i class="icon wb-search" aria-hidden="true"></i></button>
+				<input
+				type="text"
+				class="form-control input-lg"
+				name="{$field}"
+				value="{$searchword}"
+				placeholder="{$search_placeholder}"
+				required
+				data-fv-message = "{$_M['word']['Empty']}"
+				>
+			</div>
+		</form>
+EOT;
+		return $form;
+	}
+
+
+	public function get_search_column($data)
+	{
+		global $_M;
+		$search_range = $_M['config']['column_search_range']; //当前栏目
+		$search_type = $_M['config']['column_search_type'];//搜索类型限制：0为所有内容，1为标题，2为内容，3为内容加标题
+
+		$field = 'content';//搜索字段名，全局搜索是searchword,栏目里搜索是content
+		$add = '';//增加到search表单中的隐藏字段
+		$searchword = load::sys_class('label', 'new')->get('tags')->getTagName($_M['form'][$field]);
+
+		$search_placeholder = $_M['word']['columnSearchInfo'];//搜索框默认提示的内容
+		$class_value = $data['classnow'];//搜索栏目的值
+		$module = $data['module']; 
+		$module_name = load::sys_class('handle', 'new')->mod_to_file($module);
+		$url = $_M['url']['site'] . "{$module_name}/index.php?lang=" . $this->lang;
+		$add .= "<input type=\"hidden\" name=\"search\" value=\"search\" />";
+
+		if($search_range == 'current'){
+			$class = "class".$data['classtype'];
+		}else{
+			$class = 'class1';
+			$class_value = $data['class1'];
+		}
+
+		$add .= "<input type=\"hidden\" name=\"{$class}\" value=\"{$class_value}\" />";
+
+		$form = <<<EOT
+		<form method="get" class="page-search-form form-group" role="search" action="{$url}" m-id="search_column" m-type="nocontent">
+			<input type="hidden" name="lang" value="{$this->lang}" />
+			<input type="hidden" name="stype" value="{$search_type}" />
+			{$add}
+			<div class="input-search input-search-dark">
+				<button type="submit" class="input-search-btn"><i class="icon wb-search" aria-hidden="true"></i></button>
+				<input
+				type="text"
+				class="form-control input-lg"
+				name="{$field}"
+				value="{$searchword}"
+				placeholder="{$search_placeholder}"
+				required
+				data-fv-message = "{$_M['word']['Empty']}"
+				>
+			</div>
+		</form>
+EOT;
+		return $form;
+	}
+
+	public function get_search_advanced($data)
+	{
+		global $_M;
+		$field = 'searchword';
+		$add = '';//增加到search表单中的隐藏字段
+		$searchword = load::sys_class('label','new')->get('tags')->getTagName($_M['form'][$field]);
+		
+		$search_placeholder = $_M['word']['advancedSearchInfo'];//搜索框默认提示的内容
+		$module = $data['module']; 
+		if($module == 10001){
+			$module_name = 'search';
+		}else{
+			$module_name = load::sys_class('handle', 'new')->mod_to_file($module);
+		}
+		$url = $_M['url']['site'] . "{$module_name}/index.php?lang=" . $this->lang;
+		$add .= "<input type=\"hidden\" name=\"search\" value=\"search\" />";
+		
+		$add .= "<div data-plugin='select-linkage' data-select-url=\"{$_M['url']['site']}include/open.php?a=doctun\">
+            <select name=\"class1\" class=\"form-control m-r-5 prov\"></select>
+            <select name=\"class2\" class=\"form-control m-r-5 city\"></select>
+            <select name=\"class3\" class=\"form-control m-r-5 dist\"></select>
+		</div>";
+		
+		if($_M['config']['advanced_search_type']){
+			$add.="<div class=\"advanced_search_type\">
+			<select name=\"stype\" class=\"form-control m-r-5 \" data-checked=\"0\">
+			<option value=\"0\">{$_M['word']['weball']}</option>
+			<option value=\"1\">{$_M['word']['Title']}</option>
+			<option value=\"2\">{$_M['word']['Content']}</option>
+			<option value=\"3\">{$_M['word']['Content']}+{$_M['word']['Title']}</option>
+			</select>
+		</div>";
+		}
+
+		$form = <<<EOT
+		<form method="get" class="page-search-form form-group" role="search" action="{$url}" m-id="search_advanced" m-type="nocontent">
+			<input type="hidden" name="lang" value="{$this->lang}" />
+			{$add}
+			<div class="input-search input-search-dark">
+				<button type="submit" class="input-search-btn"><i class="icon wb-search" aria-hidden="true"></i></button>
+				<input
+				type="text"
+				class="form-control input-lg"
+				name="{$field}"
+				value="{$searchword}"
+				placeholder="{$search_placeholder}"
+				required
+				data-fv-message = "{$_M['word']['Empty']}"
+				>
+				
+			</div>
+		</form>
+EOT;
+		return $form;
+	}
 	/**
 	 * 获取搜索form html
 	 * @return array         搜索标签数组
@@ -178,6 +337,11 @@ EOT;
 	public function get_search_form_html(){
 		global $_M;
 		$searchword=$_M['form']['searchword'];
+		$searchword = load::sys_class('label', 'new')->get('tags')->getTagName($searchword);
+        $tag = load::mod_class('tags/tags_database', 'new')->getTagNmae($searchword);
+        if ($tag) {
+            $searchword = $tag;
+        }
 		$search = $this->get_search_form($searchword);
 $str .= <<<EOT
 		<form method='get' class="page-search-form form-group" role="search" action='{$search['url']}'>
@@ -205,36 +369,19 @@ EOT;
 	 */
 	public function get_search_list($str) {
 		global $_M;
-        $_M['form']['searchword'] = urldecode($_M['form']['searchword']);
-		$page = $_M['form']['page'] > 0 ? $_M['form']['page'] : 1;
+		$str = urldecode($str);
+		$str = load::sys_class('label', 'new')->get('tags')->getTagName($str);
+        $page = $_M['form']['page'] > 0 ? $_M['form']['page'] : 1;
 		$page = $page - 1;
 		$start = $this->page_num*$page;
 		$end  = $start + $this->page_num;
-		// return load::mod_class('search/search_handle', 'new')->para_handle(
-		// load::mod_class('search/search_database', 'new')->get_search_list($this->lang, $title, $contents, $paras, $moudel, $class1, $class2, $class3, $start, $rows)
-		// );
 		$id = $_M['form']['class3'] ? $_M['form']['class3'] : ( $_M['form']['class2'] ? $_M['form']['class2'] : $_M['form']['class1'] );
-		$type = array(
-			'type' => 'array',
-			'title'=> array (
-				'status' => 1,//开启搜索
-				'info' => $_M['form']['searchword'],
-			),
-			'content'=> array (
-				'status' => 1,//开启搜索
-				'info' => $_M['form']['searchword'],
-			),
-			'tag'=> array (
-				'status' => 1,//开启搜索
-				'info' => $_M['form']['searchword'],
-			),
-		);
+		$type = $this->get_search_type($_M['form']['stype'],$str);
 		$order = array (
 			'type' => 'array',
 			'status'=> '1',
 		);
-		if($_M['form']['searchword']){
-
+		if($str){
 			$module = intval($_M['form']['module']);
 			$table = load::sys_class('handle','new')->mod_to_name($module);
 			if($table){
@@ -242,7 +389,7 @@ EOT;
 					$content = load::sys_class('label', 'new')->get($table)->get_module_list($id, '', $type, $order);
 					$all = $content;
 				}else{
-					$about = load::sys_class('label', 'new')->get('about')->search_about($_M['form']['searchword']);
+					$about = load::sys_class('label', 'new')->get('about')->search_about($str);
 					foreach ($about as $key => $val) {
 						$about[$key]['title'] = $val['name'];
 					}
@@ -251,7 +398,7 @@ EOT;
 				}
 
 			}else{
-				$about = load::sys_class('label', 'new')->get('about')->search_about($_M['form']['searchword']);
+				$about = load::sys_class('label', 'new')->get('about')->search_about($str);
 				foreach ($about as $key => $val) {
 					$about[$key]['title'] = $val['name'];
 				}
@@ -270,7 +417,6 @@ EOT;
 				}
 			}
 		}
-
 		foreach($search as $key => $val){
 			$list = array();
 			$list['title'] = $this->handle->get_keyword_str($val['title'], $str, 50, 0, 1);
@@ -281,6 +427,7 @@ EOT;
 			$list['imgurl'] = $val['imgurl'];
 			$return[] = $list;
 		}
+
 		if(count($return) == 0 && $str){
 			$list = array();
 			$list['title'] = "{$_M['word']['SearchInfo3']}[<em style='font-style:normal;'>$str</em>]{$_M['word']['SearchInfo4']}";
@@ -296,12 +443,27 @@ EOT;
 	 * 获取列表分页数据
 	 * @param  string  $class1  一级栏目id
 	 * @param  string  $page    当前分页
-	 * @return array        		news数组
+	 * @return array   news数组
 	 */
-	public function get_page_info_by_class($id, $type) {
+	public function get_page_info_by_class($id) {
 		global $_M;
-		$info['url'] = $this->handle->url_transform("search/?class1={$_M['form']['class1']}&class2={$_M['form']['class2']}&class3={$_M['form']['class3']}&search=search&searchword={$_M['form']['searchword']}&lang={$_M['lang']}&page=#page#");
-		$info['count'] = ceil($this->search_page/$this->page_num);;
+		// 搜索列表分页
+		$stype = isset($_M['form']['stype']) ? "&stype={$_M['form']['stype']}" : '';
+		if($_M['form']['search'] == 'tag'){
+			if($_M['config']['met_pseudo']){
+				$url = "tag/{$_M['form']['searchword']}";
+				if($_M['lang'] != $_M['config']['met_index_type']){  
+					$url .= "-".$_M['lang'];
+				}
+				$url .= '-#page#';
+			}else{
+				$url = "search/index.php?search=tag&searchword={$_M['form']['searchword']}{$stype}&lang={$_M['lang']}&page=#page#";
+			}
+		}else{
+			$url = "search/index.php?search={$_M['form']['search']}&searchword={$_M['form']['searchword']}{$stype}&lang={$_M['lang']}&page=#page#";
+		}
+		$info['url'] = $this->handle->url_transform($url);
+		$info['count'] = ceil($this->search_page/$this->page_num);
 		return $info;
 	}
 
@@ -311,7 +473,7 @@ EOT;
 		$order['type'] = 'array';
 		switch ($_M['form']['order']) {
 			case 'com':
-				$order['status']  = '';
+				$order['status']  = '6';
 			break;
 			case 'new':
 				$order['status']  = '1';
@@ -326,37 +488,69 @@ EOT;
 		return $order;
 	}
 
+	public function get_search_type($stype=0,$word)
+	{
+		global $_M;
+		$type = array('type'=>'array');
+		switch ($stype){
+			case 0:
+			$fields = array('ctitle','title','keywords','description','para','content','tag','specv');
+			
+			foreach ($fields as $val) {
+				$type[$val]['status'] = 1;
+				$type[$val]['info'] = $word;
+			}
+
+			break;
+			case 1:
+			$type['title']['status'] = 1;
+			$type['title']['info'] = $word;
+			break;
+			case 2:
+			$type['content']['status'] = 1;
+			$type['content']['info'] = $word;
+			break;
+			case 3:
+			$type['title']['status'] = 1;
+			$type['title']['info'] = $word;
+			$type['content']['status'] = 1;
+			$type['content']['info'] = $word;
+		}
+		return $type;
+	}
+
+	public function tag_search()
+	{
+		global $_M;
+		// 如果是标签搜索,按全站内容搜索
+		$_M['form']['stype'] = 0;
+		$word = load::sys_class('label', 'new')->get('tags')->getTagName($_M['form']['content']);
+		if ($_M['config']['tag_show_range']) {
+			// 如果限制了只显示带TAG的信息
+			return array('type' => 'array', 'tag' => array(
+				'status' => 1, //搜索tag
+				'info' => $word,
+			));
+		}
+		
+		$type = $this->get_search_type($_M['form']['stype'], $word);
+		$type['type'] = 'tag';
+		return $type;
+	}
+
 	public function search_info(){
 		global $_M;
-		$list = array();
+		
 		if($_M['form']['search']) {
-			$type['type'] = 'array';
-			if($_M['form']['title'] || $_M['form']['content']){
-				return $type = array(
-					'type' => 'array',
-					'title'=> array (
-						'status' => 1,//开启搜索
-						'info' => $_M['form']['title'] ? $_M['form']['title'] : $_M['form']['content'],
-					),
-					'content'=> array (
-						'status' => 1,//开启搜索
-						'info' => $_M['form']['content'],
-					),
-                    'tag'=> array (
-                        'status' => 1,//开启搜索
-                        'info' => $_M['form']['content'],
-                    ),
-                    'para'=> array (
-                        'status' => 1,//开启搜索
-                        'precision' => 0,
-                        'info' => $_M['form']['content'],
-                    ),
-					'specv'=> array (
-						'status' => 0,//关闭商品规格搜索
-						'precision' => 0,
-						'info' => $_M['form']['content'],
-					)
-				);
+			
+			if($_M['form']['title'] || $_M['form']['content'] || $_M['form']['searchword']){
+				if($_M['form']['content']){
+					$word = $_M['form']['content'];
+				}else{
+					$word = $_M['form']['searchword'];
+				}
+				$type = $this->get_search_type(0, $word);
+				return $type;
 			}elseif($_M['form']['para']){
 				$paratmp = json_decode(load::sys_class('auth', 'new')->decode($_M['form']['para']), true);
 				foreach($paratmp as $key => $val){
@@ -434,8 +628,14 @@ EOT;
 	//添加搜索选项，当前只能向动态页面添加
 	public function add_search_url(){
 		global $_M;
+		
+		if($_M['form']['search'] && $_M['form']['search'] == 'tag' && !$_M['form']['stype']){
+			// 如果不是按搜索走的TAG，不添加参数
+			return;
+		}
+		$str = '';
+		
 		if($_M['form']['search']){
-			$str .= "&search=search";
 			if($_M['form']['order']){
 				$str .= "&order={$_M['form']['order']}";
 			}

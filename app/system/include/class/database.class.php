@@ -16,13 +16,13 @@ class database  {
 	 * @param  string  $table  数据表名称
 	 */
 
-	public function construct($table) {
+	public function construct($table = '') {
 		global $_M;
 		$this->table   = $table;
 		$this->langsql = " lang = '{$_M['lang']}' ";
 	}
 
-	public function set_lang($lang) {
+	public function set_lang($lang = '') {
 		global $_M;
 		if($lang){
 			if($lang == '#all'){
@@ -35,7 +35,7 @@ class database  {
 		}
 	}
 
-	public function get_lang($lang) {
+	public function get_lang($lang = '') {
 		global $_M;
 		if($lang){
 			if($lang == '#all'){
@@ -53,9 +53,9 @@ class database  {
 	 * @param  string  $id
 	 * @return array   数组
 	 */
-	public function get_list_one_by_id($id){
+	public function get_list_one_by_id($id = ''){
 		global $_M;
-	    $query = "SELECT * FROM {$this->table} WHERE id = '{$id}' ";
+	    $query = "SELECT * FROM {$this->table} WHERE id = '{$id}'";
 	    return DB::get_one($query);
   }
 
@@ -64,7 +64,7 @@ class database  {
 	 * @param  string  $id
 	 * @return array   数组
 	 */
-	public function get_all($lang){
+	public function get_all($lang = ''){
 		global $_M;
 	    $query = "SELECT * FROM {$this->table} WHERE  {$this->langsql}";
 	    return DB::get_all($query);
@@ -75,14 +75,15 @@ class database  {
 	 * @param  array  $list     需要更新字段
 	 * @return bool             更新是否成功
 	 */
-	public function update_by_id($list) {
+	public function update_by_id($list = array()) {
        
 		$sql = $this->update_sql($list);
 		$query = "UPDATE {$this->table} SET $sql WHERE id = '{$list['id']}'";
 		return DB::query($query);
 	}
 
-	public function update_sql($list) {
+	public function update_sql($list = array()) {
+        $sql = '';
 		foreach ($list as $key => $val) {
 			if($key != 'id'){
 				if($this->is_para($key)){
@@ -98,14 +99,15 @@ class database  {
 	 * @param  string  $id    id
 	 * @return number         插入的id
 	 */
-	public function insert($list) {
+	public function insert($list = array()) {
+        $sql = '';
 		foreach ($list as $key => $val) {
 			if($this->is_para($key)){
 				$sql .= " $key = '{$val}',";
 			}
 		}
 		$sql = trim($sql, ',');
-		$query = "INSERT INTO {$this->table} SET $sql";
+        $query = "INSERT INTO {$this->table} SET $sql";
 		DB::query($query);
 		return DB::insert_id();
 	}
@@ -115,7 +117,7 @@ class database  {
 	 * @param  string  $id    id
 	 * @return bool           删除是否成功
 	 */
-	public function del_by_id($id) {
+	public function del_by_id($id = '') {
 
 		$query = "DELETE FROM {$this->table} WHERE id = '{$id}'";
 		return DB::query($query);
@@ -127,7 +129,7 @@ class database  {
 	 * @param  array   $order   排序
 	 * @return bool  				 	  json数组
 	 */
-	public function table_json_list($where, $order){
+	public function table_json_list($where = '', $order = ''){
 		global $_M;
 		$this->tabledata = load::sys_class('tabledata', 'new');
 		$data = $this->tabledata->getdata($this->table, '*', $where, $order);
@@ -138,8 +140,11 @@ class database  {
 	 * 返回json数据
 	 * @param  array   $data   条件
 	 */
-	public function table_return($data){
+	public function table_return($data = array()){
 		global $_M;
+		if(!isset($this->tabledata)){
+			$this->tabledata = load::sys_class('tabledata', 'new');
+		}
 		$this->tabledata->rdata($data);
 	}
 
@@ -147,7 +152,7 @@ class database  {
 		return false;
 	}
 
-	public function is_para($key){
+	public function is_para($key = ''){
 		$para_str = $this->table_para();
 		if(!$para_str){
 			return true;

@@ -17,6 +17,13 @@ class user_op {
         $this->lang = $_M['lang'];
     }
 
+    public function getUserPlist($listid = '', $paraid = '')
+    {
+        global $_M;
+        $query = "SELECT * FROM {$_M['table']['user_list']} WHERE listid='{$listid}' AND paraid='{$paraid}'";
+        return DB::get_one($query);
+    }
+
     /**
      * 用户信息
      * @param $uid

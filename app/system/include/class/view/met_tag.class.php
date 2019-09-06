@@ -2,71 +2,95 @@
 
 /**
  * 前台标签库
- * Class met_tag
+ * Class met_tag.
  */
 load::sys_class('view/tag');
-class met_tag extends tag {
+class met_tag extends tag
+{
     public $config = array(
-        'tag'      => array( 'block' => 1, 'level' => 4 ),
-        'lang'     => array( 'block' => 1, 'level' => 4 ),
-        'foreach'  => array( 'block' => 1, 'level' => 5 ),
-        'list'     => array( 'block' => 1, 'level' => 5 ),
-        'if'       => array( 'block' => 1, 'level' => 5 ),
-        'elseif'   => array( 'block' => 0, 'level' => 0 ),
-        'else'     => array( 'block' => 0, 'level' => 0 ),
-        'include'  => array( 'block' => 0, 'level' => 0 ),
-        'location' => array( 'block' => 1, 'level' => 4 ),
-        'pager'    => array( 'block' => 0, 'level' => 0 ),
-        'pagination' => array( 'block' => 0, 'level' => 0 ),
+        'tag' => array('block' => 1, 'level' => 4),
+        'mituo' => array('block' => 1, 'level' => 4),
+        'lang' => array('block' => 1, 'level' => 4),
+        'foreach' => array('block' => 1, 'level' => 5),
+        'list' => array('block' => 1, 'level' => 5),
+        'if' => array('block' => 1, 'level' => 10),
+        'elseif' => array('block' => 0, 'level' => 0),
+        'else' => array('block' => 0, 'level' => 0),
+        'include' => array('block' => 0, 'level' => 0),
+        'location' => array('block' => 1, 'level' => 4),
+        'pager' => array('block' => 0, 'level' => 0),
+        'pagination' => array('block' => 0, 'level' => 0),
     );
 
-    public function _tag($attr, $content) {
-        static $instance = array();
-        $info   = explode('.', $attr['action']);
+    public function _mituo($attr, $content)
+    {
+        $action = $attr['ui'];
+        $style = isset($attr['style']) ? $attr['style'] : 1;
+        if (!file_exists(PATH_WEB."app/system/tag/templates/{$action}.class.php")) {
+            return "{$action}不存在";
+        }
+        $json = json_encode($attr);
+        $php
+            = <<<php
+        <?php 
+        echo load::mod_class('tag/templates/{$action}.class.php','new')->parse('$json',\$ui,\$data);
+        ?>
+php;
 
-        if(count($info) > 1){
-            $action = '_' . $info[1];
+        return $php;
+    }
+
+    public function _tag($attr, $content)
+    {
+        static $instance = array();
+        $info = explode('.', $attr['action']);
+
+        if (count($info) > 1) {
+            $action = '_'.$info[1];
             $module = $info[0];
-        }else{
-            $action = '_' . $info[0];
+        } else {
+            $action = '_'.$info[0];
             $module = 'column';
         }
 
-        $module_tag = $module . '/include/class/' . $module . '_tag.class.php';
-        $app_tag = $module . '/include/class/' . $module . '_tag.class.php';
+        $module_tag = $module.'/include/class/'.$module.'_tag.class.php';
+        $app_tag = $module.'/include/class/'.$module.'_tag.class.php';
 
-        if(is_file(PATH_SYS . $module_tag)){
+        if (is_file(PATH_SYS.$module_tag)) {
             load::mod_class($module_tag);
             $class = $module.'_tag';
-        }elseif(is_file(PATH_ALL_APP . $app_tag)){
+        } elseif (is_file(PATH_ALL_APP.$app_tag)) {
             load::app_class($app_tag);
             $class = $module.'_tag';
-        }else{
+        } else {
             load::sys_class('ui');
             $class = 'ui_tag';
         }
-        if ( ! isset($instance[$class])) {
-            $instance[$class] = new $class;
+        if (!isset($instance[$class])) {
+            $instance[$class] = new $class();
         }
+
         return $instance[$class]->$action($attr, $content);
     }
+
     //list标签
-    public function _list($attr, $content, &$met) {
+    public function _list($attr, $content, &$met)
+    {
         //变量
         $from = $attr['data'];
         $name = isset($attr['name']) ? $attr['name'] : '$val';
-        $name = substr($name,1);
-        $num = isset($attr['num']) ? $attr['num'] :30;
+        $name = substr($name, 1);
+        $num = isset($attr['num']) ? $attr['num'] : 50;
         $php
-               = <<<php
+            = <<<php
         <?php
             \$sub = count($from);
             \$num = $num;
-
-
-            if(!is_array($from)){
+            
+            if(!is_array($from) && $from){
                 $from = explode('|',$from);
             }
+
 
             foreach ($from as \$index => \$val) {
                 if(\$index >= \$num){
@@ -84,13 +108,14 @@ class met_tag extends tag {
             ?>
 php;
         $php .= $content;
-        $php .= "<?php }?>";
+        $php .= '<?php }?>';
 
         return $php;
     }
 
     //标签处理
-    public function _foreach($attr, $content){
+    public function _foreach($attr, $content)
+    {
         $php
             = "<?php foreach ({$attr['from']} as {$attr['key']}=>{$attr['value']}){?>";
         $php .= $content;
@@ -100,8 +125,8 @@ php;
     }
 
     //加载模板文件
-    public function _include($attr, $content, &$met){
-
+    public function _include($attr, $content, &$met)
+    {
         //替换常量
         $const = get_defined_constants(true);
 
@@ -110,7 +135,7 @@ php;
         }
 
         //删除域名
-        $file = str_replace(PATH_WEB . '/', '', trim($attr['file']));
+        $file = str_replace(PATH_WEB.'/', '', trim($attr['file']));
 
         $view = new met_view();
         $page = $attr['page'];
@@ -118,17 +143,23 @@ php;
 
         $cache = file_get_contents($view->compileFile);
         // 每个页面头部加页面标识
-        if($page){
-            ##load::sys_class('view/ui_compile');
-            $ui_compile = load::sys_class('view/ui_compile','new');
-            $ui_compile->parse_page($page);
+        if ($page) {
+            $this->compile = load::sys_class('view/sys_compile', 'new');
+            if ($this->compile->template_type != 'tag') {
+                require_once PATH_ALL_APP.'met_template/include/class/parse.class.php';
+                $this->compile = new parse();
+            }
+
+            $this->compile->parse_page($page);
             $cache = '<?php $met_page = "'.$page.'";?>'.$cache;
         }
+
         return $cache;
     }
 
     //if标签
-    public function _if($attr, $content, &$met){
+    public function _if($attr, $content, &$met)
+    {
         $php
             = <<<php
     <?php if({$attr['value']}){ ?>$content<?php } ?>
@@ -138,22 +169,25 @@ php;
     }
 
     //elseif标签
-    public function _elseif($attr, $content, &$met){
-
+    public function _elseif($attr, $content, &$met)
+    {
         $php = "<?php }else if({$attr['value']}){ ?>";
-        $php.=$content;
+        $php .= $content;
+
         return $php;
     }
 
     //else标签
-    public function _else($attr, $content, &$met){
+    public function _else($attr, $content, &$met)
+    {
+        $php = '<?php }else{ ?>';
+        $php .= $content;
 
-       $php = "<?php }else{ ?>";
-       $php .= $content;
-       return $php;
+        return $php;
     }
 
-    public function _location($attr, $content){
+    public function _location($attr, $content)
+    {
         $cid = isset($attr['cid']) ? $attr['cid'] : 0;
         $php = <<<str
 <?php
@@ -170,14 +204,18 @@ php;
     foreach(\$location_data as \$index=> \$v):
 ?>
 str;
-    $php.=$content;
-    $php.="<?php endforeach;?>";
-    return $php;
+        $php .= $content;
+        $php .= '<?php endforeach;?>';
+
+        return $php;
     }
 
-    public function _pager($attr,$content) {
-    $php = <<<str
+    public function _pager($attr, $content)
+    {
+        $page_type = $attr['type'] ? $attr['type'] : 0;
+        $php = <<<str
      <?php
+     \$page_type = $page_type;
      if(!\$data['classnow']){
         \$data['classnow'] = 2;
      }
@@ -185,7 +223,7 @@ str;
      if(!\$data['page']){
         \$data['page'] = 1;
      }
-      \$result = load::sys_class('label', 'new')->get('tag')->get_page_html(\$data['classnow'],\$data['page']);
+      \$result = load::sys_class('label', 'new')->get('tag')->get_page_html(\$data['classnow'],\$data['page'],\$page_type);
 
        echo \$result;
 
@@ -195,7 +233,8 @@ str;
         return $php;
     }
 
-    public function _pagination($attr, $content){
+    public function _pagination($attr, $content)
+    {
         global $_M;
         $php = <<<str
         <div class='met-page p-y-30 border-top1'>
@@ -217,19 +256,22 @@ str;
 </div>
 </div>
 str;
-    return $php;
+
+        return $php;
     }
-    public function _lang($attr, $content){
+
+    public function _lang($attr, $content)
+    {
+        global $_M;
         $php = <<<str
 <?php
     \$language = load::sys_class('label', 'new')->get('language')->get_lang();
+   
     \$sub = count(\$language);
     \$i = 0;
     foreach(\$language as \$index=>\$v):
-
         \$v['_index']   = \$index;
         \$v['_first']   = \$i == 0 ? true:false;
-
         \$v['_last']    = \$index == (count(\$language)-1) ? true : false;
         \$v['sub'] = \$sub;
         \$i++;
@@ -237,7 +279,7 @@ str;
 str;
         $php .= $content;
         $php .= '<?php endforeach;?>';
+
         return $php;
     }
-
 }

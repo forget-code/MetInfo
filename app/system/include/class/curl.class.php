@@ -68,19 +68,18 @@ class curl{
 				curl_setopt($curlHandle, CURLOPT_URL, 'http://'.$this->host.'/'.$this->file);
 			}
 			curl_setopt($curlHandle, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
-			curl_setopt($curlHandle, CURLOPT_REFERER, $_M['config']['met_weburl']);
-			curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, 1); 
+			curl_setopt($curlHandle, CURLOPT_REFERER, $_M['url']['web_site']);
+			curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, 1);
 			curl_setopt($curlHandle, CURLOPT_CONNECTTIMEOUT, $timeout);
 			curl_setopt($curlHandle, CURLOPT_TIMEOUT, $timeout);
 			curl_setopt($curlHandle, CURLOPT_POST, 1);	
 			curl_setopt($curlHandle, CURLOPT_POSTFIELDS, $post);
 			if($this->ssl == 1){
-				curl_setopt($curlHandle, CURLOPT_SSL_VERIFYPEER, false);
-				curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-				curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+				curl_setopt($curlHandle, CURLOPT_SSL_VERIFYPEER, FALSE);
+				curl_setopt($curlHandle, CURLOPT_SSL_VERIFYHOST, FALSE);
 			}
 			$result = curl_exec($curlHandle);
-			curl_close($curlHandle); 
+			curl_close($curlHandle);
 		}else{
 			if(function_exists('fsockopen') || function_exists('pfsockopen')){
 				$post_data = $post;
