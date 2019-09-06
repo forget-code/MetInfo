@@ -3,67 +3,59 @@ define(function(require, exports, module) {
 	window.met_mobile= document.body.clientWidth<700?true:false;
 	var $ = require('jquery');
 	window.jQuery = window.$ = $;
-
 	/*增加对$.browser.msie的支持*/
 	require('epl/include/jquery-migrate-1.2.1.min');
-
 	function AssemblyLoad(dom){
 		/*上传组件*/
-		if(dom.find('.ftype_upload .fbox input').length>0){
+		if(dom.find('.ftype_upload .fbox input').length){
 			require.async('epl/upload/own',function(a){
 				a.func(dom);
 			});
 		}
-
 		/*编辑器*/
-		if(dom.find('.ftype_ckeditor .fbox textarea').length>0){
+		if(dom.find('.ftype_ckeditor .fbox textarea').length){
 			require.async('edturl/own',function(a){
 				a.func(dom);
 			});
 		}
-
 		/*颜色选择器*/
-		if(dom.find('.ftype_color').length>0){
+		if(dom.find('.ftype_color').length){
 			require.async('epl/color/set',function(a){
 				a.func(dom);
 			});
 		}
-
 		/*滑块*/
-		if(dom.find('.ftype_range .fbox input').length>0){
+		if(dom.find('.ftype_range .fbox input').length){
 			require.async('epl/range/range',function(a){
 				a.func(dom);
 			});
 		}
-
 		/*日期选择器*/
-		if(dom.find('.ftype_day input').length>0){
+		if(dom.find('.ftype_day input').length){
 			require.async('epl/time/time',function(a){
 				a.func(dom);
 			});
 		}
-
 		/*联动菜单*/
-		if(dom.find('.ftype_select-linkage .fbox').length>0){
+		if(dom.find('.ftype_select-linkage .fbox').length){
 			require.async('epl/select-linkage/select',function(a){
 				a.func(dom);
 			});
 		}
-
 		/*标签增加器*/
-		if(dom.find('.ftype_tags').length>0){
+		if(dom.find('.ftype_tags').length){
 			require.async('epl/tags/tags',function(a){
 				a.func(dom);
 			});
 		}
-
 		/*表格控件*/
-		if(dom.find('.ui-table:not([data-noajax])').length>0){
+		if(dom.find('.ui-table:not([data-noajax])').length){
 			require.async('epl/table/table',function(a){
 				a.func(dom);
 			});
 		}
-
+		// 图标选择
+		if(dom.find('.icon-add[data-toggle="modal"][data-target=".icon-modal"]').length) require.async('epl/icon_choose/icon');
 		/*特殊参数表单控件处理*/
 		var $input_data_name=dom.find('.ftype_input input[data-name]');
 		if($input_data_name.length){
@@ -76,6 +68,31 @@ define(function(require, exports, module) {
 					});
 					met_font_str+='</datalist>';
 					$(this).attr({list:'tsselect_met_font'}).after(met_font_str);
+				}
+			});
+		}
+		// 表单底部下拉菜单高度过长控制
+		if($(".list-type-update").length){
+			var $list_type_update=$(".list-type-update");
+			$list_type_update.prev('.dropdown-toggle').click(function(e) {
+				var $obj=$(this).next('.list-type-update'),
+					this_top=$(this).parents('.dropup').offset().top;
+				if($obj.outerHeight()+5>this_top){
+					$obj.addClass('maxh').css({'max-height':this_top-2});
+				}else{
+					$obj.removeClass('maxh').css({'max-height':'none'});
+				}
+			});
+			$('.list-type-update .dropdown-submenu .dropdown-toggle').one('click',function(event) {
+				if(!$(this).parents('.list-type-update').hasClass('maxh')){
+					var this_top=$(this).offset().top,
+						this_h=$(this).outerHeight(),
+						dropdown_menu_h=$(this).next('.dropdown-menu').outerHeight();
+					if(this_top+this_h<dropdown_menu_h+5){
+						$(this).next('.dropdown-menu').css({bottom:this_top+this_h+2-dropdown_menu_h});
+					}else{
+						$(this).next('.dropdown-menu').css({bottom:0});
+					}
 				}
 			});
 		}

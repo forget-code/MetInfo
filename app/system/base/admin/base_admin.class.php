@@ -426,8 +426,10 @@ class base_admin extends admin {
 			$metinfo['citylist'][$i]['p']['name']='选择栏目';
 			$metinfo['citylist'][$i]['p']['value']='';
 		}else{
-			$metinfo['citylist'][$i]['p']='所有栏目';
-		}
+            $metinfo['citylist'][$i]['p']['name']='选择栏目';
+            $metinfo['citylist'][$i]['p']['value']='';
+        }
+
 		foreach($array['class1'] as $key=>$val){ //一级级栏目
 			if($val['module']==$module){
 				$i++;

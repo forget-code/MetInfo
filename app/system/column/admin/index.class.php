@@ -84,10 +84,12 @@ class index extends admin {
         <ul class=\"dropdown-menu dropdown-menu-right\" role=\"menu\">
       ";
       if($val['classtype'] !=3 && $val['module'] > 0 && $val['module'] <= 5){//可以添加下级栏目
-        $str .= "
-            <li><a class=\"m-b-5\" data-add-cloumn=\"{$_M[url][own_form]}a=doadd&bigclass={$val['id']}\" href=\"javascript:;\" data-toggle=\"popover\" class=\"delet\">
-              {$_M[word][add]}</a>
-            </li>
+          $str .= "
+            <li><a class=\"m-b-5\" data-add-cloumn=\"{$_M[url][own_form]}a=doadd&bigclass={$val['id']}\" href=\"javascript:;\" data-toggle=\"popover\" class=\"delet\">";
+
+          $str .= $_M['word']['addsubcolumn'] ? $_M['word']['addsubcolumn'] :$_M['word']['add'];
+
+          $str .= "</a>  </li>
         ";
       }
       if(!($column_lv[$val['id']] == 3 && $val['classtype'])){
@@ -417,159 +419,179 @@ class index extends admin {
   }
 
   public function list_add($id, $list){
-    global $_M;;
-    //$list['id'] = $id;
-    $if_in = $_M['form']['module-'.$id] ? 0 : 1;
-    $bigclass = $this->database->get_column_by_id($_M['form']['bigclass-'.$id]);
-    if($bigclass){
-      $classtype = $bigclass['classtype'] + 1;
-      $releclass = $bigclass['module'] == $_M['form']['module-'.$id] ? 0 : $list['bigclass-'.$id];
-    }else{
-      $classtype = 1;
-      $releclass = 0;
-    }
-    $alist['name'] = $list['name-'.$id];
-    if(!trim($alist['name'])){
-      turnover("{$_M[url][own_form]}&a=doindex", "{$_M[word][column_descript1_v6]}",0);
-    }
-    $mod = load::sys_class('handle', 'new')->file_to_mod($_M['form']['foldername-'.$id]);
+      global $_M;
+      //$list['id'] = $id;
+      $if_in = $_M['form']['module-'.$id] ? 0 : 1;
+      $bigclass = $this->database->get_column_by_id($_M['form']['bigclass-'.$id]);
+      if($bigclass){
+          $classtype = $bigclass['classtype'] + 1;
+          $releclass = $bigclass['module'] == $_M['form']['module-'.$id] ? 0 : $list['bigclass-'.$id];
+      }else{
+          $classtype = 1;
+          $releclass = 0;
+      }
+      $alist['name'] = $list['name-'.$id];
+      if(!trim($alist['name'])){
+          turnover("{$_M[url][own_form]}&a=doindex", "{$_M[word][column_descript1_v6]}",0);
+      }
+      if(preg_match("/[<\x{4e00}-\x{9fa5}>]+/u", $_M['form']['foldername-' . $id])){
+          //中文目录
+          turnover("{$_M[url][own_form]}&a=doindex", "{$_M[word][column_descript1_v6]}",0);
+      }
+      $mod = load::sys_class('handle', 'new')->file_to_mod($_M['form']['foldername-'.$id]);
 
-    if($mod && $mod!=$_M['form']['module-'.$id]){
-      turnover("{$_M[url][own_form]}&a=doindex", "{$_M['word']['columndeffflor']}",0);
-    }
-    if($bigclass['module'] == $_M['form']['module-'.$id]){
-      $alist['foldername'] = $bigclass['foldername'];
-    }else{
-        //验证模块是否可以用
-        if(!$if_in){
-            #die($_M['form']['foldername-' . $id]);
-            if(!$this->is_foldername_ok($_M['form']['foldername-'.$id], $_M['form']['module-'.$id])){
-                turnover("{$_M[url][own_form]}&a=doindex", "{$_M[word][column_descript1_v6]}",0);
-        }
+      if($mod && $mod!=$_M['form']['module-'.$id]){
+          turnover("{$_M[url][own_form]}&a=doindex", "{$_M['word']['columndeffflor']}",0);
       }
+      if($bigclass['module'] == $_M['form']['module-'.$id]){
+          $alist['foldername'] = $bigclass['foldername'];
+      }else{
+          //验证模块是否可以用
+          if(!$if_in){
+              #die($_M['form']['foldername-' . $id]);
+              if(!$this->is_foldername_ok($_M['form']['foldername-'.$id], $_M['form']['module-'.$id])){
+                  turnover("{$_M[url][own_form]}&a=doindex", "{$_M[word][column_descript1_v6]}",0);
+              }
+          }
+          $alist['foldername'] = $list['foldername-'.$id];
+      }
+      $alist['filename'] = '';
+      $alist['bigclass'] = $list['bigclass-'.$id];
+      $alist['samefile'] = 0;
+      $alist['module'] = $list['module-'.$id];
+      $alist['no_order'] = $list['no_order-'.$id];
+      $alist['wap_ok'] = 0;
+      $alist['wap_nav_ok'] = 0;
+      $alist['if_in'] = $if_in;
+      $alist['nav'] = $list['nav-'.$id];
+      $alist['ctitle'] = '';
+      $alist['keywords'] = '';
+      $alist['content'] = '';
+      $alist['description'] = '';
+      $alist['list_order'] = 1;
+      $alist['new_windows'] = 0;
+      $alist['classtype'] = $classtype;//可以用bigclass计算得出
+      $alist['out_url'] = $list['out_url-'.$id];
+      $alist['index_num'] = $list['index_num-'.$id];
+      $alist['indeximg'] = '';
+      $alist['columnimg'] = '';
+      $alist['isshow'] = 1;
+      $alist['lang'] = $_M['lang'];
+      $alist['namemark'] = '';
+      $alist['releclass'] = $releclass;//可以用bigclass计算得出
+      $alist['display'] = 0;
+      $alist['icon'] = '';
       $alist['foldername'] = $list['foldername-'.$id];
-    }
-    $alist['filename'] = '';
-    $alist['bigclass'] = $list['bigclass-'.$id];
-    $alist['samefile'] = 0;
-    $alist['module'] = $list['module-'.$id];
-    $alist['no_order'] = $list['no_order-'.$id];
-    $alist['wap_ok'] = 0;
-    $alist['wap_nav_ok'] = 0;
-    $alist['if_in'] = $if_in;
-    $alist['nav'] = $list['nav-'.$id];
-    $alist['ctitle'] = '';
-    $alist['keywords'] = '';
-    $alist['content'] = '';
-    $alist['description'] = '';
-    $alist['list_order'] = 1;
-    $alist['new_windows'] = 0;
-    $alist['classtype'] = $classtype;//可以用bigclass计算得出
-    $alist['out_url'] = $list['out_url-'.$id];
-    $alist['index_num'] = $list['index_num-'.$id];
-    $alist['indeximg'] = '';
-    $alist['columnimg'] = '';
-    $alist['isshow'] = 1;
-    $alist['lang'] = $_M['lang'];
-    $alist['namemark'] = '';
-    $alist['releclass'] = $releclass;//可以用bigclass计算得出
-    $alist['display'] = 0;
-    $alist['icon'] = '';
-    $alist['foldername'] = $list['foldername-'.$id];
-    if($if_in){
-      $alist['foldername'] = '';
-    }else{
-      $alist['out_url'] = '';
-    }
-    if($list['filename']){
-      $filenames = $this->database->get_column_by_filename($list['filename']);
-      if($filenames && $filenames['id'] != $list['id']){
-        turnover("{$_M[url][own_form]}}&a=doindex", $_M['word']['jsx27'],0);
+      if($if_in){
+          $alist['foldername'] = '';
+      }else{
+          $alist['out_url'] = '';
       }
-    }
-    $id = $this->database->insert($alist);
-    if($id)$this->columnCopyconfig($alist['foldername'], $alist['module'], $id);
-    return $id;
+      if($list['filename']){
+          $filenames = $this->database->get_column_by_filename($list['filename']);
+          if($filenames && $filenames['id'] != $list['id']){
+              turnover("{$_M[url][own_form]}}&a=doindex", $_M['word']['jsx27'],0);
+          }
+      }
+      $id = $this->database->insert($alist);
+      if($id){
+          $this->columnCopyconfig($alist['foldername'], $alist['module'], $id);
+          //更改管理员栏目权限
+          load::mod_class("admin/admin_op", 'new')->modify_admin_column_accsess($id);
+      }
+      return $id;
   }
 
   /*栏目移动*/
-  public function domove() {
-    global $_M;
-    $now_column = $this->database->get_list_one_by_id($_M['form']['nowid']);
-    $now_column_class123 = load::sys_class('label', 'new')->get('column')->get_class123_reclass($_M['form']['nowid']);
-    $to_column = $this->database->get_list_one_by_id($_M['form']['toid']);
-    $to_column_class123 = load::sys_class('label', 'new')->get('column')->get_class123_reclass($_M['form']['toid']);
-    //重写
-    if($_M['form']['uplv']){//升为一级栏目
-      //移动内容
-      if($now_column['module'] >= 2 && $now_column['module'] <= 5){
-        $module = load::sys_class('handle', 'new')->mod_to_name($now_column['module']);
-        load::mod_class("{$module}/{$module}_op", 'new')->list_move($now_column_class123['class1'],$now_column_class123['class2'],$now_column_class123['class3'],$now_column['id'],0,0);
-        if($now_column['classtype'] == 2){
-          $son = load::sys_class('label', 'new')->get('column')->get_column_son($_M['form']['nowid']);
-          foreach($son as $key=>$val){
-            $son123 = load::sys_class('label', 'new')->get('column')->get_class123_reclass($val);
-            load::mod_class("{$module}/{$module}_op", 'new')->list_move($son['class1'], $son['class2'],$son['class3'],$now_column['id'],$val['id'],0);
-          }
-        }
-      }
-      //移动栏目
-      $list = array();
-      $list['id']       = $now_column['id'];
-      $list['bigclass'] = 0;
-      $list['classtype'] = 1;
-      $list['releclass'] = 0;
-      if($_M['form']['foldername'])$list['foldername'] = $_M['form']['foldername'];
-      $this->database->update_by_id($list);
-      //给下级栏目classtype减1
-      $list = array();
-      $list['classtype']= 2;
-      $list['bigclass'] = $now_column['id'];
-      $list['foldername'] = $_M['form']['foldername'];
-      $this->database->update_column_by_bigclass($list);
-      //新增文件夹
-      $this->columnCopyconfig($list['foldername'], $now_column['module'], $now_column['id']);
-    }else{
-      if($now_column['module'] == $to_column['module']){//同模块移动
-        //移动内容
-        if($now_column['module'] >= 2 && $now_column['module'] <= 5){
-          $module = load::sys_class('handle', 'new')->mod_to_name($now_column['module']);
-          load::mod_class("{$module}/{$module}_op", 'new')->list_move($now_column_class123['class1'],$now_column_class123['class2'],$now_column_class123['class3'],$now_column['id'],0,0);
-          if($now_column['classtype'] == 2){
-            $son = load::sys_class('label', 'new')->get('column')->get_column_son($_M['form']['nowid']);
-            foreach($son as $key=>$val){
-              $son123 = load::sys_class('label', 'new')->get('column')->get_class123_reclass($son123);
-              load::mod_load("{$module}/op_{$module}", 'news')->list_move($son['class1'], $son['class2'],$son['class3'],$to_column_class123['class1'],$now_column['id'],$val['id']);
+    public function domove() {
+        global $_M;
+        $now_column = $this->database->get_list_one_by_id($_M['form']['nowid']);
+        $now_column_class123 = load::sys_class('label', 'new')->get('column')->get_class123_reclass($_M['form']['nowid']);
+        $to_column = $this->database->get_list_one_by_id($_M['form']['toid']);
+        $to_column_class123 = load::sys_class('label', 'new')->get('column')->get_class123_reclass($_M['form']['toid']);
+        //重写
+        if($_M['form']['uplv']){
+            //升为一级栏目
+            //移动内容
+            if($now_column['module'] >= 2 && $now_column['module'] <= 5){
+                $module = load::sys_class('handle', 'new')->mod_to_name($now_column['module']);
+                load::mod_class("{$module}/{$module}_op", 'new')->list_move($now_column_class123['class1']['id'],$now_column_class123['class2']['id'],$now_column_class123['class3']['id'],$now_column['id'],0,0);
+                if($now_column['classtype'] == 2){
+                    $son = load::sys_class('label', 'new')->get('column')->get_column_son($_M['form']['nowid']);
+                    foreach($son as $key=>$val){
+                        $module_son = $module = load::sys_class('handle', 'new')->mod_to_name($val['module']);
+                        $son123 = load::sys_class('label', 'new')->get('column')->get_class123_reclass($val['id']);
+                        load::mod_class("{$module_son}/{$module_son}_op", 'new')->list_move($son123['class1']['id'], $son123['class2']['id'],$son123['class3']['id'],$now_column['id'],$val['id'],0);
+                    }
+                }
             }
-          }
+            //移动栏目
+            $list = array();
+            $list['id']       = $now_column['id'];
+            $list['bigclass'] = 0;
+            $list['classtype'] = 1;
+            $list['releclass'] = 0;
+            if($_M['form']['foldername'])$list['foldername'] = $_M['form']['foldername'];
+            $this->database->update_by_id($list);
+            //给下级栏目classtype减1
+            $list = array();
+            $list['classtype']= 2;
+            $list['bigclass'] = $now_column['id'];
+            $list['foldername'] = $_M['form']['foldername'] ? $_M['form']['foldername'] : $now_column['foldername'];
+            $this->database->update_column_by_bigclass($list);
+            //新增文件夹
+            $this->columnCopyconfig($list['foldername'], $now_column['module'], $now_column['id']);
+        }else{
+            if($now_column['module'] == $to_column['module']){//同模块移动
+                //移动内容
+                if($now_column['module'] >= 2 && $now_column['module'] <= 5){
+                    $module = load::sys_class('handle', 'new')->mod_to_name($now_column['module']);
+                    if ($to_column['classtype'] == 1) {
+                        //移动到1级栏目
+                        load::mod_class("{$module}/{$module}_op", 'new')->list_move($now_column_class123['class1']['id'],$now_column_class123['class2']['id'],$now_column_class123['class3']['id'],$to_column_class123['class1']['id'],$now_column['id'],0);
+                        if($now_column['classtype'] == 2){
+                            //移动的栏目是二级栏目
+                            $son = load::sys_class('label', 'new')->get('column')->get_column_son($_M['form']['nowid']);
+                            foreach($son as $key=>$val){
+                                $module_son = $module = load::sys_class('handle', 'new')->mod_to_name($val['module']);
+                                $son123 = load::sys_class('label', 'new')->get('column')->get_class123_reclass($val['id']);
+                                load::mod_class("{$module_son}/{$module_son}_op", 'new')->list_move($son123['class1']['id'], $son123['class2']['id'],$son123['class3']['id'],$to_column_class123['class1']['id'],$son123['class2']['id'],$son123['class3']['id']);
+                            }
+                        }
+                    }
+                    if ($to_column['classtype'] == 2) {
+                        //移动到二级栏目
+                        load::mod_class("{$module}/{$module}_op", 'new')->list_move($now_column_class123['class1']['id'],$now_column_class123['class2']['id'],$now_column_class123['class3']['id'],$to_column_class123['class1']['id'],$to_column_class123['class2']['id'],$now_column['id']);
+                    }
+                }
+
+                //移动栏目
+                $list = array();
+                $list['id']       = $now_column['id'];
+                $list['bigclass'] = $to_column['id'];
+                $list['classtype'] = $to_column['classtype'] + 1;
+                $list['foldername'] = $to_column['foldername'];
+                $list['releclass'] = 0;
+                $this->database->update_by_id($list);
+                //删除多余文件夹
+                $this->del_column_file($now_column);
+            }else{
+                $list = array();
+                $list['id']       = $now_column['id'];
+                $list['bigclass'] = $to_column['id'];
+                $list['classtype'] = $to_column['classtype'] + 1;
+                $list['releclass'] = $to_column['id'];
+                $this->database->update_by_id($list);
+            }
+            //给下级栏目classtype加1
+            $list = array();
+            $list['classtype']= 3;
+            $list['bigclass'] = $now_column['id'];
+            if($now_column['module'] == $to_column['module'])$list['foldername'] = $to_column['foldername'];
+            $this->database->update_column_by_bigclass($list);
         }
-        //移动栏目
-        $list = array();
-        $list['id']       = $now_column['id'];
-        $list['bigclass'] = $to_column['id'];
-        $list['classtype'] = $to_column['classtype'] + 1;
-        $list['foldername'] = $to_column['foldername'];
-        $list['releclass'] = 0;
-        $this->database->update_by_id($list);
-        //删除多余文件夹
-        $this->del_column_file($now_column);
-      }else{
-        $list = array();
-        $list['id']       = $now_column['id'];
-        $list['bigclass'] = $to_column['id'];
-        $list['classtype'] = $to_column['classtype'] + 1;
-        $list['releclass'] = $to_column['id'];
-        $this->database->update_by_id($list);
-      }
-      //给下级栏目classtype加1
-      $list = array();
-      $list['classtype']= 3;
-      $list['bigclass'] = $now_column['id'];
-      if($now_column['module'] == $to_column['module'])$list['foldername'] = $to_column['foldername'];
-      $this->database->update_column_by_bigclass($list);
+        turnover("{$_M[url][own_form]}&a=doindex", '');
     }
-    turnover("{$_M[url][own_form]}&a=doindex", '');
-  }
 
   /*栏目表格插件*/
   public function dolistsave() {
@@ -1411,11 +1433,6 @@ class index extends admin {
         return false;
       }
     }
-  }
-
-  public function doset_icon() {
-    global $_M;
-    require_once $this->view('app/set_icon');
   }
 
   public function del_column_content($module,$cid, $classtype)

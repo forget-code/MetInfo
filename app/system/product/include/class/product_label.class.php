@@ -76,7 +76,7 @@ class product_label extends news_label {
 		$one['content2'] .= $add;
 		$one['content3'] .= $add;
 		$one['content4'] .= $add;
-		$one['content'] = load::sys_class('label', 'new')->get('seo')->anchor_replace($one['content']);
+		$one['content']  = load::sys_class('label', 'new')->get('seo')->anchor_replace($one['content']);
 		$one['content1'] = load::sys_class('label', 'new')->get('seo')->anchor_replace($one['content1']);
 		$one['content2'] = load::sys_class('label', 'new')->get('seo')->anchor_replace($one['content2']);
 		$one['content3'] = load::sys_class('label', 'new')->get('seo')->anchor_replace($one['content3']);

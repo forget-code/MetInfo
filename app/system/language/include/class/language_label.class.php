@@ -36,8 +36,8 @@ class language_label {
       // 其他语言的伪静态是否开启
       $pseudo = $config->get_value('met_pseudo',$val['mark']);
 
-      load::sys_class('view/ui_compile');
-      $ui_compile = new ui_compile();
+      #load::sys_class('view/ui_compile');
+      $ui_compile = load::sys_class('view/ui_compile','new');
       $pseudo = $ui_compile->replace_m($pseudo);
 
       if($pseudo && !$_M['form']['pageset']){

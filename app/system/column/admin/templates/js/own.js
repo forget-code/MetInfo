@@ -66,58 +66,11 @@ define(function (require, exports, module) {
 	// var ai = 0;
 	// $(document).on('click',"*[data-table-addlist]",function(){
 
-
-
-	// });
-	// 弹出图标选择框
-	$('.icon-add').click(function(event) {
-		if(!$('.icon-iframe').attr('src')) $('.icon-iframe').attr({src:$('.icon-iframe').data('src')});
-	});
-	$('.icon-iframe').load(function() {
-		var $icon_iframe=$(this).contents(),
-			icon_iframe_window=$(this).prop('contentWindow'),
-			icon_iframe_document=icon_iframe_window.document;
-		// 图标设置框-选择图标库
-		$icon_iframe.find('.iconchoose .iconchoose-href').click(function(event) {
-			$icon_iframe.find('.icon-list').hide();
-			$icon_iframe.find('.icon-detail').attr({hidden:''});
-			$icon_iframe.find('.icon-detail[data-name='+$(this).data('icon')+']').removeAttr('hidden');
-			$('.icon-modal .back-iconlist').removeAttr('hidden');
-		});
-		// 选择图标
-		$icon_iframe.find('.icon-detail .icondemo-wrap').click(function(event) {
-			$icon_iframe.find('.icon-detail .icondemo-wrap').removeClass('checked');
-			$(this).addClass('checked');
-		})
-	});
-	// 返回图标列表页
-	$('.icon-modal .back-iconlist').click(function(event) {
-		var $icon_iframe=$('.icon-iframe').contents();
-		$(this).attr({hidden:''});
-		$icon_iframe.find('.icon-list').show();
-		$icon_iframe.find('.icon-detail').attr({hidden:''}).find('.icondemo-wrap').removeClass('checked');
-	})
-	// 保存图标选择
-	$(document).on('click', '.icon-modal button[type=submit]', function(event) {
-		var $icon_iframe=$('.icon-iframe').contents(),
-			$icon_checked=$icon_iframe.find('.icon-detail .icondemo-wrap.checked'),
-			icon=$icon_checked.parents('.icon-detail').data('prev')+$icon_checked.find('.icon-title').html();
-		$('input[name=icon]').val(icon);
-		$('.icon-modal').modal('hide');
-	})
-	// 图标设置框关闭时还原框内显示
-	$(document).on('show.bs.modal', '.icon-modal', function(event) {
-		var $icon_iframe=$('.icon-iframe').contents();
-		$('.icon-modal .back-iconlist').click();
-		$icon_iframe.find('.icon-detail .icondemo-wrap').removeClass('checked');
-	})
-
 	//提升栏目
 	$(document).on('click', '.up', function(event) {
 		$('#movenow').val($(this).data('nowid'));
 		$('#move-modal').modal();
 	});
-	
 	//展开
 	$(document).on('click', '.next-column', function(event) {
 		var myid = $(this).data('my-id');
@@ -198,22 +151,22 @@ define(function (require, exports, module) {
 				f = 'job';
 			break;
 			case '7':
-				f = 'message';				
+				f = 'message';
 			break;
 			case '8':
-				f = '';				
+				f = '';
 			break;
 			case '9':
-				f = 'link';				
+				f = 'link';
 			break;
 			case '10':
-				f = 'member';							
-			break;		
+				f = 'member';
+			break;
 			case '11':
-				f = 'search';						
+				f = 'search';
 			break;
 			case '12':
-				f = 'sitemap';							
+				f = 'sitemap';
 			break;
 		}
 
@@ -225,7 +178,7 @@ define(function (require, exports, module) {
 			$("input[name='foldername-"+id+"'").val(f);
 		}
 	});
-	
+
 	// 保存图标选择
 	$(document).on('click', '.to-lang-select', function(event) {
 		$("input[name='to_lang']").val($(this).data('value'));

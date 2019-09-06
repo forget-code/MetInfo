@@ -10,8 +10,6 @@ class feedback extends web {
 	public function __construct() {
 		global $_M;
 		parent::__construct();
-		$this->upfile = load::sys_class('upfile', 'new');
-		load::sys_class('upfile', 'new');
 	}
 
 
@@ -54,9 +52,10 @@ class feedback extends web {
 		if($this->checkword() && $this->checktime()){
 			foreach ($_FILES as $key => $value) {
 				if($value[tmp_name]){
-	              $ret = $this->upfile->upload($key);//上传文件
+                    $this->upfile = load::sys_class('upfile', 'new');
+                    $ret = $this->upfile->upload($key);//上传文件
 	            if ($ret['error'] == 0) {
-			      $info[$key]=$ret[path];
+			      	$info[$key]=$ret[path];
 				} else {
 				    okinfo('javascript:history.back();',$_M[word][opfailed]);
 				}
@@ -72,7 +71,7 @@ class feedback extends web {
 		$fdclass=$_M[form][$fdclass2];
 		$title=$fdclass." - ".$_M[form][fdtitle];
 		$addtime=date('Y-m-d H:i:s',time());
-		$met_fd_type=DB::get_one("select * from {$_M[table][config]} where lang ='{$_M[form][lang]}' and  name= 'met_fd_type' and columnid = {$_M[form][id]}");
+		$met_fd_type=DB::get_one("select * from {$_M[table][config]} where lang ='{$_M[form][lang]}' and  name= 'met_fd_type' and columnid = '{$_M[form][id]}'");
          $_M[config][met_fd_type]= $met_fd_type[value];
 		if(load::sys_class('label', 'new')->get('feedback')->insert_feedback($info['id'], $info, $title, $user['username'],$fromurl,$addtime,$ip)){
 
@@ -230,11 +229,11 @@ class feedback extends web {
 
 	$cvto="para".$_M[config][met_fd_email];
     $cvto=$_M[form][$cvto];
-    $met_fd_back=DB::get_one("select * from {$_M[table][config]} where lang ='{$_M[form][lang]}' and  name= 'met_fd_back' and columnid = {$_M[form][id]}");
+    $met_fd_back=DB::get_one("select * from {$_M[table][config]} where lang ='{$_M[form][lang]}' and  name= 'met_fd_back' and columnid = '{$_M[form][id]}'");
     $_M[config][met_fd_back]= $met_fd_back[value];
-    $met_fd_content=DB::get_one("select * from {$_M[table][config]} where lang ='{$_M[form][lang]}' and  name= 'met_fd_content' and columnid = {$_M[form][id]}");
+    $met_fd_content=DB::get_one("select * from {$_M[table][config]} where lang ='{$_M[form][lang]}' and  name= 'met_fd_content' and columnid = '{$_M[form][id]}'");
     $_M[config][met_fd_content]= $met_fd_content[value];
-    $met_fd_title=DB::get_one("select * from {$_M[table][config]} where lang ='{$_M[form][lang]}' and  name= 'met_fd_title' and columnid = {$_M[form][id]}");
+    $met_fd_title=DB::get_one("select * from {$_M[table][config]} where lang ='{$_M[form][lang]}' and  name= 'met_fd_title' and columnid = '{$_M[form][id]}'");
     $_M[config][met_fd_title]= $met_fd_title[value];
     $title=$_M[word][newFeedback];
     $mail=load::sys_class('jmail','new');
@@ -296,7 +295,8 @@ class feedback extends web {
         }
 
        $paraarr = array();
-       foreach (array_keys($_M['form']) as $vale) {
+       $form = array_merge($_M['form'], $_FILES);
+       foreach (array_keys($form) as $vale) {
            if (strstr($vale, 'para')) {
                if (strstr($vale, '_')) {
                    $arr = explode('_',$vale);

@@ -2,9 +2,36 @@
 系统功能
  */
 $(function() {
+    // 访问统计
+    if (M["module"] && M['id']) {
+        switch (M["module"]) {
+            case 2:
+                M['module_name'] = "news";
+                break;
+            case 3:
+                M['module_name'] = "product";
+                break;
+            case 4:
+                M['module_name'] = "download";
+                break;
+            case 5:
+                M['module_name'] = "img";
+                break
+        }
+        if (typeof M['module_name'] != 'undefined' && !$('script[src*="/hits/?lang="]').length) {
+            $.ajax({
+                type: "GET",
+                dataType: 'text',
+                url: M['weburl'] + 'hits?lang='+M['lang']+'&type=' + M['module_name'] + '&vid=' + M['id'] + '&list=0',
+                success: function(data) {
+                    // $('#met-hits').html(data).removeAttr('hidden');
+                }
+            })
+        }
+    }
     // 在线客服
     $.ajax({
-        type: "POST",
+        type: "GET",
         url: M['weburl'] + "online/?lang="+M['lang'],
         dataType: "json",
         success: function(result) {

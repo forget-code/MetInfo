@@ -106,7 +106,7 @@ class image{
 		}
 
 		// 原图不存在
-		if(!file_exists(PATH_WEB.$image_path)){
+		if(!is_file(PATH_WEB.$image_path)){
 			$image_path = $this->default;
 		}
 		$s = file_get_contents(PATH_WEB.$image_path);
@@ -149,7 +149,7 @@ class image{
 		}else{
 			$thumb_path = $this->thumb_path;
 		}
-		return file_exists($thumb_path) ? $this->thumb_url : $this->create_thumb();
+		return is_file($thumb_path) ? $this->thumb_url : $this->create_thumb();
 	}
 
 	public function create_thumb() {
@@ -173,7 +173,7 @@ class image{
 			$image_path = str_replace('watermark/', '', $image_path);
 		}
 
-		if(!file_exists(PATH_WEB.$image_path)){
+		if(!is_file(PATH_WEB.$image_path)){
 			$image_path = $this->default;
 		}
 		$image = $thumb->createthumb($image_path);

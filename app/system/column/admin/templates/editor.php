@@ -236,7 +236,7 @@ echo <<<EOT
 			<dd class="ftype_input">
 				<div class="fbox">
 					<input type="input" name="icon" value="{$column_list['icon']}">
-					<button type="button" class="btn btn-default icon-add" data-toggle="modal" data-target=".icon-modal">{$_M[word][column_choosicon_v6]}</button>
+					<button type="button" class="btn btn-default column-icon icon-add" data-name="icon" data-toggle="modal" data-target=".icon-modal">{$_M[word][column_choosicon_v6]}</button>
 				</div>
 			</dd>
 		</dl>
@@ -292,13 +292,13 @@ echo <<<EOT
 				<h4 class="modal-title">{$_M[word][column_choosicon_v6]}</h4>
 			</div>
 			<div class="modal-body">
-				<iframe src="" data-src='{$_M['url']['own_form']}a=doset_icon' class='icon-iframe' width='100%' height='100%' frameborder="0"></iframe>
+				<iframe src="" data-src='{$_M['url']['adminurl']}n=ui_set&c=index&a=doset_icon&other=1' class='icon-iframe' width='100%' height='100%' frameborder="0"></iframe>
 			</div>
 			<div class="modal-footer bg-blue-grey-100">
 				<button type="button" class="btn btn-warning pull-left back-iconlist" hidden>{$_M[word][column_backiconlist_v6]}</button>
 				<span style='margin-right:20px;'>{$_M[word][column_saveicon_v6]}</span>
 				<button type="button" class="btn btn-default" data-dismiss="modal">{$_M['word']['indexonlieno']}</button>
-				<button type="submit" class="btn btn-primary" data-url='{$_M['url']['own_form']}a=dosave_img'>{$_M['word']['Submit']}</button>
+				<button type="submit" class="btn btn-primary">{$_M['word']['Submit']}</button>
 			</div>
 		</div>
 	</div>

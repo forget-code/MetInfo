@@ -93,7 +93,7 @@ INSERT INTO met_language VALUES (null, 'js51', '请填写栏目名称', 1, 293, 
 INSERT INTO met_language VALUES (null, 'js46', '不能重复', 1, 288, 0, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'js47', '正在删除静态页面...', 1, 289, 0, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'js50', '该语言不存在相同模块的一级栏目', 1, 292, 0, 0, 'cn');
-INSERT INTO met_language VALUES (null, 'js49', '撤销', 1, 291, 0, 0, 'cn');
+INSERT INTO met_language VALUES (null, 'js49', '撤销', 1, 291, 0, 1, 'cn');
 INSERT INTO met_language VALUES (null, 'js48', '正在加载...', 1, 290, 0, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'js45', '检测表单..', 1, 287, 0, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'js44', 'Email地址不正确！', 1, 286, 0, 0, 'cn');
@@ -134,7 +134,7 @@ INSERT INTO met_language VALUES (null, 'js10', '您的修改内容还没有保�
 INSERT INTO met_language VALUES (null, 'js9', '模板文件夹不能为空', 1, 251, 0, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'js8', '模板名称不能为空', 1, 250, 0, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'js6', '两次输入的密码不一样', 1, 248, 0, 0, 'cn');
-INSERT INTO met_language VALUES (null, 'js7', '确定要删除选中的信息吗？一旦删除将不能恢复！', 1, 249, 0, 0, 'cn');
+INSERT INTO met_language VALUES (null, 'js7', '确定要删除选中的信息吗？一旦删除将不能恢复！', 1, 249, 1, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'js5', 'email不能为空', 1, 247, 0, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'js4', '登录密码不能为空', 1, 246, 0, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'js2', '数据出错了', 1, 244, 0, 0, 'cn');
@@ -176,7 +176,7 @@ INSERT INTO met_language VALUES (null, 'description', '简短描述', 1, 196, 0,
 INSERT INTO met_language VALUES (null, 'order', 'No.', 1, 194, 0, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'selected', '选择', 1, 192, 0, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'item', '条', 1, 190, 0, 0, 'cn');
-INSERT INTO met_language VALUES (null, 'metinfo', 'MetInfo企业网站管理系统', 1, 189, 0, 0, 'cn');
+INSERT INTO met_language VALUES (null, 'metinfo', 'MetInfo|米拓企业建站系统', 1, 189, 0, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'no', '否', 1, 188, 0, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'yes', '是', 1, 187, 0, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'sort', '排序', 1, 186, 0, 0, 'cn');
@@ -190,6 +190,7 @@ INSERT INTO met_language VALUES (null, 'modify', '修改', 1, 179, 0, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'View', '查看', 1, 178, 0, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'editor', '编辑', 1, 177, 0, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'add', '添加', 1, 176, 0, 0, 'cn');
+INSERT INTO met_language VALUES (null, 'addsubcolumn', '添加子栏目', 1, 176, 0, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'dataerr1', '失败！导入的数据与系统版本不一致！', 1, 169, 0, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'Submit', '保存', 1, 171, 0, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'submit', '保存', 1, 171, 0, 0, 'cn');
@@ -322,6 +323,8 @@ INSERT INTO met_language VALUES (null, 'adminLastIP', '最后登录IP', 1, 19, 0
 INSERT INTO met_language VALUES (null, 'metadmin', '管理员', 1, 12, 0, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'adminusername', '用户名', 1, 13, 0, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'adminname', '姓名', 1, 14, 0, 0, 'cn');
+INSERT INTO met_language VALUES (null, 'admin_email', '管理员邮箱', 1, 14, 0, 0, 'cn');
+INSERT INTO met_language VALUES (null, 'admin_email_error', '管理员邮箱已被占用', 1, 14, 0, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'adminLoginNum', '登录次数', 1, 17, 38, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'admintips7', '管理员权限设置', 1, 11, 2, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'adminjurisd', '语言权限', 1, 5, 2, 0, 'cn');
@@ -677,7 +680,7 @@ INSERT INTO met_language VALUES (null, 'seotips12', '是否立即生成所有静
 INSERT INTO met_language VALUES (null, 'seotips11', '是否删除所有已生成的静态页面？', 1, 171, 11, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'uisetTips2', '为空则调用电脑版LOGO，推荐尺寸：130*50 (像素)', 1, 0, 0, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'uiset_descript_v6', '勾选的应用将出现在导航栏【常用功能】下拉列表中', 1, 0, 0, 0, 'cn');
-INSERT INTO met_language VALUES (null, 'seotips1', '多个关键词请用竖线 | 隔开，建议3到4个关键词。', 1, 161, 32, 0, 'cn');
+INSERT INTO met_language VALUES (null, 'seotips1', '多个关键词请用英文状态下的逗号 "," 隔开，建议3到4个关键词。', 1, 161, 32, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'statips42', '访问量概况', 1, 139, 0, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'statips27', '时间', 1, 124, 0, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'statips2', '统计设置', 1, 101, 0, 0, 'cn');
@@ -749,7 +752,7 @@ INSERT INTO met_language VALUES (null, 'setseoTip4', '头部优化文字', 1, 5,
 INSERT INTO met_language VALUES (null, 'setseoTip10', '留空则采用网站关键词+网站名称的构成方式', 1, 4, 32, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'setseoKey', '网站关键词', 1, 2, 32, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'setseohomeKey', '首页标题（title）', 1, 3, 32, 0, 'cn');
-INSERT INTO met_language VALUES (null, 'setseoTip1', '多个关键词请用“|”或“，”隔开。', 1, 1, 0, 0, 'cn');
+INSERT INTO met_language VALUES (null, 'setseoTip1', '多个关键词请用“|”或“,”隔开。', 1, 1, 0, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'setheadstat', '顶部代码', 1, 176, 39, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'eidtfed', '查看反馈', 1, 129, 19, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'subpart', '下级栏目', 1, 127, 19, 0, 'cn');
@@ -1149,7 +1152,7 @@ INSERT INTO met_language VALUES (null, 'upfiletips19', '水印', 1, 277, 13, 0, 
 INSERT INTO met_language VALUES (null, 'upfiletips16', '发送测试', 1, 274, 39, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'upfiletips15', '100字以内', 1, 273, 39, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'upfiletips14', '网站描述', 1, 272, 39, 0, 'cn');
-INSERT INTO met_language VALUES (null, 'upfiletips13', '多个关键词请用竖线|隔开，建议3到4个关键词。', 1, 271, 39, 0, 'cn');
+INSERT INTO met_language VALUES (null, 'upfiletips13', '多个关键词请用英文状态下的逗号 "," 隔开，建议3到4个关键词。', 1, 271, 39, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'upfiletips12', '网站关键词', 1, 270, 39, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'upfiletips10', '6.0.0以上版本无需手动设置，当前登录的网址是：', 1, 268, 39, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'upfiletips6', '录入', 1, 264, 0, 0, 'cn');
@@ -1786,7 +1789,7 @@ INSERT INTO met_language VALUES (null, 'metinfo_explain', 'MetInfo是一款非�
 INSERT INTO met_language VALUES (null, 'share_friends', '分享给朋友', 1, 0, 37, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'installation_template', '官方6.0新模板请直接在应用商店中安装或使用“我的应用”中“官方模板管理工具”进行导入添加<br>', 1, 0, 36, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'install_application', '如果需安装自己制作的模板，请到应用市场安装', 1, 0, 36, 0, 'cn');
-INSERT INTO met_language VALUES (null, 'template_assistant', '模板制作助手', 1, 0, 36, 0, 'cn');
+INSERT INTO met_language VALUES (null, 'template_assistant', '模板制作助手(V6)', 1, 0, 36, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'specified_link', '点击跳转到指定链接', 1, 0, 0, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'release', '添加', 1, 0, 0, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'administration', '管理', 1, 0, 0, 0, 'cn');
@@ -2386,6 +2389,7 @@ INSERT INTO met_language VALUES (null, 'metconfig_template_downloadtemokjs', '�
 INSERT INTO met_language VALUES (null, 'metconfig_template_downloaduijs', '正在下载UI', 1, 0, 1, 50002, 'cn');
 INSERT INTO met_language VALUES (null, 'metconfig_template_setmarktext', '点击展开高级设置', 1, 0, 0, 50002, 'cn');
 INSERT INTO met_language VALUES (null, 'metconfig_template_setmarktexth', '隐藏高级设置', 1, 0, 0, 50002, 'cn');
+INSERT INTO met_language VALUES (null, 'setpnorder', '上一条下一条调用设置', 1, 0, 0, 50002, 'cn');
 
  
 

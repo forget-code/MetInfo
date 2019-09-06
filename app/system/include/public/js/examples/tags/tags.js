@@ -6,7 +6,7 @@ define(function(require, exports, module) {
 	function tags_add(put){
 		var vput = put.parent("li").parent("ul").prev('.tags_val').find("input");
 		var l = vput.attr('data-label');
-		var myval = put.val().replace(/[ ]/g,"");
+		var myval = $.trim(put.val());
 			myval = myval.replace(l,"");
 		if(myval!=''){
 			put.parent("li").before('<li class="tags_list"><span>'+myval+'</span><a></a></li>');

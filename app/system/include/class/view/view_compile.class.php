@@ -43,8 +43,8 @@ class view_compile
     function __construct()
     {
         global $_M;
-        load::sys_class('view/ui_compile');
-        $this->ui_compile = new ui_compile();
+        #load::sys_class('view/ui_compile');
+        $this->ui_compile = load::sys_class('view/ui_compile','new');
     }
 
     //运行编译
@@ -160,7 +160,7 @@ class view_compile
 
             foreach ($tags as $file) {
 
-                if(file_exists($file)){
+                if(is_file($file)){
                     require_once $file;
                 }
                     $class = basename($file);

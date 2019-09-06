@@ -1,5 +1,5 @@
 <!--<?php
-# MetInfo Enterprise Content Management System 
+# MetInfo Enterprise Content Management System
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. .
 
 echo <<<EOT
@@ -64,8 +64,8 @@ echo <<<EOT
 		<input type='hidden' name='cnde' value='{$cnde}' />
 		<input type='hidden' name='p' value='{$_M[form][p]}' />
 		<label class="next1_mob"><span>{$_M[word][password24]}{$nbers[1]}</span></label>
-		<label class="next1_mob"><span>{$_M[word][password25]}</span><input type="text" name="password" class='text' /></label>
-		<label class="next1_mob"><span>{$_M[word][password26]}</span><input type="text" name="passwordsr" class='text' /></label>
+		<label class="next1_mob"><span>{$_M[word][password25]}</span><input type="password" name="password" class='text' /></label>
+		<label class="next1_mob"><span>{$_M[word][password26]}</span><input type="password" name="passwordsr" class='text' /></label>
 		<p class="submitnxt">
 			<input type='submit' name='submit' value='{$_M[word][password20]}' class="submit" />
 			<a href="{$_M[url][adminurl]}n=login&c=login&a=doindex" title="{$_M[word][password21]}" class="abt_turn">{$_M[word][password21]}</a>

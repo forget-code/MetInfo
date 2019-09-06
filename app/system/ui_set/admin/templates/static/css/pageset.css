@@ -88,11 +88,10 @@ iframe{vertical-align:top;}
 .icon-modal .modal-body{height:calc(100% - 120px);}
 
 /* 提示 */
-.alertify-logs{z-index: 1800;}
 .metalert-wrapper{display:none;height:100%;position:fixed;left:0;top:0;z-index:1799}
 .metalert-wrapper.bgshow{background:rgba(0,0,0,.5)}
 .metalert-text{position:fixed;left:50%;top:50%;z-index:1799;-webkit-transform:translate(-50%,-50%);-moz-transform:translate(-50%,-50%);-ms-transform:translate(-50%,-50%);-o-transform:translate(-50%,-50%);transform:translate(-50%,-50%)}
-.metalert-wrapper .metalert-text{position: absolute;}
+.metalert-wrapper .metalert-text{position:absolute}
 .metalert-text .close{position:absolute;right:5px;top:5px;font-size:30px;opacity:1}
 .returnover{display:none;padding:10px 40px;background:#7266ba;border-radius:2px;position:fixed;z-index:1000;left:50%;top:50%;color:#fff;text-align:center;font-size:16px;-webkit-transform:translate(-50%,-50%);-moz-transform:translate(-50%,-50%);-ms-transform:translate(-50%,-50%);-o-transform:translate(-50%,-50%);transform:translate(-50%,-50%);}
 

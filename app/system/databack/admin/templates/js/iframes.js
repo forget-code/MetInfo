@@ -853,7 +853,7 @@ function olflie(id, ver, action, numnow) {
 	});
 }
 function appdel(my, id) {
-	var tp = confirm(METLANG.js7) ? 1: '';
+	var tp = confirm(METLANG.delete_information) ? 1: '';
 	if (tp == 1) {
 		url = my.attr('href');
 		$.ajax({
@@ -1173,7 +1173,7 @@ function Smit(M, fn) {
 	}
 }
 function linkSmit(my, type, txt) {
-	text = txt ? txt: METLANG.js7;
+	text = txt ? txt: METLANG.delete_information;
 	var tp = type != 1 ? 1: confirm(text) ? 1: '';
 	if (tp == 1) {
 		return true;

@@ -34,7 +34,7 @@ class tag_label {
 		}
 		if (load::sys_class('handle', 'new')->file_to_mod($module)) {
 			if (method_exists(load::sys_class('label', 'new')->get($module), 'get_module_list')) {
-				return load::sys_class('label', 'new')->get($module)->get_module_list($mod, $num, $type, $order, $para);
+				return load::sys_class('label', 'new')->get($module)->get_module_list($mod, $num, $type, $order, $para, true);
 			} else {
 				return false;
 			}

@@ -52,28 +52,28 @@ class product_database extends news_database {
     return 'id|title|ctitle|keywords|description|content|content1|content2|content3|content4|class1|class2|class3|no_order|wap_ok|img_ok|imgurl|imgurls|com_ok|issue|hits|updatetime|addtime|access|top_ok|filename|lang|recycle|displaytype|tag|links|displayimg|classother|imgsize';
   }
 
-  public function get_multi_column_sql($class1, $class2, $class3){
-    if($class1 || $class2 || $class3){
-      $sql .= "AND (";
-      if ($class1) {
-        $sql .= " class1 = '{$class1}' AND ";
-      }
-      if ($class2) {
-        $sql .= " class2 = '{$class2}' AND ";
-      }
-      if ($class3) {
-        $sql .= " class3 = '{$class3}' AND ";
-      }
-      $sql = substr($sql, 0 , -4);
-      $sql .= " OR (";
-      $sql .= " classother REGEXP '/|-{$class1}-";
-      $sql .= $class2?"{$class2}-":"[0-9]*-";
-      $sql .= $class3?"{$class3}-|/'":"[0-9]*-|/'";
-      $sql .= " )";
-      $sql .= " )";
+    public function get_multi_column_sql($class1, $class2, $class3){
+        if($class1 || $class2 || $class3){
+            $sql .= "AND (";
+            if ($class1) {
+                $sql .= " class1 = '{$class1}' AND ";
+            }
+            if ($class2) {
+                $sql .= " class2 = '{$class2}' AND ";
+            }
+            if ($class3) {
+                $sql .= " class3 = '{$class3}' AND ";
+            }
+            $sql = substr($sql, 0 , -4);
+            $sql .= " OR (";
+            $sql .= " classother REGEXP '/|-{$class1}-";
+            $sql .= $class2?"{$class2}-":"[0-9]*-";
+            $sql .= $class3?"{$class3}-|/'":"[0-9]*-|/'";
+            $sql .= " )";
+            $sql .= " )";
+        }
+        return $sql;
     }
-    return $sql;
-	}
 
   public function del_plist($id,$module){
       global $_M;

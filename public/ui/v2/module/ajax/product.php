@@ -5,7 +5,7 @@
 		<div class="card card-shadow">
 			<figure class="card-header cover">
 				<a href="{$m.url}" title="{$m.name}" {$m.urlnew}>
-					<img class="cover-image" <if value="$m['_index'] gt 3">data-original<else/>src</if>="{$m.columnimg|thumb:$c['met_productimg_x'],$c['met_productimg_y']}" alt="{$m.name}" height='100'>
+					<img class="cover-image" <if value="$m['_index'] gt 3">data-original<else/>src</if>="{$m.columnimg|thumb:$c['met_productimg_x'],$c['met_productimg_y']}" alt="{$m.name}">
 				</a>
 			</figure>
 			<h4 class="card-title m-0 p-x-10 font-size-16 text-xs-center">
@@ -22,7 +22,7 @@
 
 		<figure class="card-header cover">
 			<a href="{$v.url}" title="{$v.title}" {$g.urlnew}>
-				<img class="cover-image" <if value="$v['_index'] gt 3 || $data['page'] gt 1">data-original<else/>src</if>="{$v.imgurl|thumb:$c['met_productimg_x'],$c['met_productimg_y']}" alt="{$v.title}" height='100'>
+				<img class="cover-image" <if value="$v['_index'] gt 3 || $data['page'] gt 1">data-original<else/>src</if>="{$v.imgurl|thumb:$c['met_productimg_x'],$c['met_productimg_y']}" alt="{$v.title}">
 			</a>
 		</figure>
 		<h4 class="card-title m-0 p-x-10 font-size-16 text-xs-center">
@@ -37,7 +37,7 @@
 	<div class="cover-body">
 		<div class="cover overlay overlay-hover animation-hover">
 			<a href="{$v.url}" title="{$v.title}" {$g.urlnew}>
-				<img class="cover-image" <if value="$v['_index'] gt 3 || $data['page'] gt 1">data-original<else/>src</if>="{$v.imgurl|thumb:$c['met_productimg_x'],$c['met_productimg_y']}" alt="{$v.title}" height='100'>
+				<img class="cover-image" <if value="$v['_index'] gt 3 || $data['page'] gt 1">data-original<else/>src</if>="{$v.imgurl|thumb:$c['met_productimg_x'],$c['met_productimg_y']}" alt="{$v.title}">
 				<figcaption class="overlay-panel overlay-background overlay-fade text-xs-center vertical-align" met-imgmask>
 					<div class="vertical-align-middle">
 						<h4 class="animation-slide-bottom">
@@ -56,7 +56,7 @@
 	<div class="widget widget-shadow">
 		<figure class="widget-header cover">
 			<a href="{$v.url}" title="{$v.title}" {$g.urlnew}>
-				<img class="cover-image" <if value="$v['_index'] gt 3 || $data['page'] gt 1">data-original<else/>src</if>="{$v.imgurl|thumb:$c['met_productimg_x'],$c['met_productimg_y']}" alt="{$v.title}" style='height:200px;'>
+				<img class="cover-image" <if value="$v['_index'] gt 3 || $data['page'] gt 1">data-original<else/>src</if>="{$v.imgurl|thumb:$c['met_productimg_x'],$c['met_productimg_y']}" alt="{$v.title}">
 			</a>
 		</figure>
 		<div class="widget-body">

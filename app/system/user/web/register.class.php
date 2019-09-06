@@ -107,6 +107,7 @@ class register extends userweb {
 		global $_M;
 		$auth = load::sys_class('auth', 'new');
 		$username = $auth->decode($_M['form']['p']);
+        $username = sqlinsert($username);
 		if($username){
 			if($this->userclass->get_user_valid($username)){
 				okinfo($_M['url']['login'], $_M['word']['activesuc']);
@@ -131,16 +132,19 @@ class register extends userweb {
 
 	public function dophonecode() {
 		global $_M;
+        $pinok = load::sys_class('pin', 'new')->check_pin($_M['form']['code']);
+        if(!$pinok && $_M['config']['met_memberlogin_code'] ){
+            $this->ajax_error($_M['word']['membercode']);
+        }
 		if($this->userclass->get_user_by_username_sql($_M['form']['phone'])||$this->userclass->get_admin_by_username_sql($_M['form']['phone'])){
-			echo $_M['word']['telreg'];
-			die;
+			$this->ajax_error($_M['word']['telreg']);
 		}
 
 		$valid = load::mod_class('user/web/class/valid','new');
 		if ($valid->get_tel($_M['form']['phone'])) {
-			echo 'SUCCESS';
+			$this->ajax_success();
 		} else {
-			echo $_M['word']['Sendfrequent'];
+			$this->ajax_error($_M['word']['Sendfrequent']);
 		}
 
 	}

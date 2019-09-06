@@ -90,7 +90,8 @@ class seo extends admin {
 				$htaccess.= '# Rewrite '.$_M['word']['seohtaccess1']."\n";
 				$htaccess.= 'RewriteRule ^index-([a-zA-Z0-9_^\x00-\xff]+).html$ index.php?lang=$1&pseudo_jump=1'."\n";
 				$htaccess.= 'RewriteRule ^app/app/ueditor/([a-zA-Z0-9_^\x00-\xff]+).html$ app/app/ueditor/$1.html [L]'."\n";
-				$htaccess.= 'RewriteRule ^([a-zA-Z0-9_^\x00-\xff]+)/list-([a-zA-Z0-9_^\x00-\xff]+)-([0-9_]+)-([a-zA-Z0-9_^\x00-\xff]+).html$ $1/index.php?lang=$4&metid=$2&list=1&page=$3&pseudo_jump=1'."\n";
+                $htaccess.= 'RewriteRule ^wap/([a-zA-Z0-9_^\x00-\xff]+).html$ wap/$1.html [L]'."\n";
+                $htaccess.= 'RewriteRule ^([a-zA-Z0-9_^\x00-\xff]+)/list-([a-zA-Z0-9_^\x00-\xff]+)-([0-9_]+)-([a-zA-Z0-9_^\x00-\xff]+).html$ $1/index.php?lang=$4&metid=$2&list=1&page=$3&pseudo_jump=1'."\n";
 				$htaccess.= 'RewriteRule ^([a-zA-Z0-9_^\x00-\xff]+)/list-([a-zA-Z0-9_^\x00-\xff]+)-([a-zA-Z0-9_^\x00-\xff]+).html$ $1/index.php?lang=$3&metid=$2&list=1&pseudo_jump=1'."\n";
 				$htaccess.= 'RewriteRule ^([a-zA-Z0-9_^\x00-\xff]+)/list-([a-zA-Z0-9_^\x00-\xff]+)-([0-9_]+).html$ $1/index.php?metid=$2&list=1&page=$3&pseudo_jump=1'."\n";
 				$htaccess.= 'RewriteRule ^([a-zA-Z0-9_^\x00-\xff]+)/list-([a-zA-Z0-9_^\x00-\xff]+).html$ $1/index.php?metid=$2&list=1&pseudo_jump=1'."\n";
@@ -109,7 +110,8 @@ class seo extends admin {
 			else if(stristr($_SERVER['SERVER_SOFTWARE'],'nginx')){
 				$htaccess = 'rewrite ^/index-([a-zA-Z0-9_^x00-xff]+).html$ /index.php?lang=$1&pseudo_jump=1;'."\n";
 				$htaccess.= 'rewrite ^/app/app/ueditor/([a-zA-Z0-9_^\x00-\xff]+).html$ /app/app/ueditor/$1.html last;'."\n";
-				$htaccess.= 'rewrite ^/([a-zA-Z0-9_^x00-xff]+)/list-([a-zA-Z0-9_^x00-xff]+).html$ /$1/index.php?metid=$2&list=1&pseudo_jump=1;'."\n";
+                $htaccess.= 'rewrite ^/wap/([a-zA-Z0-9_^\x00-\xff]+).html$ /wap/$1.html last;'."\n";
+                $htaccess.= 'rewrite ^/([a-zA-Z0-9_^x00-xff]+)/list-([a-zA-Z0-9_^x00-xff]+).html$ /$1/index.php?metid=$2&list=1&pseudo_jump=1;'."\n";
 				$htaccess.= 'rewrite ^/([a-zA-Z0-9_^x00-xff]+)/list-([a-zA-Z0-9_^x00-xff]+)-([0-9_]+).html$ /$1/index.php?metid=$2&list=1&page=$3&pseudo_jump=1;'."\n";
 				$htaccess.= 'rewrite ^/([a-zA-Z0-9_^x00-xff]+)/list-([a-zA-Z0-9_^x00-xff]+)-([a-zA-Z0-9_^x00-xff]+).html$ /$1/index.php?lang=$3&metid=$2&list=1&pseudo_jump=1;'."\n";
 				$htaccess.= 'rewrite ^/([a-zA-Z0-9_^x00-xff]+)/list-([a-zA-Z0-9_^x00-xff]+)-([0-9_]+)-([a-zA-Z0-9_^x00-xff]+).html$ /$1/index.php?lang=$4&metid=$2&list=1&page=$3&pseudo_jump=1;'."\n";
@@ -142,52 +144,57 @@ class seo extends admin {
 				$web.= '<action type="Rewrite" url="/app/app/ueditor/$1.html" />'."\n";
 				$web.= '</rule>'."\n";
 
-				$web.= '<rule name="rule3" stopProcessing="true">'."\n";
+                $web.= '<rule name="rule3" stopProcessing="true">'."\n";
+                $web.= '<match url="^/wap/([a-zA-Z0-9_^\x00-\xff]+).html$" />'."\n";
+                $web.= '<action type="Rewrite" url="/wap/$1.html" />'."\n";
+                $web.= '</rule>'."\n";
+
+				$web.= '<rule name="rule4" stopProcessing="true">'."\n";
 				$web.= '<match url="^([a-zA-Z0-9_\u4e00-\u9fa5]+)/list-([a-zA-Z0-9_\u4e00-\u9fa5]+).html" />'."\n";
 				$web.= '<action type="Rewrite" url="{R:1}/index.php?metid={R:2}&amp;list=1&amp;pseudo_jump=1" />'."\n";
 				$web.= '</rule>'."\n";
-				$web.= '<rule name="rule4" stopProcessing="true">'."\n";
+				$web.= '<rule name="rule5" stopProcessing="true">'."\n";
 				$web.= '<match url="^([a-zA-Z0-9_\u4e00-\u9fa5]+)/list-([a-zA-Z0-9_\u4e00-\u9fa5]+)-([0-9_]+).html" />'."\n";
 				$web.= '<action type="Rewrite" url="{R:1}/index.php?metid={R:2}&amp;list=1&amp;page={R:3}&amp;pseudo_jump=1" />'."\n";
 				$web.= '</rule>'."\n";
-				$web.= '<rule name="rule5" stopProcessing="true">'."\n";
+				$web.= '<rule name="rule6" stopProcessing="true">'."\n";
 				$web.= '<match url="^([a-zA-Z0-9_\u4e00-\u9fa5]+)/list-([a-zA-Z0-9_\u4e00-\u9fa5]+)-([a-zA-Z0-9_\u4e00-\u9fa5]+).html" />'."\n";
 				$web.= '<action type="Rewrite" url="{R:1}/index.php?lang={R:3}&amp;metid={R:2}&amp;list=1&amp;pseudo_jump=1" />'."\n";
 				$web.= '</rule>'."\n";
-				$web.= '<rule name="rule6" stopProcessing="true">'."\n";
+				$web.= '<rule name="rule7" stopProcessing="true">'."\n";
 				$web.= '<match url="^([a-zA-Z0-9_\u4e00-\u9fa5]+)/list-([a-zA-Z0-9_\u4e00-\u9fa5]+)-([0-9_]+)-([a-zA-Z0-9_\u4e00-\u9fa5]+).html" />'."\n";
 				$web.= '<action type="Rewrite" url="{R:1}/index.php?lang={R:4}&amp;metid={R:2}&amp;list=1&amp;page={R:3}&amp;pseudo_jump=1" />'."\n";
 				$web.= '</rule>'."\n";
-				$web.= '<rule name="rule7" stopProcessing="true">'."\n";
+				$web.= '<rule name="rule8" stopProcessing="true">'."\n";
 				$web.= '<match url="^([a-zA-Z0-9_\u4e00-\u9fa5]+)/jobcv-([a-zA-Z0-9_\u4e00-\u9fa5]+)-([a-zA-Z0-9_\u4e00-\u9fa5]+).html" />'."\n";
 				$web.= '<action type="Rewrite" url="{R:1}/cv.php?lang={R:3}&amp;selectedjob={R:2}&amp;pseudo_jump=1" />'."\n";
 				$web.= '</rule>'."\n";
-				$web.= '<rule name="rule8" stopProcessing="true">'."\n";
+				$web.= '<rule name="rule9" stopProcessing="true">'."\n";
 				$web.= '<match url="^([a-zA-Z0-9_\u4e00-\u9fa5]+)/product-list-([a-zA-Z0-9_\u4e00-\u9fa5]+).html" />'."\n";
 				$web.= '<action type="Rewrite" url="{R:1}/product.php?lang={R:2}&amp;pseudo_jump=1" />'."\n";
 				$web.= '</rule>'."\n";
-				$web.= '<rule name="rule9" stopProcessing="true">'."\n";
+				$web.= '<rule name="rule10" stopProcessing="true">'."\n";
 				$web.= '<match url="^([a-zA-Z0-9_\u4e00-\u9fa5]+)/img-list-([a-zA-Z0-9_\u4e00-\u9fa5]+).html" />'."\n";
 				$web.= '<action type="Rewrite" url="{R:1}/img.php?lang={R:2}&amp;pseudo_jump=1" />'."\n";
 				$web.= '</rule>'."\n";
-				$web.= '<rule name="rule10" stopProcessing="true">'."\n";
+				$web.= '<rule name="rule11" stopProcessing="true">'."\n";
 				$web.= '<match url="^([a-zA-Z0-9_\u4e00-\u9fa5]+)/([a-zA-Z0-9_\u4e00-\u9fa5]+).html" />'."\n";
 				$web.= '<action type="Rewrite" url="{R:1}/index.php?metid={R:2}&amp;pseudo_jump=1" />'."\n";
 				$web.= '</rule>'."\n";
-				$web.= '<rule name="rule11" stopProcessing="true">'."\n";
+				$web.= '<rule name="rule12" stopProcessing="true">'."\n";
 				$web.= '<match url="^([a-zA-Z0-9_\u4e00-\u9fa5]+)/([a-zA-Z0-9_\u4e00-\u9fa5]+)-([a-zA-Z0-9_\u4e00-\u9fa5]+).html" />'."\n";
 				$web.= '<action type="Rewrite" url="{R:1}/index.php?lang={R:3}&amp;metid={R:2}&amp;pseudo_jump=1" />'."\n";
 				$web.= '</rule>'."\n";
-                $web.= '<rule name="rule12" stopProcessing="true">'."\n";
+                $web.= '<rule name="rule13" stopProcessing="true">'."\n";
                 $web.= '<match url="^([a-zA-Z0-9_\u4e00-\u9fa5]+)/([a-zA-Z0-9_\u4e00-\u9fa5]+).html" />'."\n";
                 $web.= '<action type="Rewrite" url="{R:1}/index.php?lang={R:3}&amp;metid={R:2}&amp;pseudo_jump=1" />'."\n";
                 $web.= '</rule>'."\n";
-				$web.= '<rule name="rule13" stopProcessing="true">'."\n";
+				$web.= '<rule name="rule14" stopProcessing="true">'."\n";
 				$web.= '<match url="^tag/([\s\S]+)-([a-zA-Z0-9_\u4e00-\u9fa5]+)" />'."\n";
 				$web.= '<action type="Rewrite" url="search/search.php?class1=&amp;class2=&amp;class3=&amp;searchtype=0&amp;searchword={R:1}&amp;lang={R:2}" />'."\n";
 				$web.= '</rule>'."\n";
 
-				$web.= '<rule name="rule14" stopProcessing="true">'."\n";
+				$web.= '<rule name="rule15" stopProcessing="true">'."\n";
 				$web.= '<match url="^tag/([\s\S]+)" />'."\n";
 				$web.= '<action type="Rewrite" url="search/search.php?class1=&amp;class2=&amp;class3=&amp;searchtype=0&amp;searchword={R:1}" />'."\n";
 				$web.= '</rule>'."\n";
@@ -209,8 +216,9 @@ class seo extends admin {
 				$httpd.= 'RewriteRule '.$metbase.'([a-zA-Z0-9_^\x00-\xff]+)/list-([a-zA-Z0-9_^\x00-\xff]+).html '.$metbase.'$1/index.php\?metid=$2&list=1&pseudo_jump=1'."\n";
 
 				$httpd.= 'RewriteRule '.$metbase.'app/app/ueditor/([a-zA-Z0-9_^\x00-\xff]+).html '.$metbase.'app/app/ueditor/$1.html'."\n";
+                $httpd.= 'RewriteRule '.$metbase.'wap/([a-zA-Z0-9_^\x00-\xff]+).html '.$metbase.'wap/$1.html'."\n";
 
-				$httpd.= 'RewriteRule '.$metbase.'([a-zA-Z0-9_^\x00-\xff]+)/list-([a-zA-Z0-9_^\x00-\xff]+)-([0-9_]+).html '.$metbase.'$1/index.php\?metid=$2&list=1&page=$3&pseudo_jump=1'."\n";
+                $httpd.= 'RewriteRule '.$metbase.'([a-zA-Z0-9_^\x00-\xff]+)/list-([a-zA-Z0-9_^\x00-\xff]+)-([0-9_]+).html '.$metbase.'$1/index.php\?metid=$2&list=1&page=$3&pseudo_jump=1'."\n";
 				$httpd.= 'RewriteRule '.$metbase.'([a-zA-Z0-9_^\x00-\xff]+)/list-([a-zA-Z0-9_^\x00-\xff]+)-([a-zA-Z0-9_^\x00-\xff]+).html '.$metbase.'$1/index.php\?lang=$3&metid=$2&list=1&pseudo_jump=1'."\n";
 				$httpd.= 'RewriteRule '.$metbase.'([a-zA-Z0-9_^\x00-\xff]+)/list-([a-zA-Z0-9_^\x00-\xff]+)-([0-9_]+)-([a-zA-Z0-9_^\x00-\xff]+).html '.$metbase.'$1/index.php\?lang=$4&metid=$2&list=1&page=$3&pseudo_jump=1'."\n";
 				$httpd.= 'RewriteRule '.$metbase.'([a-zA-Z0-9_^\x00-\xff]+)/jobcv-([a-zA-Z0-9_^\x00-\xff]+)-([a-zA-Z0-9_^\x00-\xff]+).html '.$metbase.'$1/cv.php\?lang=$3&selectedjob=$2&pseudo_jump=1'."\n";
@@ -263,7 +271,7 @@ class seo extends admin {
 			$list[] = "<input type=\"text\" name=\"oldwords-{$val[id]}\" class=\"ui-input\" value=\"{$val[oldwords]}\"  data-required=\"1\">";
 			$list[] = "<input type=\"text\" name=\"newwords-{$val[id]}\" class=\"ui-input\" value=\"{$val[newwords]}\">";
 			$list[] = "<input type=\"text\" name=\"newtitle-{$val[id]}\" class=\"ui-input\" value=\"{$val[newtitle]}\">";
-			$list[] = "<input type=\"text\" name=\"url-{$val[id]}\" class=\"ui-input\" value=\"{$val[url]}\" data-required=\"1\">";
+			$list[] = "<input type=\"text\" name=\"url-{$val[id]}\" class=\"ui-input\" value=\"{$val[url]}\">";
 			$list[] = "<input type=\"text\" name=\"num-{$val[id]}\" class=\"ui-input\" value=\"{$val[num]}\" data-required=\"1\">";
 			$list[] = "<a href=\"{$_M[url][own_form]}a=doanchortablesave&allid={$val[id]},&submit_type=del\" class=\"delet\" data-confirm='{$_M[word][js7]}'>{$_M[word][delete]}</a>";
 			$rarray[] = $list;
@@ -279,7 +287,7 @@ class seo extends admin {
 					<td><input type=\"text\" name=\"oldwords-{$id}\" placeholder=\"{$_M[word][enter_original]}\" class=\"ui-input\" value=\"\"  data-required=\"1\"></td>
 					<td><input type=\"text\" name=\"newwords-{$id}\" placeholder=\"{$_M[word][enter_replacement]}\" class=\"ui-input\" value=\"\"></td>
 					<td><input type=\"text\" name=\"newtitle-{$id}\" placeholder=\"{$_M[word][title_description]}\" class=\"ui-input\" value=\"\"></td>
-					<td><input type=\"text\" name=\"url-{$id}\" placeholder=\"{$_M[word][input_link_address]}\" class=\"ui-input\" value=\"http://\"  data-required=\"1\"></td>
+					<td><input type=\"text\" name=\"url-{$id}\" placeholder=\"{$_M[word][input_link_address]}\" class=\"ui-input\" value=\"http://\"></td>
 					<td class='met-center'><input type=\"text\" name=\"num-{$id}\" class=\"ui-input\" value=\"9999\"  data-required=\"1\"></td>
 					<td><a href=\"\" class=\"delet\">{$_M[word][js49]}</a></td>
 				</tr>";
@@ -384,4 +392,3 @@ class seo extends admin {
 
 # This program is an open source system, commercial use, please consciously to purchase commercial license.
 # Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
-?>

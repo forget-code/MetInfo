@@ -98,7 +98,7 @@ define(function (require, exports, module) {
 	})
 });
 function linkSmit(my, type, txt) {
-	text = txt ? txt:METLANG.js7;
+	text = txt ? txt:METLANG.delete_information;
 	var tp = type != 1 ? 1: confirm(text) ? 1: '';
 	if (tp == 1) {
 		return true;

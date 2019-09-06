@@ -69,7 +69,8 @@ class column_handle extends handle {
     $classtype=$content['classtype'];
     $classid=$content['id'];
     if($content['display']){
-     unset($content);
+        unset($content['url']);
+        #unset($content);
     }
     $content['classtype']=$classtype;
     $content['id']=$classid;
@@ -152,7 +153,11 @@ class column_handle extends handle {
     if($_M['config']['met_index_type'] != $content['lang']){
       $url .= '&lang='.$content['lang'];
     }
-    $url = $this->url_transform($content['foldername'].'/'.$this->mod_to_name($content['module']).'.php'.$url);
+      if($content['module'] == 10 && $content['foldername'] == 'member'){
+          $url = $this->url_transform($content['foldername'].'/index.php'.$url);
+      }else{
+          $url = $this->url_transform($content['foldername'].'/'.$this->mod_to_name($content['module']).'.php'.$url);
+      }
     $url = str_replace('.php&', '.php?', $url);
     return $url;
   }

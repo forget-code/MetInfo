@@ -141,6 +141,12 @@ class config_ui {
 				case 13://增加新组件类型（新模板框架v2）
 					$re = $this->upload($val);
 				break;
+				case 14://
+					$re = $this->socaillink($val);
+				break;
+				case 15://
+					$re = $this->icon($val);
+				break;
 			}
 			$html[] = $re;
 		}
@@ -172,13 +178,9 @@ class config_ui {
 		$convlue = $val['uip_name'];
 		$convlue = $val['uip_style'] ==0 ? $val['uip_value'] : $_M['config'][$val['uip_value']];
 		$convlue = $val['uip_value']=="" ? $val['uip_default']:$val['uip_value'];
-		$flag = "";
-		if($val['uip_name'] == 'met_font'){
-			$flag = "data-name={$val['uip_name']}";
-		}
 		$val['inputhtm'] ="
 			<div class=\"fbox\">
-				<input type=\"text\" name=\"{$val['id']}_metinfo\" {$flag} value=\"{$convlue}\" />
+				<input type=\"text\" name=\"{$val['id']}_metinfo\" data-name={$val['uip_name']} value=\"{$convlue}\" />
 			</div>
 			<span class=\"tips\">{$val['uip_description']}</span>
 		";
@@ -196,7 +198,7 @@ class config_ui {
 
 		$val['inputhtm'] ="
 			<div class=\"fbox\">
-				<textarea name=\"{$val['id']}_metinfo\">{$convlue}</textarea>
+				<textarea name=\"{$val['id']}_metinfo\" data-name={$val['uip_name']}>{$convlue}</textarea>
 			</div>
 			<span class=\"tips\">{$val['uip_description']}</span>
 		";
@@ -214,7 +216,7 @@ class config_ui {
 			if($vz[0]){
 			$val['inputhtm'].="<label>";
 			$select=$val['uip_value']==$vz[1]?'checked':'';
-			$val['inputhtm'].="<input value='".$vz[1]."' name='{$val['id']}_metinfo' type='radio' {$select} />".$vz[0];
+			$val['inputhtm'].="<input value='".$vz[1]."' name='{$val['id']}_metinfo' data-name={$val['uip_name']} type='radio' {$select} />".$vz[0];
 			$val['inputhtm'].="</label>";
 			}
 		}
@@ -237,7 +239,7 @@ class config_ui {
 		if($val['uip_style']==2)$val['uip_style']=4;
 		if ($val['uip_style'] == 0) {
 			$val['ftype']="ftype_select";
-			$val['inputhtm'] ="<div class='fbox'><select name='{$val['id']}_metinfo' data-checked='{$val['uip_value']}'>";
+			$val['inputhtm'] ="<div class='fbox'><select name='{$val['id']}_metinfo' data-name={$val['uip_name']} data-checked='{$val['uip_value']}'>";
 			$vlist=explode('$M$',$val['uip_select']);
 			foreach($vlist as $key=>$val2){
 				$vz=explode('$T$',$val2);
@@ -254,7 +256,7 @@ class config_ui {
 			$met_class1 = $array['class1'];
 			$met_class2 = $array['class2'];
 			$met_class3 = $array['class3'];
-			$val['inputhtm'] ="<select name='{$val['id']}_metinfo' data-checked='{$val['uip_value']}'>";
+			$val['inputhtm'] ="<div class='fbox'><select name='{$val['id']}_metinfo' data-name={$val['uip_name']} data-checked='{$val['uip_value']}'>";
 			$val['inputhtm'].="<option value=''>{$_M['word']['skinerr3']}</option>";
 			switch($hngy5){
 				case 1:
@@ -320,7 +322,7 @@ class config_ui {
 				break;
 			}
 			$val[inputhtm].="</select>";
-			$val[inputhtm].="<span class='tips'>{$val['uip_description']}</span>";
+			$val[inputhtm].="<span class='tips'>{$val['uip_description']}</span></div>";
 		}
 		return $val;
 	}
@@ -343,6 +345,7 @@ class config_ui {
 			<div class=\"fbox\">
 				<input
 					name=\"{$val['id']}_metinfo\"
+					data-name={$val['uip_name']}
 					type=\"text\"
 					data-upload-type=\"{$upload_type}\"
 					value=\"{$convlue}\"
@@ -366,7 +369,7 @@ class config_ui {
 		$convlue = $val['uip_value']=="" ? $val['uip_default']:$val['uip_value'];
 		$val[inputhtm] ="
 			<div class=\"fbox\">
-				<textarea name=\"{$val['id']}_metinfo\" data-ckeditor-type=\"2\" data-ckeditor-y='300'>{$convlue}</textarea>
+				<textarea name=\"{$val['id']}_metinfo\" data-name={$val['uip_name']} data-ckeditor-type=\"2\" data-ckeditor-y='300'>{$convlue}</textarea>
 			</div>
 			<span class='tips'>{$val['uip_description']}</span>
 		";
@@ -380,10 +383,49 @@ class config_ui {
 		$val['uip_value'] = $val['uip_value'] ? $val['uip_value'] : $val['uip_default'];
 		$val[inputhtm]="
 			<div class=\"fbox\">
-				<input type=\"text\" name=\"{$val['id']}_metinfo\" value=\"{$val['uip_value']}\">
+				<input type=\"text\" name=\"{$val['id']}_metinfo\" data-name={$val['uip_name']} value=\"{$val['uip_value']}\">
 			</div>
 			<span class=\"tips\">{$val['uip_description']}</span>
 		";
+		return $val;
+	}
+	/*社交链接*/
+	public function socaillink($val){
+		global $_M;
+		$val[ftype]="ftype_input";
+		$val['uip_value'] = $val['uip_value'] ? $val['uip_value'] : $val['uip_default'];
+		$val['value']=strpos($val['uip_value'], '$M$')!==false?explode('$M$'):array('','');
+		$val['inputhtm'] ="<div class='fbox'><select name='{$val['id']}_metinfo' data-name={$val['uip_name']} data-checked='{$val['value'][0]}'>";
+		$vlist=array(
+			'tel'=>$_M['word']['parameter8'],
+			'sms'=>'短信',
+			'email'=>$_M['word']['parameter9'],
+			'qq'=>'普通qq',
+			'qyqq'=>'企业qq'
+		);
+		foreach($vlist as $key=>$val1){
+			$select=$val['value'][0]==$key?'checked':'';
+			$val['inputhtm'].="<option value='".$key."' {$select}>".$val1."</option>";
+		}
+		$val['inputhtm'].="</select>
+			<input type=\"text\" data-name=\"{$val['uip_name']}\" value=\"{$val['value'][1]}\"/>
+			<input type=\"hidden\" name=\"{$val['id']}_metinfo\" data-name={$val['uip_name']} data-type=\"14\" value=\"{$val['uip_value']}\"/>
+		</div>
+		<span class='tips'>{$val['uip_description']}</span>";
+		return $val;
+	}
+	/*图标选择*/
+	public function icon($val){
+		global $_M;
+		$val[ftype]="ftype_input";
+		$hide=$val['uip_value']?'':' hide';
+		$val['inputhtm'] ="<div class='fbox'>
+			<input type=\"hidden\" name=\"{$val['id']}_metinfo\" value=\"{$val['uip_value']}\"/>
+			<button type='button' class='btn btn-default icon-add-view{$hide}'><i class='{$val['uip_value']}'></i></button>
+			<button type='button' class='btn btn-default btn-icon-del{$hide}'>{$_M['word']['delete']}</button>
+			<button type='button' class='btn btn-primary ui-config-icon icon-add' data-name='{$val['uip_key']}' data-toggle='modal' data-target='.icon-modal'>{$_M['word']['column_choosicon_v6']}</button>
+		</div>
+		<span class='tips'>{$val['uip_description']}</span>";
 		return $val;
 	}
 

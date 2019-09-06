@@ -4,7 +4,7 @@
 	<if value="!$data[page] && !$data[class2]">
 	<div class="news-headlines imagesize" data-scale='{$ui.news_headlines_y}x{$ui.news_headlines_x}'>
 		<div class="news-headlines-slick cover">
-		<tag action='news.list' num="$ui[news_headlines_num]">
+			<list data="$result" name="$v" num="$ui[news_headlines_num]">
 			<div class='slick-slide'>
 				<a href="{$v.url}" title="{$v.title}" {$g.urlnew}>
 					<img class="cover-image" <if value="$v['_index'] gt 0">data-lazy<else/>src</if>="{$v.imgurl|thumb:$ui['news_headlines_x'],$ui['news_headlines_y']}" data-srcset="{$v.imgurl|thumb:450,450*$ui['news_headlines_y']/$ui['news_headlines_x']} 450w,{$v.imgurl|thumb:$ui['news_headlines_x'],$ui['news_headlines_y']}" sizes='(max-width:479px) 450px' alt="{$v.title}">
@@ -13,7 +13,7 @@
 					</div>
 				</a>
 			</div>
-		</tag>
+			</list>
 		</div>
 	</div>
 	</if>
@@ -41,7 +41,7 @@
 	<li class="media media-lg border-bottom1">
 		<div class="media-left">
 			<a href="{$v.url}" title="{$v.title}" {$g.urlnew}>
-				<img class="media-object" <if value="$v['_index'] gt ($ui['news_headlines']?2+$ui['news_headlines_num']:3) || $data['page'] gt 1">data-original<else/>src</if>="{$v.imgurl|thumb:$c['met_newsimg_x'],$c['met_newsimg_y']}" alt="{$v.title}" height='100'>
+				<img class="media-object" <if value="$v['_index'] gt ($ui['news_headlines']?2+$ui['news_headlines_num']:3) || $data['page'] gt 1">data-original<else/>src</if>="{$v.imgurl|thumb:$c['met_newsimg_x'],$c['met_newsimg_y']}" alt="{$v.title}">
 			</a>
 		</div>
 		<div class="media-body">
@@ -68,7 +68,7 @@
 <div class="card card-shadow">
 	<div class="card-header p-0">
 		<a href="{$v.url}" title="{$v.title}" {$g.urlnew}>
-			<img class="cover-image" <if value="$v['_index'] gt 3 || $data['page'] gt 1">data-original<else/>src</if>="{$v.imgurl|thumb:$ui['news_ccimg_x'],$ui['news_ccimg_y']}" data-srcset='{$v.imgurl|thumb:400} 400w,{$v.imgurl|thumb:$ui['news_ccimg_x'],$ui['news_ccimg_y']}' sizes='(max-width:479px) 400px' alt="{$v.title}" height='100'>
+			<img class="cover-image" <if value="$v['_index'] gt 3 || $data['page'] gt 1">data-original<else/>src</if>="{$v.imgurl|thumb:$ui['news_ccimg_x'],$ui['news_ccimg_y']}" data-srcset='{$v.imgurl|thumb:400} 400w,{$v.imgurl|thumb:$ui['news_ccimg_x'],$ui['news_ccimg_y']}' sizes='(max-width:479px) 400px' alt="{$v.title}">
 		</a>
 	</div>
 	<div class="card-body">

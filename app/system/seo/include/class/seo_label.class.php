@@ -91,6 +91,7 @@ class seo_label {
 
 	public function sitemaplist($lang){
 		global $_M;
+        $_M['config']['sitemap'] = true;
 
 		$met_webname=DB::get_one("select * from {$_M['table']['config']} where name='met_webname' and lang='{$lang}'");
 		$met_webname=$met_webname[value];
@@ -222,18 +223,20 @@ class seo_label {
 			$pageset = $_M['form']['pageset'];
 			$_M['form']['pageset'] = '';
 		}
+
 		if($_M['config']['met_sitemap_html'] || $_M['config']['met_sitemap_xml'] || $_M['config']['met_sitemap_txt']){
 			if($_M['config']['met_sitemap_lang']){
 				$sitemaplist=array();
 				$met_langok = load::sys_class('label', 'new')->get('language')->get_lang();
 				foreach($met_langok as $key=>$val){
-					$sitemaplist_temp=$this->sitemaplist($val['mark']);
-					$sitemaplist=array_merge((array)$sitemaplist , (array)$sitemaplist_temp);
+					$sitemaplist_temp = $this->sitemaplist($val['mark']);
+					$sitemaplist = array_merge((array)$sitemaplist , (array)$sitemaplist_temp);
 				}
 			}else{
-				$sitemaplist=$this->sitemaplist($_M['lang']);
+				$sitemaplist = $this->sitemaplist($_M['lang']);
 			}
-			$met_sitemap_max=50000;
+			$met_sitemap_max = 50000;
+
 			/*html网站地图*/
 			if($_M['config']['met_sitemap_html']){
 				$config_save ="<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n";
@@ -247,20 +250,21 @@ class seo_label {
 				$i=0;
 				foreach($sitemaplist as $key=>$val){
 					$i++;
-					$val[updatetime]=date("Y-m-d",strtotime($val[updatetime]));
-					$config_save.="<li><a href='".$val[url]."' title='".$val[title]."' target='_blank'>".$val[title]."</a><span>".$val[updatetime]."</span></li>\n";
-					if($i>=$met_sitemap_max)break;
+					$val[updatetime] = date("Y-m-d",strtotime($val[updatetime]));
+					$config_save.= "<li><a href='".$val[url]."' title='".$val[title]."' target='_blank'>".$val[title]."</a><span>".$val[updatetime]."</span></li>\n";
+					if($i >= $met_sitemap_max)break;
 				}
-				$config_save.="</ul>\n</body>";
-				$sitemap_hz='.html';
-				$sitemapname=PATH.WEB.'sitemap'.$sitemap_hz;
+				$config_save .= "</ul>\n</body>";
+				$sitemap_hz = '.html';
+				$sitemapname = PATH.WEB.'sitemap'.$sitemap_hz;
 				$fp = fopen($sitemapname,w);
 				fputs($fp, $config_save);
 				fclose($fp);
 			}
+
 			/*xml网站地图*/
 			if($_M['config']['met_sitemap_xml']){
-				$i=0;
+				$i = 0;
 				foreach($sitemaplist as $key=>$val){
 					$val[url]=str_replace('../','',$val[url]);
 					$val[url]=str_replace('&','&amp;',$val[url]);
@@ -291,6 +295,7 @@ class seo_label {
 				fputs($fp, $config_save);
 				fclose($fp);
 			}
+
 			/*Txt网站地图*/
 			if($_M['config']['met_sitemap_txt']){
 				$config_save="";

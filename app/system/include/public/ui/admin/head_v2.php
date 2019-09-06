@@ -20,8 +20,12 @@ if($_M['word']['metinfo']){
 }
 $met_file_version=str_replace('.','',$_M['config']['metcms_v']).$_M['config']['met_patch'];
 $is_lte_ie9=strpos($_SERVER["HTTP_USER_AGENT"],"MSIE 9")!==false || strpos($_SERVER["HTTP_USER_AGENT"],"MSIE 8")!==false;
-$basic_admin_css_name=$is_lte_ie9?"-lteie9-1":"";
-$basic_admin_css_filemtime = filemtime(PATH_WEB.'public/ui/v2/static/css/basic_admin'.$basic_admin_css_name.'.css');
+if($is_lte_ie9){
+    $basic_admin_css_filemtime_1 = filemtime(PATH_WEB.'public/ui/v2/static/css/basic_admin-lteie9-1.css');
+    $basic_admin_css_filemtime_2 = filemtime(PATH_WEB.'public/ui/v2/static/css/basic_admin-lteie9-2.css');
+}else{
+    $basic_admin_css_filemtime = filemtime(PATH_WEB.'public/ui/v2/static/css/basic_admin.css');
+}
 ?>
 <!DOCTYPE HTML>
 <html class="{$_M['html_class']}">
@@ -38,10 +42,8 @@ $basic_admin_css_filemtime = filemtime(PATH_WEB.'public/ui/v2/static/css/basic_a
 <?php
 if($is_lte_ie9){
 ?>
-<link href="{$url.site}app/system/include/static2/vendor/bootstrap/bootstrap.min.css" rel="stylesheet" type="text/css">
-<link href="{$url.site}app/system/include/static2/vendor/bootstrap/bootstrap-extend.min.css" rel="stylesheet" type="text/css">
-<link href="{$url.site}app/system/include/static2/assets/css/site.min.css" rel="stylesheet" type="text/css">
-<link href="{$url.site}public/ui/v2/static/css/basic_admin-lteie9-1.css?{$basic_admin_css_filemtime}" rel="stylesheet" type="text/css">
+<link href="{$url.site}public/ui/v2/static/css/basic_admin-lteie9-1.css?{$basic_admin_css_filemtime_1}" rel="stylesheet" type="text/css">
+<link href="{$url.site}public/ui/v2/static/css/basic_admin-lteie9-2.css?{$basic_admin_css_filemtime_2}" rel="stylesheet" type="text/css">
 <?php
 }else{
 ?>

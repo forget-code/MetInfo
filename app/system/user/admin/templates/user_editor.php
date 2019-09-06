@@ -128,7 +128,24 @@ echo <<<EOT
 		<h3 class="v52fmbx_hr">{$_M[word][memberattribute]}</h3>
 <!--
 EOT;
-$this->paraclass->paratem($_M['form']['id'],10);
+//$this->paraclass->paratem($_M['form']['id'],10,$classnow);
+
+foreach($userpara as $key=>$val){
+    echo <<<EOT
+-->
+		<div class="v52fmbx_dlbox">
+		<dl>
+			<dt>{$val[name]}{$_M[word][marks]}</dt>
+			<dd>
+				{$val['value']}
+			</dd>
+		</dl>
+		</div>
+<!--
+EOT;
+}
+
+
 echo <<<EOT
 -->
 		<dl class="noborder">

@@ -12,7 +12,7 @@ echo <<<EOT
 <div class="v52fmbx product_index">
 	<div class="v52fmbx-table-top">
 		<div class="ui-float-left">
-		<a class="btn btn-danger" href="javascript:;" data-table-addlist="{$_M[url][own_form]}a=doadd&bigclass=0" role="button">{$_M[word][column_addcolumn_v6]}</a>
+		<a class="btn btn-danger" href="javascript:;" data-table-addlist="{$_M[url][own_form]}a=doadd&bigclass=0" role="button">{$_M[word][add]}</a>
 		&nbsp;&nbsp;
 		<font style=" color:#999;">{$_M[word][noorderinfo]}</font>
 		</div>
@@ -59,7 +59,7 @@ echo <<<EOT
 					{$_M[word][Submit]}</button>
 					<button type="submit" name="del" class="btn btn-default btn-danger" data-confirm="{$_M['word']['js7']}</br>{$_M['word']['jsx39']}" style="margin-left:2px;">
 					{$_M[word][delete]}</button>
-					<a class="btn btn-default" href="javascript:;" data-table-addlist="{$_M[url][own_form]}a=doadd&bigclass=0" role="button">+{$_M[word][column_addcolumn_v6]}</a>
+					<a class="btn btn-default" href="javascript:;" data-table-addlist="{$_M[url][own_form]}a=doadd&bigclass=0" role="button">+{$_M[word][add]}</a>
 					</div>
 					<div class="pull-right">
 					<div class="pull-left padding-right-5 dropup">

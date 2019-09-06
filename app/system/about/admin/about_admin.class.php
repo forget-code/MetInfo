@@ -234,8 +234,8 @@ class about_admin extends message_admin {
 		global $_M;
 		$_M['form']['addtime'] = $_M['form']['addtype']==2?$_M['form']['addtime']:date("Y-m-d H:i:s");
 		if($this->update_list($_M['form'],$_M['form']['id'])){
-			if(strpos($_M['form']['turnurl'], 'pageset=1')!==false){
-				turnover("{$_M['url'][own_form]}a=doeditor&id={$_M['form']['id']}","");
+			if(strpos($_M['form']['turnurl'], 'pageset=1')!==false || !$_M['form']['turnurl']){
+				turnover("{$_M['url'][own_form]}","");
 			}else{
 				turnover($_M['form']['turnurl'],"");
 			}

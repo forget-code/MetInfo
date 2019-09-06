@@ -42,13 +42,11 @@ echo <<<EOT
 <!--
 EOT;
 foreach ($resui['css'] as $key=> $value) {
-	if(!$key){
 echo <<<EOT
 -->
 <link rel='stylesheet' type='text/css' href="{$value}">
 <!--
 EOT;
-	}
 }
 if($resui_lteie9){
 echo <<<EOT
@@ -242,7 +240,7 @@ echo <<<EOT
 		</div>
 	</div>
 </div>
-<div class="modal fade modal-primary content-modal">
+<div class="modal fade modal-warning content-modal">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content h-100p">
 			<div class="modal-header">
@@ -257,7 +255,7 @@ echo <<<EOT
 		</div>
 	</div>
 </div>
-<div class="modal fade modal-primary ueeditor-modal">
+<div class="modal fade modal-success ueeditor-modal">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content h-100p">
 			<div class="modal-header">
@@ -270,12 +268,12 @@ echo <<<EOT
 			</div>
 			<div class="modal-footer p-t-0">
 				<button type="button" class="btn btn-default" data-dismiss="modal">{$_M['word']['indexonlieno']}</button>
-				<button type="submit" class="btn btn-primary">{$_M['word']['Submit']}</button>
+				<button type="submit" class="btn btn-success">{$_M['word']['Submit']}</button>
 			</div>
 		</div>
 	</div>
 </div>
-<div class="modal fade modal-primary img-modal">
+<div class="modal fade modal-success img-modal">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content h-100p">
 			<div class="modal-header">
@@ -290,12 +288,12 @@ echo <<<EOT
 			</div>
 			<div class="modal-footer p-t-0">
 				<button type="button" class="btn btn-default" data-dismiss="modal">{$_M['word']['indexonlieno']}</button>
-				<button type="submit" class="btn btn-primary">{$_M['word']['Submit']}</button>
+				<button type="submit" class="btn btn-success">{$_M['word']['Submit']}</button>
 			</div>
 		</div>
 	</div>
 </div>
-<div class="modal fade modal-primary icon-modal">
+<div class="modal fade modal-success icon-modal">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content h-100p">
 			<div class="modal-header">
@@ -309,7 +307,7 @@ echo <<<EOT
 				<button type="button" class="btn btn-warning pull-xs-left back-iconlist" hidden>{$_M['word']['column_backiconlist_v6']}</button>
 				<span class='m-r-20'>{$_M['word']['column_saveicon_v6']}</span>
 				<button type="button" class="btn btn-default" data-dismiss="modal">{$_M['word']['indexonlieno']}</button>
-				<button type="submit" class="btn btn-primary" data-get_url='{$_M['url']['own_form']}a=doset_icon' data-submit_url='{$_M['url']['own_form']}a=dosave_img'>{$_M['word']['Submit']}</button>
+				<button type="submit" class="btn btn-success" data-get_url='{$_M['url']['own_form']}a=doset_icon' data-submit_url='{$_M['url']['own_form']}a=dosave_img'>{$_M['word']['Submit']}</button>
 			</div>
 		</div>
 	</div>

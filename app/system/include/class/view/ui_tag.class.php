@@ -14,8 +14,7 @@ class ui_tag extends tag {
         $name = isset($attr['name']) ? $attr['name'] : '';
         $style = isset($attr['style']) ? $attr['style'] : 'met-1';
         $id = isset($attr['id']) ? $attr['id'] : 0;
-        load::sys_class('view/ui_compile');
-        $ui_compile = new ui_compile();
+        $ui_compile = load::sys_class('view/ui_compile','new');
         $ui = $ui_compile->list_local_config($id);
 
         if(!$ui['ui_show']){
@@ -41,15 +40,15 @@ class ui_tag extends tag {
             \$id = {$id};
             \$style = \"{$style}\";
             if(!isset(\$ui_compile)){
-                load::sys_class('view/ui_compile');
-                \$ui_compile = new ui_compile();
+                
+                \$ui_compile = load::sys_class('view/ui_compile','new');
             }
             \$ui = \$ui_compile->list_local_config(\$id);
             \$ui['has'] =\$ui_compile->list_page_config(\$met_page);
             ?>";
             $cache = $php.$cache;
             $cache = str_replace("<?php defined('IN_MET') or exit('No permission'); ?>", '', $cache);
-            $cache = str_replace('$uicss', $parent_name.'_'.$style, $cache);
+            $cache = str_replace('$uicss', $parent_name.'_'.$style.'_'.$id, $cache);
 
         return $cache;
     }
@@ -91,14 +90,14 @@ $user_name=$_M["user"]?$_M["user"]["username"]:"";
 <?php
 if($lang_json_file_ok){
     $basic_css_name=$metinfover_v2?"":"_web";
+    if($c["temp_frame_version"]=="v2") $basic_css_name.="_v2";
     $is_lte_ie9=strpos($_SERVER["HTTP_USER_AGENT"],"MSIE 9")!==false || strpos($_SERVER["HTTP_USER_AGENT"],"MSIE 8")!==false;
-    if($is_lte_ie9){
-        $lteie9_css_filemtime = filemtime(PATH_WEB."public/ui/v2/static/css/basic".$basic_css_name."-lteie9-1.css");
+    if($is_lte_ie9 && $c["temp_frame_version"]!="v2"){
+        $lteie9_css_filemtime_1 = filemtime(PATH_WEB."public/ui/v2/static/css/basic".$basic_css_name."-lteie9-1.css");
+        $lteie9_css_filemtime_2 = filemtime(PATH_WEB."public/ui/v2/static/css/basic".$basic_css_name."-lteie9-2.css");
 ?>
-<link href="{$url.site}app/system/include/static2/vendor/bootstrap/bootstrap.min.css" rel="stylesheet" type="text/css">
-<link href="{$url.site}app/system/include/static2/vendor/bootstrap/bootstrap-extend.min.css" rel="stylesheet" type="text/css">
-<link href="{$url.site}app/system/include/static2/assets/css/site.min.css" rel="stylesheet" type="text/css">
-<link href="{$url.site}public/ui/v2/static/css/basic{$basic_css_name}-lteie9-1.css?{$lteie9_css_filemtime}" rel="stylesheet" type="text/css">
+<link href="{$url.site}public/ui/v2/static/css/basic{$basic_css_name}-lteie9-1.css?{$lteie9_css_filemtime_1}" rel="stylesheet" type="text/css">
+<link href="{$url.site}public/ui/v2/static/css/basic{$basic_css_name}-lteie9-2.css?{$lteie9_css_filemtime_2}" rel="stylesheet" type="text/css">
 <?php
     }else{
         $basic_css_filemtime = filemtime(PATH_WEB."public/ui/v2/static/css/basic".$basic_css_name.".css");
@@ -107,7 +106,7 @@ if($lang_json_file_ok){
 <?php
     }
     if($metinfover_v2){
-        if(file_exists(PATH_TEM."cache/common.css")){
+        if(is_file(PATH_TEM."cache/common.css")){
             $common_css_time = filemtime(PATH_TEM."cache/common.css");
 ?>
 <link rel="stylesheet" type="text/css" href="{$c.met_weburl}templates/{$c.met_skin_user}/cache/common.css?{$common_css_time}">
@@ -116,7 +115,7 @@ if($lang_json_file_ok){
         if($met_page){
             if($met_page == 404) $met_page = "show";
             $page_css = PATH_TEM."cache/".$met_page."_".$_M["lang"].".css";
-            if(!file_exists($page_css)){
+            if(!is_file($page_css)){
                 load::sys_class(\'view/ui_compile\');
                 $ui_compile = new ui_compile();
                 $ui_compile->parse_page($met_page);
@@ -168,7 +167,19 @@ h1,h2,h3,h4,h5,h6{font-family:{$g.met_font} !important;}
     {
         global $_M;
         $php = '
-<?php if($lang_json_file_ok){ ?>
+<?php
+if($lang_json_file_ok){
+    if($metinfover_v2){
+        if(is_file(PATH_TEM."cache/common.js")){
+            $common_js_time = filemtime(PATH_TEM."cache/common.js");
+            $metpagejs="common.js?".$common_js_time;
+        }
+        if($met_page){
+            $page_js_time = filemtime(PATH_TEM."cache/".$met_page."_".$_M["lang"].".js");
+            $metpagejs=$met_page."_".$_M["lang"].".js?".$page_js_time;
+        }
+    }
+?>
 <input type="hidden" name="met_lazyloadbg" value="{$g.lazyloadbg}">
 <?php if($c["shopv2_open"]){ ?>
 <script>
@@ -182,36 +193,12 @@ var jsonurl="{$url.shop_cart_jsonlist}",
     }
 }
 $basic_js_name=$metinfover_v2?"":"_web";
+if($c["temp_frame_version"]=="v2") $basic_js_name.="_v2";
 $basic_js_time = filemtime(PATH_WEB."public/ui/v2/static/js/basic".$basic_js_name.".js");
 ?>
-<script src="{$c.met_weburl}public/ui/v2/static/js/basic{$basic_js_name}.js?{$basic_js_time}"></script>
+<script src="{$c.met_weburl}public/ui/v2/static/js/basic{$basic_js_name}.js?{$basic_js_time}" data-js_url="{$c.met_weburl}templates/{$c.met_skin_user}/cache/{$metpagejs}" id="met-page-js"></script>
 <?php
 if($lang_json_file_ok){
-    if($metinfover_v2){
-        if(file_exists(PATH_TEM."cache/common.js")){
-            $common_js_time = filemtime(PATH_TEM."cache/common.js");
-            $metpagejs="common.js?".$common_js_time;
-        }
-        if($met_page){
-            $page_js_time = filemtime(PATH_TEM."cache/".$met_page."_".$_M["lang"].".js");
-            $metpagejs=$met_page."_".$_M["lang"].".js?".$page_js_time;
-        }
-?>
-<script>
-var metpagejs="{$c.met_weburl}templates/{$c.met_skin_user}/cache/{$metpagejs}";
-if(typeof jQuery != "undefined"){
-    metPageJs(metpagejs);
-}else{
-    var metPageInterval=setInterval(function(){
-        if(typeof jQuery != "undefined"){
-            metPageJs(metpagejs);
-            clearInterval(metPageInterval);
-        }
-    },50)
-}
-</script>
-<?php
-    }
     $met_lang_time = filemtime(PATH_WEB."cache/lang_json_".$data["lang"].".js");
 ?>
 <script src="{$c.met_weburl}cache/lang_json_{$data.lang}.js?{$met_lang_time}"></script>

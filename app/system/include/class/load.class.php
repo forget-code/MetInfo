@@ -17,6 +17,13 @@ class load {
 	 * @return 同_load_class
 	 */
 	public static function sys_class($classname ,$action = '') {
+        if (strstr($classname, '/')) {
+            $star = strrpos($classname, '/') + 1;
+            $dir = substr($classname, 0, $star);
+            $class_name = substr($classname, $star);
+            $path = PATH_SYS_CLASS . $dir;
+            return self::_load_class($path, $class_name, $action);
+        }
 		return self::_load_class(PATH_SYS_CLASS, $classname, $action);
 	}
 
@@ -37,7 +44,7 @@ class load {
 		$filedir = PATH_SYS;
 		$classdir = self::dir_get($classname);
 		$dirs = explode('/', trim($classdir['dir'], '/'));
-		if(file_exists(PATH_SYS.$dirs[0].'/include/class/'.$classdir['file'].'.class.php')){
+		if(is_file(PATH_SYS.$dirs[0].'/include/class/'.$classdir['file'].'.class.php')){
 			return self::_load_class(PATH_SYS.$dirs[0].'/include/class/', $classdir['file'], $action);
 		}else{
 			return self::_load_class($filedir.$classdir['dir'], $classdir['file'], $action);
@@ -50,7 +57,7 @@ class load {
 	public static function mod_func($funcname) {
 		$funcname=str_replace('.func.php', '', $funcname);
 		$filedir = PATH_MODULE_FILE;
-		if(file_exists($filedir.'include/function/'.$funcname.'.func.php')){
+		if(is_file($filedir.'include/function/'.$funcname.'.func.php')){
 			return self::_load_func($filedir.'include/function/', $funcname);
 		}else{
 			$funcdir = self::dir_get($funcname);
@@ -79,7 +86,7 @@ class load {
 	public static function own_class($classname ,$action = '') {
 		$classname=str_replace('.class.php', '', $classname);
 		$filedir = self::$own_include_dir ? self::$own_include_dir:PATH_APP_FILE;
-		if(file_exists($filedir.'include/class/'.$classname.'.class.php')){
+		if(is_file($filedir.'include/class/'.$classname.'.class.php')){
 			return self::_load_class($filedir.'include/class/', $classname, $action);
 		}else{
 			$classdir = self::dir_get($classname);
@@ -95,7 +102,7 @@ class load {
 	public static function own_func($funcname) {
 		$funcname=str_replace('.func.php', '', $funcname);
 		$filedir = self::$own_include_dir ? self::$own_include_dir:PATH_APP_FILE;
-		if(file_exists($filedir.'include/function/'.$funcname.'.func.php')){
+		if(is_file($filedir.'include/function/'.$funcname.'.func.php')){
 			return self::_load_func($filedir.'include/function/', $funcname);
 		}else{
 			$funcdir = self::dir_get($funcname);
@@ -157,7 +164,7 @@ class load {
 		foreach ($_M['plugin'][$plugin] as $key => $val) {
 			$own = $_M['url']['own'];
 			$_M['url']['own'] = $_M['url']['app'].$val.'/';
-			if (file_exists(PATH_APP.'app/'.$val.'/plugin/'.'plugin_'.$val.'.class.php')) {
+			if (is_file(PATH_APP.'app/'.$val.'/plugin/'.'plugin_'.$val.'.class.php')) {
 				self::change_own_include_dir($val);
 				require_once PATH_APP.'app/'.$val.'/plugin/'.'plugin_'.$val.'.class.php';
 				//self::_load_class(PATH_APP.'app/'.$val.'/plugin/', 'plugin_'.$val, $plugin);
@@ -209,14 +216,14 @@ class load {
 		$classname=str_replace('.class.php', '', $classname);
 		$is_myclass = 0;
 		if(!self::$mclass[$classname]){
-			if(file_exists($path.$classname.'.class.php')){
+			if(is_file($path.$classname.'.class.php')){
 				require_once $path.$classname.'.class.php';
 			} else {
 				echo str_replace(PATH_WEB, '', $path).$classname.'.class.php is not exists';
 				exit;
 			}
 			$myclass = "my_{$classname}";
-			if (file_exists($path.'myclass/'.$myclass.'.class.php')) {
+			if (is_file($path.'myclass/'.$myclass.'.class.php')) {
 				$is_myclass = 1;
 				require_once $path.'myclass/'.$myclass.'.class.php';
 			}
@@ -258,7 +265,7 @@ class load {
 	 */
 	private static function _load_func($path, $funcname) {
 		$funcname=str_replace('.func.php', '', $funcname);
-		if (file_exists($path.$funcname.'.func.php')) {
+		if (is_file($path.$funcname.'.func.php')) {
 			require_once $path.$funcname.'.func.php';
 		} else {
 			echo $funcname.'.func.php is not exists';

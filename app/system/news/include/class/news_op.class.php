@@ -57,7 +57,7 @@ class news_op {
 	/*移动产品*/
 	public function list_move($nowclass1,$nowclass2,$nowclass3,$toclass1,$toclass2,$toclass3){
 		global $_M;
-		return $this->database->move_list_by_class($id);
+		return $this->database->move_list_by_class($nowclass1,$nowclass2,$nowclass3,$toclass1,$toclass2,$toclass3);
   }
   
 }

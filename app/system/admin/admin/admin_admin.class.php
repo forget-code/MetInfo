@@ -184,6 +184,14 @@ class admin_admin extends admin {
         }else{
             $alist['admin_pass'] = md5($_M['form']['admin_pass']);
         }
+        if (!empty($_M['form']['admin_email'])) {
+            $check_email = $this->check_admin_email($_M['form']['admin_email'],$_M['form']['id']);
+            if ($check_email === true) {
+                $alist['admin_email'] = $_M['form']['admin_email'];
+            }else{
+                turnover("{$_M[url][own_form]}a=doindex","{$_M['word']['admin_email_error']}");
+            }
+        }
         if($this->update_list_sql($alist, $_M['form']['id'])){
             turnover("{$_M[url][own_form]}a=doindex");
 		}else{
@@ -199,8 +207,8 @@ class admin_admin extends admin {
 	public function update_list($list,$id){
 		global $_M;
 		$list['id'] = $id;
-		$alist = $this->publuc_handle($list);
-		if($this->update_list_sql($alist,$id)){
+        $alist = $this->publuc_handle($list);
+        if($this->update_list_sql($alist,$id)){
 			return true;
 		}else{
 			return false;
@@ -209,13 +217,25 @@ class admin_admin extends admin {
 	}
 
 	public function publuc_handle($list){
+		global $_M;
 
 		$admin = $this->database->get_list_one_by_id($list['id']);
-		
+
+		//管理员邮箱
+        if (!empty($list['admin_email'])) {
+            $check_email = $this->check_admin_email($list['admin_email'],$list['id']);
+            if ($check_email === true) {
+                $alist['admin_email'] = $list['admin_email'];
+            }else{
+                turnover("{$_M['url']['own_form']}a=doindex","{$_M['word']['admin_email_error']}");
+            }
+        }
 		//密码
-		if($admin['admin_pass'] != $list['admin_pass'] && $admin['admin_pass']){
-			$alist['admin_pass'] = md5($list['admin_pass']);
-		}
+        if(empty($list['admin_pass']) || $admin['admin_pass'] == md5($list['admin_pass'])){
+            $alist['admin_pass'] = $admin['admin_pass'];
+        }else{
+            $alist['admin_pass'] = md5($list['admin_pass']);
+        }
 		//名字
 		$alist['admin_name'] = $list['admin_name'];
 		//控制
@@ -250,6 +270,34 @@ class admin_admin extends admin {
 		$list['id'] = $id;
 		return $this->database->update_by_id($list);
 	}
+
+    /**
+     * 检测管理员邮箱是否被占用
+     * @param $id
+     * @param $email
+     * @return bool
+     */
+    public function check_admin_email($email,$id)
+    {
+        global $_M;
+        if ($id) {
+            $sql = "SELECT * FROM {$_M['table']['admin_table']} WHERE id != '{$id}' AND admin_email = '{$email}'";
+            $res = DB::get_all($sql);
+            if ($res) {
+                return false;
+            }else{
+                return true;
+            }
+        }else{
+            $sql = "SELECT * FROM {$_M['table']['admin_table']} WHERE admin_email = '{$email}'";
+            $res = DB::get_one($sql);
+            if ($res) {
+                return false;
+            }else{
+                return true;
+            }
+        }
+    }
 
 	/**
 	 * 首页页面

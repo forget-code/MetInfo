@@ -63,8 +63,10 @@ class news_handle extends base_handle{
 			}else{
 				$src = 'src';
 			}
-			$content['hits'] = "<script type='text/javascript' class='met_hits' {$src}=\"{$_M['url']['site']}hits/?lang={$_M['lang']}&type={$this->contents_page_name}&vid={$content['id']}&list={$list}{$ajax}\"></script>";
-			$content['content'] = contentshow($content['content']);
+            if ($_M['config']['met_webhtm'] && $_M['form']['html_filename'] && $_M['form']['metinfonow'] == $_M['config']['met_member_force']) {//生成静态页
+                $content['hits'] = "<script type='text/javascript' class='met_hits' {$src}=\"{$_M['url']['site']}hits/?lang={$_M['lang']}&type={$this->contents_page_name}&vid={$content['id']}&list={$list}{$ajax}\"></script>";
+            }
+			##$content['content'] = contentshow($content['content']);//已弃用
 		}
 		return $content;
 	}

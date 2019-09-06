@@ -187,7 +187,9 @@ class message_admin extends base_admin {
 
 			if($val['type'] == 5){
 				if($para_list[$key]['info']){
-						$para_list[$key]['info'] = "<a href=\"../../{$para_list[$key]['info']}\" target=\"_blank\">{$para_list[$key][imgname]}</a>";
+                    $weburl = $_M['config']['weburl'];
+                    $para_list[$key]['info'] = (($para_list[$key]['info'] != '../upload/file/') ? "<a href='{$weburl}" . $para_list[$key]['info'] . "' target='_blank'>{$para_list[$key]['imgname']}</a>" : $_M['word']['filenomor']);
+                    ##$para_list[$key]['info'] = "<a href=\"../../{$para_list[$key]['info']}\" target=\"_blank\">{$para_list[$key][imgname]}</a>";
 					}else{
 						$para_list[$key]['info'] = $_M[word][nopicture];
 					}

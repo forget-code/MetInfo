@@ -17,7 +17,7 @@ var ownlangtxt = {
 <div class="v52fmbx" data-gent="{$_M[form][gent]}">
 	<h3 class="v52fmbx_hr">{$_M['word']['unitytxt_1']}
 	<span class="tips" {$met_agents_display}>
-<a href="http://www.metinfo.cn/news/shownews852.htm" target="_blank">{$_M[word][seotips14_1]}</a>	
+<a href="https://help.metinfo.cn/faq/398.html" target="_blank">{$_M[word][seotips14_1]}</a>	
 	</span>
 	</h3>
 	<dl>

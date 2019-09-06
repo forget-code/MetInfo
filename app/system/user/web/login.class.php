@@ -46,6 +46,11 @@ class login extends userweb
                 setcookie("referer", $_SERVER['HTTP_REFERER']);
             }
         }
+
+        if (isset($_M['form']['gourl']) && $_M['form']['gourl']) {
+            setcookie("referer", $_M['form']['gourl']);
+        }
+
         if ($session->get("logineorrorlength") > 3) $_M['code'] = 1;
 
         require $this->view('app/login', $this->input);
@@ -72,36 +77,6 @@ class login extends userweb
         if ($user) {
             if (!$user['valid']) {
                 okinfo($_M['url']['login'], $_M['word']['membererror6']);
-            }
-
-            //消费会员组升级
-            $pglist = $paygroup->get_paygroup_list_recharge();
-            $payopen = $_M['config']['payment_open'];
-            if ($pglist && $payopen) {
-                $web_pay = load::mod_class('pay/pay_op', 'new');
-                $user_op = load::mod_class('user/user_op', 'new');
-
-                $payrecode = $web_pay->get_record($user,1);
-                $total = 0;
-                foreach ($payrecode as $value) {
-                    if ($value['type'] == 1) {
-                        $total = $value['price'] + $total;
-                    }
-                }
-
-                foreach ($pglist as $pgroup) {
-                    if ($pgroup['recharge_price'] <= $total) {
-                        $groupnew = $pgroup;
-                    }
-
-                    if ($pgroup['groupid'] == $user['groupid']) {
-                        $groupnow = $pgroup;
-                    }
-                }
-
-                if($groupnew['recharge_price'] >= $groupnow['$groupnow']){
-                    $res = $user_op->modity_group($user['id'], $groupnew['groupid']);
-                }
             }
 
             $session->del('logineorrorlength');

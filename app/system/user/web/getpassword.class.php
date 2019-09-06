@@ -59,9 +59,9 @@ class getpassword extends userweb {
 
 		$valid = load::mod_class('user/web/class/valid','new');
 		if ($valid->get_tel($_M['form']['phone'])) {
-			echo 'SUCCESS';
+			$this->ajax_success();
 		} else {
-			echo $_M['word']['membererror5'].$ret;
+			$this->ajax_error($_M['word']['membererror5'].$ret);
 		}
 
 	}

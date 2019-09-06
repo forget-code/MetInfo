@@ -110,6 +110,7 @@ class common {
 		$this->load_app_config('metinfo');
 
 		$_M['config']['met_webkeys'] = trim(file_get_contents(PATH_WEB.'/config/config_safe.php'));
+		$_M['config']['met_webkeys'] = str_replace(' ', '', $_M['config']['met_webkeys']);
 		$_M['config']['met_webkeys'] = str_replace('<?php/*', '', $_M['config']['met_webkeys']);
 		$_M['config']['met_webkeys'] = str_replace('*/?>', '', $_M['config']['met_webkeys']);
 		if(!preg_match('/^[0-9A-Za-z]{32}$/',$_M['config']['met_webkeys'])){
@@ -163,9 +164,17 @@ class common {
 			$_M['config'][$value['name']] = $this->filter_config($value['value']);
 		}
 
+        if (!$_M['config']['data_cache_time']) {
+            $_M['config']['data_cache_time'] = 600;
+        }
+
 		if($_M['form']['pageset']){
 			$_M['config']['debug'] = true;
 		}
+
+		if (is_mobile()) {
+            $_M['config']['met_logo'] = $_M['config']['met_mobile_logo'] ? $_M['config']['met_mobile_logo'] : $_M['config']['met_logo'];
+        }
 	}
 
 	/**
@@ -206,7 +215,7 @@ class common {
 	  */
 	protected function load_url_site() {
 		global $_M;
-			if ($_SERVER['SERVER_PORT'] == 443 || $_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1 || $_SERVER['HTTP_X_CLIENT_SCHEME'] == 'https' || $_SERVER['HTTP_FROM_HTTPS'] == 'on') {
+			if ($_SERVER['SERVER_PORT'] == 443 || $_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1 || $_SERVER['HTTP_X_CLIENT_SCHEME'] == 'https' || $_SERVER['HTTP_FROM_HTTPS'] == 'on' ||$_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
 					$http = 'https://';
 			}else{
 					$http = 'http://';

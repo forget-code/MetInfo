@@ -22,7 +22,7 @@ class ui_compile
     /**
      * 需要可视化的字段
      */
-    public $fields = array('name','value','title','keywords','description','content','valueinfo','defaultvalue','imgurl','uip_default','uip_value','img_path','columnimg','icon','imgurls','info','content1','content2','content3','content4','position','img_title','img_des','namemark','weblogo');
+    public $fields = array('name','value','title','keywords','description','content','valueinfo','defaultvalue','imgurl','uip_default','uip_value','img_path','columnimg','icon','imgurls','info','content1','content2','content3','content4','position','img_title','img_des','namemark','weblogo','ctitle');
     /**
      * 需要可视化的表
      */
@@ -38,11 +38,11 @@ class ui_compile
         $this->ui_path  = PATH_ALL_APP."met_ui/admin/ui/";
         $this->skin_name = $_M['config']['met_skin_user'];
         $this->cache_path = PATH_WEB.'cache/templates';
-        if(!file_exists($this->cache_path)){
+        if(!is_dir($this->cache_path)){
             mkdir($this->cache_path,0777,true);
         }
         $inc = $this->tem_path.'metinfo.inc.php';
-        if(file_exists($inc)){
+        if(is_file($inc)){
             require $inc;
             $this->template_type = $template_type;
         }
@@ -61,7 +61,7 @@ class ui_compile
     		return false;
     	}
 
-        if(!$_M['form']['pageset'] && file_exists($this->tem_path.'cache/'.$page.'.css')){
+        if(!$_M['form']['pageset'] && is_file($this->tem_path.'cache/'.$page.'.css')){
             return false;
         }
     	$temp_page = $this->tem_path . $page.'.php';
@@ -110,12 +110,12 @@ class ui_compile
             $ui_path  = $this->ui_path.$parent_name.'/'.$ui_name;
             $tem_ui = $this->tem_path.'ui/'.$parent_name.'/'.$ui_name;
             $config_path = $tem_ui.'/config.json';
-            if(!file_exists($config_path)){
+            if(!is_file($config_path)){
                 $config_path = $ui_path.'/config.json';
                 $tem_ui = $ui_path;
             }
 
-            if(file_exists($config_path)){
+            if(is_file($config_path)){
                 $config = json_decode(file_get_contents($config_path),true);
                 if(!$config){
                     echo "{$config_path}'配置文件有问题'<br>";
@@ -155,7 +155,9 @@ class ui_compile
         $css_content = "";
 
         foreach ($unique_css as $key => $c) {
-        	$css_content .= $this->replace_url($c);
+            if(strpos($c, '/fonts/web-icons/web-icons.min.css')===false && strpos($c, '/fonts/font-awesome/font-awesome.min.css')===false){
+                $css_content .= $this->replace_url($c);
+            }
 
         }
         foreach ($unique_js as $key => $c) {
@@ -169,21 +171,67 @@ class ui_compile
             $_js = $this->replace_js($v);
             $js_content.= $_js;
         }
-
-        if(!file_exists($this->tem_path.'cache/')){
+        if($_M['config']['temp_frame_version']=='v2'){
+            $js_content.="\nmetui();";
+        }
+        if(!is_dir($this->tem_path.'cache/')){
             mkdir($this->tem_path.'cache/',0777,true);
         }
+
+        $css_content=$this->css_compress($css_content);
+        $js_content=$this->js_compress($js_content);
 
         file_put_contents($this->tem_path.'cache/'.$page.'_'.$_M['lang'].'.css', $css_content);
         file_put_contents($this->tem_path.'cache/'.$page.'_'.$_M['lang'].'.js', $js_content);
 	}
 
+    // css压缩
+    public function css_compress($str='')
+    {
+        $str = preg_replace('!/\*[^*]*\*+([^/][^*]*\*+)*/!', '', $str);
+        $str=str_replace(array("
+","\r\n", "\r","\n","\t",'@charset "utf-8";',"@charset 'utf-8';",'@charset "UTF-8";',"@charset 'UTF-8';"), '', $str);
+        $str=str_replace(array('  ', '    ', '    '),' ',$str);
+        $str=str_replace(array(': ',' :'),':',$str);
+        $str=str_replace(array(', ',' ,'),',',$str);
+        $str=str_replace(array('; ',' ;'),';',$str);
+        $str=str_replace(array(' }','} ',';}'),'}',$str);
+        $str=str_replace(array(' {','{ '),'{',$str);
+        $str='@charset "utf-8";'.$str;// CSS声明
+
+        return $str;
+    }
+
+    // js压缩
+    // 去除空行、多行注释、单行注释
+    public function js_compress($str='')
+    {
+        $str = preg_replace(array('!/\*[^*]*\*+([^/][^*]*\*+)*/!'), '', $str);
+        $str = str_replace("\r", "\n", $str);
+        // $str = str_replace("\t", "", $str);
+        $str = explode("\n", $str);
+        $str = array_filter($str,function($var){if(!ctype_space($var)) return $var;});
+        foreach ($str as $key => $value) {
+            $value=trim($value);
+            if(substr($value,0,2)=='//'){
+                unset($str[$key]);
+            }else{
+                if(strpos($value, '// ')!=false){
+                    $value=substr($value,0,strpos($value, '// '));
+                }
+                $str[$key]=$value;
+            }
+        }
+        $str = implode("\n",$str);
+
+        return $str;
+    }
 
     public function list_public_config()
     {
         global $_M;
         $cache = $this->cache_path."/public_config_{$_M['lang']}.php";
-        if(file_exists($cache) && !$_M['form']['pageset']){
+        if(is_file($cache) && !$_M['form']['pageset']){
             return self::get_cache($cache);
         }
         if($this->template_type == 'tag'){
@@ -204,13 +252,13 @@ class ui_compile
 
         $res = $this->tem_path.'static/metinfo.'.$type;
         $new = $this->tem_path.'cache/common.'.$type;
-        if(!file_exists(dirname($new)) && !IN_ADMIN){
+        if(!is_dir(dirname($new)) && !IN_ADMIN){
             mkdir(dirname($new),0777,true);
         }
 
-        $has = file_exists($new);
+        $has = is_file($new);
         if(($_M['form']['pageset'] && !IN_ADMIN) || !$has){
-            if(file_exists($res)){
+            if(is_file($res)){
                 $content = file_get_contents($res);
                 $tem_config = $this->list_templates_config();
                 foreach ($tem_config as $name => $value) {
@@ -218,7 +266,13 @@ class ui_compile
                 }
 
                 $add_content = $this->parse_tag_path($type);
-                file_put_contents($new, $add_content."\n".$content);
+                $content=$add_content."\n".$content;
+                if($type=='css'){
+                    $content=$this->css_compress($content);
+                }else{
+                    $content=$this->js_compress($content);
+                }
+                file_put_contents($new,$content);
             }
         }
     }
@@ -236,13 +290,14 @@ class ui_compile
             $file_path = str_replace(PATH_WEB, '', $path);
             if($type == 'css'){
                 $dir = str_replace(PATH_WEB, '', dirname($path)).'/';
-                $new_content .= "\n/*{$file_path}*/\n".$this->replace_url($path);
+                $new_content .= $this->replace_url($path);
             }else{
-                $new_content.= "\n/*{$file_path}*/\n".$content;
+                $new_content.= $content;
             }
 
 
         }
+
         return $new_content;
     }
     /**
@@ -264,10 +319,10 @@ class ui_compile
                 // 替换公共参数
                 $css = str_replace("\${$name}\$", $value, $css);
             }
-            $css = str_replace('$uicss', '.'.$data['parent_name'].'_'.$data['ui_name'], $css);
+            $css = str_replace('$uicss', '.'.$data['parent_name'].'_'.$data['ui_name'].'_'.$data['pid'], $css);
             $img_url = 'templates/'.$this->skin_name.'/ui/'.$data['parent_name'].'/'.$data['ui_name'].'/img';
 
-            if(file_exists(PATH_WEB.$img_url)){
+            if(is_dir(PATH_WEB.$img_url)){
                 $img_url = $_M['url']['site'].$img_url;
             }else{
                 $img_url = $_M['url']['app'].'met_ui/admin/ui/'.$data['parent_name'].'/'.$data['ui_name'].'/img';
@@ -298,7 +353,7 @@ class ui_compile
         $js_content = "";
         foreach ($data['js'] as $j) {
             $js = file_get_contents($j);
-            $js = str_replace('$uicss', $data['parent_name'].'_'.$data['ui_name'], $js);
+            $js = str_replace('$uicss', $data['parent_name'].'_'.$data['ui_name'].'_'.$data['pid'], $js);
             $js_content.= "\n".$js;
         }
 
@@ -346,7 +401,7 @@ class ui_compile
     public function replace_common($metinfo_css)
     {
         global $_M;
-        if(file_exists($this->tem_path.'/cache/common.css')){
+        if(is_file($this->tem_path.'/cache/common.css')){
             $content = file_get_contents($this->tem_path.'/cache/common.css');
             $global = $this->list_global_config();
             foreach ($global as $name => $value) {
@@ -396,7 +451,7 @@ class ui_compile
 
         $cache = $this->cache_path.'/'."{$skin_name}_{$pid}_{$_M['lang']}.php";
 
-        if(file_exists($cache) && !$_M['form']['pageset']){
+        if(is_file($cache) && !$_M['form']['pageset']){
             return self::get_cache($cache);
         }
         $query = "SELECT * FROM {$_M['table']['ui_config']} WHERE pid = {$pid} AND skin_name = '{$skin_name}' AND lang = '{$_M['lang']}'";
@@ -493,7 +548,7 @@ class ui_compile
         global $_M;
 
         $cache = $this->cache_path."/tem_config_{$_M['lang']}.php";
-        if(file_exists($cache) && !$_M['form']['pageset']){
+        if(is_file($cache) && !$_M['form']['pageset']){
             return self::get_cache($cache);
         }
         $query = "SELECT * FROM {$_M['table']['templates']} WHERE lang = '{$_M['lang']}' AND no = '{$_M['config']['met_skin_user']}' AND type != 1";
@@ -556,7 +611,7 @@ class ui_compile
                 // 如果是外部图片，不增加网站url
                 $val = str_replace('../', '', $realval).$para;
                 if(!strstr($val, 'http')){
-                    $val = $_M['config']['met_weburl'].$val;
+                    $val = $_M['url']['site'].$val;
                 }
             }
 
@@ -632,8 +687,7 @@ class ui_compile
         global $_M;
         $that = $this;
 
-        $new_output =  preg_replace_callback("/(alt|value|title|placeholder|data-name|data-title|data-fv-message)=['\"]?([\S]+)?(<m[\s_a-zA-Z=\d>-]+<\/m>)['\"]?/isu", function($match) use ($that){
-
+        $new_output =  preg_replace_callback("/(alt|value|title|placeholder|data-name|data-title|data-fv-message|data-sub-html)=['\"]?([^\s\>]+)?(<m[\s_a-zA-Z=\d>-]+<\/m>)['\"]?/isu", function($match) use ($that){
            return $that->replace_m(trim($match[0]));
         }, $output);
         if($new_output){
@@ -652,9 +706,6 @@ class ui_compile
         $string = "/[_a-zA-Z<\x{4e00}-\x{9fa5}>]+/u";
         $chinese = "/[<\x{4e00}-\x{9fa5}>]+/u";
 
-        if($table == 'column' && $field == 'content'){
-            return $val;
-        }
         // 产品参数
         if($table == 'plist' && $field == 'info'){
             if(preg_match($number, $val) && !is_numeric($val)){
@@ -694,7 +745,7 @@ class ui_compile
 
     // 要处理的表
     public function checkTable($table){
-        if(!file_exists(PATH_WEB.'config/config_db.php')){
+        if(!is_file(PATH_WEB.'config/config_db.php')){
             return false;
         }
 
@@ -787,7 +838,7 @@ class ui_compile
     {
         global $_M;
         if($_M['form']['pageset']){
-            if(file_exists($file)){
+            if(is_file($file)){
                 @unlink($file);
             }
             return;

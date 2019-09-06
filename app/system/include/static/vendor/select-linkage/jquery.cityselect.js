@@ -40,7 +40,7 @@ required:必选项
 			prov_obj=box_obj.find(".prov"),
 			city_obj=box_obj.find(".city"),
 			dist_obj=box_obj.find(".dist"),
-			select_prehtml=(settings.required) ? "" : "<option value=''>请选择所在地区</option>",
+			select_prehtml=(settings.required) ? "" : "<option value=''>请选择</option>",
 			city_json,
 			cityJson=function(index){
 				city_json=settings.getCityjson(jsondata,index);

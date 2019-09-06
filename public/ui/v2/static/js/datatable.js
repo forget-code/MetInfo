@@ -72,7 +72,7 @@ $.fn.metDataTable=function(){
             datatable_langurl+='Chinese';
         }
         datatable_langurl+='.json';
-        window.datatableOption=function(obj,datatable_index){
+        window.datatableOption=function(obj,datatable_order){
             // 列表class
             var cadcs = obj.find("th[data-table-columnclass]"),
                 cjson=[];
@@ -86,7 +86,7 @@ $.fn.metDataTable=function(){
                 });
             }
             // 插件参数
-            datatable_index=datatable_index||0;
+            datatable_order=datatable_order||0;
             var option={
                     scrollX: M['device_type']=='m'?true:'',
                     sDom: 'tip',
@@ -124,24 +124,37 @@ $.fn.metDataTable=function(){
                         $info.addClass('pull-xs-right');
                         if(json.recordsTotal>settings._iDisplayLength){
                             // 跳转到某页
-                            var gotopage_html='<div class="gotopage pull-xs-left m-t-15 m-l-10"><span>跳转到第</span> <input type="text" name="gotopage" class="w-50 text-xs-center"/> 页 <input type="button" class="btn btn-default btn-sm gotopage-btn" value="跳转"/></div>';
+                            var gotopage_html='<div class="gotopage pull-xs-left m-t-15 m-l-10"><span>跳转到第</span> <input type="text" name="gotopage" class="form-control form-control-sm w-50 text-xs-center"/> 页 <input type="button" class="btn btn-default btn-sm gotopage-btn" value="跳转"/></div>';
                             $paginate.after(gotopage_html);
                             var $gotopage=$paginate.next('.gotopage');
                             $gotopage.find('.gotopage-btn').click(function(event) {
                                 var gotopage=parseInt($gotopage.find('input[name=gotopage]').val());
                                 if(!isNaN(gotopage)){
                                     gotopage--;
-                                    datatable[datatable_index].page(gotopage).draw(false);
+                                    datatable[datatable_order].page(gotopage).draw(false);
                                 }
                             });
                         }
                     },
                     drawCallback: function(settings){// 表格重绘后回调函数
-                        $('tbody',this).metCommon();
-                        if($(window).scrollTop()>$(this).offset().top) $(window).scrollTop($(this).offset().top);// 页面滚动回表格顶部
+                        var $this_scroll=$(window),
+                            $show_body=$(this).data('show_body')?$($(this).data('show_body')):$(this);
+                        if($(this).data('show_body')){
+                            $show_body.metCommon();
+                        }else{
+                            $('tbody',this).metCommon();
+                        }
+                        $show_body.parents().each(function(index, el) {
+                            if($(this).height()>0 && $(this).css('overflow-y')=='auto' || $(this).css('overflow-y')=='scroll'){
+                                $this_scroll=$(this);
+                                return false;
+                            }
+                        });
+                        var this_top=$show_body.offset().top-$this_scroll.offset().top;
+                        if($this_scroll.scrollTop()>this_top) $this_scroll.scrollTop(this_top);// 页面滚动回表格顶部
                         $('#'+$(this).attr('id')+'_paginate .paginate_button.active').addClass('disabled');
                         // 添加表单验证
-                        if(typeof $.fn.metFormAddField !='undefined') $(this).metFormAddField();
+                        if(typeof $.fn.metFormAddField !='undefined') $show_body.metFormAddField();
                     },
                     rowCallback: function(row,data){// 行class
                         if(data.toclass) $(row).addClass(data.toclass);
@@ -149,84 +162,30 @@ $.fn.metDataTable=function(){
                     columnDefs: cjson// 单元格class
                 };
             if(typeof datatable_option!='undefined'){
-                if(typeof datatable_option[datatable_index]['dataSrc']!='undefined') option.ajax.dataSrc=datatable_option[datatable_index]['dataSrc']; // 自定义的表格返回数据处理
-                if(typeof datatable_option[datatable_index]['columns']!='undefined') option.columns=datatable_option[datatable_index]['columns']; // 自定义表格单元格对应的数据名称
+                if(typeof datatable_option[datatable_order]['dataSrc']!='undefined') option.ajax.dataSrc=datatable_option[datatable_order]['dataSrc']; // 自定义的表格返回数据处理
+                if(typeof datatable_option[datatable_order]['columns']!='undefined') option.columns=datatable_option[datatable_order]['columns']; // 自定义表格单元格对应的数据名称
             }
             return option;
         };
         if($('.dataTable[data-table-ajaxurl]',this).length){
-            if(typeof datatable =='undefined') window.datatable=[];
+            /*动态事件绑定，无需重载*/
+            if(typeof datatable =='undefined'){
+                window.datatable=[];
+                // 自定义搜索框
+                $(document).on('change',"[data-table-search]",function(){
+                    if($(this).parents('.form-group').hasClass('has-danger')) return false;
+                    if(typeof datatable != 'undefined'){
+                        var $this_datatable=$(this).parents('.dataTable'),
+                            datatable_order=$this_datatable.index('.dataTable');
+                            if(datatable_order<0) datatable_order=0;
+                        datatable[datatable_order].ajax.reload();
+                    }
+                })
+            }
             $datatable.each(function(index, el) {
                 if($(this).data('table-ajaxurl')) datatable[index]=$(this).DataTable(datatableOption($(this),index));
             });
         }
     }
-    /*动态事件绑定，无需重载*/
-    // 自定义搜索框
-    $(document).on('change',"[data-table-search]",function(){
-        if(typeof datatable != 'undefined'){
-            var $this_datatable=$(this).parents('.dataTable'),
-                datatable_index=$this_datatable.index('.dataTable');
-                if(datatable_index<0) datatable_index=0;
-            datatable[datatable_index].ajax.reload();
-        }
-    })
-    // 自动选中
-    // function table_check(){
-    //     var check = $(".dataTable td input[type='checkbox'],.dataTable td input[type='radio']");
-    //     if(check.length>0){
-    //         var v = check.eq(0).parents(".dataTable").find("input[data-table-chckall]").eq(0).attr("data-table-chckall");
-    //         $(document).on('change',".dataTable td input[type='checkbox'],.dataTable td input[type='radio']",function(){
-    //             var t = $(this).attr("checked")?true:false,tr = $(this).parents("td").eq(0).parent("tr");
-    //             if(v&&t){
-    //                 tr.addClass("ui-table-td-hover");
-    //                 tr.find("input[name='"+v+"']").attr("checked",t);
-    //             }else if(!t&&$(this).attr("name")==v){
-    //                 tr.removeClass("ui-table-td-hover");
-    //             }
-    //         });
-    //     }
-    // }
-    // 表格内容修改后自动勾选对应选项
-    // function modifytick(){
-    //     var fints = $(".dataTable td input,.dataTable td select");
-    //     if(fints.length>0){
-    //         var nofocu = true;
-    //         fints.each(function() {
-    //             $(this).data($(this).attr('name'), $(this).val());
-    //         });
-    //         fints.focusout(function() {
-    //             var tr = $(this).parents("tr");
-    //             if ($(this).val() != $(this).data($(this).attr('name'))) tr.find("input[name='id']").attr('checked', nofocu);
-    //         });
-    //         $(".dataTable td input:checkbox[name!='id']").change(function(){
-    //             var tr = $(this).parents("tr");
-    //             tr.find("input[name='id']").attr('checked', nofocu);
-    //         });
-    //     }
-    // }
-    // 表格控件事件
-    // $(document).on( 'init.dt', function ( e, settings ) {
-    //     var api = new $.fn.dataTable.Api( settings );
-    //     var show = function ( str ) {
-    //         // Old IE :-|
-    //         try {
-    //             str = JSON.stringify( str, null, 2 );
-    //         } catch ( e ) {}
-    //         // table_check();
-    //         var cklist = $(".dataTable td select[data-checked]");
-    //         if(cklist.length>0){
-    //             cklist.each(function(){
-    //                 var v = $(this).attr('data-checked');
-    //                 if(v!=''){
-    //                     if($(this)[0].tagName=='SELECT'){
-    //                         $(this).val(v);
-    //                     }
-    //                 }
-    //             });
-    //         }
-    //         modifytick();
-    //     };
-    // });
 };
 $(document).metDataTable();

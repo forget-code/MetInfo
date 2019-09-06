@@ -68,7 +68,11 @@ class news_database extends base_database {
 		$time = date("Y-m-d H:i:s");
 
 		$column = load::sys_class('label', 'new')->get('column');
-		$sql = " {$this->langsql} AND (recycle='0' or recycle='-1') AND displaytype='1' AND addtime<'{$time}' ";
+		$sql = " {$this->langsql} AND (recycle='0' or recycle='-1') AND displaytype='1' ";
+
+		if(!$_M['config']['sitemap']){//网站地图
+            $sql .= " AND addtime < '{$time}' ";
+        }
 
 		if($_M['form']['classnow']){
 			$class = $column->get_class123_reclass($_M['form']['classnow']);
@@ -251,7 +255,7 @@ class news_database extends base_database {
 	public function get_pre($one) {
 		global $_M;
 		$time = date("Y-m-d H:i:s");
-		$where = "(recycle='0' or recycle='-1') AND displaytype='1' AND addtime<'{$time}' AND links = '' ";
+		$where = "(recycle='0' or recycle='-1') AND displaytype='1' AND addtime<'{$time}' AND (links = '' OR links is null) ";
 
 		$classnow = $one['class3'] ? $one['class3'] : ($one['class2'] ? $one['class2'] : $one['class1']);
 
@@ -363,7 +367,7 @@ class news_database extends base_database {
 	public function get_next($one) {
 		global $_M;
 		$time = date("Y-m-d H:i:s");
-		$where = "(recycle='0' or recycle='-1') AND displaytype='1' AND addtime<'{$time}' AND links = '' ";
+		$where = "(recycle='0' or recycle='-1') AND displaytype='1' AND addtime<'{$time}' AND (links = '' OR links is null) ";
 
 		$classnow = $one['class3'] ? $one['class3'] : ($one['class2'] ? $one['class2'] : $one['class1']);
 
@@ -506,16 +510,16 @@ class news_database extends base_database {
 
 	//栏目批量移动
 	public function move_list_by_class($nowclass1,$nowclass2,$nowclass3,$toclass1,$toclass2,$toclass3){
-		$query = "UPDATE $this->table SET
-			class1 = '{$nowclass1}',
-			class2 = '{$nowclass2}',
-			class3 = '{$nowclass3}',
-			WHERE {$this->langsql}
-			AND class1 = '{$toclass1}',
-			AND class2 = '{$toclass2}',
-			AND class3 = '{$toclass3}',
+        $query = "UPDATE {$this->table} SET
+			class1 = '{$toclass1}', 
+			class2 = '{$toclass2}', 
+			class3 = '{$toclass3}' 
+			WHERE {$this->langsql} 
+			AND class1 = '{$nowclass1}'  
+			AND class2 = '{$nowclass2}'  
+			AND class3 = '{$nowclass3}' 
 			";
-		return DB::query($query);
+        return DB::query($query);
 	}
 
 	//获取栏目下面的内容,返回内容不包含下级栏目内容

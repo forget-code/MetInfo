@@ -4,7 +4,7 @@ INSERT INTO met_language VALUES (null, 'search', '搜索', 0, 16, 1, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'home', '网站首页', 0, 17, 1, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'error', '读取数据错误', 0, 18, 1, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'success', '操作成功!', 0, 19, 1, 0, 'cn');
-INSERT INTO met_language VALUES (null, 'Info1', 'MetInfo企业网站管理系统', 0, 20, 1, 0, 'cn');
+INSERT INTO met_language VALUES (null, 'Info1', 'MetInfo|米拓企业建站系统', 0, 20, 1, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'Info2', '企业建站程序', 0, 21, 1, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'Info3', '企业网站建设', 0, 22, 1, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'Colunm', '栏目名称', 0, 23, 1, 0, 'cn');
@@ -448,7 +448,7 @@ INSERT INTO met_config VALUES (null, 'metconfig_weburl', '', '', 0, 0, 'cn');
 INSERT INTO met_config VALUES (null, 'metconfig_webname', '网站名称', '', 0, 0, 'cn');
 INSERT INTO met_config VALUES (null, 'metconfig_logo', '../upload/201801/1515549638.png', '', 0, 0, 'cn');
 INSERT INTO met_config VALUES (null, 'metconfig_mobile_logo', '../upload/201807/1532137488.png', '', 0, 0, 'cn');
-INSERT INTO met_config VALUES (null, 'metconfig_skin_user', 'metv6', '', 0, 0, 'cn');
+INSERT INTO met_config VALUES (null, 'metconfig_skin_user', 'metv6s', '', 0, 0, 'cn');
 INSERT INTO met_config VALUES (null, 'metconfig_big_wate', '0', '', 0, 0, 'cn');
 INSERT INTO met_config VALUES (null, 'metconfig_thumb_wate', '0', '', 0, 0, 'cn');
 INSERT INTO met_config VALUES (null, 'metconfig_wate_class', '1', '', 0, 0, 'cn');
@@ -632,8 +632,8 @@ INSERT INTO met_config VALUES(null, 'flash_10001', '1|980|600|', '', '0', '10001
 
 INSERT INTO met_lang VALUES (null,'简体中文','1','1','cn','cn','cn.gif','','0','0','html','','cn');
 
-INSERT INTO met_admin_array VALUES('1','普通会员','','0','','0','0','1','1','cn','');
-INSERT INTO met_admin_array VALUES('2','代理商','','0','','0','0','2','1','cn','');
+INSERT INTO met_admin_array VALUES('2','普通会员','','0','','0','0','1','1','cn','');
+INSERT INTO met_admin_array VALUES('3','代理商','','0','','0','0','2','1','cn','');
 
 INSERT INTO `met_user_group` VALUES(1, '普通会员', 1, 'cn');
 INSERT INTO `met_user_group` VALUES(2, '代理商', 3, 'cn');

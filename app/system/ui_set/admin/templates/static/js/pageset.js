@@ -32,13 +32,14 @@ $(function(){
             $contents=$iframe.contents();
         if($iframe.length && $iframe.prop('contentWindow').location.href.indexOf('turnovertext')>=0) $page_iframe.prop('contentWindow').location.reload();
         // 弹框隐藏时隐藏弹框中iframe中的弹框
-        $contents.find('.modal .close').click();
+        $contents.find('.modal:visible .close').click();
         // 隐藏图片添加组件弹框
         $contents.find('.popover .outside-cancel').click();
     });
     // 弹窗中iframe返回上一页
     $(document).on('click', '.iframe-goback', function(event) {
-        $(this).parents('.modal').find('iframe:visible').prop('contentWindow').history.go(-1);
+        var go=$(this).parents('.modal').find('iframe:visible').prop('contentWindow').document.referrer.match(/pageset=(\w+)/)?-1:-2;
+        $(this).parents('.modal').find('iframe:visible').prop('contentWindow').history.go(go);
     });
     // iframe中页面跳转地址加参数pageset=1
     $('iframe').hrefPageset();
@@ -152,9 +153,9 @@ $(function(){
         if(page_iframe_window.M){// 支持可视化的模板
             $page_iframe_contents.pageinfo();// 页面输出值的标签处理
             // 添加文字编辑按钮和区块设置组件
-            var pageset_html="<link rel='stylesheet' type='text/css' href='"+M['weburl']+"app/system/ui_set/admin/templates/cache/page_iframe.css'>"
+            var pageset_html="<link rel='stylesheet' type='text/css' href='"+M['weburl']+"app/system/ui_set/admin/templates/static/css/page_iframe.css'>"
                 +"<div class='pageset-btn'>"
-                    +"<button type='button' class='btn btn-xs btn-primary m-r-5 pageset-set'>"+METLANG.unitytxt_39+"</button>"
+                    +"<button type='button' class='btn btn-xs btn-primary m-r-5 mr-1 pageset-set'>"+METLANG.unitytxt_39+"</button>"
                     +"<button type='button' class='btn btn-xs btn-warning pageset-content'>"+METLANG.content+"</button>"
                 +"</div>"
                 +"<div class='pageeditor-btn'>"
@@ -195,7 +196,25 @@ $(function(){
                             self_info.top=$self.offset().top,
                             self_info.position='';
                         }
+                        self_info.width=$self.outerWidth();
+                        self_info.height=$self.outerHeight();
                         self_info.index=$page_iframe_contents.find('[m-id]').index($self);
+                        var scroll=$(page_iframe_window).scrollTop();
+                        // 区块被其它区块遮挡时设置按钮位置变换
+                        $page_iframe_contents.find('[m-id]').each(function(index, el) {
+                            var this_position=$(this).css('position');
+                            if(index!=self_info.index && this_position=='fixed'){
+                                var this_h=$(this).outerHeight(),
+                                    this_top=$(this).position().top,
+                                    this_tops=scroll+this_top,
+                                    other_judge=this_top<15?1:0;
+                                if(this_tops+this_h>self_info.top && this_tops+this_h<self_info.top+self_info.height && other_judge && $(this).outerWidth()>=self_info.width/2){
+                                    self_info.top=this_top+this_h;
+                                    self_info.position=this_position;
+                                    return false;
+                                }
+                            }
+                        });
                     }
                 };
             if(typeof $self.prop('tagName')=='undefined') return false;
@@ -282,6 +301,10 @@ $(function(){
                 $self=$self.parents('[met-id]:eq(0)');
                 obj='.met-editor';
             }
+            if($(e.target).parents('[met-id]:eq(0)').attr('met-table')=='column' && $(e.target).parents('[met-id]:eq(0)').attr('met-field')=='content'){
+                $self=$(e.target).parents('[met-id][met-table="column"][met-field="content"]:eq(0)');
+                obj='[met-id][met-table="column"][met-field="content"]';
+            }
             var left=$self.offset().left,
                 top=$self.offset().top,
                 position_fixed=$self.css('position')=='fixed'?true:false;
@@ -305,7 +328,7 @@ $(function(){
             $self.addClass('set');
         })
         // 鼠标移出设置元素，隐藏设置元素外边框
-        $(page_iframe_document).on('mouseout','.editable-click,img,.met-icon',function(e){
+        $(page_iframe_document).on('mouseout','.editable-click,img[met-id],.met-icon',function(e){
             if($pageeditor_btn.find('.editable-container').length) return false;
             var obj='';
             if($(e.target).prop('tagName')=='IMG'){
@@ -316,10 +339,7 @@ $(function(){
                 obj='.editable-click';
             }
             var $self=$(e.target).closest(obj);
-            if($(e.target).closest(obj).parents('.met-editor').length){
-                $self=$self.parents('[met-id]:eq(0)');
-            }
-            $self.removeClass('set');
+            if(!$(e.target).parents('.met-editor').length) $self.removeClass('set');
         })
         // 鼠标移到编辑按钮，显示对应的设置元素的外边框
         $pageeditor_editor.hover(function(event) {
@@ -367,7 +387,7 @@ $(function(){
                     },
                     success:function(result){
                         if(parseInt(result.status)){
-                            if($editable_click.hasClass('met-editor')){
+                            if($editable_click.hasClass('met-editor') || ($editable_click.attr('met-table')=='column' && $editable_click.attr('met-field')=='content')){
                                 // 显示百度编辑器
                                 if($('script[src*="ueditor.config.js"]').length){
                                     editableUe($editable_click,result.text);
@@ -401,7 +421,7 @@ $(function(){
                                 })
                                 $pageeditor_remark.editableform.buttons='<button type="submit" class="btn btn-primary btn-xs editable-submit"><i class="wb-check"></i></button><button type="button" class="btn btn-default btn-xs editable-cancel"><i class="wb-close"></i></button>';
                                 $pageeditor_remark.editable('show');
-                                $pageeditor_btn.find('.editable-container .editable-input .form-control').width(width);
+                                $pageeditor_btn.find('.editable-container .editable-input .form-control').width(width).val(result.text);
                                 $pageeditor_editor.hide();
                                 // 调整显示框位置
                                 var top=$pageeditor_btn.offset().top,
@@ -715,7 +735,7 @@ $.fn.pageinfo=function(){
     // 文字内容转换可视化信息
     $('m',this).each(function() {
         var el = $(this).parent();
-        if($(this).attr('met-field') == 'content') el = $(this).parents('.met-editor');
+        if($(this).attr('met-field') == 'content' && !$(this).parents('.met-editor').attr('met-field')) el = $(this).parents('.met-editor');
         el.attr({'met-id':$(this).attr('met-id'),'met-table':$(this).attr('met-table'),'met-field':$(this).attr('met-field')}).addClass('editable-click');
         $(this).remove();
     });
@@ -743,6 +763,11 @@ $.fn.pageinfo=function(){
 function metAlert(text,delay,bg_ok,type){
     delay=typeof delay != 'undefined'?delay:2000;
     bg_ok=bg_ok?'bgshow':'';
+    if(bg_ok){
+        $('.metalert-text').remove();
+    }else{
+        $('.metalert-wrapper').remove();
+    }
     if(text!=' '){
         text=text||METLANG.jsok;
         text='<div>'+text+'</div>';
@@ -756,7 +781,7 @@ function metAlert(text,delay,bg_ok,type){
             $obj=bg_ok?$('.metalert-wrapper'):$met_alert;
         $met_alert.html(text);
         $obj.show();
-        if($met_alert.height()%2) $met_alert.height($met_alert.height()+1);
+        if($met_alert.outerHeight()%2) $met_alert.height($met_alert.height()+1);
     }
     if(delay){
         setTimeout(function(){
@@ -832,7 +857,7 @@ $.fn.extend({
                         $self=$(this),
                         url_after='pageset=1',
                         href_control=(function(){
-                            if($self.attr('data-toggle')=='dropdown' && typeof $self.attr('data-hover')=='undefined') return false;
+                            if($self.attr('data-toggle')=='dropdown' && (typeof $self.attr('data-hover')=='undefined' || M.device_type!='d')) return false;
                             if(url.substr(0,1)=='#') return false;
                             if(url.indexOf('javascript')>=0) return false;
                             if(url.indexOf('tel:')>=0) return false;

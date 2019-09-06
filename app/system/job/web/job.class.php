@@ -10,7 +10,6 @@ class job extends web {
 	public function __construct() {
 		global $_M;
 		parent::__construct();
-		$this->upfile = load::sys_class('upfile', 'new');
 		$this->database = load::mod_class('job/job_database', 'new');
 	}
 
@@ -42,7 +41,8 @@ class job extends web {
 		if($this->checkword() && $this->checktime()){
 			foreach ($_FILES as $key => $value) {
 				if($value[tmp_name]){
-	              $ret = $this->upfile->upload($key);//上传文件
+                    $this->upfile = load::sys_class('upfile', 'new');
+                    $ret = $this->upfile->upload($key);//上传文件
 	            if ($ret['error'] == 0) {
 			      $info[$key]=$ret[path];
 				} else {
@@ -72,6 +72,8 @@ class job extends web {
 		$this->input_class();
 		$data = load::sys_class('label', 'new')->get('job')->get_one_list_contents($_M['form']['id']);
 		$this->add_array_input($data);
+		$this->seo($data['title'], $data['keywords'], $data['description']);
+		$this->seo_title($data['ctitle']);
 		require_once $this->template('tem/showjob');
 	}
 
@@ -261,33 +263,35 @@ class job extends web {
 
    }
 
-   /*检测后台设置的字段*/
-   function check_field(){
+    /*检测后台设置的字段*/
+    function check_field(){
         global $_M;
         $met_cv_email=$_M[form]['para'.$_M[config][met_cv_email]];
         $paralist=load::mod_class('parameter/parameter_database','new')->get_parameter('6');
         foreach ($paralist as $key => $val) {
-        	$para[$val[id]]=$val;
+            $para[$val['id']]=$val;
         }
 
-       $paraarr = array();
-       foreach (array_keys($_M['form']) as $vale) {
-           if (strstr($vale, 'para')) {
-               if (strstr($vale, '_')) {
-                   $arr = explode('_',$vale);
-                   $paraarr[] = str_replace('para','',$arr[0]);
-               }else{
-                   $paraarr[] = str_replace('para','',$vale);
-               }
-           }
-       }
+        $paraarr = array();
+        $form = array_merge($_M['form'], $_FILES);
+        foreach (array_keys($form) as $vale) {
+            if (strstr($vale, 'para')) {
+                if (strstr($vale, '_')) {
+                    $arr = explode('_',$vale);
+                    $paraarr[] = str_replace('para','',$arr[0]);
+                }else{
+                    $paraarr[] = str_replace('para','',$vale);
+                }
+            }
+        }
 
-       foreach (array_keys($para) as $val) {
-           if($para[$val]['wr_ok']==1 && !in_array($val,$paraarr)){
-               $info="【{$para[$val]['name']}】".$_M[word][noempty];
-               okinfo('javascript:history.back();',$info);
-           }
-       }
+        foreach (array_keys($para) as $val) {
+            if($para[$val]['wr_ok']==1 && !in_array($val,$paraarr)){
+                $info="【{$para[$val]['name']}】".$_M[word][noempty];
+                okinfo('javascript:history.back();',$info);
+            }
+        }
+
     }
 }
 

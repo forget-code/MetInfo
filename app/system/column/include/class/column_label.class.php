@@ -30,25 +30,24 @@ class column_label {
 	 */
 	public function get_column(){
 		global $_M;
-		if(!$this->column || $_M['form']['pageset'] || !file_exists(PATH_WEB.'cache/column.php')){
-			//有缓存读取缓存
-			$column = $this->handle->para_handle(
-				load::mod_class('column/column_database', 'new')->get_all_column_by_lang($this->lang)
-			);
-
-			file_put_contents(PATH_WEB.'cache/column.php', json_encode($column));
-		}else{
-			$column = json_decode(file_get_contents(PATH_WEB.'cache/column.php'));
-		}
-		if($this->wap){//手机版模式，v5手机模板兼容使用
-			foreach ($column as $key => $val) {
-				if($val['wap_ok']){
-					$column[$key]['nav'] = $val[wap_nav_ok] ? 1 : 0;//手机版导航
-				}else{
-					unset($column[$key]);
-				}
-			}
-		}
+        if(IN_ADMIN || $_M['form']['pageset'] || !file_exists(PATH_CACHE.'column.php')){
+            //有缓存读取缓存
+            $column = $this->handle->para_handle(
+                load::mod_class('column/column_database', 'new')->get_all_column_by_lang($this->lang)
+            );
+            cache::put('column',$column);
+        }else{
+            $column = cache::get('column');
+        }
+        if($this->wap){//手机版模式，v5手机模板兼容使用
+            foreach ($column as $key => $val) {
+                if($val['wap_ok']){
+                    $column[$key]['nav'] = $val[wap_nav_ok] ? 1 : 0;//手机版导航
+                }else{
+                    unset($column[$key]);
+                }
+            }
+        }
 		//简介不允许下级栏目时候，url替换问题。
 		foreach ($column as $key => $list) {
 			$column_bigclass[$list['bigclass']][] = $list;

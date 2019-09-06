@@ -3,7 +3,7 @@
  */
 $(function(){
 	// 翻页ajax加载
-	if($(".met-pager-ajax").length){
+	if($(".met-pager-ajax,.met-page-ajax").length){
 		var $met_pager=$('.met_pager'),
 			$metpagerajax_link=$(".met-pager-ajax-link");
 		if($met_pager.length){
@@ -27,10 +27,14 @@ $(function(){
 // 分页脚本
 function metpagerajax(){
 	var $metpagerbtn=$("#met-pager-btn"),
-		$metpagerajax=$(".met-pager-ajax"),
-		pagemax=parseInt($('#metPageT').data('pageurl').split('|')[2]),
-		page=parseInt($('#metPageT').val()),
+		$metpaget=$('#metPageT'),
+		$metpagerajax=$(".met-pager-ajax,.met-page-ajax"),
+		pageurl_str=$metpaget.data('pageurl'),
+		pagemax=pageurl_str?parseInt(pageurl_str.split('|')[2]):1,
+		page=parseInt($metpaget.val()),
 		metpagerbtnText=function(){
+			$metpagerbtn.removeClass('disabled').find('.fa-refresh').remove();
+			$metpagerbtn.find('.wb-chevron-down').show();
 			if(pagemax){
 				if(pagemax==page) $metpagerbtn.attr({hidden:''})/*addClass('disabled').text('已经是最后一页了')*/;
 			}else{
@@ -40,14 +44,15 @@ function metpagerajax(){
 	metpagerbtnText();
 	$metpagerbtn.click(function(){
 		if(!$metpagerbtn.hasClass('disabled')){
+			$(this).addClass('disabled').prepend('<i class="icon fa-refresh fa-spin"></i>').find('.wb-chevron-down').hide();
 			page++;
-			var pageurl=$('#metPageT').data('pageurl').split('&page=')[0];
+			var pageurl=pageurl_str?pageurl_str.split('&page=')[0]:'';
 			$.ajax({
 				url:pageurl,
 				type:'POST',
 				data:{ajax:1,page:page},
 				success:function(data){
-					var $data=$(data).find('.met-pager-ajax');
+					var $data=$(data).find('.met-pager-ajax,.met-page-ajax');
 					if(!$data.length){
 						data='<div class="met-pager-ajax">'+data+'</div>';
 						$data=$(data);
@@ -64,8 +69,9 @@ function metpagerajax(){
 }
 // 无刷新分页获取到数据追加到页面后，可以在此方法继续处理
 function metpagerajaxFun(page){
-	var $metpagerajax=$('.met-pager-ajax'),
-		metpager_original='.page'+page+' [data-original]';
+	var $metpagerajax=$('.met-pager-ajax,.met-page-ajax'),
+		metpager_original='.page'+page+' [data-original]'
+		$data_appear=$metpagerajax.find('.page'+page+' [data-plugin="appear"]');
 	if($metpagerajax.find(metpager_original).length){
 		// 图片高度预设
 		// setTimeout(function(){
@@ -77,6 +83,7 @@ function metpagerajaxFun(page){
 			$('html,body').stop().animate({scrollTop:$(window).scrollTop()+2},0);
 	    },300)
 	}
+    if($data_appear.length) $data_appear.trigger('appear');
 	if($('#met-grid').length){
 		setTimeout(function(){
 			if(typeof metAnimOnScroll != 'undefined') metAnimOnScroll('met-grid');// 产品模块瀑布流

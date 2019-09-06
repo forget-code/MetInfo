@@ -11,7 +11,7 @@ class paygroup extends web{
     {
         global $_M;
         parent::__construct();
-        $this->no  = 10;
+        $this->no  = 10;    //app_no 100以内为系统预留编号; 用户模块编号10
         $this->paygroup_list  = load::mod_class('user/sys_group', 'new')->get_paygroup_list_buyok();
         $this->load_url_unique();
     }
@@ -26,14 +26,15 @@ class paygroup extends web{
             if ($value['groupid'] == $_M['form']['groupid']) {
                 $pricestr       = $payclass->price_str($value['price']);
                 $out_trade_no   = $payclass->getRid();
-                $data['subject']        = "{$_M['word']['userbuy']}-{$value['groupname']} [$pricestr]";
+                $group_data = array('groupid' => $value['groupid'], 'price' => $value['price']);
+                $data['subject']        = "{$_M['word']['userbuy']}-{$value['name']} [$pricestr]";
                 $data['body']           = "{$_M['word']['userbuylist']}-{$out_trade_no}";
                 $data['total_fee']      = $value['price'];
                 $data['out_trade_no']   = $out_trade_no;
                 $data['callback_url']   ="{$_M['url']['profile']}" ;
                 $data['sys_callback']   ="{$_M['url']['paygroup']}&a=dochangepaygroup" ;
                 $data['no']             = $this->no ;
-                $data['attach']         = base64_encode(jsonencode($value));
+                $data['attach']         = base64_encode(jsonencode($group_data));
             }
         }
         $payhtml = $payclass->createPayForm($data);

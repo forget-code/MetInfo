@@ -116,6 +116,16 @@ class base_label {
 				$search_str.="&specv={$para}";
 			}
 
+            //价格区间
+            if($_M['form']['price_low']){
+                $price_low = rawurlencode($_M['form']['price_low']);
+                $search_str .= "&price_low={$price_low}";
+            }
+            if($_M['form']['price_top']){
+                $price_top = rawurlencode($_M['form']['price_top']);
+                $search_str .= "&price_top={$price_top}";
+            }
+
 
 		}else{
 			$classnow_info=load::sys_class('label', 'new')->get('column')->get_column_id($classnow);

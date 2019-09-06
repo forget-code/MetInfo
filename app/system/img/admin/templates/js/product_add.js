@@ -70,16 +70,9 @@ define(function(require, exports, module) {
 	});
 	var value = selectclass.eq(0).data('checked').toString();
 	if(value){
-		if(value.indexOf(',')>=0){
-			value = value.split(',');
-			for(var i=0;i<value.length;i++){
-				selectclass.find("option[value='"+value[i]+"']").attr("selected",true);
-			}
-		}else{
-			selectclass.eq(0).val(value);
-		}
-		classpara(value,1);
-
+		setTimeout(function(){
+			classpara($("select[name*='class']").length);
+		},500)
 	}
 	
 	$(".refresh_para").click(function(){

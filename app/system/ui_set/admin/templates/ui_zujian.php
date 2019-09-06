@@ -18,10 +18,6 @@ echo <<<EOT
 <!--
 EOT;
 	}else{
-		if(strpos($val['inputhtm'], '<select')!==false){
-			$val['inputhtm']=str_replace('<select', '<div class="fbox"><select', $val['inputhtm']);
-			$val['inputhtm']=str_replace('select>', 'select></div>', $val['inputhtm']);
-		}
 		if($val['uip_hidden'] && !$uip_hidden_open){
 			$uip_hidden_open=true;
 echo <<<EOT

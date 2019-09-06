@@ -205,6 +205,7 @@ EOT;
 	 */
 	public function get_search_list($str) {
 		global $_M;
+        $_M['form']['searchword'] = urldecode($_M['form']['searchword']);
 		$page = $_M['form']['page'] > 0 ? $_M['form']['page'] : 1;
 		$page = $page - 1;
 		$start = $this->page_num*$page;
@@ -452,6 +453,15 @@ EOT;
 				$specv = rawurlencode($_M['form']['specv']);
 				$str .= "&specv={$specv}";
 			}
+            //价格区间
+            if($_M['form']['price_low']){
+                $price_low = rawurlencode($_M['form']['price_low']);
+                $str .= "&price_low={$price_low}";
+            }
+            if($_M['form']['price_top']){
+                $price_top = rawurlencode($_M['form']['price_top']);
+                $str .= "&price_top={$price_top}";
+            }
 		}
 		return $str;
 	}

@@ -110,9 +110,7 @@ class download extends admin {
 	}
 	public function checkpower() {
 		global $_M;
-		$updatefile = PATH_WEB.$_M['config']['met_adminfile'].'/update/test/test.txt';
-		deldir(PATH_WEB.$_M['config']['met_adminfile'].'/update/test/');
-		if ($this->checkfilepower($updatefile)) {
+		if (is_writable(PATH_WEB.$_M['config']['met_adminfile'].'/update')) {
 			/*请求并验证下载权限*/
 
 			$app['ver'] = $_M['config']['metcms_v'];

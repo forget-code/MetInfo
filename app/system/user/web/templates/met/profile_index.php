@@ -71,7 +71,7 @@ $set_user_head=str_replace($_M['url']['site'], '../', $_M['user']['head']);
 										</div>
 									</div>
 								</div>
-								<?php if(count($_M['paralist'])){$_M['paraclass']->parawebtem($_M['user']['id'],10);} ?>
+								<?php if(count($_M['paralist'])){$_M['paraclass']->parawebtem($_M['user']['id'],10,0,$_M['user']['groupid'],$data['class1']);} ?>
 								<div class="form-group m-b-0">
 									<div class="row">
 										<div class="col-md-3"></div>

@@ -333,83 +333,92 @@ class language_admin extends admin {
 	}
 
 	/*语言数据保存*/
-	public function dolangsave(){
-		global $_M;
-		$langname=$_M['form']['langname'];
-		$languseok=$_M['form']['languseok'];
-		$langorder=$_M['form']['langorder'];
-		$langmark=$_M['form']['langmark'];
-		$langflag=$_M['form']['langflag'];
-		$langlink=$_M['form']['langlink'];
-		$langnewwindows=$_M['form']['langnewwindows'];
-		$langautor=$_M['form']['langautor'];
-		$langfile=$_M['form']['langfile'];
-		$langdlok=$_M['form']['langdlok'];
-		$langeditor=$_M['form']['langeditor'];
-		$met_index_type1=$_M['form']['met_index_type1'];
+    public function dolangsave(){
+        global $_M;
+        $langname   = $_M['form']['langname'];   //语言名称
+        $languseok  = $_M['form']['languseok'];  //语言状态
+        $langorder  = $_M['form']['langorder'];  //排序
+        $langmark   = $_M['form']['langmark'];   //语言标识
+        $langflag   = $_M['form']['langflag'];   //国旗标志
+        $langlink   = $_M['form']['langlink'];   //单独域名
+        $langnewwindows= $_M['form']['langnewwindows'];  //新窗口打开
+        $langautor  = $_M['form']['langautor'];  //选择语言
+        $langfile   = $_M['form']['langfile'];   //本地语言
+        $langdlok   = $_M['form']['langdlok'];   //线上同步语言   弃用
+        $langeditor = $_M['form']['langeditor']; //??
+        $langui     = $_M['form']['langui'];	 //网站主题风格
+        $langconfig = $_M['form']['langconfig']; //复制基本设置语言
+        $langcontent = $_M['form']['langcontent']; //网站基本内容
+        $met_index_type1    = $_M['form']['met_index_type1'];    //默认语言
+
         $query = "SELECT * FROM {$_M[table][lang]} order by no_order";
         $result =DB::query($query);
-        while($list_config=DB::fetch_array($result)){
-	          $list_config['order']=$list_config['no_order'];
-			if($list_config['lang']=='metinfo'){
-				$met_langadmin[$list_config['mark']]=$list_config;
-				$_M[langlist][admin][$list_config['mark']]=$list_config;
-			}else{
-				$met_langok[$list_config['mark']]=$list_config;
-				$_M[langlist][web][$list_config['mark']]=$list_config;
-			}
+        while($list_config = DB::fetch_array($result)){
+            $list_config['order'] = $list_config['no_order'];
+            if($list_config['lang'] == 'metinfo'){
+                $met_langadmin[$list_config['mark']] = $list_config;
+                $_M[langlist][admin][$list_config['mark']] = $list_config;
+            }else{
+                $met_langok[$list_config['mark']] = $list_config;
+                $_M[langlist][web][$list_config['mark']] = $list_config;
+            }
         }
-			 	$met_index_type = DB::get_one("SELECT * FROM {$_M[table][config]} WHERE name='met_index_type' and lang='metinfo'");
-			   	$met_index_type = $met_index_type['value'];
-	            if($langname=='')okinfo('-1',$_M[word][langnamenull],$depth);
-				if($langautor!='')$langmark=$langautor;
-				if($langautor!=''){
-					$synchronous=$langautor;
-					$lang=$langautor;
-				}else{
-					$synchronous=$langfile;
-					$lang=$langmark;
-				}
-				if(!$langdlok)$synchronous=$langfile;
-				$lancount=count($met_langok);
-				$isaddlang=1;
-				$langoflag=trim($langflag);
-				$met_langok[0]=array(
-								'name'		=>$langname,
-								'useok'		=>$languseok,
-								'order'		=>$langorder,
-								'mark'		=>$langmark,
-								'flag'		=>$langoflag,
-								'link'		=>$langlink,
-								'newwindows'=>$langnewwindows);
+        $met_index_type = DB::get_one("SELECT * FROM {$_M['table']['config']} WHERE name='met_index_type' and lang='metinfo'");
+        $met_index_type = $met_index_type['value'];
 
-				foreach($met_langok as $key=>$val){
-					if($key){
-						if($langmark==$val['mark'])okinfo('-1',$_M[word][langnamerepeat],$depth);
-						if($val['order'] == $langorder)okinfo('-1',$_M[word][langnameorder],$depth);
-					}
-				}
-				$met_webhtm =$met_langok[$langfile]['met_webhtm'];
-				$met_htmtype=$met_langok[$langfile]['met_htmtype'];
-				$met_weburl =$met_langok[$langfile]['met_weburl'];
+        if($langname=='')okinfo('-1',$_M['word']['langnamenull']);
+        if($langautor!='')$langmark = $langautor;
+        if($langautor!=''){
+            $synchronous = $langautor;
+            $lang = $langautor;
+        }else{
+            $synchronous = $langfile;
+            $lang = $langmark;
+        }
+        if(!$langdlok)$synchronous = $langfile;
+        $lancount   = count($met_langok);
+        $isaddlang  = 1;
+        $langoflag  = trim($langflag);
+        $met_langok[0]=array(
+            'name'		=>$langname,
+            'useok'		=>$languseok,
+            'order'		=>$langorder,
+            'mark'		=>$langmark,
+            'flag'		=>$langoflag,
+            'link'		=>$langlink,
+            'newwindows'=>$langnewwindows
+        );
 
-				$re=$this->syn->copyconfig();
-				if($re!=1){
-					$langdlok=0;
-					$langfile=$met_index_type;
-					$this->syn->copyconfig();
-					$retxt=$_M[word][jsok].'<br/>'.$_M[word][langadderr6];
-				}
-				if($_M[form][langui]){
-				$query="select * from {$_M[table][config]} where name ='met_skin_user' and lang ='{$_M[form][langui]}'";
-				 $met_skin_user=DB::get_one($query);
-                 $query="update {$_M[table][config]} set value='$met_skin_user[value]' where name ='met_skin_user' and lang ='$lang'";
-				 DB::query($query);
-				}else{
-					$query="update {$_M[table][config]} set value='' where name ='met_skin_user' and lang ='$lang'";
-				 	DB::query($query);
-				}
-				$query = "INSERT INTO {$_M['table']['lang']} SET
+        foreach($met_langok as $key=>$val){
+            if($key){
+                if($langmark == $val['mark'])okinfo('-1',$_M['word']['langnamerepeat']);
+                if($val['order'] == $langorder)okinfo('-1',$_M['word']['langnameorder']);
+            }
+        }
+        $met_webhtm     = $met_langok[$langfile]['met_webhtm'];
+        $met_htmtype    = $met_langok[$langfile]['met_htmtype'];
+        $met_weburl     = $met_langok[$langfile]['met_weburl'];
+
+        $re = $this->syn->copyconfig();
+        if($re!=1){
+            $langdlok = 0;
+            $langfile = $met_index_type;
+            $this->syn->copyconfig();
+            $retxt=$_M['word']['jsok'].'<br/>'.$_M['word']['langadderr6'];
+        }
+
+        if($_M['form']['langui']){
+            $query = "select * from {$_M['table']['config']} where name ='met_skin_user' and lang ='{$_M['form']['langui']}'";
+            $met_skin_user = DB::get_one($query);
+            $query = "update {$_M['table']['config']} set value='{$met_skin_user['value']}' where name ='met_skin_user' and lang ='{$lang}'";
+            DB::query($query);
+        }else{
+            $query = "update {$_M['table']['config']} set value='' where name ='met_skin_user' and lang ='{$lang}'";
+            DB::query($query);
+        }
+
+        //写入语言表
+        $query = "INSERT INTO {$_M['table']['lang']} SET
 					name          = '$langname',
 					useok         = '$languseok',
 					no_order      = '$langorder',
@@ -423,42 +432,43 @@ class language_admin extends admin {
 					met_weburl    = '$met_weburl',
 					lang          = '$langmark'
 				";
+        DB::query($query);
+
+        //复制基本设置
+        if($langconfig){
+            $query="select * from {$_M['table']['user_group']} where lang='{$langconfig}'";
+            $adminlist=DB::get_all($query);
+            foreach ($adminlist as $key => $value) {
+                $query="INSERT INTO {$_M['table']['user_group']} set name='$value[name]',access='$value[access]',lang='$langautor'";
                 DB::query($query);
-                if($_M[form][langconfig]){
-                	$query="select * from {$_M[table][user_group]} where lang='{$_M[form][langconfig]}'";
-                	$adminlist=DB::get_all($query);
-                    foreach ($adminlist as $key => $value) {
-	                	$query="INSERT INTO {$_M[table][user_group]} set name='$value[name]',access='$value[access]',lang='$langautor'";
-					    DB::query($query);
-                    }
+            }
 
-                    $query = "SELECT * FROM {$_M['table']['app_config']} WHERE lang = {$_M['form']['langconfig']}";
-                    $app_config = DB::get_all($query);
-                    foreach ($app_config as $c) {
-                    	$new_app_config = $c;
-                    	$new_app_config['lang'] = $langmark;
-                    	unset($new_app_config['id']);
-                    	$sql = get_sql($new_app_config);
-                    	$query = "INSERT INTO {$_M['table']['app_config']} SET {$sql}";
-                    	DB::query($query);
-                    }
+            $query = "SELECT * FROM {$_M['table']['app_config']} WHERE lang = {$_M['form']['langconfig']}";
+            $app_config = DB::get_all($query);
+            foreach ($app_config as $c) {
+                $new_app_config = $c;
+                $new_app_config['lang'] = $langmark;
+                unset($new_app_config['id']);
+                $sql = get_sql($new_app_config);
+                $query = "INSERT INTO {$_M['table']['app_config']} SET {$sql}";
+                DB::query($query);
+            }
 
-                }
+        }
 
-				if($met_index_type1){
-					if($languseok){
-						$met_index_type=$langmark ? $langmark : $langautor;
+        if($met_index_type1){
+            if($languseok){
+                $met_index_type=$langmark ? $langmark : $langautor;
 
-						$query = "update {$_M[table][config]} set value = '{$met_index_type}' where name='met_index_type'";
-					    DB::query($query);
-					}else{
-						$retxt=$retxt?$retxt.'<br/>'.$_M[word][langexplain12]:$_M[word][jsok].$_M[word][langexplain12];
-					}
-				}
-				unlink(PATH_WEB.'cache/lang_json_'.$langeditor.'.php');
-				turnover("{$_M[url][own_form]}a=doindex",$_M[word][success]);
-
-	    }
+                $query = "update {$_M[table][config]} set value = '{$met_index_type}' where name='met_index_type'";
+                DB::query($query);
+            }else{
+                $retxt=$retxt?$retxt.'<br/>'.$_M[word][langexplain12]:$_M[word][jsok].$_M[word][langexplain12];
+            }
+        }
+        unlink(PATH_WEB.'cache/lang_json_'.$langeditor.'.php');
+        turnover("{$_M[url][own_form]}a=doindex",$_M[word][success]);
+    }
 
     /*批量更新语言数据*/
     public function domengenedit() {

@@ -454,7 +454,7 @@ INSERT INTO met_config VALUES (null, 'metconfig_weburl', '', '', 0, 0, 'en');
 INSERT INTO met_config VALUES (null, 'metconfig_webname', 'Website Name', '', 0, 0, 'en');
 INSERT INTO met_config VALUES (null, 'metconfig_logo', '../upload/201801/1515663135.png', '', 0, 0, 'en');
 INSERT INTO met_config VALUES (null, 'metconfig_mobile_logo', '../upload/201807/1532139830.png', '', 0, 0, 'en');
-INSERT INTO met_config VALUES (null, 'metconfig_skin_user', 'metv6', '', 0, 0, 'en');
+INSERT INTO met_config VALUES (null, 'metconfig_skin_user', 'metv6s', '', 0, 0, 'en');
 INSERT INTO met_config VALUES (null, 'metconfig_big_wate', '0', '', 0, 0, 'en');
 INSERT INTO met_config VALUES (null, 'metconfig_thumb_wate', '0', '', 0, 0, 'en');
 INSERT INTO met_config VALUES (null, 'metconfig_wate_class', '1', '', 0, 0, 'en');

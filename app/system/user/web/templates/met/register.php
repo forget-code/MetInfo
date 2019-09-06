@@ -31,11 +31,11 @@ $data['page_title']=$_M['word']['memberReg'].$data['page_title'];
 			?>
 			<div class="form-group m-y-30 text-muted met-more">
 				<hr />
-				<span>{$_M['word']['memberMoreInfo']}</span>
+				<span class='text-xs-center w-100 bg-white'>{$_M['word']['memberMoreInfo']}</span>
 			</div>
 			<?php
 			}
-			$_M['paraclass']->parawebtem($_M['user']['id'],10,1);
+            $_M['paraclass']->parawebtem($_M['user']['id'],10,1,0,$data['class1'],$data['class2'],$data['class3']);
 			?>
 			<button class="btn btn-lg btn-primary btn-squared btn-block" type="submit">{$_M['word']['memberRegister']}</button>
 			<div class="login_link m-t-10 text-xs-right"><a href="{$_M['url']['login']}">{$_M['word']['acchave']}</a></div>

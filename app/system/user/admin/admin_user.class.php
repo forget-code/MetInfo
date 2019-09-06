@@ -91,6 +91,10 @@ class admin_user extends admin {
 		$user = $this->userclass->get_user_by_id($_M['form']['id']);
 		$user['realidinfo'] = $this->userclass->getRealIdInfo($user);
         $user['idvalid'] = $user['idvalid'] ? $_M['word']['yes'] : $_M['word']['no'];
+        $query = "SELECT * FROM {$_M['table']['column']} WHERE foldername ='member' AND lang='{$_M['lang']}'";
+        $res = DB::get_one($query);
+        $classnow = $res['id'];
+        $userpara = $this->paraclass->paratemList($_M['form']['id'],10,$classnow);
 		$_M['url']['help_tutorials_helpid']='118';
 		require_once $this->template('tem/user_editor');
 	}

@@ -50,10 +50,10 @@ class valid {
 
 	public function get_tel($tel){
 		global $_M;
-        if(!load::sys_class('pin', 'new')->check_pin($_M['form']['code']) && $_M['config']['met_memberlogin_code'] ){
-            echo  $_M['word']['membercode'];
-            die;
-        }
+        // if(!load::sys_class('pin', 'new')->check_pin($_M['form']['code']) && $_M['config']['met_memberlogin_code'] ){
+        //     echo  $_M['word']['membercode'];
+        //     die;
+        // }
 		$session = load::sys_class('session', 'new');
 		if($session->get("phonetime")&&time()<($session->get("phonetime")-220)){
 			return false;

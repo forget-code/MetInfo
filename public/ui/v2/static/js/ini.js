@@ -48,12 +48,12 @@ if(typeof Breakpoints != 'undefined') Breakpoints();// 窗口宽度断点函数
 // js严格模式
 (function(document, window, $) {
     'use strict';
-    var Site=window.Site;
+    if(typeof window.Site!='undefined') var Site=window.Site;
     $(function(){
-        Site.run();
-        // 中间弹窗隐藏效果优化（点击弹窗框外上下方隐藏弹窗）
+        if(typeof Site!='undefined') Site.run();
+        // 中间弹窗隐藏效果优化（点击位置居中的弹窗框外上下方隐藏弹窗）
         $(document).on('click', '.modal-dialog.modal-center', function(e) {
-            if(!$(e.target).closest(".modal-dialog.modal-center .modal-content").length && $('.modal-backdrop').length) $(this).parents('.modal:eq(0)').modal('hide');
+            if(!$(e.target).closest(".modal-dialog.modal-center .modal-content").length && !$(this).parents('.modal:eq(0)').attr('data-backdrop')) $(this).parents('.modal:eq(0)').modal('hide');
         });
         // 手机端弹窗位置取消垂直居中
         Breakpoints.on('xs',{
@@ -65,13 +65,14 @@ if(typeof Breakpoints != 'undefined') Breakpoints();// 窗口宽度断点函数
         })
         // 弹窗高度过高时，其位置取消垂直居中
         $(document).on('shown.bs.modal', '.modal', function(event) {
-            if($('.modal-dialog',this).hasClass('modal-center') && $('.modal-content',this).height()>$(window).height()) $('.modal-dialog',this).removeClass('modal-center');
+            if($('.modal-dialog',this).hasClass('modal-center') && $('.modal-content',this).outerHeight()>$(window).height()) $('.modal-dialog',this).removeClass('modal-center');
         });
         // 弹窗关闭时，取消弹框中的表单验证
-        $(document).on('hide.bs.modal', '.modal', function(event) {
+        $(document).on('hidden.bs.modal', '.modal', function(event) {
             $('form',this).each(function(index, el) {
                 $(this).data('formValidation').resetForm();
             });
+            if($('.modal.in').length) $('body').addClass('modal-open');
         });
     })
 })(document, window, jQuery);
@@ -95,7 +96,7 @@ $.extend({
                 if(includeFileIndex<num_end){
                     $.includeFile(includeFile[includeFileIndex],num_start,num_end,fun,special);
                 }else{
-                    if(special=='siterun') Site.run();
+                    if(special=='siterun' && typeof window.Site!='undefined') Site.run();
                     if(typeof fun === "function") fun();
                 }
             };
@@ -182,27 +183,12 @@ $.cachedScript = function(url, options) {
     return $.ajax(options);
 };
 // 判断是否加载了文件后回调
-function metFileLoadFun(file,condition,fun,noload_fun){
+function metFileLoadFun(file,condition,fun,siterun){
     if(condition()){
         if(typeof fun=='function') fun();
     }else{
-        // if($('script[src*="js/basic.js"]').length){
-        //     var load_time=0;
-        //         intervals=setInterval(function(){
-        //             load_time+=50;
-        //             if(condition()){
-        //                 if(typeof fun=='function') fun();
-        //                 clearInterval(intervals);
-        //             }else if(load_time>=7000){
-        //                 console.log(condition+'没有加载');
-        //                 if(typeof noload_fun=='function') noload_fun();
-        //                 clearInterval(intervals);
-        //             }
-        //         },50)
-        // }else{
-            $.include(file,function(){
-                if(typeof fun=='function') fun();
-            })
-        // }
+        $.include(file,function(){
+            if(typeof fun=='function') fun();
+        },siterun)
     }
 }

@@ -1,20 +1,45 @@
 @charset "utf-8";
 /*后台公用样式*/
+/*表单*/
+table .file-input{display: block;max-width: 370px;}
+/*datatables表格插件*/
+div.dataTables_paginate .paginate_button.active>a, div.dataTables_paginate .paginate_button.active>a:focus, div.dataTables_paginate .paginate_button.active>a:hover{background:#ddd !important;border-color:#ddd !important;color:#777 !important}
+.dataTables_empty{text-align:center}
+.dataTables_info{color:#777}
+body table.table-bordered.dataTable{border-collapse:collapse !important}
+.table-striped.dataTable tbody tr.active td,
+body .table-striped.dataTable tbody tr.active:hover td{background:#f3f7f9 !important;color:inherit !important}
+.table-striped.dataTable tbody tr.active td>a,
+body .table-striped.dataTable tbody tr.active:hover td>a{color:#62a8ea !important}
+@media (max-width:479px){
+    .dataTables_info{float:none !important}
+    .dataTables_paginate{float:none !important}
+}
+/* 提示弹窗 */
+.alertify-logs{bottom:auto!important;top:48%;z-index:1701!important}
 /* 下拉插件 */
 .select2-container--default:not(.select2){z-index:1700}
 .select2-container--default .select2-selection{font-family:"Segoe UI","Lucida Grande",Helvetica,Arial,"Microsoft YaHei",FreeSans,Arimo,"Droid Sans","wenquanyi micro hei","Hiragino Sans GB","Hiragino Sans GB W3",Roboto,Arial,sans-serif}
-/* 后台应用公用样式 */
-.metadmin-haed{min-height:0}
-.metadmin-haed-right .btn-default{background:none;border-color:transparent;color:#222}
-.metadmin-haed-right .btn-default:hover{background:#e4eaec;border-color:#e4eaec}
-.stat-list a{background:#e4eaec}
-.metalert-wrapper{display:none;height:100%;position:fixed;left:0;top:0;z-index:1799}
-.metalert-wrapper.bgshow{background:rgba(0,0,0,.5)}
-.metalert-text{position:fixed;left:50%;top:50%;z-index:1799;-webkit-transform:translate(-50%,-50%);-moz-transform:translate(-50%,-50%);-ms-transform:translate(-50%,-50%);-o-transform:translate(-50%,-50%);transform:translate(-50%,-50%)}
-.metalert-wrapper .metalert-text{position: absolute;}
-.metalert-text .close{position:absolute;right:5px;top:5px;font-size:30px;opacity:1}
-.function_ency-content .list-group-item{border-color:#ddd}
-.met-help-tutorials{position:fixed;left:10px;bottom:10px;z-index:10}
+/*其它*/
+.minicolors-theme-default .minicolors-input{height:36px !important;padding-left:35px !important}
+.minicolors-position-bottom .minicolors-panel{top:100% !important}
+.text-help{color:#aaa;display:inline-block}
+.spinnerUi>*{vertical-align:top !important}
+.input-group-file .file-input{display:none}
+.ribbon-badge.ribbon-reverse.ribbon-xs .ribbon-inner{right: -48px;}
+.rotate90{transform: rotate(90deg);}
+.rotate180{transform: rotate(180deg);}
+.rotate360{transform: rotate(360deg);}
+.animsition{opacity: 0;}
+.modal[data-backdrop="false"]{z-index: 1700;background: rgba(0,0,0,.5);}
+.img-library-modal .modal-body{height:calc(100% - 114px);}
+#edui_fixedlayer{z-index: 1799 !important;}
+.clockpicker-popover{z-index: 1799 !important;}
+.file-input .kv-upload-progress .progress{margin-bottom: 10px;}
+@media (min-width:1600px){
+    .blocks-xxl-8>.block,
+    .blocks-xxl-8>li{width:12.5%;}
+}
 /* 功能区块 */
 .metadmin-fmbx{border:1px solid  #ddd}
 .metadmin-fmbx .metadmin-fmbx{border: none;}
@@ -26,20 +51,11 @@
 .metadmin-fmbx dl:first-child{border-top:none}
 .metadmin-fmbx .example-title{padding:10px;font-size:16px;font-weight:bold}
 .metadmin-fmbx .alert.dark a{color:#f00}
-.metadmin-fmbx dl{
-	display:-webkit-box;
-    display:-moz-box;
-    display:box;
-    display:-ms-flexbox}
+.metadmin-fmbx dl{display:-webkit-box;display:-moz-box;display:box;display:-ms-flexbox}
 .metadmin-fmbx dl dd,
 .metadmin-fmbx dl dt{padding:10px}
 .metadmin-fmbx dl dt{width:150px;font-weight:normal}
-.metadmin-fmbx dl dd{
-	margin-bottom:0;
-	-webkit-box-flex:1.0;
-    box-flex:1.0;
-    -ms-flex:1;
-}
+.metadmin-fmbx dl dd{margin-bottom:0;-webkit-box-flex:1.0;box-flex:1.0;-ms-flex:1;}
 .metadmin-fmbx dl .form-control,
 .metadmin-fmbx dl .input-group{width:350px;float:left}
 .metadmin-fmbx dl .input-group .form-control{width:100%}
@@ -49,9 +65,23 @@
 .metadmin-fmbx dl .minicolors{float:left}
 .metadmin-fmbx dl .checkbox-custom{margin-top:0;margin-bottom:0;padding-top:.429rem;padding-bottom:.429rem}
 .metadmin-fmbx dl .radio-inline{padding-top: 5px;}
+.metadmin-fmbx .form-group small.form-control-label{margin-left:10px;line-height:36px}
 @media (max-width:767px){
     .metadmin-fmbx dl dt{width:30%;min-width: 100px;}
     .metadmin-fmbx dl .form-control,
     .metadmin-fmbx dl .input-group,
     .metadmin-fmbx dl .minicolors{width:100%;margin-right:0 !important}
 }
+/*从图片库选择*/
+.img-library-list li a{position:relative;border:2px solid  #ddd;}
+.img-library-list li img{max-width:100%;max-height:100%;}
+.img-library-list li a i{display:none;position:absolute;right:0;top:0;z-index: 1;}
+.img-library-list li a.active{border-color:#57c7d4;}
+.img-library-list li a.active:after{position:absolute;display:block;content:' ';right:0px;top:0px;border:15px solid #57c7d4;border-left-color:transparent;border-bottom-color:transparent;}
+.img-library-list li a.active i{display:block;}
+/* 后台应用公用样式 */
+.metalert-wrapper{display:none;height:100%;position:fixed;left:0;top:0;z-index:1799}
+.metalert-wrapper.bgshow{background:rgba(0,0,0,.5)}
+.metalert-text{position:fixed;left:50%;top:50%;z-index:1799;-webkit-transform:translate(-50%,-50%);-moz-transform:translate(-50%,-50%);-ms-transform:translate(-50%,-50%);-o-transform:translate(-50%,-50%);transform:translate(-50%,-50%)}
+.metalert-wrapper .metalert-text{position:absolute}
+.metalert-text .close{position:absolute;right:5px;top:5px;font-size:30px;opacity:1}

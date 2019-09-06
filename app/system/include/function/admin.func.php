@@ -138,7 +138,7 @@ function operation_column() {
 		$sql_id.= ")";
 		$query = "SELECT * from {$_M['table']['column']} WHERE lang = '{$_M['lang']}'{$sql_id} AND module < 100";
 		$admin_column_1 = DB::get_all($query);
-		$query = "SELECT * from {$_M['table']['column']} WHERE lang = '{$_M['lang']}' AND classtype!=1 AND module < 100";
+        $query = "SELECT * from {$_M['table']['column']} WHERE lang = '{$_M['lang']}' AND classtype!=1 AND releclass=0 AND module < 100";
 		$admin_column_2 = DB::get_all($query);
 		foreach($admin_column_1 as $key=>$val){
 			$admin_column[] = $val;

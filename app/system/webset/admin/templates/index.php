@@ -46,7 +46,7 @@ echo <<<EOT
 			<div class="fbox">
 				<input name="met_mobile_logo" type="text" data-upload-type="doupimg" class="text" value="{$_M['config']['met_mobile_logo']}">
 			</div>
-			<span class="tips">{$_M['word']['suggested_size']} 90 * 30 ({$_M['word']['setimgPixel']})<br>{$_M['word']['indexmobilelogoinfo']}</span>
+			<span class="tips">{$_M['word']['suggested_size']} 180 * 50 ({$_M['word']['setimgPixel']})<br>{$_M['word']['indexmobilelogoinfo']}</span>
 		</dd>
 	</dl>
 	<dl>

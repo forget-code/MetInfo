@@ -5,6 +5,7 @@ class MetUiPack{
 	public $cache = true;
 	public $isLteIe9;
 	public $versionUpdate=false;
+	public $file_compress=false;
 	public function __construct() {
 		global $_M,$metui;
 		$this->isLteIe9=strpos($_SERVER['HTTP_USER_AGENT'],'MSIE 9')!==false || strpos($_SERVER['HTTP_USER_AGENT'],'MSIE 8')!==false;
@@ -53,7 +54,9 @@ class MetUiPack{
 							$urls['css'][] = $val;
 							break;
 						case 'js':
-							$urls['js'][] = $val;
+							if(!$this->isLteIe9){
+								$urls['js'][] = $val;
+							}
 							break;
 						default:
 							$urls[$hz][] = $val;
@@ -198,7 +201,6 @@ class MetUiPack{
 			$this->file_pack['module_name']=strtoupper(str_replace(array('-','.',' '),'_',$this->file_pack['module_name']));
 			$file_code="window.METUI_{$this->file_pack['module_name']}=(function(metui){\n";
 		}
-		if($this->file_pack['suffix']=='css') $file_code.="@charset \"utf-8\";\n";// CSS声明
 		// 打包文件内容合并
 		foreach($this->file_pack['paths'] as $key => $val){
 			if($key>0) $file_code.="\n";
@@ -210,53 +212,36 @@ class MetUiPack{
 					return 'url('.$relaurl.$match[1].$match[2].')';
 				}, $file_code_val['code']);
 			}
-			$file_code_val['code']="/*{$file_code_val['path']}*/\n{$file_code_val['code']}";
+			// $file_code_val['code']="/*{$file_code_val['path']}*/\n{$file_code_val['code']}";
 			$file_code.=$file_code_val['code'];
 		}
 		if($this->file_pack['module_name']) $file_code.="\nreturn metui;\n})(window.METUI_{$this->file_pack['module_name']}||{});";// 生成的JS文件首尾添加模块化封装代码
+		// 压缩
+		if($this->file_compress){
+			if($this->file_pack['suffix']=='css'){
+				$file_code = preg_replace('!/\*[^*]*\*+([^/][^*]*\*+)*/!', '', $file_code);
+		        $file_code=str_replace(array("
+","\r\n", "\r","\n","\t",'@charset "utf-8";',"@charset 'utf-8';",'@charset "UTF-8";',"@charset 'UTF-8';"), '', $file_code);
+        		$file_code=str_replace(array('  ', '    ', '    '),' ',$file_code);
+		        $file_code=str_replace(array(': ',' :'),':',$file_code);
+		        $file_code=str_replace(array(', ',' ,'),',',$file_code);
+		        $file_code=str_replace(array('; ',' ;'),';',$file_code);
+		        $file_code=str_replace(array(' }','} ',';}'),'}',$file_code);
+		        $file_code=str_replace(array(' {','{ '),'{',$file_code);
+		        $file_code='@charset "utf-8";'.$file_code;// CSS声明
+			}
+			if($this->file_pack['suffix']=='js'){
+		  		$url='https://www.css-js.com/taskserver.do';
+		  		$data1 = array('body'=>$file_code,'tasks'=>'[{"name":"uglify","options":{"output":{"beautify":true}}}]');
+		  		$result1=json_decode($this->send_post($url,$data1),true);
+		  		$data2 = array('body'=>$result1['data'],'tasks'=>'[{"name":"uglify","options":{"sequences":true,"properties":true,"dead_code":true,"drop_debugger":true,"conditionals":true,"evaluate":true,"booleans":true,"loops":true,"unused":true,"if_return":true,"join_vars":true,"collapse_vars":true,"drop_console":true,"keep_infinity":true,"unsafe":false}}]');
+		  		$result2=json_decode($this->send_post($url,$data2),true);
+		        $file_code=$result2['data'];
+			}
+		}
+
 		return $file_code;
 	}
-	/**
-	 * scssc SCSS预处理
-	 * @param array  $scssUrl SCSS文件url数组
-	 * @param String $cssDir  生成文件目录
-	 */
-	// public function scssc($scssUrl,$cssDir){
-	// 	global $_M,$scssc;
-	// 	if(!$this->cache){
-	// 		if(!is_array($scssUrl)) $scssUrl=array($scssUrl);
-	// 		$scssUrl=str_replace($_M['url']['site'], PATH_WEB, $scssUrl);
-	// 		if(!$cssDir) $cssDir=pathinfo($scssUrl['0'],PATHINFO_DIRNAME).'/';
-	// 		$cssDir=str_replace($_M['url']['site'], PATH_WEB, $cssDir);
-	// 		// 引入SCSS预处理类
-	// 		require_once PATH_WEB.'public/ui/v2/static/scss.class.php';
-	// 		$scssc->setFormatter('scss_formatter_compressed');
-	// 		$scssc->setImportPaths($cssDir);
-	// 		// 开始预处理SCSS文件
-	// 		foreach ($scssUrl as $value) {
-	// 			$val['scssc']=true;
-	// 			$val['name']=pathinfo($value,PATHINFO_BASENAME);
-	// 			if(strpos($val['name'], '*')!==false || !strpos($val['name'], '.')){// 路径为目录时
-	// 				if(strpos($val['name'], '.')!==false || strpos($val['name'], '*')!==false) $value=str_replace($val['name'], '', $value);
-	// 				if(substr($value, -1)!='/') $value.='/';
-	// 				foreach (scandir($value) as $values) {
-	// 					if(pathinfo($values,PATHINFO_EXTENSION)=='scss') $val['scss'][]=$value.$values;
-	// 				}
-	// 				$this->scssc($val['scss']);
-	// 				$val['scssc']=false;
-	// 			}
-	// 			if(file_exists($value) && $val['scssc']){// 路径为文件时
-	// 				$val['css']=$cssDir.str_replace('.scss', '.css', $val['name']);
-	// 				$val['version']=$this->filePackVersion($value);
-	// 				$val['dir']=str_replace(PATH_WEB, '', pathinfo($value,PATHINFO_DIRNAME)).'/';
-	// 				if(!file_exists($val['css']) || $val['version']!=$this->file_version[$val['dir']][$val['name']]){
-	// 					file_put_contents($val['css'],$scssc->compile("@import '{$val['name']}'"));// 生成CSS文件
-	// 					$this->file_version[$val['dir']][$val['name']]=$val['version'];// 更新SCSS文件版本信息
-	// 				}
-	// 			}
-	// 		}
-	// 	}
-	// }
 	/**
 	 * filePackVersion 计算生成文件的版本信息
 	 * @param  array $paths             打包文件路径数组
@@ -264,6 +249,7 @@ class MetUiPack{
 	 */
 	public function filePackVersion($paths){
 		if(!is_array($paths)) $paths=array($paths);
+		$file_pack_version='';
 		foreach ($paths as $value) {
 			$file_pack_version.=$value.filemtime($value);
 			// SCSS文件版本信息计算
@@ -327,14 +313,14 @@ class MetUiPack{
 			if(!$this->tem_version['name']){// 加入模板名称等信息
 				$tem_version['name']=$met_skin;
 				$tem_version['version']='1.0';
-				$tem_version['updatetime']=date('Y.m.d',time());
+				$tem_version['update_time']=date('Y.m.d',time());
 				if($this->tem_version){
 					$this->tem_version=array_merge($tem_version,$this->tem_version);
 				}else{
 					$this->tem_version=$tem_version;
 				}
 			}
-			$this->tem_version['updatetime']=date('Y.m.d',time());
+			$this->tem_version['update_time']=date('Y.m.d',time());
 			$this->tem_version['file_version']=$this->file_version;// 更新模板UI版本信息
 			if(version_compare(PHP_VERSION,'5.4.0','>=')){
 				$tem_version_str=json_encode($this->tem_version,JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT);
@@ -347,6 +333,43 @@ class MetUiPack{
 			}
 			file_put_contents($this->version_path,$tem_version_str);
 		}
+	}
+	// post请求数据
+	public function send_post($url, $data=array()){
+		$curl = curl_init(); // 启动一个CURL会话
+		curl_setopt($curl, CURLOPT_POST, 1); // 发送一个常规的Post请求
+		curl_setopt($curl, CURLOPT_URL, $url); // 要访问的地址
+		// POST参数
+		$data = http_build_query($data);
+		curl_setopt($curl, CURLOPT_POSTFIELDS, $data); // Post提交的数据包
+		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0); // 是否对认证证书来源的检查
+		// 返回结果
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1); // 获取的信息以文件流的形式返回
+		curl_setopt($curl, CURLOPT_HEADER, 0); // 显示返回的Header区域内容
+		// 结果
+		$result = curl_exec($curl); //执行操作
+		if (curl_errno($curl)) {
+		    echo 'Errno'.curl_error($curl);
+		}
+		curl_close($curl);
+		return $result;
+	}
+	// post请求数据
+	public function send_post1($url, $data=array()){
+		$data=http_build_query($data);
+		$options = array(
+			'http'=>array(
+				'method'=>"POST",
+				'header'=>"Content-type: application/x-www-form-urlencoded;charset=utf-8\r\n".
+				"Content-length:".strlen($data)."\r\n" .
+				"Cookie: foo=bar\r\n" .
+				"\r\n",
+				'content'=>$data
+			)
+		);
+		$context = stream_context_create($options);
+		$result =file_get_contents($url, false, $context);
+		return $result;
 	}
 }
 $metuipack=new MetUiPack();

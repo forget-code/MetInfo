@@ -46,17 +46,19 @@ class column_tag extends tag {
         }
     \$sub = count(\$result);
     foreach(\$result as \$index=>\$m):
+        if(\$m['display'] == 1){
+            continue;
+        }
         \$hides = $hide;
         \$hide = explode("|",\$hides);
         \$m['_index']= \$index;
-        if(\$data['classnow']==\$m['id'] || \$data['class1']==\$m['id'] || \$data['class2']==\$m['id']){
+        if(\$data['classnow']==\$m['id'] || \$data['class1']==\$m['id'] || \$data['class2']==\$m['id'] || \$data['releclass'] == \$m['id']){
             \$m['class']="$class";
         }else{
             \$m['class'] = '';
         }
         if(in_array(\$m['name'],\$hide)){
             unset(\$m['id']);
-            unset(\$m['class']);
             \$m['hide'] = \$hide;
             \$m['sub'] = 0;
         }
@@ -82,8 +84,7 @@ str;
     public function _list( $attr, $content ) {
         global $_M;
         $module = isset( $attr['module'] ) ? $attr['module'] : "";
-        $cid = isset( $attr['cid'] ) ? ( $attr['cid'][0] == '$' ? $attr['cid']
-            : "'{$attr['cid']}'" ) : 0;
+        $cid = isset( $attr['cid'] ) ? ( $attr['cid'][0] == '$' ? $attr['cid'] : "'{$attr['cid']}'" ) : 0;
         $order = isset($attr['order']) ? $attr['order'] : "'no_order asc'";
         $num = isset($attr['num']) ? $attr['num'] :10;
         $name = isset($attr['name']) ? $attr['name'] : '$v';

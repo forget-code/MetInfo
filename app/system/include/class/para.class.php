@@ -39,7 +39,7 @@ class para{
 		}
 		return $info;
 	}
-
+    //后台表单渲染
 	public function paratem($listid,$module,$class1,$class2,$class3){
 		global $_M;
 		$paralist = $this->get_para_list($module,$class1,$class2,$class3);
@@ -54,7 +54,8 @@ class para{
 
 		require PATH_WEB.'app/system/include/public/ui/admin/paratype.php';
 	}
-	public function parawebtem($listid,$module,$wr_oks = 0,$class1,$class2,$class3){
+	//前台表单熏染
+	public function parawebtem($listid,$module,$wr_oks = 0,$access = 0,$class1,$class2,$class3){
 		global $_M;
 		if($listid)$para = $this->get_para($listid,$module,$class1,$class2,$class3);
 		$paralist = $this->get_para_list($module,$class1,$class2,$class3);
@@ -67,9 +68,45 @@ class para{
 			}
 			$paralist = $paralists;
 		}
+        $paralist = $this->paraaccess($paralist, $access);
 
 		require PATH_WEB.'app/system/include/public/ui/web/paratype.php';
 	}
+
+    public function paratemList($listid,$module,$class1,$class2,$class3)
+    {
+        global $_M;
+        $paralist = $this->get_para_list($module,$class1,$class2,$class3);
+        $parameter_database = load::mod_class('parameter/parameter_database','new');
+        foreach ($paralist as $key => $para) {
+            $query = "SELECT * FROM {$_M['table']['user_list']} WHERE listid = {$listid} AND paraid={$para['id']} AND lang = '{$_M['lang']}'";
+            $user_info = DB::get_one($query);
+
+            $values = $user_info['info'];
+            $paralist[$key]['value'] = $values;
+        }
+        return $paralist;
+    }
+
+    public function paraaccess($paralist, $access = 0)
+    {
+        //属性访问权限
+        foreach ($paralist as $key => $val) {
+            if(!$val['access']){
+                $paralist_bace[] = $val;
+            }
+        }
+
+        if($access){
+            foreach ($paralist as $key => $val) {
+                if($val['access'] == $access){
+                    $paralist_bace[] = $val;
+                }
+            }
+        }
+        return $paralist_bace;
+    }
+
 	public function get_para($listid,$module,$class1,$class2,$class3){
 		global $_M;
 		$paralist = $this->get_para_list($module,$class1,$class2,$class3);

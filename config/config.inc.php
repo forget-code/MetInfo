@@ -107,6 +107,7 @@ function met_rand_x($length){
 	return $password;
 }
 $met_webkeys=file_get_contents(ROOTPATH.'/config/config_safe.php');
+$met_webkeys=str_replace(' ','',$met_webkeys);
 $met_webkeys=str_replace('<?php/*','',$met_webkeys);
 $met_webkeys=str_replace('*/?>','',$met_webkeys);
 if(!preg_match('/^[0-9A-Za-z]{32}$/',$met_webkeys)){

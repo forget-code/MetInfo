@@ -6,14 +6,25 @@ $(function(){
             var $self = $(this);
             $(this).addClass('loading');
             $.ajax({
-               type: 'POST',
-               url: $(this).data('mailedit'),
-               success: function(msg){
-                    $.include(M['plugin']['alertify'],function(){
-                        alertify.success(msg);
+                type: 'POST',
+                url: $(this).data('mailedit'),
+                dataType:'json',
+                success: function(result){
+                    if(!parseInt(result.status)){
+                        result.msg_str=result.msg;
+                        result.msg='';
+                    }
+                    metAjaxFun({
+                        result:result,
+                        true_fun:function(){
+                            $self.removeClass('loading');
+                        },
+                        false_fun:function(){
+                            alertify.alert(result.msg_str);
+                            $self.removeClass('loading');
+                        }
                     });
-                    $self.removeClass('loading');
-               }
+                }
             });
         });
         // 手机绑定-获取短信验证码
@@ -36,16 +47,16 @@ $(function(){
                    url: $(this).data('url'),
                    type: 'POST',
                    data:{tel:$tel.val(),code:$code.val()},
-                   success: function(msg){
-                        if(msg == 'SUCCESS'){
-                            $self.attr('disabled',true);
-                            $self.html($self.data('retxt') + ' <span class="badge"></span>');
-                            identifyTime($self,90);
-                        }else{
-                            $.include(M['plugin']['alertify'],function(){
-                                alertify.error(msg);
-                            });
-                        }
+                   dataType:'json',
+                   success: function(result){
+                        metAjaxFun({
+                            result:result,
+                            true_fun:function(){
+                                $self.attr('disabled',true);
+                                $self.html($self.data('retxt') + ' <span class="badge"></span>');
+                                identifyTime($self,90);
+                            }
+                        });
                    }
                 });
             }
@@ -56,16 +67,16 @@ $(function(){
             $.ajax({
                type: 'POST',
                url: $(this).data('url'),
-               success: function(msg){
-                    if(msg == 'SUCCESS'){
-                        $self.attr('disabled',true);
-                        $self.html($self.data('retxt') + ' <span class="badge"></span>');
-                        identifyTime($self,90);
-                    }else{
-                        $.include(M['plugin']['alertify'],function(){
-                            alertify.error(msg);
-                        });
-                    }
+               dataType:'json',
+               success: function(result){
+                    metAjaxFun({
+                        result:result,
+                        true_fun:function(){
+                            $self.attr('disabled',true);
+                            $self.html($self.data('retxt') + ' <span class="badge"></span>');
+                            identifyTime($self,90);
+                        }
+                    });
                 }
             });
         });
@@ -74,13 +85,12 @@ $(function(){
             metFormvalidationLoadFun(function(){
                 var safety_teledit_form_index=$('.safety-modal-teledit form').index('form');
                 validate[safety_teledit_form_index].success(function(result,form){
-                    metAlertifyLoadFun(function(){
-                        if(result == 'SUCCESS'){
+                    metAjaxFun({
+                        result:result,
+                        true_fun:function(){
                             alertify.success(METLANG.usercheckok);
                             $('.safety-modal-teledit').modal('hide');
                             $('.safety-modal-teladd').modal('show');
-                        }else{
-                            alertify.error(result);
                         }
                     });
                 });
@@ -117,16 +127,16 @@ $(function(){
                        type: 'POST',
                        url: $(this).data('url'),
                        data:{phone:$phone.val(),code:$code.val()},
-                       success: function(msg){
-                            if(msg == 'SUCCESS'){
-                                $self.attr('disabled',true);
-                                $self.html($self.data('retxt') + ' <span class="badge"></span>');
-                                identifyTime($self,90);
-                            }else{
-                                $.include(M['plugin']['alertify'],function(){
-                                    alertify.error(msg);
-                                });
-                            }
+                       dataType:'json',
+                       success: function(result){
+                            metAjaxFun({
+                                result:result,
+                                true_fun:function(){
+                                    $self.attr('disabled',true);
+                                    $self.html($self.data('retxt') + ' <span class="badge"></span>');
+                                    identifyTime($self,90);
+                                }
+                            });
                        }
                     });
                 }
@@ -142,10 +152,9 @@ $(function(){
             $.ajax({
                 type: 'POST',
                 url: $(this).attr('href'),
-                success: function(msg){
-                    $.include(M['plugin']['alertify'],function(){
-                        alertify.success(msg);
-                    });
+                dataType:'json',
+                success: function(result){
+                    metAjaxFun({result:result,true_fun:function(){}});
                     $li.removeClass('loading');
                 }
             });

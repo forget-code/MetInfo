@@ -57,29 +57,28 @@ final class met_view
         //缓存路径
         $cachePath = $cachePath ? $cachePath : TEMP_CACHE_PATH;
 
-        //内容
-        $content = null;
+        //内容缓存
+        $content_cache = TEMP_CACHE_PATH . '/' .md5($cacheName.md5(serialize($_M['user'])).$tplFile);
 
+        $content = null;
 
         if (!$content) {
             /**
              * 全局变量定义
              * 模板使用{$c.xx}方式调用
              */
-            load::sys_class('view/ui_compile');
-            $ui_compile = new ui_compile();
-
-            $this->vars['g'] = $ui_compile->list_public_config();
-            $this->vars['c'] = $ui_compile->replace_sys_config();
-            $this->vars['url'] = $_M['url'];
-            $templates = $ui_compile->list_templates_config();
+            ##load::sys_class('view/ui_compile');
+            $ui_compile = load::sys_class('view/ui_compile','new');
+            $this->vars['g'] =  $ui_compile->list_public_config();
+            $this->vars['c'] =  $ui_compile->replace_sys_config();
             $this->vars['user'] = load::sys_class('user', 'new')->get_login_user_info();
 
             /**
              * 模板使用$lang.xxx调用模板标签配置
              */
-            $this->vars['lang'] = $templates;
+            $this->vars['lang'] = $ui_compile->list_templates_config();
             $this->vars['word'] = $_M['word'];
+            $this->vars['url']  = $_M['url'];
 
             /**
              * 获得模板文件
@@ -111,6 +110,10 @@ final class met_view
             ob_start();
             include($this->compileFile);
             $content = ob_get_clean();
+
+            if (!$_M['form']['pageset'] && M_MODULE == 'web') {
+                #file_put_contents($content_cache, $content);
+            }
 
         }
 
@@ -245,7 +248,7 @@ final class met_view
         global $_M;
         $tplFile = $this->tplFile;
         $compileFile = $this->compileFile;
-        return !file_exists($compileFile) || $_M['config']['debug']
+        return !is_file($compileFile) || $_M['config']['debug']
         || (filemtime($tplFile) > filemtime($compileFile));
     }
 

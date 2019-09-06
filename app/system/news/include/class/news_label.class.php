@@ -22,6 +22,44 @@ class news_label extends base_label {
 		$this->construct('news', $_M['config']['met_news_list']);
 	}
 
+    /**
+     * * 获取列表数据内容（产品，图片，下载，新闻模块使用）
+     * @param string  $id      栏目id
+     * @param string  $rows    取的条数
+     * @param $type    调用内容com(推荐)／news(最新，已废除)//all（所有）
+     * @param $order
+     * @param bool $cache	是否缓存数据
+     * @return array|bool|string
+     */
+    public function get_module_list($id, $rows, $type, $order) {
+        global $_M;
+
+        return self::_get_module_list($id, $rows, $type, $order);
+
+	/*
+        //模块
+        $mod = $this->mod;
+        //缓存文件编号
+        $code = md5($id . $rows . $type . $order. $mod);
+        $mod_data_cache_file =  "data/mod_list_{$mod}_{$id}_{$code}";
+        $cache_path = PATH_CACHE . "{$mod_data_cache_file}.php";
+
+        if ($_M['form']['pageset'] || defined(IN_ADMIN) || $cache == false) {
+            return self::_get_module_list($id, $rows, $type, $order);
+        }else{
+            if(time() - filemtime($cache_path) > $_M['config']['data_cache_time'] || !file_exists($cache_path) ){
+                //有缓存读取缓存
+                $redata = self::_get_module_list($id, $rows, $type, $order);
+                cache::put($mod_data_cache_file,$redata);
+                return $redata;
+
+            }else{
+                $redata = cache::get($mod_data_cache_file);
+                return $redata;
+            }
+        }*/
+    }
+
 	/**
 	 * 获取列表数据内容（产品，图片，下载，新闻模块使用）
 	 * @param  string  $id      栏目id
@@ -29,7 +67,7 @@ class news_label extends base_label {
 	 * @param  string  $type    调用内容com(推荐)／news(最新，已废除)//all（所有）
 	 * @return array        		news数组
 	 */
-	public function get_module_list($id, $rows, $type, $order) {
+	public function _get_module_list($id, $rows, $type, $order) {
 		global $_M;
 
 		if(!$type)$type = 'all';
@@ -130,31 +168,32 @@ class news_label extends base_label {
 			$this->database->get_list_one_by_id($id)
 		);
 
-		if($nj == 1){
-			$preinfo = $this->handle->one_para_handle(
-				$this->database->get_pre($one)
-			);
-			if ($preinfo) {
-				$one['preinfo']['title'] =  $preinfo['title'];
-				$one['preinfo']['lang'] =  $_M['word']['Previous_news'];
-				$one['preinfo']['url'] =  $preinfo['url'];
-				$one['preinfo']['disable'] =  '';
-			} else {
-				$one['preinfo']['disable'] =  'disable';
-			}
+        if($nj == 1){
+            $slim = true;
+            $preinfo = $this->handle->one_para_handle(
+                $this->database->get_pre($one),$slim
+            );
+            if ($preinfo) {
+                $one['preinfo']['title'] =  $preinfo['title'];
+                $one['preinfo']['lang'] =  $_M['word']['Previous_news'];
+                $one['preinfo']['url'] =  $preinfo['url'];
+                $one['preinfo']['disable'] =  '';
+            } else {
+                $one['preinfo']['disable'] =  'disable';
+            }
 
-			$nextinfo = $this->handle->one_para_handle(
-				$this->database->get_next($one)
-			);
-			if ($nextinfo) {
-				$one['nextinfo']['title'] =  $nextinfo['title'];
-				$one['nextinfo']['lang'] =  $_M['word']['Next_news'];
-				$one['nextinfo']['url'] =  $nextinfo['url'];
-				$one['nextinfo']['disable'] =  '';
-			} else {
-				$one['nextinfo']['disable'] =  'disable';
-			}
-		}
+            $nextinfo = $this->handle->one_para_handle(
+                $this->database->get_next($one),$slim
+            );
+            if ($nextinfo) {
+                $one['nextinfo']['title'] =  $nextinfo['title'];
+                $one['nextinfo']['lang'] =  $_M['word']['Next_news'];
+                $one['nextinfo']['url'] =  $nextinfo['url'];
+                $one['nextinfo']['disable'] =  '';
+            } else {
+                $one['nextinfo']['disable'] =  'disable';
+            }
+        }
 
 		if($para == 1){
 			$one['para'] = load::mod_class('parameter/parameter_label', 'new')->get_parameter_contents($this->mod , $id, $one['class1'], $one['class2'], $one['class3']);

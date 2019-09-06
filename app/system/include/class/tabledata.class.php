@@ -60,7 +60,7 @@ class tabledata {
             $total = DB::counter($table, $conds, '*');                        //获取总数量，计算总页数
         }else{
             $array = DB::get_all($sql);
-            $query = $sql . "LIMIT {$start},{$length}";
+            $query = $sql . " LIMIT {$start},{$length}";
             $array = DB::get_all($query);
             $total = count(DB::get_all($sql));
         }

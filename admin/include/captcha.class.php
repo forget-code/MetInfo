@@ -5,6 +5,7 @@ error_reporting(E_ERROR | E_PARSE);
 $safe_dirs=explode('/',str_replace('\\','/',dirname(__FILE__)));
 $safe_len=-9-strlen($safe_dirs[count($safe_dirs)-2]);
 $met_webkeys=trim(file_get_contents(substr(dirname(__FILE__), 0, $safe_len).'/config/config_safe.php'));
+$met_webkeys=str_replace(' ','',$met_webkeys);
 $met_webkeys=str_replace('<?php/*','',$met_webkeys);
 $met_webkeys=str_replace('*/?>','',$met_webkeys);
 class Captcha

@@ -46,20 +46,19 @@ if(top.location!=location) $("html",parent.document).find('.turnovertext').remov
 function metAlert(text,delay,bg_ok,type){
     delay=typeof delay != 'undefined'?delay:2000;
     bg_ok=bg_ok?'bgshow':'';
+    $('.metalert-wrapper,.metalert-text').remove();
     if(text!=' '){
         text=text||METLANG.jsok;
         text='<div>'+text+'</div>';
         if(parseInt(type)==0) text+='<button type="button" class="close white" data-dismiss="alert"><span aria-hidden="true">×</span></button>';
-        if(!$('.metalert-text').length){
-            var html='<div class="metalert-text p-x-40 p-y-10 bg-purple-600 white font-size-16">'+text+'</div>';
-            if(bg_ok) html='<div class="metalert-wrapper w-full alert '+bg_ok+'">'+html+'</div>';
-            $('body').append(html);
-        }
+        var html='<div class="metalert-text p-x-40 p-y-10 bg-purple-600 white font-size-16">'+text+'</div>';
+        if(bg_ok) html='<div class="metalert-wrapper w-full alert '+bg_ok+'">'+html+'</div>';
+        $('body').append(html);
         var $met_alert=$('.metalert-text'),
             $obj=bg_ok?$('.metalert-wrapper'):$met_alert;
         $met_alert.html(text);
         $obj.show();
-        if($met_alert.height()%2) $met_alert.height($met_alert.height()+1);
+        if($met_alert.outerHeight()%2) $met_alert.height($met_alert.height()+1);
     }
     if(delay){
         setTimeout(function(){
@@ -189,13 +188,13 @@ $.fn.extend({
     metEditor:function(){
         if(!$(this).length) return;
         if(M['met_editor']=='ueditor'){// 百度编辑器
-            if(typeof textarea_editor_val =='undefined') window.textarea_editor_val=[];
+            if(typeof UE_VAL =='undefined' || typeof textarea_editor_val =='undefined') window.UE_VAL=window.textarea_editor_val=[];
             var $self=$(this);
             $.include(M['plugin']['ueditor'],function(){
                 $self.each(function(index, val) {
                     var index1=$(this).index('textarea[data-plugin="editor"]');
                     if(!$(this).attr('id')) $(this).attr({id:'textarea-editor'+index1});
-                    textarea_editor_val[index1]=UE.getEditor(val.id,{
+                    UE_VAL[index1]=textarea_editor_val[index1]=UE.getEditor(val.id,{
                         scaleEnabled:true, // 是否可以拉伸长高,默认false(当开启时，自动长高失效)
                         autoFloatEnabled:false, // 是否保持toolbar的位置不动，默认true
                         initialFrameWidth : $(this).data('editor-x')||'100%',
@@ -207,7 +206,7 @@ $.fn.extend({
 
         }
     },
-    // 颜色选择器
+    // 日期时间选择器
     metDatetimepicker:function(){
         if(!$(this).length) return;
         $(this).each(function(index, el) {
@@ -215,7 +214,13 @@ $.fn.extend({
             $(this).datetimepicker({
                 lang:M.synchronous=='cn'?'ch':'en',
                 timepicker:$self.attr("data-day-type")==2?true:false,
-                format:$self.attr("data-day-type")==2?'Y-m-d H:i:s':'Y-m-d'
+                format:$self.attr("data-day-type")==2?'Y-m-d H:i:s':'Y-m-d',
+                onSelectDate:function(ct,$i){
+                    $self.trigger('change');
+                },
+                onSelectTime:function(ct,$i){
+                    $self.trigger('change');
+                }
             });
         });
     },
@@ -230,12 +235,12 @@ $.fn.extend({
                     city: $(this).find(".city").attr("data-checked"),
                     dist: $(this).find(".dist").attr("data-checked"),
                     value_key: 'id',
-                    nodata: 'none'
+                    nodata: 'none',
+                    required:false
                 };
             if($(this).hasClass('shop-address-select')){
-                option=$.extend({
+                $.extend(option,{
                     country:$(this).find(".country").attr("data-checked"),
-                    required:false,
                     country_name_key:'name',
                     p_name_key:'name',
                     n_name_key:'name',
@@ -246,7 +251,7 @@ $.fn.extend({
                         key=key||0;
                         return json[key]['children'];
                     }
-                },option);
+                });
             }
             citySelect[index]=$(this).citySelect(option);
         });
@@ -255,31 +260,33 @@ $.fn.extend({
     metFileInput:function(){
         if(!$(this).length) return;
         var errorFun=function(obj,data){
-                obj.find('.file-preview-thumbnails .file-preview-frame.disabled').remove();
+                obj.parents('.file-input').find('.file-preview-thumbnails .file-preview-frame.disabled').remove();
                 // 显示报错文字
                 // obj.removeClass('has-success').addClass('has-danger');
                 // if(!obj.find('small.form-control-label').length) obj.append('<small class="form-control-label"></small>');
                 // obj.find('small.form-control-label').text(data.response.error);
             },
-            successFun=function(obj1,obj2,data,multiple){
+            successFun=function(obj1,data,multiple){
                 var $obj1=obj1.parents('.input-group').find('input[type="hidden"][name="'+obj1.attr('name')+'"]'),
+                    $obj2=obj1.parents('.file-input'),
                     path='';
                 if(multiple){
                     path=$obj1.val()?$obj1.val()+','+data.response.path:data.response.path;
                 }else{
                     path=data.response.path;
-                    obj2.find('.file-preview-thumbnails .file-preview-frame:last-child').prev().remove();
+                    $obj2.find('.file-preview-thumbnails .file-preview-frame:last-child').prev().remove();
                 }
-                $obj1.val(path); // input值更新
+                $obj1.val(path).trigger('change'); // input值更新
                 // 显示上传成功文字
-                obj2.find('.file-input .input-group .file-caption-name').html('<span class="glyphicon glyphicon-file kv-caption-icon"></span>'+path);
-                obj2.removeClass('has-danger').addClass('has-success');
-                if(!obj2.find('small.form-control-label').length) obj2.append('<small class="form-control-label"></small>');
+                $obj2.find('.input-group .file-caption-name').html('<span class="glyphicon glyphicon-file kv-caption-icon"></span>'+path).attr({title:path});
+                $obj2.removeClass('has-danger').addClass('has-success');
+                if(!$obj2.parents('.form-group').find('small.form-control-label').length) $obj2.parents('.form-group').append('<small class="form-control-label"></small>');
                 var tips=M['langtxt'].jsx17||M['langtxt'].fileOK;
-                obj2.find('small.form-control-label').text(tips);
+                $obj2.parents('.form-group').find('small.form-control-label').text(tips);
+                $('.img-library-modal').attr({'data-update':1});
             };
         $(this).each(function(index, el) {
-            if(!(typeof MET['url']['basepath']!='undefined' || (typeof $(this).data('url')!='undefined' && $(this).data('url').indexOf('app/system/entrance.php?lang=cn&c=uploadify&m=include&a=dohead')>=0))) return;
+            if(!(typeof MET['url']['basepath']!='undefined' || (typeof $(this).data('url')!='undefined' && $(this).data('url').indexOf('c=uploadify&m=include&a=dohead')>=0))) return;
             var $self=$(this),
                 $form_group=$(this).parents('.form-group:eq(0)'),
                 name=$(this).attr('name'),
@@ -293,7 +300,7 @@ $.fn.extend({
                 initialPreview=[],
                 dropZoneEnabled=$(this).data('drop-zone-enabled')=='false'?false:true,
                 value=$(this).attr('value');
-            if(typeof value !='undefined' && value!='' && (value.indexOf('.png')>=0||value.indexOf('.jpg')>=0||value.indexOf('.bmp')>=0||value.indexOf('.gif')>=0||value.indexOf('.ico')>=0)){
+            if(typeof value !='undefined' && value!='' && (value.indexOf('.png')>=0||value.indexOf('.jpeg')>=0||value.indexOf('.jpg')>=0||value.indexOf('.bmp')>=0||value.indexOf('.gif')>=0||value.indexOf('.ico')>=0)){
                 if(value.indexOf(',')>=0){
                     value=value.split(',');
                 }else{
@@ -321,13 +328,24 @@ $.fn.extend({
                 }
                 $.each(accept, function(index, val) {
                     val=val.indexOf('/')>=0?val.split('/')[1]:'';
-                    if(val=='*') val='';
+                    if(val.indexOf('x-')>=0) val=val.replace('x-','');
+                    switch(val){
+                        case 'icon':
+                            val='ico';
+                            break;
+                        case 'jpeg':
+                            val='jpg';
+                            break;
+                        case '*':
+                            val='';
+                            break;
+                    }
                     if(val){
                         if(format) format+='|';
                         format+=val;
                     }
                 });
-                if(accept=='image/*') format='jpg|png|bmp|gif|webp';
+                if(accept=='image/*') format='jpg|jpeg|png|bmp|gif|webp|ico';
             }
             if(format) url+='&format='+format;
             var allowedFileExtensions=format?(format.indexOf('|')?format.split('|'):[format]):'';
@@ -350,63 +368,245 @@ $.fn.extend({
             }).on("filebatchselected", function(event, files) {
                 $(this).fileinput("upload");
             }).on('filebatchuploadsuccess', function(event, data, previewId, index) {// 同步上传成功结果处理
-                successFun($(this),$form_group,data,multiple);
+                successFun($(this),data,multiple);
             }).on('fileuploaded', function(event, data, previewId, index) {// 异步上传成功结果处理
-                successFun($(this),$form_group,data,multiple);
+                successFun($(this),data,multiple);
             }).on('filebatchuploaderror', function(event, data, previewId, index) {// 同步上传错误结果处理
-                errorFun($form_group,data);
+                errorFun($(this),data);
             }).on('fileuploaderror', function(event, data, previewId, index) {// 异步上传错误结果处理
-                errorFun($form_group,data);
+                errorFun($(this),data);
             });
             if(!$(this).parents('form').find('input[type="hidden"][name="'+name+'"]').length) $(this).after('<input type="hidden" name="'+name+'" value="'+value+'">');
             // $(this).siblings('i').attr({class:'icon wb-upload'}).parents('.btn-file').insertAfter($(this).parents('.file-input'));
-            // 删除图片后图片路径数据更新
-            $form_group.on('click', '.file-preview-thumbnails .file-preview-frame .kv-file-remove,.fileinput-remove', function(event) {
-                event.preventDefault();
-                var $input_name=$form_group.find('input[type="hidden"][name="'+name+'"]'),
-                    $caption_name=$form_group.find('.file-input .input-group .file-caption-name');
-                if($(this).hasClass('kv-file-remove')){
-                    var active=$(this).parents('.file-preview-frame').index(),
-                        input_value=$input_name.val(),
-                        path='';
-                    setTimeout(function(){
-                        if(multiple){
-                            if(input_value){
-                                if(input_value.indexOf(',')>=0){
-                                    input_value=input_value.split(',');
-                                }else{
-                                    input_value=[input_value];
-                                }
-                                $.each(input_value, function(index, val) {
-                                    if(index!=active) path=path?path+','+val:val;
-                                });
-                            }
-                        }else{
-                            var $file_preview_frame=$form_group.find('.file-preview-thumbnails .file-preview-frame');
-                            path=$file_preview_frame.length?$file_preview_frame.find('img').attr('src'):'';
-                        }
-                        $input_name.val(path); // input值更新
-                        $caption_name.html('<span class="glyphicon glyphicon-file kv-caption-icon"></span>'+path);
-                    },1000)
-                }else{
-                    $input_name.val(''); // input值更新
-                    $caption_name.html('<span class="glyphicon glyphicon-file kv-caption-icon"></span>');
-                }
-                $form_group.removeClass('has-success').find('small.form-control-label').remove();
-            });
         });
+        // 删除图片后图片路径数据更新
+        if(typeof fileinput_remove=='undefined'){
+            window.fileinput_remove=1;
+            // 删除图片后图片路径数据更新
+            $(document).on('click', '.file-input .file-preview-thumbnails .file-preview-frame .kv-file-remove,.fileinput-remove', function(event) {
+                event.preventDefault();
+                var $file_input=$(this).parents('.file-input'),
+                    $file=$file_input.find('input[type="file"]'),
+                    name=$file.attr('name'),
+                    multiple=typeof $file.attr('multiple') !='undefined'?true:false,
+                    $input_name=$file_input.find('input[type="hidden"][name="'+name+'"]'),
+                    input_value=$input_name.val(),
+                    $caption_name=$file_input.find('.input-group .file-caption-name');
+                if(input_value){
+                    if($(this).hasClass('kv-file-remove')){
+                        var $parents=$(this).parents('.file-preview-frame'),
+                            active=$parents.index(),
+                            path='';
+                        setTimeout(function(){
+                            var input_value=$input_name.val();
+                            if($parents.length) $parents.remove();
+                            if(multiple){
+                                if(input_value){
+                                    if(input_value.indexOf(',')>=0){
+                                        input_value=input_value.split(',');
+                                    }else{
+                                        input_value=[input_value];
+                                    }
+                                    $.each(input_value, function(index, val) {
+                                        if(index!=active) path=path?path+','+val:val;
+                                    });
+                                }
+                            }else{
+                                var $file_preview_frame=$file_input.find('.file-preview-thumbnails .file-preview-frame');
+                                path=$file_preview_frame.length?$file_preview_frame.find('img').attr('src'):'';
+                            }
+                            if(path){
+                                if($input_name.val()) $input_name.val(path).trigger('change'); // input值更新
+                            }else if(multiple && !$file_input.find('.file-drop-zone-title').length){
+                                $file_input.find('.fileinput-remove').click();
+                            }
+                            $caption_name.html('<span class="glyphicon glyphicon-file kv-caption-icon"></span>'+path).attr({title:path});
+                        },1000)
+                        if(!multiple) $file_input.find('.fileinput-remove').click();
+                    }else{
+                        $input_name.val('').trigger('change'); // input值更新
+                        $caption_name.html('<span class="glyphicon glyphicon-file kv-caption-icon"></span>').removeAttr('title');
+                    }
+                    $(this).parents('form-group').removeClass('has-success').find('small.form-control-label').remove();
+                }
+            });
+            // 图片库-点击按钮
+            $(document).on('click', '.file-input .fileinput-file-choose', function(event) {
+                if(!$('.img-library-modal').length){
+                    var html='<div class="modal fade modal-info img-library-modal" data-keyboard="false" data-backdrop="false" data-update="1">'
+                                +'<div class="modal-dialog modal-lg h-100p m-y-0 m-x-auto">'
+                                    +'<div class="modal-content h-100p">'
+                                        +'<div class="modal-header">'
+                                            +'<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>'
+                                            +'<h4 class="modal-title inline-block">选择图片</h4>'
+                                            +'<span class="yellow-600 font-size-16 inline-block m-l-10">单击图片即可选中</span>'
+                                        +'</div>'
+                                        +'<div class="modal-body p-r-20 oya met-scrollbar img-library-body">'
+                                            +'<ul class="img-library-list blocks-2 blocks-sm-3 blocks-md-4 blocks-xl-5 blocks-xxl-6"></ul>'
+                                            +'<div class="vertical-align h-100p w-full text-xs-center img-library-loader"><div class="loader loader-round-circle vertical-align-middle"></div></div>'
+                                        +'</div>'
+                                        +'<div class="modal-footer bg-blue-grey-100">'
+                                            +'<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>'
+                                            +'<button type="submit" class="btn btn-info">保存</button>'
+                                        +'</div>'
+                                    +'</div>'
+                                +'</div>'
+                            +'</div>';
+                    $('body').append(html);
+                    $('.img-library-modal').modal();
+                }
+                $('.img-library-modal button[type="submit"]').attr({'data-id':$(this).parents('.file-input').find('input[type="file"]').attr('id')});
+            });
+            // 图片库-弹框
+            $(document).on('show.bs.modal', '.img-library-modal', function(event) {
+                if($(this).attr('data-update')){
+                    var $loader=$('.img-library-loader',this),
+                        $list=$('.img-library-list',this);
+                    $loader.show();
+                    $list.html('');
+                    $.ajax({
+                        url: '/api/upload/getFileList',
+                        type: 'POST',
+                        dataType: 'json',
+                        success:function(result){
+                            if(parseInt(result.status)){
+                                var html='';
+                                $.each(result.data, function(index, val) {
+                                    val.fsize=parseInt(val.fsize/1024)+'kb';
+                                    html+='<li class="text-xs-center m-b-10">'
+                                        +'<a href="javascript:;" title="'+val.fname+'，大小：'+val.fsize+'" class="block p-5 vertical-align h-100">'
+                                            +'<img '+(index>5?'data-original':'src')+'="'+val.fpath+'" class="vertical-align-middle"/>'
+                                            +'<i class="icon fa-check font-size-14 white"></i>'
+                                        +'</a>'
+                                    +'</li>';
+                                });
+                                if(!html) html='<div class="text-xs-center h-300 vertical-align"><div class="vertical-align-middle font-size-20">暂无可选择图片，请上传图片</div>';
+                                $loader.hide();
+                                $list.html(html).find('[data-original]').metLazyLoad({container:'.img-library-body'});
+                                $('.img-library-modal').removeAttr('data-update');
+                            }
+                        }
+                    });
+                }else{
+                    $('.img-library-modal .img-library-list li a').removeClass('active');
+                }
+            });
+            // 图片库-选择图片
+            $(document).on('click', '.img-library-modal .img-library-list li a', function(event) {
+                var multiple=$('.file-input #'+$('.img-library-modal button[type="submit"]').attr('data-id')).attr('multiple')?true:false;
+                $(this).toggleClass('active');
+                if(!multiple) $(this).parents('li').siblings('li').find('a').removeClass('active');
+            })
+            // 图片库-提交
+            $(document).on('click', '.img-library-modal button[type="submit"]', function(event) {
+                var $self=$(this),
+                    $img_library_modal=$('.img-library-modal'),
+                    img_url='';
+                $img_library_modal.find('.img-library-list li a.active img').each(function(index, el) {
+                    img_url+=(index?',':'')+$(this).attr('src');
+                });
+                metAlertifyLoadFun(function(){
+                    if(img_url){
+                        $('.file-input #'+$self.attr('data-id')).metFileInputChange(img_url);
+                        $img_library_modal.modal('hide');
+                        alertify.success('图片选择成功');
+                    }else{
+                        alertify.error('请选择图片');
+                    }
+                });
+            });
+            // 外部图片-弹框
+            $(document).on('click', '.file-input .fileinput-file-other', function(event) {
+                if(!$('.img-other-modal').length){
+                    var html='<div class="modal fade modal-warning img-other-modal" data-keyboard="false" data-backdrop="false" data-update="1">'
+                                +'<div class="modal-dialog modal-center">'
+                                    +'<div class="modal-content">'
+                                        +'<div class="modal-header">'
+                                            +'<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>'
+                                            +'<h4 class="modal-title">添加外部图片</h4>'
+                                        +'</div>'
+                                        +'<div class="modal-body">'
+                                            +'<div class="form-group m-b-0"><input type="text" name="img_url" placeholder="请输入外部图片链接" class="form-control"/></div>'
+                                        +'</div>'
+                                        +'<div class="modal-footer bg-blue-grey-100">'
+                                            +'<button type="button" class="btn btn-default m-r-5" data-dismiss="modal">取消</button>'
+                                            +'<button type="submit" class="btn btn-warning">保存</button>'
+                                        +'</div>'
+                                    +'</div>'
+                                +'</div>'
+                            +'</div>';
+                    $('body').append(html);
+                    $('.img-other-modal').modal();
+                }
+                $('.img-other-modal [name="img_url"]').val('');
+                $('.img-other-modal button[type="submit"]').attr({'data-id':$(this).parents('.file-input').find('input[type="file"]').attr('id')});
+            });
+            // 外部图片-提交
+            $(document).on('click', '.img-other-modal button[type="submit"]', function(event) {
+                var $self=$(this),
+                    $img_other_modal=$('.img-other-modal'),
+                    img_url=$img_other_modal.find('[name="img_url"]').val();
+                metAlertifyLoadFun(function(){
+                    if(img_url){
+                        $('.file-input #'+$self.attr('data-id')).metFileInputChange(img_url);
+                        $img_other_modal.modal('hide');
+                        alertify.success('图片添加成功');
+                    }else{
+                        alertify.error('请输入外部图片链接');
+                        $img_other_modal.find('[name="img_url"]').focus();
+                    }
+                });
+            });
+        }
+    },
+    // 上传图片组件改变值
+    metFileInputChange:function(img_url){
+        var $file_input=$(this).parents('.file-input'),
+            name=$(this).attr('name'),
+            html='',
+            img_urls=img_url.indexOf(',')>=0?img_url.split(','):[img_url];
+        if($(this).attr('multiple')){
+            var old_val=$file_input.find('input[type="hidden"][name="'+name+'"]').val();
+            if(old_val){
+                old_val=old_val.indexOf(',')>=0?old_val.split(','):[old_val];
+                img_url=old_val+','+img_url;
+            }else{
+                old_val=[];
+            }
+            if(old_val!=img_urls) img_urls=old_val.concat(img_urls);
+        }
+        $.each(img_urls, function(index, val) {
+            html+='<div class="file-preview-frame file-preview-initial">'
+                    +'<a href="'+val+'" target="_blank"><img src="'+val+'" class="file-preview-image"></a>'
+                        +'<div class="file-thumbnail-footer">'
+                            +'<div class="file-caption-name" title="'+val+'">'+val+'</div>'
+                                +'<div class="file-actions">'
+                                +'<div class="file-footer-buttons">'
+                                    +'<button type="button" class="kv-file-remove btn btn-xs btn-default" title="Remove file"><i class="glyphicon glyphicon-trash text-danger"></i></button>'
+                                +'</div>'
+                                +'<div class="clearfix"></div>'
+                            +'</div>'
+                        +'</div>'
+                    +'</div>';
+        });
+        if(html && $file_input.hasClass('file-input-new')) $file_input.removeClass('file-input-new');
+        $file_input.find('.file-drop-zone .file-drop-zone-title').remove();
+        $file_input.find('.file-preview-thumbnails').html(html);
+        $file_input.find('.input-group .file-caption-name').html('<span class="glyphicon glyphicon-file kv-caption-icon"></span>'+img_url).attr({title:img_url});
+        $file_input.find('input[type="hidden"][name="'+name+'"]').val(img_url).trigger('change');
     },
     // 单选、多选默认选中
     metRadioCheckboxChecked:function(){
         if(!$(this).length) return;
         $(this).each(function(index, el) {
-            var checked=String($(this).data('checked')),
+            var checked=String($(this).attr('data-checked')),
                 delimiter=$(this).data('delimiter')||'#@met@#';
-            if(checked!=''){
+            if(checked !='undefined'){
                checked=checked.indexOf(delimiter)>=0?checked.split(delimiter):[checked];
                 var name=$(this).attr('name');
+                $(this).parents('form').find('input[name="'+name+'"]').removeAttr('checked');
                 for (var i=0; i < checked.length; i++) {
-                    $('input[name="'+name+'"][value="'+checked[i]+'"]').attr('checked', true);
+                    $(this).parents('form').find('input[name="'+name+'"][value="'+checked[i]+'"]').attr('checked', true).prop({checked:true});
                 }
             }
         });
@@ -415,17 +615,17 @@ $.fn.extend({
     metSelectChecked:function(){
         if(!$(this).length) return;
         $(this).each(function(index, el) {
-            $('option[value="'+$(this).data('checked')+'"]',this).attr({selected:true});
+            $('option[value="'+$(this).attr('data-checked')+'"]',this).attr({selected:true});
         });
     },
     // 图片延迟加载
-    metLazyLoad:function(){
+    metLazyLoad:function(options){
         if(!$(this).length) return;
         var $self=$(this);
         metFileLoadFun(M['plugin']['lazyload'],function(){
             return typeof $.fn.lazyload=='function';
         },function(){
-            $self.lazyload();
+            $self.lazyload(options);
         });
     },
     // 表单删除按钮ajax提交
@@ -455,8 +655,8 @@ $.fn.extend({
             $(this).find('[name="submit_type"]').val(type_str);
         }else $(this).append('<input type="hidden" name="submit_type" value="'+type_str+'"/>');
         // 插入表格的all_id字段
-        if($(this).find('.dataTable').length){
-            var $table=$(this).find('.dataTable'),
+        if($(this).find('table').length){
+            var $table=$(this).find('table'),
                 checked_str=type?'':':checked',
                 $checkbox=$table.find('tbody input[type="checkbox"][name="id"]'+checked_str),
                 all_id='';
@@ -556,7 +756,7 @@ $.fn.extend({
         }
         // ajax表格
         if($('.dataTable',dom).length){
-            if(typeof datatableOption =='undefined'){
+            if(typeof dataTable =='undefined'){
                 $.include(M['plugin']['datatables']);
             }else{
                 $(dom).metDataTable();
@@ -608,6 +808,10 @@ $(document).metCommon();
 $(document).on('change', 'input[type="checkbox"][data-plugin="switchery"]', function(event) {
     var val=$(this).is(':checked')?1:0;
     $(this).val(val);
+});
+// tokenfield插件输入框值更新后
+$(document).on('change', '.tokenfield .token-input', function(event) {
+    $(this).parents('.tokenfield').find('[name][data-fv-field]').trigger('change');
 });
 $(function(){
     // 非前台模板页面-兼容老模板
@@ -664,11 +868,9 @@ $(function(){
             var html=$table.find('[table-addlist-data]').val();
             addlist(html);
         }else{
-            if(typeof datatable_option=='undefined') datatable_option=[];
-            if(typeof datatable_option[datatable_index]=='undefined'){
-                var datatable_index=$table.index('.dataTable');
-                datatable_option[datatable_index]=[];
-            }
+            if(typeof datatable_option=='undefined') window.datatable_option=[];
+            var datatable_index=$table.index('.dataTable');
+            if(typeof datatable_option[datatable_index]=='undefined') datatable_option[datatable_index]=[];
             if(typeof datatable_option[datatable_index]['new_id']=='undefined'){
                 datatable_option[datatable_index]['new_id']=0;
             }else{
@@ -735,7 +937,7 @@ $(function(){
 // 判断是否加载了formvalidation后回调
 function metFormvalidationLoadFun(fun){
     metFileLoadFun(M['plugin']['formvalidation'],function(){
-        return typeof $.fn.formValidation=='function';
+        return typeof $.fn.metValidate=='function';
     },function(){
         if(typeof fun=='function') fun();
     });

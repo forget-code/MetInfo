@@ -134,7 +134,7 @@ INSERT INTO met_language VALUES (null, 'js10', '您的修改内容还没有保�
 INSERT INTO met_language VALUES (null, 'js9', '模板文件夹不能为空', 1, 251, 0, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'js8', '模板名称不能为空', 1, 250, 0, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'js6', '两次输入的密码不一样', 1, 248, 0, 0, 'cn');
-INSERT INTO met_language VALUES (null, 'js7', '确定要删除选中的信息吗？一旦删除将不能恢复！', 1, 249, 0, 0, 'cn');
+INSERT INTO met_language VALUES (null, 'js7', '确定要删除选中的信息吗？一旦删除将不能恢复！', 1, 249, 1, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'js5', 'email不能为空', 1, 247, 0, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'js4', '登录密码不能为空', 1, 246, 0, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'js2', '数据出错了', 1, 244, 0, 0, 'cn');
@@ -176,7 +176,7 @@ INSERT INTO met_language VALUES (null, 'description', '简短描述', 1, 196, 0,
 INSERT INTO met_language VALUES (null, 'order', 'No.', 1, 194, 0, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'selected', '选择', 1, 192, 0, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'item', '条', 1, 190, 0, 0, 'cn');
-INSERT INTO met_language VALUES (null, 'metinfo', 'MetInfo企业网站管理系统', 1, 189, 0, 0, 'cn');
+INSERT INTO met_language VALUES (null, 'metinfo', 'MetInfo|米拓企业建站系统', 1, 189, 0, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'no', '否', 1, 188, 0, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'yes', '是', 1, 187, 0, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'sort', '排序', 1, 186, 0, 0, 'cn');
@@ -676,7 +676,7 @@ INSERT INTO met_language VALUES (null, 'seotips12', '是否立即生成所有静
 INSERT INTO met_language VALUES (null, 'seotips11', '是否删除所有已生成的静态页面？', 1, 171, 11, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'uisetTips2', '为空则调用电脑版LOGO，推荐尺寸：130*50 (像素)', 1, 0, 0, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'uiset_descript_v6', '勾选的应用将出现在导航栏【常用功能】下拉列表中', 1, 0, 0, 0, 'cn');
-INSERT INTO met_language VALUES (null, 'seotips1', '多个关键词请用竖线 | 隔开，建议3到4个关键词。', 1, 161, 32, 0, 'cn');
+INSERT INTO met_language VALUES (null, 'seotips1', '多个关键词请用英文状态下的逗号 "," 隔开，建议3到4个关键词。', 1, 161, 32, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'statips42', '访问量概况', 1, 139, 0, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'statips27', '时间', 1, 124, 0, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'statips2', '统计设置', 1, 101, 0, 0, 'cn');
@@ -1148,7 +1148,7 @@ INSERT INTO met_language VALUES (null, 'upfiletips19', '水印', 1, 277, 13, 0, 
 INSERT INTO met_language VALUES (null, 'upfiletips16', '发送测试', 1, 274, 39, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'upfiletips15', '100字以内', 1, 273, 39, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'upfiletips14', '网站描述', 1, 272, 39, 0, 'cn');
-INSERT INTO met_language VALUES (null, 'upfiletips13', '多个关键词请用竖线|隔开，建议3到4个关键词。', 1, 271, 39, 0, 'cn');
+INSERT INTO met_language VALUES (null, 'upfiletips13', '多个关键词请用英文状态下的逗号 "," 隔开，建议3到4个关键词。', 1, 271, 39, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'upfiletips12', '网站关键词', 1, 270, 39, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'upfiletips10', '6.0.0以上版本无需手动设置，当前登录的网址是：', 1, 268, 39, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'upfiletips6', '录入', 1, 264, 0, 0, 'cn');
@@ -1419,7 +1419,7 @@ INSERT INTO met_language VALUES (null, 'download_application', '当前系统无�
 INSERT INTO met_language VALUES (null, 'sys_evaluation', '评价成功！感谢您的评价！', 1, 0, 3, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'downloads', '开始下载', 1, 0, 3, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'click_rating', '请点击星形评分！', 1, 0, 3, 0, 'cn');
-INSERT INTO met_language VALUES (null, 'repeat_password', "重复支付密码", 1, 0, 3, 0, 'cn');
+INSERT INTO met_language VALUES (null, 'repeat_password', '重复支付密码', 1, 0, 3, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'payment_password', '新支付密码', 1, 0, 3, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'original_password1', '请输入原支付密码', 1, 0, 3, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'original_password', '原支付密码', 1, 0, 3, 0, 'cn');
@@ -1786,7 +1786,7 @@ INSERT INTO met_language VALUES (null, 'metinfo_explain', 'MetInfo是一款非�
 INSERT INTO met_language VALUES (null, 'share_friends', '分享给朋友', 1, 0, 37, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'installation_template', '官方6.0新模板请直接在应用商店中安装或使用“我的应用”中“官方模板管理工具”进行导入添加<br>', 1, 0, 36, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'install_application', '如果需安装自己制作的模板，请到应用市场安装', 1, 0, 36, 0, 'cn');
-INSERT INTO met_language VALUES (null, 'template_assistant', '模板制作助手', 1, 0, 36, 0, 'cn');
+INSERT INTO met_language VALUES (null, 'template_assistant', '模板制作助手(V6)', 1, 0, 36, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'specified_link', '点击跳转到指定链接', 1, 0, 0, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'release', '添加', 1, 0, 0, 0, 'cn');
 INSERT INTO met_language VALUES (null, 'administration', '管理', 1, 0, 0, 0, 'cn');
@@ -2529,7 +2529,7 @@ INSERT INTO met_language VALUES (null, 'js10', 'Your changes have not been saved
 INSERT INTO met_language VALUES (null, 'js9', 'Template folder can not be empty', 1, 251, 0, 0, 'en');
 INSERT INTO met_language VALUES (null, 'js8', 'Template name can not be empty', 1, 250, 0, 0, 'en');
 INSERT INTO met_language VALUES (null, 'js6', 'The password entered twice is not the same', 1, 248, 0, 0, 'en');
-INSERT INTO met_language VALUES (null, 'js7', 'Are you sure you want to delete the selected message? Once deleted will not be able to recover!', 1, 249, 0, 0, 'en');
+INSERT INTO met_language VALUES (null, 'js7', 'Are you sure you want to delete the selected message? Once deleted will not be able to recover!', 1, 249, 1, 0, 'en');
 INSERT INTO met_language VALUES (null, 'js5', 'email can not be empty', 1, 247, 0, 0, 'en');
 INSERT INTO met_language VALUES (null, 'js4', 'Login password can not be blank', 1, 246, 0, 0, 'en');
 INSERT INTO met_language VALUES (null, 'js2', 'The data is wrong', 1, 244, 0, 0, 'en');
@@ -3119,7 +3119,7 @@ INSERT INTO met_language VALUES (null, 'seotips14', 'Sitemaps help speed up your
 INSERT INTO met_language VALUES (null, 'seotips12', 'Will all static pages be generated immediately?', 1, 172, 11, 0, 'en');
 INSERT INTO met_language VALUES (null, 'seotips11', 'Delete all generated static pages?', 1, 171, 11, 0, 'en');
 INSERT INTO met_language VALUES (null, 'uisetTips2', 'Empty call computer version of LOGO, the recommended size: 130 * 50 (pixels)', 1, 0, 0, 0, 'en');
-INSERT INTO met_language VALUES (null, 'seotips1', 'Multiple keywords separated by vertical lines |, recommended 3-4 keywords.', 1, 161, 32, 0, 'en');
+INSERT INTO met_language VALUES (null, 'seotips1', 'Multiple keywords separated by vertical comma "," , recommended 3-4 keywords.', 1, 161, 32, 0, 'en');
 INSERT INTO met_language VALUES (null, 'statips42', 'Overview of traffic', 1, 139, 0, 0, 'en');
 INSERT INTO met_language VALUES (null, 'statips27', 'time', 1, 124, 0, 0, 'en');
 INSERT INTO met_language VALUES (null, 'statips2', 'Statistics settings', 1, 101, 0, 0, 'en');
@@ -3590,7 +3590,7 @@ INSERT INTO met_language VALUES (null, 'upfiletips19', 'Watermark', 1, 277, 13, 
 INSERT INTO met_language VALUES (null, 'upfiletips16', 'Send the test', 1, 274, 39, 0, 'en');
 INSERT INTO met_language VALUES (null, 'upfiletips15', '100 words or less', 1, 273, 39, 0, 'en');
 INSERT INTO met_language VALUES (null, 'upfiletips14', 'Website Description', 1, 272, 39, 0, 'en');
-INSERT INTO met_language VALUES (null, 'upfiletips13', 'Multiple keywords separated by vertical lines |, recommended 3-4 keywords.', 1, 271, 39, 0, 'en');
+INSERT INTO met_language VALUES (null, 'upfiletips13', 'Multiple keywords separated by vertical comma "," , recommended 3-4 keywords.', 1, 271, 39, 0, 'en');
 INSERT INTO met_language VALUES (null, 'upfiletips12', 'Website keywords', 1, 270, 39, 0, 'en');
 INSERT INTO met_language VALUES (null, 'upfiletips10', '6.0.0 above version without manual settings, the current login URL is:', 1, 268, 39, 0, 'en');
 INSERT INTO met_language VALUES (null, 'upfiletips6', 'Enter', 1, 264, 0, 0, 'en');
@@ -4220,7 +4220,7 @@ INSERT INTO met_language VALUES (null, 'metinfo_explain', 'MetInfo is a great co
 INSERT INTO met_language VALUES (null, 'share_friends', 'Share with friends', 1, 0, 1, 0, 'en');
 INSERT INTO met_language VALUES (null, 'installation_template', 'Official 6.0 new template Please install directly in the store or use the official template management tools in My Apps to import Add <br>', 1, 0, 36, 0, 'en');
 INSERT INTO met_language VALUES (null, 'install_application', 'If you need to install your own template, please go to the application market', 1, 0, 36, 0, 'en');
-INSERT INTO met_language VALUES (null, 'template_assistant', 'Template production assistant', 1, 0, 36, 0, 'en');
+INSERT INTO met_language VALUES (null, 'template_assistant', 'Template production assistant (V6)', 1, 0, 36, 0, 'en');
 INSERT INTO met_language VALUES (null, 'specified_link', 'Click to jump to the specified link', 1, 0, 0, 0, 'en');
 INSERT INTO met_language VALUES (null, 'release', 'Add to', 1, 0, 0, 0, 'en');
 INSERT INTO met_language VALUES (null, 'administration', 'management', 1, 0, 0, 0, 'en');

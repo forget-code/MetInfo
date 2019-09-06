@@ -163,24 +163,6 @@ table tr.ontr td a {
 	color: #f61818;
 }
 
-/* 小图标设置弹框 */
-.icon-modal .modal-dialog {
-	max-width: 100%;
-	width: 90%;
-	height: 100%;
-	margin: 0 auto;
-}
-
-.icon-modal .modal-content {
-	height: 100%;
-}
-
-.icon-modal .modal-body {
-	height: calc(100% - 120px);
-	padding: 0;
-	overflow: auto;
-}
-
 .met_affix_save {
 	position: fixed;
 	bottom: 0px;

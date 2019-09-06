@@ -162,7 +162,7 @@ class parameter_admin extends base_admin {
 				<option value=\"2\">{$_M['word'][parameter2]}</option>
 				<option value=\"3\">{$_M['word'][parameter3]}</option>
 				<option value=\"4\">{$_M['word'][parameter4]}</option>
-				<option value=\"5\">{$_M['word'][parameter5]}</option>
+				<!--<option value=\"5\">{$_M['word'][parameter5]}</option>-->
 				<option value=\"6\">{$_M['word'][parameter6]}</option>
 				<!--<option value=\"7\">{$_M['word'][parameter7]}</option>-->
 				<!--<option value=\"8\">仅管理员可修改</option>-->";
@@ -173,6 +173,9 @@ class parameter_admin extends base_admin {
 		if($module==3){
 			$re .= "<option value=\"10\">{$_M['word'][parameter10]}</option>";
 		}
+        if(in_array($module,array(4,6,7,8))){
+        	$re .= "<option value=\"5\">{$_M['word'][parameter5]}</option>";
+    	}
 		$re .= "</select>";
 		return $re;
 	}

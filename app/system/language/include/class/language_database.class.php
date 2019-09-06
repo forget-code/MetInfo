@@ -14,117 +14,125 @@ class language_database {
 	 * @param  string  $lang  语言
 	 * @return array          栏目数组
 	 */
-	  public function copyconfig(){
-       global $_M;
-	   $langmark=$_M['form']['langmark'];
-	   $langdlok=$_M['form']['langdlok'];
-	   $new_lang=$_M['form']['langautor'];
-	   $base_lang =$_M['form']['langfile'];
-	   $config_lang = $_M['form']['langconfig'];
-       if($new_lang!=''){
-				$synchronous=$new_lang;
-				$lang=$new_lang;
-			}else{
-				$synchronous=$base_lang;
-				$lang=$langmark;
-			}
-		$newlangmark=$new_lang;
-     	if($langdlok=='1'){
-		$post=array('newlangmark'=>$newlangmark,'metcms_v'=>$metcms_v);
-		$file_basicname=$depth.'../update/lang/lang_'.$newlangmark.'.ini';
-		$sun_re=$this->syn_lang($post,$file_basicname,$new_lang,0,1);
-	    }else{
-        if($base_lang){
-        	$query = "select * from {$_M['table']['language']} where site='0' and lang='{$base_lang}'";
-        	$languages = DB::get_all($query);
-			foreach($languages as $key=>$val){
-				$val[value] = str_replace("'","''",$val[value]);
-				$val[value] = str_replace("\\","\\\\",$val[value]);
-				$val['lang'] = $lang;
-				unset($val['id']);
-				$sql = get_sql($val);
-				$query = "INSERT INTO {$_M['table']['language']} SET {$sql}";
-				DB::query($query);
-			}
-        }
-		$sun_re=1;
-	    }
+    public function copyconfig(){
+        global $_M;
+        $langmark 	= $_M['form']['langmark'];		//语言标识
+        $langdlok 	= $_M['form']['langdlok'];		//同步线上语言
+        $new_lang 	= $_M['form']['langautor'];		//选择语言
+        $base_lang 	= $_M['form']['langfile'];		//同步本地语言
+        $config_lang 	= $_M['form']['langconfig'];	//复制基本设置语言
+        $langcontent 	= $_M['form']['langcontent'];	//复制基本内容
+        $langui 		= $_M['form']['langui'];		//网站主题风格
 
+        if($new_lang != ''){
+            $synchronous = $new_lang;
+            $lang = $new_lang;
+        }else{
+            $synchronous = $base_lang;
+            $lang = $langmark;
+        }
+        $newlangmark = $new_lang;
+
+        //同步线上语言 弃用
+        if($langdlok=='1'){
+            $post=array('newlangmark'=>$newlangmark,'metcms_v'=>$metcms_v);
+            $file_basicname = $depth . '../update/lang/lang_'.$newlangmark.'.ini';
+            $sun_re=$this->syn_lang($post,$file_basicname,$new_lang,0,1);
+        }else{
+            if($base_lang){
+                $query = "select * from {$_M['table']['language']} where site='0' and lang='{$base_lang}'";
+                $languages = DB::get_all($query);
+                foreach($languages as $key=>$val){
+                    $val[value] = str_replace("'","''",$val[value]);
+                    $val[value] = str_replace("\\","\\\\",$val[value]);
+                    $val['lang'] = $lang;
+                    unset($val['id']);
+                    $sql = get_sql($val);
+                    $query = "INSERT INTO {$_M['table']['language']} SET {$sql}";
+                    DB::query($query);
+                }
+            }
+            $sun_re=1;
+        }
+
+        //复制配置
+        if($config_lang){
+            $query="select * from {$_M['table']['config']} where lang='{$config_lang}' and columnid= 0 and flashid= 0";
+        }else{
+            //默认复制中文配置数据
+            $query="select * from {$_M['table']['config']} where lang='cn' and columnid= 0 and flashid= 0";
+        }
+        $configs = DB::get_all($query);
+        foreach($configs as $key=>$val){
+            $val['value'] = str_replace("'","''",$val['value']);
+            $val['value'] = str_replace("\\","\\\\",$val['value']);
+            if($config_lang){
+                $query = "insert into {$_M['table']['config']} set name='{$val['name']}',value='{$val['value']}',columnid='{$val['columnid']}',flashid='{$val['flashid']}',lang='{$lang}'";
+            }else{
+                $query = "insert into {$_M['table']['config']} set name='{$val['name']}',value='',columnid='{$val['columnid']}',flashid='{$val['flashid']}',lang='{$lang}'";
+            }
+            DB::query($query);
+        }
+        self::copy_lang('app_config',$config_lang,$lang);
+        self::copy_lang('ifmember_left',$config_lang,$lang);
+        self::copy_lang('other_info',$config_lang,$lang);
+        self::copy_lang('online',$config_lang,$lang);
+        self::copy_lang('pay_config',$config_lang,$lang);
 
         if($config_lang){
-        	$query="select * from {$_M[table][config]} where (flashid ='10000' or flashid ='10001') and lang ='{$config_lang}'";
-        	$defaultflash=DB::get_all($query);
-        	foreach ($defaultflash as $key => $value) {
-        		$query="insert into {$_M[table][config]} set name='$value[name]',value='$value[value]',mobile_value='$value[mobile_value]',columnid='$value[columnid]',flashid='$value[flashid]',lang='$lang'";
-        		DB::query($query);
-        	}
-        	self::copy_lang('app_config',$config_lang,$lang);
-        	self::copy_lang('ifmember_left',$config_lang,$lang);
-        	self::copy_lang('other_info',$config_lang,$lang);
-        	self::copy_lang('online',$config_lang,$lang);
-        	self::copy_lang('pay_config',$config_lang,$lang);
-
+            $query="select * from {$_M['table']['config']}  where (flashid ='10000' or flashid ='10001') and lang ='{$config_lang}'";
+            $defaultflush = DB::get_all($query);
+            foreach ($defaultflush as $key => $value) {
+                $query = "insert into {$_M['table']['config']} set name='{$value['name']}',value='{$value['value']}',mobile_value='{$value['mobile_value']}',columnid='{$value['columnid']}',flashid='{$value['flashid']}',lang='{$lang}'";
+                DB::query($query);
+            }
         }
-        if($_M[form][langcontent]){
-        	$columnlist=load::mod_class('column/column_label','new')->get_column_by_classtype($_M[form][langcontent],'1');
-			 	foreach ($columnlist as $key => $val) {
-			 	   load::mod_class('column/column_op', 'new')->copy_column($val[id],$lang,1);
-			 	}
-		}
 
+        //复制栏目内容
+        if($langcontent){
+            $columnlist=load::mod_class('column/column_label','new')->get_column_by_classtype($langcontent,'1');
+            foreach ($columnlist as $key => $val) {
+                load::mod_class('column/column_op', 'new')->copy_column($val['id'],$lang,1);
+            }
+        }
 
-      if($_M[form][langcontent]){
-       $query="select * from {$_M[table][flash]} where (module ='metinfo' or module=',10001,') and lang ='{$_M[form][langcontent]}'";
-       $flashval=DB::get_all($query);
-	       foreach ($flashval as $key => $val) {
-	       	$val['lang'] = $lang;
-	       	unset($val['id']);
-	       	$sql = get_sql($val);
-	        $query = "INSERT INTO {$_M[table][flash]} SET {$sql}";
-	        DB::query($query);
-	        }
-       }
+        //复制banner内容
+        if($langcontent){
+            $query="select * from {$_M['table']['flash']} where (module ='metinfo' or module=',10001,') and lang ='{$langcontent}'";
+            $flashval=DB::get_all($query);
+            foreach ($flashval as $key => $val) {
+                $val['lang'] = $lang;
+                unset($val['id']);
+                $sql = get_sql($val);
+                $query = "INSERT INTO {$_M['table']['flash']} SET {$sql}";
+                DB::query($query);
+            }
+        }
 
-	    if($config_lang){
-	    	$query="select * from {$_M[table][config]} where lang='{$config_lang}' and columnid= 0 and flashid= 0";
-	    }else{
-            $query="select * from {$_M[table][config]} where lang='cn' and columnid= 0 and flashid= 0";
-	    }
-		$configs=DB::get_all($query);
-		foreach($configs as $key=>$val){
-			$val[value] = str_replace("'","''",$val[value]);
-			$val[value] = str_replace("\\","\\\\",$val[value]);
-			if($config_lang){
-               	$query = "insert into {$_M[table][config]} set name='$val[name]',value='$val[value]',columnid='$val[columnid]',flashid='$val[flashid]',lang='$lang'";
-			}else{
-				$query = "insert into {$_M[table][config]} set name='$val[name]',value='',columnid='$val[columnid]',flashid='$val[flashid]',lang='$lang'";
-			}
-			DB::query($query);
-		}
-		if($_M[form][langui]){
-		$query="select * from {$_M[table][config]} where name='met_skin_user' and lang ='{$_M[form][langui]}'";
-		$ui=DB::get_one($query);
-		$query="select * from {$_M[table][ui_config]} where skin_name ='{$ui[value]}' and lang ='{$_M[form][langui]}'";
-		$uilist=DB::get_all($query);
-        if($uilist){
-			foreach($uilist as $key=>$val){
-				$val['lang'] = $lang;
-				unset($val['id']);
-				$sql = get_sql($val);
-				$query = "INSERT INTO {$_M['table']['ui_config']} SET {$sql}";
-				DB::query($query);
+        //复制Ui内容
+        if($langui){
+            $query="select * from {$_M['table']['config']} where name='met_skin_user' and lang ='{$_M['form']['langui']}'";
+            $ui=DB::get_one($query);
+            $query="select * from {$_M['table']['ui_config']} where skin_name ='{$ui['value']}' and lang ='{$_M['form']['langui']}'";
+            $uilist=DB::get_all($query);
+            if($uilist){
+                foreach($uilist as $key=>$val){
+                    $val['lang'] = $lang;
+                    unset($val['id']);
+                    $sql = get_sql($val);
+                    $query = "INSERT INTO {$_M['table']['ui_config']} SET {$sql}";
+                    DB::query($query);
+                }
+            }else{
+                // 6.1修改复制标签模板的配置
+                $skin_name = $ui['value'];
+                $from_lang = $_M['form']['langui'];
+                load::mod_class('ui_set/class/config_tem.class.php');
+                $tem = new config_tem($skin_name, $from_lang);
 
-				}
-		}else{
-				// 6.1修改复制标签模板的配置
-				$skin_name = $ui['value'];
-				$from_lang = $_M['form']['langui'];
-				load::mod_class('ui_set/class/config_tem.class.php');
-				$tem = new config_tem($skin_name, $from_lang);
-
-				$tem->copy_tempates($skin_name,$from_lang,$lang);
-			}
-		}
+                $tem->copy_tempates($skin_name,$from_lang,$lang);
+            }
+        }
 
         return $sun_re;
     }

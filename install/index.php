@@ -204,7 +204,7 @@ switch ($action)
 		'../config/config_safe.php',
 		'../cache/',
 		'../upload/file/',
-		'../templates/metv6/cache/',
+		'../templates/metv6s/cache/',
 		'../message/',
 		'../feedback/',
 		'../app/',
@@ -216,18 +216,27 @@ switch ($action)
 		$check_msg = array();
 		$count=count($w_check);
 		for($i=0; $i<$count; $i++){
+            if (!strstr($w_check[$i], ".php")) {
+                if (!file_exists($w_check[$i])){
+                    mkdir ($w_check[$i],0777,true);
+                }
+            }
 			if(!file_exists($w_check[$i])){
-				$check_msg[$i].= '文件或文件夹不存在请上传';$check=0;
+				$check_msg[$i].= '文件或文件夹不存在请上传';
+				$check=0;
 				$class_chcek[$i] = 'WARN';
 			} elseif(is_writable_met($w_check[$i])){
 				$check_msg[$i].= '通 过';
 				$class_chcek[$i] = 'OK';
 				$check=1;
 			} else{
-				$check_msg[$i].='777属性检测不通过'; $check=0;
+				$check_msg[$i].='777属性检测不通过';
+				$check=0;
 				$class_chcek[$i] = 'WARN';
 			}
-			if($check!=1 and $disabled!='disabled'){$disabled = 'disabled';}
+			if($check!=1 and $disabled!='disabled'){
+			    $disabled = 'disabled';
+			}
 		}
 		include template('inspect');
 		break;
@@ -330,7 +339,7 @@ switch ($action)
                 $content = preg_replace_callback("/{#(.+?)}/is", function($r)use($lang){ return $lang[$r[1]]; }, $content);
                 $installinfo.=creat_table($content, $db);
             }
-			file_put_contents('../config/config_safe.php','<?php/*'.met_rand_i(32).'*/?>');
+			file_put_contents('../config/config_safe.php','<?php /*'.met_rand_i(32).'*/?>');
 			header("location:index.php?action=adminsetup&cndata={$cndata}&endata={$endata}&showdata={$showdata}");exit;
 		}else {
 			include template('databasesetup');
@@ -447,13 +456,14 @@ switch ($action)
 
         	$db->dbconn($con_db_host,$con_db_id,$con_db_pass,$con_db_name, $con_db_port);
 
+        	//不安装演示数据
 			if($showdata != 'yes'){
 				 if($cndata == 'yes'){
-					install_tag_templates($db,$met_templates,'metv6','cn');
+					install_tag_templates($db,$met_templates,'metv6s','cn');
 				}
 
 				if($endata == 'yes'){
-					install_tag_templates($db,$met_templates,'metv6','en');
+					install_tag_templates($db,$met_templates,'metv6s','en');
 				}
 			}
 

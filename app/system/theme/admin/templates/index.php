@@ -92,11 +92,11 @@ EOT;
 if(!$_M['config']['met_agents_switch']){
 echo <<<EOT
 -->
-				    <div class="moretemp"><a href="{$_M['url'][site_admin]}index.php?anyid=65&n=appstore&c=appstore&a=dotem_market&lang={$_M[lang]}" target="_blank">{$_M['word']['skinmore']}</a></div>
+				    <div class="moretemp"><a href="https://www.mituo.cn/product/" target="_blank">{$_M['word']['skinmore']}</a></div>
 				    <div style="padding:10px;text-align:center; line-height:1.5; color:#888;">
 					    {$_M['word']['installation_template']}<br/>
 					    {$_M['word']['install_application']}
-					    <a href="{$_M['url'][site_admin]}index.php?n=appstore&c=appstore&a=doappdetail&type=app&no=10012&lang={$_M[lang]}&anyid=65" target="_blank">{$_M['word']['template_assistant']}</a>
+					    <a href="{$_M['url'][site_admin]}index.php?n=appstore&c=appstore&a=doappdetail&type=app&no=10079&lang={$_M[lang]}&anyid=65" target="_blank">{$_M['word']['template_assistant']}</a>
 				    </div>
 <!--
 EOT;

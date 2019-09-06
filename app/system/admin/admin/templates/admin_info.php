@@ -45,6 +45,14 @@ echo <<<EOT
         </div>
       </dd>
     </dl>
+    <dl>
+      <dt>{$_M['word']['admin_email']}</dt>
+      <dd class="ftype_input">
+        <div class="fbox">
+          <input type="text" name="admin_email" value="{$list['admin_email']}">
+        </div>
+      </dd>
+    </dl>
     <dl class="noborder">
       <dt> </dt>
       <dd>

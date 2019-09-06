@@ -2,9 +2,12 @@
 表单验证功能（需调用formvalidation插件）
  */
 $(function(){
-    // 验证码输入自动转为大写
-    $(document).on('change keyup','.input-codeimg',function(){
-        $(this).val($(this).val().toUpperCase());
+    // 表单提交前处理
+    $(document).on('click', 'form [type="submit"]:not(.fv-hidden-submit)', function() {
+        $(this).formSubmitSet($(this).parents('form'));
+    });
+    $(document).on('submit', 'form', function() {
+        $(this).formSubmitSet();
     });
     // 上传文件
     $(document).on('change keyup','.input-group-file input[type="file"]',function(){
@@ -29,11 +32,11 @@ $(function(){
                     $input_group_file.parents('.form-group').removeClass('has-danger');
                 }
             }
-            if(value) $text.val(value);
+            if(value) $text.val(value).trigger('change');
         }
     });
     // 验证码点击刷新
-    $(document).on('click',"#getcode",function(){
+    $(document).on('click',"#getcode,.met-getcode",function(){
         var data_src=$(this).attr("data-src");
         if(!data_src){
             data_src=$(this).prop("src")+'&random=';
@@ -43,86 +46,85 @@ $(function(){
         $(this).attr({src:data_src+Math.floor(Math.random()*9999+1)});
     });
 });
-// 表单验证通用
-$.fn.validation=function(){
-    var $self=$(this),
-        self_validation=$(this).formValidation({
-        locale:M['validation_locale'],
-        framework:'bootstrap4'
-    });
-    function success(fun,afterajax_ok){
-        self_validation.on('success.form.fv', function(e) {
-            e.preventDefault();
-            if($self.find('[name="submit_type"]').length && $self.find('[name="submit_type"]').val()=='delet' && $self.find('[name="all_id"]').val()=='') return false;
-            var ajax_ok=typeof afterajax_ok != "undefined" ?afterajax_ok:true;
-            if(ajax_ok){
-                formDataAjax(e,fun);
-            }else{
-                $self.data('formValidation').resetForm();
-                if (typeof fun==="function") window.form_data_ajax=fun(e,$self);
-                setTimeout(function(){
-                    if(typeof form_data_ajax =='undefined') $self.data('formValidation').defaultSubmit();
-                },100)
-            }
-        })
-    }
-    function formDataAjax(e,fun){
-        window.form_data_ajax=false;
-        var $form    = $(e.target),
-            type=($form.attr('method')||'POST').toUpperCase(),
-            url=$form.attr('action');
-        if(type!='POST') url+=(url.indexOf('?')>0?'&':'?')+$form.serialize(e.target);
-        if(M['is_lteie9']){
-            var formData = $form.serializeArray(e.target),
-                contentType='application/x-www-form-urlencoded',
-                processData=true;
-        }else{
-            var formData = new FormData(e.target),
-                params   = $form.serializeArray(),
-                contentType=false,
-                processData=false;
-            // $.each(params, function(i, val) {
-            //     formData.append(val.name, val.value);
-            // });
-        }
-        $.ajax({
-            url: url,
-            data: formData,
-            cache: false,
-            contentType: contentType,
-            processData: processData,
-            type: type,
-            dataType:'json',
-            success: function(result) {
-                $form.data('formValidation').resetForm();
-                if (typeof fun==="function") return fun(result,$form);
-            }
+$.fn.extend({
+    // 表单验证通用
+    validation:function(){
+        var $self=$(this),
+            order=$(this).attr('data-validate_order'),
+            self_validation=$(this).formValidation({
+            locale:M['validation_locale'],
+            framework:'bootstrap4'
         });
-    }
-    // 表单提交前端处理
-    success(function(e,form){
+        function success(fun,afterajax_ok){
+            validate[order].ajax_submit=1;
+            self_validation.on('success.form.fv', function(e) {
+                e.preventDefault();
+                if($self.find('[name="submit_type"]').length && $self.find('[name="submit_type"]').val()=='delet' && $self.find('[name="all_id"]').val()=='') return false;
+                var ajax_ok=typeof afterajax_ok != "undefined" ?afterajax_ok:true;
+                if(ajax_ok){
+                    formDataAjax(e,fun);
+                }else{
+                    $self.data('formValidation').resetForm();
+                    if (typeof fun==="function") window.form_data_ajax=fun(e,$self);
+                    setTimeout(function(){
+                        if(typeof form_data_ajax =='undefined') $self.data('formValidation').defaultSubmit();
+                    },100)
+                }
+            })
+        }
+        function formDataAjax(e,fun){
+            window.form_data_ajax=false;
+            var $form    = $(e.target),
+                type=($form.attr('method')||'POST').toUpperCase(),
+                url=$form.attr('action');
+            if(type!='POST') url+=(url.indexOf('?')>0?'&':'?')+$form.serialize(e.target);
+            if(M['is_lteie9']){
+                var formData = $form.serializeArray(e.target),
+                    contentType='application/x-www-form-urlencoded',
+                    processData=true;
+            }else{
+                var formData = new FormData(e.target),
+                    params   = $form.serializeArray(),
+                    contentType=false,
+                    processData=false;
+                // $.each(params, function(i, val) {
+                //     formData.append(val.name, val.value);
+                // });
+            }
+            $.ajax({
+                url: url,
+                data: formData,
+                cache: false,
+                contentType: contentType,
+                processData: processData,
+                type: type,
+                dataType:'json',
+                success: function(result) {
+                    $form.data('formValidation').resetForm();
+                    if (typeof fun==="function") return fun(result,$form);
+                }
+            });
+        }
+        return {success:success,formDataAjax:formDataAjax};
+    },
+    // 表单提交前处理
+    formSubmitSet:function(form){
         // 多选值组合
         var checkbox_val={},
-            checkbox_delimiter=[];
-        form.find('input[type="checkbox"][name]').each(function(index, el) {
+            $form=form||$(this);
+        $form.find('input[type="checkbox"][name]').each(function(index, el) {
             var name=$(this).attr('name'),
-                val=$(this).val();
-            if($(this).data('delimiter')){
-                checkbox_delimiter[name]=$(this).data('delimiter');
-            }else{
-                checkbox_delimiter[name]=checkbox_delimiter[name]?checkbox_delimiter[name]:'#@met@#';
-            }
+                val=$(this).val(),
+                delimiter=$(this).data('delimiter')||'#@met@#';
             if(typeof checkbox_val[name] =='undefined') checkbox_val[name]='';
-            if($(this).prop('checked')) checkbox_val[name]+=checkbox_val[name]!=''?(checkbox_delimiter[name]+val):val;
+            if($(this).prop('checked') || $(this).data('plugin')=='switchery') checkbox_val[name]+=checkbox_val[name]!=''?(delimiter+val):val;
         });
         $.each(checkbox_val, function(index, val) {
-            if(!form.find('[name="'+index+'"][type="hidden"]').length) form.append('<input type="hidden" name="'+index+'"/>');
-            var length=form.find('[name="'+index+'"][type="hidden"]').length-1;
-            form.find('[name="'+index+'"][type="hidden"]').eq(length).val(val);
+            if(!$form.find('[name="'+index+'"][type="hidden"]').length) $form.append('<input type="hidden" name="'+index+'"/>');
+            $form.find('[name="'+index+'"][type="hidden"]').val(val);
         });
-    },false);
-    return {success:success,formDataAjax:formDataAjax};
-}
+    }
+});
 // formValidation多语言选择
 M['validation_locale']='';
 if("undefined" != typeof M){
@@ -192,6 +194,7 @@ $.fn.metValidate=function(){
     if(typeof validate =='undefined') window.validate=[];
     $('form',this).each(function(index, el) {
         var order=$(this).index('form');
+        $(this).attr({'data-validate_order':order});
         validate[order]=$(this).validation();
     });
 }

@@ -32,7 +32,7 @@ class userweb extends web {
 		global $_M;
 		$user = $this->get_login_user_info();
 		if(!$user){
-			okinfo($_M['url']['site'].'member/login.php?gourl='.$_M['form']['gourl']);
+            okinfo($_M['url']['site'].'member/login.php?lang='.$_M['form']['lang'].'&gourl='.$_M['form']['gourl']);
 		}
 	}
 
@@ -72,6 +72,24 @@ class userweb extends web {
 
 	protected function navlist(){
 
+	}
+	//错误
+	public function ajax_error($error){
+		global $_M;
+		$retun = array();
+		$retun['status'] = 0;
+		$retun['msg'] = $error;
+		echo jsonencode($retun);
+		die();
+	}
+	//成功
+	public function ajax_success($success){
+		global $_M;
+		$retun = array();
+		$retun['status'] = 1;
+		$retun['msg'] = $success;
+		echo jsonencode($retun);
+		die();
 	}
 }
 # This program is an open source system, commercial use, please consciously to purchase commercial license.

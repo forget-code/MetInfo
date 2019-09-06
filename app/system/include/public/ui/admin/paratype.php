@@ -85,7 +85,8 @@ EOT;
 		foreach($val['list'] as $option){
 			if($option){
 				if($module == 10){
-					$para_value = $option['value'];
+					##$para_value = $option['value'];
+                    $para_value = $option['id'];
 				}else{
 					$para_value = $option['id'];
 				}

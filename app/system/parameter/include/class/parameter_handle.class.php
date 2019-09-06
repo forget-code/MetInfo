@@ -138,6 +138,7 @@ class parameter_handle extends handle {
  						$i=0;
  						foreach($val['para_list'] as $key=>$pv){
  							$i++;
+ 							$pv['required']=$key?'':$wr_ok.'';
  							if(is_array($pv)){
  								if($_M['form']['fdtitle'] == urldecode($pv['value'])){
 										$product_selected = "checked=checked";
@@ -147,11 +148,13 @@ class parameter_handle extends handle {
                                $val['type_html'].="
  								<div class=\"checkbox-custom checkbox-primary\">
  									<input
- 										name='para{$val[id]}_{$i}'
+ 										name='para{$val[id]}'
  										type=\"checkbox\"
  										value='{$pv[value]}'
  										id=\"para{$val[id]}_{$i}\"
  										{$product_selected}
+ 										{$pv['required']}
+ 										data-delimiter=',';
  									>
  									<label for=\"para{$val[id]}_{$i}\">{$pv[value]}</label>
  								</div>";
@@ -159,7 +162,7 @@ class parameter_handle extends handle {
  								$val['type_html'].="
  								<div class=\"checkbox-custom checkbox-primary\">
  									<input
- 										name='para{$val[id]}_{$i}'
+ 										name='para{$val[id]}'
  										type=\"checkbox\"
  										value='{$pv}'
  										id=\"para{$val[id]}_{$i}\"

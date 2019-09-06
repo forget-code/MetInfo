@@ -22,7 +22,7 @@ class product_handle extends news_handle{
    * @param  string  $content 内容数组
    * @return array           	处理过后数组
    */
-  public function one_para_handle($content) {
+  public function one_para_handle($content, $slim) {
     global $_M;
     $content = parent::one_para_handle($content);
     $displayimg = stringto_array($content['displayimg'], '*', '|');
@@ -54,7 +54,7 @@ class product_handle extends news_handle{
         $content['contents'][] = array('title'=>$_M['config']['met_productTabname_'.$i], 'content'=>$content['content'.$i]);
       }
     }
-    if($_M['config']['shopv2_open'] && $this->contents_page_name == 'product'){
+    if($_M['config']['shopv2_open'] && $this->contents_page_name == 'product' && !$slim){
         // 商品
       $goods = load::plugin('doget_goods',1,$content['id']);
       if($goods){

@@ -1,5 +1,5 @@
 <?php defined('IN_MET') or exit('No permission'); ?>
-<main class="$uicss met-download animsition" m-id='{$ui.mid}'>
+<main class="$uicss met-download" m-id='{$ui.mid}'>
     <div class="container">
         <div class="row">
         <tag action='job.list' num="$c['met_job_list']">

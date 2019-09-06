@@ -53,7 +53,7 @@ function news_submit(argument) {
 	var txt='';
 	$('.ui-from select[name*=class]').each(function(){
 		if(parseInt($(this).prev('select').val()) && !parseInt($(this).val()) && $('option',this).length){
-			txt='{$_M[word][skinerr3]}'+$('option',this).eq(0).html();
+			txt=METLANG.skinerr3+$('option',this).eq(0).html();
 			return false;
 		}
 	})

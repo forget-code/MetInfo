@@ -96,7 +96,7 @@ INSERT INTO met_language VALUES (null, 'js51', 'Please fill in the column name',
 INSERT INTO met_language VALUES (null, 'js46', 'Can not repeat', 1, 288, 0, 0, 'en');
 INSERT INTO met_language VALUES (null, 'js47', 'Removing static pages ...', 1, 289, 0, 0, 'en');
 INSERT INTO met_language VALUES (null, 'js50', 'The language does not exist in the same module of a column', 1, 292, 0, 0, 'en');
-INSERT INTO met_language VALUES (null, 'js49', 'Undo', 1, 291, 0, 0, 'en');
+INSERT INTO met_language VALUES (null, 'js49', 'Undo', 1, 291, 0, 1, 'en');
 INSERT INTO met_language VALUES (null, 'js48', 'loading...', 1, 290, 0, 0, 'en');
 INSERT INTO met_language VALUES (null, 'js45', 'Test form.', 1, 287, 0, 0, 'en');
 INSERT INTO met_language VALUES (null, 'js44', 'Email address is incorrect!', 1, 286, 0, 0, 'en');
@@ -137,7 +137,7 @@ INSERT INTO met_language VALUES (null, 'js10', 'Your changes have not been saved
 INSERT INTO met_language VALUES (null, 'js9', 'Template folder can not be empty', 1, 251, 0, 0, 'en');
 INSERT INTO met_language VALUES (null, 'js8', 'Template name can not be empty', 1, 250, 0, 0, 'en');
 INSERT INTO met_language VALUES (null, 'js6', 'The password entered twice is not the same', 1, 248, 0, 0, 'en');
-INSERT INTO met_language VALUES (null, 'js7', 'Are you sure you want to delete the selected message? Once deleted will not be able to recover!', 1, 249, 0, 0, 'en');
+INSERT INTO met_language VALUES (null, 'js7', 'Are you sure you want to delete the selected message? Once deleted will not be able to recover!', 1, 249, 1, 0, 'en');
 INSERT INTO met_language VALUES (null, 'js5', 'email can not be empty', 1, 247, 0, 0, 'en');
 INSERT INTO met_language VALUES (null, 'js4', 'Login password can not be blank', 1, 246, 0, 0, 'en');
 INSERT INTO met_language VALUES (null, 'js2', 'The data is wrong', 1, 244, 0, 0, 'en');
@@ -193,6 +193,7 @@ INSERT INTO met_language VALUES (null, 'modify', 'modify', 1, 179, 0, 0, 'en');
 INSERT INTO met_language VALUES (null, 'View', 'View', 1, 178, 0, 0, 'en');
 INSERT INTO met_language VALUES (null, 'editor', 'edit', 1, 177, 0, 0, 'en');
 INSERT INTO met_language VALUES (null, 'add', 'Add to', 1, 176, 0, 0, 'en');
+INSERT INTO met_language VALUES (null, 'addsubcolumn', 'Add sub column', 1, 176, 0, 0, 'en');
 INSERT INTO met_language VALUES (null, 'dataerr1', 'failure! Import data inconsistent with the system version!', 1, 169, 0, 0, 'en');
 INSERT INTO met_language VALUES (null, 'Submit', 'save', 1, 171, 0, 0, 'en');
 INSERT INTO met_language VALUES (null, 'submit', 'save', 1, 171, 0, 0, 'en');
@@ -327,6 +328,8 @@ INSERT INTO met_language VALUES (null, 'adminLastIP', 'Finally login IP', 1, 19,
 INSERT INTO met_language VALUES (null, 'metadmin', 'administrator', 1, 12, 0, 0, 'en');
 INSERT INTO met_language VALUES (null, 'adminusername', 'username', 1, 13, 0, 0, 'en');
 INSERT INTO met_language VALUES (null, 'adminname', 'Name', 1, 14, 0, 0, 'en');
+INSERT INTO met_language VALUES (null, 'admin_email', 'Administrator mailbox', 1, 14, 0, 0, 'en');
+INSERT INTO met_language VALUES (null, 'admin_email_error', 'Administrator''s mailbox has been occupied', 1, 14, 0, 0, 'en');
 INSERT INTO met_language VALUES (null, 'adminLoginNum', 'Login times', 1, 17, 38, 0, 'en');
 INSERT INTO met_language VALUES (null, 'admintips7', 'Administrator permission settings', 1, 11, 2, 0, 'en');
 INSERT INTO met_language VALUES (null, 'adminjurisd', 'Language permissions', 1, 5, 2, 0, 'en');
@@ -728,7 +731,7 @@ INSERT INTO met_language VALUES (null, 'seotips14', 'Sitemaps help speed up your
 INSERT INTO met_language VALUES (null, 'seotips12', 'Will all static pages be generated immediately?', 1, 172, 11, 0, 'en');
 INSERT INTO met_language VALUES (null, 'seotips11', 'Delete all generated static pages?', 1, 171, 11, 0, 'en');
 INSERT INTO met_language VALUES (null, 'uisetTips2', 'Empty call computer version of LOGO, the recommended size: 130 * 50 (pixels)', 1, 0, 0, 0, 'en');
-INSERT INTO met_language VALUES (null, 'seotips1', 'Multiple keywords separated by vertical lines |, recommended 3-4 keywords.', 1, 161, 32, 0, 'en');
+INSERT INTO met_language VALUES (null, 'seotips1', 'Multiple keywords separated by vertical comma "," , recommended 3-4 keywords.', 1, 161, 32, 0, 'en');
 INSERT INTO met_language VALUES (null, 'statips42', 'Overview of traffic', 1, 139, 0, 0, 'en');
 INSERT INTO met_language VALUES (null, 'statips27', 'time', 1, 124, 0, 0, 'en');
 INSERT INTO met_language VALUES (null, 'statips2', 'Statistics settings', 1, 101, 0, 0, 'en');
@@ -1199,7 +1202,7 @@ INSERT INTO met_language VALUES (null, 'upfiletips19', 'Watermark', 1, 277, 13, 
 INSERT INTO met_language VALUES (null, 'upfiletips16', 'Send the test', 1, 274, 39, 0, 'en');
 INSERT INTO met_language VALUES (null, 'upfiletips15', '100 words or less', 1, 273, 39, 0, 'en');
 INSERT INTO met_language VALUES (null, 'upfiletips14', 'Website Description', 1, 272, 39, 0, 'en');
-INSERT INTO met_language VALUES (null, 'upfiletips13', 'Multiple keywords separated by vertical lines |, recommended 3-4 keywords.', 1, 271, 39, 0, 'en');
+INSERT INTO met_language VALUES (null, 'upfiletips13', 'Multiple keywords separated by vertical comma "," , recommended 3-4 keywords.', 1, 271, 39, 0, 'en');
 INSERT INTO met_language VALUES (null, 'upfiletips12', 'Website keywords', 1, 270, 39, 0, 'en');
 INSERT INTO met_language VALUES (null, 'upfiletips10', '6.0.0 above version without manual settings, the current login URL is:', 1, 268, 39, 0, 'en');
 INSERT INTO met_language VALUES (null, 'upfiletips6', 'Enter', 1, 264, 0, 0, 'en');
@@ -1829,7 +1832,7 @@ INSERT INTO met_language VALUES (null, 'metinfo_explain', 'MetInfo is a great co
 INSERT INTO met_language VALUES (null, 'share_friends', 'Share with friends', 1, 0, 1, 0, 'en');
 INSERT INTO met_language VALUES (null, 'installation_template', 'Official 6.0 new template Please install directly in the store or use the official template management tools in My Apps to import Add <br>', 1, 0, 36, 0, 'en');
 INSERT INTO met_language VALUES (null, 'install_application', 'If you need to install your own template, please go to the application market', 1, 0, 36, 0, 'en');
-INSERT INTO met_language VALUES (null, 'template_assistant', 'Template production assistant', 1, 0, 36, 0, 'en');
+INSERT INTO met_language VALUES (null, 'template_assistant', 'Template production assistant (V6)', 1, 0, 36, 0, 'en');
 INSERT INTO met_language VALUES (null, 'specified_link', 'Click to jump to the specified link', 1, 0, 0, 0, 'en');
 INSERT INTO met_language VALUES (null, 'release', 'Add to', 1, 0, 0, 0, 'en');
 INSERT INTO met_language VALUES (null, 'administration', 'management', 1, 0, 0, 0, 'en');
@@ -2386,5 +2389,6 @@ INSERT INTO met_language VALUES (null, 'sys_group_bayable', 'Allow separate purc
 INSERT INTO met_language VALUES (null, 'sys_group_set_price', 'Please set the amount', 1, 0, 0, 0, 'en');
 INSERT INTO met_language VALUES (null, 'idcode', 'ID code', 1, 0, 0, 0, 'en');	
 INSERT INTO met_language VALUES (null, 'recoveryisntallinfo', 'The imported version of the database is inconsistent with the current version of the system. Some parameters and configuration data may be lost after import. Please import it carefully!', 1, 0, 0, 0, 'en');
+INSERT INTO met_language VALUES (null, 'setpnorder', 'Previous and Next Call Settings', 1, 0, 0, 50002, 'en');
 
 INSERT INTO met_lang_admin VALUES (null, 'English', '1', '2', 'en', 'en', '', 'en');

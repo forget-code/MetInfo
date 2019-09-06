@@ -267,55 +267,57 @@ $metui['paths']=array(
     'form'=>"{$metui['url']['uiv2_js']}form.js",
     'datatable'=>"{$metui['url']['uiv2_js']}datatable.js"
 );
-// 应用后台模快框架基础UI
-$metui['paths']['basic_admin']=array(
-    $metui['paths']['basic'],
-    "{$metui['url']['uiv2_css']}admin.css",
-    "{$metui['url']['uiv2_js']}app.js",
-    'name'=>'basic_admin',
-    'url'=>array(
-        'css'=>$metui['url']['uiv2_css'],
-        'js'=>$metui['url']['uiv2_js']
-    )
-);
-// 应用前台模板框架基础UI
-$metui['paths']['basic_web']=array(
-    $metui['paths']['basic'],
-    "{$metui['url']['uiv2_css']}web_common.css",
-    "{$metui['url']['uiv2_css']}web.css",
-    "{$metui['url']['uiv2_js']}app.js",
-    $metui['paths']['hover_dropdown'],
-    "{$metui['url']['uiv2_js']}common.js",
-    "{$metui['url']['uiv2_js']}web.js",
-    'name'=>'basic_web',
-    'url'=>array(
-        'css'=>$metui['url']['uiv2_css'],
-        'js'=>$metui['url']['uiv2_js']
-    )
-);
-// 前台模板框架基础UI
-$metui['paths']['basic_tem']=array(
-    $metui['paths']['basic'],
-    "{$metui['url']['uiv2_css']}web_common.css",
-    "{$metui['url']['uiv2_css']}template.css",
-    "{$metui['url']['uiv2_js']}common.js",
-    "{$metui['url']['uiv2_js']}sys.js",
-    'name'=>'basic',
-    'url'=>array(
-        'css'=>$metui['url']['uiv2_css'],
-        'js'=>$metui['url']['uiv2_js']
+// 打包文件集
+$metui['pack_paths']=array(
+    // 应用后台模快框架基础UI
+    'basic_admin'=>array(
+        $metui['paths']['basic'],
+        "{$metui['url']['uiv2_css']}admin.css",
+        "{$metui['url']['uiv2_js']}app.js",
+        'url'=>array(
+            'css'=>$metui['url']['uiv2_css'],
+            'js'=>$metui['url']['uiv2_js']
+        )
+    ),
+    // 应用前台模板框架基础UI
+    'basic_web'=>array(
+        $metui['paths']['basic'],
+        "{$metui['url']['uiv2_css']}web_common.css",
+        "{$metui['url']['uiv2_css']}web.css",
+        "{$metui['url']['uiv2_js']}app.js",
+        $metui['paths']['hover_dropdown'],
+        "{$metui['url']['uiv2_js']}common.js",
+        "{$metui['url']['uiv2_js']}web.js",
+        'url'=>array(
+            'css'=>$metui['url']['uiv2_css'],
+            'js'=>$metui['url']['uiv2_js']
+        )
+    ),
+    // 前台模板框架基础UI
+    'basic'=>array(
+        $metui['paths']['basic'],
+        "{$metui['url']['uiv2_css']}web_common.css",
+        "{$metui['url']['uiv2_css']}template.css",
+        "{$metui['url']['uiv2_js']}common.js",
+        "{$metui['url']['uiv2_js']}sys.js",
+        'url'=>array(
+            'css'=>$metui['url']['uiv2_css'],
+            'js'=>$metui['url']['uiv2_js']
+        )
     )
 );
 require_once PATH_WEB.'public/ui/v2/static/metuipack.class.php';// UI打包类
 if($metuipack->isLteIe9) $resui_lteie9=$metuipack->getUi($metui['url']['uiv2_js'].'lteie9.js');// IE9兼容JS打包生成文件，返回文件路径
+if($_M['form']['file_compress']){
+    $metuipack->file_compress=1;
+}
 // 打包更新系统UI文件
 if($_M['form']['sysui_pack']){
-    $is_lteie9=array(false,true);
     $metuipack->cache=false;
-    $sysui_pack=array($metui['paths']['basic_admin'],$metui['paths']['basic_web'],$metui['paths']['basic_tem']);
+    $is_lteie9=array(false,true);
     foreach ($is_lteie9 as $key=> $val) {
         $metuipack->isLteIe9=$val;
-        $sysui_pack_result=$metuipack->getUiGroup($sysui_pack);
+        $sysui_pack_result=$metuipack->getUiGroup($metui['pack_paths']);
         if($key){
             echo 'IE9兼容文件：';
         }

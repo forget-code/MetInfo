@@ -154,12 +154,7 @@ echo <<<EOT
 			<dt>{$_M[word][dowloadauthority]}</dt>
 			<dd class="ftype_select">
 				<div class="fbox">
-					<select name="downloadaccess" data-checked="{$list[downloadaccess]}">
-					<option value="0">{$_M[word][unrestricted]}</option>
-					<option value="1">{$_M[word][access1]}</option>
-					<option value="2">{$_M[word][access2]}</option>
-					<option value="3">{$_M[word][access3]}</option>
-			      </select>
+					{$downloadaccess}
 				</div>
 			</dd>
 		</dl>

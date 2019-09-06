@@ -16,8 +16,8 @@ class profile extends userweb {
 		global $_M;
         parent::__construct();
         $this->paraclass = load::sys_class('para', 'new');
-		$this->paralist  = $this->paraclass->get_para_list(10);
-		$this->sys_group  = load::mod_class('user/sys_group', 'new');
+        $this->paralist  = $this->paraclass->get_para_list(10,$this->input['classnow']);
+        $this->sys_group  = load::mod_class('user/sys_group', 'new');
         $this->paygroup_list  = $this->sys_group->get_paygroup_list_buyok();
     }
 
@@ -27,9 +27,9 @@ class profile extends userweb {
 		global $_M;
 		$valid = load::mod_class('user/web/class/valid','new');
 		if ($valid->get_email($_M['user']['username'])) {
-			echo $_M['word']['emailsuc'];
+			$this->ajax_success($_M['word']['emailsuc']);
 		} else {
-			echo $_M['word']['emailfail'];
+			$this->ajax_error($_M['word']['emailfail']);
 		}
 	}
 
@@ -58,7 +58,7 @@ class profile extends userweb {
 
 	public function doinfosave() {
 		global $_M;
-		$infos = $this->paraclass->form_para($_M['form'],10);
+		$infos = $this->paraclass->form_para($_M['form'],10,$this->input['classnow']);
 		$this->paraclass->update_para($_M['user']['id'], $infos, 10);
 		$this->userclass->modify_head($_M['user']['id'], $_M['form']['head']);
 		okinfo($_M['url']['profile'], $_M['word']['modifysuc']);
@@ -126,9 +126,9 @@ class profile extends userweb {
 		}else{
 			$valid = load::mod_class('user/web/class/valid','new');
 			if ($valid->get_email($_M['user']['email'],'emailedit')) {
-				echo $_M['word']['emailsuclink'];
+				$this->ajax_success($_M['word']['emailsuclink']);
 			} else {
-				echo $_M['word']['emailfail'];
+				$this->ajax_error($_M['word']['emailfail']);
 			}
 		}
 	}
@@ -149,6 +149,7 @@ class profile extends userweb {
 		if($_M['form']['p']){
 			$auth = load::sys_class('auth', 'new');
 			$email = $auth->decode($_M['form']['p']);
+            $email = sqlinsert($email);
 			if($email){
 				if($this->userclass->editor_uesr_email($_M['user']['id'], $email)){
 					okinfo($_M['url']['profile_safety'], $_M['word']['bindingok']);
@@ -191,23 +192,23 @@ class profile extends userweb {
 		if($_M['form']['code']){
 			$session = load::sys_class('session', 'new');
 			if($_M['form']['code']!=$session->get("phonecode")){
-				echo $_M['word']['membercode'];
+				$this->ajax_error($_M['word']['membercode']);
 				die;
 			}
 			if(time()>$session->get("phonetime")){
-				echo $_M['word']['codetimeout'];
+				$this->ajax_error($_M['word']['codetimeout']);
 				die;
 			}
 			$session->del('phonecode');
 			$session->del('phonetime');
 			$session->del('phonetel');
-			echo 'SUCCESS';
+			$this->ajax_success();
 		}else{
 			$valid = load::mod_class('user/web/class/valid','new');
 			if ($valid->get_tel($_M['user']['tel'])) {
-				echo 'SUCCESS';
+				$this->ajax_success();
 			} else {
-				echo $_M['word']['Sendfrequent'];
+				$this->ajax_error($_M['word']['Sendfrequent']);
 			}
 		}
 	}
@@ -239,14 +240,13 @@ class profile extends userweb {
 	public function dosafety_telvalid() {
 		global $_M;
 		if($this->userclass->get_user_by_tel($_M['form']['tel'])){
-			echo $_M['word']['teluse'];
-			die;
+			$this->ajax_error($_M['word']['teluse']);
 		}
 		$valid = load::mod_class('user/web/class/valid','new');
 		if ($valid->get_tel($_M['form']['tel'])) {
-			echo 'SUCCESS';
+			$this->ajax_success();
 		} else {
-			echo $_M['word']['Sendfrequent'];
+			$this->ajax_error($_M['word']['Sendfrequent']);
 		}
 	}
 

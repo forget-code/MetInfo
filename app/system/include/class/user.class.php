@@ -471,9 +471,9 @@ class user {
 
     public function modify_head($id, $head) {
         global $_M;
-        if($head!=""){
-        $query = "UPDATE {$_M['table']['user']} SET head = '{$head}' WHERE id = '{$id}' AND lang='{$_M['lang']}' ";
-        DB::query($query);
+        if($id != ""){
+            $query = "UPDATE {$_M['table']['user']} SET head = '{$head}' WHERE id = '{$id}' AND lang='{$_M['lang']}' ";
+            DB::query($query);
         }
     }
 
@@ -681,6 +681,9 @@ class user {
 				return -2;
 			}
 			$group = load::sys_class('group', 'new')->get_group($groupid);
+            if(!$group){
+                return -1;
+            }
 			if($user['access'] < $group['access']){
 				return -1;
 			}

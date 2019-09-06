@@ -104,7 +104,19 @@ define(function(require, exports, module) {
 		            return option;
 	            };
 	 		}
-	 		window.table = obj.DataTable(datatableOption(obj));
+	 		if(obj.parents('form').find('.ftype_select-linkage').length){
+	 			var $select0=obj.parents('form').find('.ftype_select-linkage select:eq(0)'),
+	 				data_checked=typeof $select0.data('checked')=='undefined'?'':$select0.data('checked'),
+	 				option_checked_interval=setInterval(function(){
+	 					var $option_checked=obj.parents('form').find('.ftype_select-linkage select:eq(0) option:checked');
+	 					if($option_checked.length && ($option_checked.val()==data_checked || data_checked=='') ){
+	 						window.table = obj.DataTable(datatableOption(obj));
+	 						clearInterval(option_checked_interval);
+	 					}
+	 				},50);
+	 		}else{
+	 			window.table = obj.DataTable(datatableOption(obj));
+	 		}
 	 	// },100)
 	}
 	exports.func = function(d){

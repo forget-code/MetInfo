@@ -36,6 +36,10 @@ define(function(require, exports, module) {
 	$("form").submit(function(event) {
 		// 可视化模式处理
 		if($(this).hasClass('set-block-form')){
+			$(this).find('input[data-type=14]').each(function(index, el) {
+				var val=$(this).parents('.fbox').find('select').val()+'$M$'+$(this).prev('input[type="text"][data-name="'+$(this).data('name')+'"]').val();
+				$(this).val(val);
+			});
 			$(this).ajaxSubmit({
 				dataType : "json",
 				success:function(message) {

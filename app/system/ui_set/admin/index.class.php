@@ -88,7 +88,7 @@ class index extends admin {
             $adflag = 0;
         }
         load::app_class('met_template/admin/class/UI','new')->adminnav();
-		if($_GET['pageset']){
+		if($_M['form']['pageset']){
 			require $this->template('own/pageset');
 		}else{
 			require $this->template('own/index');
@@ -432,8 +432,8 @@ class index extends admin {
 		$field = $_M['form']['field'];
 		$id = $_M['form']['id'];
 
-		load::sys_class('view/ui_compile');
-		$ui_compile = new ui_compile();
+		#load::sys_class('view/ui_compile');
+		$ui_compile = load::sys_class('view/ui_compile','new');
 		$content = $ui_compile->get_field_text($table,$field,$id);
 		echo jsonencode($content);die;
 	}
@@ -450,8 +450,8 @@ class index extends admin {
 		$field = $_M['form']['field'];
 		$id = $_M['form']['id'];
 		$text = $_M['form']['text'];
-		load::sys_class('view/ui_compile');
-		$ui_compile = new ui_compile();
+		#load::sys_class('view/ui_compile');
+		$ui_compile = load::sys_class('view/ui_compile','new');
 		$content = $ui_compile->set_field_text($table,$field,$id,$text);
 
 		echo jsonencode($content);die;
@@ -547,8 +547,8 @@ class index extends admin {
 		$new_img = $_M['form']['new_img'];
 
 		if(strpos($new_img, PATH_WEB) === false){
-			load::sys_class('view/ui_compile');
-			$ui_compile = new ui_compile();
+			#load::sys_class('view/ui_compile');
+			$ui_compile = load::sys_class('view/ui_compile','new');
 			$update = $ui_compile->save_img_field($table,$field,$mid,$new_img);
 
 			if($_M['config']['met_big_wate'] && ($table == 'product' || $table == 'news' || $table == 'img')){
@@ -595,7 +595,7 @@ class index extends admin {
 	 */
 	public function doset_icon(){
 		global $_M;
-		require $this->view('app/set_icon');
+		require $this->view('app/set_icon'.($_M['form']['other']?'_other':''));
 	}
 
 	/**

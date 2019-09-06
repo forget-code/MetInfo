@@ -363,7 +363,7 @@ class product_admin extends news_admin {
 	function dojson_list(){
 		global $_M;
 		if(!$this->shop->plgin_json_list()){
-			if($_M['form']['class1_select']=='null'&&$_M['form']['class2_select']=='null'&&$_M['form']['class3_select']=='null'){
+			/*if($_M['form']['class1_select']=='null'&&$_M['form']['class2_select']=='null'&&$_M['form']['class3_select']=='null'){
 				$class1 = $_M['form']['class1'];
 				$class2 = $_M['form']['class2'];
 				$class3 = $_M['form']['class3'];
@@ -381,6 +381,12 @@ class product_admin extends news_admin {
 			$class1 = $class1 == ' ' ? 'null' : $class1;
 			$class2 = $class2 == ' ' ? 'null' : $class2;
 			$class3 = $class3 == ' ' ? 'null' : $class3;
+			*/
+
+            $class1 = is_numeric($_M['form']['class1_select'])?$_M['form']['class1_select']:($_M['form']['class1_select']==''?$_M['form']['class1']:'');
+            $class2 = is_numeric($_M['form']['class2_select'])?$_M['form']['class2_select']:($_M['form']['class2_select']==''?$_M['form']['class2']:'');
+            $class3 = is_numeric($_M['form']['class3_select'])?$_M['form']['class3_select']:($_M['form']['class3_select']==''?$_M['form']['class3']:'');
+
 			$keyword = $_M['form']['keyword'];
 			$search_type = $_M['form']['search_type'];
 			$orderby_hits = $_M['form']['orderby_hits'];
@@ -388,20 +394,31 @@ class product_admin extends news_admin {
 
 			$ps = '';
 
-			$where = $class1&&$class1!=$_M[word][allcategory]&&$class1!='null'?"and {$ps}class1 = '{$class1}'":'';
-			$where.= $class2&&$class2!='null'?"and {$ps}class2 = '{$class2}'":'';
-			$where.= $class3&&$class3!='null'?"and {$ps}class3 = '{$class3}'":'';
+			$where = $class1&&$class1!=$_M[word][allcategory]&&$class1!='null'?" and {$ps}class1 = '{$class1}'":'';
+			$where.= $class2&&$class2!='null'?" and {$ps}class2 = '{$class2}'":'';
+			$where.= $class3&&$class3!='null'?" and {$ps}class3 = '{$class3}'":'';
 
-			$where.= $keyword?"and {$ps}title like '%{$keyword}%'":'';
+			$where.= $keyword?" and {$ps}title like '%{$keyword}%'":'';
 			switch($search_type){
 				case 0:break;
 				case 1:
-					$where.= "and {$ps}displaytype = '0'";
+					$where.= " and {$ps}displaytype = '0'";
 				break;
 				case 2:
-					$where.= "and {$ps}com_ok = '1'";
+					$where.= " and {$ps}com_ok = '1'";
 				break;
 			}
+
+			if($class3){
+				$classother = "|-{$class1}-{$class2}-{$class3}-|";
+			}else{
+				if($class2){
+					$classother = "|-{$class1}-{$class2}-0-|";
+				}else{
+					$classother = "|-{$class1}-0-0-|";
+				}
+			}
+			$where.= " or classother like '%{$classother}%'";
 			$admininfo = admin_information();
 			if($admininfo[admin_issueok] == 1)$where.= "and issue = '{$admininfo[admin_id]}'";
 			$met_class = $this->column(2,$this->module);

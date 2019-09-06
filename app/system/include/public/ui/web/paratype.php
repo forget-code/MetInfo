@@ -77,14 +77,14 @@ echo <<<EOT
 EOT;
 		foreach($val['list'] as $option){
 			if($option){
-				if(strstr($value,"|")){
-					$values = explode("|",$value);
+				if(strstr($value,"#@met@#")){
+					$values = explode("#@met@#",$value);
 					$checked ='';
 					foreach($values as $v){
 						if($v==$option['value'])$checked = 'checked';
 					}
 				}else{
-					$checked = $value==$option['value']?'checked':'';
+					$checked = $value==$option['id']?'checked':'';
 				}
 				// html修改（新模板框架v2） 开始
 echo <<<EOT

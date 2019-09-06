@@ -34,27 +34,7 @@ echo <<<EOT
 		</dd>
 	</dl>
 	</div>
-	<!--<div class="v52fmbx_dlbox">
-	<dl>
-		<dt>{$_M[word][language_backlangchange_v6]}</dt>
-		<dd class="ftype_select">
-		  <div class="fbox">
-			<select name="met_admin_type_ok" data-checked='{$_M[config][met_admin_type_ok]}'>
-<!--
-EOT;
-foreach($met_langok as $key=>$val){
-echo <<<EOT
--->
-<option value="{$val[mark]}">{$val[name]}</option>	
-<!--
-EOT;
-}
-echo <<<EOT
--->
-	</select></div>&nbsp;<span class="tips">{$_M[word][langadminyes]}</span>
-		</dd>
-	</dl>
-	-->
+	
 	<div class="v52fmbx_dlbox">
 	<dl>
 		<dt>{$_M[word][langsw]}{$_M[word][marks]}</dt>

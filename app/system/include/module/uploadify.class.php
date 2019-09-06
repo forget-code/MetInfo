@@ -126,8 +126,10 @@ class uploadify extends web {
 		}
 		$file_old = PATH_WEB.str_replace('../', '', $back['path']);
 
-		$file_new = PATH_WEB.'upload/head/'.get_met_cookie('id').'.png';
-		rename($file_old, $file_new);
+        #$file_new = PATH_WEB.'upload/head/'.get_met_cookie('id').'.png';
+        $basename = basename($file_old);
+        $file_new = PATH_WEB.'upload/head/'.get_met_cookie('id').'_'.$basename;
+        rename($file_old, $file_new);
 
 
 		$thumb = load::sys_class('thumb', 'new');//加载缩略图类

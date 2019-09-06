@@ -50,7 +50,7 @@ $(function(){
             enter:function(){
                 setTimeout(function(){
                     $sidebar_piclist.masonry({itemSelector:".masonry-child"});
-                },500)
+                },0)
             }
         });
     }
@@ -77,7 +77,7 @@ $(function(){
             $('.metvideo').videoSizeRes();
         }
     }
-    if($('.met-editor iframe,.met-editor embed').length) $('.met-editor iframe,.met-editor embed').videoSizeRes();
+    $('.met-editor iframe:not(.ueditor_baidumap),.met-editor embed,.met-editor video').videoSizeRes();
 });
 // 全局函数
 $.fn.extend({
@@ -263,8 +263,9 @@ $.fn.extend({
      */
     appearDiy:function(){
         if(typeof $.fn.appear !='undefined'){
+            var $self=$(this);
             setTimeout(function(){
-                $(this).appear({
+                $self.appear({
                     force_process:true,
                     interval:0
                 });
@@ -383,9 +384,21 @@ $.fn.extend({
         });
     }
 });
-// 加载当前页面js
-function metPageJs(js){
-    $('body').append('<script src="'+js+'"></script>');
+// 页面简繁文字切换
+var isSimplified = localStorage.getItem('is_simplified')!=null?parseInt(localStorage.getItem('is_simplified')):1;
+function tsChangge(is_change,fun){
+    if(is_change) isSimplified=isSimplified?0:1;
+    metFileLoadFun(M.weburl+'app/system/include/static2/vendor/s2t/jquery.s2t.js',function(){
+        return typeof $.fn.t2s=='function';
+    },function(){
+        if (isSimplified) {
+            $('body').t2s();
+        } else {
+            $('body').s2t();
+        }
+    });
+    if(is_change) window.localStorage.setItem("is_simplified",isSimplified);
+    if(typeof fun=='function') fun(isSimplified);
 }
 // 执行模板UI自定义的函数
 function metui(array){
@@ -399,3 +412,5 @@ function metui(array){
 }
 window.METUI=[];
 window.METUI_FUN=[];
+// 加载模板js
+if($('#met-page-js').data('js_url').indexOf('.js')>=0) $('body').append('<script src="'+$('#met-page-js').data('js_url')+'"></script>');

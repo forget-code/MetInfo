@@ -15,12 +15,14 @@ class myapp extends admin {
 
     public function doindex() {
         global $_M;
-        $app = load::mod_class('myapp/class/getapp', 'new');
-        $appl = $app->get_app();
+        $app    = load::mod_class('myapp/class/getapp', 'new');
+        $appl   = $app->get_app();
 
         foreach($appl as $key=>$val){
 
-            if($val['no'] > 10000)$applist .= $val['no'].'-'.$val['ver'].'|';
+            if($val['no'] > 10000){
+                $applist .= $val['no'].'-'.$val['ver'].'|';
+            }
         }
         $applist = trim($applist, '|');
         require $this->template('own/myapp');

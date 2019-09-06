@@ -7,13 +7,14 @@ define(function(require, exports, module) {
 		if($.cookie('appupdate')){
 			applist = $.cookie('appupdate').split('|');
 		}
+        console.log(applist);
 		$.each(applist, function(i, item){
 			var app = item.split('-');
 			if($('#'+app[0]).attr('data-ver') != app[1]){
 				$('#'+app[0]).removeClass("hidden");
 			}
 		});
-	}	
+	}
 	if(!$.cookie('appupdate')){
 		var url = apppath+'n=platform&c=system&a=doappupdate&applist='+$('#applist').val();
 		$.ajax({

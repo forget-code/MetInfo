@@ -3,6 +3,7 @@
 # Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
 error_reporting(E_ERROR | E_PARSE);
 $met_webkeys=trim(file_get_contents(substr(dirname(__FILE__), 0, -6).'/config/config_safe.php'));
+$met_webkeys=str_replace(' ','',$met_webkeys);
 $met_webkeys=str_replace('<?php/*','',$met_webkeys);
 $met_webkeys=str_replace('*/?>','',$met_webkeys);
 class Captcha

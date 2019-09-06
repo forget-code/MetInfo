@@ -37,17 +37,6 @@ function check_main_login(){
 			return false;
 		}
 }
-function pressCaptcha(obj){
-    obj.value = obj.value.toUpperCase();
-}
-function metfocus(intext){
-        intext.focus(function(){
-		    $(this).addClass('metfocus');
-		});
-        intext.focusout(function(){
-		    $(this).removeClass('metfocus');
-		});
-}
 </script>
 <body id="login">
 <div class="login-min">
@@ -120,7 +109,7 @@ if($_M['config']['met_login_code']==1){
 echo <<<EOT
 -->
 					<label>{$_M['word']['logincode']}</label>
-					<input name="code" onKeyUp="pressCaptcha(this)" type="text" class="text mid" id="code" />
+					<input name="code" type="text" class="text mid" id="code" />
 					<img align="absbottom" src="./include/ajax.php?action=code"  onclick=this.src="./include/ajax.php?action=code&"+Math.random() style="cursor: pointer;" title="{$_M['word']['logincodechange']}"/>
 <!--
 EOT;

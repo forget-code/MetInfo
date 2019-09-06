@@ -191,7 +191,7 @@ CREATE TABLE `met_flash` (
   `height` int(11) default NULL,
   `wap_ok` int(11) NOT NULL default '0',
   `img_title_color` varchar(100) NOT NULL DEFAULT '',
-  `img_des` varchar(100) NOT NULL DEFAULT '',
+  `img_des` varchar(255) NOT NULL DEFAULT '',
   `img_des_color` varchar(100) NOT NULL DEFAULT '',
   `img_text_position` varchar(100) NOT NULL DEFAULT '',
   `lang` varchar(50) default NULL,
@@ -821,11 +821,12 @@ CREATE TABLE `met_para` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 INSERT INTO met_applist VALUES(null, '0', '1.0', 'ueditor', 'index', 'doindex', '百度编辑器', '编辑器', '0', '0', '0','0','',0);
-INSERT INTO met_applist VALUES(null,'10070','1.2', 'metconfig_sms', 'index', 'doindex', '短信功能', '短信接口', '0', '0', '0','1','',0);
+INSERT INTO met_applist VALUES(null,'10070','1.3', 'metconfig_sms', 'index', 'doindex', '短信功能', '短信接口', '0', '0', '0','1','',0);
 INSERT INTO met_applist VALUES(null,'50002','1.0', 'metconfig_template', 'temtool', 'dotemlist', '官方模板管理工具', '官方商业模板请在此进行管理操作', '0', '0', '0','2','',1);
+
 INSERT INTO met_config VALUES(null,'metconfig_nurse_link_tel','','','0','0','metinfo');
 INSERT INTO met_config VALUES(null,'metconfig_nurse_link','0','','0','0','metinfo');
-INSERT INTO met_config VALUES(null,'metcms_v','6.1.3','','0','0','metinfo');
+INSERT INTO met_config VALUES(null,'metcms_v','6.2.0','','0','0','metinfo');
 INSERT INTO met_config VALUES(null,'metconfig_nurse_job_tel','','','0','0','metinfo');
 INSERT INTO met_config VALUES(null,'metconfig_nurse_job','0','','0','0','metinfo');
 INSERT INTO met_config VALUES(null,'metconfig_nurse_massge_tel','','','0','0','metinfo');
@@ -874,7 +875,7 @@ INSERT INTO met_config VALUES(null,'metconfig_tablename','admin_array|admin_tabl
 INSERT INTO met_config VALUES(null,'metconfig_smsprice','0.1','','0','0','metinfo');
 INSERT INTO met_config VALUES(null,'metconfig_agents_logo_login','templates/met/images/login-logo.png','','0','0','metinfo');
 INSERT INTO met_config VALUES(null,'metconfig_agents_logo_index','templates/met/images/logoen.gif','','0','0','metinfo');
-INSERT INTO met_config VALUES(null,'metconfig_agents_copyright_foot','Powered by <b><a href=http://www.metinfo.cn target=_blank>MetInfo $metcms_v</a></b> &copy;2008-$m_now_year &nbsp;<a href=http://www.metinfo.cn target=_blank>MetInfo Inc.</a>','','0','0','metinfo');
+INSERT INTO met_config VALUES(null,'metconfig_agents_copyright_foot','Powered by <b><a href=https://www.metinfo.cn target=_blank title="CMS">MetInfo $metcms_v</a></b> &copy;2008-$m_now_year &nbsp;<a href=https://www.mituo.cn target=_blank title="米拓建站">mituo.cn</a>','','0','0','metinfo');
 INSERT INTO met_config VALUES(null,'metconfig_agents_type','0','','0','0','metinfo');
 INSERT INTO met_config VALUES(null,'metconfig_agents_code','','','0','0','metinfo');
 INSERT INTO met_config VALUES(null,'metconfig_agents_backup','metinfo','','0','0','metinfo');
@@ -887,7 +888,7 @@ INSERT INTO met_config VALUES(null,'metconfig_app_sysver','|5.0 Beta|5.0|5.0.1|5
 INSERT INTO met_config VALUES(null,'metconfig_app_info','0|1373858456','','0','0','metinfo');
 INSERT INTO met_config VALUES(null,'metconfig_agents_thanks','感谢使用 Metinfo','','0','0','cn-metinfo');
 INSERT INTO met_config VALUES(null,'metconfig_agents_depict_login','MetInfo','','0','0','cn-metinfo');
-INSERT INTO met_config VALUES(null,'metconfig_agents_name','Metinfo企业网站管理系统','','0','0','cn-metinfo');
+INSERT INTO met_config VALUES(null,'metconfig_agents_name','MetInfo|米拓企业建站系统','','0','0','cn-metinfo');
 INSERT INTO met_config VALUES(null,'metconfig_agents_copyright','长沙米拓信息技术有限公司（MetInfo Inc.）','','0','0','cn-metinfo');
 INSERT INTO met_config VALUES(null,'metconfig_agents_about','关于我们','','0','0','cn-metinfo');
 INSERT INTO met_config VALUES(null,'metconfig_agents_thanks','thanks use Metinfo','','0','0','en-metinfo');
@@ -902,6 +903,7 @@ INSERT INTO met_config VALUES(null,'metconfig_sms_url', 'https://appv2.metinfo.c
 INSERT INTO met_config VALUES(null,'metconfig_sms_token', '', '', '0', '0', 'metinfo');
 INSERT INTO met_config VALUES(NULL, 'metconfig_agents_metmsg', '1', '', '', '', 'metinfo');
 INSERT INTO met_config VALUES(null, 'metconfig_safe_prompt', '0', '', '0', '0', 'metinfo');
+INSERT INTO met_config VALUES(null, 'metconfig_data_cache_time', '600', '', '0', '0', 'metinfo');
 
 INSERT INTO met_admin_column VALUES('5','lang_unitytxt_39','','0','0','1','7','<i class=\"fa fa-sliders\"></i>','','1');
 INSERT INTO met_admin_column VALUES('73','lang_member','index.php?n=user&c=admin_user&a=doindex','72','1601','2','1','<i class=\"fa fa-users\"></i>','','1');
@@ -933,8 +935,10 @@ INSERT INTO met_admin_column VALUES('75','lang_checkupdate','index.php?n=update&
 INSERT INTO met_admin_column VALUES('65','lang_dlapptips2','index.php?n=appstore&c=appstore&a=doappstore','4','1507','2','9999','<i class=\"fa fa-cube\"></i>','','1');
 
 
-INSERT INTO met_otherinfo VALUES('1','NOUSER','2147483647','','','','','','','','','','','','','','','','','metinfo');
-INSERT INTO met_skin_table VALUES('1','metv6','metv6','MetInfo v6.0正式版新推出一套全新精致免费模板！','0','');
-INSERT INTO met_lang VALUES('2','English','1','2','en','en','','','0','0','','','metinfo');
-INSERT INTO met_lang VALUES('1','简体中文','1','1','cn','cn','','','0','0','','','metinfo');
-INSERT INTO met_admin_array VALUES('3','管理员','metinfo','1','metinfo','0','10000','256','2','metinfo','metinfo');
+INSERT INTO met_otherinfo VALUES(null,'NOUSER','2147483647','','','','','','','','','','','','','','','','','metinfo');
+INSERT INTO met_skin_table VALUES(null,'metv6s','metv6s','MetInfo v6.0正式版新推出一套全新精致免费模板！','0','');
+
+INSERT INTO met_lang VALUES(null,'简体中文','1','1','cn','cn','','','0','0','','','metinfo');
+INSERT INTO met_lang VALUES(null,'English','1','2','en','en','','','0','0','','','metinfo');
+
+INSERT INTO met_admin_array VALUES(1,'管理员','metinfo','1','metinfo','0','10000','256','2','metinfo','metinfo');

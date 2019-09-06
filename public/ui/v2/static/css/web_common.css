@@ -93,3 +93,19 @@
 .met-sidebar-nav .list-group-item a{color:#76838f}
 .met-sidebar-nav .list-group-item a:hover{color:#000;text-decoration:none}
 .met-sidebar-nav .list-group-item.active a{color:#62a8ea}
+/*编辑器*/
+.met-editor{width:100%;max-width:100%;font-size:16px;line-height:1.8}
+.met-editor *{max-width: 100%;}
+.met-editor p{margin-bottom:.8em}
+.met-editor img{max-width:100%!important;vertical-align:top}
+.met-editor img[src]:not(.imgloading){height:auto!important}
+.met-editor .table-saw{overflow-x:auto}
+.met-editor .metvideobox,
+.met-editor video,
+.met-editor .metvideo,
+.met-editor iframe,
+.met-editor embed{max-width:100%!important;}
+.met-editor .lg-item-box{display:inline-block}
+@media (max-width:767px){
+    .met-editor{font-size:14px}
+}

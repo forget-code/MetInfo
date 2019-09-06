@@ -83,23 +83,24 @@ class DB {
 		$rs = self::fetch_array($result);
 		//如果是前台可视化编辑模式
 		if(IN_ADMIN !== true && $_GET['pageset'] == 1){
-			load::sys_class('view/ui_compile');
+			/*load::sys_class('view/ui_compile');
 			$ui_compile = new ui_compile();
-			$rs = $ui_compile->replace_sql_one($sql,$rs);
-		}
-		self::free_result($result);
-		return $rs ;
-	}
+			$rs = $ui_compile->replace_sql_one($sql,$rs);*/
+            $rs = load::sys_class('view/ui_sqlbuild','new')->replace_sql_one($sql,$rs);
+        }
+        self::free_result($result);
+        return $rs ;
+    }
 
-	/**
-	 * 获取多条数据
-	 * @param   string  $sql      select sql语句
-	 * @param   string  $type     为UNBUFFERED时，不获取缓存结果
-	 * @return  array             返回执行sql语句后查询到的数据
+    /**
+     * 获取多条数据
+     * @param   string  $sql      select sql语句
+     * @param   string  $type     为UNBUFFERED时，不获取缓存结果
+     * @return  array             返回执行sql语句后查询到的数据
      *	MYSQLI_ASSOC - 默认。关联数组
      *	MYSQLI_NUM - 数字数组
      *	MYSQLI_BOTH - 同时产生关联和数字数组
-	 */
+     */
 	/*public static function get_all($sql, $type = ''){
         $result = self::query($sql, $type);
 		# 	MYSQLI_ASSOC - 默认。关联数组
@@ -133,9 +134,10 @@ class DB {
         }
 		//如果是前台可视化编辑模式
 		if(IN_ADMIN !== true && $_GET['pageset'] == 1){
-			load::sys_class('view/ui_compile');
+			/*load::sys_class('view/ui_compile');
 			$ui_compile = new ui_compile();
-			$rs = $ui_compile->replace_sql_all($sql,$rs);
+			$rs = $ui_compile->replace_sql_all($sql,$rs);*/
+            $rs = load::sys_class('view/ui_sqlbuild','new')->replace_sql_all($sql,$rs);
 		}
 		return $rs ;
 	}

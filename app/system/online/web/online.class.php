@@ -34,44 +34,44 @@ class online extends web
 
             $metinfo="<div id='onlinebox' class='onlinebox' style='display:none;' m-type='online' m-id='online'>
                         <div class='onlinebox-open' id='onlinebox-open' style='background:{$_M['config']['met_online_color']};'><i class='fa fa-comments-o'></i></div>
-                        <div class='onlinebox-box'>
+                        <div class='onlinebox-box font-size-14'>
                             <div class='onlinebox-top' style='background:{$_M['config']['met_online_color']};'>
                                 <div class='onlinebox-top-btn'>
                                     <a href='javascript:;' class='onlinebox-close' title='{$lang_Close}' onclick='return onlineclose();'>x</a>
                                     <a href='javascript:;' class='onlinebox-min' onclick='return onlinemin();'>-</a>
                                 </div>
-                                <h4 class='editable-click' met-id='{$online_word['id']}' met-table='language' met-field='value'>{$online_word['value']}</h4>
+                                <h4 class='editable-click h5' met-id='{$online_word['id']}' met-table='language' met-field='value'>{$online_word['value']}</h4>
                             </div>
                             <div class='onlinebox-center list-group'>";
             //online content
             $qq_url1='http://wpa.qq.com/msgrd?v=3&uin=';
             $qq_url2='&site=qq&menu=yes';
             if(!met_useragent('desktop') && strpos($_SERVER['HTTP_USER_AGENT'],'MicroMessenger')===false){
-                $qq_url1='mqqwpa://im/chat?chat_type=wpa&uin=';
+                $qq_url1='mqq://im/chat?chat_type=wpa&uin=';
                 $qq_url2='&version=1&src_type=web';
             }
             foreach ($cache_online as $key => $val) {
-                $metinfo .= '<li class="list-group-item">';
+                $metinfo .= '<li class="list-group-item border-none">';
                 $val['show_name']=$val['name'];
                 if ($val['qq'] != '') {
                     if($_M['config']['met_onlinenameok']) $val['show_name']=$val['qq'];
-                    $metinfo .= "<p class='met_qq list-group-item-text'><a href='{$qq_url1}{$val['qq']}{$qq_url2}' target='_blank'><i class='fa fa-qq'></i><span>{$val['show_name']}</span></a></p>";
+                    $metinfo .= "<p class='met_qq list-group-item-text mb-0'><a href='{$qq_url1}{$val['qq']}{$qq_url2}' target='_blank'><i class='fa fa-qq'></i><span>{$val['show_name']}</span></a></p>";
                 }
                 if ($val['msn'] != ''){
                     if($_M['config']['met_onlinenameok']) $val['show_name']=$val['msn'];
-                    $metinfo .= "<p class='met_facebook list-group-item-text'><a href='https://www.facebook.com/{$val['msn']}' target='_blank'><i class='fa fa-facebook'></i><span>{$val['show_name']}</span></a></p>";
+                    $metinfo .= "<p class='met_facebook list-group-item-text mb-0'><a href='https://www.facebook.com/{$val['msn']}' target='_blank'><i class='fa fa-facebook'></i><span>{$val['show_name']}</span></a></p>";
                 }
                 if ($val['taobao'] != ''){
                     if($_M['config']['met_onlinenameok']) $val['show_name']=$val['taobao'];
-                    $metinfo .= "<p class='met_taobao list-group-item-text'><a href='http://www.taobao.com/webww/ww.php?ver=3&touid=".urlencode($val['taobao']) ."&siteid=cntaobao&status={$_M['config']['met_taobao_type']}&charset=utf-8' target='_blank'><img src='{$met_url}images/taobao/taobao.png'><span>{$val['show_name']}</span></a></p>";
+                    $metinfo .= "<p class='met_taobao list-group-item-text mb-0'><a href='http://www.taobao.com/webww/ww.php?ver=3&touid=".urlencode($val['taobao']) ."&siteid=cntaobao&status={$_M['config']['met_taobao_type']}&charset=utf-8' target='_blank'><img src='{$met_url}images/taobao/taobao.png'><span>{$val['show_name']}</span></a></p>";
                 }
                 if ($val['alibaba'] != '') {
                     if($_M['config']['met_onlinenameok']) $val['show_name']=$val['alibaba'];
-                    $metinfo .= "<p class='met_alibaba list-group-item-text'><a href='http://amos.alicdn.com/msg.aw?v=2&uid={$val['alibaba']}&site=cnalichn&s={$_M['comfig']['met_alibaba_type']}&charset=UTF-8' target='_blank'><img src='{$met_url}images/taobao/taobao.png'><span>{$val['show_name']}</span></a></p>";
+                    $metinfo .= "<p class='met_alibaba list-group-item-text mb-0'><a href='http://amos.alicdn.com/msg.aw?v=2&uid={$val['alibaba']}&site=cnalichn&s={$_M['comfig']['met_alibaba_type']}&charset=UTF-8' target='_blank'><img src='{$met_url}images/taobao/taobao.png'><span>{$val['show_name']}</span></a></p>";
                 }
                 if ($val['skype'] != '') {
                     if($_M['config']['met_onlinenameok']) $val['show_name']=$val['skype'];
-                    $metinfo .= "<p class='met_skype list-group-item-text'><a href='callto://{$val['skype']}'><i class='fa fa-skype'></i><span>{$val['show_name']}</span></a></p>";
+                    $metinfo .= "<p class='met_skype list-group-item-text mb-0'><a href='callto://{$val['skype']}'><i class='fa fa-skype'></i><span>{$val['show_name']}</span></a></p>";
                 }
                 $metinfo .= '</li>';
             }

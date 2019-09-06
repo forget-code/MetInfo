@@ -142,6 +142,7 @@ color:#999;}
 	transition: .05s border-color ease-in-out;
 	*/}
 .ftype_input .fbox input::-webkit-input-placeholder{padding-top:2px;}
+.ftype_input .fbox select+input{width: 267px;}
 .placeholder-ie{position:relative;}
 .placeholder-ie label{position:absolute;left:8px;top:7px;cursor:text;color:#999;}
 .placeholder-ie input{}
@@ -307,18 +308,18 @@ input[type="file"]{cursor:pointer;}
 .ui-table-search select{position:relative;bottom:2px;}
 .ui-table-search .placeholder-ie{float:left\9;}
 .ui-table-a a{display:inline-block;max-width:300px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
-
+.list-type-update.maxh{overflow-y: auto;}
+.list-type-update::-webkit-scrollbar{width: 10px;}
+.list-type-update::-webkit-scrollbar-thumb{background-color: #999;}
+.list-type-update::-webkit-scrollbar-track{background-color: #e5e5e5;}
+.list-type-update.maxh .dropdown-submenu .dropdown-menu{position: relative;left: 0;}
 /*
 * Table styles
 */
 .sorting_1{background:none!important;}
 .dataTable{border:1px solid #ddd!important;border-right:0!important;border-right:0!important;margin:0px!important;}
 .dataTable tr.newlist td{min-height:60px;}
-table.dataTable{width:100%;margin:0 auto;clear:both;border-collapse:separate;border-spacing:0;  /*
-	   * Header and footer styles
-	   */  /*
-	   * Body styles
-	   */}
+table.dataTable{width:100%;margin:0 auto;clear:both; border-collapse:separate; border-spacing:0;}
 table.dataTable thead th,table.dataTable tfoot th{font-weight:normal;color:#656565!important;text-align:left;border-right:1px solid #ddd;}
 table.dataTable thead th,table.dataTable thead td{padding:8px 10px;font-size:14px;white-space:nowrap;border-bottom:1px solid #ddd;background:#f7f7f7!important;}
 table.dataTable thead th:active,table.dataTable thead td:active{outline:none;}
@@ -462,7 +463,22 @@ td .formerror i{display:none;}
 .metalert-text{padding: 15px 40px;background: #926dde;font-size: 16px;color: #fff; position:fixed;left:50%;top:50%;z-index:1799;-webkit-transform:translate(-50%,-50%);-moz-transform:translate(-50%,-50%);-ms-transform:translate(-50%,-50%);-o-transform:translate(-50%,-50%);transform:translate(-50%,-50%);}
 .metalert-wrapper .metalert-text{position: absolute;}
 .metalert-text .close{position: absolute;right: 5px;top: 11px;font-size: 30px;color: #fff;opacity: 1;}
+/* 小图标设置弹框 */
+.icon-modal .modal-dialog {
+	max-width: 100%;
+	width: 90%;
+	height: 100%;
+	margin: 0 auto;
+}
 
+.icon-modal .modal-content {
+	height: 100%;
+}
+
+.icon-modal .modal-body {
+	height: calc(100% - 120px);
+	padding: 0;
+}
 /*手机屏幕*/
 @media screen and (max-width:700px){
 	/*表单*/

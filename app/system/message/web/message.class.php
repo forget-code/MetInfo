@@ -10,7 +10,6 @@ class message extends web {
 	public function __construct() {
 		global $_M;
 		parent::__construct();
-		$this->upfile = load::sys_class('upfile', 'new');
 	}
 
 
@@ -53,9 +52,10 @@ class message extends web {
 
 			foreach ($_FILES as $key => $value) {
 				if($value[tmp_name]){
-	              $ret = $this->upfile->upload($key);//上传文件
+                    $this->upfile = load::sys_class('upfile', 'new');
+	              	$ret = $this->upfile->upload($key);//上传文件
 	            if ($ret['error'] == 0) {
-			      $info[$key]=$ret[path];
+			      	$info[$key]=$ret[path];
 				} else {
 				    okinfo('javascript:history.back();',$_M[word][opfail]);
 				}
@@ -145,7 +145,7 @@ class message extends web {
            $message=DB::get_one("select * from {$_M[table][column]} where module= 7 and lang ='{$_M[form][lang]}'");
            $_M[form][id]=$message[id];
 		}
-		$met_fd_time=DB::get_one("select * from {$_M[table][config]} where lang ='{$_M[form][lang]}' and  name= 'met_fd_time' and columnid = {$_M[form][id]}");
+		$met_fd_time=DB::get_one("select * from {$_M[table][config]} where lang ='{$_M[form][lang]}' and  name= 'met_fd_time' and columnid = '{$_M[form][id]}'");
         $_M[config][met_fd_time]= $met_fd_time[value];
 
 		if($timeok<=$_M[config][met_fd_time]&&$timeok2<=$_M[config][met_fd_time]){
@@ -194,15 +194,15 @@ class message extends web {
            $message=DB::get_one("select * from {$_M[table][column]} where module= 7 and lang ='{$_M[form][lang]}'");
            $_M[form][id]=$message[id];
 		}
-		$met_fd_back=DB::get_one("select * from {$_M[table][config]} where lang ='{$_M[form][lang]}' and  name= 'met_fd_back' and columnid = {$_M[form][id]}");
+		$met_fd_back=DB::get_one("select * from {$_M[table][config]} where lang ='{$_M[form][lang]}' and  name= 'met_fd_back' and columnid = '{$_M[form][id]}'");
         $_M[config][met_fd_back]= $met_fd_back[value];
-        $met_fd_title=DB::get_one("select * from {$_M[table][config]} where lang ='{$_M[form][lang]}' and  name= 'met_fd_title' and columnid = {$_M[form][id]}");
+        $met_fd_title=DB::get_one("select * from {$_M[table][config]} where lang ='{$_M[form][lang]}' and  name= 'met_fd_title' and columnid = '{$_M[form][id]}'");
         $_M[config][met_fd_title]= $met_fd_title[value];
-        $met_fd_content=DB::get_one("select * from {$_M[table][config]} where lang ='{$_M[form][lang]}' and  name= 'met_fd_content' and columnid = {$_M[form][id]}");
+        $met_fd_content=DB::get_one("select * from {$_M[table][config]} where lang ='{$_M[form][lang]}' and  name= 'met_fd_content' and columnid = '{$_M[form][id]}'");
         $_M[config][met_fd_content]= $met_fd_content[value];
-        $met_fd_to=DB::get_one("select * from {$_M[table][config]} where lang ='{$_M[form][lang]}' and  name= 'met_fd_to' and columnid = {$_M[form][id]}");
+        $met_fd_to=DB::get_one("select * from {$_M[table][config]} where lang ='{$_M[form][lang]}' and  name= 'met_fd_to' and columnid = '{$_M[form][id]}'");
         $_M[config][met_fd_to]= $met_fd_to[value];
-        $met_fd_email=DB::get_one("select * from {$_M[table][config]} where lang ='{$_M[form][lang]}' and  name= 'met_fd_email' and columnid = {$_M[form][id]}");
+        $met_fd_email=DB::get_one("select * from {$_M[table][config]} where lang ='{$_M[form][lang]}' and  name= 'met_fd_email' and columnid = '{$_M[form][id]}'");
         $_M[config][met_fd_email]= $met_fd_email[value];
 
 
@@ -271,7 +271,8 @@ class message extends web {
         }
 
        $paraarr = array();
-       foreach (array_keys($_M['form']) as $vale) {
+       $form = array_merge($_M['form'], $_FILES);
+       foreach (array_keys($form) as $vale) {
            if (strstr($vale, 'para')) {
                if (strstr($vale, '_')) {
                    $arr = explode('_',$vale);

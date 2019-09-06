@@ -119,8 +119,8 @@ php;
         $cache = file_get_contents($view->compileFile);
         // 每个页面头部加页面标识
         if($page){
-            load::sys_class('view/ui_compile');
-            $ui_compile = new ui_compile();
+            ##load::sys_class('view/ui_compile');
+            $ui_compile = load::sys_class('view/ui_compile','new');
             $ui_compile->parse_page($page);
             $cache = '<?php $met_page = "'.$page.'";?>'.$cache;
         }
@@ -161,7 +161,7 @@ php;
     if(!\$cid){
         \$cid = \$data['classnow'];
     }
-    \$location = load::sys_class('label', 'new')->get('column')->get_class123_no_reclass(\$cid);
+    \$location = load::sys_class('label', 'new')->get('column')->get_class123_reclass(\$cid);
     \$location_data = array();
     \$location_data[0] = \$location['class1'];
     \$location_data[1] = \$location['class2'];

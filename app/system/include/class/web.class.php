@@ -35,12 +35,16 @@ class web extends common {
 				die;
 			}
 		}
-
+		// 非可视化状态下pageset=1页面跳转
+		if(strpos($_SERVER['HTTP_REFERER'], $_M['url']['site'])===false && strpos($_SERVER['QUERY_STRING'], 'pageset=1')!==false){
+			echo "<script>
+					if(self == top) window.location.href=location.href.replace('&pageset=1','').replace('?pageset=1','');
+				</script>";
+		}
 		$this->tem_dir();//确定模板根目录
 		$this->load_domain();//加载绑定域名的语言
 		$this->load_language();//语言加载
 		$this->load_publuc_data();//加载公共数据
-        $this->mobile_config_exchange();//移动网页设置转换
 		$this->sys_input();
 		load::sys_class('user', 'new')->get_login_user_info();//会员登录
 		load::plugin('doweb');//加载插件
@@ -108,7 +112,8 @@ class web extends common {
 	protected function input_class($id) {
 		if(!$id){
 			$REQUEST_URIs = explode('/', REQUEST_URI);
-			$c = load::sys_class('label', 'new')->get('column')->get_column_folder($REQUEST_URIs[count($REQUEST_URIs) - 2]);
+            $floder = $REQUEST_URIs[count($REQUEST_URIs) - 2] == 'tag' ? 'search' : $REQUEST_URIs[count($REQUEST_URIs) - 2];
+            $c = load::sys_class('label', 'new')->get('column')->get_column_folder($floder);
 			$id = $c['id'];
 		}
 		$c123_releclass = load::sys_class('label', 'new')->get('column')->get_class123_reclass($id);
@@ -236,10 +241,12 @@ class web extends common {
 
 		$domain = trim(str_replace($_SERVER['REQUEST_SCHEME'].'://', '', $_M['url']['site']),'/');
 
-		$query = "SELECT * FROM {$_M['table']['lang']} WHERE link = '{$domain}'";
-		$res = DB::get_one($query);
-		if($res){
-			$_M['lang'] = $res['mark'];
+		if($domain){
+			$query = "SELECT * FROM {$_M['table']['lang']} WHERE link = '{$domain}'";
+			$res = DB::get_one($query);
+			if($res){
+				$_M['lang'] = $res['mark'];
+			}
 		}
 	}
 
@@ -270,8 +277,9 @@ class web extends common {
 		$query = "SELECT * FROM {$_M['table']['templates']} WHERE no='{$_M[config][met_skin_user]}' AND lang='{$_M['lang']}' order by no_order ";
 		$inc = DB::get_all($query);
 		$tmpincfile=PATH_WEB."templates/{$_M[config][met_skin_user]}/metinfo.inc.php";
-		if(file_exists($tmpincfile))require $tmpincfile;
+		if(is_file($tmpincfile))require $tmpincfile;
 		$_M['config']['metinfover'] = $metinfover;
+		$_M['config']['temp_frame_version'] = $temp_frame_version;
 		foreach($inc as $key=>$val){
 			$name = $val['name'];
 			if($val[type]==7&&strstr($val['value'],"../upload/")&&$index=='index'&&($metinfover=='v1' || $metinfover=='v2')){//增加判断（新模板框架v2）
@@ -281,21 +289,11 @@ class web extends common {
 			$_M['word'][$name] = trim($val['value']);
 		}
 
-		load::sys_class('view/ui_compile');
-		$ui_compile = new ui_compile();
+		#load::sys_class('view/ui_compile');
+		$ui_compile = load::sys_class('view/ui_compile','new');
 		$templates = $ui_compile->list_templates_config();
 		$_M['word'] = array_merge($_M['word'],$templates);
 	}
-
-    /**
-     * 移动网页设置转换
-     */
-    public function mobile_config_exchange(){
-        global $_M;
-        if (is_mobile()) {
-            $_M['config']['met_logo'] = $_M['config']['met_mobile_logo'] ? $_M['config']['met_mobile_logo'] : $_M['config']['met_logo'];
-        }
-    }
 
     /**
 	  * 前台权限检测
@@ -306,7 +304,8 @@ class web extends common {
 		global $_M;
 		$power = load::sys_class('user', 'new')->check_power($groupid);
 		if($power < 0){
-			$gourl = $_M['gourl'] ? urlencode($_M['gourl']) : urlencode('http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
+			/*$gourl = $_M['gourl'] ? urlencode($_M['gourl']) : urlencode('http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);*/
+            $gourl = $_M['gourl'] ? urlencode($_M['gourl']) : urlencode($_M['url']['site'].trim($_SERVER['REQUEST_URI'],'/'));
 			$gourl = $gourl == -1 ? "":$gourl;
 			if($_M['lang'] != $_M['config']['met_index_type']){
 				$lang = "&lang={$_M['lang']}";
@@ -478,12 +477,13 @@ class web extends common {
 		/**
 		 * 标签数据处理
 		 */
-		load::sys_class('view/ui_compile');
-		$ui_compile = new ui_compile();
+		#load::sys_class('view/ui_compile');
+		$ui_compile = load::sys_class('view/ui_compile','new');
 		$output = $ui_compile->replace_attr($output);
 
-		if($_M['form']['html_filename'] && $_M['form']['metinfonow'] == $_M['config']['met_member_force']){
-			$filename = urldecode($_M['form']['html_filename']);
+        if($_M['form']['html_filename'] && $_M['form']['metinfonow'] == $_M['config']['met_member_force']){
+            //静态页
+            $filename = urldecode($_M['form']['html_filename']);
 			if(stristr(PHP_OS,"WIN")) {
 				$filename = @iconv("utf-8", "GBK", $filename);
 			}

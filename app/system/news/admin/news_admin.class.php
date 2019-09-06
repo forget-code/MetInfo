@@ -60,15 +60,15 @@ class news_admin extends base_admin {
 	 */
 	public function doaddsave() {
 		global $_M;
-		$_M['form']['addtime'] = $_M['form']['addtype']==2?$_M['form']['addtime']:date("Y-m-d H:i:s");
-		$id = $this->insert_list($_M['form']);
-		if($id){
-		$url="{$_M[url][own_form]}a=doindex{$_M[form][turnurl]}";
-	    load::mod_class('html/html_op', 'new')->html_generate($url,$_M['form']['class1_select'],$id);
-		}else{
-			turnover("{$_M[url][own_form]}a=doindex",$_M[word][dataerror]);
-		}
-	}
+        $_M['form']['addtime'] = $_M['form']['addtype']==2?$_M['form']['addtime']:date("Y-m-d H:i:s");
+        $id = $this->insert_list($_M['form']);
+        if($id){
+            $url="{$_M['url']['own_form']}a=doindex{$_M['form']['turnurl']}";
+            load::mod_class('html/html_op', 'new')->html_generate($url,$_M['form']['class1_select'],$id);
+        }else{
+            turnover("{$_M['url']['own_form']}a=doindex",$_M['word']['dataerror']);
+        }
+    }
 
 	/**
 	 * 新增内容插入数据处理
@@ -190,6 +190,8 @@ class news_admin extends base_admin {
 		$a = 'doeditorsave';
 		$access_option = $this->access_option('access',$list['access']);
 		$_M['url']['help_tutorials_helpid']='98#1、基本信息';
+		$list['title'] = htmlspecialchars($list['title']);
+		$list['ctitle'] = htmlspecialchars($list['ctitle']);
 		require $this->template('own/article_add');
 	}
 
@@ -200,8 +202,6 @@ class news_admin extends base_admin {
 	 */
 	function doeditorsave() {
 		global $_M;
-		// dump($_SERVER);
-		// exit;
 		$_M['form']['addtime'] = $_M['form']['addtype']==2?$_M['form']['addtime']:date("Y-m-d H:i:s");
 		if($this->update_list($_M['form'],$_M['form']['id'])){
 			//if($_M['config']['met_webhtm'] == 2 && $_M['config']['met_htmlurl'] == 0){
@@ -331,28 +331,17 @@ class news_admin extends base_admin {
 	 */
 	function dojson_list(){
 		global $_M;
-		// dump($_M['form']);
-		// exit;
-		if($_M['form']['class1_select']=='null'&&$_M['form']['class2_select']=='null'&&$_M['form']['class3_select']=='null'){
-			$class1 = $_M['form']['class1'];
-			$class2 = $_M['form']['class2'];
-			$class3 = $_M['form']['class3'];
-		}else{
-			$class1 = $_M['form']['class1_select'];
-			$class2 = $_M['form']['class2_select'];
-			$class3 = $_M['form']['class3_select'];
-		}
-		$class1 = $class1 == ' ' ? 'null' : $class1;
-		$class2 = $class2 == ' ' ? 'null' : $class2;
-		$class3 = $class3 == ' ' ? 'null' : $class3;
+		$class1 = is_numeric($_M['form']['class1_select'])?$_M['form']['class1_select']:($_M['form']['class1_select']==null?$_M['form']['class1']:'');
+		$class2 = is_numeric($_M['form']['class2_select'])?$_M['form']['class2_select']:($_M['form']['class2_select']==null?$_M['form']['class2']:'');
+		$class3 = is_numeric($_M['form']['class3_select'])?$_M['form']['class3_select']:($_M['form']['class3_select']==null?$_M['form']['class3']:'');
 		$keyword = $_M['form']['keyword'];
 		$search_type = $_M['form']['search_type'];
 		$orderby_hits = $_M['form']['orderby_hits'];
 		$orderby_updatetime = $_M['form']['orderby_updatetime'];
 
-		$where = $class1&&$class1!=$_M[word][allcategory]&&$class1!='null'?"and class1 = '{$class1}'":'';
-		$where.= $class2&&$class2!='null'?"and class2 = '{$class2}'":'';
-		$where.= $class3&&$class3!='null'?"and class3 = '{$class3}'":'';
+		$where = $class1&&$class1!=$_M[word][allcategory]&&$class1!=null?"and class1 = '{$class1}'":'';
+		$where.= $class2&&$class2!=null?"and class2 = '{$class2}'":'';
+		$where.= $class3&&$class3!=null?"and class3 = '{$class3}'":'';
 		$where.= $keyword?"and title like '%{$keyword}%'":'';
 		switch($search_type){
 			case 0:break;
@@ -366,9 +355,9 @@ class news_admin extends base_admin {
 		$admininfo = admin_information();
 		if($admininfo[admin_issueok] == 1)$where.= "and issue = '{$admininfo[admin_id]}'";
 		$met_class = $this->column(2,$this->module);
-		if($class3!='null' &&$class3){
+		if($class3!=null &&$class3){
                  $classnow=$class3;
-			}elseif($class2!='null' && $class2){
+			}elseif($class2!=null && $class2){
                  $classnow=$class2;
 			}else{
 				 $classnow=$class1;
@@ -393,8 +382,9 @@ class news_admin extends base_admin {
 			$list[] = $val['updatetime'];
 			$list[] = $val['state'];
 			$list[] = "<input name=\"no_order-{$val['id']}\" type=\"text\" class=\"ui-input text-center\" value=\"{$val[no_order]}\">";
-			$list[] = "<a href=\"{$_M[url][own_form]}a=doeditor&id={$val['id']}&class1_select={$class1}&class2_select={$class2}&class3_select={$class3}\" class=\"edit\">{$_M[word][editor]}</a><span class=\"line\">-</span><a href=\"{$_M[url][own_form]}a=dolistsave&submit_type=del&allid={$val['id']}\" data-toggle=\"popover\" class=\"delet\">{$_M[word][delete]}</a>
-			";
+            $list[] = "<a href=\"{$_M[url][own_form]}a=doeditor&id={$val['id']}&class1_select={$class1}&class2_select={$class2}&class3_select={$class3}\" class=\"edit\">{$_M[word][editor]}</a>
+<span class=\"line\">-</span>
+<a href=\"{$_M[url][own_form]}a=dolistsave&submit_type=del&allid={$val['id']}&class1_select={$class1}&class2_select={$class2}&class3_select={$class3}\" data-toggle=\"popover\" class=\"delet\">{$_M[word][delete]}</a>";
 			$rarray[] = $list;
 		}
 

@@ -338,7 +338,11 @@ class upfile extends common{
 			return ;
 		}
 		$ext = explode(".", $filename);
-		return $this->ext = $ext[count($ext)-1];
+        $ext = $ext[count($ext) - 1];
+        if (preg_match("/^[0-9a-zA-Z]+$/u", $ext)) {
+            return $this->ext = $ext;
+        }
+        return $this->ext = '';
 	}
 
 	/**

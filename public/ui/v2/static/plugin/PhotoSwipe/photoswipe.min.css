@@ -5,7 +5,7 @@
 */
 
 /* pswp = photoswipe */
-.pswp{display:none;position:absolute;width:100%;height:100%;left:0;top:0;overflow:hidden;-ms-touch-action:none;touch-action:none;z-index:1700;-webkit-text-size-adjust:100%;  /* create separate layer, to avoid paint on window.onscroll in webkit/blink */-webkit-backface-visibility:hidden;outline:none;}
+.pswp{display:none;position:absolute;width:100%;height:100%;left:0;top:0;overflow:hidden;-ms-touch-action:none;touch-action:none;z-index:1800;-webkit-text-size-adjust:100%;  /* create separate layer, to avoid paint on window.onscroll in webkit/blink */-webkit-backface-visibility:hidden;outline:none;}
 .pswp *{-webkit-box-sizing:border-box;box-sizing:border-box;}
 .pswp img{max-width:none;-webkit-transition:none;-o-transition:none;transition:none;}
 

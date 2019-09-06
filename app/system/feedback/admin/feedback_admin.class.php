@@ -278,7 +278,7 @@ class feedback_admin extends message_admin {
       $showcol = array();
       $met_fd_related = load::mod_class('config/config_database','new')->get_value_by_classid($_M['form']['class1'],'met_fd_related');
       $parameter_handle = load::mod_class('parameter/parameter_handle','new');
-
+      $parameter_database = load::mod_class('parameter/parameter_database','new');
       //循环显示列表项
       foreach ($met_fd_showcol as $paraid){
           foreach ($result as $val ){
@@ -289,7 +289,7 @@ class feedback_admin extends message_admin {
                       // 如果有产品关联，筛选就用产品
                       $options = $parameter_handle->related_product($val['related']);
                     }else{
-                       $options = jsondecode($val['options']);
+                       $options = $parameter_database->get_parameters($val['module'],$val['id']);
                     }
 
                       $options_item = "<option value=''>{$_M['word']['cvall']}</option>";
@@ -516,7 +516,11 @@ class feedback_admin extends message_admin {
     if ($_M['config']['met_webhtm'] == 2 && $_M['config']['met_htmlurl'] == 0) {
       turnover("./content/article/save.php?lang={$_M['lang']}&action=html");
     } else {
-      turnover("{$_M[url][own_form]}a=doindex");
+        $url_para = '';
+        $url_para .= $_M['form']['class1'] ? "&class1={$_M['form']['class1']}" : '';
+        $url_para .= $_M['form']['class2'] ? "&class1={$_M['form']['class2']}" : '';
+        $url_para .= $_M['form']['class3'] ? "&class1={$_M['form']['class3']}" : '';
+        turnover("{$_M[url][own_form]}a=doindex".$url_para);
     }
 
   }

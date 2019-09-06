@@ -15,13 +15,10 @@ $resui['pageset']=array(
     "{$metui['url']['tem_css']}pageset.css",
     "{$metui['url']['tem_js']}pageset.js"
 );
-$resui['page_iframe']=array(
-    $metui['paths']['web_icons'],
-    "{$metui['url']['tem_css']}page_iframe.css"
-);
 
 // UI打包
 $metuipack->cache=false; // 缓存开关
+$_M['form']['file_compress']=1;
 $resui=$metuipack->getUiGroup($resui);// 模板公共UI、当前页面UI打包生成文件，返回文件url数组
 $metuipack->setUiVersion();// 模板版本信息更新
 ?>
